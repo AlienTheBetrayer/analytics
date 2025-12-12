@@ -38,7 +38,7 @@
 /* all elements */
 * {
 	box-sizing: border-box;
-    font-family: Inter, Arial, sans-serif;
+	font-family: Inter, Arial, sans-serif;
 }
 
 /* element-specific */
@@ -78,4 +78,11 @@ p {
 button {
 	font-size: var(--font-4);
 	color: var(--foreground-1);
+}
+
+ul,
+li {
+	margin: 0;
+	padding: 0;
+	list-style: none;
 }

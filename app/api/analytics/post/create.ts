@@ -16,8 +16,7 @@ export const create = async (request: NextRequest) => {
 		const { data: projectData, error: projectError } = (await supabaseServer
 			.from("projects")
 			.upsert({ name: project }, { onConflict: "name" })
-			.select()
-			.single()) as { data: ProjectType; error: PostgrestError | null };
+			.select()) as { data: ProjectType[]; error: PostgrestError | null };
 
 		if (projectError) {
 			return nextResponse({ projectError }, 400);
@@ -28,8 +27,7 @@ export const create = async (request: NextRequest) => {
 			(await supabaseServer
 				.from("analytics_meta")
 				.upsert({ type: event, description })
-				.select()
-				.single()) as { data: AnalyticsMetaType; error: PostgrestError | null };
+				.select()) as { data: AnalyticsMetaType[]; error: PostgrestError | null };
 
 		if (analyticsMetaError) {
 			return nextResponse({ analyticsMetaError }, 400);
@@ -40,8 +38,8 @@ export const create = async (request: NextRequest) => {
 			.from("project_aggregates")
 			.upsert(
 				{
-					id: projectData.id,
-					analytics_meta_id: analyticsMetaData.id,
+					id: projectData[0].id,
+					analytics_meta_id: analyticsMetaData[0].id,
 				},
 				{ onConflict: "id" },
 			);
@@ -54,8 +52,8 @@ export const create = async (request: NextRequest) => {
 		const { error: analyticsError } = await supabaseServer
 			.from("analytics")
 			.upsert({
-				project_id: projectData.id,
-				analytics_meta_id: analyticsMetaData.id,
+				project_id: projectData[0].id,
+				analytics_meta_id: analyticsMetaData[0].id,
 				page_url: pageUrl,
 			});
 

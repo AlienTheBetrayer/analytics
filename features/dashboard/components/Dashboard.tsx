@@ -1,4 +1,5 @@
 import { Button } from "@/features/ui/button/components/Button";
+import { Menu } from "@/features/ui/menu/components/Menu";
 import type { ComponentPropsWithoutRef } from "react";
 import { useSync } from "../hooks/useSync";
 
@@ -7,6 +8,7 @@ type Props = {} & ComponentPropsWithoutRef<"div">;
 export const Dashboard = ({ className }: Props) => {
 	// controller
 	const controller = useSync();
+	console.log(controller.data);
 
 	// ui states
 	const hasSynced = controller.data !== null;
@@ -24,12 +26,20 @@ export const Dashboard = ({ className }: Props) => {
 					Sync
 				</Button>
 				<Button onClick={() => controller.setAutoSyncEnabled((prev) => !prev)}>
-					{controller.autoSyncEnabled === false ? 'Enable auto-sync' : 'Disable auto-sync'}
+					{controller.autoSyncEnabled === false
+						? "Enable auto-sync"
+						: "Disable auto-sync"}
 				</Button>
 			</div>
 
 			<div className="w-full grow p-2">
 				<span>{JSON.stringify(controller.data)}</span>
+				<Menu
+					items={[
+						{ title: "hi", element: "f" },
+						{ title: "bye", element: "g" },
+					]}
+				/>
 			</div>
 
 			<div className="w-full p-2"></div>

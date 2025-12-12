@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 
 export const useSync = () => {
 	// states
-	const [data, setData] = useState<object | null>(null);
+	const [data, setData] = useState<object[] | null>(null);
 	const [autoSyncEnabled, setAutoSyncEnabled] = useState<boolean>(false);
 
 	const sync = useCallback(async () => {
