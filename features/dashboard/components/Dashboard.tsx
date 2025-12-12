@@ -13,11 +13,11 @@ export const Dashboard = ({ className }: Props) => {
 
 	return (
 		<div
-			className={`w-full h-full flex flex-col max-w-lg min-h-128 bg-background-2 rounded-xl ${className ?? ""}`}
+			className={`w-full h-full flex flex-col max-w-128 min-h-100 bg-background-2 rounded-xl ${className ?? ""}`}
 		>
 			<div className="w-full flex border-b border-b-background-4 p-2 items-center gap-1">
 				<div
-					className={`rounded-full w-1.5 h-1.5 ${hasSynced ? "bg-blue-500" : "bg-red-500"}`}
+					className={`rounded-full w-1.5 h-1.5 ${hasSynced ? "bg-blue-500" : "bg-red-500"} duration-1000`}
 				></div>
 				<span>{hasSynced ? "Synced" : "Not synced"}</span>
 				<Button onClick={controller.sync} className="ml-auto">
@@ -29,7 +29,7 @@ export const Dashboard = ({ className }: Props) => {
 			</div>
 
 			<div className="w-full grow p-2">
-				<h1>{JSON.stringify(controller.data)}</h1>
+				<span>{JSON.stringify(controller.data)}</span>
 			</div>
 
 			<div className="w-full p-2"></div>

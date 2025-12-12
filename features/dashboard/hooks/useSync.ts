@@ -7,7 +7,7 @@ export const useSync = () => {
 	const [autoSyncEnabled, setAutoSyncEnabled] = useState<boolean>(false);
 
 	const sync = useCallback(async () => {
-		const res = await axios.get("api/analytics");
+		const res = await axios.get("api/analytics?type=projects");
 		return res.data;
 	}, []);
 
