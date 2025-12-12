@@ -13,6 +13,11 @@
 	--foreground-3: hsl(0, 0%, 75%);
 	--foreground-4: hsl(0, 0%, 65%);
 	--foreground-5: hsl(0, 0%, 55%);
+
+	--font-1: 4rem;
+	--font-2: 2rem;
+	--font-3: 1rem;
+	--font-4: 0.8rem;
 }
 
 /* tailwind-specific variables */
@@ -33,6 +38,7 @@
 /* all elements */
 * {
 	box-sizing: border-box;
+    font-family: Inter, Arial, sans-serif;
 }
 
 /* element-specific */
@@ -45,5 +51,31 @@ body {
 	background: var(--background-1);
 	color: var(--foreground-1);
 	margin: 0;
-	font-family: Arial, Helvetica, sans-serif;
+}
+
+h1 {
+	font-size: var(--font-1);
+	color: var(--foreground-1);
+}
+
+h2 {
+	font-size: var(--font-2);
+	color: var(--foreground-1);
+}
+
+h3 {
+	font-size: var(--font-3);
+	color: var(--foreground-2);
+}
+
+h4,
+span,
+p {
+	font-size: var(--font-4);
+	color: var(--foreground-2);
+}
+
+button {
+	font-size: var(--font-4);
+	color: var(--foreground-1);
 }
