@@ -37,7 +37,7 @@ export const Notification = ({
 			animate={{ opacity: 1, y: 0 }}
 			exit={{ opacity: 0, y: 200 }}
 			transition={{ ease: "backInOut", duration: 0.8 }}
-			className={`flex flex-col fixed bottom-4 right-4 h-38 min-w-64 bg-background-a-1 outline-1 rounded-xl backdrop-blur-[2px] z-9999 ${className ?? ""}`}
+			className={`flex flex-col fixed bottom-4 right-4 h-38 min-w-64 bg-background-a-1 outline-1 rounded-xl backdrop-blur-[2px] z-10 ${className ?? ""}`}
 			style={{ outlineColor: outline() }}
 			{...rest}
 		>

@@ -6,6 +6,7 @@ import type {
 } from "@/app/types/database";
 import axios from "axios";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useDashboardContext } from "../context/DashboardContext";
 
 export type ProjectData = {
 	project: ProjectType;
@@ -14,11 +15,14 @@ export type ProjectData = {
 };
 
 type useDataCallbacks = {
-    onSync?: () => void;
-    onError?: (message: string) => void;
+	onSync?: () => void;
+	onError?: (message: string) => void;
 };
 
 export const useData = (callbacks?: useDataCallbacks) => {
+	// context
+	const [state] = useDashboardContext();
+
 	// states
 	const [data, setData] = useState<ProjectData[] | null>(null);
 	const [message, setMessage] = useState<string | null>(null);
@@ -29,10 +33,12 @@ export const useData = (callbacks?: useDataCallbacks) => {
 
 	// refs
 	const isSyncing = useRef<boolean>(false);
-    const hasInitiallySynced = useRef<boolean>(false);
+	const hasInitiallySynced = useRef<boolean>(false);
 
 	// api function
 	const sync = useCallback(async () => {
+		if (state.visible === false) return;
+
 		try {
 			const projectListRes = await axios.get("api/analytics?type=projects");
 			const projectListData = projectListRes.data as ProjectType[];
@@ -51,28 +57,27 @@ export const useData = (callbacks?: useDataCallbacks) => {
 				});
 
 				Promise.all(finalData).then((d) => {
-                    setData(d);
-                    callbacks?.onSync?.();
-                });
+					setData(d);
+					callbacks?.onSync?.();
+				});
 			} catch (e) {
 				const error = e instanceof Error ? e.message : "unknown error";
 				setMessage(error);
-                callbacks?.onError?.(error);
+				callbacks?.onError?.(error);
 			}
 		} catch (e) {
 			const error = e instanceof Error ? e.message : "unknown error";
 			setMessage(error);
-                callbacks?.onError?.(error);
+			callbacks?.onError?.(error);
 		}
-	}, [callbacks]);
+	}, [callbacks, state]);
 
 	// initial sync + auto-sync
 	useEffect(() => {
-        if(hasInitiallySynced.current === true)
-            return;
+		if (hasInitiallySynced.current === true) return;
 
 		sync();
-        hasInitiallySynced.current = true;
+		hasInitiallySynced.current = true;
 
 		if (autoSyncEnabled) {
 			const interval = setInterval(sync, 1000);

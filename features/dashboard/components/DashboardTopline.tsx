@@ -11,7 +11,7 @@ type Props = {
 };
 
 export const DashboardTopline = ({ controller }: Props) => {
-	const [state, dispatch] = useDashboardContext();
+	const [, dispatch] = useDashboardContext();
 
 	return (
 		<div className="w-full flex flex-col border-b border-b-background-4 px-2 py-1 items-center gap-2 flex-wrap">

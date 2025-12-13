@@ -6,6 +6,8 @@ import { useDashboardContext } from "../context/DashboardContext";
 import { useData } from "../hooks/useData";
 import { DashboardMain } from "./DashboardMain";
 import { DashboardTopline } from "./DashboardTopline";
+import { DashboardRecover } from "./additional/DashboardRecoverer";
+import { usePopup } from "@/hooks/usePopup";
 
 type Props = {} & ComponentPropsWithoutRef<"div">;
 
@@ -29,17 +31,22 @@ export const Dashboard = ({ className }: Props) => {
 	// state
 	const [state] = useDashboardContext();
 
+    const recovererPopup = usePopup();
+
 	return (
-		<Activity mode={state.visible === true ? "visible" : "hidden"}>
-			<motion.div
-				initial={{ opacity: 0, y: 10 }}
-				animate={{ opacity: 1, y: 0 }}
-				className={`w-full h-full flex flex-col max-w-lg rounded-xl bg-linear-to-bl from-background-2 to-background-1 ${className ?? ""} hover:scale-105 duration-300`}
-			>
-				{notifications.render()}
-				<DashboardTopline controller={controller} />
-				<DashboardMain controller={controller} />
-			</motion.div>
-		</Activity>
+		<>
+            <DashboardRecover/>
+			<Activity mode={state.visible === true ? "visible" : "hidden"}>
+				<motion.div
+					initial={{ opacity: 0, y: 10 }}
+					animate={{ opacity: 1, y: 0 }}
+					className={`w-full h-full flex flex-col max-w-lg rounded-xl bg-linear-to-bl from-background-2 to-background-1 ${className ?? ""} hover:scale-105 duration-300`}
+				>
+					{notifications.render()}
+					<DashboardTopline controller={controller} />
+					<DashboardMain controller={controller} />
+				</motion.div>
+			</Activity>
+		</>
 	);
 };
