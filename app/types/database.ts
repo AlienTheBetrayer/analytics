@@ -24,11 +24,9 @@ export type ProjectAggregatesType = {
 	last_updated?: string;
 };
 
-// GET-specific
-export type ProjectData = {
+// GET
+export type ProjectDataType = {
     id: string;
-    name: string;
-    visits?: number;
-    events?: AnalyticsMetaType[];
-    created_at?: string;
+    aggregates: ProjectAggregatesType;
+    metaData: AnalyticsMetaType[];
 }

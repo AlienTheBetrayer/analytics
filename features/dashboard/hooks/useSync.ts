@@ -1,27 +1,49 @@
-import type { ProjectType } from "@/app/types/database";
+import type {
+	AnalyticsMetaType,
+	ProjectAggregatesType,
+	ProjectDataType,
+	ProjectType,
+} from "@/app/types/database";
 import axios from "axios";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-export type DataType = {
-	projects: ProjectType[];
-} | null;
+export type ProjectData = {
+	project: ProjectType;
+	aggregates: ProjectAggregatesType;
+	metaData: AnalyticsMetaType[];
+};
 
 export const useSync = () => {
 	// states
-	const [data, setData] = useState<DataType>(null);
+	const [data, setData] = useState<ProjectData[] | null>(null);
 	const [autoSyncEnabled, setAutoSyncEnabled] = useState<boolean>(false);
-    const [selectedProject, setSelectedProject] = useState<string | null>(null);
+	const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
 
 	// refs
 	const isSyncing = useRef<boolean>(false);
 
 	// api function
 	const sync = useCallback(async () => {
-		const res = await axios.get("api/analytics?type=projects");
-		setData({ projects: res.data });
+		const projectListRes = await axios.get("api/analytics?type=projects");
+		const projectListData = projectListRes.data as ProjectType[];
+
+		const finalData = projectListData.map(async (project) => {
+			const specificRes = await axios.get(
+				`api/analytics?type=project&id=${project.id}`,
+			);
+			const specificData = specificRes.data as ProjectDataType;
+
+			return {
+				project,
+				aggregates: specificData.aggregates,
+				metaData: specificData.metaData,
+			};
+		});
+
+		Promise.all(finalData).then((d) => setData(d));
 	}, []);
 
-    // initial sync + auto-sync
+	// initial sync + auto-sync
 	useEffect(() => {
 		sync();
 
@@ -35,6 +57,7 @@ export const useSync = () => {
 	const resync = useCallback(async () => {
 		isSyncing.current = true;
 		setData(null);
+        setSelectedProjectId(null);
 		await sync();
 		isSyncing.current = false;
 	}, [sync]);
@@ -44,7 +67,8 @@ export const useSync = () => {
 		sync,
 		resync,
 		isSyncing,
-        selectedProject, setSelectedProject,
+		selectedProjectId,
+		setSelectedProjectId,
 		autoSyncEnabled,
 		setAutoSyncEnabled,
 	};
