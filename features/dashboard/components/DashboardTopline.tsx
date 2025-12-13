@@ -14,10 +14,15 @@ export const DashboardTopline = ({ controller }: Props) => {
 	return (
 		<div className="w-full flex flex-col border-b border-b-background-4 px-2 py-1 items-center gap-2 flex-wrap">
             <div className='flex gap-1 w-full items-center'>
-                    <Image src={serverImg} alt='' className='image invert-75!'/>
+                <Image src={serverImg} alt='' className='image invert-75!'/>
                 <h3>
                     Analytics client
                 </h3>
+                <Button className='ml-auto'>
+                    <small>
+                        ✕ Hide
+                    </small>
+                </Button>
             </div>
 			<div className='flex gap-1 w-full items-center'>
 				<span className="flex gap-1.5 items-center">
