@@ -1,6 +1,8 @@
 "use client";
 import { useNotification } from "@/features/notification/hooks/useNotification";
-import type { ComponentPropsWithoutRef } from "react";
+import { motion } from "motion/react";
+import { Activity, type ComponentPropsWithoutRef } from "react";
+import { useDashboardContext } from "../context/DashboardContext";
 import { useData } from "../hooks/useData";
 import { DashboardMain } from "./DashboardMain";
 import { DashboardTopline } from "./DashboardTopline";
@@ -24,13 +26,20 @@ export const Dashboard = ({ className }: Props) => {
 		},
 	});
 
+	// state
+	const [state] = useDashboardContext();
+
 	return (
-		<div
-			className={`w-full h-full flex flex-col max-w-lg rounded-xl bg-linear-to-bl from-background-2 to-background-1 ${className ?? ""} hover:scale-105 duration-300`}
-		>
-			{notifications.render()}
-			<DashboardTopline controller={controller} />
-			<DashboardMain controller={controller} />
-		</div>
+		<Activity mode={state.visible === true ? "visible" : "hidden"}>
+			<motion.div
+				initial={{ opacity: 0, y: 10 }}
+				animate={{ opacity: 1, y: 0 }}
+				className={`w-full h-full flex flex-col max-w-lg rounded-xl bg-linear-to-bl from-background-2 to-background-1 ${className ?? ""} hover:scale-105 duration-300`}
+			>
+				{notifications.render()}
+				<DashboardTopline controller={controller} />
+				<DashboardMain controller={controller} />
+			</motion.div>
+		</Activity>
 	);
 };
