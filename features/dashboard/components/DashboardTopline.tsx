@@ -9,12 +9,11 @@ type Props = {
 export const DashboardTopline = ({ controller }: Props) => {
 	return (
 		<div className="w-full flex border-b border-b-background-4 px-2 py-1 items-center gap-1 flex-wrap">
-			<span className="flex gap-1 items-center">
+			<span className="flex gap-1.5 items-center">
 				<div
-					className={`rounded-full w-1.5 h-1.5 ${controller.data !== null ? "bg-blue-500" : "bg-red-500"} duration-1000`}
+					className={`rounded-full w-1.5 h-1.5 ${controller.data !== null ? "bg-green-500" : "bg-red-500"} duration-1000`}
 				/>
-				{controller.data !== null ? "Synced" : "Not synced"}
-				{controller.data === null && <Spinner className="w-3! h-3!" />}
+				{controller.data !== null ? "Synced" : "Fetching..."}
 			</span>
 
 			<div className="flex gap-1 ml-auto flex-wrap justify-center">
