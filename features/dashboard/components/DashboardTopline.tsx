@@ -11,7 +11,7 @@ export const DashboardTopline = ({ controller }: Props) => {
 		<div className="w-full flex border-b border-b-background-4 px-2 py-1 items-center gap-1 flex-wrap">
 			<span className="flex gap-1.5 items-center">
 				<div
-					className={`rounded-full w-1.5 h-1.5 ${controller.data !== null ? "bg-green-500" : "bg-red-500"} duration-1000`}
+					className={`rounded-full w-1.5 h-1.5 ${controller.data !== null ? "bg-[rgb(56,66,255)]" : "bg-red-500"} duration-1000`}
 				/>
 				{controller.data !== null ? "Synced" : "Fetching..."}
 			</span>
@@ -21,7 +21,7 @@ export const DashboardTopline = ({ controller }: Props) => {
 					{controller.isSyncing.current === true && (
 						<Spinner className="w-3! h-3!" />
 					)}
-					Sync
+					<mark>Sync</mark>
 				</Button>
 
 				<Button onClick={() => controller.setAutoSyncEnabled((prev) => !prev)}>

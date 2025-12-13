@@ -60,6 +60,40 @@ body {
 	background-repeat: repeat;
 }
 
+b,
+i,
+u,
+mark {
+	all: unset;
+	pointer-events: none;
+}
+
+b {
+	filter: brightness(1.5);
+}
+
+i {
+	font-style: italic;
+}
+
+u {
+	text-decoration: underline wavy;
+	text-decoration-color: rgb(255, 56, 56);
+	text-decoration-thickness: 1px;
+}
+
+mark {
+	text-decoration: underline;
+	text-decoration-color: rgb(56, 66, 255);
+	text-decoration-thickness: 2px;
+	text-decoration-skip-ink: none;
+}
+
+small {
+	opacity: 0.5;
+	font-size: inherit;
+}
+
 hr {
 	border-color: var(--background-5);
 }

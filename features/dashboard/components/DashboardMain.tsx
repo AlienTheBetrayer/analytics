@@ -46,25 +46,26 @@ export const DashboardMain = ({ controller }: Props) => {
 							</ul>
 						</div>
 
-						{controller.selectedProjectId !== null && (
+						{controller.selectedProjectId !== null &&
+						projectData !== undefined ? (
 							<>
 								<hr />
 								<div className="flex flex-col gap-4">
-									<h3 className="text-center">Project events</h3>
-									{projectData !== undefined ? (
-										<ul className="flex flex-col gap-2">
-											{projectData.metaData.map((metaDataEntry) => (
-												<li key={metaDataEntry.id}>
-													{metaDataEntry.type}
-													{metaDataEntry.description}
-												</li>
-											))}
-										</ul>
-									) : (
-										<span className="m-auto">No events so far...</span>
-									)}
+									<h3 className="text-center">
+										Project events (<mark>{projectData.project.name}</mark>)
+									</h3>
+									<ul className="flex flex-col gap-2">
+										{projectData.metaData.map((metaDataEntry) => (
+											<li key={metaDataEntry.id}>
+												{metaDataEntry.type}
+												{metaDataEntry.description}
+											</li>
+										))}
+									</ul>
 								</div>
 							</>
+						) : (
+							<span className="m-auto">No events so far...</span>
 						)}
 					</motion.div>
 				) : (
