@@ -12,6 +12,8 @@
     "@fontsource/inter": "^5.2.8",
     "@supabase/supabase-js": "^2.87.1",
     "axios": "^1.13.2",
+    "date-fns": "^4.1.0",
+    "motion": "^12.23.26",
     "next": "16.0.10",
     "react": "19.2.1",
     "react-dom": "19.2.1"

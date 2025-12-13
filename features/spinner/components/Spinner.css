@@ -1,0 +1,15 @@
+@keyframes loading {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+.loading-spinner {
+	animation: 0.5s loading infinite linear;
+	filter: invert(0.7) grayscale(1);
+	height: 1.5rem;
+	width: 1.5rem;
+}
