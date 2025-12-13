@@ -19,7 +19,11 @@ export const DashboardTopline = ({ controller }: Props) => {
 			<div className="flex gap-1 w-full items-center">
 				<Image src={serverImg} alt="" className="image" />
 				<h3>Analytics client</h3>
-				<Tooltip description="Hide dashboard" direction="top" className="ml-auto">
+				<Tooltip
+					description="Hide dashboard"
+					direction="top"
+					className="ml-auto"
+				>
 					<Button
 						onClick={() => dispatch({ type: "SET_VISIBLE", flag: false })}
 					>
@@ -36,13 +40,15 @@ export const DashboardTopline = ({ controller }: Props) => {
 				</span>
 
 				<div className="flex gap-1 ml-auto flex-wrap justify-center">
-					<Button onClick={controller.resync}>
-						{controller.isSyncing.current === true && (
-							<Spinner className="w-3! h-3!" />
-						)}
-						<Image className="image invert-70!" alt="" src={downloadImg} />
-						<mark>Sync</mark>
-					</Button>
+					<Tooltip description="Re-download database data">
+						<Button onClick={controller.resync}>
+							{controller.isSyncing.current === true && (
+								<Spinner className="w-3! h-3!" />
+							)}
+							<Image className="image invert-70!" alt="" src={downloadImg} />
+							<mark>Sync</mark>
+						</Button>
+					</Tooltip>
 
 					<Button
 						onClick={() => controller.setAutoSyncEnabled((prev) => !prev)}

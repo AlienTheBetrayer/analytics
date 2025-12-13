@@ -1,3 +1,4 @@
+import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import type { useData } from "../../hooks/useData";
 import { DashboardEvent } from "./DashboardEvent";
@@ -23,12 +24,13 @@ export const DashboardEvents = ({ controller }: Props) => {
 							Events (<mark>{projectData.project.name}</mark>)
 						</h3>
 
-						<Button
-							className="ml-auto"
-							onClick={() => controller.setSelectedProjectId(null)}
-						>
-							<small>✕ Go back</small>
-						</Button>
+						<Tooltip description="Hide events tab" className='ml-auto' direction='top'>
+							<Button
+								onClick={() => controller.setSelectedProjectId(null)}
+							>
+								<small>✕ Hide</small>
+							</Button>
+						</Tooltip>
 					</div>
 					<ul className="flex flex-col gap-2">
 						{projectData.metaData.map((metaDataEntry) => (

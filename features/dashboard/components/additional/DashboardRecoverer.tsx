@@ -1,3 +1,4 @@
+import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { motion } from "motion/react";
 import Image from "next/image";
@@ -21,9 +22,11 @@ export const DashboardRecover = ({ onInteract }: Props) => {
 				<Image className="image" alt="" src={eyeImg} />
 				Dashboard is <u>hidden</u>
 			</span>
-			<Button onClick={onInteract}>
-				<mark>Show</mark>
-			</Button>
+			<Tooltip description="Bring the dashboard back">
+				<Button onClick={onInteract}>
+					<mark>Show</mark>
+				</Button>
+			</Tooltip>
 		</motion.div>
 	);
 };
