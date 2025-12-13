@@ -1,23 +1,17 @@
 import { Spinner } from "@/features/spinner/components/Spinner";
-import { Button } from "@/features/ui/button/components/Button";
-import { relativeTime } from "@/utils/relativeTime";
 import { motion } from "motion/react";
-import type { useSync } from "../hooks/useSync";
+import type { useData } from "../hooks/useData";
+import { DashboardEvents } from "./events/DashboardEvents";
+import { DashboardProjects } from "./projects/DashboardProjects";
 
 type Props = {
-	controller: ReturnType<typeof useSync>;
+	controller: ReturnType<typeof useData>;
 };
 
 export const DashboardMain = ({ controller }: Props) => {
-	const projectData =
-		controller.data === null
-			? undefined
-			: controller.data.find(
-					(p) => p.project.id === controller.selectedProjectId,
-				);
-
 	return (
 		<div className="w-full flex flex-col grow p-4">
+			<h1>{controller.message}</h1>
 			{controller.data !== null ? (
 				controller.data.length > 0 ? (
 					<motion.div
@@ -25,48 +19,9 @@ export const DashboardMain = ({ controller }: Props) => {
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 					>
-						<div className="flex flex-col gap-4">
-							<h3 className="text-center">Available projects</h3>
-							<ul className="flex flex-col gap-2">
-								{controller.data.map((v) => (
-									<li key={v.project.id} className="w-full">
-										<Button
-											className="w-full"
-											onClick={() =>
-												controller.setSelectedProjectId(v.project.id)
-											}
-										>
-											<span>{v.project.name}</span>
-											<span className="ml-auto">
-												attached {relativeTime(v.project.created_at)}
-											</span>
-										</Button>
-									</li>
-								))}
-							</ul>
-						</div>
-
-						{controller.selectedProjectId !== null &&
-						projectData !== undefined ? (
-							<>
-								<hr />
-								<div className="flex flex-col gap-4">
-									<h3 className="text-center">
-										Project events (<mark>{projectData.project.name}</mark>)
-									</h3>
-									<ul className="flex flex-col gap-2">
-										{projectData.metaData.map((metaDataEntry) => (
-											<li key={metaDataEntry.id}>
-												{metaDataEntry.type}
-												{metaDataEntry.description}
-											</li>
-										))}
-									</ul>
-								</div>
-							</>
-						) : (
-							<span className="m-auto">No events so far...</span>
-						)}
+						<DashboardProjects controller={controller} />
+						<hr />
+						<DashboardEvents controller={controller} />
 					</motion.div>
 				) : (
 					<span className="m-auto">No projects connected.</span>

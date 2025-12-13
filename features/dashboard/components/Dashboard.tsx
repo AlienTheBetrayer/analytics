@@ -1,5 +1,5 @@
 import type { ComponentPropsWithoutRef } from "react";
-import { useSync } from "../hooks/useSync";
+import { useData } from "../hooks/useData";
 import { DashboardMain } from "./DashboardMain";
 import { DashboardTopline } from "./DashboardTopline";
 
@@ -7,7 +7,7 @@ type Props = {} & ComponentPropsWithoutRef<"div">;
 
 export const Dashboard = ({ className }: Props) => {
 	// controller
-	const controller = useSync();
+	const controller = useData();
 
 	return (
 		<div

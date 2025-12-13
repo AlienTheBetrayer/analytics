@@ -1,0 +1,14 @@
+.dashboard-events {
+    display: grid;
+    grid-template-columns: 20% 1fr 30%;
+}
+
+.dashboard-event {
+    overflow: hidden;
+}
+
+.dashboard-event * {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}

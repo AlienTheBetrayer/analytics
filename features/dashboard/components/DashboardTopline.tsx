@@ -1,9 +1,9 @@
 import { Spinner } from "@/features/spinner/components/Spinner";
 import { Button } from "@/features/ui/button/components/Button";
-import type { useSync } from "../hooks/useSync";
+import type { useData } from "../hooks/useData";
 
 type Props = {
-	controller: ReturnType<typeof useSync>;
+	controller: ReturnType<typeof useData>;
 };
 
 export const DashboardTopline = ({ controller }: Props) => {

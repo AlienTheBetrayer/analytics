@@ -13,7 +13,6 @@ export const POST = async (request: NextRequest) => {
 
 	switch (type) {
 		case "create":
-		case null:
 			return await create(request);
 
 		case "wipe":
@@ -27,7 +26,6 @@ export const POST = async (request: NextRequest) => {
 export const GET = async (request: NextRequest) => {
 	const params = request.nextUrl.searchParams;
 	const type = params.get("type");
-	// api/analytics?type=project&id=
 
 	switch (type) {
 		case "projects":
