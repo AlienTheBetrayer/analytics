@@ -22,7 +22,10 @@ export const DashboardMain = ({ controller }: Props) => {
 						<ul className="flex flex-col gap-2">
 							{controller.data.projects.map((v) => (
 								<li key={v.id} className="w-full">
-									<Button className="w-full">
+									<Button
+										className="w-full"
+										onClick={() => controller.setSelectedProject(v.id)}
+									>
 										<span>{v.name}</span>
 										<span className="ml-auto">
 											attached {relativeTime(v.created_at)}

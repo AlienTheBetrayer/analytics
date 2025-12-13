@@ -10,6 +10,7 @@ export const useSync = () => {
 	// states
 	const [data, setData] = useState<DataType>(null);
 	const [autoSyncEnabled, setAutoSyncEnabled] = useState<boolean>(false);
+    const [selectedProject, setSelectedProject] = useState<string | null>(null);
 
 	// refs
 	const isSyncing = useRef<boolean>(false);
@@ -43,6 +44,7 @@ export const useSync = () => {
 		sync,
 		resync,
 		isSyncing,
+        selectedProject, setSelectedProject,
 		autoSyncEnabled,
 		setAutoSyncEnabled,
 	};

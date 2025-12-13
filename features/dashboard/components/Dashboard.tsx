@@ -11,7 +11,7 @@ export const Dashboard = ({ className }: Props) => {
 
 	return (
 		<div
-			className={`w-full h-full flex flex-col max-w-lg bg-background-2 rounded-xl ${className ?? ""}`}
+			className={`w-full h-full flex flex-col max-w-lg rounded-xl bg-linear-to-bl from-background-2 to-background-1 ${className ?? ""}`}
 		>
 			<DashboardTopline controller={controller} />
 			<DashboardMain controller={controller} />

@@ -2,7 +2,6 @@ export type AnalyticsType = {
 	id: string;
 	project_id: string;
 	analytics_meta_id: string;
-	page_url?: string;
 };
 
 export type AnalyticsMetaType = {
@@ -24,3 +23,12 @@ export type ProjectAggregatesType = {
 	visits?: number;
 	last_updated?: string;
 };
+
+// GET-specific
+export type ProjectData = {
+    id: string;
+    name: string;
+    visits?: number;
+    events?: AnalyticsMetaType[];
+    created_at?: string;
+}
