@@ -1,9 +1,12 @@
 import { Button } from "@/features/ui/button/components/Button";
 import { relativeTime } from "@/utils/relativeTime";
-import type { useSync } from "../../hooks/useData";
+import type { useData } from "../../hooks/useData";
+import Image from "next/image";
+
+import linkImg from '../../../../public/link.svg';
 
 type Props = {
-	controller: ReturnType<typeof useSync>;
+	controller: ReturnType<typeof useData>;
 };
 
 export const DashboardProjects = ({ controller }: Props) => {
@@ -18,6 +21,7 @@ export const DashboardProjects = ({ controller }: Props) => {
 								className="w-full"
 								onClick={() => controller.setSelectedProjectId(v.project.id)}
 							>
+                                <Image src={linkImg} alt='' className={`image h-3! w-3! ${controller.selectedProjectId === v.project.id ? 'invert-100!' : ''}`}/>
 								<span>{v.project.name}</span>
 								<span className="ml-auto">
 									attached {relativeTime(v.project.created_at)}

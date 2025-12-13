@@ -143,3 +143,11 @@ li {
 	padding: 0;
 	list-style: none;
 }
+
+/* global classes */
+.image {
+    height: 1rem;
+    width: 1rem;
+    filter: invert(0.4);
+    transition: 0.3s;
+}

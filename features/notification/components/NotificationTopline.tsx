@@ -1,9 +1,11 @@
 import { Button } from "@/features/ui/button/components/Button";
+import Image from "next/image";
+import closeImg from "../../../public/close.svg";
 import type { NotificationData } from "./Notification";
 
 type Props = {
 	data: NotificationData;
-    onInteract?: () => void;
+	onInteract?: () => void;
 };
 
 export const NotificationTopline = ({ data, onInteract }: Props) => {
@@ -13,11 +15,13 @@ export const NotificationTopline = ({ data, onInteract }: Props) => {
 				{data.type[0].toUpperCase()}
 				{data.type.slice(1)}
 			</h4>
-            <Button onClick={onInteract} className='bg-background-1! hover:bg-background-2! active:bg-background-3! outline-0!'>
-                <small>
-                    Close
-                </small>
-            </Button>
+			<Button
+				onClick={onInteract}
+				className="bg-background-1! hover:bg-background-2! active:bg-background-3! outline-0!"
+			>
+				<Image className="image" alt="" src={closeImg} />
+				<small>Close</small>
+			</Button>
 		</div>
 	);
 };

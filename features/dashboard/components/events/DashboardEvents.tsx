@@ -1,6 +1,8 @@
 import type { useData } from "../../hooks/useData";
 import { DashboardEvent } from "./DashboardEvent";
 
+
+
 type Props = {
 	controller: ReturnType<typeof useData>;
 };
