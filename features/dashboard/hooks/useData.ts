@@ -13,7 +13,12 @@ export type ProjectData = {
 	metaData: AnalyticsMetaType[];
 };
 
-export const useData = () => {
+type useDataCallbacks = {
+    onSync?: () => void;
+    onError?: (message: string) => void;
+};
+
+export const useData = (callbacks?: useDataCallbacks) => {
 	// states
 	const [data, setData] = useState<ProjectData[] | null>(null);
 	const [message, setMessage] = useState<string | null>(null);
@@ -24,6 +29,7 @@ export const useData = () => {
 
 	// refs
 	const isSyncing = useRef<boolean>(false);
+    const hasInitiallySynced = useRef<boolean>(false);
 
 	// api function
 	const sync = useCallback(async () => {
@@ -44,20 +50,29 @@ export const useData = () => {
 					};
 				});
 
-				Promise.all(finalData).then((d) => setData(d));
+				Promise.all(finalData).then((d) => {
+                    setData(d);
+                    callbacks?.onSync?.();
+                });
 			} catch (e) {
 				const error = e instanceof Error ? e.message : "unknown error";
 				setMessage(error);
+                callbacks?.onError?.(error);
 			}
 		} catch (e) {
 			const error = e instanceof Error ? e.message : "unknown error";
 			setMessage(error);
+                callbacks?.onError?.(error);
 		}
-	}, []);
+	}, [callbacks]);
 
 	// initial sync + auto-sync
 	useEffect(() => {
+        if(hasInitiallySynced.current === true)
+            return;
+
 		sync();
+        hasInitiallySynced.current = true;
 
 		if (autoSyncEnabled) {
 			const interval = setInterval(sync, 1000);
@@ -65,7 +80,7 @@ export const useData = () => {
 		}
 	}, [sync, autoSyncEnabled]);
 
-	// user API
+	// user functions
 	const resync = useCallback(async () => {
 		if (isSyncing.current !== true) {
 			isSyncing.current = true;

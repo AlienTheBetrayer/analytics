@@ -8,6 +8,12 @@
 	--background-4: hsl(0, 0%, 10%);
 	--background-5: hsl(0, 0%, 12%);
 
+    --background-a-1: hsla(0, 0%, 4%, 0.3);
+	--background-a-2: hsla(0, 0%, 6%, 0.3);
+	--background-a-3: hsla(0, 0%, 8%, 0.3);
+	--background-a-4: hsla(0, 0%, 10%, 0.3);
+	--background-a-5: hsla(0, 0%, 12%, 0.3);
+
 	--foreground-1: hsl(0, 0%, 95%);
 	--foreground-2: hsl(0, 0%, 85%);
 	--foreground-3: hsl(0, 0%, 75%);
@@ -27,6 +33,12 @@
 	--color-background-3: var(--background-3);
 	--color-background-4: var(--background-4);
 	--color-background-5: var(--background-5);
+
+    --color-background-a-1: var(--background-a-1);
+	--color-background-a-2: var(--background-a-2);
+	--color-background-a-3: var(--background-a-3);
+	--color-background-a-4: var(--background-a-4);
+	--color-background-a-5: var(--background-a-5);
 
 	--color-foreground-1: var(--foreground-1);
 	--color-foreground-2: var(--foreground-2);
