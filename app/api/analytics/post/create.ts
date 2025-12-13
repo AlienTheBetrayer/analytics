@@ -6,7 +6,7 @@ import type { NextRequest } from "next/server";
 
 export const create = async (request: NextRequest) => {
 	try {
-		const { project, event, description, pageUrl } = await request.json();
+		const { project, event, description } = await request.json();
 
 		if (project === undefined || event === undefined) {
 			return nextResponse({ error: "project & event are missing." }, 400);
@@ -27,7 +27,10 @@ export const create = async (request: NextRequest) => {
 			(await supabaseServer
 				.from("analytics_meta")
 				.upsert({ type: event, description })
-				.select()) as { data: AnalyticsMetaType[]; error: PostgrestError | null };
+				.select()) as {
+				data: AnalyticsMetaType[];
+				error: PostgrestError | null;
+			};
 
 		if (analyticsMetaError) {
 			return nextResponse({ analyticsMetaError }, 400);
@@ -54,7 +57,6 @@ export const create = async (request: NextRequest) => {
 			.upsert({
 				project_id: projectData[0].id,
 				analytics_meta_id: analyticsMetaData[0].id,
-				page_url: pageUrl,
 			});
 
 		if (analyticsError) {
