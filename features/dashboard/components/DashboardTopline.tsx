@@ -1,4 +1,5 @@
 import { Spinner } from "@/features/spinner/components/Spinner";
+import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import Image from "next/image";
 import downloadImg from "../../../public/download.svg";
@@ -18,12 +19,13 @@ export const DashboardTopline = ({ controller }: Props) => {
 			<div className="flex gap-1 w-full items-center">
 				<Image src={serverImg} alt="" className="image" />
 				<h3>Analytics client</h3>
-				<Button
-					className="ml-auto"
-					onClick={() => dispatch({ type: "SET_VISIBLE", flag: false })}
-				>
-					<small>✕ Hide</small>
-				</Button>
+				<Tooltip description="Hide dashboard" direction="top" className="ml-auto">
+					<Button
+						onClick={() => dispatch({ type: "SET_VISIBLE", flag: false })}
+					>
+						<small>✕ Hide</small>
+					</Button>
+				</Tooltip>
 			</div>
 			<div className="flex gap-1 w-full items-center">
 				<span className="flex gap-1.5 items-center">
