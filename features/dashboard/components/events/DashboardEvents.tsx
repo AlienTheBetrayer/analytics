@@ -2,6 +2,7 @@ import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import type { useData } from "../../hooks/useData";
 import { DashboardEvent } from "./DashboardEvent";
+import axios from "axios";
 
 type Props = {
 	controller: ReturnType<typeof useData>;
@@ -47,8 +48,9 @@ export const DashboardEvents = ({ controller }: Props) => {
 							<DashboardEvent
 								event={metaDataEntry}
 								key={metaDataEntry.id}
-								onDelete={(_id) => {
-                                    
+								onDelete={(id) => {
+                                    // controller.dataDispatch({ type: 'DELETE_EVENT', id });
+                                    axios.post('api/analytics/type=deleteEvent', { id });
                                 }}
 							/>
 						))}

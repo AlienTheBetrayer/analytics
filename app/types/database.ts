@@ -2,6 +2,7 @@ export type AnalyticsType = {
 	id: string;
 	project_id: string;
 	analytics_meta_id: string;
+	created_at?: string;
 };
 
 export type AnalyticsMetaType = {

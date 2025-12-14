@@ -105,6 +105,7 @@ export const useData = (callbacks?: useDataCallbacks) => {
 
 	return {
 		data,
+        dataDispatch,
 		sync,
 		resync,
 		isSyncing,

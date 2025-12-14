@@ -23,7 +23,7 @@ export const POST = async (request: NextRequest) => {
 			return await deleteEvent(request);
 
 		default:
-			return nextResponse({ error: "supported types: create/wipe" }, 400);
+			return nextResponse({ error: "supported types: create/wipe/delete_event" }, 400);
 	}
 };
 
