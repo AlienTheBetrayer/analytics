@@ -1,5 +1,5 @@
-import { motion } from "motion/react";
 import { Spinner } from "@/features/spinner/components/Spinner";
+import { motion } from "motion/react";
 import type { useData } from "../hooks/useData";
 import { DashboardEvents } from "./events/DashboardEvents";
 import { DashboardProjects } from "./projects/DashboardProjects";

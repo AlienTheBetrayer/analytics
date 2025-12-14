@@ -34,8 +34,9 @@ export const DashboardEvents = ({ controller }: Props) => {
 							</Button>
 						</Tooltip>
 					</div>
+
 					<ul
-						className="flex flex-col gap-2 max-h-64 overflow-y-scroll overflow-x-auto scheme-dark p-2.5!"
+						className="flex flex-col gap-2 max-h-64 overflow-y-auto scheme-dark p-2.5!"
 						style={{
 							maskImage:
 								"linear-gradient(to top, transparent 0%, black 15%), linear-gradient(to bottom, trasparent 0%, black 15%)",
@@ -43,7 +44,13 @@ export const DashboardEvents = ({ controller }: Props) => {
 						}}
 					>
 						{[...projectData.metaData].reverse().map((metaDataEntry) => (
-							<DashboardEvent event={metaDataEntry} key={metaDataEntry.id} />
+							<DashboardEvent
+								event={metaDataEntry}
+								key={metaDataEntry.id}
+								onDelete={(_id) => {
+
+                                }}
+							/>
 						))}
 					</ul>
 				</>
