@@ -3,6 +3,22 @@
     grid-template-columns: 20% 1fr 30%;
 }
 
+@media (max-width: 768px) {
+    .dashboard-events {
+        grid-template-columns: 20% 1fr 30% auto;
+    }
+}
+
+.delete-event-button {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .delete-event-button {
+        display: flex;
+    }
+}
+
 .dashboard-event {
     overflow: hidden;
 }

@@ -30,7 +30,7 @@ export const useData = (callbacks?: useDataCallbacks) => {
 	// context
 	const [state, dispatch] = useDashboardContext();
 
-	// states
+    // states
 	const [data, dataDispatch] = useReducer(DataReducer, null);
 	const [selectedProjectId, setSelectedProjectId] = useState<string | null>(
 		null,
@@ -74,25 +74,23 @@ export const useData = (callbacks?: useDataCallbacks) => {
 
 	// user functions
 	const resync = useCallback(async () => {
-		if (isSyncing.current !== true) {
-			isSyncing.current = true;
-			dataDispatch({ type: "SET_DATA", data: null });
-			dispatch({ type: "SET_IS_SYNCING", flag: true });
+		isSyncing.current = true;
+		dataDispatch({ type: "SET_DATA", data: null });
+		dispatch({ type: "SET_IS_SYNCING", flag: true });
 
-			sync().then((res) => {
-				switch (res.status) {
-					case "ok":
-						dataDispatch({ type: "SET_DATA", data: res.data ?? null });
-						isSyncing.current = false;
-						dispatch({ type: "SET_IS_SYNCING", flag: false });
-						callbacks?.onSync?.();
-						break;
-					case "error":
-						callbacks?.onError?.(res.message ?? "unknown error");
-						break;
-				}
-			});
-		}
+		sync().then((res) => {
+			switch (res.status) {
+				case "ok":
+					dataDispatch({ type: "SET_DATA", data: res.data ?? null });
+					isSyncing.current = false;
+					dispatch({ type: "SET_IS_SYNCING", flag: false });
+					callbacks?.onSync?.();
+					break;
+				case "error":
+					callbacks?.onError?.(res.message ?? "unknown error");
+					break;
+			}
+		});
 	}, [sync, dispatch, callbacks]);
 
 	// initial sync + auto-sync
@@ -105,7 +103,7 @@ export const useData = (callbacks?: useDataCallbacks) => {
 
 	return {
 		data,
-        dataDispatch,
+		dataDispatch,
 		sync,
 		resync,
 		isSyncing,

@@ -20,7 +20,11 @@ export const DashboardEvent = ({ event, onDelete }: Props) => {
 			description={event.description ?? "No description"}
 			title={event.type}
 			direction="inside"
-			element={<Button onClick={() => onDelete?.(event.id)}>Delete</Button>}
+			element={
+				<Tooltip description="Delete this event" direction="top">
+					<Button onClick={() => onDelete?.(event.id)}>Delete</Button>
+				</Tooltip>
+			}
 		>
 			<li className="dashboard-events gap-3 bg-linear-to-r from-background-1 to-background-2 rounded-3xl outline-1 outline-background-4 px-4! py-2! hover:brightness-200 hover:scale-102 duration-300 transition-all">
 				<EventProperty eventType="Type" value={event.type} image={typeImg} />
@@ -34,6 +38,12 @@ export const DashboardEvent = ({ event, onDelete }: Props) => {
 					value={relativeTime(event.created_at)}
 					image={calendarImg}
 				/>
+				<Button
+					className="delete-event-button"
+					onClick={() => onDelete?.(event.id)}
+				>
+					Delete
+				</Button>
 			</li>
 		</Tooltip>
 	);

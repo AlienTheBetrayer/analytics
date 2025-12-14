@@ -23,12 +23,12 @@ export const useNotification = () => {
 	const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
 	// user functions
-	const render = useCallback(() => {
+	const render = useCallback((flag?: boolean) => {
 		if (!mounted) return null;
 
 		return createPortal(
 			<AnimatePresence>
-				{isShown && (
+				{isShown && (flag ?? true) && (
 					<Notification
 						data={notificationData}
 						onInteract={() => {
