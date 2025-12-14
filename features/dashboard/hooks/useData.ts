@@ -5,8 +5,9 @@ import type {
 	ProjectType,
 } from "@/app/types/database";
 import axios from "axios";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useReducer, useRef, useState } from "react";
 import { useDashboardContext } from "../context/DashboardContext";
+import { DataReducer } from "../reducers/DataReducer";
 
 export type ProjectData = {
 	project: ProjectType;
@@ -30,7 +31,7 @@ export const useData = (callbacks?: useDataCallbacks) => {
 	const [state, dispatch] = useDashboardContext();
 
 	// states
-	const [data, setData] = useState<ProjectData[] | null>(null);
+	const [data, dataDispatch] = useReducer(DataReducer, null);
 	const [selectedProjectId, setSelectedProjectId] = useState<string | null>(
 		null,
 	);
@@ -75,13 +76,13 @@ export const useData = (callbacks?: useDataCallbacks) => {
 	const resync = useCallback(async () => {
 		if (isSyncing.current !== true) {
 			isSyncing.current = true;
-			setData(null);
+			dataDispatch({ type: "SET_DATA", data: null });
 			dispatch({ type: "SET_IS_SYNCING", flag: true });
 
 			sync().then((res) => {
 				switch (res.status) {
 					case "ok":
-						setData(res.data ?? null);
+						dataDispatch({ type: "SET_DATA", data: res.data ?? null });
 						isSyncing.current = false;
 						dispatch({ type: "SET_IS_SYNCING", flag: false });
 						callbacks?.onSync?.();

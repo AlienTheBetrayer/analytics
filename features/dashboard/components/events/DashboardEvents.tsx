@@ -48,7 +48,7 @@ export const DashboardEvents = ({ controller }: Props) => {
 								event={metaDataEntry}
 								key={metaDataEntry.id}
 								onDelete={(_id) => {
-
+                                    
                                 }}
 							/>
 						))}

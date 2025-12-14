@@ -1,11 +1,12 @@
 import { nextResponse } from "@/utils/request";
 import type { NextRequest } from "next/server";
+import { project } from "./get/project";
 import { projects } from "./get/projects";
 import { create } from "./post/create";
+import { deleteEvent } from "./post/deleteEvent";
 import { wipe } from "./post/wipe";
-import { project } from "./get/project";
 
-export type AnalyticsPostType = null | "create" | "wipe";
+export type AnalyticsPostType = null | "create" | "wipe" | "delete_event";
 
 export const POST = async (request: NextRequest) => {
 	const params = request.nextUrl.searchParams;
@@ -17,6 +18,9 @@ export const POST = async (request: NextRequest) => {
 
 		case "wipe":
 			return await wipe();
+
+		case "delete_event":
+			return await deleteEvent(request);
 
 		default:
 			return nextResponse({ error: "supported types: create/wipe" }, 400);
