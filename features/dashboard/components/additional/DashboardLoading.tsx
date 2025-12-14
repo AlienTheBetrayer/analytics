@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from "motion/react";
 import { useDashboardContext } from "../../context/DashboardContext";
+import "./DashboardLoading.css";
 
 export const DashboardLoading = () => {
 	const [state] = useDashboardContext();
@@ -12,11 +13,11 @@ export const DashboardLoading = () => {
                 from-background-2 to-background-1 z-10 gap-2 outline-1 outline-background-5 w-64"
 					initial={{ opacity: 0, y: -30 }}
 					animate={{ opacity: 1, y: 0 }}
-					exit={{ opacity: 0, y: -30 }}
+					exit={{ opacity: 0, y: -30, transition: { delay: 1 } }}
 					transition={{ ease: "backInOut", duration: 0.5 }}
 				>
 					<span>Fetching...</span>
-					<div className="w-full h-1 rounded-xl bg-red-500"></div>
+					<div className={`w-full h-1.5 rounded-full loading-slider`}></div>
 				</motion.div>
 			)}
 		</AnimatePresence>

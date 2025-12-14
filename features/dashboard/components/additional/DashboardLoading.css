@@ -1,0 +1,14 @@
+@keyframes sliderLoading {
+    0% {
+        filter: brightness(1);
+    }
+    100% {
+        filter: brightness(4);
+    }
+}
+
+.loading-slider {
+    animation: 0.4s sliderLoading alternate-reverse infinite linear;
+    background: linear-gradient(125deg, var(--background-1) 50%, var(--background-5) 80%,rgb(126, 59, 11) 85%, #00f);
+    transition: 0.7s;
+}

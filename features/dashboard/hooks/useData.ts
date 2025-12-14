@@ -83,7 +83,7 @@ export const useData = (callbacks?: useDataCallbacks) => {
 					case "ok":
 						setData(res.data ?? null);
 						isSyncing.current = false;
-						dispatch({ type: "SET_IS_SYNCING", flag: true });
+						dispatch({ type: "SET_IS_SYNCING", flag: false });
 						break;
 					case "error":
 						callbacks?.onError?.(res.message ?? "unknown error");
