@@ -13,12 +13,16 @@ type Props = {
 export const DashboardProjects = ({ controller }: Props) => {
 	return (
 		controller.data !== null && (
-			<div className="flex flex-col gap-4">
+			<div className="flex flex-col gap-4 relative">
 				<h3 className="text-center">Available projects</h3>
 				<ul className="flex flex-col gap-2">
 					{controller.data.map((v) => (
-						<Tooltip key={v.project.id} description={`View events`} title={v.project.name}>
-							<li  className="w-full">
+						<Tooltip
+							key={v.project.id}
+							description={`View events`}
+							title={v.project.name}
+						>
+							<li className="w-full">
 								<Button
 									className="w-full"
 									onClick={() => controller.setSelectedProjectId(v.project.id)}
@@ -30,8 +34,23 @@ export const DashboardProjects = ({ controller }: Props) => {
 									/>
 									<span>{v.project.name}</span>
 									<span className="ml-auto">
-										attached {relativeTime(v.project.created_at)}
+										connected {relativeTime(v.project.created_at)}
 									</span>
+
+									<div className="absolute inset-0 pointer-events-none select-none">
+										<span
+											style={{
+												opacity:
+													controller.selectedProjectId === v.project.id
+														? 1
+														: 0.3,
+											}}
+											className={`transition-all duration-300`}
+										>
+											<small className="text-3xl!">{v.metaData.length}</small>{" "}
+											<small>events</small>
+										</span>
+									</div>
 								</Button>
 							</li>
 						</Tooltip>

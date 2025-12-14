@@ -26,7 +26,7 @@ export const DashboardEvent = ({ event, onDelete }: Props) => {
 				</Tooltip>
 			}
 		>
-			<li className="dashboard-events gap-3 bg-linear-to-r from-background-1 to-background-2 rounded-3xl outline-1 outline-background-4 px-4! py-2! hover:brightness-200 hover:scale-102 duration-300 transition-all">
+			<li className="dashboard-events relative gap-3 bg-linear-to-r from-background-1 to-background-2 rounded-3xl outline-1 outline-background-4 px-4! py-2! hover:brightness-200 hover:scale-102 duration-300 transition-all">
 				<EventProperty eventType="Type" value={event.type} image={typeImg} />
 				<EventProperty
 					eventType="Description"
@@ -44,6 +44,12 @@ export const DashboardEvent = ({ event, onDelete }: Props) => {
 				>
 					Delete
 				</Button>
+
+				<div className="absolute inset-0 grid place-items-center pointer-events-none select-none">
+					<span className={`text-5xl! opacity-30 transition-all duration-300`}>
+						<small>{event.type[0].toUpperCase()}</small>
+					</span>
+				</div>
 			</li>
 		</Tooltip>
 	);

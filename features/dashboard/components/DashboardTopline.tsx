@@ -15,7 +15,7 @@ export const DashboardTopline = ({ controller }: Props) => {
 	const [, dispatch] = useDashboardContext();
 
 	return (
-		<div className="w-full flex flex-col border-b-2 border-b-background-4 p-3 items-center gap-2 flex-wrap">
+		<div className="w-full flex relative flex-col border-b-2 border-b-background-4 p-3 items-center gap-2 flex-wrap">
 			<div className="flex gap-1 w-full items-center">
 				<Image src={serverImg} alt="" className="image" />
 				<h3>Analytics client</h3>
@@ -46,7 +46,7 @@ export const DashboardTopline = ({ controller }: Props) => {
 								<Spinner className="w-3! h-3!" />
 							)}
 							<Image className="image invert-70!" alt="" src={downloadImg} />
-							<mark>Sync data</mark>
+							<mark>Sync</mark> data
 						</Button>
 					</Tooltip>
 				</div>
