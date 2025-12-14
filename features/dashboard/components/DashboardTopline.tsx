@@ -46,17 +46,9 @@ export const DashboardTopline = ({ controller }: Props) => {
 								<Spinner className="w-3! h-3!" />
 							)}
 							<Image className="image invert-70!" alt="" src={downloadImg} />
-							<mark>Sync</mark>
+							<mark>Sync data</mark>
 						</Button>
 					</Tooltip>
-
-					<Button
-						onClick={() => controller.setAutoSyncEnabled((prev) => !prev)}
-					>
-						{controller.autoSyncEnabled === false
-							? "Enable auto-sync"
-							: "Disable auto-sync"}
-					</Button>
 				</div>
 			</div>
 		</div>

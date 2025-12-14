@@ -6,11 +6,13 @@ import {
 	type NotificationData,
 } from "../components/Notification";
 
-export const useNotification = (data: NotificationData) => {
+export const useNotification = () => {
 	// states
 	const [isShown, setIsShown] = useState<boolean>(false);
-	const [notificationData, setNotificationData] =
-		useState<NotificationData>(data);
+	const [notificationData, setNotificationData] = useState<NotificationData>({
+		content: "show() method is used incorrectly.",
+		type: "error",
+	});
 	const [mounted, setMounted] = useState<boolean>(false);
 
 	useEffect(() => {

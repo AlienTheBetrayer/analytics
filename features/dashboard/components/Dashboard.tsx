@@ -1,10 +1,10 @@
 "use client";
 import { useNotification } from "@/features/notification/hooks/useNotification";
-import { usePopup } from "@/hooks/usePopup";
 import { AnimatePresence, motion } from "motion/react";
-import { type ComponentPropsWithoutRef, useEffect } from "react";
+import type { ComponentPropsWithoutRef } from "react";
 import { useDashboardContext } from "../context/DashboardContext";
 import { useData } from "../hooks/useData";
+import { DashboardLoading } from "./additional/DashboardLoading";
 import { DashboardRecover } from "./additional/DashboardRecoverer";
 import { DashboardMain } from "./DashboardMain";
 import { DashboardTopline } from "./DashboardTopline";
@@ -13,7 +13,7 @@ type Props = {} & ComponentPropsWithoutRef<"div">;
 
 export const Dashboard = ({ className }: Props) => {
 	// misc (notifications)
-	const notifications = useNotification({ content: "", type: "error" });
+	const notifications = useNotification();
 
 	// controller
 	const controller = useData({
@@ -29,23 +29,13 @@ export const Dashboard = ({ className }: Props) => {
 	});
 
 	// state
-	const [state, dispatch] = useDashboardContext();
-
-	const recovererPopup = usePopup(
-		<DashboardRecover
-			onInteract={() => {
-				dispatch({ type: "SET_VISIBLE", flag: true });
-			}}
-		/>,
-	);
-
-	useEffect(() => {
-		recovererPopup.setIsShown(!state.visible);
-	}, [state.visible, recovererPopup.setIsShown]);
+	const [state] = useDashboardContext();
 
 	return (
 		<>
-			{recovererPopup.render()}
+			<DashboardRecover />
+			<DashboardLoading />
+
 			<AnimatePresence>
 				{state.visible && (
 					<motion.div
