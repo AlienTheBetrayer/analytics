@@ -1,10 +1,29 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export const useTooltip = () => {
-    // states
+	// states
 	const [isShown, setIsShown] = useState<boolean>(false);
 
-    // hotkeys
+	// container ref
+	const containerRef = useRef<HTMLDivElement>(null);
+	const tooltipRef = useRef<HTMLDivElement>(null);
+
+    // tooltip positioning
+	useEffect(() => {
+		const handle = () => {
+			if (containerRef.current && tooltipRef.current && isShown) {
+				const containerBounds = containerRef.current.getBoundingClientRect();
+				tooltipRef.current.style.display = "flex";
+				tooltipRef.current.style.translate = `${containerBounds.left}px ${containerBounds.top}px`;
+			}
+		};
+		handle();
+
+		window.addEventListener("resize", handle);
+		return () => window.removeEventListener("resize", handle);
+	}, [isShown]);
+
+	// hotkeys
 	useEffect(() => {
 		const handle = (e: KeyboardEvent) => {
 			switch (e.code) {
@@ -18,7 +37,7 @@ export const useTooltip = () => {
 		return () => window.removeEventListener("keydown", handle);
 	}, []);
 
-    // user functions
+	// user functions
 	const enter = useCallback(() => {
 		setIsShown(true);
 	}, []);
@@ -31,5 +50,7 @@ export const useTooltip = () => {
 		enter,
 		leave,
 		isShown,
+		containerRef,
+		tooltipRef,
 	};
 };

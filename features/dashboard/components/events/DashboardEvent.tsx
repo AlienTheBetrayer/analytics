@@ -19,7 +19,7 @@ export const DashboardEvent = ({ event, onDelete }: Props) => {
 		<Tooltip
 			description={event.description ?? "No description"}
 			title={event.type}
-			direction="inside"
+			direction="top"
 			element={
 				<Tooltip description="Delete this event" direction="top">
 					<Button onClick={() => onDelete?.(event.id)}>Delete</Button>

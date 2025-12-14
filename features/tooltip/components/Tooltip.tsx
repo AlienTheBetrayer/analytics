@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from "motion/react";
 import type React from "react";
 import type { CSSProperties } from "react";
+import { createPortal } from "react-dom";
 import { useTooltip } from "../hooks/useTooltip";
 
 type TooltipDirection = "top" | "bottom" | "inside";
@@ -22,18 +23,18 @@ export const Tooltip = ({
 	title,
 	direction = "bottom",
 }: Props) => {
-	const controller = useTooltip();
-
 	const directionStyle = (): CSSProperties => {
 		switch (direction) {
 			case "bottom":
-				return { top: "115%", translate: `-50% 0` };
+				return { top: "115%", transform: "translate(-50%, 0)" };
 			case "top":
-				return { bottom: "115%", translate: `-50% 0` };
+				return { bottom: "115%", transform: "translate(-50%, 0)" };
 			case "inside":
-				return { top: "50%", translate: `-50% -50%` };
+				return { top: "50%", transform: "translate(-50%, -50%)" };
 		}
 	};
+
+	const controller = useTooltip();
 
 	return (
 		<div
@@ -45,23 +46,49 @@ export const Tooltip = ({
 
 			<AnimatePresence>
 				{controller.isShown && (
-					<motion.div
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						exit={{ opacity: 0 }}
-						style={directionStyle()}
-						className="flex items-center py-1 gap-2 px-4 rounded-3xl text-center outline-1 outline-background-5 bg-background-3 z-10 absolute left-1/2  hover:brightness-150 duration-300"
-					>
-						<div className="flex flex-col">
-							<span className="max-w-96 w-max break-keep">
-								{title && (
-									<h4 className="text-center text-foreground-3!">{title}</h4>
-								)}
-								<small>{description}</small>
-							</span>
+					<>
+						{/* ghost */}
+						<div
+							style={directionStyle()}
+							ref={controller.containerRef}
+							className="flex absolute items-center py-1 gap-2 px-4 text-center z-10 left-1/2 pointer-events-none opacity-0!"
+						>
+							<div className="flex flex-col">
+								<span className="max-w-96 w-max break-keep">
+									{title && <h4 className="text-center">{title}</h4>}
+									<small>{description}</small>
+								</span>
+							</div>
+
+							{element}
 						</div>
-                        {element}
-					</motion.div>
+
+						{/* the actual tooltip */}
+						{createPortal(
+							<motion.div
+								initial={{ opacity: 0 }}
+								animate={{ opacity: 1 }}
+								exit={{ opacity: 0 }}
+								style={{ display: "none" }}
+								ref={controller.tooltipRef}
+								className="flex items-center py-1 gap-2 px-4 rounded-3xl text-center outline-1 outline-background-5 bg-background-3 z-10 absolute left-0 top-0 hover:brightness-150 duration-300"
+							>
+								<div className="flex flex-col">
+									<span className="max-w-96 w-max break-keep">
+										{title && (
+											<h4 className="text-center text-foreground-3!">
+												{title}
+											</h4>
+										)}
+										<small>{description}</small>
+									</span>
+								</div>
+
+								{element}
+							</motion.div>,
+							document.body,
+						)}
+					</>
 				)}
 			</AnimatePresence>
 		</div>
