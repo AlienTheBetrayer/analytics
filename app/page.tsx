@@ -6,7 +6,7 @@ import { DashboardProvider } from "@/features/dashboard/context/DashboardContext
 export const Home = () => {
 	return (
 		<DashboardProvider>
-			<main className="w-full h-full min-h-screen flex flex-col">
+			<main className="w-full min-h-screen overflow-hidden flex flex-col">
 				<Dashboard className="m-auto" />
 			</main>
 		</DashboardProvider>

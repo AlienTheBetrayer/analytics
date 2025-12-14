@@ -1,9 +1,8 @@
-import { Spinner } from "@/features/spinner/components/Spinner";
 import { motion } from "motion/react";
+import { Spinner } from "@/features/spinner/components/Spinner";
 import type { useData } from "../hooks/useData";
 import { DashboardEvents } from "./events/DashboardEvents";
 import { DashboardProjects } from "./projects/DashboardProjects";
-
 
 type Props = {
 	controller: ReturnType<typeof useData>;
@@ -11,7 +10,7 @@ type Props = {
 
 export const DashboardMain = ({ controller }: Props) => {
 	return (
-		<div className="w-full flex flex-col grow p-4">
+		<div className="w-full flex flex-col grow p-3">
 			{controller.data !== null ? (
 				controller.data.length > 0 ? (
 					<motion.div

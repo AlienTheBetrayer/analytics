@@ -15,7 +15,7 @@ type Props = {
 export const DashboardEvent = ({ event }: Props) => {
 	return (
 		<Tooltip description={event.description ?? "No description"} title={event.type} direction="top">
-			<li className="dashboard-events gap-3 bg-linear-to-r from-background-1 to-background-2 rounded-3xl outline-1 outline-background-4 px-4! py-2! hover:scale-105 hover:brightness-175 duration-300 transition-all">
+			<li className="dashboard-events gap-3 bg-linear-to-r from-background-1 to-background-2 rounded-3xl outline-1 outline-background-4 px-4! py-2! hover:brightness-200 hover:scale-102 duration-300 transition-all">
 				<EventProperty eventType="Type" value={event.type} image={typeImg} />
 				<EventProperty
 					eventType="Description"

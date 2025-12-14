@@ -16,24 +16,33 @@ export const DashboardEvents = ({ controller }: Props) => {
 				);
 
 	return controller.selectedProjectId !== null && projectData !== undefined ? (
-		<div className="flex flex-col gap-4">
+		<div className="flex flex-col gap-4 ">
 			{projectData.metaData.length > 0 ? (
 				<>
-					<div className="flex relative min-h-8">
+					<div className="flex relative">
 						<h3 className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
 							Events (<mark>{projectData.project.name}</mark>)
 						</h3>
 
-						<Tooltip description="Hide events tab" className='ml-auto' direction='top'>
-							<Button
-								onClick={() => controller.setSelectedProjectId(null)}
-							>
+						<Tooltip
+							description="Hide events tab"
+							className="ml-auto"
+							direction="top"
+						>
+							<Button onClick={() => controller.setSelectedProjectId(null)}>
 								<small>✕ Hide</small>
 							</Button>
 						</Tooltip>
 					</div>
-					<ul className="flex flex-col gap-2">
-						{projectData.metaData.map((metaDataEntry) => (
+					<ul
+						className="flex flex-col gap-2 max-h-64 overflow-y-scroll overflow-x-auto scheme-dark p-2.5!"
+						style={{
+							maskImage:
+								"linear-gradient(to top, transparent 0%, black 15%), linear-gradient(to bottom, trasparent 0%, black 15%)",
+							scrollbarWidth: "none",
+						}}
+					>
+						{[...projectData.metaData].reverse().map((metaDataEntry) => (
 							<DashboardEvent event={metaDataEntry} key={metaDataEntry.id} />
 						))}
 					</ul>

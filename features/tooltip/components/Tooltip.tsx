@@ -45,9 +45,9 @@ export const Tooltip = ({
 						animate={{ opacity: 1 }}
 						exit={{ opacity: 0 }}
 						style={directionStyle()}
-						className="flex flex-col items-center whitespace-nowrap py-1 px-4 rounded-3xl outline-1 outline-background-5 bg-background-3 z-10 absolute left-1/2 -translate-x-1/2 hover:brightness-150 duration-300"
+						className="flex flex-col items-center py-1 px-4 rounded-3xl text-center outline-1 outline-background-5 bg-background-3 z-10 absolute left-1/2 -translate-x-1/2 hover:brightness-150 duration-300"
 					>
-						<span>
+						<span className="max-w-96 w-max break-keep">
 							{title && (
 								<h4 className="text-center text-foreground-3!">{title}</h4>
 							)}
