@@ -5,8 +5,8 @@ import {
 } from "../reducers/DashboardReducer";
 
 export type DashboardType = {
-    visible: boolean;
-    syncingProgress: number | null;
+    isVisible: boolean;
+    isSyncing: boolean;
 };
 
 export type DashboardContextType = [
@@ -24,8 +24,8 @@ type Props = {
 
 export const DashboardProvider = ({ children }: Props) => {
 	const [state, dispatch] = useReducer(DashboardReducer, {
-        visible: true,
-        syncingProgress: null
+        isVisible: true,
+        isSyncing: false
     });
 
 	return (

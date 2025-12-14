@@ -10,7 +10,7 @@ export const DashboardRecover = () => {
 
 	return (
 		<AnimatePresence>
-			{state.visible === false && (
+			{state.isVisible === false && (
 				<motion.div
 					className="flex items-center justify-between p-2 fixed top-4 left-4 rounded-xl bg-linear-to-bl 
                 from-background-2 to-background-1 z-10 gap-2 outline-1 outline-background-5 w-64"
@@ -25,7 +25,7 @@ export const DashboardRecover = () => {
 					</span>
 					<Tooltip description="Bring the dashboard back">
 						<Button
-							onClick={() => dispatch({ type: "SET_VISIBLE", flag: true })}
+							onClick={() => dispatch({ type: "SET_IS_VISIBLE", flag: true })}
 						>
 							<mark>Show</mark>
 						</Button>

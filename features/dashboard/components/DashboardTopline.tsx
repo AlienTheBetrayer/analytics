@@ -25,7 +25,7 @@ export const DashboardTopline = ({ controller }: Props) => {
 					className="ml-auto"
 				>
 					<Button
-						onClick={() => dispatch({ type: "SET_VISIBLE", flag: false })}
+						onClick={() => dispatch({ type: "SET_IS_VISIBLE", flag: false })}
 					>
 						<small>✕ Hide</small>
 					</Button>

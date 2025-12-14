@@ -41,21 +41,12 @@ export const useData = (callbacks?: useDataCallbacks) => {
 
 	// api function
 	const sync = useCallback(async (): Promise<SyncResponse> => {
-		if (state.visible === false) {
+		if (state.isVisible === false) {
 			return { status: "error" };
 		}
 
 		try {
-			const projectListRes = await axios.get("api/analytics?type=projects", {
-				onDownloadProgress: (event) => {
-					const progress = Math.round(
-						(event.loaded * 100) / (event.total || 1),
-					);
-					console.log(event.loaded, event.total);
-					console.log(progress);
-					dispatch({ type: "SET_PROGRESS", progress });
-				},
-			});
+			const projectListRes = await axios.get("api/analytics?type=projects");
 
 			const projectListData = projectListRes.data as ProjectType[];
 
@@ -78,20 +69,21 @@ export const useData = (callbacks?: useDataCallbacks) => {
 			const error = e instanceof Error ? e.message : "unknown error";
 			return { status: "error", message: error };
 		}
-	}, [state, dispatch]);
+	}, [state]);
 
 	// user functions
 	const resync = useCallback(async () => {
 		if (isSyncing.current !== true) {
 			isSyncing.current = true;
 			setData(null);
-			dispatch({ type: "SET_PROGRESS", progress: null });
+			dispatch({ type: "SET_IS_SYNCING", flag: true });
 
 			sync().then((res) => {
 				switch (res.status) {
 					case "ok":
 						setData(res.data ?? null);
 						isSyncing.current = false;
+						dispatch({ type: "SET_IS_SYNCING", flag: true });
 						break;
 					case "error":
 						callbacks?.onError?.(res.message ?? "unknown error");

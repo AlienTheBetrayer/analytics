@@ -1,17 +1,17 @@
 import type { DashboardType } from "../context/DashboardContext";
 
 export type DashboardAction =
-	| { type: "SET_VISIBLE"; flag: boolean }
-	| { type: "SET_PROGRESS"; progress: number | null };
+	| { type: "SET_IS_VISIBLE"; flag: boolean }
+	| { type: "SET_IS_SYNCING"; flag: boolean };
 
 export const DashboardReducer = (
 	state: DashboardType,
 	action: DashboardAction,
 ): DashboardType => {
 	switch (action.type) {
-		case "SET_VISIBLE":
-			return { ...state, visible: action.flag };
-		case "SET_PROGRESS":
-			return { ...state, syncingProgress: action.progress };
+		case "SET_IS_VISIBLE":
+			return { ...state, isVisible: action.flag };
+		case "SET_IS_SYNCING":
+			return { ...state, isSyncing: action.flag };
 	}
 };
