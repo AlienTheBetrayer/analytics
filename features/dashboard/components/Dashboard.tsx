@@ -24,7 +24,7 @@ export const Dashboard = ({ className }: Props) => {
 			});
 		},
 		onError: (message: string) => {
-			notifications.show({ type: "information", content: message }, false);
+			notifications.show({ type: "error", content: message }, false);
 		},
 	});
 
