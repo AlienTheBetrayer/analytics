@@ -14,6 +14,22 @@ type Props = {
 export const DashboardTopline = ({ controller }: Props) => {
 	const [, dispatch] = useDashboardContext();
 
+	const statusText = () => {
+		if (controller.data !== null) {
+			if (controller.hasErrored === true) {
+				return "Failed";
+			} else {
+				return "Synced";
+			}
+		} else {
+			if (controller.hasErrored === true) {
+				return "Fixing...";
+			} else {
+				return "Fetching...";
+			}
+		}
+	};
+
 	return (
 		<div className="w-full flex relative flex-col border-b-2 border-b-background-4 p-3 items-center gap-2 flex-wrap">
 			<div className="flex gap-1 w-full items-center">
@@ -36,7 +52,7 @@ export const DashboardTopline = ({ controller }: Props) => {
 					<div
 						className={`rounded-full w-1.5 h-1.5 ${controller.data !== null ? "bg-[rgb(56,66,255)]" : "bg-red-500"} duration-1000`}
 					/>
-					{controller.data !== null ? "Synced" : "Fetching..."}
+					{statusText()}
 				</span>
 
 				<div className="flex gap-1 ml-auto flex-wrap justify-center">
@@ -46,7 +62,7 @@ export const DashboardTopline = ({ controller }: Props) => {
 								<Spinner className="w-3! h-3!" />
 							)}
 							<Image className="image invert-70!" alt="" src={downloadImg} />
-							<mark>Sync</mark> data
+							<mark>{controller.hasErrored ? "Fix" : "Sync"}</mark> data
 						</Button>
 					</Tooltip>
 				</div>

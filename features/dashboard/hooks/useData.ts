@@ -30,11 +30,12 @@ export const useData = (callbacks?: useDataCallbacks) => {
 	// context
 	const [state, dispatch] = useDashboardContext();
 
-    // states
+	// states
 	const [data, dataDispatch] = useReducer(DataReducer, null);
 	const [selectedProjectId, setSelectedProjectId] = useState<string | null>(
 		null,
 	);
+	const [hasErrored, setHasErrored] = useState<boolean>(false);
 
 	// refs
 	const isSyncing = useRef<boolean>(false);
@@ -85,9 +86,12 @@ export const useData = (callbacks?: useDataCallbacks) => {
 					isSyncing.current = false;
 					dispatch({ type: "SET_IS_SYNCING", flag: false });
 					callbacks?.onSync?.();
+					setHasErrored(false);
+
 					break;
 				case "error":
 					callbacks?.onError?.(res.message ?? "unknown error");
+					setHasErrored(true);
 					break;
 			}
 		});
@@ -109,5 +113,6 @@ export const useData = (callbacks?: useDataCallbacks) => {
 		isSyncing,
 		selectedProjectId,
 		setSelectedProjectId,
+		hasErrored,
 	};
 };
