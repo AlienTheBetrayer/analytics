@@ -8,6 +8,7 @@ import { DashboardLoading } from "./additional/DashboardLoading";
 import { DashboardRecover } from "./additional/DashboardRecoverer";
 import { DashboardMain } from "./DashboardMain";
 import { DashboardTopline } from "./DashboardTopline";
+import { DashboardAuth } from "./auth/DashboardAuth";
 
 type Props = {} & ComponentPropsWithoutRef<"div">;
 
@@ -35,6 +36,7 @@ export const Dashboard = ({ className }: Props) => {
 		<>
 			<DashboardRecover />
 			<DashboardLoading />
+            <DashboardAuth/>
 			{notifications.render(state.isVisible)}
 
 			<AnimatePresence>
