@@ -2,6 +2,7 @@ import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { relativeTime } from "@/utils/relativeTime";
 import Image from "next/image";
+import "./DashboardProjects.css";
 
 import linkImg from "../../../../public/link.svg";
 import type { useData } from "../../hooks/useData";
@@ -24,33 +25,45 @@ export const DashboardProjects = ({ controller }: Props) => {
 						>
 							<li className="w-full">
 								<Button
-									className="w-full"
+									className="w-full project-button"
 									onClick={() => controller.setSelectedProjectId(v.project.id)}
 								>
-									<Image
-										src={linkImg}
-										alt=""
-										className={`image h-3! w-3! ${controller.selectedProjectId === v.project.id ? "invert-100!" : ""}`}
-									/>
-									<span>{v.project.name}</span>
-									<span className="ml-auto">
-										connected {relativeTime(v.project.created_at)}
+									<div className="flex items-center gap-1">
+										<Image
+											src={linkImg}
+											alt=""
+											className={`image h-3! w-3! ${controller.selectedProjectId === v.project.id ? "invert-100!" : ""}`}
+										/>
+										<span>{v.project.name}</span>
+									</div>
+
+									<span
+										style={{
+											opacity:
+												controller.selectedProjectId === v.project.id ? 1 : 0.3,
+										}}
+										className={`transition-all duration-300`}
+									>
+										<small className="text-3xl!">{v.metaData.length}</small>
+										<small> events</small>
 									</span>
 
-									<div className="absolute inset-0 pointer-events-none select-none">
-										<span
-											style={{
-												opacity:
-													controller.selectedProjectId === v.project.id
-														? 1
-														: 0.3,
-											}}
-											className={`transition-all duration-300`}
-										>
-											<small className="text-3xl!">{v.metaData.length}</small>{" "}
-											<small>events</small>
-										</span>
-									</div>
+									<span
+										style={{
+											opacity:
+												controller.selectedProjectId === v.project.id ? 1 : 0.3,
+										}}
+										className={`transition-all duration-300`}
+									>
+										<small className="text-3xl!">
+											{v.aggregates.visits ?? 0}
+										</small>
+										<small> visits</small>
+									</span>
+
+									<span>
+										connected {relativeTime(v.project.created_at)}
+									</span>
 								</Button>
 							</li>
 						</Tooltip>

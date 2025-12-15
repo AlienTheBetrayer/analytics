@@ -1,0 +1,10 @@
+.project-button {
+    display: grid;
+    grid-template-columns: 20% 1fr 1fr auto;
+}
+
+.project-button span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
