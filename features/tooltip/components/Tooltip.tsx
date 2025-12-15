@@ -4,7 +4,7 @@ import type { CSSProperties } from "react";
 import { createPortal } from "react-dom";
 import { useTooltip } from "../hooks/useTooltip";
 
-type TooltipDirection = "top" | "bottom" | "inside";
+type TooltipDirection = "top" | "bottom" | "inside" | "left" | "right";
 
 type Props = {
 	className?: string;
@@ -31,6 +31,14 @@ export const Tooltip = ({
 				return { bottom: "115%", transform: "translate(-50%, 0)" };
 			case "inside":
 				return { top: "50%", transform: "translate(-50%, -50%)" };
+			case "left":
+				return {
+					left: "-8px",
+					top: "50%",
+					transform: "translate(-100%, -50%)",
+				};
+			case "right":
+				return { left: "100%", top: "50%", transform: "translate(8px, -50%)" };
 		}
 	};
 

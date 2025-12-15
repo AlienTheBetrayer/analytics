@@ -32,11 +32,11 @@ export const DashboardTopline = ({ controller }: Props) => {
 
 	return (
 		<div className="w-full flex relative flex-col border-b-2 border-b-background-4 p-3 items-center gap-2 flex-wrap">
-			<div className="flex gap-1 w-full items-center">
+			<div className="relative flex gap-1 w-full items-center">
 				<Image src={serverImg} alt="" className="image" />
 				<h3>Analytics client</h3>
 				<Tooltip
-					description="Hide dashboard"
+					description="Hide this dashboard"
 					direction="top"
 					className="ml-auto"
 				>

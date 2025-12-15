@@ -151,7 +151,7 @@ h3 {
 
 h4,
 span,
-p {
+p, input {
 	font-size: var(--font-4);
 	color: var(--foreground-2);
 }
