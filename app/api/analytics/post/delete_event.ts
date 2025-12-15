@@ -12,15 +12,6 @@ export const delete_event = async (request: NextRequest) => {
 			return nextResponse({ error: "id is missing." }, 400);
 		}
 
-		const { error: analyticsError } = await supabaseServer
-			.from("analytics")
-			.delete()
-			.eq("analytics_meta_id", id);
-
-		if (analyticsError) {
-			return nextResponse(analyticsError, 400);
-		}
-
 		const { data: analyticsMetaData, error: metaError } = (await supabaseServer
 			.from("analytics_meta")
 			.delete()

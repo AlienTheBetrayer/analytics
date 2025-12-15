@@ -46,7 +46,7 @@ export const create = async (request: NextRequest) => {
 				.from("project_aggregates")
 				.select()
 				.eq("id", projectData[0].id)) as {
-				data: ProjectAggregatesType[] | null;
+				data: ProjectAggregatesType[];
 				error: PostgrestError | null;
 			};
 
@@ -62,8 +62,8 @@ export const create = async (request: NextRequest) => {
 					analytics_meta_id: analyticsMetaData[0].id,
 					visits:
 						event_type === "page_view"
-							? (projectAggregatesData?.[0].visits ?? 0) + 1
-							: (projectAggregatesData?.[0].visits ?? 0),
+							? (projectAggregatesData[0].visits ?? 0) + 1
+							: (projectAggregatesData[0].visits ?? 0),
 				},
 				{ onConflict: "id" },
 			);

@@ -5,7 +5,6 @@ import { projects } from "./get/projects";
 import { create } from "./post/create";
 import { delete_event } from "./post/delete_event";
 import { delete_events } from "./post/delete_events";
-import { wipe } from "./post/wipe";
 
 export const POST = async (request: NextRequest) => {
 	const params = request.nextUrl.searchParams;
@@ -14,9 +13,6 @@ export const POST = async (request: NextRequest) => {
 	switch (type) {
 		case "create":
 			return await create(request);
-
-		case "wipe":
-			return await wipe();
 
 		case "delete_event":
 			return await delete_event(request);
