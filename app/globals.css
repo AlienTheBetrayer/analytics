@@ -8,7 +8,7 @@
 	--background-4: hsl(0, 0%, 10%);
 	--background-5: hsl(0, 0%, 12%);
 
-    --background-a-1: hsla(0, 0%, 4%, 0.3);
+	--background-a-1: hsla(0, 0%, 4%, 0.3);
 	--background-a-2: hsla(0, 0%, 6%, 0.3);
 	--background-a-3: hsla(0, 0%, 8%, 0.3);
 	--background-a-4: hsla(0, 0%, 10%, 0.3);
@@ -34,7 +34,7 @@
 	--color-background-4: var(--background-4);
 	--color-background-5: var(--background-5);
 
-    --color-background-a-1: var(--background-a-1);
+	--color-background-a-1: var(--background-a-1);
 	--color-background-a-2: var(--background-a-2);
 	--color-background-a-3: var(--background-a-3);
 	--color-background-a-4: var(--background-a-4);
@@ -45,6 +45,25 @@
 	--color-foreground-3: var(--foreground-3);
 	--color-foreground-4: var(--foreground-4);
 	--color-foreground-5: var(--foreground-5);
+}
+
+/* aceternity-specific */
+@theme inline {
+	--animate-meteor-effect: meteor 5s linear infinite;
+
+	@keyframes meteor {
+		0% {
+			transform: rotate(215deg) translateX(0);
+			opacity: 1;
+		}
+		70% {
+			opacity: 1;
+		}
+		100% {
+			transform: rotate(215deg) translateX(-500px);
+			opacity: 0;
+		}
+	}
 }
 
 /* all elements */
@@ -147,8 +166,8 @@ li {
 
 /* global classes */
 .image {
-    height: 1rem;
-    width: 1rem;
-    filter: invert(0.4);
-    transition: 0.3s;
+	height: 1rem;
+	width: 1rem;
+	filter: invert(0.4);
+	transition: 0.3s;
 }

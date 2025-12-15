@@ -41,7 +41,7 @@ export const DashboardEvents = ({ controller }: Props) => {
 						style={{
 							maskImage:
 								"linear-gradient(to top, transparent 0%, black 15%), linear-gradient(to bottom, trasparent 0%, black 15%)",
-							scrollbarWidth: "none",
+							scrollbarWidth: "thin",
 						}}
 					>
 						{[...projectData.metaData].reverse().map((metaDataEntry) => (
