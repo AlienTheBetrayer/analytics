@@ -30,7 +30,7 @@ export const DashboardEvent = ({ event, onDelete }: Props) => {
 				<EventProperty eventType="Type" value={event.type} image={typeImg} />
 				<EventProperty
 					eventType="Description"
-					value={event.description ?? ""}
+					value={event.description ?? "No description"}
 					image={descriptionImg}
 				/>
 				<EventProperty

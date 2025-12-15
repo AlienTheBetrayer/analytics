@@ -13,7 +13,10 @@ export const create = async (request: NextRequest) => {
 		const { project_name, event_type, description } = await request.json();
 
 		if (project_name === undefined || event_type === undefined) {
-			return nextResponse({ error: "project_name & event_type are missing." }, 400);
+			return nextResponse(
+				{ error: "project_name & event_type are missing." },
+				400,
+			);
 		}
 
 		// 1. inserting / updating a project
@@ -59,7 +62,6 @@ export const create = async (request: NextRequest) => {
 			.upsert(
 				{
 					id: projectData[0].id,
-					analytics_meta_id: analyticsMetaData[0].id,
 					visits:
 						event_type === "page_view"
 							? (projectAggregatesData[0].visits ?? 0) + 1

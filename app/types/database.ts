@@ -20,7 +20,6 @@ export type ProjectType = {
 
 export type ProjectAggregatesType = {
 	project_id: string;
-	analytics_meta_id: string;
 	visits?: number;
 	last_updated?: string;
 };
