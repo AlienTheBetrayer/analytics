@@ -1,4 +1,8 @@
-import type { AnalyticsMetaType, ProjectType } from "@/app/types/database";
+import type {
+	AnalyticsMetaType,
+	ProjectAggregatesType,
+	ProjectType,
+} from "@/app/types/database";
 import { supabaseServer } from "@/server/supabase";
 import { nextResponse } from "@/utils/request";
 import type { PostgrestError } from "@supabase/supabase-js";
@@ -12,7 +16,7 @@ export const create = async (request: NextRequest) => {
 			return nextResponse({ error: "project & event are missing." }, 400);
 		}
 
-		// 1. inserting a project if it's not created
+		// 1. inserting / updating a project
 		const { data: projectData, error: projectError } = (await supabaseServer
 			.from("projects")
 			.upsert({ name: project }, { onConflict: "name" })
@@ -22,7 +26,7 @@ export const create = async (request: NextRequest) => {
 			return nextResponse({ projectError }, 400);
 		}
 
-		// 2. inserting a new metadata
+		// 2. inserting / updating new metadata
 		const { data: analyticsMetaData, error: analyticsMetaError } =
 			(await supabaseServer
 				.from("analytics_meta")
@@ -36,13 +40,30 @@ export const create = async (request: NextRequest) => {
 			return nextResponse({ analyticsMetaError }, 400);
 		}
 
-		// 3. inserting a project aggregate if it's not created
+		// 3. inserting / updating a project aggregate
+		const { data: projectAggregatesData, error: projectAggregatesError1 } =
+			(await supabaseServer
+				.from("project_aggregates")
+				.select()
+				.eq("id", projectData[0].id)) as {
+				data: ProjectAggregatesType[] | null;
+				error: PostgrestError | null;
+			};
+
+		if (projectAggregatesError1) {
+			return nextResponse({ projectAggregatesError1 }, 400);
+		}
+
 		const { error: projectAggregatesError } = await supabaseServer
 			.from("project_aggregates")
 			.upsert(
 				{
 					id: projectData[0].id,
 					analytics_meta_id: analyticsMetaData[0].id,
+					visits:
+						event === "page_view"
+							? (projectAggregatesData?.[0].visits ?? 0) + 1
+							: (projectAggregatesData?.[0].visits ?? 0),
 				},
 				{ onConflict: "id" },
 			);

@@ -20,16 +20,24 @@ export const DashboardEvents = ({ controller }: Props) => {
 		<div className="flex flex-col gap-4 ">
 			{projectData.metaData.length > 0 ? (
 				<>
-					<div className="flex relative">
+					<div className="flex relative gap-2">
 						<h3 className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
 							Events (<mark>{projectData.project.name}</mark>)
 						</h3>
 
 						<Tooltip
-							description="Hide events tab"
+							description="Wipe all events"
 							className="ml-auto"
 							direction="top"
 						>
+							<Button onClick={() => {
+                                
+                            }}>
+								<small>Delete events</small>
+							</Button>
+						</Tooltip>
+
+						<Tooltip description="Hide events tab" direction="top">
 							<Button onClick={() => controller.setSelectedProjectId(null)}>
 								<small>✕ Hide</small>
 							</Button>

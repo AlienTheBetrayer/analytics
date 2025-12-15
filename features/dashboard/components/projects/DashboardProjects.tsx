@@ -49,6 +49,7 @@ export const DashboardProjects = ({ controller }: Props) => {
 										>
 											<small className="text-3xl!">{v.metaData.length}</small>{" "}
 											<small>events</small>
+                                            {v.aggregates.visits}
 										</span>
 									</div>
 								</Button>

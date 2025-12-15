@@ -25,8 +25,10 @@ export const deleteEvent = async (request: NextRequest) => {
 			.from("analytics_meta")
 			.delete()
 			.eq("id", id)
-			.select("*")
-			.single()) as { data: AnalyticsMetaType; error: PostgrestError | null };
+			.select()) as {
+			data: AnalyticsMetaType[];
+			error: PostgrestError | null;
+		};
 
 		if (metaError) {
 			return nextResponse(metaError, 400);
@@ -34,7 +36,7 @@ export const deleteEvent = async (request: NextRequest) => {
 
 		return nextResponse(
 			{
-				message: `Successfully deleted ${analyticsMetaData.type} event!`,
+				message: `Successfully deleted ${analyticsMetaData[0].type} event!`,
 			},
 			200,
 		);

@@ -23,10 +23,9 @@ export const project = async (request: NextRequest) => {
 
 	const { data: aggregatesData, error: aggregatesError } = (await supabaseServer
 		.from("project_aggregates")
-		.select("*")
-		.eq("id", id)
-		.single()) as {
-		data: ProjectAggregatesType;
+		.select()
+		.eq("id", id)) as {
+		data: ProjectAggregatesType[];
 		error: PostgrestError | null;
 	};
 
@@ -36,7 +35,7 @@ export const project = async (request: NextRequest) => {
 
 	const { data: analyticsData, error: analyticsError } = (await supabaseServer
 		.from("analytics")
-		.select("*")
+		.select()
 		.eq("project_id", id)) as {
 		data: AnalyticsType[];
 		error: PostgrestError | null;
@@ -50,7 +49,7 @@ export const project = async (request: NextRequest) => {
 
 	const { data: metaData, error: metaError } = (await supabaseServer
 		.from("analytics_meta")
-		.select("*")
+		.select()
 		.in("id", analyticsDataIDs)) as {
 		data: AnalyticsMetaType[];
 		error: PostgrestError | null;
@@ -61,7 +60,7 @@ export const project = async (request: NextRequest) => {
 	}
 
 	return nextResponse(
-		{ id, aggregates: aggregatesData, metaData: metaData },
+		{ id, aggregates: aggregatesData[0], metaData: metaData },
 		200,
 	);
 };
