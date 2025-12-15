@@ -3,14 +3,13 @@ import type { NextRequest } from "next/server";
 import { project } from "./get/project";
 import { projects } from "./get/projects";
 import { create } from "./post/create";
-import { deleteEvent } from "./post/deleteEvent";
+import { delete_event } from "./post/delete_event";
+import { delete_events } from "./post/delete_events";
 import { wipe } from "./post/wipe";
-
-export type AnalyticsPostType = null | "create" | "wipe" | "delete_event";
 
 export const POST = async (request: NextRequest) => {
 	const params = request.nextUrl.searchParams;
-	const type = params.get("type") as AnalyticsPostType;
+	const type = params.get("type");
 
 	switch (type) {
 		case "create":
@@ -20,11 +19,14 @@ export const POST = async (request: NextRequest) => {
 			return await wipe();
 
 		case "delete_event":
-			return await deleteEvent(request);
+			return await delete_event(request);
+
+		case "delete_events":
+			return await delete_events(request);
 
 		default:
 			return nextResponse(
-				{ error: "supported types: create/wipe/delete_event" },
+				{ error: "supported types: create/wipe/delete_event/delete_events" },
 				400,
 			);
 	}

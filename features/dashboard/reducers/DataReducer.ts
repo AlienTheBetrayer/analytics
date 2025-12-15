@@ -2,7 +2,8 @@ import type { ProjectData } from "../hooks/useData";
 
 export type DataAction =
 	| { type: "SET_DATA"; data: ProjectData[] | null }
-	| { type: "DELETE_EVENT"; id: string };
+	| { type: "DELETE_EVENT"; id: string }
+	| { type: "DELETE_EVENTS"; project_id: string };
 
 export const DataReducer = (
 	state: ProjectData[] | null,
@@ -18,6 +19,15 @@ export const DataReducer = (
 				...data,
 				metaData: data.metaData.filter((metaData) => metaData.id !== action.id),
 			}));
+		}
+		case "DELETE_EVENTS": {
+			if (state === null) return state;
+
+			return state.map((data) =>
+				data.project.id === action.project_id
+					? { ...data, metaData: [] }
+					: data,
+			);
 		}
 	}
 };

@@ -10,16 +10,16 @@ import type { NextRequest } from "next/server";
 
 export const create = async (request: NextRequest) => {
 	try {
-		const { project, event, description } = await request.json();
+		const { project_name, event_type, description } = await request.json();
 
-		if (project === undefined || event === undefined) {
+		if (project_name === undefined || event_type === undefined) {
 			return nextResponse({ error: "project & event are missing." }, 400);
 		}
 
 		// 1. inserting / updating a project
 		const { data: projectData, error: projectError } = (await supabaseServer
 			.from("projects")
-			.upsert({ name: project }, { onConflict: "name" })
+			.upsert({ name: project_name }, { onConflict: "name" })
 			.select()) as { data: ProjectType[]; error: PostgrestError | null };
 
 		if (projectError) {
@@ -61,7 +61,7 @@ export const create = async (request: NextRequest) => {
 					id: projectData[0].id,
 					analytics_meta_id: analyticsMetaData[0].id,
 					visits:
-						event === "page_view"
+						event_type === "page_view"
 							? (projectAggregatesData?.[0].visits ?? 0) + 1
 							: (projectAggregatesData?.[0].visits ?? 0),
 				},

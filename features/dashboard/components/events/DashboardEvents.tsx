@@ -30,9 +30,17 @@ export const DashboardEvents = ({ controller }: Props) => {
 							className="ml-auto"
 							direction="top"
 						>
-							<Button onClick={() => {
-                                
-                            }}>
+							<Button
+								onClick={() => {
+									axios.post("api/analytics?type=delete_events", {
+										project_id: projectData.project.id,
+									});
+									controller.dataDispatch({
+										type: "DELETE_EVENTS",
+										project_id: projectData.project.id,
+									});
+								}}
+							>
 								<small>Delete events</small>
 							</Button>
 						</Tooltip>

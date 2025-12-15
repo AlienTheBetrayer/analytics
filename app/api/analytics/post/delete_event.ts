@@ -4,7 +4,7 @@ import { nextResponse } from "@/utils/request";
 import type { PostgrestError } from "@supabase/supabase-js";
 import type { NextRequest } from "next/server";
 
-export const deleteEvent = async (request: NextRequest) => {
+export const delete_event = async (request: NextRequest) => {
 	try {
 		const { id } = await request.json();
 
