@@ -14,9 +14,11 @@ export const delete_events = async (request: NextRequest) => {
 
 		const { data: analyticsData, error: analyticsError } = (await supabaseServer
 			.from("analytics")
-			.delete()
-			.eq("project_id", project_id)
-			.select()) as { data: AnalyticsType[]; error: PostgrestError | null };
+			.select()
+			.eq("project_id", project_id)) as {
+			data: AnalyticsType[];
+			error: PostgrestError | null;
+		};
 
 		if (analyticsError) {
 			return nextResponse(analyticsError, 400);

@@ -1,6 +1,7 @@
 /** biome-ignore-all lint/suspicious/noArrayIndexKey: <not my code> */
 "use client";
 import { motion } from "motion/react";
+import { useEffect, useState } from "react";
 import { cn } from "../lib";
 
 export const Meteors = ({
@@ -10,15 +11,28 @@ export const Meteors = ({
 	number?: number;
 	className?: string;
 }) => {
-	const meteors = new Array(number || 20).fill(true);
+	const meteorCount = number || 20;
+
+	const [meteorRandoms, setMeteorRandoms] = useState<
+		{ delay: number; duration: number }[]
+	>([]);
+
+	useEffect(() => {
+		setMeteorRandoms(
+			Array.from({ length: meteorCount }, () => ({
+				delay: Math.random() * 5,
+				duration: Math.floor(Math.random() * (10 - 5) + 5),
+			})),
+		);
+	}, [meteorCount]);
+
 	return (
 		<motion.div
 			initial={{ opacity: 0 }}
 			animate={{ opacity: 1 }}
 			transition={{ duration: 0.5 }}
 		>
-			{meteors.map((_, idx) => {
-				const meteorCount = number || 20;
+			{meteorRandoms.map((meteor, idx) => {
 				// Calculate position to evenly distribute meteors across container width
 				const position = idx * (800 / meteorCount) - 400; // Spread across 800px range, centered
 
@@ -33,8 +47,8 @@ export const Meteors = ({
 						style={{
 							top: "-40px", // Start above the container
 							left: `${position}px`,
-							animationDelay: `${Math.random() * 5}s`, // Random delay between 0-5s
-							animationDuration: `${Math.floor(Math.random() * (10 - 5) + 5)}s`, // Keep some randomness in duration
+							animationDelay: `${meteor.delay}s`, // Random delay between 0-5s
+							animationDuration: `${meteor.duration}s`, // Keep some randomness in duration
 						}}
 					></span>
 				);

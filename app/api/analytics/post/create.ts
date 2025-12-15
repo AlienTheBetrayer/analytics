@@ -13,7 +13,7 @@ export const create = async (request: NextRequest) => {
 		const { project_name, event_type, description } = await request.json();
 
 		if (project_name === undefined || event_type === undefined) {
-			return nextResponse({ error: "project & event are missing." }, 400);
+			return nextResponse({ error: "project_name & event_type are missing." }, 400);
 		}
 
 		// 1. inserting / updating a project
@@ -30,7 +30,7 @@ export const create = async (request: NextRequest) => {
 		const { data: analyticsMetaData, error: analyticsMetaError } =
 			(await supabaseServer
 				.from("analytics_meta")
-				.upsert({ type: event, description })
+				.upsert({ type: event_type, description })
 				.select()) as {
 				data: AnalyticsMetaType[];
 				error: PostgrestError | null;
