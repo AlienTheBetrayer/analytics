@@ -5,9 +5,16 @@ import { useInput } from "../hooks/useInput";
 
 type Props = {
 	onDelete?: () => void;
-} & ComponentPropsWithoutRef<"input">;
+	onChange?: (value: string) => void;
+} & Omit<ComponentPropsWithoutRef<"input">, "onChange">;
 
-export const Input = ({ value, onChange, onDelete, ...rest }: Props) => {
+export const Input = ({
+	className,
+	value,
+	onChange,
+	onDelete,
+	...rest
+}: Props) => {
 	// value state logic
 	const [data, setData] = useState<string>("");
 	const inputValue = (value as string | undefined) ?? data;
@@ -19,12 +26,14 @@ export const Input = ({ value, onChange, onDelete, ...rest }: Props) => {
 		<div className="relative ">
 			<input
 				type="text"
-				className="w-full h-full bg-linear-to-bl 
-            from-background-2 to-background-1 outline-2 outline-background-5 p-2 rounded-xl focus:outline-primary-1 hover:brightness-125 transition-all duration-150"
+				className={`w-full h-full bg-linear-to-bl 
+            from-background-2 to-background-1 outline-2 outline-background-5 p-2 rounded-xl focus:outline-blue-1 invalid:outline-red-1! valid:outline-blue-1! hover:brightness-125 transition-colors duration-150 ${className ?? ""}`}
 				value={inputValue}
 				ref={controller.inputRef}
 				onChange={(e) =>
-					value === undefined ? setData(e.target.value) : onChange?.(e)
+					value === undefined
+						? setData(e.target.value)
+						: onChange?.(e.target.value)
 				}
 				{...rest}
 			/>
@@ -36,7 +45,14 @@ export const Input = ({ value, onChange, onDelete, ...rest }: Props) => {
 						initial={{ opacity: 0, y: 5 }}
 						animate={{ opacity: 1, y: 0 }}
 						exit={{ opacity: 0, y: 5 }}
-						onClick={() => (value === undefined ? setData("") : onDelete?.())}
+						onClick={() => {
+							if (value === undefined) {
+								setData("");
+							} else {
+								onChange?.("");
+								onDelete?.();
+							}
+						}}
 					>
 						✕
 					</Button>

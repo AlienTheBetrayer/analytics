@@ -20,7 +20,8 @@
 	--foreground-4: hsl(0, 0%, 65%);
 	--foreground-5: hsl(0, 0%, 55%);
 
-    --primary-1: rgb(56, 66, 255);
+    --blue-1: rgb(56, 66, 255);
+    --red-1: rgb(255, 56, 56);
 
 	--font-1: 4rem;
 	--font-2: 2rem;
@@ -42,7 +43,8 @@
 	--color-background-a-4: var(--background-a-4);
 	--color-background-a-5: var(--background-a-5);
     
-	--color-primary-1: var(--primary-1);
+	--color-blue-1: var(--blue-1);
+	--color-red-1: var(--red-1);
 
 	--color-foreground-1: var(--foreground-1);
 	--color-foreground-2: var(--foreground-2);
@@ -114,13 +116,13 @@ i {
 
 u {
 	text-decoration: underline wavy;
-	text-decoration-color: rgb(255, 56, 56);
+	text-decoration-color: var(--red-1);
 	text-decoration-thickness: 1px;
 }
 
 mark {
 	text-decoration: underline;
-	text-decoration-color: var(--primary-1);
+	text-decoration-color: var(--blue-1);
 	text-decoration-thickness: 2px;
 	text-decoration-skip-ink: none;
 }

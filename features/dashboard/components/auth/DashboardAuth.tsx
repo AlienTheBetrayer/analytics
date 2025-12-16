@@ -1,9 +1,8 @@
-import { Tooltip } from "@/features/tooltip/components/Tooltip";
-import { Button } from "@/features/ui/button/components/Button";
-import { Input } from "@/features/ui/input/components/Input";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
+import { DashboardAuthForm } from "./DashboardAuthForm";
 import { DashboardAuthRecoverer } from "./DashboardAuthRecoverer";
+import { DashboardAuthTopline } from "./DashboardAuthTopline";
 
 export const DashboardAuth = () => {
 	const [isVisible, setIsVisible] = useState<boolean>(false);
@@ -20,35 +19,8 @@ export const DashboardAuth = () => {
 						exit={{ opacity: 0, y: -30 }}
 						transition={{ ease: "backInOut", duration: 0.5 }}
 					>
-						<div className="relative flex items-center justify-between w-full border-b border-b-background-5 p-2">
-							<h4 className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2">
-								<mark>Authenticate</mark>
-							</h4>
-							<Tooltip
-								description="Hide this window"
-								className="ml-auto"
-								direction="left"
-							>
-								<Button
-									className="min-h-7! h-7 ml-auto"
-									onClick={() => setIsVisible(false)}
-								>
-									<small>✕ Hide</small>
-								</Button>
-							</Tooltip>
-						</div>
-
-						<div className="flex flex-col gap-2 p-2">
-							<Input placeholder="Code" />
-							<Tooltip description="Obtain full access" direction="left">
-								<Button className="w-full">Sign in</Button>
-							</Tooltip>
-							<Tooltip description="Lose permissions">
-								<Button className="w-full">
-									<small>Log out</small>
-								</Button>
-							</Tooltip>
-						</div>
+						<DashboardAuthTopline onInteract={() => setIsVisible(false)} />
+						<DashboardAuthForm />
 					</motion.div>
 				)}
 			</AnimatePresence>
