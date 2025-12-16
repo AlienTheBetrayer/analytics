@@ -1,7 +1,8 @@
+import { Spinner } from "@/features/spinner/components/Spinner";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
-import axios from "axios";
+import { motion } from "motion/react";
 import { useAuth } from "../../hooks/useAuth";
 
 export const DashboardAuthForm = () => {
@@ -24,31 +25,39 @@ export const DashboardAuthForm = () => {
 					required
 					minLength={6}
 				/>
+
 				<Tooltip description="Obtain full access" direction="left">
 					<Button className="w-full" type="submit">
+						{auth.isLoading?.signIn && <Spinner />}
 						Sign in
 					</Button>
 				</Tooltip>
+
 				<Tooltip description="Lose permissions" direction="left">
 					<Button className="w-full" type="button" onClick={auth.onLogout}>
-						<small>Log out</small>
+						<small>
+							{auth.isLoading?.logOut && <Spinner />}
+							Log out
+						</small>
 					</Button>
 				</Tooltip>
-				{JSON.stringify(auth.status)}
-				<Button
-					onClick={() => {
-						axios
-							.post("api/auth/check_login")
-							.then((res) => {
-								alert(JSON.stringify(res.data));
-							})
-							.catch((e) => {
-								alert(`error: ${e}`);
-							});
-					}}
-				>
-					Check
-				</Button>
+
+				{auth.status !== null && (
+					<motion.div
+						className="mt-2 text-center"
+						key={`${auth.status}`}
+						initial={{ y: 10 }}
+						animate={{ y: 0 }}
+					>
+						<small>
+							{auth.status === "success" ? (
+								<mark>Full access</mark>
+							) : (
+								<u>Wrong password</u>
+							)}
+						</small>
+					</motion.div>
+				)}
 			</form>
 		</div>
 	);

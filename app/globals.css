@@ -130,6 +130,7 @@ mark {
 small {
 	opacity: 0.3;
 	font-size: inherit;
+    display: inherit;
 }
 
 hr {
