@@ -1,8 +1,8 @@
-import { nextResponse } from "@/app/fetch/response";
+import { nextResponse } from "@/app/utils/response";
 import { supabaseServer } from "@/server/supabase";
 import type { NextRequest } from "next/server";
 
-export const projects = async (_request: NextRequest) => {
+export const GET = async (_request: NextRequest) => {
 	const { data, error } = await supabaseServer.from("projects").select();
 
 	if (error) {

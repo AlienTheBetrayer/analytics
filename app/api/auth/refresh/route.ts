@@ -1,4 +1,4 @@
-import { nextResponse } from "@/app/fetch/response";
+import { nextResponse } from "@/app/utils/response";
 import jwt from "jsonwebtoken";
 import { type NextRequest, NextResponse } from "next/server";
 

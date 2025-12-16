@@ -1,14 +1,14 @@
-import { nextResponse } from "@/app/fetch/response";
 import type {
 	AnalyticsMetaType,
 	ProjectAggregatesType,
 	ProjectType,
 } from "@/app/types/database";
+import { nextResponse } from "@/app/utils/response";
 import { supabaseServer } from "@/server/supabase";
 import type { PostgrestError } from "@supabase/supabase-js";
 import type { NextRequest } from "next/server";
 
-export const create = async (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
 	try {
 		const { project_name, event_type, description } = await request.json();
 

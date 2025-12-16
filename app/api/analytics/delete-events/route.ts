@@ -1,10 +1,10 @@
-import { nextResponse } from "@/app/fetch/response";
 import type { AnalyticsType } from "@/app/types/database";
+import { nextResponse } from "@/app/utils/response";
 import { supabaseServer } from "@/server/supabase";
 import type { PostgrestError } from "@supabase/supabase-js";
 import type { NextRequest } from "next/server";
 
-export const delete_events = async (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
 	try {
 		const { project_id } = await request.json();
 

@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import { type NextRequest, NextResponse } from "next/server";
-import { nextResponse } from "./app/fetch/response";
+import { nextResponse } from "./app/utils/response";
 
 export const proxy = async (request: NextRequest) => {
 	const token = request.cookies.get("accessToken");
@@ -19,5 +19,5 @@ export const proxy = async (request: NextRequest) => {
 };
 
 export const config = {
-	matcher: ["/api/analytics/protected/:path*"],
+	matcher: ["/api/analytics/delete-events", "/api/analytics/delete-event"],
 };

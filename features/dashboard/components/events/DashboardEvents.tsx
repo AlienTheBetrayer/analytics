@@ -1,3 +1,4 @@
+import { protectedRequest } from "@/app/utils/protectedRequest";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import axios from "axios";
@@ -32,13 +33,18 @@ export const DashboardEvents = ({ controller }: Props) => {
 						>
 							<Button
 								onClick={() => {
-									axios.post("api/analytics?type=delete_events", {
+									protectedRequest("/api/analytics/delete-events", {
 										project_id: projectData.project.id,
-									});
-									controller.dataDispatch({
-										type: "DELETE_EVENTS",
-										project_id: projectData.project.id,
-									});
+									})
+										.then(() => {
+											controller.dataDispatch({
+												type: "DELETE_EVENTS",
+												project_id: projectData.project.id,
+											});
+										})
+										.catch((e) => {
+											alert(e);
+										});
 								}}
 							>
 								<small>Delete events</small>
@@ -65,8 +71,14 @@ export const DashboardEvents = ({ controller }: Props) => {
 								event={metaDataEntry}
 								key={metaDataEntry.id}
 								onDelete={(id) => {
-									controller.dataDispatch({ type: "DELETE_EVENT", id });
-									axios.post("api/analytics?type=delete_event", { id });
+									protectedRequest("/api/analytics/delete-event", { id })
+										.then(() => {
+											controller.dataDispatch({ type: "DELETE_EVENT", id });
+											axios.post("/api/analytics/delete-event", { id });
+										})
+										.catch((e) => {
+											alert(e);
+										});
 								}}
 							/>
 						))}

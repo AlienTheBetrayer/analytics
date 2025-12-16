@@ -1,6 +1,7 @@
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
+import axios from "axios";
 import { useAuth } from "../../hooks/useAuth";
 
 export const DashboardAuthForm = () => {
@@ -15,7 +16,7 @@ export const DashboardAuthForm = () => {
 				onSubmit={auth.onFormSubmit}
 			>
 				<Input
-					value={auth.code ?? ''}
+					value={auth.code ?? ""}
 					placeholder="Code"
 					onChange={auth.onCodeChange}
 					type="password"
@@ -33,7 +34,21 @@ export const DashboardAuthForm = () => {
 						<small>Log out</small>
 					</Button>
 				</Tooltip>
-                {JSON.stringify(auth.status)}
+				{JSON.stringify(auth.status)}
+				<Button
+					onClick={() => {
+						axios
+							.post("api/auth/check_login")
+							.then((res) => {
+								alert(JSON.stringify(res.data));
+							})
+							.catch((e) => {
+								alert(`error: ${e}`);
+							});
+					}}
+				>
+					Check
+				</Button>
 			</form>
 		</div>
 	);

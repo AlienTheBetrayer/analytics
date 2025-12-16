@@ -1,16 +1,19 @@
-import { nextResponse } from "@/app/fetch/response";
 import type {
 	AnalyticsMetaType,
 	AnalyticsType,
 	ProjectAggregatesType,
 } from "@/app/types/database";
+import { nextResponse } from "@/app/utils/response";
 import { supabaseServer } from "@/server/supabase";
 import type { PostgrestError } from "@supabase/supabase-js";
 import type { NextRequest } from "next/server";
 
-export const project = async (request: NextRequest) => {
-	const params = request.nextUrl.searchParams;
-	const id = params.get("id");
+type ParamsType = {
+	params: Promise<{ id: string }>;
+};
+
+export const GET = async (_request: NextRequest, { params }: ParamsType) => {
+	const { id } = await params;
 
 	if (!id) {
 		return nextResponse(

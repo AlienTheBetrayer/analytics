@@ -7,13 +7,16 @@ export const protectedRequest = async (
 ) => {
 	try {
 		const res = await axios.post(route, data, config);
+		console.log("1");
 		return res;
 	} catch {
 		try {
 			await axios.post("api/auth/refresh");
+			console.log("2");
+
 			return await axios.post(route, data, config);
 		} catch {
-			return new Error("Not authenticated.");
+			throw new Error("Not authenticated.");
 		}
 	}
 };
