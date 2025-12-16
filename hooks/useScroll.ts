@@ -1,10 +1,9 @@
-import type React from "react";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
-export const useScroll = <T extends HTMLElement>(
-	ref: React.RefObject<T>,
-	onChange: (value: number) => void,
-) => {
+export const useScroll = <T extends HTMLElement>(onChange: (value: number) => void) => {
+	// refs
+	const ref = useRef<T | null>(null);
+
 	useEffect(() => {
 		const handle = () => {
 			if (ref.current) {
@@ -17,5 +16,7 @@ export const useScroll = <T extends HTMLElement>(
 
 		ref.current?.addEventListener("scroll", handle);
 		return () => ref.current?.removeEventListener("scroll", handle);
-	}, [ref, onChange]);
+	}, [onChange]);
+
+	return { ref };
 };
