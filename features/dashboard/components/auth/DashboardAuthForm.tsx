@@ -1,11 +1,11 @@
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
+import axios from "axios";
 import { useCallback, useRef, useState } from "react";
 
 export const DashboardAuthForm = () => {
 	// states
-	const [username, setUsername] = useState<string>("");
 	const [code, setCode] = useState<string>("");
 
 	// refs + validity
@@ -13,7 +13,7 @@ export const DashboardAuthForm = () => {
 
 	const validateForm = useCallback(() => {
 		if (formRef.current) {
-			formRef.current.reportValidity();
+			formRef.current.checkValidity();
 		}
 	}, []);
 
@@ -24,21 +24,12 @@ export const DashboardAuthForm = () => {
 				className="flex flex-col gap-2 p-2"
 				onSubmit={(e) => {
 					e.preventDefault();
+
+					if (formRef.current?.checkValidity()) {
+						axios.post("api/auth/login", { code });
+					}
 				}}
 			>
-				<Input
-					value={username}
-					placeholder="Username"
-					onChange={(value) => {
-						setUsername(value);
-						validateForm();
-					}}
-					onDelete={() => setUsername("")}
-					aria-label="Username"
-					required
-					minLength={6}
-					className="invalid:bg-blue-100"
-				/>
 				<Input
 					value={code}
 					placeholder="Code"
@@ -50,7 +41,6 @@ export const DashboardAuthForm = () => {
 					aria-label="Password"
 					required
 					minLength={6}
-					className="invalid:bg-blue-100"
 				/>
 				<Tooltip description="Obtain full access" direction="left">
 					<Button className="w-full" type="submit">
@@ -58,7 +48,7 @@ export const DashboardAuthForm = () => {
 					</Button>
 				</Tooltip>
 				<Tooltip description="Lose permissions" direction="left">
-					<Button className="w-full">
+					<Button className="w-full" type="button">
 						<small>Log out</small>
 					</Button>
 				</Tooltip>
