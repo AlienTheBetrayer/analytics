@@ -1,42 +1,23 @@
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
-import axios from "axios";
-import { useCallback, useRef, useState } from "react";
+import { useAuth } from "../../hooks/useAuth";
 
 export const DashboardAuthForm = () => {
-	// states
-	const [code, setCode] = useState<string>("");
-
-	// refs + validity
-	const formRef = useRef<HTMLFormElement | null>(null);
-
-	const validateForm = useCallback(() => {
-		if (formRef.current) {
-			formRef.current.checkValidity();
-		}
-	}, []);
+	// controller
+	const auth = useAuth();
 
 	return (
 		<div className="flex flex-col gap-2">
 			<form
-				ref={formRef}
+				ref={auth.formRef}
 				className="flex flex-col gap-2 p-2"
-				onSubmit={(e) => {
-					e.preventDefault();
-
-					if (formRef.current?.checkValidity()) {
-						axios.post("api/auth/login", { code });
-					}
-				}}
+				onSubmit={auth.onFormSubmit}
 			>
 				<Input
-					value={code}
+					value={auth.code ?? ''}
 					placeholder="Code"
-					onChange={(value) => {
-						setCode(value);
-						validateForm();
-					}}
+					onChange={auth.onCodeChange}
 					type="password"
 					aria-label="Password"
 					required
@@ -48,10 +29,11 @@ export const DashboardAuthForm = () => {
 					</Button>
 				</Tooltip>
 				<Tooltip description="Lose permissions" direction="left">
-					<Button className="w-full" type="button">
+					<Button className="w-full" type="button" onClick={auth.onLogout}>
 						<small>Log out</small>
 					</Button>
 				</Tooltip>
+                {JSON.stringify(auth.status)}
 			</form>
 		</div>
 	);

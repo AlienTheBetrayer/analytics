@@ -7,19 +7,13 @@ export const protectedRequest = async (
 ) => {
 	try {
 		const res = await axios.post(route, data, config);
-		if (res.status === 401) {
-			const refreshRes = await axios.post("api/auth/refresh");
-
-			if (refreshRes.status === 200) {
-				return await axios.post(route, data, config);
-			} else {
-				return new Error("Not authenticated.");
-			}
-		} else {
-			return res;
+		return res;
+	} catch {
+		try {
+			await axios.post("api/auth/refresh");
+			return await axios.post(route, data, config);
+		} catch {
+			return new Error("Not authenticated.");
 		}
-	} catch (error) {
-		const message = error instanceof Error ? error.message : "protected error";
-		return message;
 	}
 };

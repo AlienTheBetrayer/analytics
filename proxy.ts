@@ -19,5 +19,5 @@ export const proxy = async (request: NextRequest) => {
 };
 
 export const config = {
-	matcher: ["api/analytics/protected/:path*"],
+	matcher: ["/api/analytics/protected/:path*"],
 };
