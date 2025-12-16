@@ -1,10 +1,10 @@
-import { nextResponse } from "@/utils/request";
+import { nextResponse } from "@/app/fetch/response";
 import type { NextRequest } from "next/server";
 import { project } from "./get/project";
 import { projects } from "./get/projects";
 import { create } from "./post/create";
-import { delete_event } from "./post/delete_event";
-import { delete_events } from "./post/delete_events";
+import { delete_event } from "./protected/delete_event";
+import { delete_events } from "./protected/delete_events";
 
 export const POST = async (request: NextRequest) => {
 	const params = request.nextUrl.searchParams;

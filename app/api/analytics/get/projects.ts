@@ -1,5 +1,5 @@
+import { nextResponse } from "@/app/fetch/response";
 import { supabaseServer } from "@/server/supabase";
-import { nextResponse } from "@/utils/request";
 import type { NextRequest } from "next/server";
 
 export const projects = async (_request: NextRequest) => {

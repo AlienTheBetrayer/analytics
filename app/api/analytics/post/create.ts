@@ -1,10 +1,10 @@
+import { nextResponse } from "@/app/fetch/response";
 import type {
 	AnalyticsMetaType,
 	ProjectAggregatesType,
 	ProjectType,
 } from "@/app/types/database";
 import { supabaseServer } from "@/server/supabase";
-import { nextResponse } from "@/utils/request";
 import type { PostgrestError } from "@supabase/supabase-js";
 import type { NextRequest } from "next/server";
 
