@@ -1,20 +1,20 @@
 "use client";
-import { useNotification } from "@/features/notification/hooks/useNotification";
 import { AnimatePresence, motion } from "motion/react";
 import type { ComponentPropsWithoutRef } from "react";
 import { useDashboardContext } from "../context/DashboardContext";
+import { useNotificationContext } from "../context/NotificationContext";
 import { useData } from "../hooks/useData";
 import { DashboardLoading } from "./additional/DashboardLoading";
 import { DashboardRecover } from "./additional/DashboardRecoverer";
+import { DashboardAuth } from "./auth/DashboardAuth";
 import { DashboardMain } from "./DashboardMain";
 import { DashboardTopline } from "./DashboardTopline";
-import { DashboardAuth } from "./auth/DashboardAuth";
 
 type Props = {} & ComponentPropsWithoutRef<"div">;
 
 export const Dashboard = ({ className }: Props) => {
 	// misc (notifications)
-	const notifications = useNotification();
+	const notifications = useNotificationContext();
 
 	// controller
 	const controller = useData({
@@ -36,7 +36,7 @@ export const Dashboard = ({ className }: Props) => {
 		<>
 			<DashboardRecover />
 			<DashboardLoading />
-            <DashboardAuth/>
+			<DashboardAuth />
 			{notifications.render(state.isVisible)}
 
 			<AnimatePresence>

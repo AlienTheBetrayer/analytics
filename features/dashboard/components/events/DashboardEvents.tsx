@@ -1,14 +1,23 @@
 import { protectedRequest } from "@/app/utils/protectedRequest";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
+import { useNotificationContext } from "../../context/NotificationContext";
 import type { useData } from "../../hooks/useData";
 import { DashboardEvent } from "./DashboardEvent";
+import { useLocalStore } from "@/zustand/localStore";
 
 type Props = {
 	controller: ReturnType<typeof useData>;
 };
 
 export const DashboardEvents = ({ controller }: Props) => {
+    // zustand
+    const isLoggedIn = useLocalStore(state => state.isLoggedIn);
+
+    // notifications api
+	const notifications = useNotificationContext();
+
+    // data regarding selected project
 	const projectData =
 		controller.data === null
 			? undefined
@@ -29,8 +38,10 @@ export const DashboardEvents = ({ controller }: Props) => {
 							description="Wipe all events"
 							className="ml-auto"
 							direction="top"
+                            disabled={isLoggedIn}
 						>
 							<Button
+                                disabled={isLoggedIn}
 								onClick={() => {
 									protectedRequest("/api/analytics/delete-events", {
 										project_id: projectData.project.id,
@@ -41,8 +52,11 @@ export const DashboardEvents = ({ controller }: Props) => {
 												project_id: projectData.project.id,
 											});
 										})
-										.catch((e) => {
-											alert(e);
+										.catch(() => {
+											notifications.show(
+												{ type: "error", content: "Not authenticated." },
+												false,
+											);
 										});
 								}}
 							>
@@ -74,8 +88,12 @@ export const DashboardEvents = ({ controller }: Props) => {
 										.then(() => {
 											controller.dataDispatch({ type: "DELETE_EVENT", id });
 										})
-										.catch((e) => {
-											alert(e);
+										.catch(() => {
+											notifications.show(
+												{ type: "error", content: "Not authenticated." },
+
+												false,
+											);
 										});
 								}}
 							/>

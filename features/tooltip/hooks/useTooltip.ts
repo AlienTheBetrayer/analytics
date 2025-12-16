@@ -1,6 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
-export const useTooltip = () => {
+export type TooltipConfig = {
+	disabled?: boolean;
+};
+
+export const useTooltip = (config: TooltipConfig) => {
 	// states
 	const [isShown, setIsShown] = useState<boolean>(false);
 
@@ -8,7 +12,7 @@ export const useTooltip = () => {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const tooltipRef = useRef<HTMLDivElement>(null);
 
-    // tooltip positioning
+	// tooltip positioning
 	useEffect(() => {
 		const handle = () => {
 			if (containerRef.current && tooltipRef.current && isShown) {
@@ -39,12 +43,16 @@ export const useTooltip = () => {
 
 	// user functions
 	const enter = useCallback(() => {
-		setIsShown(true);
-	}, []);
+		if (config.disabled !== true) {
+			setIsShown(true);
+		}
+	}, [config.disabled]);
 
 	const leave = useCallback(() => {
-		setIsShown(false);
-	}, []);
+		if (config.disabled !== true) {
+			setIsShown(false);
+		}
+	}, [config.disabled]);
 
 	return {
 		enter,

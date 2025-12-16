@@ -2,17 +2,17 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
 export type LocalStoreType = {
-	loggedIn: boolean;
+	isLoggedIn: boolean;
 
-	setLoggedIn: (flag: boolean) => void;
+	setIsLoggedIn: (flag: boolean) => void;
 };
 
 export const useLocalStore = create<LocalStoreType>()(
 	persist(
 		(set) => ({
-			loggedIn: false,
-			setLoggedIn: (flag: boolean) => {
-				set((state) => ({ ...state, loggedIn: flag }));
+			isLoggedIn: false,
+			setIsLoggedIn: (flag: boolean) => {
+				set((state) => ({ ...state, isLoggedIn: flag }));
 			},
 		}),
 		{
