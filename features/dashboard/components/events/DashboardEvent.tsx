@@ -4,6 +4,7 @@ import "./DashboardEvent.css";
 
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
+import { useLocalStore } from "@/zustand/localStore";
 import Image from "next/image";
 import calendarImg from "../../../../public/calendar.svg";
 import descriptionImg from "../../../../public/description.svg";
@@ -15,18 +16,27 @@ type Props = {
 };
 
 export const DashboardEvent = ({ event, onDelete }: Props) => {
+	// zustand
+	const isLoggedIn = useLocalStore((state) => state.isLoggedIn);
+
 	return (
 		<Tooltip
 			description={event.description ?? "No description"}
 			title={event.type}
 			direction="top"
 			element={
-				<Tooltip description="Delete this event" direction="top">
-					<Button onClick={() => onDelete?.(event.id)}>Delete</Button>
+				<Tooltip
+					description="Delete this event"
+					direction="top"
+					isEnabled={isLoggedIn}
+				>
+					<Button isEnabled={isLoggedIn} onClick={() => onDelete?.(event.id)}>
+						Delete
+					</Button>
 				</Tooltip>
 			}
 		>
-			<li className="dashboard-events relative gap-3 bg-linear-to-r from-background-1 to-background-2 rounded-3xl outline-1 outline-background-4 px-4! py-2! hover:brightness-200 hover:scale-102 duration-300 transition-all">
+			<li className="dashboard-event relative gap-3 bg-linear-to-r from-background-1 to-background-2 rounded-3xl outline-1 outline-background-4 px-4! py-2! hover:brightness-200 hover:scale-102 duration-300 transition-all">
 				<EventProperty eventType="Type" value={event.type} image={typeImg} />
 				<EventProperty
 					eventType="Description"
@@ -41,6 +51,7 @@ export const DashboardEvent = ({ event, onDelete }: Props) => {
 				<Button
 					className="delete-event-button"
 					onClick={() => onDelete?.(event.id)}
+					isEnabled={isLoggedIn}
 				>
 					Delete
 				</Button>
@@ -69,7 +80,7 @@ const EventProperty = ({
 	className,
 }: PropertyProps) => {
 	return (
-		<div className={`dashboard-event flex flex-col ${className ?? ""}`}>
+		<div className={`dashboard-event-element flex flex-col ${className ?? ""}`}>
 			<span>
 				<small className="flex items-center gap-1">
 					{image && <Image className="image invert-70!" alt="" src={image} />}

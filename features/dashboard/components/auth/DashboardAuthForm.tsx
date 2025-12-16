@@ -2,10 +2,14 @@ import { Spinner } from "@/features/spinner/components/Spinner";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
+import { useLocalStore } from "@/zustand/localStore";
 import { motion } from "motion/react";
 import { useAuth } from "../../hooks/useAuth";
 
 export const DashboardAuthForm = () => {
+	// zustand
+	const isLoggedIn = useLocalStore((state) => state.isLoggedIn);
+
 	// controller
 	const auth = useAuth();
 
@@ -26,15 +30,28 @@ export const DashboardAuthForm = () => {
 					minLength={6}
 				/>
 
-				<Tooltip description="Obtain full access" direction="left">
-					<Button className="w-full" type="submit">
+				<Tooltip
+					description="Obtain full access"
+					direction="left"
+					isEnabled={!isLoggedIn}
+				>
+					<Button className="w-full" type="submit" isEnabled={!isLoggedIn}>
 						{auth.isLoading?.signIn && <Spinner />}
 						Sign in
 					</Button>
 				</Tooltip>
 
-				<Tooltip description="Lose permissions" direction="left">
-					<Button className="w-full" type="button" onClick={auth.onLogout}>
+				<Tooltip
+					description="Lose permissions"
+					direction="left"
+					isEnabled={isLoggedIn}
+				>
+					<Button
+						className="w-full"
+						type="button"
+						onClick={auth.onLogout}
+						isEnabled={isLoggedIn}
+					>
 						<small>{auth.isLoading?.logOut && <Spinner />}</small>
 						<small>Log out</small>
 					</Button>
@@ -47,13 +64,11 @@ export const DashboardAuthForm = () => {
 						initial={{ y: 10 }}
 						animate={{ y: 0 }}
 					>
-						<small>
-							{auth.status === "success" ? (
-								<mark>Full access</mark>
-							) : (
-								<u>Wrong password</u>
-							)}
-						</small>
+						{auth.status === "success" ? (
+							<mark>Full access</mark>
+						) : (
+							<u>Wrong password</u>
+						)}
 					</motion.div>
 				)}
 			</form>

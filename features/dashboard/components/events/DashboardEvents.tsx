@@ -1,29 +1,34 @@
 import { protectedRequest } from "@/app/utils/protectedRequest";
+import { Spinner } from "@/features/spinner/components/Spinner";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
+import { usePromiseStatus } from "@/hooks/usePromiseStatus";
+import { useLocalStore } from "@/zustand/localStore";
 import { useNotificationContext } from "../../context/NotificationContext";
 import type { useData } from "../../hooks/useData";
 import { DashboardEvent } from "./DashboardEvent";
-import { useLocalStore } from "@/zustand/localStore";
 
 type Props = {
 	controller: ReturnType<typeof useData>;
 };
 
 export const DashboardEvents = ({ controller }: Props) => {
-    // zustand
-    const isLoggedIn = useLocalStore(state => state.isLoggedIn);
+	// zustand
+	const isLoggedIn = useLocalStore((state) => state.isLoggedIn);
 
-    // notifications api
+	// notifications api
 	const notifications = useNotificationContext();
 
-    // data regarding selected project
+	// data regarding selected project
 	const projectData =
 		controller.data === null
 			? undefined
 			: controller.data.find(
 					(p) => p.project.id === controller.selectedProjectId,
 				);
+
+	// spinner handling
+	const promises = usePromiseStatus();
 
 	return controller.selectedProjectId !== null && projectData !== undefined ? (
 		<div className="flex flex-col gap-4 ">
@@ -38,28 +43,31 @@ export const DashboardEvents = ({ controller }: Props) => {
 							description="Wipe all events"
 							className="ml-auto"
 							direction="top"
-                            isEnabled={isLoggedIn}
+							isEnabled={isLoggedIn}
 						>
 							<Button
-                                isEnabled={isLoggedIn}
+								isEnabled={isLoggedIn}
 								onClick={() => {
-									protectedRequest("/api/analytics/delete-events", {
-										project_id: projectData.project.id,
-									})
-										.then(async () => {
-											controller.dataDispatch({
-												type: "DELETE_EVENTS",
-												project_id: projectData.project.id,
-											});
+									promises.wrap("events", () =>
+										protectedRequest("/api/analytics/delete-events", {
+											project_id: projectData.project.id,
 										})
-										.catch(() => {
-											notifications.show(
-												{ type: "error", content: "Not authenticated." },
-												false,
-											);
-										});
+											.then(async () => {
+												controller.dataDispatch({
+													type: "DELETE_EVENTS",
+													project_id: projectData.project.id,
+												});
+											})
+											.catch(() => {
+												notifications.show(
+													{ type: "error", content: "Not authenticated." },
+													false,
+												);
+											}),
+									);
 								}}
 							>
+								{promises.get("events") === "pending" && <Spinner />}
 								<small>Delete events</small>
 							</Button>
 						</Tooltip>

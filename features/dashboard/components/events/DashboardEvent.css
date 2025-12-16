@@ -1,11 +1,12 @@
-.dashboard-events {
+.dashboard-event {
     display: grid;
     grid-template-columns: 20% 1fr 30%;
 }
 
 @media (max-width: 768px) {
-    .dashboard-events {
+    .dashboard-event {
         grid-template-columns: 20% 1fr 30% auto;
+        gap: 0.25rem;
     }
 }
 
@@ -19,11 +20,11 @@
     }
 }
 
-.dashboard-event {
+.dashboard-event-element {
     overflow: hidden;
 }
 
-.dashboard-event * {
+.dashboard-event-element * {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;

@@ -1,20 +1,33 @@
 import { useLocalStore } from "@/zustand/localStore";
 import axios from "axios";
-import { type FormEvent, useCallback, useRef, useState } from "react";
+import {
+	type FormEvent,
+	useCallback,
+	useEffect,
+	useRef,
+	useState,
+} from "react";
 
 export type AuthStatus = "success" | "failure" | null;
 
 export const useAuth = () => {
-    // zustand
-    const setIsLoggedIn = useLocalStore(state => state.setIsLoggedIn);
+	// zustand
+	const isLoggedIn = useLocalStore((state) => state.isLoggedIn);
+	const setIsLoggedIn = useLocalStore((state) => state.setIsLoggedIn);
 
 	// states
 	const [code, setCode] = useState<string | null>(null);
-	const [status, setStatus] = useState<AuthStatus>(null);
+	const [status, setStatus] = useState<AuthStatus>(
+		isLoggedIn === true ? "success" : null,
+	);
 	const [isLoading, setIsLoading] = useState<{
 		signIn?: boolean;
 		logOut?: boolean;
 	}>();
+
+	useEffect(() => {
+		setIsLoggedIn(status === "success");
+	}, [status, setIsLoggedIn]);
 
 	// refs
 	const formRef = useRef<HTMLFormElement | null>(null);
@@ -49,13 +62,12 @@ export const useAuth = () => {
 		try {
 			setIsLoading({ logOut: true });
 			await axios.post("api/auth/logout");
-            setIsLoggedIn(false);
 		} catch {
 			setStatus("failure");
 		} finally {
 			setTimeout(() => setIsLoading({ logOut: false }), 300);
 		}
-	}, [setIsLoggedIn]);
+	}, []);
 
 	return {
 		code,

@@ -11,7 +11,7 @@ type Props = {
 	children?: React.ReactNode;
 	description: string;
 	title?: string;
-    isEnabled?: boolean;
+	isEnabled?: boolean;
 	element?: React.ReactNode;
 	direction?: TooltipDirection;
 };
@@ -21,7 +21,7 @@ export const Tooltip = ({
 	children,
 	description,
 	element,
-    isEnabled=true,
+	isEnabled = true,
 	title,
 	direction = "bottom",
 }: Props) => {
@@ -45,8 +45,8 @@ export const Tooltip = ({
 	};
 
 	const controller = useTooltip({
-        isEnabled
-    });
+		isEnabled,
+	});
 
 	return (
 		<div
@@ -57,7 +57,7 @@ export const Tooltip = ({
 			{children}
 
 			<AnimatePresence>
-				{controller.isShown && (
+				{controller.isShown && isEnabled && (
 					<>
 						{/* ghost */}
 						<div
