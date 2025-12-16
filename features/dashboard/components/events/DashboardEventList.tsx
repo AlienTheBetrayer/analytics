@@ -1,0 +1,53 @@
+"use client";
+import { protectedRequest } from "@/app/utils/protectedRequest";
+import type { usePromiseStatus } from "@/hooks/usePromiseStatus";
+import type { useNotificationContext } from "../../context/NotificationContext";
+import type { ProjectData, useData } from "../../hooks/useData";
+import { DashboardEvent } from "./DashboardEvent";
+
+type Props = {
+	projectData: ProjectData;
+	promises: ReturnType<typeof usePromiseStatus>;
+	controller: ReturnType<typeof useData>;
+	notifications: ReturnType<typeof useNotificationContext>;
+};
+
+export const DashboardEventList = ({
+	projectData,
+	promises,
+	controller,
+	notifications,
+}: Props) => {
+	return (
+		<ul
+			className="relative flex flex-col gap-2 max-h-64 overflow-y-scroll scheme-dark pb-4!"
+			style={{
+				maskImage: "linear-gradient(to top, transparent 0%, black 30%)",
+				scrollbarWidth: "thin",
+			}}
+		>
+			{[...projectData.metaData].reverse().map((metaDataEntry) => (
+				<DashboardEvent
+					event={metaDataEntry}
+					key={metaDataEntry.id}
+					onDelete={(id) => {
+						promises.wrap(metaDataEntry.id, () =>
+							protectedRequest("/api/analytics/delete-event", { id })
+								.then(() => {
+									controller.dataDispatch({ type: "DELETE_EVENT", id });
+								})
+								.catch(() => {
+									notifications.show(
+										{ type: "error", content: "Not authenticated." },
+
+										false,
+									);
+								}),
+						);
+					}}
+					isLoading={promises.get(metaDataEntry.id) === "pending"}
+				/>
+			))}
+		</ul>
+	);
+};

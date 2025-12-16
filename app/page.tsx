@@ -10,8 +10,8 @@ export const Home = () => {
 		<NotificationProvider>
 			<DashboardProvider>
 				<main className="relative w-full min-h-screen overflow-hidden flex flex-col">
-					<Dashboard className="m-auto z-2"/>
-					<div className="absolute inset-0 pointer-events-none">
+					<Dashboard className="m-auto" />
+					<div className="absolute inset-0 pointer-events-none z-10">
 						<Meteors />
 					</div>
 				</main>

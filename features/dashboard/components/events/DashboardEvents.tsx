@@ -6,7 +6,7 @@ import { usePromiseStatus } from "@/hooks/usePromiseStatus";
 import { useLocalStore } from "@/zustand/localStore";
 import { useNotificationContext } from "../../context/NotificationContext";
 import type { useData } from "../../hooks/useData";
-import { DashboardEvent } from "./DashboardEvent";
+import { DashboardEventList } from "./DashboardEventList";
 
 type Props = {
 	controller: ReturnType<typeof useData>;
@@ -79,35 +79,12 @@ export const DashboardEvents = ({ controller }: Props) => {
 						</Tooltip>
 					</div>
 
-					<ul
-						className="flex flex-col gap-2 max-h-64 overflow-y-auto scheme-dark pb-4!"
-						style={{
-							maskImage:
-								"linear-gradient(to top, transparent 0%, black 30%)",
-							scrollbarWidth: "thin",
-						}}
-					>
-						{[...projectData.metaData].reverse().map((metaDataEntry) => (
-							<DashboardEvent
-								event={metaDataEntry}
-								key={metaDataEntry.id}
-								onDelete={(id) => {
-									promises.wrap(metaDataEntry.id, () => protectedRequest("/api/analytics/delete-event", { id })
-										.then(() => {
-											controller.dataDispatch({ type: "DELETE_EVENT", id });
-										})
-										.catch(() => {
-											notifications.show(
-												{ type: "error", content: "Not authenticated." },
-
-												false,
-											);
-										}));
-								}}
-                                isLoading={promises.get(metaDataEntry.id) === 'pending'}
-							/>
-						))}
-					</ul>
+					<DashboardEventList
+						projectData={projectData}
+						controller={controller}
+						notifications={notifications}
+						promises={promises}
+					/>
 				</>
 			) : (
 				<span className="m-auto">No events so far...</span>

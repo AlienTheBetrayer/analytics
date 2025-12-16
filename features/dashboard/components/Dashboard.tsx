@@ -35,11 +35,12 @@ export const Dashboard = ({ className }: Props) => {
 
 	return (
 		<>
-				<DashboardRecoverer />
-				<DashboardAuth />
+			{notifications.render(state.isVisible)}
+            
+			<DashboardRecoverer />
+			<DashboardAuth />
 			<DashboardLoading />
 			<DashboardAuthNotifier />
-			{notifications.render(state.isVisible)}
 
 			<AnimatePresence>
 				{state.isVisible && (
