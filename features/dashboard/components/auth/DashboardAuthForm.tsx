@@ -35,10 +35,8 @@ export const DashboardAuthForm = () => {
 
 				<Tooltip description="Lose permissions" direction="left">
 					<Button className="w-full" type="button" onClick={auth.onLogout}>
-						<small>
-							{auth.isLoading?.logOut && <Spinner />}
-							Log out
-						</small>
+						<small>{auth.isLoading?.logOut && <Spinner />}</small>
+						<small>Log out</small>
 					</Button>
 				</Tooltip>
 

@@ -34,7 +34,6 @@ export const POST = async (request: NextRequest) => {
 
 		return response;
 	} catch (error) {
-		const message = error instanceof Error ? error.message : "jwt error";
-		return nextResponse({ error: message }, 400);
+		return nextResponse({ error: "Not authenticated" }, 401);
 	}
 };

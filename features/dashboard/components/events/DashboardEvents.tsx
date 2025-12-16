@@ -1,7 +1,6 @@
 import { protectedRequest } from "@/app/utils/protectedRequest";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
-import axios from "axios";
 import type { useData } from "../../hooks/useData";
 import { DashboardEvent } from "./DashboardEvent";
 
@@ -36,7 +35,7 @@ export const DashboardEvents = ({ controller }: Props) => {
 									protectedRequest("/api/analytics/delete-events", {
 										project_id: projectData.project.id,
 									})
-										.then(() => {
+										.then(async () => {
 											controller.dataDispatch({
 												type: "DELETE_EVENTS",
 												project_id: projectData.project.id,
@@ -74,7 +73,6 @@ export const DashboardEvents = ({ controller }: Props) => {
 									protectedRequest("/api/analytics/delete-event", { id })
 										.then(() => {
 											controller.dataDispatch({ type: "DELETE_EVENT", id });
-											axios.post("/api/analytics/delete-event", { id });
 										})
 										.catch((e) => {
 											alert(e);
