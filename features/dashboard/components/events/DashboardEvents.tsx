@@ -38,10 +38,10 @@ export const DashboardEvents = ({ controller }: Props) => {
 							description="Wipe all events"
 							className="ml-auto"
 							direction="top"
-                            disabled={isLoggedIn}
+                            isEnabled={isLoggedIn}
 						>
 							<Button
-                                disabled={isLoggedIn}
+                                isEnabled={isLoggedIn}
 								onClick={() => {
 									protectedRequest("/api/analytics/delete-events", {
 										project_id: projectData.project.id,

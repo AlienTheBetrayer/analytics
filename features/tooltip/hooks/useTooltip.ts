@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 export type TooltipConfig = {
-	disabled?: boolean;
+	isEnabled?: boolean;
 };
 
-export const useTooltip = (config: TooltipConfig) => {
+export const useTooltip = (config: TooltipConfig = { isEnabled: true }) => {
 	// states
 	const [isShown, setIsShown] = useState<boolean>(false);
 
@@ -43,16 +43,16 @@ export const useTooltip = (config: TooltipConfig) => {
 
 	// user functions
 	const enter = useCallback(() => {
-		if (config.disabled !== true) {
+		if (config.isEnabled === true) {
 			setIsShown(true);
 		}
-	}, [config.disabled]);
+	}, [config.isEnabled]);
 
 	const leave = useCallback(() => {
-		if (config.disabled !== true) {
+		if (config.isEnabled === true) {
 			setIsShown(false);
 		}
-	}, [config.disabled]);
+	}, [config.isEnabled]);
 
 	return {
 		enter,
