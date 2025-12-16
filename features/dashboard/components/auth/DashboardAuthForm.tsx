@@ -28,6 +28,7 @@ export const DashboardAuthForm = () => {
 					aria-label="Password"
 					required
 					minLength={6}
+                    isEnabled={!isLoggedIn}
 				/>
 
 				<Tooltip
