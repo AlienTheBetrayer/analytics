@@ -35,7 +35,7 @@ export const DashboardEvents = ({ controller }: Props) => {
 			{projectData.metaData.length > 0 ? (
 				<>
 					<div className="flex relative gap-2">
-						<h3 className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+						<h3 className="sm:absolute sm:left-1/2 sm:top-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2">
 							Events (<mark>{projectData.project.name}</mark>)
 						</h3>
 
@@ -80,10 +80,10 @@ export const DashboardEvents = ({ controller }: Props) => {
 					</div>
 
 					<ul
-						className="flex flex-col gap-2 max-h-64 overflow-y-auto scheme-dark p-2.5!"
+						className="flex flex-col gap-2 max-h-64 overflow-y-auto scheme-dark pb-4!"
 						style={{
 							maskImage:
-								"linear-gradient(to top, transparent 0%, black 15%), linear-gradient(to bottom, trasparent 0%, black 15%)",
+								"linear-gradient(to top, transparent 0%, black 30%)",
 							scrollbarWidth: "thin",
 						}}
 					>

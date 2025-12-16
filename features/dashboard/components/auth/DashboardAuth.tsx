@@ -12,7 +12,7 @@ export const DashboardAuth = () => {
 			<AnimatePresence>
 				{isVisible && (
 					<motion.div
-						className="flex flex-col fixed top-4 right-4 rounded-xl bg-linear-to-bl 
+						className="flex flex-col rounded-xl fixed top-4 right-4 bg-linear-to-bl 
                 from-background-2 to-background-1 z-10 outline-1 outline-background-5 w-64"
 						initial={{ opacity: 0, y: -30 }}
 						animate={{ opacity: 1, y: 0 }}

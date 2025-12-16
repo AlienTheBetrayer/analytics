@@ -28,7 +28,7 @@ export const DashboardAuthForm = () => {
 					aria-label="Password"
 					required
 					minLength={6}
-                    isEnabled={!isLoggedIn}
+					isEnabled={!isLoggedIn}
 				/>
 
 				<Tooltip
@@ -65,11 +65,15 @@ export const DashboardAuthForm = () => {
 						initial={{ y: 10 }}
 						animate={{ y: 0 }}
 					>
-						{auth.status === "success" ? (
-							<mark>Full access</mark>
-						) : (
-							<u>Wrong password</u>
-						)}
+						<span>
+							{auth.status === "success" ? (
+								<>
+									Logged in (<mark>Full access</mark>)
+								</>
+							) : (
+								<u>Wrong password</u>
+							)}
+						</span>
 					</motion.div>
 				)}
 			</form>

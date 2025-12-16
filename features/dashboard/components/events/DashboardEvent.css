@@ -10,6 +10,14 @@
     }
 }
 
+@media (max-width: 640px) {
+    .dashboard-event {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
+
 .delete-event-button {
     display: none;
 }
@@ -28,4 +36,10 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+}
+
+@media (max-width: 640px) {
+    .dashboard-event-element {
+        align-items: center;
+    }
 }

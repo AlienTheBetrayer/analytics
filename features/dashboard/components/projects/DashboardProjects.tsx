@@ -15,7 +15,7 @@ export const DashboardProjects = ({ controller }: Props) => {
 	return (
 		controller.data !== null && (
 			<div className="flex flex-col gap-4 relative">
-				<h3 className="text-center">Available projects</h3>
+				<h3 className="sm:text-center">Available projects</h3>
 				<ul className="flex flex-col gap-2">
 					{controller.data.map((v) => (
 						<Tooltip
@@ -62,7 +62,8 @@ export const DashboardProjects = ({ controller }: Props) => {
 									</span>
 
 									<span>
-										connected {relativeTime(v.project.created_at)}
+										<span className="hidden sm:inline">connected </span>
+										{relativeTime(v.project.created_at)}
 									</span>
 								</Button>
 							</li>

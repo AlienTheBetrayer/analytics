@@ -39,7 +39,9 @@ export const DashboardEvent = ({ event, onDelete, isLoading }: Props) => {
 				</Tooltip>
 			}
 		>
-			<li className="dashboard-event relative gap-3 bg-linear-to-r from-background-1 to-background-2 rounded-3xl outline-1 outline-background-4 px-4! py-2! hover:brightness-200 hover:scale-102 duration-300 transition-all">
+			<li className="dashboard-event relative gap-3 bg-linear-to-r from-background-1 to-background-2 rounded-3xl
+            border-2 border-background-4 
+            px-4! py-2! hover:brightness-200 duration-300 transition-all">
 				<EventProperty eventType="Type" value={event.type} image={typeImg} />
 				<EventProperty
 					eventType="Description"
