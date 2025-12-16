@@ -38,7 +38,6 @@ export const useData = (callbacks?: useDataCallbacks) => {
 	const [hasErrored, setHasErrored] = useState<boolean>(false);
 
 	// refs
-	const isSyncing = useRef<boolean>(false);
 	const hasInitiallySynced = useRef<boolean>(false);
 
 	// api function
@@ -75,26 +74,26 @@ export const useData = (callbacks?: useDataCallbacks) => {
 
 	// user functions
 	const resync = useCallback(async () => {
-		isSyncing.current = true;
 		dataDispatch({ type: "SET_DATA", data: null });
 		dispatch({ type: "SET_IS_SYNCING", flag: true });
 
-		sync().then((res) => {
-			switch (res.status) {
-				case "ok":
-					dataDispatch({ type: "SET_DATA", data: res.data ?? null });
-					isSyncing.current = false;
-					dispatch({ type: "SET_IS_SYNCING", flag: false });
-					callbacks?.onSync?.();
-					setHasErrored(false);
+		const res = await sync();
 
-					break;
-				case "error":
-					callbacks?.onError?.(res.message ?? "unknown error");
-					setHasErrored(true);
-					break;
-			}
-		});
+		switch (res.status) {
+			case "ok":
+				dataDispatch({ type: "SET_DATA", data: res.data ?? null });
+				dispatch({ type: "SET_IS_SYNCING", flag: false });
+				callbacks?.onSync?.();
+				setHasErrored(false);
+
+				break;
+			case "error":
+				callbacks?.onError?.(res.message ?? "unknown error");
+				setHasErrored(true);
+				break;
+		}
+
+        return res;
 	}, [sync, dispatch, callbacks]);
 
 	// initial sync + auto-sync
@@ -110,7 +109,6 @@ export const useData = (callbacks?: useDataCallbacks) => {
 		dataDispatch,
 		sync,
 		resync,
-		isSyncing,
 		selectedProjectId,
 		setSelectedProjectId,
 		hasErrored,

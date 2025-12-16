@@ -1,6 +1,7 @@
 import { Spinner } from "@/features/spinner/components/Spinner";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
+import { usePromiseStatus } from "@/hooks/usePromiseStatus";
 import Image from "next/image";
 import downloadImg from "../../../public/download.svg";
 import serverImg from "../../../public/server.svg";
@@ -30,6 +31,9 @@ export const DashboardTopline = ({ controller }: Props) => {
 		}
 	};
 
+	// spinners
+	const promises = usePromiseStatus();
+
 	return (
 		<div className="w-full flex relative flex-col border-b-2 border-b-background-4 p-3 items-center gap-2 flex-wrap">
 			<div className="relative flex gap-1 w-full items-center">
@@ -57,8 +61,12 @@ export const DashboardTopline = ({ controller }: Props) => {
 
 				<div className="flex gap-1 ml-auto flex-wrap justify-center">
 					<Tooltip description="Re-download database data">
-						<Button onClick={controller.resync}>
-							{controller.isSyncing.current === true && (
+						<Button
+							onClick={() => {
+								promises.wrap("sync", controller.resync);
+							}}
+						>
+							{promises.get("sync") === "pending" && (
 								<Spinner className="w-3! h-3!" />
 							)}
 							<Image className="image invert-70!" alt="" src={downloadImg} />

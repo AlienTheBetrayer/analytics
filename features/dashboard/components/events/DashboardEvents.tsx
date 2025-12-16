@@ -92,7 +92,7 @@ export const DashboardEvents = ({ controller }: Props) => {
 								event={metaDataEntry}
 								key={metaDataEntry.id}
 								onDelete={(id) => {
-									protectedRequest("/api/analytics/delete-event", { id })
+									promises.wrap(metaDataEntry.id, () => protectedRequest("/api/analytics/delete-event", { id })
 										.then(() => {
 											controller.dataDispatch({ type: "DELETE_EVENT", id });
 										})
@@ -102,8 +102,9 @@ export const DashboardEvents = ({ controller }: Props) => {
 
 												false,
 											);
-										});
+										}));
 								}}
+                                isLoading={promises.get(metaDataEntry.id) === 'pending'}
 							/>
 						))}
 					</ul>
@@ -113,6 +114,6 @@ export const DashboardEvents = ({ controller }: Props) => {
 			)}
 		</div>
 	) : (
-		<span className="m-auto">Select a project to see events</span>
+		<span className="m-auto">Select a project to see events.</span>
 	);
 };

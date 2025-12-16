@@ -2,6 +2,7 @@ import type { AnalyticsMetaType } from "@/app/types/database";
 import { relativeTime } from "@/utils/relativeTime";
 import "./DashboardEvent.css";
 
+import { Spinner } from "@/features/spinner/components/Spinner";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { useLocalStore } from "@/zustand/localStore";
@@ -13,9 +14,10 @@ import typeImg from "../../../../public/type.svg";
 type Props = {
 	event: AnalyticsMetaType;
 	onDelete?: (id: string) => void;
+	isLoading?: boolean;
 };
 
-export const DashboardEvent = ({ event, onDelete }: Props) => {
+export const DashboardEvent = ({ event, onDelete, isLoading }: Props) => {
 	// zustand
 	const isLoggedIn = useLocalStore((state) => state.isLoggedIn);
 
@@ -31,6 +33,7 @@ export const DashboardEvent = ({ event, onDelete }: Props) => {
 					isEnabled={isLoggedIn}
 				>
 					<Button isEnabled={isLoggedIn} onClick={() => onDelete?.(event.id)}>
+						{isLoading && <Spinner />}
 						Delete
 					</Button>
 				</Tooltip>
@@ -53,6 +56,7 @@ export const DashboardEvent = ({ event, onDelete }: Props) => {
 					onClick={() => onDelete?.(event.id)}
 					isEnabled={isLoggedIn}
 				>
+					{isLoading && <Spinner />}
 					Delete
 				</Button>
 
