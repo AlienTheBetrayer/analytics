@@ -2,7 +2,7 @@ import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { motion } from "motion/react";
 import Image from "next/image";
-import eyeImg from "../../../../public/eye.svg";
+import authImg from "../../../../public/auth.svg";
 
 type Props = {
 	onInteract: () => void;
@@ -18,7 +18,7 @@ export const DashboardAuthRecoverer = ({ onInteract }: Props) => {
 			exit={{ opacity: 0, y: -30 }}
 			transition={{ ease: "backInOut", duration: 0.5 }}
 		>
-			<Image className="image" alt="" src={eyeImg} />
+			<Image className="image w-5! h-5!" alt="" src={authImg} />
 			<h4>
 				Authentication is <u>hidden</u>
 			</h4>

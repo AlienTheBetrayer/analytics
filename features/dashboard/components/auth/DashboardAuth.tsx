@@ -6,7 +6,7 @@ import { useState } from "react";
 import { DashboardAuthRecoverer } from "./DashboardAuthRecoverer";
 
 export const DashboardAuth = () => {
-	const [isVisible, setIsVisible] = useState<boolean>(true);
+	const [isVisible, setIsVisible] = useState<boolean>(false);
 
 	return (
 		<>
