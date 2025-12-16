@@ -13,7 +13,7 @@ export const DashboardRecover = () => {
 			{state.isVisible === false && (
 				<motion.div
 					className="flex items-center justify-between p-2 fixed top-4 left-4 rounded-xl bg-linear-to-bl 
-                from-background-2 to-background-1 z-10 gap-2 outline-1 outline-background-5 w-64"
+                from-background-2 to-background-1 z-10 outline-1 outline-background-5 w-64"
 					initial={{ opacity: 0, y: -30 }}
 					animate={{ opacity: 1, y: 0 }}
 					exit={{ opacity: 0, y: -30 }}
@@ -23,11 +23,11 @@ export const DashboardRecover = () => {
 						<Image className="image" alt="" src={eyeImg} />
 						Dashboard is <u>hidden</u>
 					</span>
-					<Tooltip description="Bring the dashboard back">
+					<Tooltip description="Bring the dashboard back" direction="right">
 						<Button
 							onClick={() => dispatch({ type: "SET_IS_VISIBLE", flag: true })}
 						>
-							<mark>Show</mark>
+							<small>Show</small>
 						</Button>
 					</Tooltip>
 				</motion.div>
