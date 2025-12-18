@@ -6,7 +6,7 @@ Designed as a **secure, production-grade, view-only analytics dashboard** with a
 
 This project collects analytics data from multiple external services and websites into a single centralized dashboard, using a **self-authored npm SDK** and a **custom authentication system with token rotation**.
 
-![Showcase image with meteors, dashboard and authentication]()
+![Showcase image with meteors, dashboard and authentication](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/front.png)
 
 ----------
 
@@ -135,7 +135,7 @@ This project intentionally follows **real-world engineering practices**, not tut
 -   Fast server-side data fetching
     
 -   Clean, minimal UI with Tailwind
-    
+![Dashboard with projects and events](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/dashboard.png)
 
 ### 2. Authentication
 
@@ -148,7 +148,7 @@ This project intentionally follows **real-world engineering practices**, not tut
 -   Server-side rotation & invalidation
     
 -   Secure logout & session handling
-    
+![Secure authentication with server-side token refreshing](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/login.png)
 
 > Only authorized users can view analytics.  
 > Admin-level operations (delete projects, events, etc.) are intentionally restricted to internal tooling.
