@@ -1,12 +1,11 @@
 
 # Analytics
 
-A **full-stack analytics platform** built from scratch using **Next.js, React, TypeScript, SQL, and a custom SDK**.  
-Designed as a **secure, production-grade, view-only analytics dashboard** with a private admin-level backend.
+A **production-grade analytics platform** implemented using **Next.js, React, TypeScript, SQL, and a custom-built SDK**.
 
-This project collects analytics data from multiple external services and websites into a single centralized dashboard, using a **self-authored npm SDK** and a **custom authentication system with token rotation**.
+The system aggregates analytics events from multiple external services into a centralized, **view-only dashboard**, leveraging a **self-authored npm SDK** and a **custom authentication architecture with server-side token rotation**.
 
-![Showcase image with meteors, dashboard and authentication](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/front.png)
+![Analytics Dashboard Showcase](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/front.png)
 
 ----------
 
@@ -15,156 +14,224 @@ This project collects analytics data from multiple external services and website
 **Frontend**
 
 -   Next.js (App Router)
+    
 -   React
+    
 -   TypeScript
     
 -   Tailwind CSS
     
--   Context API & Providers
-    
--   Custom hooks & reusable UI components
+-   Context API, Providers, and custom hooks
     
 
 **Backend**
 
--   Next.js API routes (server-only logic)
+-   Next.js API routes
     
--   SQL (via Supabase / Postgres)
+-   SQL (Supabase / PostgreSQL)
     
--   Custom authentication system
+-   Custom authentication layer
     
--   Secure cookie-based sessions
+-   HttpOnly cookie-based sessions
     
--   Token rotation (access + refresh tokens)
+-   Access and refresh token rotation
     
 
 **SDK**
 
--   Custom npm packages:
+-   `@alienthebetrayer/analytics-sdk-core`
     
-    -   `@alienthebetrayer/analytics-sdk-core`
-        
-    -   `@alienthebetrayer/analytics-sdk-react`
-        
--   Typed API client
+-   `@alienthebetrayer/analytics-sdk-react`
+    
+-   Strongly typed API client
     
 -   React Provider abstraction
-    
--   Event-based analytics API
     
 
 ----------
 
-## 📚 Libraries / Additional
+## 📚 Libraries / Tooling
 
--   Axios (HTTP client, SDK + server communication)
+-   Axios
     
--   Supabase (database & server client)
+-   Supabase
     
--   Tailwind CSS (design system)
+-   Tailwind CSS
     
--   TypeScript strict mode
+-   TypeScript (strict mode)
     
--   npm workspaces (monorepo setup)
+-   npm workspaces (monorepo architecture)
     
--   Custom CORS handling
-    
--   Custom middleware
+-   Custom middleware and CORS handling
     
 
 ----------
 
 ## 🧠 Engineering Principles
 
-This project intentionally follows **real-world engineering practices**, not tutorial shortcuts.
-
--   **Security-first**
+-   **Security-oriented design**  
+    Server-side session validation, token rotation, protected routes, and CORS-aware API boundaries
     
-    -   HttpOnly cookies
-        
-    -   Access & refresh token rotation
-        
-    -   Server-side session validation
-        
-    -   Protected routes & middleware
-        
-    -   CORS-aware API design
-        
--   **Scalability**
+-   **Scalable system architecture**  
+    SDK-driven ingestion, separation of core and framework-specific layers, and aggregation-based data modeling
     
-    -   Analytics ingestion separated from dashboard UI
-        
-    -   SDK-based event collection
-        
-    -   Clear separation of concerns (core vs react SDK)
-        
-    -   Database normalization & aggregation tables
-        
--   **Maintainability**
+-   **Maintainability and clarity**  
+    End-to-end static typing, reusable abstractions, consistent project structure, and JSDoc-driven documentation
     
-    -   Strong TypeScript typing across frontend, backend, and SDK
-        
-    -   Reusable components and hooks
-        
-    -   Clear folder structure
-        
-    -   Self-documented code with JSDoc
-        
--   **Ownership**
+-   **Full technical ownership**  
+    No third-party authentication, analytics, or SDK frameworks; all critical infrastructure implemented explicitly
     
-    -   No auth libraries
-        
-    -   No analytics libraries
-        
-    -   No SDK boilerplates  
-        Everything critical is implemented manually and understood end-to-end.
-        
 
 ----------
 
 ## 📸 Project Overview
 
-### 1. Dashboard
+**Dashboard**
 
--   View-only analytics dashboard
+-   Read-only analytics interface
     
 -   Project-level and event-level insights
     
--   Aggregated metrics (e.g. page views)
+-   Pre-aggregated metrics
     
--   Fast server-side data fetching
+-   Server-side data fetching for performance and consistency
     
--   Clean, minimal UI with Tailwind
-![Dashboard with projects and events](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/dashboard.png)
 
-### 2. Authentication
+![Analytics Dashboard](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/dashboard.png)
 
--   Fully custom authentication system
-    
--   Access tokens + refresh tokens
-    
--   Automatic token refresh
-    
--   Server-side rotation & invalidation
-    
--   Secure logout & session handling
-![Secure authentication with server-side token refreshing](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/login.png)
+**Authentication**
 
-> Only authorized users can view analytics.  
-> Admin-level operations (delete projects, events, etc.) are intentionally restricted to internal tooling.
+-   Fully custom-built authentication flow
+    
+-   Access and refresh token lifecycle management
+    
+-   Server-side rotation and invalidation
+    
+-   Explicit session termination and invalidation semantics
+    
+
+![Authentication Flow](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/login.png)
 
 ----------
 
 ## ✅ Final Notes
 
-This project was **designed, implemented, and iterated rapidly**, focusing on **depth of understanding rather than reliance on libraries**.
+This project demonstrates **end-to-end system ownership**, spanning frontend engineering, backend API design, authentication infrastructure, SDK development, and relational data modeling, with an emphasis on production-oriented trade-offs and long-term maintainability.
+# Analytics
 
-In a short timeframe, this evolved from:
+A **production-grade analytics platform** implemented using **Next.js, React, TypeScript, SQL, and a custom-built SDK**.
 
--   basic API routes  
-    → to a **secure auth system**  
-    → to a **custom analytics backend**  
-    → to a **published npm SDK**  
-    → to a **production-style full-stack application**
-   
- 
+The system aggregates analytics events from multiple external services into a centralized, **view-only dashboard**, leveraging a **self-authored npm SDK** and a **custom authentication architecture with server-side token rotation**.
+
+![Analytics Dashboard Showcase](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/front.png)
+
+----------
+
+## 🚀 Tech Stack
+
+**Frontend**
+
+-   Next.js (App Router)
+    
+-   React
+    
+-   TypeScript
+    
+-   Tailwind CSS
+    
+-   Context API, Providers, and custom hooks
+    
+
+**Backend**
+
+-   Next.js API routes
+    
+-   SQL (Supabase / PostgreSQL)
+    
+-   Custom authentication layer
+    
+-   HttpOnly cookie-based sessions
+    
+-   Access and refresh token rotation
+    
+
+**SDK**
+
+-   `@alienthebetrayer/analytics-sdk-core`
+    
+-   `@alienthebetrayer/analytics-sdk-react`
+    
+-   Strongly typed API client
+    
+-   React Provider abstraction
+    
+
+----------
+
+## 📚 Libraries / Tooling
+
+-   Axios
+    
+-   Supabase
+    
+-   Tailwind CSS
+    
+-   TypeScript (strict mode)
+    
+-   npm workspaces (monorepo architecture)
+    
+-   Custom middleware and CORS handling
+    
+
+----------
+
+## 🧠 Engineering Principles
+
+-   **Security-oriented design**  
+    Server-side session validation, token rotation, protected routes, and CORS-aware API boundaries
+    
+-   **Scalable system architecture**  
+    SDK-driven ingestion, separation of core and framework-specific layers, and aggregation-based data modeling
+    
+-   **Maintainability and clarity**  
+    End-to-end static typing, reusable abstractions, consistent project structure, and JSDoc-driven documentation
+    
+-   **Full technical ownership**  
+    No third-party authentication, analytics, or SDK frameworks; all critical infrastructure implemented explicitly
+    
+
+----------
+
+## 📸 Project Overview
+
+**Dashboard**
+
+-   Read-only analytics interface
+    
+-   Project-level and event-level insights
+    
+-   Pre-aggregated metrics
+    
+-   Server-side data fetching for performance and consistency
+    
+
+![Analytics Dashboard](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/dashboard.png)
+
+**Authentication**
+
+-   Fully custom-built authentication flow
+    
+-   Access and refresh token lifecycle management
+    
+-   Server-side rotation and invalidation
+    
+-   Explicit session termination and invalidation semantics
+    
+
+![Authentication Flow](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/login.png)
+
+----------
+
+## ✅ Final Notes
+
+This project demonstrates **end-to-end system ownership**, spanning frontend engineering, backend API design, authentication infrastructure, SDK development, and relational data modeling, with an emphasis on production-oriented trade-offs and long-term maintainability.
