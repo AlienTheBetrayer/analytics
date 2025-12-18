@@ -11,7 +11,7 @@ type Props = {
 export const DashboardAuthRecoverer = ({ onInteract }: Props) => {
 	return (
 		<motion.div
-			className="flex gap-4 items-center rounded-xl bg-linear-to-bl fixed top-4 right-4
+			className="flex justify-between items-center rounded-xl bg-linear-to-bl fixed top-4 right-4
                     from-background-2 to-background-1 z-10 outline-1 outline-background-5 w-fit sm:w-64 p-2"
 			initial={{ opacity: 0, y: -30 }}
 			animate={{ opacity: 1, y: 0 }}
@@ -23,7 +23,6 @@ export const DashboardAuthRecoverer = ({ onInteract }: Props) => {
 				Authentication is <u>hidden</u>
 			</span>
 			<Tooltip
-				className="ml-auto"
 				description="Bring the authentication back"
 				direction="left"
 			>

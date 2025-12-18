@@ -19,7 +19,7 @@ export const DashboardAuthTopline = ({ onInteract }: Props) => {
 				className="ml-auto"
 				direction="left"
 			>
-				<Button className="min-h-7! h-7 ml-auto" onClick={onInteract}>
+				<Button className="ml-auto" onClick={onInteract}>
 					<small>✕ Hide</small>
 				</Button>
 			</Tooltip>

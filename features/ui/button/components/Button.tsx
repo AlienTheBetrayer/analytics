@@ -16,8 +16,8 @@ export const Button = ({
 			onClick={onClick}
 			type="button"
 			disabled={!isEnabled}
-			className={`flex gap-1 items-center justify-center rounded-3xl outline-2 outline-background-5 bg-background-3 min-w-8 min-h-8 px-2
-                 hover:brightness-150 active:brightness-200 focus-visible:outline-blue-1 transition duration-150 cursor-pointer
+			className={`flex gap-1 items-center justify-center rounded-3xl border-2 border-background-5 bg-background-3 min-w-8 min-h-8 px-2.5
+                 hover:brightness-150 active:brightness-200 focus-visible:border-blue-1 outline-0 transition duration-150 cursor-pointer
                  ${isEnabled !== true ? 'pointer-events-none opacity-30' : ''} 
                  ${className ?? ""} `}
 			{...rest}

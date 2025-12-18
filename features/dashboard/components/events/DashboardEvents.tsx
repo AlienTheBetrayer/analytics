@@ -35,20 +35,60 @@ export const DashboardEvents = ({ controller }: Props) => {
 	const deleteEventsMessageBox = useMessageBox(
 		"Are you sure?",
 		"You are about to delete all events!",
-		(res) => {},
+		(res) => {
+			if (res === "yes" && projectData !== undefined) {
+				promises.wrap("events", () =>
+					protectedRequest("/api/analytics/delete-events", {
+						project_id: projectData.project.id,
+					})
+						.then(() => {
+							controller.dataDispatch({
+								type: "DELETE_EVENTS",
+								project_id: projectData.project.id,
+							});
+						})
+						.catch(() => {
+							notifications.show(
+								{ type: "error", content: "Not authenticated." },
+								false,
+							);
+						}),
+				);
+			}
+		},
 	);
 
 	const deleteProjectMessageBox = useMessageBox(
 		"Are you sure?",
 		"You are about to delete all data about this project!",
-		(res) => {},
+		(res) => {
+			if (res === "yes" && projectData !== undefined) {
+				promises.wrap("project", () =>
+					protectedRequest("/api/analytics/delete-project", {
+						project_id: projectData.project.id,
+					})
+						.then(() => {
+							controller.dataDispatch({
+								type: "DELETE_PROJECT",
+								project_id: projectData.project.id,
+							});
+						})
+						.catch(() => {
+							notifications.show(
+								{ type: "error", content: "Not authenticated." },
+								false,
+							);
+						}),
+				);
+			}
+		},
 	);
 
 	return controller.selectedProjectId !== null && projectData !== undefined ? (
 		<div className="flex flex-col gap-4 ">
-            {deleteEventsMessageBox.render()}
-            {deleteProjectMessageBox.render()}
-            
+			{deleteEventsMessageBox.render()}
+			{deleteProjectMessageBox.render()}
+
 			{projectData.metaData.length > 0 ? (
 				<>
 					<div className="flex relative gap-2 flex-wrap">
@@ -57,13 +97,18 @@ export const DashboardEvents = ({ controller }: Props) => {
 								Events (<mark>{projectData.project.name}</mark>)
 							</h3>
 
-							<Tooltip description="Wipe" direction="top">
+							<Tooltip
+								description="Wipe"
+								direction="top"
+								isEnabled={isLoggedIn}
+							>
 								<Button
 									isEnabled={isLoggedIn}
 									onClick={() => {
 										deleteProjectMessageBox.show();
 									}}
 								>
+                                    {promises.get('project') === 'pending' && <Spinner/>}
 									<small>Delete project</small>
 								</Button>
 							</Tooltip>
@@ -78,23 +123,7 @@ export const DashboardEvents = ({ controller }: Props) => {
 								<Button
 									isEnabled={isLoggedIn}
 									onClick={() => {
-										promises.wrap("events", () =>
-											protectedRequest("/api/analytics/delete-events", {
-												project_id: projectData.project.id,
-											})
-												.then(async () => {
-													controller.dataDispatch({
-														type: "DELETE_EVENTS",
-														project_id: projectData.project.id,
-													});
-												})
-												.catch(() => {
-													notifications.show(
-														{ type: "error", content: "Not authenticated." },
-														false,
-													);
-												}),
-										);
+										deleteEventsMessageBox.show();
 									}}
 								>
 									{promises.get("events") === "pending" && <Spinner />}
