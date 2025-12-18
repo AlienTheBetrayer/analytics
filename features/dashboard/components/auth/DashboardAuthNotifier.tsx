@@ -1,9 +1,9 @@
-import { useLocalStore } from "@/zustand/localStore";
+import { useSessionStore } from "@/zustand/localStore";
 import { AnimatePresence, motion } from "motion/react";
+import React from "react";
 
-export const DashboardAuthNotifier = () => {
-	const isLoggedIn = useLocalStore((state) => state.isLoggedIn);
-
+export const DashboardAuthNotifier = React.memo(() => {
+	const isLoggedIn = useSessionStore((state) => state.isLoggedIn);
 	return (
 		<AnimatePresence>
 			{isLoggedIn && (
@@ -25,4 +25,4 @@ export const DashboardAuthNotifier = () => {
 			)}
 		</AnimatePresence>
 	);
-};
+});

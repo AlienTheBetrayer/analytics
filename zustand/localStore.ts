@@ -1,13 +1,13 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-export type LocalStoreType = {
+export type SessionStoreType = {
 	isLoggedIn: boolean;
 
 	setIsLoggedIn: (flag: boolean) => void;
 };
 
-export const useLocalStore = create<LocalStoreType>()(
+export const useSessionStore = create<SessionStoreType>()(
 	persist(
 		(set) => ({
 			isLoggedIn: false,
@@ -17,7 +17,7 @@ export const useLocalStore = create<LocalStoreType>()(
 		}),
 		{
 			name: "app-storage",
-			storage: createJSONStorage(() => localStorage),
+			storage: createJSONStorage(() => sessionStorage),
 		},
 	),
 );

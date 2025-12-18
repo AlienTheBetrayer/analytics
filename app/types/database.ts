@@ -24,6 +24,11 @@ export type ProjectAggregatesType = {
 	last_updated?: string;
 };
 
+export type RefreshTokens = {
+    id: string;
+    token: string;
+}
+
 // GET
 export type ProjectDataType = {
     id: string;

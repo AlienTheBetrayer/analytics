@@ -1,4 +1,6 @@
 import { nextResponse } from "@/app/utils/response";
+import { supabaseServer } from "@/server/supabase";
+import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { type NextRequest, NextResponse } from "next/server";
 
@@ -7,13 +9,12 @@ export const POST = async (request: NextRequest) => {
 		const { code } = await request.json();
 
 		if (code === undefined) {
-			return nextResponse({ error: "code is missing." }, 400);
+			throw nextResponse({ error: "code is missing." }, 400);
 		}
 
 		// password checking
 		if (code !== (process.env.CODE as string)) {
-			console.log(process.env.CODE as string);
-			return nextResponse({ error: "code is incorrect." }, 401);
+			throw nextResponse({ error: "code is incorrect." }, 401);
 		}
 
 		// issuing tokens
@@ -50,9 +51,17 @@ export const POST = async (request: NextRequest) => {
 			maxAge: 30 * 24 * 60 * 60,
 		});
 
+		const { error: refreshError } = await supabaseServer
+			.from("refresh_tokens")
+			.upsert({ token: await bcrypt.hash(refreshToken, 10) });
+
+		if (refreshError) {
+			throw nextResponse(refreshError, 400);
+		}
+
 		return res;
 	} catch (e) {
 		const message = e instanceof Error ? e.message : "unknown error";
-		return nextResponse({ error: message }, 400);
+		throw nextResponse({ error: message }, 400);
 	}
 };

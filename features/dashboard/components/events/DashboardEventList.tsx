@@ -25,7 +25,6 @@ export const DashboardEventList = ({
 	const scroll = useScroll<HTMLUListElement>((value) => {
 		setHasScrolledEnough(value > 0.5);
 	});
-	console.log("f");
 	return (
 		<ul
 			ref={scroll.ref}

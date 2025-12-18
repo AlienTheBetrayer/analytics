@@ -1,4 +1,4 @@
-import { useLocalStore } from "@/zustand/localStore";
+import { useSessionStore } from "@/zustand/localStore";
 import axios from "axios";
 import {
 	type FormEvent,
@@ -12,8 +12,8 @@ export type AuthStatus = "success" | "failure" | null;
 
 export const useAuth = () => {
 	// zustand
-	const isLoggedIn = useLocalStore((state) => state.isLoggedIn);
-	const setIsLoggedIn = useLocalStore((state) => state.setIsLoggedIn);
+	const isLoggedIn = useSessionStore((state) => state.isLoggedIn);
+	const setIsLoggedIn = useSessionStore((state) => state.setIsLoggedIn);
 
 	// states
 	const [code, setCode] = useState<string | null>(null);

@@ -5,7 +5,7 @@ import "./DashboardEvent.css";
 import { Spinner } from "@/features/spinner/components/Spinner";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
-import { useLocalStore } from "@/zustand/localStore";
+import { useSessionStore } from "@/zustand/localStore";
 import Image from "next/image";
 import calendarImg from "../../../../public/calendar.svg";
 import descriptionImg from "../../../../public/description.svg";
@@ -19,7 +19,7 @@ type Props = {
 
 export const DashboardEvent = ({ event, onDelete, isLoading }: Props) => {
 	// zustand
-	const isLoggedIn = useLocalStore((state) => state.isLoggedIn);
+	const isLoggedIn = useSessionStore((state) => state.isLoggedIn);
 
 	return (
 		<Tooltip
@@ -39,9 +39,11 @@ export const DashboardEvent = ({ event, onDelete, isLoading }: Props) => {
 				</Tooltip>
 			}
 		>
-			<li className="dashboard-event relative gap-3 bg-linear-to-r from-background-1 to-background-2 rounded-3xl
+			<li
+				className="dashboard-event relative gap-3 bg-linear-to-r from-background-1 to-background-2 rounded-3xl
             border-2 border-background-4 
-            px-4! py-2! hover:brightness-200 duration-300 transition-all">
+            px-4! py-2! hover:brightness-200 duration-300 transition-all"
+			>
 				<EventProperty eventType="Type" value={event.type} image={typeImg} />
 				<EventProperty
 					eventType="Description"

@@ -3,7 +3,7 @@ import { Spinner } from "@/features/spinner/components/Spinner";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { usePromiseStatus } from "@/hooks/usePromiseStatus";
-import { useLocalStore } from "@/zustand/localStore";
+import { useSessionStore } from "@/zustand/localStore";
 import { useNotificationContext } from "../../context/NotificationContext";
 import type { useData } from "../../hooks/useData";
 import { DashboardEventList } from "./DashboardEventList";
@@ -14,7 +14,7 @@ type Props = {
 
 export const DashboardEvents = ({ controller }: Props) => {
 	// zustand
-	const isLoggedIn = useLocalStore((state) => state.isLoggedIn);
+	const isLoggedIn = useSessionStore((state) => state.isLoggedIn);
 
 	// notifications api
 	const notifications = useNotificationContext();
