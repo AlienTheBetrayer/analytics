@@ -34,49 +34,58 @@ export const DashboardEvents = ({ controller }: Props) => {
 		<div className="flex flex-col gap-4 ">
 			{projectData.metaData.length > 0 ? (
 				<>
-					<div className="flex relative gap-2">
-						<h3 className="sm:absolute sm:left-1/2 sm:top-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2">
-							Events (<mark>{projectData.project.name}</mark>)
-						</h3>
+					<div className="flex relative gap-2 flex-wrap">
+						<div className="flex gap-2">
+							<h3 className="sm:absolute whitespace-nowrap sm:left-1/2 sm:top-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2">
+								Events (<mark>{projectData.project.name}</mark>)
+							</h3>
 
-						<Tooltip
-							description="Wipe all events"
-							className="ml-auto"
-							direction="top"
-							isEnabled={isLoggedIn}
-						>
-							<Button
+							<Tooltip description="Wipe" direction="top">
+								<Button isEnabled={isLoggedIn}>
+									<small>Delete project</small>
+								</Button>
+							</Tooltip>
+						</div>
+
+						<div className="flex gap-2 ml-auto">
+							<Tooltip
+								description="Wipe all events"
+								direction="top"
 								isEnabled={isLoggedIn}
-								onClick={() => {
-									promises.wrap("events", () =>
-										protectedRequest("/api/analytics/delete-events", {
-											project_id: projectData.project.id,
-										})
-											.then(async () => {
-												controller.dataDispatch({
-													type: "DELETE_EVENTS",
-													project_id: projectData.project.id,
-												});
-											})
-											.catch(() => {
-												notifications.show(
-													{ type: "error", content: "Not authenticated." },
-													false,
-												);
-											}),
-									);
-								}}
 							>
-								{promises.get("events") === "pending" && <Spinner />}
-								<small>Delete events</small>
-							</Button>
-						</Tooltip>
+								<Button
+									isEnabled={isLoggedIn}
+									onClick={() => {
+										promises.wrap("events", () =>
+											protectedRequest("/api/analytics/delete-events", {
+												project_id: projectData.project.id,
+											})
+												.then(async () => {
+													controller.dataDispatch({
+														type: "DELETE_EVENTS",
+														project_id: projectData.project.id,
+													});
+												})
+												.catch(() => {
+													notifications.show(
+														{ type: "error", content: "Not authenticated." },
+														false,
+													);
+												}),
+										);
+									}}
+								>
+									{promises.get("events") === "pending" && <Spinner />}
+									<small>Delete events</small>
+								</Button>
+							</Tooltip>
 
-						<Tooltip description="Hide events tab" direction="top">
-							<Button onClick={() => controller.setSelectedProjectId(null)}>
-								<small>✕ Hide</small>
-							</Button>
-						</Tooltip>
+							<Tooltip description="Hide events tab" direction="top">
+								<Button onClick={() => controller.setSelectedProjectId(null)}>
+									<small>✕ Hide</small>
+								</Button>
+							</Tooltip>
+						</div>
 					</div>
 
 					<DashboardEventList
@@ -87,10 +96,12 @@ export const DashboardEvents = ({ controller }: Props) => {
 					/>
 				</>
 			) : (
-				<span className="m-auto">No events so far...</span>
+				<span className="m-auto span-animated">No events so far...</span>
 			)}
 		</div>
 	) : (
-		<span className="m-auto">Select a project to see events.</span>
+		<span className="m-auto span-animated">
+			Select a project to see events.
+		</span>
 	);
 };

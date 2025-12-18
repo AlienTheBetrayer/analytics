@@ -28,11 +28,11 @@ export const DashboardProjects = ({ controller }: Props) => {
 									className="w-full project-button"
 									onClick={() => controller.setSelectedProjectId(v.project.id)}
 								>
-									<div className="flex items-center gap-1">
+									<div className="flex items-center gap-1.5">
 										<Image
 											src={linkImg}
 											alt=""
-											className={`image h-3! w-3! ${controller.selectedProjectId === v.project.id ? "invert-100!" : ""}`}
+											className={`image ${controller.selectedProjectId === v.project.id ? "invert-100!" : ""}`}
 										/>
 										<span>{v.project.name}</span>
 									</div>
@@ -42,7 +42,7 @@ export const DashboardProjects = ({ controller }: Props) => {
 											opacity:
 												controller.selectedProjectId === v.project.id ? 1 : 0.3,
 										}}
-										className={`transition-all duration-300`}
+										className={`transition-all duration-300 text-left events-span`}
 									>
 										<small className="text-3xl!">{v.metaData.length}</small>
 										<small> events</small>
@@ -53,7 +53,7 @@ export const DashboardProjects = ({ controller }: Props) => {
 											opacity:
 												controller.selectedProjectId === v.project.id ? 1 : 0.3,
 										}}
-										className={`transition-all duration-300`}
+										className={`transition-all duration-300 text-left`}
 									>
 										<small className="text-3xl!">
 											{v.aggregates.visits ?? 0}
@@ -61,8 +61,7 @@ export const DashboardProjects = ({ controller }: Props) => {
 										<small> visits</small>
 									</span>
 
-									<span>
-										<span className="hidden sm:inline">connected </span>
+									<span className="text-right">
 										{relativeTime(v.project.created_at)}
 									</span>
 								</Button>
