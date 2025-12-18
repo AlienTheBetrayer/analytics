@@ -10,7 +10,7 @@ export const POST = async (request: NextRequest) => {
 	const refreshToken = request.cookies.get("refreshToken")?.value;
 
 	if (refreshToken === undefined) {
-		throw nextResponse({ error: "Session is outdated. Re-login. " }, 400);
+		return nextResponse({ error: "Session is outdated. Re-login. " }, 400);
 	}
 
 	try {
@@ -24,11 +24,11 @@ export const POST = async (request: NextRequest) => {
 			};
 
 		if (refreshTokensError) {
-			throw nextResponse(refreshTokensError, 400);
+			return nextResponse(refreshTokensError, 400);
 		}
 
 		if (refreshTokensData.length === 0) {
-			throw nextResponse({ error: "Incorrect authentication." }, 400);
+			return nextResponse({ error: "Incorrect authentication." }, 400);
 		}
 
 		const results = await Promise.all(
@@ -49,7 +49,7 @@ export const POST = async (request: NextRequest) => {
 			response.cookies.delete("accessToken");
 			response.cookies.delete("refreshToken");
 
-			throw response;
+			return response;
 		}
 
 		// if the token is matched in the database (as it should) - rotate everything and sign in
@@ -104,7 +104,7 @@ export const POST = async (request: NextRequest) => {
 		});
 
 		return response;
-	} catch (error) {
-		throw nextResponse({ error: "Not authenticated" }, 401);
+	} catch {
+		return nextResponse({ error: "Not authenticated" }, 401);
 	}
 };

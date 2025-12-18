@@ -6,7 +6,7 @@ export const POST = async (request: NextRequest) => {
 	const refreshToken = request.cookies.get("refreshToken")?.value;
 
 	if (refreshToken === undefined) {
-		throw nextResponse({ error: "Not logged in." }, 400);
+		return nextResponse({ error: "Not logged in." }, 400);
 	}
 
 	const { error: refreshError } = await supabaseServer

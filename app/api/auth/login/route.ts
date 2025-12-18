@@ -9,12 +9,12 @@ export const POST = async (request: NextRequest) => {
 		const { code } = await request.json();
 
 		if (code === undefined) {
-			throw nextResponse({ error: "code is missing." }, 400);
+			return nextResponse({ error: "code is missing." }, 400);
 		}
 
 		// password checking
 		if (code !== (process.env.CODE as string)) {
-			throw nextResponse({ error: "code is incorrect." }, 401);
+			return nextResponse({ error: "code is incorrect." }, 401);
 		}
 
 		// issuing tokens
@@ -56,12 +56,12 @@ export const POST = async (request: NextRequest) => {
 			.upsert({ token: await bcrypt.hash(refreshToken, 10) });
 
 		if (refreshError) {
-			throw nextResponse(refreshError, 400);
+			return nextResponse(refreshError, 400);
 		}
 
 		return res;
 	} catch (e) {
 		const message = e instanceof Error ? e.message : "unknown error";
-		throw nextResponse({ error: message }, 400);
+		return nextResponse({ error: message }, 400);
 	}
 };
