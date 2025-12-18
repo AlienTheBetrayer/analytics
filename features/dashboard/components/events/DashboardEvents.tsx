@@ -1,4 +1,5 @@
 import { protectedRequest } from "@/app/utils/protectedRequest";
+import { useMessageBox } from "@/features/messagebox/hooks/useMessageBox";
 import { Spinner } from "@/features/spinner/components/Spinner";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
@@ -30,8 +31,24 @@ export const DashboardEvents = ({ controller }: Props) => {
 	// spinner handling
 	const promises = usePromiseStatus();
 
+	// message boxes
+	const deleteEventsMessageBox = useMessageBox(
+		"Are you sure?",
+		"You are about to delete all events!",
+		(res) => {},
+	);
+
+	const deleteProjectMessageBox = useMessageBox(
+		"Are you sure?",
+		"You are about to delete all data about this project!",
+		(res) => {},
+	);
+
 	return controller.selectedProjectId !== null && projectData !== undefined ? (
 		<div className="flex flex-col gap-4 ">
+            {deleteEventsMessageBox.render()}
+            {deleteProjectMessageBox.render()}
+            
 			{projectData.metaData.length > 0 ? (
 				<>
 					<div className="flex relative gap-2 flex-wrap">
@@ -41,7 +58,12 @@ export const DashboardEvents = ({ controller }: Props) => {
 							</h3>
 
 							<Tooltip description="Wipe" direction="top">
-								<Button isEnabled={isLoggedIn}>
+								<Button
+									isEnabled={isLoggedIn}
+									onClick={() => {
+										deleteProjectMessageBox.show();
+									}}
+								>
 									<small>Delete project</small>
 								</Button>
 							</Tooltip>
