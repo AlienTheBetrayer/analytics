@@ -3,7 +3,7 @@ import { Spinner } from "@/features/spinner/components/Spinner";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { usePromiseStatus } from "@/hooks/usePromiseStatus";
-import { useSessionStore } from "@/zustand/localStore";
+import { useSessionStore } from "@/zustand/sessionStore";
 import { useNotificationContext } from "../../context/NotificationContext";
 import type { useData } from "../../hooks/useData";
 import { DashboardEventList } from "./DashboardEventList";

@@ -2,7 +2,7 @@ import { Spinner } from "@/features/spinner/components/Spinner";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
-import { useSessionStore } from "@/zustand/localStore";
+import { useSessionStore } from "@/zustand/sessionStore";
 import { motion } from "motion/react";
 import { useAuth } from "../../hooks/useAuth";
 

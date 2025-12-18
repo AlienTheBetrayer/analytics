@@ -1,4 +1,4 @@
-import { useSessionStore } from "@/zustand/localStore";
+import { useSessionStore } from "@/zustand/sessionStore";
 import axios from "axios";
 import {
 	type FormEvent,

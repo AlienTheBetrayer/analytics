@@ -1,4 +1,4 @@
-import { useSessionStore } from "@/zustand/localStore";
+import { useSessionStore } from "@/zustand/sessionStore";
 import { AnimatePresence, motion } from "motion/react";
 import React from "react";
 

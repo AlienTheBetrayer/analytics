@@ -5,7 +5,7 @@ import "./DashboardEvent.css";
 import { Spinner } from "@/features/spinner/components/Spinner";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
-import { useSessionStore } from "@/zustand/localStore";
+import { useSessionStore } from "@/zustand/sessionStore";
 import Image from "next/image";
 import calendarImg from "../../../../public/calendar.svg";
 import descriptionImg from "../../../../public/description.svg";

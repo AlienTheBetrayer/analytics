@@ -1,7 +1,7 @@
 "use client";
 import axios from "axios";
 import { useEffect } from "react";
-import { useSessionStore } from "./localStore";
+import { useSessionStore } from "./sessionStore";
 
 export const SessionStoreWatcher = () => {
 	const setIsLoggedIn = useSessionStore((state) => state.setIsLoggedIn);
