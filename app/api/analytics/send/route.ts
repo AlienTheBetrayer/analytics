@@ -1,12 +1,13 @@
 import type {
-    AnalyticsMetaType,
-    ProjectAggregatesType,
-    ProjectType,
+	AnalyticsMetaType,
+	ProjectAggregatesType,
+	ProjectType,
 } from "@/app/types/database";
 import { nextResponse } from "@/app/utils/response";
 import { supabaseServer } from "@/server/supabase";
 import type { PostgrestError } from "@supabase/supabase-js";
 import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 
 export const POST = async (request: NextRequest) => {
 	try {
@@ -91,4 +92,18 @@ export const POST = async (request: NextRequest) => {
 		const message = e instanceof Error ? e.message : "unknown error";
 		return nextResponse({ error: message }, 400);
 	}
+};
+
+export const OPTIONS = () => {
+	return NextResponse.json(
+		{},
+		{
+			headers: {
+				"Access-Control-Allow-Origin": "*",
+				"Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+				"Access-Control-Allow-Headers": "Content-Type, Authorization",
+			},
+			status: 204,
+		},
+	);
 };
