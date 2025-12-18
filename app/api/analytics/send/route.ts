@@ -1,7 +1,7 @@
 import type {
-	AnalyticsMetaType,
-	ProjectAggregatesType,
-	ProjectType,
+    AnalyticsMetaType,
+    ProjectAggregatesType,
+    ProjectType,
 } from "@/app/types/database";
 import { nextResponse } from "@/app/utils/response";
 import { supabaseServer } from "@/server/supabase";
@@ -64,8 +64,8 @@ export const POST = async (request: NextRequest) => {
 					id: projectData[0].id,
 					visits:
 						event_type === "page_view"
-							? (projectAggregatesData[0]?.visits ?? 0) + 1
-							: (projectAggregatesData[0]?.visits ?? 0),
+							? (projectAggregatesData?.[0]?.visits ?? 0) + 1
+							: (projectAggregatesData?.[0]?.visits ?? 0),
 				},
 				{ onConflict: "id" },
 			);
