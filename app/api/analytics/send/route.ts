@@ -95,15 +95,12 @@ export const POST = async (request: NextRequest) => {
 };
 
 export const OPTIONS = () => {
-	return NextResponse.json(
-		{},
-		{
-			headers: {
-				"Access-Control-Allow-Origin": "*",
-				"Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-				"Access-Control-Allow-Headers": "Content-Type, Authorization",
-			},
-			status: 204,
+	return NextResponse.json(null, {
+		headers: {
+			"Access-Control-Allow-Origin": "*",
+			"Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+			"Access-Control-Allow-Headers": "Content-Type, Authorization",
 		},
-	);
+		status: 204,
+	});
 };
