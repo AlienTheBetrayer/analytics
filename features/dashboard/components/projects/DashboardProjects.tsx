@@ -13,7 +13,7 @@ export const DashboardProjects = ({ controller }: Props) => {
 			<div className="flex flex-col gap-4 relative">
 				<h3 className="sm:text-center">Available projects</h3>
 				<ul
-					className="flex flex-col gap-2 max-h-48 overflow-y-scroll scheme-dark"
+					className="flex flex-col gap-2 max-h-48 overflow-y-scroll scheme-dark pb-4!"
 					style={{
 						maskImage: "linear-gradient(to top, transparent 0%, black 30%)",
 						scrollbarWidth: "thin",
