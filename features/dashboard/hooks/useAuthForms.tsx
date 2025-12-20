@@ -1,4 +1,5 @@
 import { usePopup } from "@/features/popup/hooks/usePopup";
+import type { HTMLMotionProps } from "motion/react";
 import { useCallback, useEffect } from "react";
 import { LoginForm } from "../components/auth/forms/LoginForm";
 import { LogoutMessageBox } from "../components/auth/forms/LogoutMessageBox";
@@ -7,8 +8,10 @@ import { useDashboardContext } from "../context/DashboardContext";
 import type { useAuth } from "./useAuth";
 
 export const useAuthForms = (auth: ReturnType<typeof useAuth>) => {
+	// state
 	const [dashboardState, dashboardDispatch] = useDashboardContext();
 
+	// forms
 	const registerForm = usePopup(<RegisterForm auth={auth} />, () => {
 		dashboardDispatch({ type: "AUTH_FORM_SET", flag: null });
 	});
@@ -21,6 +24,7 @@ export const useAuthForms = (auth: ReturnType<typeof useAuth>) => {
 		dashboardDispatch({ type: "AUTH_FORM_SET", flag: null });
 	});
 
+	// handling the visibility of all forms
 	useEffect(() => {
 		switch (dashboardState.authForm) {
 			case "register":
@@ -36,7 +40,7 @@ export const useAuthForms = (auth: ReturnType<typeof useAuth>) => {
 				registerForm.hide();
 				loginForm.hide();
 				logOutForm.hide();
-                auth.clearData();
+				auth.clearData();
 				break;
 		}
 	}, [
@@ -47,9 +51,10 @@ export const useAuthForms = (auth: ReturnType<typeof useAuth>) => {
 		loginForm.show,
 		logOutForm.hide,
 		logOutForm.show,
-        auth.clearData
+		auth.clearData,
 	]);
 
+	// a function to render all forms
 	const render = useCallback(() => {
 		return (
 			<>

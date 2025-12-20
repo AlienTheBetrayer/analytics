@@ -44,9 +44,9 @@ export const DashboardAuthForm = forwardRef<HTMLFormElement, Props>(
 	) => {
 		return (
 			<motion.div
-				initial={{ opacity: 0 }}
-				animate={{ opacity: 1 }}
-				exit={{ opacity: 0 }}
+				initial={{ opacity: 0, y: 5 }}
+				animate={{ opacity: 1, y: 0  }}
+				exit={{ opacity: 0, y: 5 }}
 				className="flex flex-col gap-2 fixed left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 
                 z-100 bg-background-2 rounded-xl p-2 min-w-72"
 			>

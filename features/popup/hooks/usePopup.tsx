@@ -3,14 +3,14 @@ import { useCallback, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 
 type BlurConfig = {
-	isEnabled: boolean;
+	isEnabled?: boolean;
 	className?: string;
 };
 
 export const usePopup = (
 	component: React.ReactNode,
-    onClose?: () => void,
-	blurConfig: BlurConfig = { isEnabled: true },
+	onClose?: () => void,
+	blurConfig?: BlurConfig,
 ) => {
 	// client-side-only
 	const [mounted, setMounted] = useState<boolean>(false);
@@ -28,7 +28,7 @@ export const usePopup = (
 			switch (e.code) {
 				case "Escape":
 					setIsShown(false);
-                    onClose?.();
+					onClose?.();
 					break;
 			}
 		};
@@ -43,17 +43,17 @@ export const usePopup = (
 		return createPortal(
 			<>
 				<AnimatePresence>{isShown && component}</AnimatePresence>
-				{blurConfig.isEnabled && (
+				{(blurConfig?.isEnabled ?? true) && (
 					<AnimatePresence>
 						{isShown && (
 							<motion.div
-								className={`fixed inset-0 z-32 ${blurConfig.className ?? "backdrop-blur-xs"}`}
+								className={`fixed inset-0 z-32 ${blurConfig?.className ?? "backdrop-blur-xs"}`}
 								initial={{ opacity: 0 }}
 								animate={{ opacity: 1 }}
 								exit={{ opacity: 0 }}
 								onClick={() => {
 									setIsShown(false);
-                                    onClose?.();
+									onClose?.();
 								}}
 							/>
 						)}
