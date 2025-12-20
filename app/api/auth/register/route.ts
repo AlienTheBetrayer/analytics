@@ -9,7 +9,12 @@ export const POST = async (request: NextRequest) => {
 			await request.json();
 
 		if (username === undefined || password === undefined) {
-			return nextResponse({ error: "username or password are missing." }, 400);
+			return nextResponse(
+				{
+					error: "username or password are missing.",
+				},
+				400,
+			);
 		}
 
 		if (username.trim().length < 5 || password.trim().length < 5) {

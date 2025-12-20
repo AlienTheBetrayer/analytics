@@ -3,16 +3,8 @@ import { useSessionStore } from "@/zustand/sessionStore";
 import axios from "axios";
 import { useCallback, useRef, useState } from "react";
 
-export type AuthStatusMessage =
-	| "Registered"
-	| "Authenticated"
-	| "Incorrect credentials"
-	| "Incorrect length"
-	| "Already exists"
-	| "Unknown";
-
 export type AuthStatus = {
-	message: AuthStatusMessage;
+	message: string;
 	ok: boolean;
 } | null;
 
@@ -53,21 +45,13 @@ export const useAuth = () => {
 						username: data.username,
 						password: data.password,
 					});
-					setStatus({ message: "Registered", ok: true });
+					setStatus({ message: "Registered!", ok: true });
 				})
 				.catch((e) => {
-					const data = axios.isAxiosError(e) && e.response?.data;
-
-					if (!data || !data.code) {
-						setStatus({ message: "Unknown", ok: false });
-						return;
-					}
-
-					switch (data.code) {
-						case "23505":
-							setStatus({ message: "Already exists", ok: false });
-							break;
-					}
+					const message = axios.isAxiosError(e)
+						? (e.response?.data.error ?? "Unknown")
+						: "Unknown";
+					setStatus({ message, ok: false });
 				});
 		}
 	}, [data, promiseStatus.wrap]);
@@ -80,22 +64,14 @@ export const useAuth = () => {
 						username: data.username,
 						password: data.password,
 					});
-					setStatus({ message: "Authenticated", ok: true });
+					setStatus({ message: "Authenticated!", ok: true });
 					setIsLoggedIn(true);
 				})
 				.catch((e) => {
-					const data = axios.isAxiosError(e) && e.response?.data;
-
-					if (!data || !data.code) {
-						setStatus({ message: "Unknown", ok: false });
-						return;
-					}
-
-					switch (data.code) {
-						case "23505":
-							setStatus({ message: "Already exists", ok: false });
-							break;
-					}
+					const message = axios.isAxiosError(e)
+						? (e.response?.data.error ?? "Unknown")
+						: "Unknown";
+					setStatus({ message, ok: false });
 				});
 		}
 	}, [data, promiseStatus.wrap, setIsLoggedIn]);

@@ -12,22 +12,31 @@ export type AnalyticsMetaType = {
 	created_at?: string;
 };
 
-export type ProjectType = {
-	id: string;
-	name: string;
-	created_at?: string;
-};
-
 export type ProjectAggregatesType = {
-	project_id: string;
+    project_id: string;
 	visits?: number;
 	last_updated?: string;
 };
 
-export type RefreshTokens = {
+export type ProjectType = {
     id: string;
+    name: string;
+    created_at?: string;
+};
+
+export type TokensType = {
+    id: string;
+    user_id: string;
     token: string;
 }
+
+export type UsersType = {
+    id: string;
+    username: string;
+    password: string;
+    role: 'user' | 'admin';
+    created_at?: string;
+};
 
 // GET
 export type ProjectDataType = {
@@ -35,3 +44,4 @@ export type ProjectDataType = {
     aggregates: ProjectAggregatesType;
     metaData: AnalyticsMetaType[];
 }
+

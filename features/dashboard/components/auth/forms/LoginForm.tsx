@@ -19,7 +19,7 @@ export const LoginForm = ({ auth }: Props) => {
 			animate={{ opacity: 1, y: 0 }}
 			exit={{ opacity: 0, y: 5 }}
 			className="flex flex-col gap-2 fixed left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 
-                z-100 bg-background-2 rounded-xl p-2 min-w-72"
+                z-100 bg-background-2 rounded-xl p-2 w-80"
 		>
 			{/* topline */}
 			<div className="relative gap-2 flex items-center justify-between w-full border-b border-b-background-5 p-2">
@@ -84,13 +84,16 @@ export const LoginForm = ({ auth }: Props) => {
 
 			{/* status message */}
 			{auth.status && (
-				<div className="flex gap-1 items-center mx-auto">
-					<div
-						className={`rounded-full w-2 h-2 ${auth.status.ok ? "bg-blue-1" : "bg-red-1"}`}
-					/>
-					<span>{auth.status.ok ? "Success!" : "ERROR:"}</span>
-					<span>{auth.status.message}</span>
-				</div>
+				<>
+					<hr />
+					<div className="flex gap-1 items-center mx-auto ">
+						<div
+							className={`rounded-full w-2 h-2 ${auth.status.ok ? "bg-blue-1" : "bg-red-1"} shrink-0`}
+						/>
+						<span>{auth.status.ok ? "Success!" : "ERROR:"}</span>
+						<span>{auth.status.message}</span>
+					</div>
+				</>
 			)}
 		</motion.div>
 	);

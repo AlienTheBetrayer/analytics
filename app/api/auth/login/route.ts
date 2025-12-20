@@ -1,30 +1,57 @@
+import type { UsersType } from "@/app/types/database";
 import { nextResponse } from "@/app/utils/response";
 import { supabaseServer } from "@/server/supabase";
+import type { PostgrestError } from "@supabase/supabase-js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { type NextRequest, NextResponse } from "next/server";
 
 export const POST = async (request: NextRequest) => {
 	try {
-		const { code } = await request.json();
+		// json body checking
+		const { username, password } = await request.json();
 
-		if (code === undefined) {
-			return nextResponse({ error: "code is missing." }, 400);
+		if (username === undefined || password === undefined) {
+			return nextResponse({ error: "username or password are missing." }, 400);
 		}
 
-		// password checking
-		if (code !== (process.env.CODE as string)) {
-			return nextResponse({ error: "code is incorrect." }, 401);
+		// user checking
+		const { data: userData, error: userError } = (await supabaseServer
+			.from("users")
+			.select()
+			.eq("username", username)) as {
+			data: UsersType[];
+			error: PostgrestError | null;
+		};
+
+		if (userError) {
+			return nextResponse(userError, 400);
 		}
 
+		if (userData.length === 0) {
+			return nextResponse({ error: "the user has not been created yet." }, 400);
+		}
+
+		// password comparing
+		const isPasswordCorrect = await bcrypt.compare(
+			password,
+			userData[0].password,
+		);
+
+		if (isPasswordCorrect === false) {
+			return nextResponse({ error: "Invalid credentials" }, 401);
+		}
+
+		// logged in
 		// issuing tokens
 		const accessToken = jwt.sign(
-			{ type: "access_code" },
+			{ id: userData[0].id, role: userData[0].role },
 			process.env.ACCESS_SECRET as string,
 			{ expiresIn: "15m" },
 		);
+
 		const refreshToken = jwt.sign(
-			{ type: "access_code" },
+			{ id: userData[0].id, role: userData[0].role },
 			process.env.REFRESH_SECRET as string,
 			{ expiresIn: "30d" },
 		);
@@ -51,9 +78,10 @@ export const POST = async (request: NextRequest) => {
 			maxAge: 30 * 24 * 60 * 60,
 		});
 
-		const { error: refreshError } = await supabaseServer
-			.from("refresh_tokens")
-			.upsert({ token: await bcrypt.hash(refreshToken, 10) });
+		const { error: refreshError } = await supabaseServer.from("tokens").insert({
+			user_id: userData[0].id,
+			token: await bcrypt.hash(refreshToken, 10),
+		});
 
 		if (refreshError) {
 			return nextResponse(refreshError, 400);
