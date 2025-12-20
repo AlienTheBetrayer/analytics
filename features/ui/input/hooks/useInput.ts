@@ -1,8 +1,6 @@
 import { useEffect, useRef } from "react";
 
 export const useInput = () => {
-	// states
-
 	// refs
 	const inputRef = useRef<HTMLInputElement | null>(null);
 

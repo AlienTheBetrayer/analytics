@@ -18,7 +18,6 @@ export type AuthStatus = {
 
 export const useAuth = () => {
 	// zustand
-	const isLoggedIn = useSessionStore((state) => state.isLoggedIn);
 	const setIsLoggedIn = useSessionStore((state) => state.setIsLoggedIn);
 
 	// states
@@ -82,6 +81,7 @@ export const useAuth = () => {
 						password: data.password,
 					});
 					setStatus({ message: "Authenticated", ok: true });
+					setIsLoggedIn(true);
 				})
 				.catch((e) => {
 					const data = axios.isAxiosError(e) && e.response?.data;
@@ -98,15 +98,16 @@ export const useAuth = () => {
 					}
 				});
 		}
-	}, [data, promiseStatus.wrap]);
+	}, [data, promiseStatus.wrap, setIsLoggedIn]);
 
 	const onLogout = useCallback(async () => {
 		try {
 			await axios.post("api/auth/logout");
+			setIsLoggedIn(true);
 		} catch {
 			setStatus(null);
 		}
-	}, []);
+	}, [setIsLoggedIn]);
 
 	const clearData = useCallback(() => {
 		setData({ username: null, password: null });
