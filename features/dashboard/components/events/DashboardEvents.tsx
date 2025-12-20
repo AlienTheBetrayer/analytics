@@ -16,7 +16,7 @@ type Props = {
 
 export const DashboardEvents = ({ controller }: Props) => {
 	// zustand
-	const isLoggedIn = true;//useSessionStore((state) => state.isLoggedIn);
+	const isLoggedIn = useSessionStore((state) => state.isLoggedIn);
 
 	// notifications api
 	const notifications = useNotificationContext();
@@ -57,7 +57,7 @@ export const DashboardEvents = ({ controller }: Props) => {
 							}),
 					);
 				}
-                deleteEventsMessageBox.hide();
+				deleteEventsMessageBox.hide();
 			}}
 		/>,
 	);
@@ -86,7 +86,7 @@ export const DashboardEvents = ({ controller }: Props) => {
 							}),
 					);
 				}
-                deleteProjectMessageBox.hide();
+				deleteProjectMessageBox.hide();
 			}}
 		/>,
 	);
