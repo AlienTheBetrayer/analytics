@@ -47,13 +47,13 @@ export const useData = (callbacks?: useDataCallbacks) => {
 		}
 
 		try {
-			const projectListRes = await axios.get("/api/analytics/projects");
+			const projectListRes = await axios.get("/api/analytics/user/projects");
 
 			const projectListData = projectListRes.data as ProjectType[];
 
 			const finalData = projectListData.map(async (project) => {
 				const specificRes = await axios.get(
-					`api/analytics/project/${project.id}`,
+					`api/analytics/user/project/${project.id}`,
 				);
 				const specificData = specificRes.data as ProjectDataType;
 

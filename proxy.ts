@@ -10,8 +10,34 @@ export const proxy = async (request: NextRequest) => {
 	}
 
 	try {
-		jwt.verify(token.value, process.env.ACCESS_SECRET as string);
-		return NextResponse.next();
+		const payload = jwt.verify(
+			token.value,
+			process.env.ACCESS_SECRET as string,
+		) as {
+			userId: string;
+			role: "user" | "admin";
+		};
+
+		if (payload.role === "admin") {
+			return NextResponse.next();
+		}
+
+		if (request.nextUrl.pathname.startsWith("/api/analytics/user")) {
+			if (payload.role === "user") {
+				return NextResponse.next();
+			}
+		}
+
+		if (request.nextUrl.pathname.startsWith("/api/analytics/admin")) {
+			if (payload.role !== "user") {
+				return NextResponse.next();
+			}
+		}
+
+		return NextResponse.json(
+			{ error: "Not enough permissions" },
+			{ status: 401 },
+		);
 	} catch (error) {
 		const message = error instanceof Error ? error.message : "jwt error";
 		return nextResponse({ error: message }, 401);
@@ -19,5 +45,5 @@ export const proxy = async (request: NextRequest) => {
 };
 
 export const config = {
-	matcher: ["/api/analytics/protected/:path*"],
+	matcher: ["/api/analytics/user/:path*", "/api/analytics/admin/:path*"],
 };

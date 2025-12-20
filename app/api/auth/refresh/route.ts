@@ -1,4 +1,4 @@
-import type { TokensType } from "@/app/types/database";
+import type { TokensType, UsersType } from "@/app/types/database";
 import { nextResponse } from "@/app/utils/response";
 import { supabaseServer } from "@/server/supabase";
 import type { PostgrestError } from "@supabase/supabase-js";
@@ -61,19 +61,37 @@ export const POST = async (request: NextRequest) => {
 			return response;
 		}
 
-		// if the token is matched in the database (as it should) - rotate everything and sign in
+		// align permissions
+		const { data: userData, error: userError } = (await supabaseServer
+			.from("users")
+			.select()
+			.eq("id", payload.id)) as {
+			data: UsersType[];
+			error: PostgrestError | null;
+		};
+
+        if(userError) {
+            return nextResponse(userError, 400);
+        }
+
+        if(userData.length === 0) {
+            return nextResponse({ error: 'The user does not exist.'}, 400);
+        }
+
+		// if everything went right we issue the tokens 
 		const accessToken = jwt.sign(
-			{ id: payload.id, role: payload.role },
+			{ id: payload.id, role: userData[0].role },
 			process.env.ACCESS_SECRET as string,
 			{ expiresIn: "15m" },
 		);
 
 		const newRefreshToken = jwt.sign(
-			{ id: payload.id, role: payload.role },
+			{ id: payload.id, role: userData[0].role },
 			process.env.REFRESH_SECRET as string,
 			{ expiresIn: "30d" },
 		);
 
+        // replace the token from the database
 		const { error: refreshDeleteError } = await supabaseServer
 			.from("tokens")
 			.delete()
@@ -85,7 +103,10 @@ export const POST = async (request: NextRequest) => {
 
 		const { error: refreshRotateError } = await supabaseServer
 			.from("tokens")
-			.insert({ user_id: payload.id, token: await bcrypt.hash(newRefreshToken, 10) });
+			.insert({
+				user_id: payload.id,
+				token: await bcrypt.hash(newRefreshToken, 10),
+			});
 
 		if (refreshRotateError) {
 			return nextResponse(refreshRotateError, 400);

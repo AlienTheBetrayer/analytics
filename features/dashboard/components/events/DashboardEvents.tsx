@@ -40,7 +40,7 @@ export const DashboardEvents = ({ controller }: Props) => {
 			onInteract={(res) => {
 				if (res === "yes" && projectData !== undefined) {
 					promises.wrap("events", () =>
-						protectedRequest("/api/analytics/protected/delete-events", {
+						protectedRequest("/api/analytics/admin/delete-events", {
 							project_id: projectData.project.id,
 						})
 							.then(() => {
@@ -69,7 +69,7 @@ export const DashboardEvents = ({ controller }: Props) => {
 			onInteract={(res) => {
 				if (res === "yes" && projectData !== undefined) {
 					promises.wrap("project", () =>
-						protectedRequest("/api/analytics/protected/delete-project", {
+						protectedRequest("/api/analytics/admin/delete-project", {
 							project_id: projectData.project.id,
 						})
 							.then(() => {
