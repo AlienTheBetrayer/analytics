@@ -79,7 +79,7 @@ export const useAuth = () => {
 	const onLogout = useCallback(async () => {
 		try {
 			await axios.post("api/auth/logout");
-			setIsLoggedIn(true);
+			setIsLoggedIn(false);
 		} catch {
 			setStatus(null);
 		}

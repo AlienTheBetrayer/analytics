@@ -15,7 +15,7 @@ export const RegisterForm = ({ auth }: Props) => {
 
 	const hasRegistered = auth.status?.message === "Registered";
 
-	return (
+    return (
 		<motion.div
 			initial={{ opacity: 0, y: 5 }}
 			animate={{ opacity: 1, y: 0 }}

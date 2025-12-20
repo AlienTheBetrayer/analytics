@@ -26,6 +26,19 @@ export const POST = async (request: NextRequest) => {
 
 		const hashedPassword = await bcrypt.hash(password, 10);
 
+		const { data: userData, error: userError0 } = await supabaseServer
+			.from("users")
+			.select()
+			.eq("username", username);
+
+		if (userError0) {
+			return nextResponse(userError0, 400);
+		}
+
+		if (userData.length > 0) {
+			return nextResponse({ error: "The user already exists." }, 400);
+		}
+
 		const { error: userError } = await supabaseServer
 			.from("users")
 			.insert({ username: username.trim(), password: hashedPassword });

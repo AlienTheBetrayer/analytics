@@ -10,7 +10,7 @@ export const useAuthForms = (auth: ReturnType<typeof useAuth>) => {
 	// state
 	const [dashboardState, dashboardDispatch] = useDashboardContext();
 
-	// forms
+    // forms
 	const registerForm = usePopup(<RegisterForm auth={auth} />, () => {
 		dashboardDispatch({ type: "AUTH_FORM_SET", flag: null });
 	});
