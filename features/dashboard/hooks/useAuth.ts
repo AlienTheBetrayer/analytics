@@ -1,14 +1,14 @@
+import { usePromiseStatus } from "@/hooks/usePromiseStatus";
 import { useSessionStore } from "@/zustand/sessionStore";
 import axios from "axios";
-import {
-	type FormEvent,
-	useCallback,
-	useEffect,
-	useRef,
-	useState,
-} from "react";
+import { useCallback, useRef, useState } from "react";
 
-export type AuthStatus = "success" | "failure" | null;
+export type AuthStatus =
+	| "registered"
+	| "authenticated"
+	| "incorrect credentials"
+	| "incorrect length"
+	| null;
 
 export const useAuth = () => {
 	// zustand
@@ -16,66 +16,88 @@ export const useAuth = () => {
 	const setIsLoggedIn = useSessionStore((state) => state.setIsLoggedIn);
 
 	// states
-	const [code, setCode] = useState<string | null>(null);
-	const [status, setStatus] = useState<AuthStatus>(
-		isLoggedIn === true ? "success" : null,
-	);
-	const [isLoading, setIsLoading] = useState<{
-		signIn?: boolean;
-		logOut?: boolean;
-	}>();
+	const [data, setData] = useState<{
+		username: string | null;
+		password: string | null;
+	}>({
+		username: null,
+		password: null,
+	});
 
-	useEffect(() => {
-		setIsLoggedIn(status === "success");
-	}, [status, setIsLoggedIn]);
+	// statuses
+	const [status, setStatus] = useState<AuthStatus>(null);
+	const promiseStatus = usePromiseStatus();
 
 	// refs
 	const formRef = useRef<HTMLFormElement | null>(null);
 
 	// user functions
-	const onCodeChange = useCallback((newCode: string) => {
-		setCode(newCode);
+	const onPasswordChange = useCallback((newPassword: string) => {
+		setData((prev) => ({ ...prev, password: newPassword }));
 	}, []);
 
-	const onFormSubmit = useCallback(
-		async (e: FormEvent<HTMLFormElement>) => {
-			e.preventDefault();
+	const onUsernameChange = useCallback((newUsername: string) => {
+		setData((prev) => ({ ...prev, username: newUsername }));
+	}, []);
 
-			if (formRef.current?.checkValidity()) {
-				try {
-					setIsLoading({ signIn: true });
-					await axios.post("api/auth/login", { code });
-					setStatus("success");
-				} catch {
-					setStatus("failure");
-				} finally {
-					setTimeout(() => setIsLoading({ signIn: false }), 300);
-				}
-			}
-		},
-		[code],
-	);
+	const onRegister = useCallback(async () => {
+		if (formRef.current?.checkValidity()) {
+			promiseStatus
+				.wrap("register", async () => {
+					await axios.post("api/auth/register", {
+						username: data.username,
+						password: data.password,
+					});
+					setStatus("registered");
+				})
+				.catch((e) => {
+					// check code
+					console.log(JSON.stringify(e));
+					setStatus("incorrect credentials");
+				});
+		}
+	}, [data, promiseStatus.wrap]);
+
+	const onLogin = useCallback(async () => {
+		if (formRef.current?.checkValidity()) {
+			promiseStatus
+				.wrap("login", async () => {
+					await axios.post("api/auth/login", {
+						username: data.username,
+						password: data.password,
+					});
+					setStatus("authenticated");
+				})
+				.catch(() => {
+					// check code
+					setStatus("incorrect credentials");
+				});
+		}
+	}, [data, promiseStatus.wrap]);
 
 	const onLogout = useCallback(async () => {
-		setStatus(null);
-		setCode(null);
 		try {
-			setIsLoading({ logOut: true });
 			await axios.post("api/auth/logout");
 		} catch {
-			setStatus("failure");
-		} finally {
-			setTimeout(() => setIsLoading({ logOut: false }), 300);
+			setStatus(null);
 		}
 	}, []);
 
+	const clearData = useCallback(() => {
+		setData({ username: null, password: null });
+		setStatus(null);
+	}, []);
+
 	return {
-		code,
-		isLoading,
+		data,
+		clearData,
 		formRef,
 		status,
-		onCodeChange,
-		onFormSubmit,
+		promiseStatus,
+		onPasswordChange,
+		onUsernameChange,
+		onLogin,
+		onRegister,
 		onLogout,
 	};
 };

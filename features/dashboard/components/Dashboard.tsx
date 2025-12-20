@@ -3,6 +3,8 @@ import { AnimatePresence, motion } from "motion/react";
 import type { ComponentPropsWithoutRef } from "react";
 import { useDashboardContext } from "../context/DashboardContext";
 import { useNotificationContext } from "../context/NotificationContext";
+import { useAuth } from "../hooks/useAuth";
+import { useAuthForms } from "../hooks/useAuthForms";
 import { useData } from "../hooks/useData";
 import { DashboardLoading } from "./additional/DashboardLoading";
 import { DashboardRecoverer } from "./additional/DashboardRecoverer";
@@ -14,6 +16,9 @@ import { DashboardTopline } from "./DashboardTopline";
 type Props = {} & ComponentPropsWithoutRef<"div">;
 
 export const Dashboard = ({ className }: Props) => {
+	// state
+	const [dashboardState] = useDashboardContext();
+
 	// misc (notifications)
 	const notifications = useNotificationContext();
 
@@ -30,20 +35,23 @@ export const Dashboard = ({ className }: Props) => {
 		},
 	});
 
-	// state
-	const [state] = useDashboardContext();
+	// auth controller + its forms
+	const auth = useAuth();
+	const authForms = useAuthForms(auth);
 
 	return (
 		<>
-			{notifications.render(state.isVisible)}
-            
+			{notifications.render(dashboardState.isVisible)}
+			{authForms.render()}
+
 			<DashboardRecoverer />
 			<DashboardAuth />
+
 			<DashboardLoading />
 			<DashboardAuthNotifier />
 
 			<AnimatePresence>
-				{state.isVisible && (
+				{dashboardState.isVisible && (
 					<motion.div
 						initial={{ opacity: 0, y: 10 }}
 						animate={{ opacity: 1, y: 0 }}

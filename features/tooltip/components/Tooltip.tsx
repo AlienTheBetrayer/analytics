@@ -4,7 +4,7 @@ import type { CSSProperties } from "react";
 import { createPortal } from "react-dom";
 import { useTooltip } from "../hooks/useTooltip";
 
-type TooltipDirection = "top" | "bottom" | "inside" | "left" | "right";
+export type TooltipDirection = "top" | "bottom" | "inside" | "left" | "right";
 
 type Props = {
 	className?: string;
@@ -63,7 +63,7 @@ export const Tooltip = ({
 						<div
 							style={directionStyle()}
 							ref={controller.containerRef}
-							className="flex absolute items-center py-1 gap-2 px-4 text-center z-10 left-1/2 pointer-events-none opacity-0!"
+							className="flex absolute items-center py-1 gap-2 px-4 text-center z-9999 left-1/2 pointer-events-none opacity-0!"
 						>
 							<div className="flex flex-col">
 								<span className="max-w-96 w-max break-keep">
@@ -83,7 +83,7 @@ export const Tooltip = ({
 								exit={{ opacity: 0 }}
 								style={{ display: "none" }}
 								ref={controller.tooltipRef}
-								className="flex items-center py-1 gap-2 px-4 rounded-3xl text-center outline-1 outline-background-5 bg-background-3 z-10 absolute left-0 top-0 hover:brightness-150 duration-300"
+								className="flex items-center py-1 gap-2 px-4 rounded-3xl text-center outline-1 outline-background-5 bg-background-3 z-9999 absolute left-0 top-0 hover:brightness-150 duration-300"
 							>
 								<div className="flex flex-col">
 									<span className="max-w-96 w-max break-keep">

@@ -3,8 +3,9 @@ import type { DashboardType } from "../context/DashboardContext";
 export type DashboardAction =
 	// ui states
 	| { type: "SET_IS_VISIBLE"; flag: boolean }
-	| { type: "SET_IS_SYNCING"; flag: boolean };
-    
+	| { type: "SET_IS_SYNCING"; flag: boolean }
+	| { type: "AUTH_FORM_SET"; flag: DashboardType["authForm"] };
+
 export const DashboardReducer = (
 	state: DashboardType,
 	action: DashboardAction,
@@ -14,5 +15,7 @@ export const DashboardReducer = (
 			return { ...state, isVisible: action.flag };
 		case "SET_IS_SYNCING":
 			return { ...state, isSyncing: action.flag };
+		case "AUTH_FORM_SET":
+			return { ...state, authForm: action.flag };
 	}
 };
