@@ -1,5 +1,6 @@
 import { protectedRequest } from "@/app/utils/protectedRequest";
-import { useMessageBox } from "@/features/messagebox/hooks/useMessageBox";
+import { MessageBox } from "@/features/messagebox/components/MessageBox";
+import { usePopup } from "@/features/popup/hooks/usePopup";
 import { Spinner } from "@/features/spinner/components/Spinner";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
@@ -15,7 +16,7 @@ type Props = {
 
 export const DashboardEvents = ({ controller }: Props) => {
 	// zustand
-	const isLoggedIn = useSessionStore((state) => state.isLoggedIn);
+	const isLoggedIn = true;//useSessionStore((state) => state.isLoggedIn);
 
 	// notifications api
 	const notifications = useNotificationContext();
@@ -32,56 +33,62 @@ export const DashboardEvents = ({ controller }: Props) => {
 	const promises = usePromiseStatus();
 
 	// message boxes
-	const deleteEventsMessageBox = useMessageBox(
-		"Are you sure?",
-		"You are about to delete all events!",
-		(res) => {
-			if (res === "yes" && projectData !== undefined) {
-				promises.wrap("events", () =>
-					protectedRequest("/api/analytics/delete-events", {
-						project_id: projectData.project.id,
-					})
-						.then(() => {
-							controller.dataDispatch({
-								type: "DELETE_EVENTS",
-								project_id: projectData.project.id,
-							});
+	const deleteEventsMessageBox = usePopup(
+		<MessageBox
+			title="Are you sure?"
+			description="You are about to delete all events!"
+			onInteract={(res) => {
+				if (res === "yes" && projectData !== undefined) {
+					promises.wrap("events", () =>
+						protectedRequest("/api/analytics/protected/delete-events", {
+							project_id: projectData.project.id,
 						})
-						.catch(() => {
-							notifications.show(
-								{ type: "error", content: "Not authenticated." },
-								false,
-							);
-						}),
-				);
-			}
-		},
+							.then(() => {
+								controller.dataDispatch({
+									type: "DELETE_EVENTS",
+									project_id: projectData.project.id,
+								});
+							})
+							.catch(() => {
+								notifications.show(
+									{ type: "error", content: "Not authenticated." },
+									false,
+								);
+							}),
+					);
+				}
+                deleteEventsMessageBox.hide();
+			}}
+		/>,
 	);
 
-	const deleteProjectMessageBox = useMessageBox(
-		"Are you sure?",
-		"You are about to delete all data about this project!",
-		(res) => {
-			if (res === "yes" && projectData !== undefined) {
-				promises.wrap("project", () =>
-					protectedRequest("/api/analytics/delete-project", {
-						project_id: projectData.project.id,
-					})
-						.then(() => {
-							controller.dataDispatch({
-								type: "DELETE_PROJECT",
-								project_id: projectData.project.id,
-							});
+	const deleteProjectMessageBox = usePopup(
+		<MessageBox
+			title="Are you sure?"
+			description="You are about to delete all data about this project!"
+			onInteract={(res) => {
+				if (res === "yes" && projectData !== undefined) {
+					promises.wrap("project", () =>
+						protectedRequest("/api/analytics/protected/delete-project", {
+							project_id: projectData.project.id,
 						})
-						.catch(() => {
-							notifications.show(
-								{ type: "error", content: "Not authenticated." },
-								false,
-							);
-						}),
-				);
-			}
-		},
+							.then(() => {
+								controller.dataDispatch({
+									type: "DELETE_PROJECT",
+									project_id: projectData.project.id,
+								});
+							})
+							.catch(() => {
+								notifications.show(
+									{ type: "error", content: "Not authenticated." },
+									false,
+								);
+							}),
+					);
+				}
+                deleteProjectMessageBox.hide();
+			}}
+		/>,
 	);
 
 	return controller.selectedProjectId !== null && projectData !== undefined ? (
@@ -108,7 +115,7 @@ export const DashboardEvents = ({ controller }: Props) => {
 										deleteProjectMessageBox.show();
 									}}
 								>
-                                    {promises.get('project') === 'pending' && <Spinner/>}
+									{promises.get("project") === "pending" && <Spinner />}
 									<small>Delete project</small>
 								</Button>
 							</Tooltip>

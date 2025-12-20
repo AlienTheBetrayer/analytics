@@ -1,5 +1,7 @@
 import { protectedRequest } from "@/app/utils/protectedRequest";
-import { useMessageBox } from "@/features/messagebox/hooks/useMessageBox";
+import { MessageBox } from "@/features/messagebox/components/MessageBox";
+import { usePopup } from "@/features/popup/hooks/usePopup";
+import { Spinner } from "@/features/spinner/components/Spinner";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { usePromiseStatus } from "@/hooks/usePromiseStatus";
@@ -9,7 +11,6 @@ import Image from "next/image";
 import linkImg from "../../../../public/link.svg";
 import { useNotificationContext } from "../../context/NotificationContext";
 import type { ProjectData, useData } from "../../hooks/useData";
-import { Spinner } from "@/features/spinner/components/Spinner";
 
 type Props = {
 	projectData: ProjectData;
@@ -27,30 +28,33 @@ export const DashboardProject = ({ projectData, controller }: Props) => {
 	const notifications = useNotificationContext();
 
 	// message box
-	const deleteProjectMessageBox = useMessageBox(
-		"Are you sure?",
-		"You are about to delete all data about this project!",
-		(res) => {
-			if (res === "yes" && projectData !== undefined) {
-				promises.wrap("project", () =>
-					protectedRequest("/api/analytics/delete-project", {
-						project_id: projectData.project.id,
-					})
-						.then(() => {
-							controller.dataDispatch({
-								type: "DELETE_PROJECT",
-								project_id: projectData.project.id,
-							});
+	const deleteProjectMessageBox = usePopup(
+		<MessageBox
+			title="Are you sure?"
+			description="You are about to delete all data about this project!"
+			onInteract={(res) => {
+				if (res === "yes" && projectData !== undefined) {
+					promises.wrap("project", () =>
+						protectedRequest("/api/analytics/protected/delete-project", {
+							project_id: projectData.project.id,
 						})
-						.catch(() => {
-							notifications.show(
-								{ type: "error", content: "Not authenticated." },
-								false,
-							);
-						}),
-				);
-			}
-		},
+							.then(() => {
+								controller.dataDispatch({
+									type: "DELETE_PROJECT",
+									project_id: projectData.project.id,
+								});
+							})
+							.catch(() => {
+								notifications.show(
+									{ type: "error", content: "Not authenticated." },
+									false,
+								);
+							}),
+					);
+				}
+				deleteProjectMessageBox.hide();
+			}}
+		/>,
 	);
 
 	return (
@@ -75,7 +79,7 @@ export const DashboardProject = ({ projectData, controller }: Props) => {
 			}
 			title={projectData.project.name}
 		>
-            {deleteProjectMessageBox.render()}
+			{deleteProjectMessageBox.render()}
 
 			<li className="w-full">
 				<Button
@@ -85,7 +89,7 @@ export const DashboardProject = ({ projectData, controller }: Props) => {
 					}
 				>
 					<div className="flex items-center gap-1.5">
-                        {promises.get('project') === 'pending' && <Spinner/>}
+						{promises.get("project") === "pending" && <Spinner />}
 						<Image
 							src={linkImg}
 							alt=""
