@@ -30,9 +30,9 @@ export const DashboardEvent = ({ event, onDelete, isLoading }: Props) => {
 				<Tooltip
 					description="Delete this event"
 					direction="top"
-					isEnabled={isLoggedIn}
+					isEnabled={isLoggedIn !== false && isLoggedIn.role === 'admin'}
 				>
-					<Button isEnabled={isLoggedIn} onClick={() => onDelete?.(event.id)}>
+					<Button isEnabled={isLoggedIn !== false && isLoggedIn.role === 'admin'} onClick={() => onDelete?.(event.id)}>
 						{isLoading && <Spinner />}
 						Delete
 					</Button>
@@ -58,7 +58,7 @@ export const DashboardEvent = ({ event, onDelete, isLoading }: Props) => {
 				<Button
 					className="delete-event-button"
 					onClick={() => onDelete?.(event.id)}
-					isEnabled={isLoggedIn}
+					isEnabled={isLoggedIn !== false && isLoggedIn.role === 'admin'}
 				>
 					{isLoading && <Spinner />}
 					Delete

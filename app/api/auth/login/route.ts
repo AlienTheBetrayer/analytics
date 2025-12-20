@@ -58,7 +58,7 @@ export const POST = async (request: NextRequest) => {
 
 		// http-only cookies
 		const res = NextResponse.json(
-			{ message: "Authenticated!" },
+			{ message: "Authenticated!", role: userData[0].role },
 			{ status: 200 },
 		);
 

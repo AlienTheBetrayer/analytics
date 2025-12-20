@@ -65,10 +65,10 @@ export const DashboardProject = ({ projectData, controller }: Props) => {
 				<Tooltip
 					description="Delete this project"
 					direction="top"
-					isEnabled={isLoggedIn}
+					isEnabled={isLoggedIn !== false && isLoggedIn.role === "admin"}
 				>
 					<Button
-						isEnabled={isLoggedIn}
+						isEnabled={isLoggedIn !== false && isLoggedIn.role === "admin"}
 						onClick={() => {
 							deleteProjectMessageBox.show();
 						}}

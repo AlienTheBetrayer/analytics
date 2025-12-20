@@ -60,12 +60,12 @@ export const useAuth = () => {
 		if (formRef.current?.checkValidity()) {
 			promiseStatus
 				.wrap("login", async () => {
-					await axios.post("api/auth/login", {
+					const res = await axios.post("api/auth/login", {
 						username: data.username,
 						password: data.password,
 					});
 					setStatus({ message: "Authenticated!", ok: true });
-					setIsLoggedIn(true);
+					setIsLoggedIn({ role: res.data.role });
 				})
 				.catch((e) => {
 					const message = axios.isAxiosError(e)

@@ -107,10 +107,10 @@ export const DashboardEvents = ({ controller }: Props) => {
 							<Tooltip
 								description="Wipe"
 								direction="top"
-								isEnabled={isLoggedIn}
+								isEnabled={isLoggedIn !== false && isLoggedIn.role === 'admin'}
 							>
 								<Button
-									isEnabled={isLoggedIn}
+									isEnabled={isLoggedIn !== false && isLoggedIn.role === 'admin'}
 									onClick={() => {
 										deleteProjectMessageBox.show();
 									}}
@@ -125,10 +125,10 @@ export const DashboardEvents = ({ controller }: Props) => {
 							<Tooltip
 								description="Wipe all events"
 								direction="top"
-								isEnabled={isLoggedIn}
+								isEnabled={isLoggedIn !== false && isLoggedIn.role === 'admin'}
 							>
 								<Button
-									isEnabled={isLoggedIn}
+									isEnabled={isLoggedIn !== false && isLoggedIn.role === 'admin'}
 									onClick={() => {
 										deleteEventsMessageBox.show();
 									}}

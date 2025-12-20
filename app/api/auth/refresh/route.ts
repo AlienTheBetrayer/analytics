@@ -70,15 +70,15 @@ export const POST = async (request: NextRequest) => {
 			error: PostgrestError | null;
 		};
 
-        if(userError) {
-            return nextResponse(userError, 400);
-        }
+		if (userError) {
+			return nextResponse(userError, 400);
+		}
 
-        if(userData.length === 0) {
-            return nextResponse({ error: 'The user does not exist.'}, 400);
-        }
+		if (userData.length === 0) {
+			return nextResponse({ error: "The user does not exist." }, 400);
+		}
 
-		// if everything went right we issue the tokens 
+		// if everything went right we issue the tokens
 		const accessToken = jwt.sign(
 			{ id: payload.id, role: userData[0].role },
 			process.env.ACCESS_SECRET as string,
@@ -91,7 +91,7 @@ export const POST = async (request: NextRequest) => {
 			{ expiresIn: "30d" },
 		);
 
-        // replace the token from the database
+		// replace the token from the database
 		const { error: refreshDeleteError } = await supabaseServer
 			.from("tokens")
 			.delete()
@@ -113,7 +113,7 @@ export const POST = async (request: NextRequest) => {
 		}
 
 		const response = NextResponse.json(
-			{ message: "Re-Authenticated" },
+			{ message: "Authenticated!", role: userData[0].role },
 			{ status: 200 },
 		);
 

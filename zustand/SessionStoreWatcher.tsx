@@ -10,8 +10,9 @@ export const SessionStoreWatcher = () => {
 		const check = async () => {
 			// returns 200 if logged in, otherwise goes to the catch block
 			try {
-				await axios.post("/api/auth/refresh");
-				setIsLoggedIn(true);
+				const res = await axios.post("/api/auth/refresh");
+
+				setIsLoggedIn({ role: res.data.role });
 			} catch {
 				setIsLoggedIn(false);
 			}
