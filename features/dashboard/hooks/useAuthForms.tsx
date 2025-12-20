@@ -1,5 +1,4 @@
 import { usePopup } from "@/features/popup/hooks/usePopup";
-import type { HTMLMotionProps } from "motion/react";
 import { useCallback, useEffect } from "react";
 import { LoginForm } from "../components/auth/forms/LoginForm";
 import { LogoutMessageBox } from "../components/auth/forms/LogoutMessageBox";

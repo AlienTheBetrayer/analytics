@@ -3,12 +3,18 @@ import { useSessionStore } from "@/zustand/sessionStore";
 import axios from "axios";
 import { useCallback, useRef, useState } from "react";
 
-export type AuthStatus =
-	| "registered"
-	| "authenticated"
-	| "incorrect credentials"
-	| "incorrect length"
-	| null;
+export type AuthStatusMessage =
+	| "Registered"
+	| "Authenticated"
+	| "Incorrect credentials"
+	| "Incorrect length"
+	| "Already exists"
+	| "Unknown";
+
+export type AuthStatus = {
+	message: AuthStatusMessage;
+	ok: boolean;
+} | null;
 
 export const useAuth = () => {
 	// zustand
@@ -48,12 +54,21 @@ export const useAuth = () => {
 						username: data.username,
 						password: data.password,
 					});
-					setStatus("registered");
+					setStatus({ message: "Registered", ok: true });
 				})
 				.catch((e) => {
-					// check code
-					console.log(JSON.stringify(e));
-					setStatus("incorrect credentials");
+					const data = axios.isAxiosError(e) && e.response?.data;
+
+					if (!data || !data.code) {
+						setStatus({ message: "Unknown", ok: false });
+						return;
+					}
+
+					switch (data.code) {
+						case "23505":
+							setStatus({ message: "Already exists", ok: false });
+							break;
+					}
 				});
 		}
 	}, [data, promiseStatus.wrap]);
@@ -66,11 +81,21 @@ export const useAuth = () => {
 						username: data.username,
 						password: data.password,
 					});
-					setStatus("authenticated");
+					setStatus({ message: "Authenticated", ok: true });
 				})
-				.catch(() => {
-					// check code
-					setStatus("incorrect credentials");
+				.catch((e) => {
+					const data = axios.isAxiosError(e) && e.response?.data;
+
+					if (!data || !data.code) {
+						setStatus({ message: "Unknown", ok: false });
+						return;
+					}
+
+					switch (data.code) {
+						case "23505":
+							setStatus({ message: "Already exists", ok: false });
+							break;
+					}
 				});
 		}
 	}, [data, promiseStatus.wrap]);

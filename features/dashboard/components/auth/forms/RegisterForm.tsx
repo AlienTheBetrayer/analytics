@@ -38,8 +38,8 @@ export const RegisterForm = ({ auth }: Props) => {
 			onSubmit={() => {
 				auth.onRegister();
 			}}
-            promises={auth.promiseStatus}
-            status={auth.status}
+			promises={auth.promiseStatus}
+			status={auth.status}
 			ref={auth.formRef}
 		/>
 	);
