@@ -47,7 +47,7 @@ export const usePopup = (
 					<AnimatePresence>
 						{isShown && (
 							<motion.div
-								className={`fixed inset-0 z-32 ${blurConfig?.className ?? "backdrop-blur-xs"}`}
+								className={`fixed inset-0 z-32 ${blurConfig?.className ?? "backdrop-blur-xs bg-[#00000030]"}`}
 								initial={{ opacity: 0 }}
 								animate={{ opacity: 1 }}
 								exit={{ opacity: 0 }}
