@@ -121,7 +121,7 @@ export const DashboardProject = ({ projectData, controller }: Props) => {
 						className={`transition-all duration-300 text-left`}
 					>
 						<small className="text-3xl!">
-							{projectData.aggregates.visits ?? 0}
+							{projectData?.aggregates.visits ?? 0}
 						</small>
 						<small> visits</small>
 					</span>

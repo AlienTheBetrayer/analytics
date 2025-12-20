@@ -44,7 +44,19 @@ export const POST = async (request: NextRequest) => {
 			return nextResponse({ analyticsMetaError }, 400);
 		}
 
-		// 3. inserting / updating a project aggregate
+		// 3. creating the analytics row
+		const { error: analyticsError } = await supabaseServer
+			.from("analytics")
+			.upsert({
+				project_id: projectData[0].id,
+				analytics_meta_id: analyticsMetaData[0].id,
+			});
+
+		if (analyticsError) {
+			return nextResponse({ analyticsError }, 400);
+		}
+
+		// 4. inserting / updating a project aggregate
 		const { data: projectAggregatesData, error: projectAggregatesError1 } =
 			(await supabaseServer
 				.from("project_aggregates")
@@ -73,18 +85,6 @@ export const POST = async (request: NextRequest) => {
 
 		if (projectAggregatesError) {
 			return nextResponse({ projectAggregatesError }, 400);
-		}
-
-		// 4. finalizing and creating the last analytics row
-		const { error: analyticsError } = await supabaseServer
-			.from("analytics")
-			.upsert({
-				project_id: projectData[0].id,
-				analytics_meta_id: analyticsMetaData[0].id,
-			});
-
-		if (analyticsError) {
-			return nextResponse({ analyticsError }, 400);
 		}
 
 		return nextResponse({ message: "Successfully created an event!" }, 200);
