@@ -25,7 +25,7 @@ export const DashboardRecoverer = () => {
 							Dashboard is <u>hidden</u>
 						</span>
 					</span>
-					<Tooltip description="Bring the dashboard back" direction="right">
+					<Tooltip description="Bring the dashboard back" direction="bottom-right">
 						<Button
 							onClick={() => dispatch({ type: "SET_IS_VISIBLE", flag: true })}
 						>

@@ -40,7 +40,7 @@ export const DashboardAuth = () => {
 				<>
 					<Tooltip
 						description="Create a new account"
-						direction="left"
+						direction="bottom-left"
 						className="ml-4"
 					>
 						<Button
@@ -52,7 +52,10 @@ export const DashboardAuth = () => {
 						</Button>
 					</Tooltip>
 
-					<Tooltip description="Login in the existing account" direction="left">
+					<Tooltip
+						description="Login in the existing account"
+						direction="bottom-left"
+					>
 						<Button
 							onClick={() => {
 								dashboardDispatch({ type: "AUTH_FORM_SET", flag: "login" });

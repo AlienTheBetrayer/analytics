@@ -4,7 +4,14 @@ import type { CSSProperties } from "react";
 import { createPortal } from "react-dom";
 import { useTooltip } from "../hooks/useTooltip";
 
-export type TooltipDirection = "top" | "bottom" | "inside" | "left" | "right";
+export type TooltipDirection =
+	| "top"
+	| "bottom"
+	| "bottom-right"
+	| "bottom-left"
+	| "inside"
+	| "left"
+	| "right";
 
 type Props = {
 	className?: string;
@@ -28,9 +35,13 @@ export const Tooltip = ({
 	const directionStyle = (): CSSProperties => {
 		switch (direction) {
 			case "bottom":
-				return { top: "115%", transform: "translate(-50%, 0)" };
+				return { left: '50%', top: "115%", transform: "translate(-50%, 0)" };
+			case "bottom-right":
+                return { left: "0", top: "115%", transform: "translate(0, 0)" };
+			case "bottom-left":
+				return { right: "0", top: "115%", transform: "translate(0, 0)" };
 			case "top":
-				return { bottom: "115%", transform: "translate(-50%, 0)" };
+				return { left:'50%', bottom: "115%", transform: "translate(-50%, 0)" };
 			case "inside":
 				return { top: "50%", transform: "translate(-50%, -50%)" };
 			case "left":
@@ -63,7 +74,7 @@ export const Tooltip = ({
 						<div
 							style={directionStyle()}
 							ref={controller.containerRef}
-							className="flex absolute items-center py-1 gap-2 px-4 text-center z-9999 left-1/2 pointer-events-none opacity-0!"
+							className="flex absolute items-center py-1 gap-2 px-4 text-center z-9999 pointer-events-none opacity-0!"
 						>
 							<div className="flex flex-col">
 								<span className="max-w-96 w-max break-keep">

@@ -52,7 +52,7 @@ export const DashboardAuthForm = forwardRef<HTMLFormElement, Props>(
 			>
 				{/* topline */}
 				<div className="relative gap-2 flex items-center justify-between w-full border-b border-b-background-5 p-2">
-					<Tooltip description="Easter egg 🌀" direction="left">
+					<Tooltip description="Easter egg 🌀" direction="top">
 						<div className="rounded-full bg-blue-1 w-1.5 h-1.5" />
 					</Tooltip>
 					<h4>
@@ -61,7 +61,7 @@ export const DashboardAuthForm = forwardRef<HTMLFormElement, Props>(
 					<Tooltip
 						description="Hide this window"
 						className="ml-auto"
-						direction="left"
+						direction="top"
 					>
 						<Button className="ml-auto" onClick={onHide}>
 							<small>✕ Hide</small>
@@ -97,7 +97,7 @@ export const DashboardAuthForm = forwardRef<HTMLFormElement, Props>(
 						<Tooltip
 							key={button.text}
 							description={button.tooltip ?? button.text}
-							direction={button.direction ?? "top"}
+							direction={button.direction ?? "bottom"}
 							isEnabled={button.isEnabled ?? true}
 						>
 							<Button
