@@ -6,7 +6,6 @@ import {
 
 export type DashboardType = {
 	isVisible: boolean;
-	isSyncing: boolean;
     authForm: 'register' | 'login' | 'logout' | null;
 };
 
@@ -26,7 +25,6 @@ type Props = {
 export const DashboardProvider = ({ children }: Props) => {
 	const [state, dispatch] = useReducer(DashboardReducer, {
 		isVisible: true,
-		isSyncing: false,
         authForm: null,
 	});
 

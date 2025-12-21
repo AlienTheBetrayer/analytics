@@ -24,6 +24,7 @@ export const proxy = async (request: NextRequest) => {
 
 		if (request.nextUrl.pathname.startsWith("/api/analytics/user")) {
 			if (payload.role === "user") {
+                console.log('allowed');
 				return NextResponse.next();
 			}
 		}

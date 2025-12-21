@@ -47,11 +47,12 @@ export const LoginForm = ({ auth }: Props) => {
 
 			{/* main form */}
 			<form
-				ref={auth.formRef}
 				className="flex flex-col gap-3 p-2"
 				onSubmit={(e) => {
 					e.preventDefault();
-					auth.onLogin();
+					if (e.currentTarget.checkValidity()) {
+						auth.onLogin();
+					}
 				}}
 			>
 				<Input

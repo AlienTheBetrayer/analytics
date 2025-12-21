@@ -47,7 +47,7 @@ export const Dashboard = ({ className }: Props) => {
 			<DashboardRecoverer />
 			<DashboardAuth />
 
-			<DashboardLoading />
+			<DashboardLoading controller={controller}/>
 			<DashboardAuthNotifier />
 
 			<AnimatePresence>

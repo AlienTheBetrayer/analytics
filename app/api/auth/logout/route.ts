@@ -4,13 +4,13 @@ import jwt from "jsonwebtoken";
 import { type NextRequest, NextResponse } from "next/server";
 
 export const POST = async (request: NextRequest) => {
-	const refreshToken = request.cookies.get("refreshToken")?.value;
-
-	if (refreshToken === undefined) {
-		return nextResponse({ error: "Not logged in." }, 400);
-	}
-
 	try {
+		const refreshToken = request.cookies.get("refreshToken")?.value;
+
+		if (refreshToken === undefined) {
+			return nextResponse({ error: "Not logged in." }, 400);
+		}
+
 		const payload = jwt.verify(
 			refreshToken,
 			process.env.REFRESH_SECRET as string,
@@ -35,6 +35,15 @@ export const POST = async (request: NextRequest) => {
 
 		return response;
 	} catch {
-		return nextResponse({ error: "Not authenticated" }, 401);
+		const response = NextResponse.json(
+			{ message: "Not authenticated." },
+			{ status: 400 },
+		);
+
+		// ensuring empty cookies
+		response.cookies.delete("accessToken");
+		response.cookies.delete("refreshToken");
+
+		return response;
 	}
 };

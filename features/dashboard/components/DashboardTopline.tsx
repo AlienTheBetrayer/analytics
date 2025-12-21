@@ -2,6 +2,7 @@ import { Spinner } from "@/features/spinner/components/Spinner";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { usePromiseStatus } from "@/hooks/usePromiseStatus";
+import { useSessionStore } from "@/zustand/sessionStore";
 import Image from "next/image";
 import downloadImg from "../../../public/download.svg";
 import serverImg from "../../../public/server.svg";
@@ -13,23 +14,10 @@ type Props = {
 };
 
 export const DashboardTopline = ({ controller }: Props) => {
-	const [, dispatch] = useDashboardContext();
+	// zustand's global state
+	const isLoggedIn = useSessionStore((state) => state.isLoggedIn);
 
-	const statusText = () => {
-		if (controller.data !== null) {
-			if (controller.hasErrored === true) {
-				return "Failed";
-			} else {
-				return "Synced";
-			}
-		} else {
-			if (controller.hasErrored === true) {
-				return "Fixing...";
-			} else {
-				return "Fetching...";
-			}
-		}
-	};
+	const [, dispatch] = useDashboardContext();
 
 	// spinners
 	const promises = usePromiseStatus();
@@ -56,21 +44,25 @@ export const DashboardTopline = ({ controller }: Props) => {
 					<div
 						className={`rounded-full w-1.5 h-1.5 ${controller.data !== null ? "bg-[rgb(56,66,255)]" : "bg-red-500"} duration-1000`}
 					/>
-					{statusText()}
+					{controller.data === null ? "Syncing..." : "Synced"}
 				</span>
 
 				<div className="flex gap-1 ml-auto flex-wrap justify-center">
-					<Tooltip description="Re-download database data">
+					<Tooltip
+						description="Re-download database data"
+						isEnabled={isLoggedIn !== false}
+					>
 						<Button
 							onClick={() => {
-								promises.wrap("sync", controller.resync);
+								promises.wrap("sync", controller.sync);
 							}}
+							isEnabled={isLoggedIn !== false}
 						>
 							{promises.get("sync") === "pending" && (
 								<Spinner className="w-3! h-3!" />
 							)}
 							<Image className="image invert-70!" alt="" src={downloadImg} />
-							<mark>{controller.hasErrored ? "Fix" : "Sync"}</mark> data
+							<mark>Sync</mark> data
 						</Button>
 					</Tooltip>
 				</div>

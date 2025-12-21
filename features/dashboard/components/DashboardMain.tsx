@@ -1,4 +1,5 @@
 import { Spinner } from "@/features/spinner/components/Spinner";
+import { useSessionStore } from "@/zustand/sessionStore";
 import { motion } from "motion/react";
 import type { useData } from "../hooks/useData";
 import { DashboardEvents } from "./events/DashboardEvents";
@@ -9,6 +10,8 @@ type Props = {
 };
 
 export const DashboardMain = ({ controller }: Props) => {
+	const isLoggedIn = useSessionStore((state) => state.isLoggedIn);
+
 	return (
 		<div className="w-full flex flex-col grow p-3">
 			{controller.data !== null ? (
@@ -26,7 +29,12 @@ export const DashboardMain = ({ controller }: Props) => {
 					<span className="m-auto">No projects connected.</span>
 				)
 			) : (
-				<Spinner className="m-auto h-20! w-20!" />
+				<>
+					<Spinner className="m-auto h-20! w-20!" />
+					{isLoggedIn === false && (
+						<span className="m-auto">Create an account to see the data.</span>
+					)}
+				</>
 			)}
 		</div>
 	);

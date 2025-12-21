@@ -13,9 +13,9 @@ type Props = {
 export const RegisterForm = ({ auth }: Props) => {
 	const [, dashboardDispatch] = useDashboardContext();
 
-	const hasRegistered = auth.status?.message === "Registered";
+	const hasRegistered = auth.status?.registerRedirect ?? false;
 
-    return (
+	return (
 		<motion.div
 			initial={{ opacity: 0, y: 5 }}
 			animate={{ opacity: 1, y: 0 }}
@@ -49,11 +49,12 @@ export const RegisterForm = ({ auth }: Props) => {
 
 			{/* main form */}
 			<form
-				ref={auth.formRef}
 				className="flex flex-col gap-3 p-2"
 				onSubmit={(e) => {
 					e.preventDefault();
-					auth.onRegister();
+					if (e.currentTarget.checkValidity()) {
+						auth.onRegister();
+					}
 				}}
 			>
 				<Input

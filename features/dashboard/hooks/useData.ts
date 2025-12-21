@@ -4,9 +4,9 @@ import type {
 	ProjectDataType,
 	ProjectType,
 } from "@/app/types/database";
+import { useSessionStore } from "@/zustand/sessionStore";
 import axios from "axios";
-import { useCallback, useEffect, useReducer, useRef, useState } from "react";
-import { useDashboardContext } from "../context/DashboardContext";
+import { useCallback, useEffect, useReducer, useState } from "react";
 import { DataReducer } from "../reducers/DataReducer";
 
 export type ProjectData = {
@@ -15,102 +15,69 @@ export type ProjectData = {
 	metaData: AnalyticsMetaType[];
 };
 
-type SyncResponse = {
-	status: "ok" | "error";
-	data?: ProjectData[];
-	message?: string;
-};
-
 type useDataCallbacks = {
 	onSync?: () => void;
 	onError?: (message: string) => void;
 };
 
 export const useData = (callbacks?: useDataCallbacks) => {
-	// context
-	const [state, dispatch] = useDashboardContext();
+	// zustand's global context
+	const isLoggedIn = useSessionStore((state) => state.isLoggedIn);
 
-	// states
-	const [data, dataDispatch] = useReducer(DataReducer, null);
+	// internal states
+	const [data, dispatch] = useReducer(DataReducer, null);
 	const [selectedProjectId, setSelectedProjectId] = useState<string | null>(
 		null,
 	);
-	const [hasErrored, setHasErrored] = useState<boolean>(false);
-
-	// refs
-	const hasInitiallySynced = useRef<boolean>(false);
-
-	// api function
-	const sync = useCallback(async (): Promise<SyncResponse> => {
-		if (state.isVisible === false) {
-			return { status: "error" };
-		}
-
-		try {
-			const projectListRes = await axios.get("/api/analytics/user/projects");
-
-			const projectListData = projectListRes.data as ProjectType[];
-
-			const finalData = projectListData.map(async (project) => {
-				const specificRes = await axios.get(
-					`api/analytics/user/project/${project.id}`,
-				);
-				const specificData = specificRes.data as ProjectDataType;
-
-				return {
-					project,
-					aggregates: specificData.aggregates,
-					metaData: specificData.metaData,
-				};
-			});
-
-			const returnData = await Promise.all(finalData);
-			return { status: "ok", data: returnData };
-		} catch (e) {
-			const error = e instanceof Error ? e.message : "unknown error";
-			return { status: "error", message: error };
-		}
-	}, [state]);
 
 	// user functions
-	const resync = useCallback(async () => {
-		dataDispatch({ type: "SET_DATA", data: null });
-		dispatch({ type: "SET_IS_SYNCING", flag: true });
+	const sync = useCallback(async () => {
+		try {
+			const projectListData = (await axios.get("/api/analytics/user/projects"))
+				.data as ProjectType[];
 
-		const res = await sync();
+			const finalData = await Promise.all(
+				projectListData.map(async (project) => {
+					const projectData = (
+						await axios.get(`api/analytics/user/project/${project.id}`)
+					).data as ProjectDataType;
 
-		switch (res.status) {
-			case "ok":
-				dataDispatch({ type: "SET_DATA", data: res.data ?? null });
-				dispatch({ type: "SET_IS_SYNCING", flag: false });
-				callbacks?.onSync?.();
-				setHasErrored(false);
+					return {
+						project,
+						aggregates: projectData.aggregates,
+						metaData: projectData.metaData,
+					};
+				}),
+			);
 
-				break;
-			case "error":
-				callbacks?.onError?.(res.message ?? "unknown error");
-				setHasErrored(true);
-				break;
+			dispatch({ type: "SET_DATA", data: finalData });
+            console.log(finalData);
+			callbacks?.onSync?.();
+			return finalData;
+		} catch (e) {
+			const error = e instanceof Error ? e.message : "unknown error";
+			callbacks?.onError?.(error);
+			return error;
 		}
+	}, [callbacks]);
 
-        return res;
-	}, [sync, dispatch, callbacks]);
-
-	// initial sync + auto-sync
+	// re-sync on log in
 	useEffect(() => {
-		if (hasInitiallySynced.current === false) {
-			resync();
-			hasInitiallySynced.current = true;
+		if (isLoggedIn === false && data !== null) {
+			dispatch({ type: "SET_DATA", data: null });
+			return;
 		}
-	}, [resync]);
+
+		if (isLoggedIn !== false && data === null) {
+			sync();
+		}
+	}, [isLoggedIn, sync, data]);
 
 	return {
 		data,
-		dataDispatch,
+		dispatch,
 		sync,
-		resync,
 		selectedProjectId,
 		setSelectedProjectId,
-		hasErrored,
 	};
 };

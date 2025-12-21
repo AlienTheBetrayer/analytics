@@ -39,7 +39,7 @@ export const DashboardProject = ({ projectData, controller }: Props) => {
 							project_id: projectData.project.id,
 						})
 							.then(() => {
-								controller.dataDispatch({
+								controller.dispatch({
 									type: "DELETE_PROJECT",
 									project_id: projectData.project.id,
 								});

@@ -29,7 +29,7 @@ export const POST = async (request: NextRequest) => {
 		}
 
 		if (userData.length === 0) {
-			return nextResponse({ error: "the user has not been created yet." }, 400);
+			return nextResponse({ error: "The user has not been created yet." }, 400);
 		}
 
 		// password comparing

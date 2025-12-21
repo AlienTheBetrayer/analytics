@@ -47,7 +47,7 @@ export const DashboardEventList = ({
 						promises.wrap(metaDataEntry.id, () =>
 							protectedRequest("/api/analytics/admin/delete-event", { id })
 								.then(() => {
-									controller.dataDispatch({ type: "DELETE_EVENT", id });
+									controller.dispatch({ type: "DELETE_EVENT", id });
 								})
 								.catch(() => {
 									notifications.show(

@@ -44,7 +44,7 @@ export const DashboardEvents = ({ controller }: Props) => {
 							project_id: projectData.project.id,
 						})
 							.then(() => {
-								controller.dataDispatch({
+								controller.dispatch({
 									type: "DELETE_EVENTS",
 									project_id: projectData.project.id,
 								});
@@ -73,7 +73,7 @@ export const DashboardEvents = ({ controller }: Props) => {
 							project_id: projectData.project.id,
 						})
 							.then(() => {
-								controller.dataDispatch({
+								controller.dispatch({
 									type: "DELETE_PROJECT",
 									project_id: projectData.project.id,
 								});

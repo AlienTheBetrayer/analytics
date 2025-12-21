@@ -1,11 +1,12 @@
 import { usePromiseStatus } from "@/hooks/usePromiseStatus";
 import { useSessionStore } from "@/zustand/sessionStore";
 import axios from "axios";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 
 export type AuthStatus = {
 	message: string;
 	ok: boolean;
+	registerRedirect?: boolean;
 } | null;
 
 export const useAuth = () => {
@@ -25,9 +26,6 @@ export const useAuth = () => {
 	const [status, setStatus] = useState<AuthStatus>(null);
 	const promiseStatus = usePromiseStatus();
 
-	// refs
-	const formRef = useRef<HTMLFormElement | null>(null);
-
 	// user functions
 	const onPasswordChange = useCallback((newPassword: string) => {
 		setData((prev) => ({ ...prev, password: newPassword }));
@@ -38,42 +36,38 @@ export const useAuth = () => {
 	}, []);
 
 	const onRegister = useCallback(async () => {
-		if (formRef.current?.checkValidity()) {
-			promiseStatus
-				.wrap("register", async () => {
-					await axios.post("api/auth/register", {
-						username: data.username,
-						password: data.password,
-					});
-					setStatus({ message: "Registered!", ok: true });
-				})
-				.catch((e) => {
-					const message = axios.isAxiosError(e)
-						? (e.response?.data.error ?? "Unknown")
-						: "Unknown";
-					setStatus({ message, ok: false });
+		promiseStatus
+			.wrap("register", async () => {
+				await axios.post("api/auth/register", {
+					username: data.username,
+					password: data.password,
 				});
-		}
+				setStatus({ message: "Registered!", ok: true, registerRedirect: true });
+			})
+			.catch((e) => {
+				const message = axios.isAxiosError(e)
+					? (e.response?.data.error ?? "Unknown")
+					: "Unknown";
+				setStatus({ message, ok: false });
+			});
 	}, [data, promiseStatus.wrap]);
 
 	const onLogin = useCallback(async () => {
-		if (formRef.current?.checkValidity()) {
-			promiseStatus
-				.wrap("login", async () => {
-					const res = await axios.post("api/auth/login", {
-						username: data.username,
-						password: data.password,
-					});
-					setStatus({ message: "Authenticated!", ok: true });
-					setIsLoggedIn({ role: res.data.role });
-				})
-				.catch((e) => {
-					const message = axios.isAxiosError(e)
-						? (e.response?.data.error ?? "Unknown")
-						: "Unknown";
-					setStatus({ message, ok: false });
+		promiseStatus
+			.wrap("login", async () => {
+				const res = await axios.post("api/auth/login", {
+					username: data.username,
+					password: data.password,
 				});
-		}
+				setStatus({ message: "Authenticated!", ok: true });
+				setIsLoggedIn({ role: res.data.role });
+			})
+			.catch((e) => {
+				const message = axios.isAxiosError(e)
+					? (e.response?.data.error ?? "Unknown")
+					: "Unknown";
+				setStatus({ message, ok: false });
+			});
 	}, [data, promiseStatus.wrap, setIsLoggedIn]);
 
 	const onLogout = useCallback(async () => {
@@ -93,7 +87,6 @@ export const useAuth = () => {
 	return {
 		data,
 		clearData,
-		formRef,
 		status,
 		promiseStatus,
 		onPasswordChange,
