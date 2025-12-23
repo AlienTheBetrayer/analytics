@@ -1,0 +1,143 @@
+import { motion } from "motion/react";
+import { useState } from "react";
+import { Spinner } from "../../spinner/components/Spinner";
+import { Tooltip } from "../../tooltip/components/Tooltip";
+import { Button } from "../../ui/button/components/Button";
+import { Input } from "../../ui/input/components/Input";
+import { LinkButton } from "../../ui/linkbutton/components/LinkButton";
+import { usePromiseStatus } from "@/src/hooks/usePromiseStatus";
+import {
+	type RetrievedResponse,
+	retrieveResponse,
+} from "../utils/retrieveResponse";
+import type { ResponseAxios } from "@/src/types/zustand/utils/axios";
+
+type Props = {
+	title: string;
+	button: {
+		text: string;
+		tooltip: string;
+	};
+	onSubmit: (username: string, password: string) => Promise<ResponseAxios>;
+	className?: string;
+};
+
+export const AuthenticationForm = ({
+	title,
+	button,
+	onSubmit,
+	className,
+}: Props) => {
+	// input states
+	const [username, setUsername] = useState<string>("");
+	const [password, setPassword] = useState<string>("");
+
+	// authentication internal states
+	const [response, setResponse] = useState<RetrievedResponse | null>(null);
+
+	// spinners
+	const promises = usePromiseStatus();
+
+	return (
+		<motion.div
+			initial={{ opacity: 0, y: 5 }}
+			animate={{ opacity: 1, y: 0 }}
+			exit={{ opacity: 0, y: 5 }}
+			className={`flex flex-col gap-2 bg-background-a-5 backdrop-blur-xs rounded-xl p-2 max-w-96 w-full z-2
+                sm:hover:scale-105 duration-300
+                 ${className ?? ""}`}
+		>
+			{/* topline */}
+			<div className="relative gap-2 flex flex-wrap items-center w-full border-b border-b-background-5 p-2">
+				<Tooltip description="Easter egg 🌀" direction="top">
+					<div className="rounded-full bg-blue-1 w-1.5 h-1.5" />
+				</Tooltip>
+				<span>{title}</span>
+				<Tooltip
+					description="Come back home"
+					className="ml-auto"
+					direction="top"
+				>
+					<LinkButton className="ml-auto" href="/home">
+						✕ Back
+					</LinkButton>
+				</Tooltip>
+			</div>
+
+			{/* main form */}
+			<form
+				className="flex flex-col gap-3 p-2"
+				onSubmit={async (e) => {
+					e.preventDefault();
+
+					if (e.currentTarget.checkValidity()) {
+						promises.wrap("auth_action", async () => {
+							const res = await retrieveResponse(
+								async () => await onSubmit(username, password),
+							);
+							setResponse(res.retrievedResponse);
+						});
+					}
+
+					if (e.currentTarget.checkValidity()) {
+						promises.wrap("register", async () => {});
+					}
+				}}
+			>
+				<Input
+					value={username}
+					placeholder={"Username"}
+					onChange={(value) => setUsername(value)}
+					type="text"
+					aria-label="Username"
+					required
+					minLength={6}
+				/>
+
+				<Input
+					value={password}
+					placeholder={"Password"}
+					onChange={(value) => setPassword(value)}
+					type="password"
+					aria-label="Password"
+					required
+					minLength={6}
+				/>
+
+				<Tooltip description={button.tooltip} direction={"bottom"}>
+					<Button className="w-full" type="submit">
+						{promises.get("auth_action") === "pending" && <Spinner />}
+						{button.text}
+					</Button>
+				</Tooltip>
+			</form>
+
+			{response?.type === "user_registered" && (
+				<>
+					<hr />
+					<Tooltip
+						description={"Proceed the authentication"}
+						direction={"bottom"}
+					>
+						<LinkButton className="w-full" href="/login">
+							Redirect to log in
+						</LinkButton>
+					</Tooltip>
+				</>
+			)}
+
+			{/* status message */}
+			{response !== null && (
+				<>
+					<hr />
+					<div className="flex gap-2 items-center mx-auto">
+						<div
+							className={`rounded-full w-2 h-2 ${response.status === "ok" ? "bg-blue-1" : "bg-red-1"} shrink-0`}
+						/>
+						<span>{response.message}</span>
+					</div>
+				</>
+			)}
+		</motion.div>
+	);
+};

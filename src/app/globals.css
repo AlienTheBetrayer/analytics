@@ -1,0 +1,224 @@
+@import "tailwindcss";
+
+/* global variables */
+:root {
+	--background-1: hsl(0, 0%, 4%);
+	--background-2: hsl(0, 0%, 6%);
+	--background-3: hsl(0, 0%, 8%);
+	--background-4: hsl(0, 0%, 10%);
+	--background-5: hsl(0, 0%, 12%);
+	--background-6: hsl(0, 0%, 14%);
+	--background-7: hsl(0, 0%, 18%);
+
+	--background-a-1: hsla(0, 0%, 4%, 0.3);
+	--background-a-2: hsla(0, 0%, 6%, 0.3);
+	--background-a-3: hsla(0, 0%, 8%, 0.3);
+	--background-a-4: hsla(0, 0%, 10%, 0.3);
+	--background-a-5: hsla(0, 0%, 12%, 0.3);
+
+	--foreground-0: hsl(0, 0%, 100%);
+	--foreground-1: hsl(0, 0%, 95%);
+	--foreground-2: hsl(0, 0%, 85%);
+	--foreground-3: hsl(0, 0%, 75%);
+	--foreground-4: hsl(0, 0%, 65%);
+	--foreground-5: hsl(0, 0%, 55%);
+	--foreground-6: hsl(0, 0%, 50%);
+	--foreground-7: hsl(0, 0%, 40%);
+
+	--blue-1: hsl(237, 100%, 61%);
+	--blue-2: hsl(237, 75%, 61%);
+	--blue-3: hsl(237, 50%, 61%);
+	--red-1: hsl(0, 100%, 61%);
+	--red-2: hsl(0, 75%, 61%);
+	--red-3: hsl(0, 50%, 61%);
+
+    --blue-a-1: rgba(56, 66, 255, 0.6);
+	--red-a-1: rgba(255, 56, 56, 0.6);
+
+	--font-1: 3rem;
+	--font-2: 2.5rem;
+	--font-3: 2rem;
+	--font-4: 1.5rem;
+	--font-5: 1rem;
+	--font-6: 0.8rem;
+	--font-7: 0.5rem;
+}
+
+/* tailwind-specific variables */
+@theme {
+	--color-background-1: var(--background-1);
+	--color-background-2: var(--background-2);
+	--color-background-3: var(--background-3);
+	--color-background-4: var(--background-4);
+	--color-background-5: var(--background-5);
+	--color-background-6: var(--background-6);
+	--color-background-7: var(--background-7);
+
+	--color-background-a-1: var(--background-a-1);
+	--color-background-a-2: var(--background-a-2);
+	--color-background-a-3: var(--background-a-3);
+	--color-background-a-4: var(--background-a-4);
+	--color-background-a-5: var(--background-a-5);
+
+	--color-blue-1: var(--blue-1);
+	--color-blue-2: var(--blue-2);
+	--color-blue-3: var(--blue-3);
+	--color-red-1: var(--red-1);
+	--color-red-2: var(--red-2);
+	--color-red-3: var(--red-3);
+
+    --color-blue-a-1: var(--blue-a-1);
+	--color-red-a-1: var(--red-a-1);
+    
+	--color-foreground-0: var(--foreground-0);
+	--color-foreground-1: var(--foreground-1);
+	--color-foreground-2: var(--foreground-2);
+	--color-foreground-3: var(--foreground-3);
+	--color-foreground-4: var(--foreground-4);
+	--color-foreground-5: var(--foreground-5);
+	--color-foreground-6: var(--foreground-6);
+	--color-foreground-7: var(--foreground-7);
+
+    --text-1: var(--font-1);
+    --text-2: var(--font-2);
+    --text-3: var(--font-3);
+    --text-4: var(--font-4);
+    --text-5: var(--font-5);
+    --text-6: var(--font-6);
+    --text-7: var(--font-7);
+}
+
+/* aceternity-specific */
+@theme inline {
+	--animate-meteor-effect: meteor 5s linear infinite;
+
+	@keyframes meteor {
+		0% {
+			transform: rotate(215deg) translateX(0);
+			opacity: 1;
+		}
+		70% {
+			opacity: 1;
+		}
+		100% {
+			transform: rotate(215deg) translateX(-500px);
+			opacity: 0;
+		}
+	}
+}
+
+/* all elements */
+* {
+	box-sizing: border-box;
+	font-family: Inter, Arial, sans-serif;
+	font-weight: 450;
+}
+
+/* element-specific */
+html {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background: var(--background-1);
+	color: var(--foreground-1);
+	margin: 0;
+	padding: 0;
+}
+
+b,
+i,
+u,
+mark {
+	all: unset;
+	pointer-events: none;
+}
+
+b {
+	filter: brightness(1.5);
+}
+
+i {
+	font-style: italic;
+}
+
+u {
+	text-decoration: underline wavy;
+	text-decoration-color: var(--red-1);
+	text-decoration-thickness: 1px;
+}
+
+mark {
+	text-decoration: underline;
+	text-decoration-color: var(--blue-1);
+	text-decoration-thickness: 2px;
+	text-decoration-skip-ink: none;
+}
+
+small {
+	opacity: 0.3;
+	font-size: inherit;
+}
+
+hr {
+    border-width: 1px;
+	border-color: var(--background-3);
+}
+
+h1 {
+	font-size: var(--font-1);
+	color: var(--foreground-1);
+}
+
+h2 {
+	font-size: var(--font-2);
+	color: var(--foreground-2);
+}
+
+h3 {
+	font-size: var(--font-3);
+	color: var(--foreground-3);
+}
+
+h4,
+span,
+p,
+input,
+button,
+a {
+	font-size: var(--font-6);
+	color: var(--foreground-7);
+}
+
+ul,
+li {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+/* global classes */
+.image {
+	height: 1rem;
+	width: 1rem;
+	filter: invert(0.4);
+	transition: 0.3s;
+}
+
+.dotted {
+	background-image: radial-gradient(
+		circle,
+		var(--background-5) 1px,
+		transparent 1px
+	);
+	background-size: 1rem 1rem;
+	background-repeat: repeat;
+}
+
+.box {
+    background: linear-gradient(to bottom, var(--background-a-3), var(--background-a-1));
+    backdrop-filter: blur(1px);
+    border-radius: 1rem;
+    border: 1px solid var(--background-5);
+}
