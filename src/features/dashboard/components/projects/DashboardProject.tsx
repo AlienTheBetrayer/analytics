@@ -27,6 +27,7 @@ export const DashboardProject = ({ projectData }: Props) => {
 			description={`View events`}
 			direction="top"
 			title={projectData.project?.name}
+			type="modal"
 		>
 			<li className="w-full">
 				<Button
@@ -39,21 +40,6 @@ export const DashboardProject = ({ projectData }: Props) => {
 						{promises.get("project") === "pending" && <Spinner />}
 						<Image src="link.svg" alt="" width={16} height={16} />
 						<span>{projectData.project.name}</span>
-					</div>
-
-					<div className="grid grid-cols-2 w-full gap-1 row-start-3 sm:row-start-auto">
-						<Tooltip description="Delete this event">
-							<Button className="w-full">
-								<Image src="cross.svg" width={16} height={16} alt="" />
-								Delete
-							</Button>
-						</Tooltip>
-						<Tooltip description="Emulate an event for this project">
-							<Button className="w-full">
-								<Image src="emulate.svg" width={16} height={16} alt="" />
-								Emulate
-							</Button>
-						</Tooltip>
 					</div>
 
 					<div className="flex sm:flex-col justify-evenly sm:justify-between w-full h-full items-end">

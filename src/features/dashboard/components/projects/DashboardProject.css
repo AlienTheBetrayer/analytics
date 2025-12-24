@@ -1,6 +1,6 @@
 .project-button {
 	display: grid;
-	grid-template-columns: 20% 1fr 20%;
+	grid-template-columns: 1fr 1fr;
 	gap: 1rem;
 }
 

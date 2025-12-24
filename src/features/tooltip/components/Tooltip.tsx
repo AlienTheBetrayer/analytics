@@ -1,8 +1,8 @@
 import { AnimatePresence } from "motion/react";
 import type React from "react";
 import { useTooltip } from "../hooks/useTooltip";
+import type { TooltipDirection, TooltipType } from "../types/tooltip";
 import { getDirectionStyle } from "../utils/getDirectionStyle";
-import type { TooltipDirection } from "../types/tooltip";
 
 type Props = {
 	className?: string;
@@ -12,6 +12,7 @@ type Props = {
 	element?: React.ReactNode;
 	isEnabled?: boolean;
 	direction?: TooltipDirection;
+	type?: TooltipType;
 };
 
 export const Tooltip = ({
@@ -21,10 +22,11 @@ export const Tooltip = ({
 	element,
 	isEnabled = true,
 	title,
+	type = "tooltip",
 	direction = "bottom",
 }: Props) => {
 	// syncing the portal-sent tooltip's position with the ghost tooltip
-	const controller = useTooltip(isEnabled, description, title, element);
+	const controller = useTooltip(isEnabled, description, title, element, type);
 
 	// determining the ghost tooltip's position
 	const directionStyle = getDirectionStyle(direction);
@@ -34,6 +36,7 @@ export const Tooltip = ({
 			className={`relative ${className ?? ""}`}
 			onPointerEnter={controller.enter}
 			onPointerLeave={controller.leave}
+			onPointerDown={controller.toggle}
 		>
 			{children}
 

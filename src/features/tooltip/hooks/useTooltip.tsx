@@ -1,6 +1,7 @@
 import { motion } from "motion/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import type { TooltipType } from "../types/tooltip";
 
 export type TooltipConfig = {
 	isEnabled?: boolean;
@@ -11,13 +12,27 @@ export const useTooltip = (
 	description?: string,
 	title?: string,
 	element?: React.ReactNode,
+	type?: TooltipType,
 ) => {
 	// states
-	const [isShown, setIsShown] = useState<boolean>(false);
+	const [isHovered, setIsHovered] = useState<boolean>(false);
+	const [isToggled, setIsToggled] = useState<boolean>(false);
+
+	// ui states derived from react states
+	const isShown = isHovered || isToggled;
 
 	// container ref
 	const ghostRef = useRef<HTMLDivElement>(null);
 	const tooltipRef = useRef<HTMLDivElement>(null);
+
+	// other refs
+	const hasPositioned = useRef<boolean>(false);
+
+	useEffect(() => {
+		if (isShown === false) {
+			hasPositioned.current = false;
+		}
+	}, [isShown]);
 
 	// tooltip positioning
 	useEffect(() => {
@@ -35,6 +50,10 @@ export const useTooltip = (
 
 				tooltipRef.current.style.display = "flex";
 				tooltipRef.current.style.translate = `${ghostBounds.left + dx}px ${ghostBounds.top}px`;
+
+				requestAnimationFrame(() => {
+					hasPositioned.current = true;
+				});
 			}
 		};
 		handle();
@@ -43,32 +62,61 @@ export const useTooltip = (
 		return () => window.removeEventListener("resize", handle);
 	}, [isShown]);
 
-	// hotkeys
+	// hotkeys to cancel the modal
 	useEffect(() => {
+		if (isEnabled !== true) return;
+
 		const handle = (e: KeyboardEvent) => {
 			switch (e.code) {
 				case "Escape":
-					setIsShown(false);
+					type === "modal" ? setIsToggled(false) : setIsHovered(false);
 					break;
 			}
 		};
 
 		window.addEventListener("keydown", handle);
 		return () => window.removeEventListener("keydown", handle);
-	}, []);
+	}, [type, isEnabled]);
+
+	// click outside to cancel the modal
+	useEffect(() => {
+		if (!(isEnabled === true && type === "modal" && isToggled === true)) return;
+
+		const handle = (e: PointerEvent) => {
+			console.log("pressed", e.target);
+			if (
+				!tooltipRef.current?.contains(e.target as Node | null) &&
+				hasPositioned.current === true
+			) {
+				setIsToggled(false);
+			}
+		};
+
+		window.addEventListener("pointerdown", handle);
+
+		return () => {
+			window.removeEventListener("pointerdown", handle);
+		};
+	}, [type, isToggled, isEnabled]);
 
 	// user functions
 	const enter = useCallback(() => {
-		if (isEnabled === true) {
-			setIsShown(true);
+		if (isEnabled === true && type === "tooltip") {
+			setIsHovered(true);
 		}
-	}, [isEnabled]);
+	}, [isEnabled, type]);
 
 	const leave = useCallback(() => {
-		if (isEnabled === true) {
-			setIsShown(false);
+		if (isEnabled === true && type === "tooltip") {
+			setIsHovered(false);
 		}
-	}, [isEnabled]);
+	}, [isEnabled, type]);
+
+	const toggle = useCallback(() => {
+		if (isEnabled === true && type === "modal") {
+			setIsToggled(true);
+		}
+	}, [isEnabled, type]);
 
 	const render = useCallback(() => {
 		return createPortal(
@@ -100,6 +148,7 @@ export const useTooltip = (
 		leave,
 		render,
 		isShown,
+		toggle,
 		ghostRef,
 		tooltipRef,
 	};
