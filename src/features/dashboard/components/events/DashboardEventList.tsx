@@ -1,34 +1,21 @@
 "use client";
-import { useState } from "react";
-import { useScroll } from "@/hooks/useScroll";
 import type { AnalyticsMeta } from "@/types/api/database";
 import { DashboardEvent } from "./DashboardEvent";
-import { DashboardScrollTop } from "./DashboardScrollTop";
 
 type Props = {
 	events: AnalyticsMeta[];
+	scrollRef: React.RefObject<HTMLUListElement | null>;
 };
 
-export const DashboardEventList = ({ events }: Props) => {
-	const [hasScrolledEnough, setHasScrolledEnough] = useState<boolean>(false);
-	const scroll = useScroll<HTMLUListElement>((value) => {
-		setHasScrolledEnough(value > 0.5);
-	});
-
+export const DashboardEventList = ({ events, scrollRef }: Props) => {
 	return (
 		<ul
-			ref={scroll.ref}
-			className="relative! flex flex-col gap-2 max-h-58 overflow-y-scroll scheme-dark pb-4!"
+			ref={scrollRef}
+			className="flex flex-col gap-2 h-full overflow-y-auto overflow-x-hidden scheme-dark"
 			style={{
-				maskImage: "linear-gradient(to top, transparent 0%, black 30%)",
 				scrollbarWidth: "thin",
 			}}
 		>
-			<DashboardScrollTop
-				isVisible={hasScrolledEnough}
-				scrollRef={scroll.ref}
-			/>
-
 			{[...events].reverse().map((event) => (
 				<DashboardEvent event={event} key={event.id} />
 			))}

@@ -1,16 +1,18 @@
 .project-button {
 	display: grid;
-	grid-template-columns: 20% 1fr 1fr 30%;
-	min-height: 3rem;
+	grid-template-columns: 20% 1fr 20%;
+	gap: 1rem;
 }
 
 @media (max-width: 640px) {
-	.project-button {
-		grid-template-columns: 40% 1fr 30%;
-	}
-
 	.events-span {
 		display: none;
+	}
+
+	.project-button {
+		grid-template-columns: 1fr;
+		justify-items: center;
+		gap: 0.5rem;
 	}
 }
 

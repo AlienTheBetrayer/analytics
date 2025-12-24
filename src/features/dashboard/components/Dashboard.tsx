@@ -23,11 +23,10 @@ export const Dashboard = () => {
 			<hr />
 
 			{status?.isLoggedIn === true ? (
-				<>
+				<div className='grid grid-flow-row lg:grid-flow-col lg:grid-cols-2 gap-4'>
 					<DashboardProjects />
-					<hr />
 					<DashboardEvents />
-				</>
+                </div>
 			) : (
 				<div className="m-auto flex flex-col items-center justify-center">
 					<span>Authentication is required to see data.</span>

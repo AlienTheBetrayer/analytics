@@ -1,8 +1,7 @@
-import "./DashboardProjects.css";
 
-import { DashboardProject } from "./DashboardProject";
 import { Spinner } from "@/features/spinner/components/Spinner";
 import { useAppStore } from "@/zustand/store";
+import { DashboardProject } from "./DashboardProject";
 
 export const DashboardProjects = () => {
 	// zustand
@@ -13,12 +12,11 @@ export const DashboardProjects = () => {
 	}
 
 	return (
-		<div className="flex flex-col gap-4 relative">
+		<div className="flex flex-col gap-4 relative max-h-64">
 			<span className="sm:text-center text-5!">Available projects</span>
 			<ul
-				className="flex flex-col gap-2 max-h-48 overflow-y-scroll scheme-dark pb-4!"
+				className="flex flex-col gap-2 h-full overflow-y-auto overflow-x-hidden scheme-dark"
 				style={{
-					maskImage: "linear-gradient(to top, transparent 0%, black 30%)",
 					scrollbarWidth: "thin",
 				}}
 			>

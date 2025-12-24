@@ -22,6 +22,7 @@ export type Project = {
 	id: string;
 	name: string;
 	created_at?: string;
+    last_event_at?: string;
 };
 
 export type Token = {

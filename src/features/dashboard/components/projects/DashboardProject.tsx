@@ -1,3 +1,4 @@
+import "./DashboardProject.css";
 import Image from "next/image";
 import { Spinner } from "@/features/spinner/components/Spinner";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
@@ -29,37 +30,36 @@ export const DashboardProject = ({ projectData }: Props) => {
 		>
 			<li className="w-full">
 				<Button
-					className={`w-full project-button ${projectData.project.id === selectedProjectId ? "border-blue-3" : ""}`}
+					className={`w-full px-4! py-2!  sm:h-16! project-button ${projectData.project.id === selectedProjectId ? "border-blue-3" : ""}`}
 					onClick={() => {
 						selectProject(projectData.project?.id ?? null);
 					}}
 				>
 					<div className="flex items-center gap-1.5">
 						{promises.get("project") === "pending" && <Spinner />}
-						<Image
-							src="link.svg"
-							alt=""
-							width={16}
-							height={16}
-						/>
+						<Image src="link.svg" alt="" width={16} height={16} />
 						<span>{projectData.project.name}</span>
 					</div>
 
-					<span className={`transition-all duration-300 text-left events-span`}>
-						<small className="text-3xl!">{projectData.events?.length}</small>
-						<small> events</small>
-					</span>
+					<div className="grid grid-cols-2 w-full gap-1 row-start-3 sm:row-start-auto">
+						<Tooltip description="Delete this event">
+							<Button className="w-full">
+								<Image src="cross.svg" width={16} height={16} alt="" />
+								Delete
+							</Button>
+						</Tooltip>
+						<Tooltip description="Emulate an event for this project">
+							<Button className="w-full">
+								<Image src="emulate.svg" width={16} height={16} alt="" />
+								Emulate
+							</Button>
+						</Tooltip>
+					</div>
 
-					<span style={{}} className={`transition-all duration-300 text-left`}>
-						<small className="text-3xl!">
-							{projectData?.aggregates?.visits ?? 0}
-						</small>
-						<small> visits</small>
-					</span>
-
-					<span className="text-right">
-						{relativeTime(projectData.project.created_at)}
-					</span>
+					<div className="flex sm:flex-col justify-evenly sm:justify-between w-full h-full items-end">
+						<span>{relativeTime(projectData.project.created_at)}</span>
+						<span>{relativeTime(projectData.project.last_event_at)}</span>
+					</div>
 				</Button>
 			</li>
 		</Tooltip>

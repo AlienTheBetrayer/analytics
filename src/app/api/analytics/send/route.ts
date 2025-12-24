@@ -23,7 +23,10 @@ export const POST = async (request: NextRequest) => {
 		// 1. inserting / updating a project
 		const { data: projectData, error: projectError } = (await supabaseServer
 			.from("projects")
-			.upsert({ name: project_name }, { onConflict: "name" })
+			.upsert(
+				{ name: project_name, last_event_at: new Date().toISOString() },
+				{ onConflict: "name" },
+			)
 			.select()) as { data: Project[]; error: PostgrestError | null };
 
 		if (projectError) {
