@@ -1,5 +1,7 @@
 "use client";
+import { useEffect } from "react";
 import { useAppStore } from "@/zustand/store";
+import { useEmulateContext } from "../context/EmulateContext";
 import { AuthRequired } from "./AuthRequired";
 import { FetchPrompt } from "./FetchPrompt";
 import { ProjectList } from "./ProjectList";
@@ -12,6 +14,16 @@ export const Emulate = ({ id }: Props) => {
 	// zustand states
 	const data = useAppStore((state) => state.data);
 	const status = useAppStore((state) => state.status);
+
+	// internal context
+	const [emulateData, setEmulateData] = useEmulateContext();
+
+	// setting selected project to current id if it exists
+	useEffect(() => {
+		if (id !== undefined) {
+			setEmulateData((prev) => ({ ...prev, selectedProjectId: id }));
+		}
+	}, [id, setEmulateData]);
 
 	// error handling
 	// authentcation's missing
@@ -69,7 +81,7 @@ export const Emulate = ({ id }: Props) => {
 					</span>
 				</div>
 				<hr />
-				<ProjectList data={data} id={id}/>
+				<ProjectList data={data} />
 				<hr />
 			</div>
 		);
