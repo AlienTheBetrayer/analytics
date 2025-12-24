@@ -40,10 +40,7 @@ export default function RootLayout({
 					<Meteors />
 				</div>
 
-                <div className='flex flex-col w-full min-h-screen'>
-
-				{children}
-                </div>
+				<div className="flex flex-col w-full min-h-screen">{children}</div>
 			</body>
 		</html>
 	);

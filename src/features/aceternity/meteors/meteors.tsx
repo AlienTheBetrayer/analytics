@@ -31,7 +31,7 @@ export const Meteors = ({
 			initial={{ opacity: 0 }}
 			animate={{ opacity: 1 }}
 			transition={{ duration: 0.5 }}
-            className='hidden sm:block pointer-events-none'
+            className='pointer-events-none'
 		>
 			{meteorRandoms.map((meteor, idx) => {
 				// Calculate position to evenly distribute meteors across container width

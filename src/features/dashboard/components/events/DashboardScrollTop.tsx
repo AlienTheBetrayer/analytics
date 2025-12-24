@@ -18,7 +18,7 @@ export const DashboardScrollTop = ({ isVisible, scrollRef }: Props) => {
 					exit={{ opacity: 0, y: -10 }}
 					className="flex flex-col items-center justify-between p-3 rounded-xl bg-linear-to-bl 
                 from-background-2 to-background-1 outline-1 outline-background-5 hover:scale-110 hover:brightness-150 duration-300
-                absolute -bottom-12 left-1/2! -translate-x-1/2 z-999"
+                absolute -bottom-8 left-1/2! -translate-x-1/2 z-999"
 				>
 					<Button
 						onClick={() => {
@@ -32,7 +32,7 @@ export const DashboardScrollTop = ({ isVisible, scrollRef }: Props) => {
 					>
 						<Image src="arrow.svg" alt="scroll top" width={16} height={16} />
 						<span>
-							<small>Scroll</small>
+							Scroll
 						</span>
 					</Button>
 				</motion.div>
