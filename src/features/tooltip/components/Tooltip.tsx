@@ -38,6 +38,7 @@ export const Tooltip = ({
 			onPointerEnter={controller.enter}
 			onPointerLeave={controller.leave}
 			onPointerDown={controller.toggle}
+			data-tooltip-root={`tooltip-${title}`}
 			onKeyDown={(e) => {
 				if (e.code === "Enter") controller.toggle();
 			}}

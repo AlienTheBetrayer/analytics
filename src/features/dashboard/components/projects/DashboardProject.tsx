@@ -37,7 +37,18 @@ export const DashboardProject = ({ projectData }: Props) => {
 								Delete
 							</Button>
 						</Tooltip>
-						<Tooltip description="Emulate an event for this project" direction="right">
+						<Tooltip
+							description="Emulate an event for this project"
+							direction="bottom"
+							type="modal"
+							element={
+								<div className="flex flex-col gap-1">
+									<Button>Send</Button>
+									<Button>Fetch</Button>
+									<Button>View</Button>
+								</div>
+							}
+						>
 							<Button className="w-full">
 								<Image src="emulate.svg" width={16} height={16} alt="" />
 								Emulate
