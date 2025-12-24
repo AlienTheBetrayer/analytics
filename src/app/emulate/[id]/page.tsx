@@ -12,7 +12,7 @@ const EmulatePage = async ({ params }: Props) => {
 	if (Array.isArray(id)) return null;
 
 	return (
-		<main className="relative flex flex-col m-auto w-full">
+		<main className="relative flex flex-col my-auto w-full">
 			<Emulate id={id} />
 		</main>
 	);

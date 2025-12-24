@@ -7,7 +7,7 @@ import type {
 } from "../api/database";
 
 export type ProjectData = {
-	project?: Project;
+	project: Project;
 	events?: AnalyticsMeta[];
 	aggregates?: ProjectAggregate;
 };

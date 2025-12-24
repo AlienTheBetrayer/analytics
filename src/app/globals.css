@@ -164,6 +164,7 @@ small {
 hr {
 	border-width: 1px;
 	border-color: var(--background-3);
+    width: 100%;
 }
 
 h1 {
@@ -224,7 +225,7 @@ img {
 		var(--background-a-3),
 		var(--background-a-1)
 	);
-	backdrop-filter: blur(1px);
+	backdrop-filter: blur(3px);
 	border-radius: 1rem;
 	border: 1px solid var(--background-5);
 }

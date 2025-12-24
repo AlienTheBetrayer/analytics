@@ -1,29 +1,17 @@
 "use client";
-import { Spinner } from "@/features/spinner/components/Spinner";
-import { Button } from "@/features/ui/button/components/Button";
-import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { useAppStore } from "@/zustand/store";
+import { AuthRequired } from "./AuthRequired";
+import { FetchPrompt } from "./FetchPrompt";
+import { ProjectList } from "./ProjectList";
 
 type Props = {
 	id?: string | undefined;
 };
 
 export const Emulate = ({ id }: Props) => {
-	return (
-		<div className="box w-full max-w-64 m-auto">
-			<_Emulate id={id} />
-		</div>
-	);
-};
-
-const _Emulate = ({ id }: Props) => {
 	// zustand states
 	const data = useAppStore((state) => state.data);
 	const status = useAppStore((state) => state.status);
-	const dataPromises = useAppStore((state) => state.dataPromises);
-
-	// zustand functions
-	const updateProjectList = useAppStore((state) => state.updateProjectList);
 
 	// error handling
 	// authentcation's missing
@@ -33,50 +21,57 @@ const _Emulate = ({ id }: Props) => {
 		status?.role === "user"
 	) {
 		return (
-			<div className="flex flex-col items-center">
-				<span>Authentication is required.</span>
-				<Spinner styles="big" />
+			<div className="flex flex-col w-full max-w-64 m-auto box">
+				<AuthRequired />
 			</div>
 		);
 	}
+
+	/*
+        1. data is not available / id is defined but project is not available:
+            other projects list
+            refetch prompt
+        2. data is available & id is defined and project is available 
+            show project data + emulation
+            other projects list
+        3. data is available yet id is undefined 
+            show other projects list
+    */
 
 	if (data === null || (id !== undefined && data?.[id] === undefined)) {
 		return (
-			<div className="flex flex-col gap-4">
-				<div className="flex flex-col gap-2">
-					<span className="text-center text-foreground-2! text-5!">
-						Fetch required
-					</span>
-					<span className="text-center">
-						The project / data has not been fetched yet
-					</span>
-				</div>
+			<div className="flex flex-col w-full max-w-64 m-auto box">
+				<FetchPrompt />
+				{data !== null && (
+					<>
+						<hr />
 
-				<hr />
-				<div className="flex flex-col gap-2">
-					<Button
-						onClick={() => {
-							updateProjectList();
-						}}
-					>
-						{dataPromises?.projects === "pending" && <Spinner />}
-						Fetch
-					</Button>
-					<LinkButton style="button" href="/dashboard">
-						Go to dashboard
-					</LinkButton>
-				</div>
+						<ProjectList data={data} />
+					</>
+				)}
 			</div>
 		);
 	}
 
-	return (
-        <div>
-            {Object.values(data).map(project => (
-                <div key={project.project?.name}>
-                    {project.project?.name}
-                </div>
-            ))}
-        </div>
-    )
+	if (data !== null && id === undefined) {
+		return <ProjectList data={data} />;
+	}
+
+	if (data !== null && id !== undefined && data[id] !== undefined) {
+		return (
+			<div className="flex flex-col gap-4 w-full max-w-lg box m-auto">
+				<div className="flex flex-col gap-2">
+					<span className="text-center text-foreground-2! text-5!">
+						Emulation
+					</span>
+					<span className="text-center">
+						Emulate events / aggregates without having to send an event
+					</span>
+				</div>
+				<hr />
+				<ProjectList data={data} id={id}/>
+				<hr />
+			</div>
+		);
+	}
 };
