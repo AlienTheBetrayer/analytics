@@ -46,7 +46,7 @@ export const Header = () => {
 						<li>
 							<LinkButton href="/home" style="link">
 								<Image
-									src="cube.svg"
+									src="/cube.svg"
 									width={18}
 									height={18}
 									alt=""
@@ -61,7 +61,7 @@ export const Header = () => {
 								<Image
 									width={18}
 									height={18}
-									src="launch.svg"
+									src="/launch.svg"
 									alt=""
 									className="group-hover:invert-100!"
 								/>
@@ -80,7 +80,7 @@ export const Header = () => {
 								<Image
 									width={18}
 									height={18}
-									src="menu.svg"
+									src="/menu.svg"
 									alt=""
 									className="group-hover:invert-100!"
 								/>

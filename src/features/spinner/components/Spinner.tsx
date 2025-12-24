@@ -11,7 +11,7 @@ export const Spinner = ({ className, styles }: Props) => {
 	return (
 		<Image
 			alt="Loading"
-			src="spinner.svg"
+			src="/spinner.svg"
 			width={16}
 			height={16}
 			className={`loading-spinner ${className ?? ""} ${styles ? SpinnerStyles[styles] : ""}`}

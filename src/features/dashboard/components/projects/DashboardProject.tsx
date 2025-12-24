@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Spinner } from "@/features/spinner/components/Spinner";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
+import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { usePromiseStatus } from "@/hooks/usePromiseStatus";
 import type { ProjectData } from "@/types/zustand/data";
 import { relativeTime } from "@/utils/relativeTime";
@@ -25,34 +26,28 @@ export const DashboardProject = ({ projectData }: Props) => {
 	return (
 		<li className="w-full">
 			<Tooltip
-				title="Project actions"
+				title={`${projectData.project.name}'s actions`}
 				description="Specific to this project"
 				type="modal"
 				direction="top"
 				element={
 					<div className="flex flex-col gap-1">
-						<Tooltip description="Delete this event" direction="right">
+						<Tooltip description="Delete this project" direction="right">
 							<Button className="w-full">
-								<Image src="cross.svg" width={16} height={16} alt="" />
+								<Image src="/cross.svg" width={16} height={16} alt="" />
 								Delete
 							</Button>
 						</Tooltip>
-						<Tooltip
-							description="Emulate an event for this project"
-							direction="bottom"
-							type="modal"
-							element={
-								<div className="flex flex-col gap-1">
-									<Button>Send</Button>
-									<Button>Fetch</Button>
-									<Button>View</Button>
-								</div>
-							}
-						>
-							<Button className="w-full">
-								<Image src="emulate.svg" width={16} height={16} alt="" />
+
+						<Tooltip description="Go to emulate page" direction="right">
+							<LinkButton
+								className="w-full"
+								style="button"
+								href={`/emulate/${projectData.project.id}`}
+							>
+								<Image src="/emulate.svg" width={16} height={16} alt="" />
 								Emulate
-							</Button>
+							</LinkButton>
 						</Tooltip>
 					</div>
 				}
@@ -65,7 +60,7 @@ export const DashboardProject = ({ projectData }: Props) => {
 				>
 					<div className="flex items-center gap-1.5">
 						{promises.get("project") === "pending" && <Spinner />}
-						<Image src="link.svg" alt="" width={16} height={16} />
+						<Image src="/link.svg" alt="" width={16} height={16} />
 						<span>{projectData.project.name}</span>
 					</div>
 

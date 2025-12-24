@@ -15,18 +15,20 @@ export const Dashboard = () => {
 
 	return (
 		<div
-			className="flex flex-col w-full max-w-4xl m-auto h-full 
-        bg-linear-to-b from-background-a-3 to-background-a-1 backdrop-blur-xs rounded-xl gap-2 p-4
-        lg:hover:scale-105 duration-300 mt-8 sm:mt-0"
+			className="w-full border-0! max-w-4xl m-auto h-full 
+        lg:hover:scale-105 duration-300 mt-8 sm:mt-0 box"
 		>
 			<Topline />
 			<hr />
 
 			{status?.isLoggedIn === true ? (
-				<div className='grid grid-flow-row lg:grid-flow-col lg:grid-cols-2 gap-4'>
+				<div className="grid grid-flow-row lg:grid-flow-col lg:grid-cols-2 gap-4">
 					<DashboardProjects />
-					<DashboardEvents />
-                </div>
+
+					<div className="flex flex-col gap-4 h-64 max-h-64 relative">
+						<DashboardEvents />
+					</div>
+				</div>
 			) : (
 				<div className="m-auto flex flex-col items-center justify-center">
 					<span>Authentication is required to see data.</span>

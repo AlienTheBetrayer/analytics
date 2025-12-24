@@ -29,19 +29,19 @@ export const DashboardEvents = () => {
 
 	if (data[selectedProjectId].events.length === 0) {
 		return (
-			<div className="flex h-64 max-h-64 relative">
+			<>
 				<span className="m-auto">
 					No <u>events</u> so far...
 				</span>
 				<span className="m-auto absolute text-[14rem]! left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
 					<small>?</small>
 				</span>
-			</div>
+			</>
 		);
 	}
 
 	return (
-		<div className="flex flex-col gap-4 max-h-64 relative">
+		<>
 			<span className="sm:text-center text-5!">
 				{data[selectedProjectId].project?.name}
 				{"'s"} events
@@ -56,6 +56,6 @@ export const DashboardEvents = () => {
 				isVisible={hasScrolledEnough}
 				scrollRef={scroll.ref}
 			/>
-		</div>
+		</>
 	);
 };

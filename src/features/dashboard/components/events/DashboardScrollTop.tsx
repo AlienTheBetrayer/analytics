@@ -30,7 +30,7 @@ export const DashboardScrollTop = ({ isVisible, scrollRef }: Props) => {
 							}
 						}}
 					>
-						<Image src="arrow.svg" alt="scroll top" width={16} height={16} />
+						<Image src="/arrow.svg" alt="scroll top" width={16} height={16} />
 						<span>
 							Scroll
 						</span>

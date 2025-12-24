@@ -215,6 +215,10 @@ img {
 }
 
 .box {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem;
 	background: linear-gradient(
 		to bottom,
 		var(--background-a-3),

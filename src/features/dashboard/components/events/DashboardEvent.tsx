@@ -28,16 +28,16 @@ export const DashboardEvent = ({ event }: Props) => {
 					</span>
 				</div>
 
-				<EventProperty eventType="Type" value={event.type} image="type.svg" />
+				<EventProperty eventType="Type" value={event.type} image="/type.svg" />
 				<EventProperty
 					eventType="Description"
 					value={event.description ?? "No description"}
-					image="description.svg"
+					image="/description.svg"
 				/>
 				<EventProperty
 					eventType="When"
 					value={relativeTime(event.created_at)}
-					image="calendar.svg"
+					image="/calendar.svg"
 				/>
 
 				<Tooltip description="Delete this event" className='w-full' direction='left'>

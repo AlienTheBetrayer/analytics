@@ -11,7 +11,7 @@ export const Topline = () => {
 		<nav className="flex flex-col items-center gap-2">
 			<div className="flex gap-1 w-full items-center">
 				<Image
-					src="server.svg"
+					src="/server.svg"
 					alt=""
 					width={16}
 					height={16}
@@ -30,7 +30,7 @@ export const Topline = () => {
 				<Tooltip description="Re-sync all data" className="ml-auto">
 					<Button>
 						<Image
-							src="download.svg"
+							src="/download.svg"
 							alt=""
 							width={16}
 							height={16}

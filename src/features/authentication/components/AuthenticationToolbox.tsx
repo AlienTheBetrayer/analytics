@@ -16,11 +16,11 @@ export const AuthenticationToolbox = () => {
 
 	return (
 		<div
-			className={`hidden md:flex gap-4 box p-2
+			className={`hidden! md:flex! flex-row! gap-4 box p-2
         fixed top-4 right-4 items-center z-2 ${status !== null && status?.isLoggedIn !== true ? "border-awaiting" : ""}`}
 		>
 			<Image
-				src="auth.svg"
+				src="/auth.svg"
 				alt=""
 				width={20}
 				height={20}
