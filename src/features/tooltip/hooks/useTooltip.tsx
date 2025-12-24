@@ -83,7 +83,6 @@ export const useTooltip = (
 		if (!(isEnabled === true && type === "modal" && isToggled === true)) return;
 
 		const handle = (e: PointerEvent) => {
-			console.log("pressed", e.target);
 			if (
 				!tooltipRef.current?.contains(e.target as Node | null) &&
 				hasPositioned.current === true

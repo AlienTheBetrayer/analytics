@@ -21,7 +21,7 @@ export const proxy = async (request: NextRequest) => {
 		if (payload.role === "admin") {
 			return NextResponse.next();
 		}
-		console.log(payload.role);
+        
 		if (request.nextUrl.pathname.startsWith("/api/analytics/user")) {
 			if (payload.role === "user") {
 				return NextResponse.next();
