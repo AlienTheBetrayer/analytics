@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/a11y/noStaticElementInteractions: <explanation> */
 import { AnimatePresence } from "motion/react";
 import type React from "react";
 import { useTooltip } from "../hooks/useTooltip";
@@ -37,6 +38,9 @@ export const Tooltip = ({
 			onPointerEnter={controller.enter}
 			onPointerLeave={controller.leave}
 			onPointerDown={controller.toggle}
+			onKeyDown={(e) => {
+				if (e.code === "Enter") controller.toggle();
+			}}
 		>
 			{children}
 

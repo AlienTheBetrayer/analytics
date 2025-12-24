@@ -71,6 +71,9 @@ export const useTooltip = (
 				case "Escape":
 					type === "modal" ? setIsToggled(false) : setIsHovered(false);
 					break;
+				case "Enter":
+					if (hasPositioned.current === true) setIsToggled(false);
+					break;
 			}
 		};
 

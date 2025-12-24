@@ -23,13 +23,29 @@ export const DashboardProject = ({ projectData }: Props) => {
 	if (!projectData.project) return null;
 
 	return (
-		<Tooltip
-			description={`View events`}
-			direction="top"
-			title={projectData.project?.name}
-			type="modal"
-		>
-			<li className="w-full">
+		<li className="w-full">
+			<Tooltip
+				title="Project actions"
+				description="Specific to this project"
+				type="modal"
+				direction="top"
+				element={
+					<div className="flex flex-col gap-1">
+						<Tooltip description="Delete this event" direction="right">
+							<Button className="w-full">
+								<Image src="cross.svg" width={16} height={16} alt="" />
+								Delete
+							</Button>
+						</Tooltip>
+						<Tooltip description="Emulate an event for this project" direction="right">
+							<Button className="w-full">
+								<Image src="emulate.svg" width={16} height={16} alt="" />
+								Emulate
+							</Button>
+						</Tooltip>
+					</div>
+				}
+			>
 				<Button
 					className={`w-full px-4! py-2!  sm:h-16! project-button ${projectData.project.id === selectedProjectId ? "border-blue-3" : ""}`}
 					onClick={() => {
@@ -47,7 +63,7 @@ export const DashboardProject = ({ projectData }: Props) => {
 						<span>{relativeTime(projectData.project.last_event_at)}</span>
 					</div>
 				</Button>
-			</li>
-		</Tooltip>
+			</Tooltip>
+		</li>
 	);
 };
