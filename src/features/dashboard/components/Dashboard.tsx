@@ -24,10 +24,7 @@ export const Dashboard = () => {
 			{status?.isLoggedIn === true ? (
 				<div className="grid grid-flow-row lg:grid-flow-col lg:grid-cols-2 gap-4">
 					<DashboardProjects />
-
-					<div className="flex flex-col gap-4 h-64 max-h-64 relative">
-						<DashboardEvents />
-					</div>
+					<DashboardEvents />
 				</div>
 			) : (
 				<div className="m-auto flex flex-col items-center justify-center">

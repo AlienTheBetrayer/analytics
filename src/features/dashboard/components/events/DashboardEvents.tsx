@@ -6,6 +6,14 @@ import { DashboardEventList } from "./DashboardEventList";
 import { DashboardScrollTop } from "./DashboardScrollTop";
 
 export const DashboardEvents = () => {
+	return (
+		<div className="flex flex-col gap-4 h-64 max-h-64 relative">
+			<_DashboardEvents />
+		</div>
+	);
+};
+
+const _DashboardEvents = () => {
 	// zustand
 	const data = useAppStore((state) => state.data);
 	const selectedProjectId = useAppStore((state) => state.selectedProjectId);

@@ -1,29 +1,19 @@
-"use client";
-import { useParams } from "next/navigation";
+"use server";
 import { Emulate } from "@/features/emulate/components/Emulate";
-import { useRedirect } from "@/hooks/useRedirect";
-import { useAppStore } from "@/zustand/store";
 
-const EmulatePage = () => {
-	// zustand
-	const status = useAppStore((state) => state.status);
+type Props = {
+	params: Promise<{ id: string }>;
+};
 
+const EmulatePage = async ({ params }: Props) => {
 	// url
-	const { id } = useParams();
+	const { id } = await params;
 
-	// redirecting if anything went wrong
-	const check =
-		typeof id !== "string" ||
-		status?.isLoggedIn !== true ||
-		status?.role === "user";
-        
-        useRedirect(check, "/dashboard");
-    if(check)
-        return null;
+	if (Array.isArray(id)) return null;
 
 	return (
 		<main className="relative flex flex-col m-auto w-full">
-			<Emulate currentId={id} />
+			<Emulate id={id} />
 		</main>
 	);
 };
