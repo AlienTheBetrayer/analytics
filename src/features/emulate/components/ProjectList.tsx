@@ -1,14 +1,15 @@
 import Image from "next/image";
-import { Button } from "@/features/ui/button/components/Button";
+import { useParams } from "next/navigation";
+import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import type { Data } from "@/types/zustand/data";
-import { useEmulateContext } from "../context/EmulateContext";
 
 type Props = {
 	data: Data;
 };
 
-export const ProjectList = ({ data}: Props) => {
-	const [emulateData, setEmulateData] = useEmulateContext();
+export const ProjectList = ({ data }: Props) => {
+	// url
+	const { id } = useParams<{ id: string | undefined }>();
 
 	return (
 		<ul
@@ -20,19 +21,14 @@ export const ProjectList = ({ data}: Props) => {
 			{data !== null &&
 				Object.values(data).map((projectData) => (
 					<li key={projectData.project.name}>
-						<Button
-							className={`w-full h-full box hover:brightness-200 active:brightness-300 duration-300 rounded-full!
-                            ${projectData.project.id === emulateData.selectedProjectId ? "border-blue-1!" : ""}`}
-							onClick={() => {
-								setEmulateData((prev) => ({
-									...prev,
-									selectedProjectId: projectData.project.id,
-								}));
-							}}
+						<LinkButton
+							href={`/emulate/${projectData.project.id}`}
+							className={`flex flex-row! w-full h-full box hover:brightness-200 active:brightness-300 duration-300 rounded-full!
+                            ${projectData.project.id === id ? "border-blue-1!" : ""}`}
 						>
 							<Image src="/cube.svg" width={20} height={20} alt="" />
 							<span>{projectData.project.name}</span>
-						</Button>
+						</LinkButton>
 					</li>
 				))}
 		</ul>

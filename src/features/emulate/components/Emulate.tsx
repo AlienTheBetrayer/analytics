@@ -1,29 +1,18 @@
 "use client";
-import { useEffect } from "react";
+import { useParams } from "next/navigation";
 import { useAppStore } from "@/zustand/store";
-import { useEmulateContext } from "../context/EmulateContext";
 import { AuthRequired } from "./AuthRequired";
+import { Controller } from "./Controller";
 import { FetchPrompt } from "./FetchPrompt";
 import { ProjectList } from "./ProjectList";
 
-type Props = {
-	id?: string | undefined;
-};
+export const Emulate = () => {
+	// url
+	const { id } = useParams<{ id: string | undefined }>();
 
-export const Emulate = ({ id }: Props) => {
 	// zustand states
 	const data = useAppStore((state) => state.data);
 	const status = useAppStore((state) => state.status);
-
-	// internal context
-	const [emulateData, setEmulateData] = useEmulateContext();
-
-	// setting selected project to current id if it exists
-	useEffect(() => {
-		if (id !== undefined) {
-			setEmulateData((prev) => ({ ...prev, selectedProjectId: id }));
-		}
-	}, [id, setEmulateData]);
 
 	// error handling
 	// authentcation's missing
@@ -50,40 +39,46 @@ export const Emulate = ({ id }: Props) => {
             show other projects list
     */
 
-	if (data === null || (id !== undefined && data?.[id] === undefined)) {
+	// no data fetched
+	if (data === null) {
 		return (
-			<div className="flex flex-col w-full max-w-64 m-auto box">
+			<div className="flex flex-col w-full max-w-72 m-auto box">
 				<FetchPrompt />
-				{data !== null && (
-					<>
-						<hr />
-
-						<ProjectList data={data} />
-					</>
-				)}
 			</div>
 		);
 	}
 
-	if (data !== null && id === undefined) {
-		return <ProjectList data={data} />;
-	}
-
-	if (data !== null && id !== undefined && data[id] !== undefined) {
+	// data is fetched and project at the id is not fetched
+	if (id !== undefined && data[id] === undefined) {
 		return (
-			<div className="flex flex-col gap-4 w-full max-w-lg box m-auto">
-				<div className="flex flex-col gap-2">
-					<span className="text-center text-foreground-2! text-5!">
-						Emulation
-					</span>
-					<span className="text-center">
-						Emulate events / aggregates without having to send an event
-					</span>
-				</div>
+			<div className="flex flex-col w-full max-w-72 m-auto box">
+				<FetchPrompt />
 				<hr />
 				<ProjectList data={data} />
-				<hr />
 			</div>
 		);
 	}
+
+	return (
+		<div className="flex flex-col w-full max-w-lg box m-auto">
+			<div className="flex flex-col gap-2">
+				<span className="text-center text-foreground-2! text-5!">
+					Project selection
+				</span>
+				<span className="text-center">
+					Select a project first to emulate events / aggregates
+				</span>
+			</div>
+
+			<hr />
+			<ProjectList data={data} />
+
+			{id !== undefined && (
+				<>
+					<hr />
+					<Controller />
+				</>
+			)}
+		</div>
+	);
 };

@@ -15,6 +15,7 @@ export const Input = ({
 	onChange,
 	onDelete,
 	isEnabled = true,
+	required,
 	...rest
 }: Props) => {
 	// value state logic
@@ -29,9 +30,11 @@ export const Input = ({
 			<input
 				disabled={!isEnabled}
 				type="text"
+				required={required}
 				className={`w-full h-full bg-linear-to-bl 
             from-background-2 to-background-1 outline-2 outline-background-5 p-2 rounded-xl focus:outline-blue-1 
-            invalid:outline-red-2! valid:outline-blue-2! hover:brightness-125 transition-colors duration-150 
+             hover:brightness-125 transition-colors duration-150
+            ${required === true ? "invalid:outline-red-2! valid:outline-blue-2!" : ""} 
                  ${isEnabled !== true ? "pointer-events-none opacity-30" : ""} 
             ${className ?? ""}`}
 				value={inputValue}

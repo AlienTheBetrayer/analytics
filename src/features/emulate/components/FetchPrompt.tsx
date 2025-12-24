@@ -5,7 +5,7 @@ import { useAppStore } from "@/zustand/store";
 
 export const FetchPrompt = () => {
 	// zustand state
-    const dataPromises = useAppStore((state) => state.dataPromises);
+	const dataPromises = useAppStore((state) => state.dataPromises);
 
 	// zustand functions
 	const updateProjectList = useAppStore((state) => state.updateProjectList);
