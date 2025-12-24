@@ -1,8 +1,8 @@
-import type { Project, ProjectResponseData } from "@/src/types/api/database";
-import type { DataStore } from "@/src/types/zustand/data";
-import type { SliceFunction } from "@/src/types/zustand/utils/sliceFunction";
-import { promiseStatus } from "@/src/utils/promiseStatus";
-import { refreshedRequest } from "@/src/utils/refreshedRequest";
+import type { Project, ProjectResponseData } from "@/types/api/database";
+import type { DataStore } from "@/types/zustand/data";
+import type { SliceFunction } from "@/types/zustand/utils/sliceFunction";
+import { promiseStatus } from "@/utils/promiseStatus";
+import { refreshedRequest } from "@/utils/refreshedRequest";
 
 export const DataSlice: SliceFunction<DataStore> = (set, get) => {
 	return {

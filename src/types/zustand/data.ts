@@ -1,11 +1,8 @@
-import type {
-	PromiseStatus,
-	PromiseStatuses,
-} from "@/src/hooks/usePromiseStatus";
+import type { PromiseStatus, PromiseStatuses } from "@/hooks/usePromiseStatus";
 import type {
 	AnalyticsMeta,
-	ProjectAggregate,
 	Project,
+	ProjectAggregate,
 	ProjectResponseData,
 } from "../api/database";
 
@@ -52,15 +49,18 @@ export type DataStore = {
 	/**
 	 * updates or creates all projects and its names / other data
 	 * @returns a promise containing the project list array
-     * @param fetchOnce don't fetch the data if it had already been fetched once (default = false)
+	 * @param fetchOnce don't fetch the data if it had already been fetched once (default = false)
 	 */
 	updateProjectList: (fetchOnce?: boolean) => Promise<Project[] | undefined>;
 
 	/**
 	 * updates or creates the data (events / aggregates) of a specific project
-     * @param id the uuid of the project stored in the database and Project type
-     * @param fetchOnce don't fetch the data if it had already been fetched once (default = false)
+	 * @param id the uuid of the project stored in the database and Project type
+	 * @param fetchOnce don't fetch the data if it had already been fetched once (default = false)
 	 * @returns a promise containing the project data for this id
 	 */
-	updateProjectData: (id: string, fetchOnce?: boolean) => Promise<ProjectResponseData | undefined>;
+	updateProjectData: (
+		id: string,
+		fetchOnce?: boolean,
+	) => Promise<ProjectResponseData | undefined>;
 };

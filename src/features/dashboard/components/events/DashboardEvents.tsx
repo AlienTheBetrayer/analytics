@@ -1,6 +1,6 @@
-import { useAppStore } from "@/src/zustand/store";
+import { Spinner } from "@/features/spinner/components/Spinner";
+import { useAppStore } from "@/zustand/store";
 import { DashboardEventList } from "./DashboardEventList";
-import { Spinner } from "@/src/features/spinner/components/Spinner";
 
 export const DashboardEvents = () => {
 	// zustand

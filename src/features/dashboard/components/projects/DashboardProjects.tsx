@@ -1,8 +1,8 @@
 import "./DashboardProjects.css";
 
 import { DashboardProject } from "./DashboardProject";
-import { useAppStore } from "@/src/zustand/store";
-import { Spinner } from "@/src/features/spinner/components/Spinner";
+import { Spinner } from "@/features/spinner/components/Spinner";
+import { useAppStore } from "@/zustand/store";
 
 export const DashboardProjects = () => {
 	// zustand

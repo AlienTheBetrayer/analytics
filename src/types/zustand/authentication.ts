@@ -1,7 +1,4 @@
-import type {
-	PromiseStatus,
-	PromiseStatuses,
-} from "@/src/hooks/usePromiseStatus";
+import type { PromiseStatus, PromiseStatuses } from "@/hooks/usePromiseStatus";
 import type { ResponseAxios } from "./utils/axios";
 
 export type PermissionRole = "user" | "admin" | null;

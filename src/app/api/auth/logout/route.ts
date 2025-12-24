@@ -1,7 +1,7 @@
-import { supabaseServer } from "@/src/types/server/supabase";
-import { nextResponse } from "@/src/utils/response";
 import jwt from "jsonwebtoken";
 import { type NextRequest, NextResponse } from "next/server";
+import { supabaseServer } from "@/types/server/supabase";
+import { nextResponse } from "@/utils/response";
 
 export const POST = async (request: NextRequest) => {
 	try {

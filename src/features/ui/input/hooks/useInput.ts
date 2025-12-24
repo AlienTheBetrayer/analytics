@@ -4,7 +4,7 @@ export const useInput = () => {
 	// refs
 	const inputRef = useRef<HTMLInputElement | null>(null);
 
-    // hotkeys
+	// hotkeys
 	useEffect(() => {
 		const handle = (e: KeyboardEvent) => {
 			switch (e.code) {

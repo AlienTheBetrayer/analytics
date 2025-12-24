@@ -4,7 +4,7 @@ export const getDirectionStyle = (direction: TooltipDirection) => {
 	switch (direction) {
 		case "bottom":
 			return {
-				left: '50%',
+				left: "50%",
 				top: "115%",
 				transform: "translate(-50%, 0)",
 			};

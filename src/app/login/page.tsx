@@ -1,7 +1,8 @@
 "use client";
-import { AuthenticationForm } from "@/src/features/authentication/components/AuthenticationForm";
-import { useRedirect } from "@/src/hooks/useRedirect";
-import { useAppStore } from "@/src/zustand/store";
+
+import { AuthenticationForm } from "@/features/authentication/components/AuthenticationForm";
+import { useRedirect } from "@/hooks/useRedirect";
+import { useAppStore } from "@/zustand/store";
 
 const LoginPage = () => {
 	// zustand

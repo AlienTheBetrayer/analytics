@@ -1,10 +1,10 @@
-import { StoreInitialHandler } from "@/src/zustand/StoreInitialHandler";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { StoreInitialHandler } from "@/zustand/StoreInitialHandler";
 import { Meteors } from "../features/aceternity/meteors/meteors";
-import { Header } from "../features/header/components/Header";
 import { AuthenticationToolbox } from "../features/authentication/components/AuthenticationToolbox";
+import { Header } from "../features/header/components/Header";
 
 const geistSans = Geist({
 	variable: "--font-geist-sans",
@@ -32,13 +32,13 @@ export default function RootLayout({
 
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} dotted antialiased overflow-x-hidden min-h-screen flex flex-col relative`}
-			>   
-                <Header/>
-                <AuthenticationToolbox/>
-                
-                <div className="absolute inset-0 pointer-events-none">
-                    <Meteors />
-                </div>
+			>
+				<Header />
+				<AuthenticationToolbox />
+
+				<div className="absolute inset-0 pointer-events-none">
+					<Meteors />
+				</div>
 
 				{children}
 			</body>

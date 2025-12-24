@@ -1,7 +1,7 @@
-import { Tooltip } from "@/features/tooltip/components/Tooltip";
-import { Button } from "@/features/ui/button/components/Button";
 import { motion } from "motion/react";
 import { useMessageBoxHotkeys } from "../hooks/useMessageBoxHotkeys";
+import { Tooltip } from "@/features/tooltip/components/Tooltip";
+import { Button } from "@/features/ui/button/components/Button";
 
 type Props = {
 	title: string;
@@ -26,9 +26,7 @@ export const MessageBox = ({ title, description, onInteract }: Props) => {
 				<u>{title}</u>
 			</h3>
 
-			<span className="text-center w-full">
-				{description}
-			</span>
+			<span className="text-center w-full">{description}</span>
 
 			<div className="grid grid-cols-2 w-full gap-2">
 				<Tooltip description="Confirm">

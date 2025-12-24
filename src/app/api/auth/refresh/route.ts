@@ -1,10 +1,10 @@
-import type { Token } from "@/src/types/api/database";
-import { supabaseServer } from "@/src/types/server/supabase";
-import { nextResponse } from "@/src/utils/response";
 import type { PostgrestError, User } from "@supabase/supabase-js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import type { NextRequest } from "next/server";
+import type { Token } from "@/types/api/database";
+import { supabaseServer } from "@/types/server/supabase";
+import { nextResponse } from "@/utils/response";
 
 export const POST = async (request: NextRequest) => {
 	const refreshToken = request.cookies.get("refreshToken")?.value;

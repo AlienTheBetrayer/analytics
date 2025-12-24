@@ -1,11 +1,9 @@
 import Image from "next/image";
-import { Tooltip } from "@/src/features/tooltip/components/Tooltip";
-import { useAppStore } from "@/src/zustand/store";
-import { Button } from "../../ui/button/components/Button";
-
-// images
-import serverImg from "../../../public/server.svg";
+import { Tooltip } from "@/features/tooltip/components/Tooltip";
+import { useAppStore } from "@/zustand/store";
 import downloadImg from "../../../public/download.svg";
+import serverImg from "../../../public/server.svg";
+import { Button } from "../../ui/button/components/Button";
 
 export const Topline = () => {
 	// zustand
@@ -21,9 +19,9 @@ export const Topline = () => {
 			<div className="flex gap-2 w-full">
 				<span className="flex gap-1 items-center">
 					<div
-						className={`rounded-full w-1.5 h-1.5 ${true! !== null ? "bg-[rgb(56,66,255)]" : "bg-red-500"} duration-1000`}
+						className={`rounded-full w-1.5 h-1.5 ${status?.isLoggedIn !== null ? "bg-[rgb(56,66,255)]" : "bg-red-500"} duration-1000`}
 					/>
-					{true! === null ? "Syncing..." : "Synced"}
+					{status?.isLoggedIn === null ? "Syncing..." : "Synced"}
 				</span>
 
 				<Tooltip description="Re-sync all data" className="ml-auto">

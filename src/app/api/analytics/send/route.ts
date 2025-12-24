@@ -1,13 +1,13 @@
+import type { PostgrestError } from "@supabase/supabase-js";
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 import type {
 	AnalyticsMeta,
 	Project,
 	ProjectAggregate,
-} from "@/src/types/api/database";
-import { supabaseServer } from "@/src/types/server/supabase";
-import { nextResponse } from "@/src/utils/response";
-import type { PostgrestError } from "@supabase/supabase-js";
-import type { NextRequest } from "next/server";
-import { NextResponse } from "next/server";
+} from "@/types/api/database";
+import { supabaseServer } from "@/types/server/supabase";
+import { nextResponse } from "@/utils/response";
 
 export const POST = async (request: NextRequest) => {
 	try {

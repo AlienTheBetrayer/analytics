@@ -1,6 +1,6 @@
-import type { APIResponseType } from "@/src/types/api/response";
-import type { ResponseAxios } from "@/src/types/zustand/utils/axios";
 import axios from "axios";
+import type { APIResponseType } from "@/types/api/response";
+import type { ResponseAxios } from "@/types/zustand/utils/axios";
 
 export type RetrievedResponse = {
 	status: "ok" | "error";

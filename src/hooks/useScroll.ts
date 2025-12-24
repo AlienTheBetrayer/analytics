@@ -1,6 +1,8 @@
 import { useEffect, useRef } from "react";
 
-export const useScroll = <T extends HTMLElement>(onChange: (value: number) => void) => {
+export const useScroll = <T extends HTMLElement>(
+	onChange: (value: number) => void,
+) => {
 	// refs
 	const ref = useRef<T | null>(null);
 

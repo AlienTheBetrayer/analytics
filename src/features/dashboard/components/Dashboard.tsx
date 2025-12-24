@@ -1,10 +1,10 @@
 "use client";
-import { useAppStore } from "@/src/zustand/store";
+import { useAppStore } from "@/zustand/store";
+import { Spinner } from "../../spinner/components/Spinner";
 import { useData } from "../hooks/useData";
+import { DashboardEvents } from "./events/DashboardEvents";
 import { DashboardProjects } from "./projects/DashboardProjects";
 import { Topline } from "./Topline";
-import { Spinner } from "../../spinner/components/Spinner";
-import { DashboardEvents } from "./events/DashboardEvents";
 
 export const Dashboard = () => {
 	// zustand

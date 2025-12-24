@@ -1,9 +1,9 @@
 "use client";
-import { useScroll } from "@/src/hooks/useScroll";
 import { useState } from "react";
+import { useScroll } from "@/hooks/useScroll";
+import type { AnalyticsMeta } from "@/types/api/database";
 import { DashboardEvent } from "./DashboardEvent";
 import { DashboardScrollTop } from "./DashboardScrollTop";
-import type { AnalyticsMeta } from "@/src/types/api/database";
 
 type Props = {
 	events: AnalyticsMeta[];
@@ -14,7 +14,7 @@ export const DashboardEventList = ({ events }: Props) => {
 	const scroll = useScroll<HTMLUListElement>((value) => {
 		setHasScrolledEnough(value > 0.5);
 	});
-    
+
 	return (
 		<ul
 			ref={scroll.ref}

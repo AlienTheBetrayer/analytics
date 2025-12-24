@@ -1,7 +1,7 @@
-import { supabaseServer } from "@/src/types/server/supabase";
-import { nextResponse } from "@/src/utils/response";
 import bcrypt from "bcrypt";
 import type { NextRequest } from "next/server";
+import { supabaseServer } from "@/types/server/supabase";
+import { nextResponse } from "@/utils/response";
 
 export const POST = async (request: NextRequest) => {
 	try {

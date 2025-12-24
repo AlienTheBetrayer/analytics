@@ -1,14 +1,12 @@
 "use client";
 
-import './AuthenticationToolbox.css';
-import { LinkButton } from "@/src/features/ui/linkbutton/components/LinkButton";
-import { useAppStore } from "@/src/zustand/store";
-import { Button } from "../../ui/button/components/Button";
-
-// images
+import "./AuthenticationToolbox.css";
 import Image from "next/image";
+import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
+import { useAppStore } from "@/zustand/store";
 import authImg from "../../../public/auth.svg";
 import { Spinner } from "../../spinner/components/Spinner";
+import { Button } from "../../ui/button/components/Button";
 
 export const AuthenticationToolbox = () => {
 	// zustand

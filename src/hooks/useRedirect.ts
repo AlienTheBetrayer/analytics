@@ -6,7 +6,10 @@ import { useEffect } from "react";
  * @param trigger a trigger to determine whether we should redirect or not
  * @param path path to redirect to
  */
-export const useRedirect = (trigger: boolean | null | undefined, path: string) => {
+export const useRedirect = (
+	trigger: boolean | null | undefined,
+	path: string,
+) => {
 	useEffect(() => {
 		if (trigger === true) {
 			redirect(path);

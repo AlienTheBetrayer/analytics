@@ -1,6 +1,6 @@
-import { supabaseServer } from "@/src/types/server/supabase";
-import { nextResponse } from "@/src/utils/response";
 import type { NextRequest } from "next/server";
+import { supabaseServer } from "@/types/server/supabase";
+import { nextResponse } from "@/utils/response";
 
 export const GET = async (_request: NextRequest) => {
 	const { data, error } = await supabaseServer.from("projects").select();

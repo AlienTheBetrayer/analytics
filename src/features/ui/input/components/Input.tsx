@@ -6,7 +6,7 @@ import { useInput } from "../hooks/useInput";
 type Props = {
 	onDelete?: () => void;
 	onChange?: (value: string) => void;
-    isEnabled?: boolean;
+	isEnabled?: boolean;
 } & Omit<ComponentPropsWithoutRef<"input">, "onChange">;
 
 export const Input = ({
@@ -14,7 +14,7 @@ export const Input = ({
 	value,
 	onChange,
 	onDelete,
-    isEnabled=true,
+	isEnabled = true,
 	...rest
 }: Props) => {
 	// value state logic
@@ -27,12 +27,12 @@ export const Input = ({
 	return (
 		<div className="relative ">
 			<input
-                disabled={!isEnabled}
+				disabled={!isEnabled}
 				type="text"
 				className={`w-full h-full bg-linear-to-bl 
             from-background-2 to-background-1 outline-2 outline-background-5 p-2 rounded-xl focus:outline-blue-1 
             invalid:outline-red-2! valid:outline-blue-2! hover:brightness-125 transition-colors duration-150 
-                 ${isEnabled !== true ? 'pointer-events-none opacity-30' : ''} 
+                 ${isEnabled !== true ? "pointer-events-none opacity-30" : ""} 
             ${className ?? ""}`}
 				value={inputValue}
 				ref={controller.inputRef}

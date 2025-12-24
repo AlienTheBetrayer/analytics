@@ -1,7 +1,7 @@
-import type { AuthenticationStore } from "@/src/types/zustand/authentication";
-import type { SliceFunction } from "@/src/types/zustand/utils/sliceFunction";
-import { promiseStatus } from "@/src/utils/promiseStatus";
 import axios from "axios";
+import type { AuthenticationStore } from "@/types/zustand/authentication";
+import type { SliceFunction } from "@/types/zustand/utils/sliceFunction";
+import { promiseStatus } from "@/utils/promiseStatus";
 
 export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (
 	set,

@@ -1,16 +1,16 @@
 import { motion } from "motion/react";
 import { useState } from "react";
+import { usePromiseStatus } from "@/hooks/usePromiseStatus";
+import type { ResponseAxios } from "@/types/zustand/utils/axios";
 import { Spinner } from "../../spinner/components/Spinner";
 import { Tooltip } from "../../tooltip/components/Tooltip";
 import { Button } from "../../ui/button/components/Button";
 import { Input } from "../../ui/input/components/Input";
 import { LinkButton } from "../../ui/linkbutton/components/LinkButton";
-import { usePromiseStatus } from "@/src/hooks/usePromiseStatus";
 import {
 	type RetrievedResponse,
 	retrieveResponse,
 } from "../utils/retrieveResponse";
-import type { ResponseAxios } from "@/src/types/zustand/utils/axios";
 
 type Props = {
 	title: string;

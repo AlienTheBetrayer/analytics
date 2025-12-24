@@ -1,5 +1,5 @@
-import type { DashboardStore } from "@/src/types/zustand/dashboard";
-import type { SliceFunction } from "@/src/types/zustand/utils/sliceFunction";
+import type { DashboardStore } from "@/types/zustand/dashboard";
+import type { SliceFunction } from "@/types/zustand/utils/sliceFunction";
 
 export const DashboardSlice: SliceFunction<DashboardStore> = (set, get) => {
 	return {

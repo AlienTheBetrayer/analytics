@@ -1,12 +1,12 @@
-import { usePromiseStatus } from "@/src/hooks/usePromiseStatus";
-import { relativeTime } from "@/src/utils/relativeTime";
-import { useAppStore } from "@/src/zustand/store";
 import Image from "next/image";
+import { Spinner } from "@/features/spinner/components/Spinner";
+import { Tooltip } from "@/features/tooltip/components/Tooltip";
+import { Button } from "@/features/ui/button/components/Button";
+import { usePromiseStatus } from "@/hooks/usePromiseStatus";
+import type { ProjectData } from "@/types/zustand/data";
+import { relativeTime } from "@/utils/relativeTime";
+import { useAppStore } from "@/zustand/store";
 import linkImg from "../../../../public/link.svg";
-import { Spinner } from "@/src/features/spinner/components/Spinner";
-import { Tooltip } from "@/src/features/tooltip/components/Tooltip";
-import { Button } from "@/src/features/ui/button/components/Button";
-import type { ProjectData } from "@/src/types/zustand/data";
 
 type Props = {
 	projectData: ProjectData;
@@ -37,11 +37,7 @@ export const DashboardProject = ({ projectData }: Props) => {
 				>
 					<div className="flex items-center gap-1.5">
 						{promises.get("project") === "pending" && <Spinner />}
-						<Image
-							src={linkImg}
-							alt=""
-							className={`image`}
-						/>
+						<Image src={linkImg} alt="" className={`image`} />
 						<span>{projectData.project.name}</span>
 					</div>
 

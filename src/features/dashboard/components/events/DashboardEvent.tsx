@@ -1,12 +1,12 @@
-import { relativeTime } from "@/src/utils/relativeTime";
 import "./DashboardEvent.css";
 
 import Image from "next/image";
+import { Tooltip } from "@/features/tooltip/components/Tooltip";
+import type { AnalyticsMeta } from "@/types/api/database";
+import { relativeTime } from "@/utils/relativeTime";
 import calendarImg from "../../../../public/calendar.svg";
 import descriptionImg from "../../../../public/description.svg";
 import typeImg from "../../../../public/type.svg";
-import { Tooltip } from "@/src/features/tooltip/components/Tooltip";
-import type { AnalyticsMeta } from "@/src/types/api/database";
 
 type Props = {
 	event: AnalyticsMeta;

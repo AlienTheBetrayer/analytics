@@ -1,8 +1,8 @@
 // authForm
 export type DashboardAuthForm = {
-    type: "register" | "login" | "logout";
-    username?: string;
-    password?: string;
+	type: "register" | "login" | "logout";
+	username?: string;
+	password?: string;
 };
 
 // notifications

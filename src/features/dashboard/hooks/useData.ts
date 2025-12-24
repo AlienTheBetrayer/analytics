@@ -1,5 +1,5 @@
-import { useAppStore } from "@/src/zustand/store";
 import { useEffect } from "react";
+import { useAppStore } from "@/zustand/store";
 
 /**
  * acts as a wrapper around zustand's data loading system

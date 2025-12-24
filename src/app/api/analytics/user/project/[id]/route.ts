@@ -1,13 +1,12 @@
-import type {
-	ProjectAggregate,
-	Analytics,
-	AnalyticsMeta,
-} from "@/src/types/api/database";
-
-import { supabaseServer } from "@/src/types/server/supabase";
-import { nextResponse } from "@/src/utils/response";
 import type { PostgrestError } from "@supabase/supabase-js";
 import type { NextRequest } from "next/server";
+import type {
+	Analytics,
+	AnalyticsMeta,
+	ProjectAggregate,
+} from "@/types/api/database";
+import { supabaseServer } from "@/types/server/supabase";
+import { nextResponse } from "@/utils/response";
 
 type ParamsType = {
 	params: Promise<{ id: string }>;
