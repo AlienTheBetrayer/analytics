@@ -1,6 +1,5 @@
 import Image from "next/image";
 import type { ComponentPropsWithoutRef } from "react";
-import spinnerImg from "../../../public/loading.svg";
 import "./Spinner.css";
 import { SpinnerStyles } from "../utils/styles";
 
@@ -12,7 +11,9 @@ export const Spinner = ({ className, styles }: Props) => {
 	return (
 		<Image
 			alt="Loading"
-			src={spinnerImg}
+			src="spinner.svg"
+			width={16}
+			height={16}
 			className={`loading-spinner ${className ?? ""} ${styles ? SpinnerStyles[styles] : ""}`}
 		/>
 	);

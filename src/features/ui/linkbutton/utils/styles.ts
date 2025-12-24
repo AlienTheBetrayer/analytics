@@ -1,6 +1,6 @@
-import { ButtonClassName } from "../../button/components/Button";
+import { DefaultButtonClassName } from "../../button/utils/styles";
 
 export const LinkButtonStyles: Record<string, string> = {
-	button: ButtonClassName,
+	button: DefaultButtonClassName,
 	link: "hover:text-foreground-0! duration-150",
 };

@@ -6,7 +6,6 @@ import { usePromiseStatus } from "@/hooks/usePromiseStatus";
 import type { ProjectData } from "@/types/zustand/data";
 import { relativeTime } from "@/utils/relativeTime";
 import { useAppStore } from "@/zustand/store";
-import linkImg from "../../../../public/link.svg";
 
 type Props = {
 	projectData: ProjectData;
@@ -37,7 +36,12 @@ export const DashboardProject = ({ projectData }: Props) => {
 				>
 					<div className="flex items-center gap-1.5">
 						{promises.get("project") === "pending" && <Spinner />}
-						<Image src={linkImg} alt="" className={`image`} />
+						<Image
+							src="link.svg"
+							alt=""
+							width={16}
+							height={16}
+						/>
 						<span>{projectData.project.name}</span>
 					</div>
 

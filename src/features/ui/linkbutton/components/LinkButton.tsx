@@ -20,7 +20,7 @@ export const LinkButton = ({
 	return (
 		<Link
 			href={href}
-			className={`${LinkButtonStyles[style]} ${isEnabled !== true ? "pointer-events-none opacity-30" : ""} ${className ?? ""} 
+			className={`flex gap-1 items-center justify-center group ${LinkButtonStyles[style]} ${isEnabled !== true ? "pointer-events-none opacity-30" : ""} ${className ?? ""} 
             `}
 		>
 			{children}

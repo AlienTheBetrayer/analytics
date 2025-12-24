@@ -17,7 +17,7 @@ export const Dashboard = () => {
 		<div
 			className="flex flex-col w-full max-w-4xl m-auto h-full 
         bg-linear-to-b from-background-a-3 to-background-a-1 backdrop-blur-xs rounded-xl gap-2 p-4
-        sm:hover:scale-105 duration-300"
+        lg:hover:scale-105 duration-300"
 		>
 			<Topline />
 			<hr />

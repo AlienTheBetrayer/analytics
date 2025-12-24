@@ -32,7 +32,7 @@
 	--red-2: hsl(0, 75%, 61%);
 	--red-3: hsl(0, 50%, 61%);
 
-    --blue-a-1: rgba(56, 66, 255, 0.6);
+	--blue-a-1: rgba(56, 66, 255, 0.6);
 	--red-a-1: rgba(255, 56, 56, 0.6);
 
 	--font-1: 3rem;
@@ -67,9 +67,9 @@
 	--color-red-2: var(--red-2);
 	--color-red-3: var(--red-3);
 
-    --color-blue-a-1: var(--blue-a-1);
+	--color-blue-a-1: var(--blue-a-1);
 	--color-red-a-1: var(--red-a-1);
-    
+
 	--color-foreground-0: var(--foreground-0);
 	--color-foreground-1: var(--foreground-1);
 	--color-foreground-2: var(--foreground-2);
@@ -79,13 +79,13 @@
 	--color-foreground-6: var(--foreground-6);
 	--color-foreground-7: var(--foreground-7);
 
-    --text-1: var(--font-1);
-    --text-2: var(--font-2);
-    --text-3: var(--font-3);
-    --text-4: var(--font-4);
-    --text-5: var(--font-5);
-    --text-6: var(--font-6);
-    --text-7: var(--font-7);
+	--text-1: var(--font-1);
+	--text-2: var(--font-2);
+	--text-3: var(--font-3);
+	--text-4: var(--font-4);
+	--text-5: var(--font-5);
+	--text-6: var(--font-6);
+	--text-7: var(--font-7);
 }
 
 /* aceternity-specific */
@@ -162,7 +162,7 @@ small {
 }
 
 hr {
-    border-width: 1px;
+	border-width: 1px;
 	border-color: var(--background-3);
 }
 
@@ -198,14 +198,12 @@ li {
 	list-style: none;
 }
 
-/* global classes */
-.image {
-	height: 1rem;
-	width: 1rem;
+img {
 	filter: invert(0.4);
-	transition: 0.3s;
+	transition: 0.15s;
 }
 
+/* utility classes */
 .dotted {
 	background-image: radial-gradient(
 		circle,
@@ -217,8 +215,24 @@ li {
 }
 
 .box {
-    background: linear-gradient(to bottom, var(--background-a-3), var(--background-a-1));
-    backdrop-filter: blur(1px);
-    border-radius: 1rem;
-    border: 1px solid var(--background-5);
+	background: linear-gradient(
+		to bottom,
+		var(--background-a-3),
+		var(--background-a-1)
+	);
+	backdrop-filter: blur(1px);
+	border-radius: 1rem;
+	border: 1px solid var(--background-5);
+}
+
+/* animations */
+@keyframes borderAwaiting {
+	0% {
+		outline-color: var(--color-blue-1);
+	}
+}
+
+.border-awaiting {
+    outline: 2px solid transparent;
+	animation: 0.5s borderAwaiting alternate infinite;
 }

@@ -3,7 +3,6 @@ import Image from "next/image";
 import type React from "react";
 import { createPortal } from "react-dom";
 import { Button } from "@/features/ui/button/components/Button";
-import arrowImg from "../../../../public/arrow.svg";
 
 type Props = {
 	isVisible: boolean;
@@ -31,7 +30,12 @@ export const DashboardScrollTop = ({ isVisible, scrollRef }: Props) => {
 							}
 						}}
 					>
-						<Image className="image" src={arrowImg} alt="scroll top" />
+						<Image
+							src="arrow.svg"
+							alt="scroll top"
+							width={16}
+							height={16}
+						/>
 						<span>
 							<small>Scroll</small>
 						</span>

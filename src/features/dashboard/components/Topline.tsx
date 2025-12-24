@@ -1,8 +1,6 @@
 import Image from "next/image";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { useAppStore } from "@/zustand/store";
-import downloadImg from "../../../public/download.svg";
-import serverImg from "../../../public/server.svg";
 import { Button } from "../../ui/button/components/Button";
 
 export const Topline = () => {
@@ -12,7 +10,12 @@ export const Topline = () => {
 	return (
 		<nav className="flex flex-col items-center gap-2">
 			<div className="flex gap-1 w-full items-center">
-				<Image src={serverImg} alt="" className="image w-5! h-5!" />
+				<Image
+					src="server.svg"
+					alt=""
+					width={16}
+					height={16}
+				/>
 				<span>Client</span>
 			</div>
 
@@ -26,7 +29,12 @@ export const Topline = () => {
 
 				<Tooltip description="Re-sync all data" className="ml-auto">
 					<Button>
-						<Image src={downloadImg} alt="" className="image" />
+						<Image
+							src="download.svg"
+							alt=""
+							width={16}
+							height={16}
+						/>
 						<mark>Sync</mark>
 					</Button>
 				</Tooltip>

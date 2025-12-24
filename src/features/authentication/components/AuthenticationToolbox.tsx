@@ -1,10 +1,8 @@
 "use client";
 
-import "./AuthenticationToolbox.css";
 import Image from "next/image";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { useAppStore } from "@/zustand/store";
-import authImg from "../../../public/auth.svg";
 import { Spinner } from "../../spinner/components/Spinner";
 import { Button } from "../../ui/button/components/Button";
 
@@ -18,10 +16,15 @@ export const AuthenticationToolbox = () => {
 
 	return (
 		<div
-			className={`flex gap-4 box p-2
-        fixed top-4 right-4 items-center z-2 ${status !== null && status?.isLoggedIn !== true ? "toolbox-not-logged-in" : ""}`}
+			className={`hidden md:flex gap-4 box p-2
+        fixed top-4 right-4 items-center z-2 ${status !== null && status?.isLoggedIn !== true ? "border-awaiting" : ""}`}
 		>
-			<Image src={authImg} alt="" className="image w-5! h-5!" />
+			<Image
+				src="auth.svg"
+				alt=""
+				width={20}
+				height={20}
+			/>
 			{status === null ? (
 				<Spinner />
 			) : (

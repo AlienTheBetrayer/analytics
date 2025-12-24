@@ -1,10 +1,9 @@
 import { type HTMLMotionProps, motion } from "motion/react";
-
-export const ButtonClassName = `flex gap-1 items-center justify-center rounded-3xl border-2 border-background-5 bg-background-3 min-w-8 min-h-8 px-2.5
-                 hover:brightness-150 active:brightness-200 focus-visible:border-blue-1 outline-0 transition duration-150 cursor-pointer`;
+import { ButtonStyles } from "../utils/styles";
 
 type Props = {
 	isEnabled?: boolean;
+	styles?: keyof typeof ButtonStyles;
 } & HTMLMotionProps<"button">;
 
 export const Button = ({
@@ -12,6 +11,7 @@ export const Button = ({
 	onClick,
 	isEnabled = true,
 	className,
+	styles = "button",
 	...rest
 }: Props) => {
 	return (
@@ -19,7 +19,10 @@ export const Button = ({
 			onClick={onClick}
 			type="button"
 			disabled={!isEnabled}
-			className={`${ButtonClassName} ${isEnabled !== true ? "pointer-events-none opacity-30" : ""} ${className ?? ""} `}
+			className={`flex gap-1 items-center justify-center cursor-pointer border-2 border-transparent group min-w-8 min-h-8 px-2.5 
+                ${ButtonStyles[styles]} 
+                ${isEnabled !== true ? "pointer-events-none opacity-30" : ""}
+                ${className ?? ""} `}
 			{...rest}
 		>
 			{children}

@@ -1,9 +1,0 @@
-@keyframes toolboxNotLoggedIn {
-    0% {
-        border-color: var(--color-blue-1);
-    }
-}
-
-.toolbox-not-logged-in {
-    animation: 0.5s toolboxNotLoggedIn alternate infinite;
-}
