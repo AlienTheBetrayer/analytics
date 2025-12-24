@@ -31,7 +31,7 @@ export default function RootLayout({
 			<StoreInitialHandler />
 
 			<body
-				className={`${geistSans.variable} ${geistMono.variable} dotted antialiased overflow-x-hidden min-h-screen flex flex-col relative`}
+				className={`${geistSans.variable} ${geistMono.variable} px-4! dotted antialiased overflow-x-hidden min-h-screen flex flex-col relative`}
 			>
 				<Header />
 				<AuthenticationToolbox />
@@ -40,7 +40,10 @@ export default function RootLayout({
 					<Meteors />
 				</div>
 
+                <div className='flex flex-col w-full min-h-screen'>
+
 				{children}
+                </div>
 			</body>
 		</html>
 	);

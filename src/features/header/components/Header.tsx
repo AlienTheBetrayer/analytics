@@ -1,7 +1,8 @@
 "use client";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDisabledScroll } from "@/hooks/useDisabledScroll";
 import { useAppStore } from "@/zustand/store";
 import { Button } from "../../ui/button/components/Button";
 import { LinkButton } from "../../ui/linkbutton/components/LinkButton";
@@ -21,21 +22,27 @@ export const Header = () => {
 	// react states
 	const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
+    // disabling scroll
+	const disabledScroll = useDisabledScroll();
+
+	useEffect(() => {
+		disabledScroll.setIsDisabled(isMenuOpen);
+	}, [isMenuOpen, disabledScroll.setIsDisabled]);
+
 	return (
 		<header
 			style={{
 				maxWidth: isMenuOpen ? "100%" : "20rem",
-				minHeight: isMenuOpen ? "100vh" : "3rem",
-                height: isMenuOpen ? '100vh' : 'auto',
+				height: isMenuOpen ? "100vh" : "3rem",
 				backdropFilter: `blur(${isMenuOpen ? "1rem" : "4px"})`,
 				top: isMenuOpen ? "0rem" : "1rem",
 			}}
 			className="fixed flex items-center left-1/2 -translate-x-1/2 
-            box border-0! w-full z-3 duration-500 transition-all"
+            border-0! w-full z-3 duration-500 transition-all"
 		>
 			<nav className="flex items-center w-full h-full">
 				{!isMenuOpen ? (
-					<ul className="flex justify-between gap-4 w-full *:flex *:items-center p-2 px-4">
+					<ul className="flex justify-between gap-4 w-full *:flex *:items-center px-4!">
 						<li>
 							<LinkButton href="/home" style="link">
 								<Image

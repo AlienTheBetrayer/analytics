@@ -11,7 +11,7 @@ export const HeaderMenu = ({ onInteract, isBorderAwaiting }: Props) => {
 	return (
 		// biome-ignore lint/a11y/useKeyWithClickEvents: <when we click on anything the menu has to go away>
 		<ul
-			className="flex flex-col justify-between w-full h-full p-8!"
+			className="flex md:hidden flex-col justify-between w-full h-full p-8!"
 			onClick={onInteract}
 		>
 			<div className="flex flex-col gap-4">
