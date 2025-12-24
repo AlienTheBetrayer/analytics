@@ -17,7 +17,7 @@ export const HeaderMenu = ({ onInteract, isBorderAwaiting }: Props) => {
 			<div className="flex flex-col gap-4">
 				<li>
 					<LinkButton href="/home" style="button" className="p-4! text-5!">
-						<Image src="home.svg" width={24} height={24} alt="" />
+						<Image src="cube.svg" width={24} height={24} alt="" />
 						Home
 					</LinkButton>
 				</li>
@@ -25,12 +25,6 @@ export const HeaderMenu = ({ onInteract, isBorderAwaiting }: Props) => {
 					<LinkButton href="/dashboard" style="button" className="p-4! text-5!">
 						<Image src="dashboard.svg" width={24} height={24} alt="" />
 						Dashboard
-					</LinkButton>
-				</li>
-				<li>
-					<LinkButton href="/info" style="button" className="p-4! text-5!">
-						<Image src="cube.svg" width={24} height={24} alt="" />
-						Info
 					</LinkButton>
 				</li>
 			</div>

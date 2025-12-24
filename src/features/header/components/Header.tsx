@@ -46,26 +46,13 @@ export const Header = () => {
 						<li>
 							<LinkButton href="/home" style="link">
 								<Image
-									src="home.svg"
+									src="cube.svg"
 									width={18}
 									height={18}
 									alt=""
 									className="group-hover:invert-100!"
 								/>
 								Home
-							</LinkButton>
-						</li>
-
-						<li className="hidden! md:block!">
-							<LinkButton href="/info" style="link">
-								<Image
-									width={18}
-									height={18}
-									src="cube.svg"
-									alt=""
-									className="group-hover:invert-100!"
-								/>
-								Info
 							</LinkButton>
 						</li>
 
