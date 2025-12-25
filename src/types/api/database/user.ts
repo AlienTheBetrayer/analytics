@@ -1,4 +1,4 @@
-export type PermissionRole = "user" | "admin" | null;
+export type PermissionRole = "user" | "admin";
 
 export type User = {
 	id: string;

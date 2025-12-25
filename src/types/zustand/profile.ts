@@ -18,8 +18,8 @@ export type ProfileStore = {
 
 	/**
 	 * gets the user's profile by its id
-	 * @param user_id the id of the user
+	 * @param name the name of the user
 	 * @returns a promise containing the response
 	 */
-	getProfile: (user_id: string) => Promise<ResponseAxios>;
+	getProfile: (name: string) => Promise<ResponseAxios>;
 };

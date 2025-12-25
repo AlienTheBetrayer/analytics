@@ -18,17 +18,17 @@ export const ProfileSlice: SliceFunction<ProfileStore> = (set, get) => {
 			}));
 		},
 
-		getProfile: async (user_id: string) => {
+		getProfile: async (name: string) => {
 			const { setProfilePromise } = get();
 
-			return await promiseStatus(
+            return await promiseStatus(
 				"profile",
 				async () => {
-					const res = await axios.get(`/api/profile/${user_id}`);
+					const res = await axios.get(`/api/profile/${name}`);
 
 					set((state) => {
 						const newProfiles = { ...state.profiles };
-						newProfiles[user_id] = {
+						newProfiles[name] = {
 							profile: res.data.profile,
 							user: res.data.user,
 						};

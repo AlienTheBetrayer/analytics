@@ -6,17 +6,17 @@ import { supabaseServer } from "@/types/server/supabase";
 import { nextResponse } from "@/utils/response";
 
 type ParamsType = {
-	params: Promise<{ id: string }>;
+	params: Promise<{ name: string }>;
 };
 
 export const GET = async (_request: NextRequest, { params }: ParamsType) => {
-	const { id } = await params;
+	const { name } = await params;
 
 	try {
 		const { data: userData, error: userError } = (await supabaseServer
 			.from("users")
 			.select()
-			.eq("id", id)) as { data: User[]; error: PostgrestError | null };
+			.eq("username", name)) as { data: User[]; error: PostgrestError | null };
 
 		if (userError) {
 			return nextResponse(userError, 400);
@@ -33,7 +33,10 @@ export const GET = async (_request: NextRequest, { params }: ParamsType) => {
 		const { data: profileData, error: profileError } = (await supabaseServer
 			.from("profiles")
 			.select()
-			.eq("user_id", id)) as { data: Profile[]; error: PostgrestError | null };
+			.eq("user_id", userData[0].id)) as {
+			data: Profile[];
+			error: PostgrestError | null;
+		};
 
 		if (profileError) {
 			return nextResponse(profileError, 400);

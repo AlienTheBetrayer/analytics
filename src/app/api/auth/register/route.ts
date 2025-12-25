@@ -41,7 +41,10 @@ export const POST = async (request: NextRequest) => {
 
 		const { data: userData, error: userError } = (await supabaseServer
 			.from("users")
-			.insert({ username: username.trim(), password: hashedPassword })
+			.insert({
+				username: username.trim().replaceAll(" ", "_"),
+				password: hashedPassword,
+			})
 			.select()) as {
 			data: User[];
 			error: PostgrestError | null;
