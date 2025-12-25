@@ -17,16 +17,11 @@ export const refreshedRequest = async (
 	config?: AxiosRequestConfig,
 ) => {
 	try {
-		switch (type) {
-			case "GET":
-				return await axios.get(route, config);
-			case "POST":
-				return await axios.post(route, data, config);
-		}
+		return await axios.request({ url: route, data, method: type, ...config });
 	} catch {
 		try {
 			await axios.post("api/auth/refresh");
-			return await axios.post(route, data, config);
+			return await axios.request({ url: route, data, method: type, ...config });
 		} catch {
 			throw new Error("Not authenticated.");
 		}
