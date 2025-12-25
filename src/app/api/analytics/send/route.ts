@@ -1,11 +1,8 @@
 import type { PostgrestError } from "@supabase/supabase-js";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import type {
-	AnalyticsMeta,
-	Project,
-	ProjectAggregate,
-} from "@/types/api/database";
+import type { AnalyticsMeta } from "@/types/api/database/analytics";
+import type { Project, ProjectAggregate } from "@/types/api/database/projects";
 import { supabaseServer } from "@/types/server/supabase";
 import { nextResponse } from "@/utils/response";
 

@@ -1,10 +1,7 @@
 import type { PromiseStatus, PromiseStatuses } from "@/hooks/usePromiseStatus";
-import type {
-	AnalyticsMeta,
-	Project,
-	ProjectAggregate,
-	ProjectResponseData,
-} from "../api/database";
+import type { ProjectResponseData } from "../api/database";
+import type { AnalyticsMeta } from "../api/database/analytics";
+import type { Project, ProjectAggregate } from "../api/database/projects";
 
 export type ProjectData = {
 	project: Project;

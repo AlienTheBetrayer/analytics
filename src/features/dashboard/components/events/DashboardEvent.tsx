@@ -3,7 +3,7 @@ import "./DashboardEvent.css";
 import Image from "next/image";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
-import type { AnalyticsMeta } from "@/types/api/database";
+import type { AnalyticsMeta } from "@/types/api/database/analytics";
 import { relativeTime } from "@/utils/relativeTime";
 
 type Props = {
@@ -40,8 +40,12 @@ export const DashboardEvent = ({ event }: Props) => {
 					image="/calendar.svg"
 				/>
 
-				<Tooltip description="Delete this event" className='w-full' direction='left'>
-					<Button className='w-full'>Delete</Button>
+				<Tooltip
+					description="Delete this event"
+					className="w-full"
+					direction="left"
+				>
+					<Button className="w-full">Delete</Button>
 				</Tooltip>
 			</li>
 		</Tooltip>

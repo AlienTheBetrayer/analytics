@@ -1,4 +1,4 @@
-/** biome-ignore-all lint/a11y/noStaticElementInteractions: <explanation> */
+/** biome-ignore-all lint/a11y/noStaticElementInteractions: <a> */
 import { AnimatePresence } from "motion/react";
 import type React from "react";
 import { useTooltip } from "../hooks/useTooltip";
@@ -14,6 +14,7 @@ type Props = {
 	isEnabled?: boolean;
 	direction?: TooltipDirection;
 	type?: TooltipType;
+	inverted?: boolean;
 };
 
 export const Tooltip = ({
@@ -52,7 +53,7 @@ export const Tooltip = ({
 						<div
 							style={directionStyle}
 							ref={controller.ghostRef}
-							className="flex absolute items-center py-1 gap-2 px-4 text-center z-100 pointer-events-none opacity-0! appearance-none"
+							className={`flex absolute items-center py-1 gap-2 px-4 text-center z-100 pointer-events-none opacity-0! appearance-none`}
 						>
 							<div className="flex flex-col">
 								<span className="max-w-96 w-max break-keep">

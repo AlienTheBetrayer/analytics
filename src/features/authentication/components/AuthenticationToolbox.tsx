@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { useAppStore } from "@/zustand/store";
 import { Spinner } from "../../spinner/components/Spinner";
@@ -25,18 +26,37 @@ export const AuthenticationToolbox = () => {
 			) : (
 				<nav className="flex gap-1 items-center">
 					{status.isLoggedIn === true ? (
-						<Button
-							onClick={() => {
-								logout();
-							}}
+						<Tooltip
+							description="Go to your profile"
+							direction="left"
+							inverted={true}
+							element={
+								<Button
+									onClick={() => {
+										logout();
+									}}
+								>
+									{authenticationPromises?.logout === "pending" && <Spinner />}
+									<Image width={16} height={16} alt="" src="/cross.svg" />
+									Log out
+								</Button>
+							}
 						>
-							{authenticationPromises?.logout === "pending" && <Spinner />}
-							Log out
-						</Button>
+							<LinkButton href="/profile">
+								<Image width={16} height={16} alt="" src="/account.svg" />
+								Profile
+							</LinkButton>
+						</Tooltip>
 					) : (
 						<>
-							<LinkButton href="/register">Register</LinkButton>
-							<LinkButton href="/login">Log in</LinkButton>
+							<LinkButton href="/register">
+								<Image width={16} height={16} alt="" src="/plus.svg" />
+								Register
+							</LinkButton>
+							<LinkButton href="/login">
+								<Image width={16} height={16} alt="" src="/auth.svg" />
+								Log in
+							</LinkButton>
 						</>
 					)}
 				</nav>

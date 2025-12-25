@@ -1,5 +1,5 @@
 "use client";
-import type { AnalyticsMeta } from "@/types/api/database";
+import type { AnalyticsMeta } from "@/types/api/database/analytics";
 import { DashboardEvent } from "./DashboardEvent";
 
 type Props = {

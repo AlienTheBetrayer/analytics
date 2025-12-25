@@ -33,26 +33,41 @@ export const HeaderMenu = ({ onInteract }: Props) => {
 			</div>
 
 			<div className="flex flex-col gap-4">
-				<li>
-					<LinkButton
-						href="/register"
-						style="button"
-						className={`p-4! text-5! ${status?.isLoggedIn === false ? "border-awaiting" : ""}`}
-					>
-						<Image src="/plus.svg" width={24} height={24} alt="" />
-						Register
-					</LinkButton>
-				</li>
-				<li>
-					<LinkButton
-						href="/login"
-						style="button"
-						className={`p-4! text-5! ${status?.isLoggedIn === false ? "border-awaiting" : ""}`}
-					>
-						<Image src="/auth.svg" width={24} height={24} alt="" />
-						Log in
-					</LinkButton>
-				</li>
+				{status && status.isLoggedIn === true ? (
+					<li>
+						<LinkButton
+							href="/profile"
+							style="button"
+							className={`p-4! text-5!`}
+						>
+							<Image src="/account.svg" width={24} height={24} alt="" />
+							Profile
+						</LinkButton>
+					</li>
+				) : (
+					<>
+						<li>
+							<LinkButton
+								href="/register"
+								style="button"
+								className={`p-4! text-5! ${status?.isLoggedIn === false ? "border-awaiting" : ""}`}
+							>
+								<Image src="/plus.svg" width={24} height={24} alt="" />
+								Register
+							</LinkButton>
+						</li>
+						<li>
+							<LinkButton
+								href="/login"
+								style="button"
+								className={`p-4! text-5! ${status?.isLoggedIn === false ? "border-awaiting" : ""}`}
+							>
+								<Image src="/auth.svg" width={24} height={24} alt="" />
+								Log in
+							</LinkButton>
+						</li>
+					</>
+				)}
 			</div>
 
 			<div className="flex flex-col gap-4">

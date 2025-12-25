@@ -1,4 +1,5 @@
-import type { Project, ProjectResponseData } from "@/types/api/database";
+import type { ProjectResponseData } from "@/types/api/database";
+import type { Project } from "@/types/api/database/projects";
 import type { DataStore } from "@/types/zustand/data";
 import type { SliceFunction } from "@/types/zustand/utils/sliceFunction";
 import { promiseStatus } from "@/utils/promiseStatus";

@@ -2,7 +2,7 @@ import type { PostgrestError } from "@supabase/supabase-js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import type { NextRequest } from "next/server";
-import type { User } from "@/types/api/database";
+import type { User } from "@/types/api/database/user";
 import { supabaseServer } from "@/types/server/supabase";
 import { nextResponse } from "@/utils/response";
 

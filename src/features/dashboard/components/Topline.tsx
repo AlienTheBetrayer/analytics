@@ -36,7 +36,7 @@ export const Topline = () => {
 					<span className="hidden sm:block">Profiles</span>
 				</LinkButton>
 			</div>
-
+            <hr/>
 			<div className="flex gap-1 w-full items-center">
 				<Image src="/server.svg" alt="" width={16} height={16} />
 				<span>Client</span>

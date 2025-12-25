@@ -1,8 +1,8 @@
 "use client";
 import { useParams } from "next/navigation";
+import { AuthRequired } from "@/features/authentication/components/AuthRequired";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { useAppStore } from "@/zustand/store";
-import { AuthRequired } from "./AuthRequired";
 import { Controller } from "./Controller";
 import { FetchPrompt } from "./FetchPrompt";
 import { ProjectList } from "./ProjectList";
