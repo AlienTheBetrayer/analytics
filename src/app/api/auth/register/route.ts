@@ -1,5 +1,7 @@
+import type { PostgrestError } from "@supabase/supabase-js";
 import bcrypt from "bcrypt";
 import type { NextRequest } from "next/server";
+import type { User } from "@/types/api/database/user";
 import { supabaseServer } from "@/types/server/supabase";
 import { nextResponse } from "@/utils/response";
 
@@ -26,29 +28,39 @@ export const POST = async (request: NextRequest) => {
 
 		const hashedPassword = await bcrypt.hash(password, 10);
 
-		const { data: userData, error: userError0 } = await supabaseServer
-			.from("users")
-			.select()
-			.eq("username", username);
+		const { data: existingUserData, error: existingUserError } =
+			await supabaseServer.from("users").select().eq("username", username);
 
-		if (userError0) {
-			return nextResponse(userError0, 400);
+		if (existingUserError) {
+			return nextResponse(existingUserError, 400);
 		}
 
-		if (userData.length > 0) {
+		if (existingUserData.length > 0) {
 			return nextResponse({ error: "The user already exists." }, 400);
 		}
 
-		const { error: userError } = await supabaseServer
+		const { data: userData, error: userError } = (await supabaseServer
 			.from("users")
-			.insert({ username: username.trim(), password: hashedPassword });
+			.insert({ username: username.trim(), password: hashedPassword })
+			.select()) as {
+			data: User[];
+			error: PostgrestError | null;
+		};
 
 		if (userError) {
 			return nextResponse(userError, 400);
 		}
 
+		const { error: profileError } = await supabaseServer
+			.from("profiles")
+			.insert({ user_id: userData[0].id });
+
+		if (profileError) {
+			return nextResponse(profileError, 400);
+		}
+
 		return nextResponse(
-			{ message: "Successfully created the user! " },
+			{ message: "Successfully created the user and profile! " },
 			200,
 			"user_registered",
 		);
