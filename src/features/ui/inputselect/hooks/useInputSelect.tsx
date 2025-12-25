@@ -127,6 +127,5 @@ export const useInputSelect = (
 		render,
 		expandToggle,
 		inputValue,
-		selectedItem,
 	};
 };

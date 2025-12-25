@@ -8,6 +8,7 @@ export const ProfileEdit = () => {
 	// input states
 	const [status, setStatus] = useState<string>("");
 	const [bio, setBio] = useState<string>("");
+	const [visibility, setVisibility] = useState<string>("");
 
 	return (
 		<div className="flex flex-col w-full gap-4">
@@ -18,7 +19,11 @@ export const ProfileEdit = () => {
 					onChange={(e) => setStatus(e)}
 				/>
 				<Input placeholder="Bio" value={bio} onChange={(e) => setBio(e)} />
-				<InputSelect items={["everyone", "friends", "nobody"]}/>
+				<InputSelect
+					items={["everyone", "friends", "nobody"]}
+					value={visibility}
+					onChange={(e) => setVisibility(e)}
+				/>
 			</div>
 
 			<hr className="mt-auto" />

@@ -26,15 +26,15 @@ export const InputSelect = ({ items, value, onChange }: Props) => {
 				onClick={controller.expandToggle}
 			>
 				<motion.span
-					key={`${controller.selectedItem}`}
+					key={`${controller.inputValue}`}
 					initial={{ y: 7.5 }}
 					animate={{ y: 0 }}
 				>
-					{controller.selectedItem}
+					{controller.inputValue}
 				</motion.span>
 
 				<span className="ml-auto">
-					<small>{items.indexOf(controller.selectedItem)}</small>
+					<small>{items.indexOf(controller.inputValue)}</small>
 				</span>
 			</button>
 			{controller.render()}
