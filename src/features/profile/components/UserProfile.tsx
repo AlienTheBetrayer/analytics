@@ -6,8 +6,6 @@ import { useEffect, useState } from "react";
 import { AuthRequired } from "@/features/authentication/components/AuthRequired";
 import { retrieveResponse } from "@/features/authentication/utils/retrieveResponse";
 import { Spinner } from "@/features/spinner/components/Spinner";
-import { Button } from "@/features/ui/button/components/Button";
-import { Input } from "@/features/ui/input/components/Input";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import type { APIResponseType } from "@/types/api/response";
 import { useAppStore } from "@/zustand/store";
@@ -118,7 +116,7 @@ export const UserProfile = () => {
 					</div>
 
 					<hr className="flex sm:w-px! h-full!" />
-                    <ProfileEdit/>
+					<ProfileEdit />
 				</div>
 			</div>
 		</div>

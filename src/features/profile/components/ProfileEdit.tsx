@@ -2,13 +2,13 @@ import Image from "next/image";
 import { useState } from "react";
 import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
-import { InputSelect } from "@/features/ui/inputselect/components/InputSelect";
+import { Select } from "@/features/ui/select/components/Select";
 
 export const ProfileEdit = () => {
 	// input states
 	const [status, setStatus] = useState<string>("");
 	const [bio, setBio] = useState<string>("");
-	const [visibility, setVisibility] = useState<string>("");
+	const [visibility, setVisibility] = useState<string>("everyone");
 
 	return (
 		<div className="flex flex-col w-full gap-4">
@@ -19,7 +19,7 @@ export const ProfileEdit = () => {
 					onChange={(e) => setStatus(e)}
 				/>
 				<Input placeholder="Bio" value={bio} onChange={(e) => setBio(e)} />
-				<InputSelect
+				<Select
 					items={["everyone", "friends", "nobody"]}
 					value={visibility}
 					onChange={(e) => setVisibility(e)}

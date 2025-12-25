@@ -7,7 +7,7 @@ type Props = {
 	onChange?: (item: string) => void;
 } & Omit<ComponentPropsWithoutRef<"select">, "onChange">;
 
-export const InputSelect = ({ items, value, onChange }: Props) => {
+export const Select = ({ items, value, onChange }: Props) => {
 	// controller
 	const controller = useInputSelect(
 		items,
@@ -34,7 +34,7 @@ export const InputSelect = ({ items, value, onChange }: Props) => {
 				</motion.span>
 
 				<span className="ml-auto">
-					<small>{items.indexOf(controller.inputValue)}</small>
+					<small>{items.indexOf(controller.inputValue) + 1}</small>
 				</span>
 			</button>
 			{controller.render()}
