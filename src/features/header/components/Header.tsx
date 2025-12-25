@@ -1,6 +1,5 @@
 "use client";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDisabledScroll } from "@/hooks/useDisabledScroll";
 import { useAppStore } from "@/zustand/store";
@@ -12,17 +11,10 @@ export const Header = () => {
 	// zustand
 	const status = useAppStore((state) => state.status);
 
-	// next.js
-	const pathName = usePathname();
-
-	// ui states
-	const isBorderAwaiting =
-		status?.isLoggedIn === false && pathName.startsWith("/dashboard");
-
 	// react states
 	const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
-    // disabling scroll
+	// disabling scroll
 	const disabledScroll = useDisabledScroll();
 
 	useEffect(() => {
@@ -72,7 +64,7 @@ export const Header = () => {
 						<li className="flex md:hidden">
 							<Button
 								styles="link"
-								className={`${isBorderAwaiting ? "border-awaiting" : ""}`}
+								className={`${status?.isLoggedIn === false ? "border-awaiting" : ""}`}
 								onClick={() => {
 									setIsMenuOpen(true);
 								}}
@@ -93,7 +85,6 @@ export const Header = () => {
 						onInteract={() => {
 							setIsMenuOpen(false);
 						}}
-						isBorderAwaiting={isBorderAwaiting}
 					/>
 				)}
 			</nav>

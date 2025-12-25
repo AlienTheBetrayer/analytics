@@ -15,7 +15,7 @@ export const Emulate = () => {
 	const data = useAppStore((state) => state.data);
 	const status = useAppStore((state) => state.status);
 
-	// error handling
+	// error handling:
 	// authentcation's missing
 	if (
 		status === null ||

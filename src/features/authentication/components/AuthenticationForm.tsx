@@ -11,6 +11,7 @@ import {
 	type RetrievedResponse,
 	retrieveResponse,
 } from "../utils/retrieveResponse";
+import Image from "next/image";
 
 type Props = {
 	title: string;
@@ -43,8 +44,8 @@ export const AuthenticationForm = ({
 			initial={{ opacity: 0, y: 5 }}
 			animate={{ opacity: 1, y: 0 }}
 			exit={{ opacity: 0, y: 5 }}
-			className={`flex flex-col gap-2 bg-background-a-5 backdrop-blur-xs rounded-xl p-2 max-w-96 w-full z-2
-                sm:hover:scale-105 duration-300
+			className={`flex flex-col max-w-96 w-full z-2
+                sm:hover:scale-105 duration-300 box
                  ${className ?? ""}`}
 		>
 			{/* topline */}
@@ -52,7 +53,7 @@ export const AuthenticationForm = ({
 				<Tooltip description="Easter egg 🌀" direction="top">
 					<div className="rounded-full bg-blue-1 w-1.5 h-1.5" />
 				</Tooltip>
-				<span>{title}</span>
+				<span className="text-foreground-5!">{title}</span>
 				<Tooltip
 					description="Come back home"
 					className="ml-auto"
@@ -107,6 +108,7 @@ export const AuthenticationForm = ({
 				<Tooltip description={button.tooltip} direction={"bottom"}>
 					<Button className="w-full" type="submit">
 						{promises.get("auth_action") === "pending" && <Spinner />}
+                        <Image alt='' width={20} height={20} src="/send.svg"/>
 						{button.text}
 					</Button>
 				</Tooltip>

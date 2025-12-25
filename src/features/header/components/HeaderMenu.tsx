@@ -1,13 +1,16 @@
 import Image from "next/image";
 import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
+import { useAppStore } from "@/zustand/store";
 
 type Props = {
 	onInteract: () => void;
-	isBorderAwaiting: boolean;
 };
 
-export const HeaderMenu = ({ onInteract, isBorderAwaiting }: Props) => {
+export const HeaderMenu = ({ onInteract }: Props) => {
+	// zustand
+	const status = useAppStore((state) => state.status);
+
 	return (
 		// biome-ignore lint/a11y/useKeyWithClickEvents: <when we click on anything the menu has to go away>
 		<ul
@@ -34,7 +37,7 @@ export const HeaderMenu = ({ onInteract, isBorderAwaiting }: Props) => {
 					<LinkButton
 						href="/register"
 						style="button"
-						className={`p-4! text-5! ${isBorderAwaiting ? "border-awaiting" : ""}`}
+						className={`p-4! text-5! ${status?.isLoggedIn === false ? "border-awaiting" : ""}`}
 					>
 						<Image src="/plus.svg" width={24} height={24} alt="" />
 						Register
@@ -44,7 +47,7 @@ export const HeaderMenu = ({ onInteract, isBorderAwaiting }: Props) => {
 					<LinkButton
 						href="/login"
 						style="button"
-						className={`p-4! text-5! ${isBorderAwaiting ? "border-awaiting" : ""}`}
+						className={`p-4! text-5! ${status?.isLoggedIn === false ? "border-awaiting" : ""}`}
 					>
 						<Image src="/auth.svg" width={24} height={24} alt="" />
 						Log in
