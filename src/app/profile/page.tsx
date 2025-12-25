@@ -1,11 +1,11 @@
 "use server";
 
-import { Profile } from "@/features/profile/components/Profile";
+import { UserProfile } from "@/features/profile/components/UserProfile";
 
 const ProfilePage = () => {
 	return (
 		<main className="relative flex flex-col my-auto w-full">
-			<Profile />
+			<UserProfile />
 		</main>
 	);
 };

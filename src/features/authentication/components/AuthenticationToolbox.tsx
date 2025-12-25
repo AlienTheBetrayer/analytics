@@ -5,15 +5,14 @@ import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { useAppStore } from "@/zustand/store";
 import { Spinner } from "../../spinner/components/Spinner";
-import { Button } from "../../ui/button/components/Button";
+import { Button } from "@/features/ui/button/components/Button";
 
 export const AuthenticationToolbox = () => {
 	// zustand
-	const logout = useAppStore((state) => state.logout);
 	const status = useAppStore((state) => state.status);
-	const authenticationPromises = useAppStore(
-		(state) => state.authenticationPromises,
-	);
+
+    // TMEP
+    const logout = useAppStore(state => state.logout);
 
 	return (
 		<div
@@ -30,22 +29,16 @@ export const AuthenticationToolbox = () => {
 							description="Go to your profile"
 							direction="left"
 							inverted={true}
-							element={
-								<Button
-									onClick={() => {
-										logout();
-									}}
-								>
-									{authenticationPromises?.logout === "pending" && <Spinner />}
-									<Image width={16} height={16} alt="" src="/cross.svg" />
-									Log out
-								</Button>
-							}
 						>
 							<LinkButton href="/profile">
 								<Image width={16} height={16} alt="" src="/account.svg" />
 								Profile
 							</LinkButton>
+                            <Button onClick={() => {
+                                logout();
+                            }}>
+                                Log out
+                            </Button>
 						</Tooltip>
 					) : (
 						<>

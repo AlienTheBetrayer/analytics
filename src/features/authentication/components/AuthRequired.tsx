@@ -2,11 +2,17 @@ import Image from "next/image";
 import { Spinner } from "@/features/spinner/components/Spinner";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 
-export const AuthRequired = () => {
+type Props = {
+	description?: string;
+};
+
+export const AuthRequired = ({ description }: Props) => {
 	return (
 		<div className="flex flex-col items-center gap-4">
 			<div className="flex flex-col gap-2">
-				<span>Authentication is required.</span>
+				<span className="text-center">
+					{description ?? "Authentication / permissions are required."}
+				</span>
 				<Spinner styles="big" />
 			</div>
 			<hr />

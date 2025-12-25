@@ -1,6 +1,7 @@
 import type { PostgrestError } from "@supabase/supabase-js";
 import type { NextRequest } from "next/server";
 import type { Profile } from "@/types/api/database/profiles";
+import type { User } from "@/types/api/database/user";
 import { supabaseServer } from "@/types/server/supabase";
 import { nextResponse } from "@/utils/response";
 
@@ -13,9 +14,9 @@ export const GET = async (_request: NextRequest, { params }: ParamsType) => {
 
 	try {
 		const { data: userData, error: userError } = (await supabaseServer
-			.from("profiles")
+			.from("users")
 			.select()
-			.eq("id", id)) as { data: Profile[]; error: PostgrestError | null };
+			.eq("id", id)) as { data: User[]; error: PostgrestError | null };
 
 		if (userError) {
 			return nextResponse(userError, 400);
@@ -46,7 +47,7 @@ export const GET = async (_request: NextRequest, { params }: ParamsType) => {
 			);
 		}
 
-		return nextResponse({ user: userData, profile: profileData }, 200);
+		return nextResponse({ user: userData[0], profile: profileData[0] }, 200);
 	} catch {
 		return nextResponse({ error: "Failed fetching user's profile." }, 400);
 	}

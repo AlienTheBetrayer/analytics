@@ -32,9 +32,13 @@ export const AlreadyLoggedIn = () => {
 							Authentication is <mark>done</mark>
 						</span>
 						<span className="text-center">
-							You can now proceed to your dashboard and all its features with
-							your current access
+							You can now proceed to your dashboard / profile and all its
+							features with your current access
 						</span>
+						<LinkButton href="/profile">
+							<Image alt="" src="/account.svg" width={16} height={16} />
+							Go to profile
+						</LinkButton>
 						<LinkButton href="/dashboard">
 							<Image alt="" src="/dashboard.svg" width={16} height={16} />
 							Go to dashboard

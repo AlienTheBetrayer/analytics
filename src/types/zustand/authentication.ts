@@ -1,11 +1,10 @@
 import type { PromiseStatus, PromiseStatuses } from "@/hooks/usePromiseStatus";
+import type { User } from "../api/database/user";
 import type { ResponseAxios } from "./utils/axios";
-
-export type PermissionRole = "user" | "admin" | null;
 
 export type AuthenticationStatus = {
 	isLoggedIn: boolean;
-	role: PermissionRole;
+	user: User;
 };
 
 export type AuthenticationStore = {

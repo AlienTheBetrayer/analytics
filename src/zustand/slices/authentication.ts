@@ -56,7 +56,7 @@ export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (
 
 					set((state) => ({
 						...state,
-						status: { isLoggedIn: true, role: res.data?.role ?? "user" },
+						status: { isLoggedIn: true, user: res.data?.user },
 					}));
 
 					return res;
@@ -74,7 +74,7 @@ export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (
 					const res = await axios.post("/api/auth/logout");
 					set((state) => ({
 						...state,
-						status: { isLoggedIn: false, role: null },
+						status: null,
 					}));
 
 					return res;
@@ -94,14 +94,14 @@ export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (
 
 						set((state) => ({
 							...state,
-							status: { isLoggedIn: true, role: res.data.role ?? "user" },
+							status: { isLoggedIn: true, user: res.data.user },
 						}));
 
 						return res;
 					} catch (e) {
 						set((state) => ({
 							...state,
-							status: { isLoggedIn: false, role: null },
+							status: null,
 						}));
 						throw e;
 					}

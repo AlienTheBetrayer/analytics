@@ -114,7 +114,7 @@ export const POST = async (request: NextRequest) => {
 		}
 
 		const response = nextResponse(
-			{ message: "Authenticated!", role: userData[0].role },
+			{ message: "Authenticated!", user: userData[0] },
 			200,
 			"user_refreshed",
 		);

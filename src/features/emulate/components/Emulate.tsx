@@ -20,7 +20,7 @@ export const Emulate = () => {
 	if (
 		status === null ||
 		status?.isLoggedIn === false ||
-		status?.role === "user"
+		status?.user.role === "user"
 	) {
 		return (
 			<div className="flex flex-col w-full max-w-64 m-auto box">
