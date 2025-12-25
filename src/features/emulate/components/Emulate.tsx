@@ -1,5 +1,6 @@
 "use client";
 import { useParams } from "next/navigation";
+import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { useAppStore } from "@/zustand/store";
 import { AuthRequired } from "./AuthRequired";
 import { Controller } from "./Controller";
@@ -28,17 +29,6 @@ export const Emulate = () => {
 		);
 	}
 
-	/*
-        1. data is not available / id is defined but project is not available:
-            other projects list
-            refetch prompt
-        2. data is available & id is defined and project is available 
-            show project data + emulation
-            other projects list
-        3. data is available yet id is undefined 
-            show other projects list
-    */
-
 	// no data fetched
 	if (data === null) {
 		return (
@@ -62,7 +52,12 @@ export const Emulate = () => {
 	return (
 		<div className="flex flex-col w-full max-w-lg box m-auto">
 			<div className="flex flex-col gap-2">
-				<span className="text-center text-foreground-2! text-5!">
+				<div className="flex">
+					<LinkButton href="/dashboard" className="ml-auto">
+						✕ Go back
+					</LinkButton>
+				</div>
+				<span className="text-center text-foreground-2! text-5! whitespace-nowrap">
 					Project selection
 				</span>
 				<span className="text-center">

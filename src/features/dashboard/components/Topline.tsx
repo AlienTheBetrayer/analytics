@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
+import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { useAppStore } from "@/zustand/store";
 import { Button } from "../../ui/button/components/Button";
 
@@ -9,13 +10,35 @@ export const Topline = () => {
 
 	return (
 		<nav className="flex flex-col items-center gap-2">
+			<div className="flex w-full gap-2">
+				<LinkButton
+					style="button"
+					href="/dashboard/emulate/"
+					className="w-full"
+				>
+					<Image width={16} height={16} alt="emulate" src="/emulate.svg" />
+					<span className="hidden sm:block">Emulate</span>
+				</LinkButton>
+				<LinkButton
+					style="button"
+					href="/dashboard/notifications/"
+					className="w-full"
+				>
+					<Image width={16} height={16} alt="notifications" src="/send.svg" />
+					<span className="hidden sm:block">Notifications</span>
+				</LinkButton>
+				<LinkButton
+					style="button"
+					href="/dashboard/profiles/"
+					className="w-full"
+				>
+					<Image width={16} height={16} alt="profiles" src="/account.svg" />
+					<span className="hidden sm:block">Profiles</span>
+				</LinkButton>
+			</div>
+
 			<div className="flex gap-1 w-full items-center">
-				<Image
-					src="/server.svg"
-					alt=""
-					width={16}
-					height={16}
-				/>
+				<Image src="/server.svg" alt="" width={16} height={16} />
 				<span>Client</span>
 			</div>
 
@@ -29,12 +52,7 @@ export const Topline = () => {
 
 				<Tooltip description="Re-sync all data" className="ml-auto">
 					<Button>
-						<Image
-							src="/download.svg"
-							alt=""
-							width={16}
-							height={16}
-						/>
+						<Image src="/download.svg" alt="" width={16} height={16} />
 						<mark>Sync</mark>
 					</Button>
 				</Tooltip>

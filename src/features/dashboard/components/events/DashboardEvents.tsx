@@ -38,9 +38,7 @@ const _DashboardEvents = () => {
 	if (data[selectedProjectId].events.length === 0) {
 		return (
 			<>
-				<span className="m-auto">
-					No <u>events</u> so far...
-				</span>
+				<span className="m-auto">No events so far...</span>
 				<span className="m-auto absolute text-[14rem]! left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
 					<small>?</small>
 				</span>
@@ -50,11 +48,7 @@ const _DashboardEvents = () => {
 
 	return (
 		<>
-			<span className="sm:text-center text-5!">
-				{data[selectedProjectId].project?.name}
-				{"'s"} events
-			</span>
-
+			<hr className="block! lg:hidden!" />
 			<DashboardEventList
 				events={data[selectedProjectId].events}
 				scrollRef={scroll.ref}

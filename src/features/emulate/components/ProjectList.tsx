@@ -22,7 +22,7 @@ export const ProjectList = ({ data }: Props) => {
 				Object.values(data).map((projectData) => (
 					<li key={projectData.project.name}>
 						<LinkButton
-							href={`/emulate/${projectData.project.id}`}
+							href={`/dashboard/emulate/${projectData.project.id}`}
 							className={`flex flex-row! w-full h-full box hover:brightness-200 active:brightness-300 duration-300 rounded-full!
                             ${projectData.project.id === id ? "border-blue-1!" : ""}`}
 						>

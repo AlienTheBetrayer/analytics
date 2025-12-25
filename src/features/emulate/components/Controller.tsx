@@ -1,6 +1,7 @@
 import { useParams } from "next/navigation";
 import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
+import Image from "next/image";
 
 export const Controller = () => {
 	// url
@@ -32,7 +33,10 @@ export const Controller = () => {
 				>
 					<Input placeholder="Event Type" required minLength={5} />
 					<Input placeholder="Description (optional)" />
-					<Button type="submit">Send</Button>
+					<Button type="submit">
+                        <Image width={20} height={20} src="/send.svg" alt=''/>
+                        Send
+                    </Button>
 				</form>
 			</div>
 		</div>
