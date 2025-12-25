@@ -42,12 +42,10 @@ export const useInputSelect = (
 	// hotkeys
 	useEffect(() => {
 		const handle = (e: KeyboardEvent) => {
-			if (!(inputRef.current && inputRef.current === document.activeElement))
-				return;
-
 			switch (e.code) {
 				case "Escape":
-					inputRef.current.blur();
+					inputRef.current?.blur();
+                    setIsExpanded(false);
 					break;
 			}
 		};
