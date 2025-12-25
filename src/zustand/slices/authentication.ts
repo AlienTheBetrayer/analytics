@@ -56,7 +56,7 @@ export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (
 
 					set((state) => ({
 						...state,
-						status: { isLoggedIn: true, user: res.data?.user },
+						status: { isLoggedIn: true, user: res.data.user },
 					}));
 
 					return res;

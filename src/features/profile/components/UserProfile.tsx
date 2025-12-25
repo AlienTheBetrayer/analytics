@@ -25,12 +25,7 @@ export const UserProfile = () => {
 	const getProfile = useAppStore((state) => state.getProfile);
 
 	// user id to fetch data from
-	const username =
-		status !== null && name === undefined
-			? status.user.username
-			: name !== undefined
-				? name
-				: undefined;
+	const retrievedUsername = name ?? status?.user.username;
 
 	// getting data + status
 	const [responseStatus, setResponseStatus] = useState<
@@ -38,20 +33,20 @@ export const UserProfile = () => {
 	>();
 
 	useEffect(() => {
-		if (username === undefined) return;
+		if (retrievedUsername === undefined) return;
 
 		const get = async () => {
 			const res = await retrieveResponse(
-				async () => await getProfile(username),
+				async () => await getProfile(retrievedUsername),
 			);
 			setResponseStatus(res.retrievedResponse.type);
 		};
 
 		get();
-	}, [username, getProfile]);
+	}, [retrievedUsername, getProfile]);
 
-	// error / routes handling
-	if (username === undefined) {
+	// viewing current profile but not logged in
+	if (retrievedUsername === undefined) {
 		return (
 			<div className="box max-w-64 w-full m-auto">
 				<AuthRequired description="Log in to see your own profile" />
@@ -59,6 +54,7 @@ export const UserProfile = () => {
 		);
 	}
 
+	// wrong user
 	if (
 		responseStatus === "user_not_exists" ||
 		responseStatus === "profile_not_exists"
@@ -87,7 +83,10 @@ export const UserProfile = () => {
 		);
 	}
 
-	if (profilePromises?.profile === "pending" || !profiles?.[username]) {
+	if (
+		profilePromises?.profile === "pending" ||
+		profiles?.[retrievedUsername] === undefined
+	) {
 		return (
 			<div className="box max-w-lg w-full m-auto">
 				<span className="m-auto">Loading profile...</span>
@@ -96,7 +95,7 @@ export const UserProfile = () => {
 		);
 	}
 
-	const data = profiles[username];
+	const data = profiles[retrievedUsername];
 
 	return (
 		<div className="box max-w-xl w-full m-auto">
@@ -112,7 +111,7 @@ export const UserProfile = () => {
 				<div className="flex flex-col sm:flex-row gap-4">
 					<div className="flex flex-col items-center gap-2">
 						<div className="bg-blue-3 rounded-full h-48 aspect-square" />
-						<span className='text-foreground-5!'>
+						<span className="text-foreground-5!">
 							{data.user.role[0].toUpperCase() + data.user.role.substring(1)}
 						</span>
 					</div>

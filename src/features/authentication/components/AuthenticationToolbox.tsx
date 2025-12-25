@@ -2,17 +2,20 @@
 
 import Image from "next/image";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
+import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { useAppStore } from "@/zustand/store";
 import { Spinner } from "../../spinner/components/Spinner";
-import { Button } from "@/features/ui/button/components/Button";
 
 export const AuthenticationToolbox = () => {
 	// zustand
 	const status = useAppStore((state) => state.status);
+	const authenticationPromises = useAppStore(
+		(state) => state.authenticationPromises,
+	);
 
-    // TMEP
-    const logout = useAppStore(state => state.logout);
+	// TMEP
+	const logout = useAppStore((state) => state.logout);
 
 	return (
 		<div
@@ -20,11 +23,12 @@ export const AuthenticationToolbox = () => {
         fixed top-4 right-4 items-center z-2 ${status?.isLoggedIn !== true ? "border-awaiting" : ""}`}
 		>
 			<Image src="/auth.svg" alt="" width={20} height={20} />
-			{status === null ? (
+			{authenticationPromises === null ||
+			authenticationPromises?.refresh === "pending" ? (
 				<Spinner />
 			) : (
 				<nav className="flex gap-1 items-center">
-					{status.isLoggedIn === true ? (
+					{status ? (
 						<Tooltip
 							description="Go to your profile"
 							direction="left"
@@ -34,11 +38,13 @@ export const AuthenticationToolbox = () => {
 								<Image width={16} height={16} alt="" src="/account.svg" />
 								Profile
 							</LinkButton>
-                            <Button onClick={() => {
-                                logout();
-                            }}>
-                                Log out
-                            </Button>
+							<Button
+								onClick={() => {
+									logout();
+								}}
+							>
+								Log out
+							</Button>
 						</Tooltip>
 					) : (
 						<>
