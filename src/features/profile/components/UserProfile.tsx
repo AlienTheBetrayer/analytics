@@ -11,6 +11,7 @@ import { Input } from "@/features/ui/input/components/Input";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import type { APIResponseType } from "@/types/api/response";
 import { useAppStore } from "@/zustand/store";
+import { ProfileEdit } from "./ProfileEdit";
 
 export const UserProfile = () => {
 	// url
@@ -117,21 +118,7 @@ export const UserProfile = () => {
 					</div>
 
 					<hr className="flex sm:w-px! h-full!" />
-					<div className="flex flex-col w-full gap-4">
-						<div className="flex flex-col gap-2">
-							<Input placeholder="Status" />
-							<Input placeholder="Bio" />
-							<Input placeholder="Bio" />
-						</div>
-
-						<hr className="mt-auto" />
-						<div className="flex flex-col gap-2">
-							<Button>
-								<Image width={20} height={20} src="/send.svg" alt="" />
-								Apply changes
-							</Button>
-						</div>
-					</div>
+                    <ProfileEdit/>
 				</div>
 			</div>
 		</div>

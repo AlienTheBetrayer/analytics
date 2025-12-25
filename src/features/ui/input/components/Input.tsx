@@ -31,7 +31,7 @@ export const Input = ({
 				disabled={!isEnabled}
 				type="text"
 				required={required}
-				className={`w-full h-full bg-linear-to-bl 
+				className={`w-full h-full min-h-8 bg-linear-to-bl 
             from-background-2 to-background-1 outline-2 outline-background-5 p-2 rounded-xl focus:outline-blue-1 
              hover:brightness-125 transition-colors duration-150
             ${required === true ? "invalid:outline-red-2! valid:outline-blue-2!" : ""} 

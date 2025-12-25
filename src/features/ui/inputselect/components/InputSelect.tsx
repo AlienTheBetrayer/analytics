@@ -1,0 +1,43 @@
+import { motion } from "motion/react";
+import type { ComponentPropsWithoutRef } from "react";
+import { useInputSelect } from "../hooks/useInputSelect";
+
+type Props = {
+	items: string[];
+	onChange?: (item: string) => void;
+} & Omit<ComponentPropsWithoutRef<"select">, "onChange">;
+
+export const InputSelect = ({ items, value, onChange }: Props) => {
+	// controller
+	const controller = useInputSelect(
+		items,
+		value as string | undefined,
+		onChange,
+	);
+
+	return (
+		<>
+			<button
+				ref={controller.inputRef}
+				type="button"
+				className={`flex w-full min-h-8 bg-linear-to-bl 
+            from-background-2 to-background-1 outline-2 outline-background-5 p-2 rounded-xl focus:outline-blue-1 
+             hover:brightness-125 transition-colors duration-150 cursor-pointer`}
+				onClick={controller.expandToggle}
+			>
+				<motion.span
+					key={`${controller.selectedItem}`}
+					initial={{ y: 7.5 }}
+					animate={{ y: 0 }}
+				>
+					{controller.selectedItem}
+				</motion.span>
+
+				<span className="ml-auto">
+					<small>{items.indexOf(controller.selectedItem)}</small>
+				</span>
+			</button>
+			{controller.render()}
+		</>
+	);
+};
