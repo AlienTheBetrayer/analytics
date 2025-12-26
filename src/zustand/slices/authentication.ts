@@ -158,5 +158,13 @@ export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (
 				return res;
 			});
 		},
+
+		changePassword: async (id: string, password: string) => {
+			const { setPromise } = get();
+
+			return await setPromise(`password_change`, async () => {
+				return await axios.post(`/api/auth/password-change/`, { id, password });
+			});
+		},
 	};
 };

@@ -8,21 +8,28 @@ type Props = {
 export const Privacy = ({ data }: Props) => {
 	return (
 		<div className="flex flex-col gap-4 p-2 w-full">
-			<div className="flex flex-col gap-2">
+			<div className="flex flex-col gap-2 items-center">
 				<span className="text-center text-foreground-2! text-5!">
 					<mark>{data.user.username}</mark>
 					's profile
 				</span>
+                <span>
+                    Account's Privacy
+                </span>
 			</div>
 
 			<hr />
-			<div className="flex flex-col sm:flex-row gap-4">
-				<div className="flex flex-col items-center gap-2">
+			<div className="flex flex-col sm:flex-row gap-4 grow w-full">
+				<div className="flex flex-col items-center gap-2 sm:w-80">
 					<div className="bg-blue-3 rounded-full h-48 aspect-square" />
 					<span className="text-foreground-5!">
 						{data.user.role[0].toUpperCase() + data.user.role.substring(1)}
 					</span>
 				</div>
+				<hr className="sm:w-px! sm:h-full" />
+				<div className="flex flex-col gap-2 h-full w-full grow">
+
+                </div>
 			</div>
 		</div>
 	);

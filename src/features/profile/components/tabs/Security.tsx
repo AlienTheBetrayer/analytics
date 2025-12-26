@@ -26,6 +26,7 @@ export const Security = ({ data }: Props) => {
 	const deleteProfileData = useAppStore((state) => state.deleteProfileData);
 	const getSessions = useAppStore((state) => state.getSessions);
 	const deleteSession = useAppStore((state) => state.deleteSession);
+	const changePassword = useAppStore((state) => state.changePassword);
 	const terminateOtherSessions = useAppStore(
 		(state) => state.terminateOtherSessions,
 	);
@@ -90,7 +91,7 @@ export const Security = ({ data }: Props) => {
 							logout();
 						}}
 					>
-                        {promises.logout === 'pending' && <Spinner/>}
+						{promises.logout === "pending" && <Spinner />}
 						<Image width={16} height={16} alt="" src="/auth.svg" />
 						Log out
 					</Button>
@@ -102,6 +103,7 @@ export const Security = ({ data }: Props) => {
 						className="flex flex-col gap-2"
 						onSubmit={(e) => {
 							e.preventDefault();
+							changePassword(data.user.id, password);
 						}}
 					>
 						<label htmlFor="bio" className="flex justify-between items-center">
@@ -109,10 +111,11 @@ export const Security = ({ data }: Props) => {
 							<small> (a new strong password)</small>
 						</label>
 						<Input
+                        type='password'
 							value={password}
 							onChange={(e) => setPassword(e)}
-							placeholder="24 characters max"
-							maxLength={24}
+							placeholder="at least 6 characters"
+							minLength={6}
 						/>
 
 						<hr className="mt-auto" />
@@ -155,7 +158,7 @@ export const Security = ({ data }: Props) => {
 											{session.isCurrent ? "CURRENT SESSION" : session.id}
 										</span>
 										<Button
-                                            isEnabled={!session.isCurrent}
+											isEnabled={!session.isCurrent}
 											onClick={async () => {
 												deleteSession(session.id);
 											}}

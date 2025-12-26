@@ -86,4 +86,12 @@ export type AuthenticationStore = {
 	 * @returns a promise containing the response
 	 */
 	terminateOtherSessions: () => Promise<ResponseAxios>;
+
+    /**
+     * changes the password of the user with the id
+     * @param id an id of the user
+     * @param password a new password
+     * @returns a promise containing the response
+     */
+    changePassword: (id: string, password: string) => Promise<ResponseAxios>;
 };
