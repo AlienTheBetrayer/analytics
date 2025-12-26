@@ -45,19 +45,18 @@ export const UserProfile = () => {
 		  }
 		| undefined
 	>(() => {
-		if (!profiles) return undefined;
-
-		const found = Object.values(profiles).find((p) => p.user.username === name);
-
-		return found;
+		return profiles === null
+			? undefined
+			: Object.values(profiles).find((p) => p.user.username === name);
 	});
 
+    // fetch if haven't cached
 	useEffect(() => {
 		if (retrievedUsername === undefined || retrievedData !== undefined) return;
 
 		const get = async () => {
 			const res = await retrieveResponse(
-				async () => await getProfileByName(retrievedUsername, true),
+				async () => await getProfileByName(retrievedUsername),
 			);
 			setResponseStatus(res.retrievedResponse.type);
 			setRetrievedData(res.axiosResponse?.data);
@@ -104,6 +103,7 @@ export const UserProfile = () => {
 		);
 	}
 
+    // loading user
 	if (profilePromises?.profile === "pending" || retrievedData === undefined) {
 		return (
 			<div className="box max-w-lg w-full m-auto">
@@ -113,6 +113,7 @@ export const UserProfile = () => {
 		);
 	}
 
+    // retrieved data from the retrieved user based on the url
 	const data = retrievedData;
 
 	return (
