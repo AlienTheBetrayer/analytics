@@ -9,7 +9,7 @@ export type AuthenticationStatus = {
 export type AuthenticationStore = {
 	// login status
 	status?: AuthenticationStatus;
-    runningSessions?: number[];
+    runningSessions?: string[];
 
 	/**
 	 * sets the current authentication status
@@ -60,4 +60,10 @@ export type AuthenticationStore = {
      * @returns a promise containing the response
      */
     getSessions: (id: string, caching?: boolean) => Promise<ResponseAxios | undefined>;
+
+    /**
+     * deletes a specific session with the id, making the user with that session unable to login 
+     * @param id id of the session
+     */
+    deleteSession: (id: string) => Promise<ResponseAxios>;
 };

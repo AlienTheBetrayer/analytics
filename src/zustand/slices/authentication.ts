@@ -99,12 +99,27 @@ export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (
 			return await setPromise("sessions", async () => {
 				const res = await axios.get(`/api/auth/sessions/${id}`);
 				const data = res.data as {
-					sessions: { id: number }[];
+					sessions: { id: string }[];
 				};
 
 				set((state) => ({
 					...state,
 					runningSessions: data.sessions.map((s) => s.id),
+				}));
+
+				return res;
+			});
+		},
+
+		deleteSession: async (id: string) => {
+			const { setPromise } = get();
+
+			return await setPromise(`session_logout_${id}`, async () => {
+				const res = await axios.post(`/api/auth/logout/${id}`);
+
+				set((state) => ({
+					...state,
+					runningSessions: state.runningSessions?.filter((s) => s !== id),
 				}));
 
 				return res;

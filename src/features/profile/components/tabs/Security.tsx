@@ -25,6 +25,7 @@ export const Security = ({ data }: Props) => {
 	const deleteUser = useAppStore((state) => state.deleteUser);
 	const deleteProfileData = useAppStore((state) => state.deleteProfileData);
 	const getSessions = useAppStore((state) => state.getSessions);
+	const deleteSession = useAppStore((state) => state.deleteSession);
 
 	useEffect(() => {
 		getSessions(data.user.id, false);
@@ -137,7 +138,10 @@ export const Security = ({ data }: Props) => {
 								<React.Fragment key={session}>
 									<li className="grid grid-cols-[1fr_40%] gap-4 items-center">
 										<span className="truncate">{session}</span>
-										<Button onClick={() => {}}>
+										<Button onClick={() => {
+                                            deleteSession(session);
+                                        }}>
+                                            {promises[`session_logout_${session}`] === 'pending' && <Spinner/>}
 											<Image src="/cross.svg" width={16} height={16} alt="" />
 											Terminate
 										</Button>
