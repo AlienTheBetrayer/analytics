@@ -11,7 +11,7 @@ type Props = {
 
 export const Menu = ({ items, value, type = "default" }: Props) => {
 	// controller
-	const controller = useMenu(items, value);
+	const controller = useMenu(items, value, type);
 
 	return (
 		<div className="flex flex-col grow h-full w-full gap-2">

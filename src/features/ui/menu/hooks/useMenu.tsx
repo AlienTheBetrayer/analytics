@@ -2,12 +2,14 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import type { MenuItem } from "../types/menu";
 
-export const useMenu = (items: MenuItem[], value?: number) => {
+export const useMenu = (items: MenuItem[], value?: number, type?: string) => {
 	// states
 	const [selectedItem, setSelectedItem] = useState<number>(value ?? 0);
 
 	// refs
-	const buttonRefs = useRef<(HTMLButtonElement | HTMLAnchorElement | null)[]>([]);
+	const buttonRefs = useRef<(HTMLButtonElement | HTMLAnchorElement | null)[]>(
+		[],
+	);
 	const selectRef = useRef<HTMLDivElement | null>(null);
 
 	// positioning
@@ -17,16 +19,26 @@ export const useMenu = (items: MenuItem[], value?: number) => {
 
 			const buttonBounds =
 				buttonRefs.current[selectedItem].getBoundingClientRect();
+
 			selectRef.current.style.left = `${buttonBounds.left}px`;
 			selectRef.current.style.top = `${buttonBounds.bottom}px`;
-			selectRef.current.style.width = `${buttonBounds.width}px`;
 			selectRef.current.style.display = `block`;
+			selectRef.current.style.width = `${buttonBounds.width}px`;
+
+			if (type === "link") {
+				selectRef.current.style.transform = "scale(0, 1)";
+				requestAnimationFrame(() => {
+					if (selectRef.current) {
+						selectRef.current.style.transform = "scale(1, 1)";
+					}
+				});
+			}
 		};
 		handle();
 
 		window.addEventListener("resize", handle);
 		return () => window.removeEventListener("resize", handle);
-	}, [selectedItem]);
+	}, [selectedItem, type]);
 
 	const select = useCallback((idx: number) => {
 		setSelectedItem(idx);
@@ -40,7 +52,7 @@ export const useMenu = (items: MenuItem[], value?: number) => {
 	const renderSelect = useCallback(() => {
 		return createPortal(
 			<div
-				className="absolute hidden transition-all duration-300 ease-out h-[1.5px] bg-blue-1"
+				className="absolute hidden transition-all duration-300 ease-out h-[1.5px] bg-blue-1 origin-center"
 				ref={selectRef}
 			/>,
 			document.body,
