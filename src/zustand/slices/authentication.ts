@@ -66,16 +66,20 @@ export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (
 		},
 
 		logout: async () => {
-			const { setAuthenticationPromise } = get();
+			const { setAuthenticationPromise, status } = get();
 
 			return await promiseStatus(
 				"logout",
 				async () => {
-					const res = await axios.post("/api/auth/logout");
-					set((state) => ({
-						...state,
-						status: null,
-					}));
+                    const res = await axios.post("/api/auth/logout");
+					set((state) => {
+                        const newProfiles = { ...(state.profiles ?? {}) };
+                        if(status !== null) {
+                            delete newProfiles[status?.user.id];
+                        }
+                        
+                        return { ...state, status: null, profiles: newProfiles };
+					});
 
 					return res;
 				},
