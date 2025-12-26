@@ -135,13 +135,18 @@ export const Security = ({ data }: Props) => {
 						{runningSessions !== undefined &&
 						promises.sessions !== "pending" ? (
 							runningSessions.map((session) => (
-								<React.Fragment key={session}>
-									<li className="grid grid-cols-[1fr_40%] gap-4 items-center">
-										<span className="truncate">{session}</span>
-										<Button onClick={() => {
-                                            deleteSession(session);
-                                        }}>
-                                            {promises[`session_logout_${session}`] === 'pending' && <Spinner/>}
+								<React.Fragment key={session.id}>
+									<li
+										className={`grid grid-cols-[1fr_40%] gap-4 items-center rounded-full p-1.5! ${session.isCurrent ? "border border-blue-1" : ""}`}
+									>
+										<span className="truncate">{session.id}</span>
+										<Button
+											onClick={() => {
+												deleteSession(session.id);
+											}}
+										>
+											{promises[`session_logout_${session.id}`] ===
+												"pending" && <Spinner />}
 											<Image src="/cross.svg" width={16} height={16} alt="" />
 											Terminate
 										</Button>

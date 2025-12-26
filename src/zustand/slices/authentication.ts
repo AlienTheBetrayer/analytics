@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { AuthenticationStore } from "@/types/zustand/authentication";
+import type { AuthenticationSession, AuthenticationStore } from "@/types/zustand/authentication";
 import type { SliceFunction } from "@/types/zustand/utils/sliceFunction";
 
 export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (
@@ -99,12 +99,12 @@ export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (
 			return await setPromise("sessions", async () => {
 				const res = await axios.get(`/api/auth/sessions/${id}`);
 				const data = res.data as {
-					sessions: { id: string }[];
+					sessions: AuthenticationSession[];
 				};
 
 				set((state) => ({
 					...state,
-					runningSessions: data.sessions.map((s) => s.id),
+					runningSessions: data.sessions
 				}));
 
 				return res;
@@ -119,7 +119,7 @@ export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (
 
 				set((state) => ({
 					...state,
-					runningSessions: state.runningSessions?.filter((s) => s !== id),
+					runningSessions: state.runningSessions?.filter((s) => s.id !== id),
 				}));
 
 				return res;

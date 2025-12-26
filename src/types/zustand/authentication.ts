@@ -6,10 +6,15 @@ export type AuthenticationStatus = {
 	user: User;
 };
 
+export type AuthenticationSession = {
+    id: string;
+    isCurrent: boolean;
+}
+
 export type AuthenticationStore = {
 	// login status
 	status?: AuthenticationStatus;
-    runningSessions?: string[];
+    runningSessions?: AuthenticationSession[];
 
 	/**
 	 * sets the current authentication status
