@@ -1,5 +1,6 @@
 import type { PostgrestError } from "@supabase/supabase-js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import type { NextRequest } from "next/server";
 import type { Token } from "@/types/api/database/authentication";
 import { supabaseServer } from "@/types/server/supabase";
@@ -27,10 +28,15 @@ export const GET = async (
 			return nextResponse({ error: "Not authenticated." }, 400);
 		}
 
-		const sessions = await Promise.all(sessionsData.map(async (s) => ({
-			id: s.id,
-			isCurrent: await bcrypt.compare(refreshToken, s.token),
-		})));
+		const refreshPayload = jwt.verify(
+			refreshToken,
+			process.env.REFRESH_SECRET as string,
+		) as { session_id: string; id: string; role: string };
+
+		const sessions = sessionsData.map(s => ({
+            id: s.id,
+            isCurrent: refreshPayload.session_id === s.session_id
+        }))
 
 		return nextResponse({ sessions }, 200);
 	} catch {

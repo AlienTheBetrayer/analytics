@@ -18,7 +18,7 @@ export const POST = async (request: NextRequest) => {
 		const payload = jwt.verify(
 			refreshToken,
 			process.env.REFRESH_SECRET as string,
-		) as { id: string; role: string };
+		) as { id: string; role: string, session: string };
 
 		// get all server-side tokens from the current user
 		const { data: refreshTokensData, error: refreshTokensError } =
@@ -86,8 +86,10 @@ export const POST = async (request: NextRequest) => {
 			{ expiresIn: "15m" },
 		);
 
+        const session_id = crypto.randomUUID();
+
 		const newRefreshToken = jwt.sign(
-			{ id: payload.id, role: userData[0].role },
+			{ session_id, id: payload.id, role: userData[0].role },
 			process.env.REFRESH_SECRET as string,
 			{ expiresIn: "7d" },
 		);
@@ -107,6 +109,7 @@ export const POST = async (request: NextRequest) => {
 			.insert({
 				user_id: payload.id,
 				token: await bcrypt.hash(newRefreshToken, 10),
+                session_id
 			});
 
 		if (refreshRotateError) {

@@ -58,12 +58,14 @@ export const POST = async (request: NextRequest) => {
 			{ expiresIn: "15m" },
 		);
 
+        const session_id = crypto.randomUUID();
+
 		const refreshToken = jwt.sign(
-			{ id: userData[0].id, role: userData[0].role },
+			{ session_id, id: userData[0].id, role: userData[0].role },
 			process.env.REFRESH_SECRET as string,
 			{ expiresIn: "7d" },
 		);
-
+        
 		// http-only cookies
 		const res = nextResponse(
 			{ message: "Authenticated!", user: userData[0] },
@@ -90,6 +92,7 @@ export const POST = async (request: NextRequest) => {
 		const { error: refreshError } = await supabaseServer.from("tokens").insert({
 			user_id: userData[0].id,
 			token: await bcrypt.hash(refreshToken, 10),
+            session_id
 		});
 
 		if (refreshError) {

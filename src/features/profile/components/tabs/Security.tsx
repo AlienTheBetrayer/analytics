@@ -137,7 +137,7 @@ export const Security = ({ data }: Props) => {
 							runningSessions.map((session) => (
 								<React.Fragment key={session.id}>
 									<li
-										className={`grid grid-cols-[1fr_40%] gap-4 items-center rounded-full p-1.5! ${session.isCurrent ? "border border-blue-1" : ""}`}
+										className={`grid grid-cols-[1fr_40%] gap-4 items-center rounded-xl p-1.5! ${session.isCurrent ? "border border-blue-2" : ""}`}
 									>
 										<span className="truncate">{session.id}</span>
 										<Button
@@ -192,6 +192,11 @@ export const Security = ({ data }: Props) => {
 							Delete account
 						</Button>
 					</Tooltip>
+                    <Button onClick={() => {
+                        logout();
+                    }}>
+                            Log out 
+                    </Button>
 				</div>
 			</div>
 		</div>
