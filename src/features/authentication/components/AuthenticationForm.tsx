@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import Image from "next/image";
 import { useState } from "react";
 import { usePromiseStatus } from "@/hooks/usePromiseStatus";
 import type { ResponseAxios } from "@/types/zustand/utils/axios";
@@ -11,7 +12,6 @@ import {
 	type RetrievedResponse,
 	retrieveResponse,
 } from "../utils/retrieveResponse";
-import Image from "next/image";
 
 type Props = {
 	title: string;
@@ -21,6 +21,7 @@ type Props = {
 	};
 	onSubmit: (username: string, password: string) => Promise<ResponseAxios>;
 	className?: string;
+	type?: "login" | "register";
 };
 
 export const AuthenticationForm = ({
@@ -28,6 +29,7 @@ export const AuthenticationForm = ({
 	button,
 	onSubmit,
 	className,
+	type = "login",
 }: Props) => {
 	// input states
 	const [username, setUsername] = useState<string>("");
@@ -85,30 +87,42 @@ export const AuthenticationForm = ({
 					}
 				}}
 			>
+				<label htmlFor="username" className="flex justify-between">
+					Username
+					{type === "register" && <small>(your unique name)</small>}
+				</label>
 				<Input
+					id="username"
 					value={username}
-					placeholder={"Username"}
+					placeholder={"at least 6 characters"}
 					onChange={(value) => setUsername(value)}
 					type="text"
 					aria-label="Username"
 					required
 					minLength={6}
 				/>
+				<hr />
 
+				<label htmlFor="password" className="flex justify-between">
+					Password
+					{type === "register" && <small>(create a strong password)</small>}
+				</label>
 				<Input
+					id="password"
 					value={password}
-					placeholder={"Password"}
+					placeholder={"at least 6 characters"}
 					onChange={(value) => setPassword(value)}
 					type="password"
 					aria-label="Password"
 					required
 					minLength={6}
 				/>
+				<hr />
 
 				<Tooltip description={button.tooltip} direction={"bottom"}>
 					<Button className="w-full" type="submit">
 						{promises.get("auth_action") === "pending" && <Spinner />}
-                        <Image alt='' width={20} height={20} src="/send.svg"/>
+						<Image alt="" width={20} height={20} src="/send.svg" />
 						{button.text}
 					</Button>
 				</Tooltip>

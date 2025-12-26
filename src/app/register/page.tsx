@@ -25,6 +25,7 @@ const RegisterPage = () => {
 						</p>
 					</div>
 					<AuthenticationForm
+                        type='register'
 						title="Account creation"
 						button={{ text: "Register", tooltip: "Create a new account" }}
 						onSubmit={async (username, password) => {
