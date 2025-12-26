@@ -8,11 +8,12 @@ type Props = {
 export const Overview = ({ data }: Props) => {
 	return (
 		<div className="flex flex-col gap-4 p-2 w-full grow">
-			<div className="flex flex-col gap-2">
-				<span className="text-center text-foreground-2! text-5!">
+			<div className="flex flex-col gap-2 items-center">
+				<span className="text-foreground-2! text-5!">
 					<mark>{data.user.username}</mark>
 					's profile
 				</span>
+                <span>Profile overview</span>
 			</div>
 
 			<hr />

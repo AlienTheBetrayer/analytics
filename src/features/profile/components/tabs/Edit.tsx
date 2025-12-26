@@ -30,7 +30,7 @@ export const Edit = ({ data }: Props) => {
 					<mark>{data.user.username}</mark>
 					's profile
 				</span>
-				<span>Editing</span>
+				<span>Appearance editing</span>
 			</div>
 
 			<hr />
