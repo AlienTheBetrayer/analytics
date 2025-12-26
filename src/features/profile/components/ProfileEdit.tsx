@@ -8,17 +8,40 @@ import { Security } from "./tabs/Security";
 
 type Props = {
 	data: { profile: Profile; user: User };
+	tab: string;
 };
 
-export const ProfileEdit = ({ data }: Props) => {
+export const ProfileEdit = ({ data, tab }: Props) => {
+	const items = [
+		{
+			title: "Overview",
+			href: `/profile/${data.user.username}/overview`,
+			element: <Overview data={data} />,
+		},
+		{
+			title: "Edit",
+			href: `/profile/${data.user.username}/edit`,
+			element: <Edit data={data} />,
+		},
+		{
+			title: "Privacy",
+			href: `/profile/${data.user.username}/privacy`,
+			element: <Privacy data={data} />,
+		},
+		{
+			title: "Security",
+			href: `/profile/${data.user.username}/security`,
+			element: <Security data={data} />,
+		},
+	];
+
 	return (
 		<Menu
-			items={[
-				{ title: "Overview", element: <Overview data={data} /> },
-				{ title: "Edit", element: <Edit data={data} /> },
-				{ title: "Privacy", element: <Privacy data={data} /> },
-				{ title: "Security", element: <Security data={data} /> },
-			]}
+			type="link"
+			items={items}
+			value={items.findIndex(
+				(item) => item.title.toLowerCase() === tab.toLowerCase(),
+			)}
 		/>
 	);
 };

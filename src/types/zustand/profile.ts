@@ -21,7 +21,7 @@ export type ProfileStore = {
 	 * @param name the name of the user
 	 * @returns a promise containing the response
 	 */
-	getProfile: (name: string) => Promise<ResponseAxios>;
+	getProfile: (name: string, fetchOnce?: boolean) => Promise<ResponseAxios | undefined>;
 
     /**
      * Sets or updates the profile data at the given user

@@ -1,6 +1,7 @@
 import type { Url } from "next/dist/shared/lib/router/router";
 import Link from "next/link";
 import { LinkButtonStyles } from "../utils/styles";
+import { forwardRef } from "react";
 
 type Props = {
 	children: React.ReactNode;
@@ -10,15 +11,16 @@ type Props = {
 	style?: keyof typeof LinkButtonStyles;
 };
 
-export const LinkButton = ({
+export const LinkButton = forwardRef<HTMLAnchorElement, Props>(({
 	className,
 	children,
 	href,
 	isEnabled = true,
 	style = "button",
-}: Props) => {
+}: Props, ref) => {
 	return (
 		<Link
+            ref={ref}
 			href={href}
 			className={`flex gap-1 items-center justify-center group ${LinkButtonStyles[style]} ${isEnabled !== true ? "pointer-events-none opacity-30" : ""} ${className ?? ""} 
             `}
@@ -26,4 +28,4 @@ export const LinkButton = ({
 			{children}
 		</Link>
 	);
-};
+});

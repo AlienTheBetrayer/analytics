@@ -14,7 +14,7 @@ export type RetrievedResponse = {
  * @returns a promise with an optional axios response (in case the response succeeds) and with an RetrievedResponse object
  */
 export const retrieveResponse = async (
-	callback: () => Promise<ResponseAxios>,
+	callback: () => Promise<ResponseAxios | undefined>,
 ): Promise<{
 	axiosResponse?: ResponseAxios;
 	retrievedResponse: RetrievedResponse;
@@ -25,8 +25,8 @@ export const retrieveResponse = async (
 			axiosResponse: response,
 			retrievedResponse: {
 				status: "ok",
-				message: response.data?.message ?? "Success!",
-				type: response.data?.type ?? "unknown",
+				message: response?.data?.message ?? "Success!",
+				type: response?.data?.type ?? "unknown",
 			},
 		};
 	} catch (error) {

@@ -2,12 +2,12 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import type { MenuItem } from "../types/menu";
 
-export const useMenu = (items: MenuItem[]) => {
+export const useMenu = (items: MenuItem[], value?: number) => {
 	// states
-	const [selectedItem, setSelectedItem] = useState<number>(0);
+	const [selectedItem, setSelectedItem] = useState<number>(value ?? 0);
 
 	// refs
-	const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
+	const buttonRefs = useRef<(HTMLButtonElement | HTMLAnchorElement | null)[]>([]);
 	const selectRef = useRef<HTMLDivElement | null>(null);
 
 	// positioning

@@ -20,8 +20,11 @@ export const ProfileSlice: SliceFunction<ProfileStore> = (set, get) => {
 			}));
 		},
 
-		getProfile: async (name: string) => {
-			const { setProfilePromise } = get();
+		getProfile: async (name: string, fetchOnce: boolean = true) => {
+			const { setProfilePromise, profiles } = get();
+
+            if(fetchOnce === true && profiles?.[name] !== undefined)
+                return;
 
 			return await promiseStatus(
 				"profile",
