@@ -24,7 +24,8 @@ export const Select = ({ items, value, onChange, ...rest }: Props) => {
             from-background-2 to-background-1 outline-2 outline-background-5 p-2 rounded-xl focus:outline-blue-1 
              hover:brightness-125 transition-colors duration-150 cursor-pointer`}
 				onClick={controller.expandToggle}
-                {...rest}
+				onKeyDown={controller.keyDown}
+				{...rest}
 			>
 				<motion.span
 					key={`${controller.inputValue}`}

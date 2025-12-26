@@ -45,7 +45,7 @@ export const useInputSelect = (
 			switch (e.code) {
 				case "Escape":
 					inputRef.current?.blur();
-                    setIsExpanded(false);
+					setIsExpanded(false);
 					break;
 			}
 		};
@@ -75,7 +75,7 @@ export const useInputSelect = (
 			<AnimatePresence>
 				{isExpanded && (
 					<motion.ul
-						className="absolute flex-col overflow-hidden rounded-xl border-2 border-background-5"
+						className="absolute flex flex-col-reverse overflow-hidden rounded-xl border-2 border-background-5"
 						ref={expandRef}
 						initial={{ height: "0px" }}
 						animate={{ height: "auto" }}
@@ -120,8 +120,29 @@ export const useInputSelect = (
 		setIsExpanded((prev) => !prev);
 	}, []);
 
+	const keyDown = useCallback(
+		(e: React.KeyboardEvent<HTMLButtonElement>) => {
+			const id = items.indexOf(inputValue);
+
+			switch (e.code) {
+				case "ArrowUp": {
+					const item = items[id + 1 < items.length ? id + 1 : 0];
+					value === undefined ? setSelectedItem(item) : onChange?.(item);
+					break;
+				}
+				case "ArrowDown": {
+					const item = items[id > 0 ? id - 1 : items.length - 1];
+					value === undefined ? setSelectedItem(item) : onChange?.(item);
+					break;
+				}
+			}
+		},
+		[items, inputValue, value, onChange],
+	);
+
 	return {
 		inputRef,
+		keyDown,
 		render,
 		expandToggle,
 		inputValue,

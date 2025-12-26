@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { useState } from "react";
 import { Button } from "@/features/ui/button/components/Button";
-import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
 import { Input } from "@/features/ui/input/components/Input";
 import { Select } from "@/features/ui/select/components/Select";
 
@@ -10,14 +9,10 @@ export const ProfileEdit = () => {
 	const [status, setStatus] = useState<string>("");
 	const [bio, setBio] = useState<string>("");
 	const [visibility, setVisibility] = useState<string>("everyone");
-	const [a, setA] = useState<boolean>(true);
 
 	return (
 		<div className="flex flex-col w-full gap-4">
 			<div className="flex flex-col gap-2">
-				<Checkbox value={a} onToggle={() => setA(prev => !prev)}>
-					Profile visibility
-				</Checkbox>
 				<Input
 					placeholder="Status"
 					value={status}
