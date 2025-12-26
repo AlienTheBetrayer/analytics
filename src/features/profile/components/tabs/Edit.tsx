@@ -50,8 +50,8 @@ export const Edit = ({ data }: Props) => {
 						setProfileData(data.user, { status, bio, oneliner });
 					}}
 				>
-					<label htmlFor="bio" className="flex justify-between">
-						One-liner
+					<label htmlFor="bio" className="flex justify-between items-center">
+						<b>One-liner</b>
 						<small> (a short phrase that feels yours)</small>
 					</label>
 					<Input
@@ -62,8 +62,8 @@ export const Edit = ({ data }: Props) => {
 					/>
 
 					<hr />
-					<label htmlFor="status" className="flex justify-between">
-						Status
+					<label htmlFor="status" className="flex justify-between items-center">
+						<b>Status</b>
 						<small> (a short text capturing your mood)</small>
 					</label>
 					<Input
@@ -75,8 +75,8 @@ export const Edit = ({ data }: Props) => {
 					/>
 
 					<hr />
-					<label htmlFor="bio" className="flex justify-between">
-						Bio
+					<label htmlFor="bio" className="flex justify-between items-center">
+						<b>Bio</b>
 						<small> (a long piece of text, describe yourself)</small>
 					</label>
 					<Input

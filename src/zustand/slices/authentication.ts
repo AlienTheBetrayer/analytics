@@ -90,5 +90,25 @@ export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (
 				return await axios.post("/api/auth/delete", { id });
 			});
 		},
+
+		getSessions: async (id: string, caching: boolean = true) => {
+			const { setPromise, runningSessions } = get();
+
+			if (caching === true && runningSessions !== undefined) return;
+
+			return await setPromise("sessions", async () => {
+				const res = await axios.get(`/api/auth/sessions/${id}`);
+				const data = res.data as {
+					sessions: { id: number }[];
+				};
+
+				set((state) => ({
+					...state,
+					runningSessions: data.sessions.map((s) => s.id),
+				}));
+
+				return res;
+			});
+		},
 	};
 };

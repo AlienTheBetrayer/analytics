@@ -1,15 +1,15 @@
 import axios from "axios";
 import type { Profile } from "@/types/api/database/profiles";
 import type { User } from "@/types/api/database/user";
-import type { ProfileStore } from "@/types/zustand/profile";
+import type { UserStore } from "@/types/zustand/user";
 import type { SliceFunction } from "@/types/zustand/utils/sliceFunction";
 
-export const ProfileSlice: SliceFunction<ProfileStore> = (set, get) => {
+export const UserSlice: SliceFunction<UserStore> = (set, get) => {
 	return {
-		getProfileByName: async (name: string, fetchOnce: boolean = true) => {
+		getProfileByName: async (name: string, caching: boolean = true) => {
 			const { setPromise, profiles } = get();
 
-			if (fetchOnce === true && profiles) {
+			if (caching === true && profiles) {
 				const found = Object.values(profiles).find(
 					(p) => p.user.username === name,
 				);
@@ -34,10 +34,10 @@ export const ProfileSlice: SliceFunction<ProfileStore> = (set, get) => {
 			});
 		},
 
-		getProfileById: async (id: string, fetchOnce: boolean = true) => {
+		getProfileById: async (id: string, caching: boolean = true) => {
 			const { setPromise, profiles } = get();
 
-			if (fetchOnce === true && profiles?.[id] !== undefined) return;
+			if (caching === true && profiles?.[id] !== undefined) return;
 
 			return await setPromise("profile", async () => {
 				const res = await axios.get(`/api/profile?id=${id}`);
@@ -66,10 +66,9 @@ export const ProfileSlice: SliceFunction<ProfileStore> = (set, get) => {
 				});
 
 				set((state) => {
-
 					const newProfiles = { ...(state.profiles ?? {}) };
 
-                    newProfiles[user.id] = {
+					newProfiles[user.id] = {
 						...newProfiles[user.id],
 						profile: { ...newProfiles[user.id].profile, ...data },
 					};

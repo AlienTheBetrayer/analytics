@@ -9,6 +9,7 @@ export type AuthenticationStatus = {
 export type AuthenticationStore = {
 	// login status
 	status?: AuthenticationStatus;
+    runningSessions?: number[];
 
 	/**
 	 * sets the current authentication status
@@ -50,4 +51,13 @@ export type AuthenticationStore = {
 	 * @returns a promise with the axios response
 	 */
 	deleteUser: (id: string) => Promise<ResponseAxios>;
+
+    
+    /**
+     * gets all the current up-running authentication systems of a user
+     * @param id the id of the user
+     * @param caching don't fetch the data if it has already been fetched
+     * @returns a promise containing the response
+     */
+    getSessions: (id: string, caching?: boolean) => Promise<ResponseAxios | undefined>;
 };

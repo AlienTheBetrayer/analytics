@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { useState } from "react";
+import { redirect } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import { MessageBox } from "@/features/messagebox/components/MessageBox";
 import { usePopup } from "@/features/popup/hooks/usePopup";
 import { Spinner } from "@/features/spinner/components/Spinner";
@@ -9,7 +10,6 @@ import { Input } from "@/features/ui/input/components/Input";
 import type { Profile } from "@/types/api/database/profiles";
 import type { User } from "@/types/api/database/user";
 import { useAppStore } from "@/zustand/store";
-import { redirect } from "next/navigation";
 
 type Props = {
 	data: { profile: Profile; user: User };
@@ -17,29 +17,33 @@ type Props = {
 
 export const Security = ({ data }: Props) => {
 	// zustand states
-	const promises = useAppStore(
-		(state) => state.promises,
-	);
+	const promises = useAppStore((state) => state.promises);
+	const runningSessions = useAppStore((state) => state.runningSessions);
 
 	// zustand functions
 	const logout = useAppStore((state) => state.logout);
 	const deleteUser = useAppStore((state) => state.deleteUser);
 	const deleteProfileData = useAppStore((state) => state.deleteProfileData);
+	const getSessions = useAppStore((state) => state.getSessions);
+
+	useEffect(() => {
+		getSessions(data.user.id, false);
+	}, [getSessions, data.user]);
 
 	// states
 	const [password, setPassword] = useState<string>("");
 
-	// messageBox
+	// message boxes
 	const deleteMessageBox = usePopup(
 		<MessageBox
 			description="You are about to delete your account data forever!"
 			onInteract={(res) => {
 				deleteMessageBox.hide();
 				if (res === "yes") {
-                    deleteProfileData(data.user.id);
+					deleteProfileData(data.user.id);
 					deleteUser(data.user.id);
-                    logout();
-                    redirect("/home");
+					logout();
+					redirect("/home");
 				}
 			}}
 		/>,
@@ -87,8 +91,8 @@ export const Security = ({ data }: Props) => {
 							e.preventDefault();
 						}}
 					>
-						<label htmlFor="bio" className="flex justify-between">
-							Password
+						<label htmlFor="bio" className="flex justify-between items-center">
+							<b>Password</b>
 							<small> (a new strong password)</small>
 						</label>
 						<Input
@@ -100,17 +104,56 @@ export const Security = ({ data }: Props) => {
 
 						<hr className="mt-auto" />
 						<Button type="submit">
-							{promises.password_change === "pending" && (
-								<Spinner />
-							)}
+							{promises.password_change === "pending" && <Spinner />}
 							<Image src="/send.svg" width={20} height={20} alt="" />
 							Apply changes
 						</Button>
 					</form>
+
+					<hr />
+					<span className="flex items-center gap-2">
+						<b>Sessions</b>
+						<Tooltip description="Re-load visible sessions" direction="top">
+							<Button
+								className="p-0!"
+								onClick={() => {
+									getSessions(data.user.id, false);
+								}}
+							>
+								<Image src="/reload.svg" width={16} height={16} alt="refresh" />
+							</Button>
+						</Tooltip>
+						<small className="ml-auto">(all your logged in accounts)</small>
+					</span>
+					<ul
+						className="flex flex-col overflow-y-auto h-full max-h-24 scheme-dark gap-px"
+						style={{
+							scrollbarWidth: "thin",
+						}}
+					>
+						{runningSessions !== undefined &&
+						promises.sessions !== "pending" ? (
+							runningSessions.map((session) => (
+								<React.Fragment key={session}>
+									<li className="grid grid-cols-[1fr_40%] gap-4 items-center">
+										<span className="truncate">{session}</span>
+										<Button onClick={() => {}}>
+											<Image src="/cross.svg" width={16} height={16} alt="" />
+											Terminate
+										</Button>
+									</li>
+									<hr />
+								</React.Fragment>
+							))
+						) : (
+							<Spinner className="m-auto" width={24} height={24} />
+						)}
+					</ul>
+
 					<hr className="mt-auto" />
 					<Tooltip
 						description="Log yourself out of all sessions on all devices"
-						direction="top"
+						direction="bottom"
 						className="w-full"
 					>
 						<Button
@@ -126,7 +169,7 @@ export const Security = ({ data }: Props) => {
 					</Tooltip>
 					<Tooltip
 						description="Wipe your account data"
-						direction="top"
+						direction="bottom"
 						className="w-full"
 					>
 						<Button

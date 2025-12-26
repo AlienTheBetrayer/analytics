@@ -4,27 +4,29 @@ import type { ResponseAxios } from "./utils/axios";
 
 export type Profiles = Record<string, { profile: Profile; user: User }>;
 
-export type ProfileStore = {
+export type UserStore = {
 	profiles?: Profiles;
 
 	/**
 	 * gets the user's profile by its name
 	 * @param name the name of the user
+	 * @param caching don't fetch the data if it has already been fetched
 	 * @returns a promise containing the response
 	 */
 	getProfileByName: (
 		id: string,
-		fetchOnce?: boolean,
+		caching?: boolean,
 	) => Promise<ResponseAxios | undefined>;
 
 	/**
 	 * gets the user's profile by its id
 	 * @param id the id of the user
+	 * @param caching don't fetch the data if it has already been fetched
 	 * @returns a promise containing the response
 	 */
 	getProfileById: (
 		id: string,
-		fetchOnce?: boolean,
+		caching?: boolean,
 	) => Promise<ResponseAxios | undefined>;
 
 	/**
@@ -43,4 +45,5 @@ export type ProfileStore = {
 	 * @param id the id of the user
 	 */
 	deleteProfileData: (id: string) => void;
+
 };

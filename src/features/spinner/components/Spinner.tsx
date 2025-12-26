@@ -5,16 +5,19 @@ import { SpinnerStyles } from "../utils/styles";
 
 type Props = {
 	styles?: keyof typeof SpinnerStyles;
-} & ComponentPropsWithoutRef<"img">;
+    width?: number;
+    height?: number;
+} & Omit<ComponentPropsWithoutRef<"img">, 'src' | 'width' | 'height'>;
 
-export const Spinner = ({ className, styles }: Props) => {
+export const Spinner = ({ className, styles, width, height, ...rest }: Props) => {
 	return (
 		<Image
 			alt="Loading"
 			src="/spinner.svg"
-			width={16}
-			height={16}
+			width={width ?? 16}
+			height={height ?? 16}
 			className={`loading-spinner ${className ?? ""} ${styles ? SpinnerStyles[styles] : ""}`}
+            {...rest}
 		/>
 	);
 };

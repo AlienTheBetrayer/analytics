@@ -49,10 +49,10 @@ export const DataSlice: SliceFunction<DataStore> = (set, get) => {
 			return await setPromise("sync", async () => {});
 		},
 
-		updateProjectList: async (fetchOnce: boolean = false) => {
+		updateProjectList: async (caching: boolean = false) => {
 			const { data, setPromise } = get();
 
-			if (fetchOnce === true && data !== undefined) return;
+			if (caching === true && data !== undefined) return;
 
 			return await setPromise("projects", async () => {
 				const projects = (
@@ -75,10 +75,10 @@ export const DataSlice: SliceFunction<DataStore> = (set, get) => {
 			});
 		},
 
-		updateProjectData: async (id: string, fetchOnce: boolean = false) => {
+		updateProjectData: async (id: string, caching: boolean = false) => {
 			const { data, setPromise } = get();
 
-			if (fetchOnce === true && data?.[id]?.events !== undefined) return;
+			if (caching === true && data?.[id]?.events !== undefined) return;
 
 			return await setPromise(id, async () => {
 				const projectData = (
