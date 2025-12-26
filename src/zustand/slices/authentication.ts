@@ -1,5 +1,8 @@
 import axios from "axios";
-import type { AuthenticationSession, AuthenticationStore } from "@/types/zustand/authentication";
+import type {
+	AuthenticationSession,
+	AuthenticationStore,
+} from "@/types/zustand/authentication";
 import type { SliceFunction } from "@/types/zustand/utils/sliceFunction";
 
 export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (
@@ -104,7 +107,7 @@ export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (
 
 				set((state) => ({
 					...state,
-					runningSessions: data.sessions
+					runningSessions: data.sessions,
 				}));
 
 				return res;
@@ -120,6 +123,36 @@ export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (
 				set((state) => ({
 					...state,
 					runningSessions: state.runningSessions?.filter((s) => s.id !== id),
+				}));
+
+				return res;
+			});
+		},
+
+		terminateAllSessions: async () => {
+			const { setPromise } = get();
+			return await setPromise(`sessions_terminate`, async () => {
+				const res = await axios.post(`/api/auth/terminate/`);
+
+				set((state) => ({
+					...state,
+					runningSessions: undefined,
+					status: undefined,
+				}));
+
+				return res;
+			});
+		},
+
+		terminateOtherSessions: async () => {
+			const { setPromise } = get();
+
+			return await setPromise(`sessions_terminate`, async () => {
+				const res = await axios.post(`/api/auth/terminate?type=other`);
+
+				set((state) => ({
+					...state,
+					runningSessions: state.runningSessions?.filter((s) => s.isCurrent),
 				}));
 
 				return res;

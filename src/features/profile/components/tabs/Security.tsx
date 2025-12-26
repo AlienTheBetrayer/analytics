@@ -26,6 +26,9 @@ export const Security = ({ data }: Props) => {
 	const deleteProfileData = useAppStore((state) => state.deleteProfileData);
 	const getSessions = useAppStore((state) => state.getSessions);
 	const deleteSession = useAppStore((state) => state.deleteSession);
+	const terminateOtherSessions = useAppStore(
+		(state) => state.terminateOtherSessions,
+	);
 
 	useEffect(() => {
 		getSessions(data.user.id, false);
@@ -56,7 +59,7 @@ export const Security = ({ data }: Props) => {
 			onInteract={(res) => {
 				terminateMessageBox.hide();
 				if (res === "yes") {
-					logout();
+					terminateOtherSessions();
 				}
 			}}
 		/>,
@@ -82,6 +85,15 @@ export const Security = ({ data }: Props) => {
 					<span className="text-foreground-5!">
 						{data.user.role[0].toUpperCase() + data.user.role.substring(1)}
 					</span>
+					<Button
+						onClick={() => {
+							logout();
+						}}
+					>
+                        {promises.logout === 'pending' && <Spinner/>}
+						<Image width={16} height={16} alt="" src="/auth.svg" />
+						Log out
+					</Button>
 				</div>
 
 				<hr className="sm:w-px! sm:h-full" />
@@ -139,9 +151,12 @@ export const Security = ({ data }: Props) => {
 									<li
 										className={`grid grid-cols-[1fr_40%] gap-4 items-center rounded-xl p-1.5! ${session.isCurrent ? "border border-blue-2" : ""}`}
 									>
-										<span className="truncate">{session.isCurrent ? 'CURRENT SESSION' : session.id}</span>
+										<span className="truncate">
+											{session.isCurrent ? "CURRENT SESSION" : session.id}
+										</span>
 										<Button
-											onClick={async() => {
+                                            isEnabled={!session.isCurrent}
+											onClick={async () => {
 												deleteSession(session.id);
 											}}
 										>
@@ -161,7 +176,7 @@ export const Security = ({ data }: Props) => {
 
 					<hr className="mt-auto" />
 					<Tooltip
-						description="Log yourself out of all sessions on all devices"
+						description="Keep only this session logged in"
 						direction="bottom"
 						className="w-full"
 					>
@@ -171,9 +186,9 @@ export const Security = ({ data }: Props) => {
 								terminateMessageBox.show();
 							}}
 						>
-							{promises.logout === "pending" && <Spinner />}
+							{promises.sessions_terminate === "pending" && <Spinner />}
 							<Image src="/auth.svg" width={16} height={16} alt="" />
-							Terminate sessions
+							Terminate other sessions
 						</Button>
 					</Tooltip>
 					<Tooltip
@@ -192,11 +207,6 @@ export const Security = ({ data }: Props) => {
 							Delete account
 						</Button>
 					</Tooltip>
-                    <Button onClick={() => {
-                        logout();
-                    }}>
-                            Log out 
-                    </Button>
 				</div>
 			</div>
 		</div>

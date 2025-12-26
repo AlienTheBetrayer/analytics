@@ -14,12 +14,13 @@ export const POST = async (request: NextRequest) => {
 		const payload = jwt.verify(
 			refreshToken,
 			process.env.REFRESH_SECRET as string,
-		) as { id: string; role: string };
+		) as { id: string; role: string; session_id: string };
 
 		const { error: refreshError } = await supabaseServer
 			.from("tokens")
 			.delete()
-			.eq("user_id", payload.id);
+			.eq("user_id", payload.id)
+			.eq("session_id", payload.session_id);
 
 		if (refreshError) {
 			return nextResponse(refreshError, 400);
