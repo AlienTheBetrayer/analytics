@@ -9,12 +9,15 @@ import { Spinner } from "@/features/spinner/components/Spinner";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import type { APIResponseType } from "@/types/api/response";
 import { useAppStore } from "@/zustand/store";
-import { ProfileEdit } from "./ProfileEdit";
+import { ProfileEdit, ProfileTabs } from "./ProfileEdit";
 import { Overview } from "./tabs/Overview";
 
 export const UserProfile = () => {
 	// url
-	const { name, tab } = useParams<{ name: string | undefined, tab: string | undefined }>();
+	const { name, tab } = useParams<{
+		name: string | undefined;
+		tab: string | undefined;
+	}>();
 
 	// zustand state
 	const status = useAppStore((state) => state.status);
@@ -26,7 +29,8 @@ export const UserProfile = () => {
 
 	// user id to fetch data from
 	const retrievedUsername = name ?? status?.user.username;
-    const retrievedTab = tab ?? "overview";
+	const retrievedTab =
+		(tab && ProfileTabs.find((t) => t === tab)) || "overview";
 
 	// getting data + status
 	const [responseStatus, setResponseStatus] = useState<
@@ -46,7 +50,7 @@ export const UserProfile = () => {
 		get();
 	}, [retrievedUsername, getProfile]);
 
-    // viewing current profile but not logged in
+	// viewing current profile but not logged in
 	if (retrievedUsername === undefined) {
 		return (
 			<div className="box max-w-64 w-full m-auto">
@@ -100,11 +104,11 @@ export const UserProfile = () => {
 
 	return (
 		<div className="box max-w-xl w-full m-auto min-h-128! p-0!">
-            {data.user.id !== status?.user.id ? (
-                <Overview data={data} />
-            ) : (
-                <ProfileEdit data={data} tab={retrievedTab}/>
-            )}
+			{data.user.id !== status?.user.id ? (
+				<Overview data={data} />
+			) : (
+				<ProfileEdit data={data} tab={retrievedTab} />
+			)}
 		</div>
 	);
 };

@@ -34,7 +34,7 @@ export const useMenu = (items: MenuItem[], value?: number) => {
 
 	// rendering
 	const renderElement = useCallback(() => {
-		return items[selectedItem].element;
+		return items[selectedItem]?.element;
 	}, [selectedItem, items]);
 
 	const renderSelect = useCallback(() => {

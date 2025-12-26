@@ -11,6 +11,8 @@ type Props = {
 	tab: string;
 };
 
+export const ProfileTabs = ["overview", "edit", "privacy", "security"];
+
 export const ProfileEdit = ({ data, tab }: Props) => {
 	const items = [
 		{
