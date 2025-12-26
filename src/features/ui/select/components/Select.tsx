@@ -5,9 +5,9 @@ import { useInputSelect } from "../hooks/useInputSelect";
 type Props = {
 	items: string[];
 	onChange?: (item: string) => void;
-} & Omit<ComponentPropsWithoutRef<"select">, "onChange">;
+} & Omit<ComponentPropsWithoutRef<"button">, "onChange">;
 
-export const Select = ({ items, value, onChange }: Props) => {
+export const Select = ({ items, value, onChange, ...rest }: Props) => {
 	// controller
 	const controller = useInputSelect(
 		items,
@@ -20,10 +20,11 @@ export const Select = ({ items, value, onChange }: Props) => {
 			<button
 				ref={controller.inputRef}
 				type="button"
-				className={`flex w-full min-h-8 bg-linear-to-bl 
+				className={`flex w-full items-center min-h-8 bg-linear-to-bl 
             from-background-2 to-background-1 outline-2 outline-background-5 p-2 rounded-xl focus:outline-blue-1 
              hover:brightness-125 transition-colors duration-150 cursor-pointer`}
 				onClick={controller.expandToggle}
+                {...rest}
 			>
 				<motion.span
 					key={`${controller.inputValue}`}
