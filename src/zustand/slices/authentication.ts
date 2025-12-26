@@ -109,5 +109,17 @@ export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (
 				setAuthenticationPromise,
 			);
 		},
+
+		deleteUser: async (id: string) => {
+			const { setAuthenticationPromise } = get();
+
+			return await promiseStatus(
+				"delete",
+				async () => {
+					return await axios.post("/api/auth/delete", { id });
+				},
+				setAuthenticationPromise,
+			);
+		},
 	};
 };

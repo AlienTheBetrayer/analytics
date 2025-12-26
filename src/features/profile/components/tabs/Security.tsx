@@ -20,8 +20,9 @@ export const Security = ({ data }: Props) => {
 		(state) => state.authenticationPromises,
 	);
 
-    // zustand functions
-    const logout = useAppStore(state => state.logout);
+	// zustand functions
+	const logout = useAppStore((state) => state.logout);
+	const deleteUser = useAppStore((state) => state.deleteUser);
 
 	// states
 	const [password, setPassword] = useState<string>("");
@@ -33,6 +34,8 @@ export const Security = ({ data }: Props) => {
 			onInteract={(res) => {
 				deleteMessageBox.hide();
 				if (res === "yes") {
+					deleteUser(data.user.id);
+                    logout();
 				}
 			}}
 		/>,
@@ -44,7 +47,7 @@ export const Security = ({ data }: Props) => {
 			onInteract={(res) => {
 				terminateMessageBox.hide();
 				if (res === "yes") {
-                    logout();
+					logout();
 				}
 			}}
 		/>,
@@ -112,7 +115,7 @@ export const Security = ({ data }: Props) => {
 								terminateMessageBox.show();
 							}}
 						>
-                            {authenticationPromises?.logout === 'pending' && <Spinner/>}
+							{authenticationPromises?.logout === "pending" && <Spinner />}
 							<Image src="/auth.svg" width={16} height={16} alt="" />
 							Terminate sessions
 						</Button>
@@ -128,7 +131,7 @@ export const Security = ({ data }: Props) => {
 								deleteMessageBox.show();
 							}}
 						>
-                            {authenticationPromises?.delete === 'pending' && <Spinner/>}
+							{authenticationPromises?.delete === "pending" && <Spinner />}
 							<Image src="/cross.svg" width={16} height={16} alt="" />
 							Delete account
 						</Button>
