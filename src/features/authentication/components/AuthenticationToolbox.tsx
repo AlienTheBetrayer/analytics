@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
-import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { useAppStore } from "@/zustand/store";
 import { Spinner } from "../../spinner/components/Spinner";
@@ -11,9 +10,6 @@ export const AuthenticationToolbox = () => {
 	// zustand
 	const status = useAppStore((state) => state.status);
 	const promises = useAppStore((state) => state.promises);
-
-	// TMEP
-	const logout = useAppStore((state) => state.logout);
 
 	return (
 		<div
@@ -35,13 +31,6 @@ export const AuthenticationToolbox = () => {
 								<Image width={16} height={16} alt="" src="/account.svg" />
 								Profile
 							</LinkButton>
-							<Button
-								onClick={() => {
-									logout();
-								}}
-							>
-								Log out
-							</Button>
 						</Tooltip>
 					) : (
 						<>

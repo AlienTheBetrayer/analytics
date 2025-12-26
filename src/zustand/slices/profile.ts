@@ -66,10 +66,12 @@ export const ProfileSlice: SliceFunction<ProfileStore> = (set, get) => {
 				});
 
 				set((state) => {
+
 					const newProfiles = { ...(state.profiles ?? {}) };
-					newProfiles[user.username] = {
-						...newProfiles[user.username],
-						profile: { ...newProfiles[user.username].profile, ...data },
+
+                    newProfiles[user.id] = {
+						...newProfiles[user.id],
+						profile: { ...newProfiles[user.id].profile, ...data },
 					};
 
 					return { ...state, profiles: newProfiles };
