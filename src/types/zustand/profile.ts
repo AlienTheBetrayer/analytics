@@ -17,17 +17,30 @@ export type ProfileStore = {
 	setProfilePromise: (key: string, status: PromiseStatus) => void;
 
 	/**
-	 * gets the user's profile by its id
+	 * gets the user's profile by its name
 	 * @param name the name of the user
 	 * @returns a promise containing the response
 	 */
-	getProfile: (name: string, fetchOnce?: boolean) => Promise<ResponseAxios | undefined>;
+	getProfileByName: (id: string, fetchOnce?: boolean) => Promise<ResponseAxios | undefined>;
 
     /**
-     * Sets or updates the profile data at the given user
-     * @param user_id the id of the user (not the profile)
+	 * gets the user's profile by its id
+	 * @param id the id of the user
+	 * @returns a promise containing the response
+	 */
+	getProfileById: (id: string, fetchOnce?: boolean) => Promise<ResponseAxios | undefined>;
+
+    /**
+     * sets or updates the profile data at the given user
+     * @param user the user object of the user (not the profile)
      * @param data the data that has been changed (hence partial)
      * @returns a promise containing the response
      */
-    setProfileData: (user: User, data: Partial<Profile>) => Promise<ResponseAxios>;
+    setProfileData: (user: User, data: Partial<Profile>) => Promise<ResponseAxios | undefined>;
+
+    /**
+     * deletes the profile from state
+     * @param id the id of the user
+     */
+    deleteProfileData: (id: string) => void;
 };

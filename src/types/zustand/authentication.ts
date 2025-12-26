@@ -54,7 +54,7 @@ export type AuthenticationStore = {
 	refresh: () => Promise<ResponseAxios>;
 
     /**
-     * Deletes the user from the database and state + its profile
+     * Deletes the user from the database + its profile
      * @param id the id of the user
      * @returns a promise with the axios response
      */

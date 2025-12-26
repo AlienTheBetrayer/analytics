@@ -5,18 +5,19 @@ import type { User } from "@/types/api/database/user";
 import { supabaseServer } from "@/types/server/supabase";
 import { nextResponse } from "@/utils/response";
 
-type ParamsType = {
-	params: Promise<{ name: string }>;
-};
-
-export const GET = async (_request: NextRequest, { params }: ParamsType) => {
-	const { name } = await params;
+export const GET = async (request: NextRequest) => {
+	const params = await request.nextUrl.searchParams;
+	const id = params.get("id");
+	const name = params.get("name");
 
 	try {
 		const { data: userData, error: userError } = (await supabaseServer
 			.from("users")
 			.select()
-			.eq("username", name)) as { data: User[]; error: PostgrestError | null };
+			.eq(id === null ? "username" : "id", id || name)) as {
+			data: User[];
+			error: PostgrestError | null;
+		};
 
 		if (userError) {
 			return nextResponse(userError, 400);

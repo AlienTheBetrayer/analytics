@@ -9,6 +9,7 @@ import { Input } from "@/features/ui/input/components/Input";
 import type { Profile } from "@/types/api/database/profiles";
 import type { User } from "@/types/api/database/user";
 import { useAppStore } from "@/zustand/store";
+import { redirect } from "next/navigation";
 
 type Props = {
 	data: { profile: Profile; user: User };
@@ -23,6 +24,7 @@ export const Security = ({ data }: Props) => {
 	// zustand functions
 	const logout = useAppStore((state) => state.logout);
 	const deleteUser = useAppStore((state) => state.deleteUser);
+	const deleteProfileData = useAppStore((state) => state.deleteProfileData);
 
 	// states
 	const [password, setPassword] = useState<string>("");
@@ -34,8 +36,10 @@ export const Security = ({ data }: Props) => {
 			onInteract={(res) => {
 				deleteMessageBox.hide();
 				if (res === "yes") {
+                    deleteProfileData(data.user.id);
 					deleteUser(data.user.id);
                     logout();
+                    redirect("/home");
 				}
 			}}
 		/>,

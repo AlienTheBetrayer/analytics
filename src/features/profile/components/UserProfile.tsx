@@ -7,6 +7,8 @@ import { AuthRequired } from "@/features/authentication/components/AuthRequired"
 import { retrieveResponse } from "@/features/authentication/utils/retrieveResponse";
 import { Spinner } from "@/features/spinner/components/Spinner";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
+import type { Profile } from "@/types/api/database/profiles";
+import type { User } from "@/types/api/database/user";
 import type { APIResponseType } from "@/types/api/response";
 import { useAppStore } from "@/zustand/store";
 import { ProfileEdit, ProfileTabs } from "./ProfileEdit";
@@ -21,11 +23,11 @@ export const UserProfile = () => {
 
 	// zustand state
 	const status = useAppStore((state) => state.status);
-	const profiles = useAppStore((state) => state.profiles);
 	const profilePromises = useAppStore((state) => state.profilePromises);
+	const profiles = useAppStore((state) => state.profiles);
 
 	// zustand functions
-	const getProfile = useAppStore((state) => state.getProfile);
+	const getProfileByName = useAppStore((state) => state.getProfileByName);
 
 	// user id to fetch data from
 	const retrievedUsername = name ?? status?.user.username;
@@ -36,19 +38,33 @@ export const UserProfile = () => {
 	const [responseStatus, setResponseStatus] = useState<
 		APIResponseType | undefined
 	>();
+	const [retrievedData, setRetrievedData] = useState<
+		| {
+				user: User;
+				profile: Profile;
+		  }
+		| undefined
+	>(() => {
+		if (!profiles) return undefined;
+
+		const found = Object.values(profiles).find((p) => p.user.username === name);
+
+		return found;
+	});
 
 	useEffect(() => {
-		if (retrievedUsername === undefined) return;
+		if (retrievedUsername === undefined || retrievedData !== undefined) return;
 
 		const get = async () => {
 			const res = await retrieveResponse(
-				async () => await getProfile(retrievedUsername),
+				async () => await getProfileByName(retrievedUsername, true),
 			);
 			setResponseStatus(res.retrievedResponse.type);
+			setRetrievedData(res.axiosResponse?.data);
 		};
 
 		get();
-	}, [retrievedUsername, getProfile]);
+	}, [retrievedData, retrievedUsername, getProfileByName]);
 
 	// viewing current profile but not logged in
 	if (retrievedUsername === undefined) {
@@ -88,10 +104,7 @@ export const UserProfile = () => {
 		);
 	}
 
-	if (
-		profilePromises?.profile === "pending" ||
-		profiles?.[retrievedUsername] === undefined
-	) {
+	if (profilePromises?.profile === "pending" || retrievedData === undefined) {
 		return (
 			<div className="box max-w-lg w-full m-auto">
 				<span className="m-auto">Loading profile...</span>
@@ -100,7 +113,7 @@ export const UserProfile = () => {
 		);
 	}
 
-	const data = profiles[retrievedUsername];
+	const data = retrievedData;
 
 	return (
 		<div className="box max-w-xl w-full m-auto min-h-128! p-0!">

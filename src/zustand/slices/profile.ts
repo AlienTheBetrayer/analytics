@@ -20,20 +20,51 @@ export const ProfileSlice: SliceFunction<ProfileStore> = (set, get) => {
 			}));
 		},
 
-		getProfile: async (name: string, fetchOnce: boolean = true) => {
+		getProfileByName: async (name: string, fetchOnce: boolean = true) => {
 			const { setProfilePromise, profiles } = get();
 
-            if(fetchOnce === true && profiles?.[name] !== undefined)
-                return;
+			if (fetchOnce === true && profiles) {
+				const found = Object.values(profiles).find(
+					(p) => p.user.username === name,
+				);
+
+				if (found) return;
+			}
 
 			return await promiseStatus(
 				"profile",
 				async () => {
-					const res = await axios.get(`/api/profile/${name}`);
+					const res = await axios.get(`/api/profile?name=${name}`);
 
 					set((state) => {
 						const newProfiles = { ...state.profiles };
-						newProfiles[name] = {
+						newProfiles[res.data.user.id] = {
+							profile: res.data.profile,
+							user: res.data.user,
+						};
+
+						return { ...state, profiles: newProfiles };
+					});
+
+					return res;
+				},
+				setProfilePromise,
+			);
+		},
+
+		getProfileById: async (id: string, fetchOnce: boolean = true) => {
+			const { setProfilePromise, profiles } = get();
+
+			if (fetchOnce === true && profiles?.[id] !== undefined) return;
+
+			return await promiseStatus(
+				"profile",
+				async () => {
+					const res = await axios.get(`/api/profile?id=${id}`);
+
+					set((state) => {
+						const newProfiles = { ...state.profiles };
+						newProfiles[id] = {
 							profile: res.data.profile,
 							user: res.data.user,
 						};
@@ -53,10 +84,10 @@ export const ProfileSlice: SliceFunction<ProfileStore> = (set, get) => {
 			return await promiseStatus(
 				"profile_set",
 				async () => {
-                    const res = await axios.post("/api/profile/update", {
-                        user_id: user.id,
-                        ...data
-                    });
+					const res = await axios.post("/api/profile/update", {
+						user_id: user.id,
+						...data,
+					});
 
 					set((state) => {
 						const newProfiles = { ...state.profiles };
@@ -68,10 +99,19 @@ export const ProfileSlice: SliceFunction<ProfileStore> = (set, get) => {
 						return { ...state, profiles: newProfiles };
 					});
 
-                    return res;
+					return res;
 				},
 				setProfilePromise,
 			);
+		},
+
+		deleteProfileData: (id: string) => {
+			set((state) => {
+				const newProfiles = { ...(state.profiles ?? {}) };
+				delete newProfiles[id];
+
+				return { ...state, profiles: newProfiles };
+			});
 		},
 	};
 };
