@@ -11,7 +11,7 @@ export const Menu = ({ items }: Props) => {
 	const controller = useMenu(items);
 
 	return (
-		<div className="flex flex-col grow">
+		<div className="flex flex-col grow h-full w-full gap-2">
 			<ul className="p-2 flex items-center rounded-tl-xl rounded-tr-xl overflow-hidden">
 				{items.map((item, idx) => (
 					<li key={item.title} className="w-full">
@@ -20,7 +20,8 @@ export const Menu = ({ items }: Props) => {
 								controller.buttonRefs.current[idx] = el;
 							}}
 							onClick={() => controller.select(idx)}
-							className={`w-full rounded-none outline-0! border-0! duration-300 bg-transparent! hover:bg-background-2! active:bg-background-3!`}
+							className={`w-full rounded-none outline-0! border-0! duration-300 bg-transparent hover:bg-background-2! active:bg-background-3!
+                                ${controller.selectedItem === idx ? "bg-background-1! brightness-200" : ""}`}
 						>
 							{item.title}
 						</Button>
@@ -29,7 +30,7 @@ export const Menu = ({ items }: Props) => {
 				{controller.renderSelect()}
 			</ul>
 
-			<div className="grow">{controller.renderElement()}</div>
+			<div className="flex grow w-full">{controller.renderElement()}</div>
 		</div>
 	);
 };

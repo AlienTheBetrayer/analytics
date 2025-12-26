@@ -10,6 +10,7 @@ import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import type { APIResponseType } from "@/types/api/response";
 import { useAppStore } from "@/zustand/store";
 import { ProfileEdit } from "./ProfileEdit";
+import { Overview } from "./tabs/Overview";
 
 export const UserProfile = () => {
 	// url
@@ -97,28 +98,12 @@ export const UserProfile = () => {
 	const data = profiles[retrievedUsername];
 
 	return (
-		<div className="box max-w-xl w-full m-auto">
-			<div className="flex flex-col gap-4">
-				<div className="flex flex-col gap-2">
-					<span className="text-center text-foreground-2! text-5!">
-						<mark>{data.user.username}</mark>
-						's profile
-					</span>
-				</div>
-
-				<hr />
-				<div className="flex flex-col sm:flex-row gap-4">
-					<div className="flex flex-col items-center gap-2">
-						<div className="bg-blue-3 rounded-full h-48 aspect-square" />
-						<span className="text-foreground-5!">
-							{data.user.role[0].toUpperCase() + data.user.role.substring(1)}
-						</span>
-					</div>
-
-					<hr className="flex sm:w-px! h-full!" />
-					<ProfileEdit />
-				</div>
-			</div>
+		<div className="box max-w-xl w-full m-auto min-h-128! p-0!">
+            {data.user.id !== status?.user.id ? (
+                <Overview data={data} />
+            ) : (
+                <ProfileEdit data={data}/>
+            )}
 		</div>
 	);
 };

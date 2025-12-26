@@ -22,4 +22,12 @@ export type ProfileStore = {
 	 * @returns a promise containing the response
 	 */
 	getProfile: (name: string) => Promise<ResponseAxios>;
+
+    /**
+     * Sets or updates the profile data at the given user
+     * @param user_id the id of the user (not the profile)
+     * @param data the data that has been changed (hence partial)
+     * @returns a promise containing the response
+     */
+    setProfileData: (user: User, data: Partial<Profile>) => Promise<ResponseAxios>;
 };

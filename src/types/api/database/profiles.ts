@@ -5,5 +5,6 @@ export type Profile = {
 	user_id: string;
 	status?: string;
 	bio?: string;
+	oneliner?: string;
 	visibility: ProfileVisibility;
 };

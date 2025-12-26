@@ -164,7 +164,7 @@ small {
 hr {
 	border-width: 1px;
 	border-color: var(--background-3);
-    width: 100%;
+	width: 100%;
 }
 
 h1 {
@@ -187,7 +187,8 @@ span,
 p,
 input,
 button,
-a {
+a,
+label {
 	font-size: var(--font-6);
 	color: var(--foreground-7);
 }
@@ -216,16 +217,16 @@ img {
 }
 
 .box {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    padding: 1rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	padding: 1rem;
 	background: linear-gradient(
 		to bottom,
 		var(--background-a-3),
 		var(--background-a-1)
 	);
-	backdrop-filter: blur(3px);
+	backdrop-filter: blur(4px);
 	border-radius: 1rem;
 	border: 1px solid var(--background-5);
 }
@@ -238,6 +239,6 @@ img {
 }
 
 .border-awaiting {
-    outline: 2px solid transparent;
+	outline: 2px solid transparent;
 	animation: 0.5s borderAwaiting alternate infinite;
 }
