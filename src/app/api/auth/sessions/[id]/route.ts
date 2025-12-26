@@ -1,5 +1,4 @@
 import type { PostgrestError } from "@supabase/supabase-js";
-import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import type { NextRequest } from "next/server";
 import type { Token } from "@/types/api/database/authentication";
@@ -33,10 +32,10 @@ export const GET = async (
 			process.env.REFRESH_SECRET as string,
 		) as { session_id: string; id: string; role: string };
 
-		const sessions = sessionsData.map(s => ({
-            id: s.id,
-            isCurrent: refreshPayload.session_id === s.session_id
-        }))
+		const sessions = sessionsData.map((s) => ({
+			id: s.id,
+			isCurrent: refreshPayload.session_id === s.session_id,
+		}));
 
 		return nextResponse({ sessions }, 200);
 	} catch {

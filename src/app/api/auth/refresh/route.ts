@@ -18,7 +18,7 @@ export const POST = async (request: NextRequest) => {
 		const payload = jwt.verify(
 			refreshToken,
 			process.env.REFRESH_SECRET as string,
-		) as { id: string; role: string, session: string };
+		) as { id: string; role: string, session_id: string };
 
 		// get all server-side tokens from the current user
 		const { data: refreshTokensData, error: refreshTokensError } =
@@ -40,16 +40,16 @@ export const POST = async (request: NextRequest) => {
 		}
 
 		// compare all the hashes to detect a theft
-		const results = await Promise.all(
+		const hashResults = await Promise.all(
 			refreshTokensData.map(async (data) => ({
 				id: data.id,
 				matched: await bcrypt.compare(refreshToken, data.token),
 			})),
 		);
 
-		const matchedToken = results.find((r) => r.matched) ?? false;
+		const hasMatched = hashResults.some((r) => r.matched);
 
-		if (matchedToken === false) {
+		if (hasMatched === false) {
 			const response = nextResponse(
 				{ error: "Token theft detection" },
 				400,
@@ -98,7 +98,7 @@ export const POST = async (request: NextRequest) => {
 		const { error: refreshDeleteError } = await supabaseServer
 			.from("tokens")
 			.delete()
-			.eq("id", matchedToken.id);
+			.eq("session_id", payload.session_id);
 
 		if (refreshDeleteError) {
 			return nextResponse(refreshDeleteError, 400);

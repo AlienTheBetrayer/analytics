@@ -139,9 +139,9 @@ export const Security = ({ data }: Props) => {
 									<li
 										className={`grid grid-cols-[1fr_40%] gap-4 items-center rounded-xl p-1.5! ${session.isCurrent ? "border border-blue-2" : ""}`}
 									>
-										<span className="truncate">{session.id}</span>
+										<span className="truncate">{session.isCurrent ? 'CURRENT SESSION' : session.id}</span>
 										<Button
-											onClick={() => {
+											onClick={async() => {
 												deleteSession(session.id);
 											}}
 										>
