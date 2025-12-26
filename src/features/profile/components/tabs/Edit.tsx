@@ -13,13 +13,13 @@ type Props = {
 
 export const Edit = ({ data }: Props) => {
 	// zustand state
-	const profilePromises = useAppStore((state) => state.profilePromises);
+	const promises = useAppStore((state) => state.promises);
 
 	// zustand functions
 	const setProfileData = useAppStore((state) => state.setProfileData);
 
 	// input states
-	const [status, setStatus] = useState<string>(data.profile.status ?? '');
+	const [status, setStatus] = useState<string>(data.profile.status ?? "");
 	const [bio, setBio] = useState<string>(data.profile.bio ?? "");
 	const [oneliner, setOneliner] = useState<string>(data.profile.oneliner ?? "");
 
@@ -88,7 +88,7 @@ export const Edit = ({ data }: Props) => {
 
 					<hr className="mt-auto" />
 					<Button type="submit">
-						{profilePromises?.profile_set === "pending" && <Spinner />}
+						{promises.profile_set === "pending" && <Spinner />}
 						<Image src="/send.svg" width={20} height={20} alt="" />
 						Apply changes
 					</Button>

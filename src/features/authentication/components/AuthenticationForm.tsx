@@ -36,7 +36,7 @@ export const AuthenticationForm = ({
 	const [password, setPassword] = useState<string>("");
 
 	// authentication internal states
-	const [response, setResponse] = useState<RetrievedResponse | null>(null);
+	const [response, setResponse] = useState<RetrievedResponse | undefined>();
 
 	// spinners
 	const promises = usePromiseStatus();
@@ -143,7 +143,7 @@ export const AuthenticationForm = ({
 			)}
 
 			{/* status message */}
-			{response !== null && (
+			{response !== undefined && (
 				<>
 					<hr />
 					<div className="flex gap-2 items-center mx-auto">

@@ -1,4 +1,4 @@
-import type { PromiseStatus, PromiseStatuses } from "@/hooks/usePromiseStatus";
+import type { PromiseStatuses } from "@/hooks/usePromiseStatus";
 import type { ProjectResponseData } from "../api/database";
 import type { AnalyticsMeta } from "../api/database/analytics";
 import type { Project, ProjectAggregate } from "../api/database/projects";
@@ -13,18 +13,18 @@ export type ProjectData = {
  * All currently fetched data
  * @type [id: string]: [data: ProjectData]
  */
-export type Data = Record<string, ProjectData> | null;
+export type Data = Record<string, ProjectData>;
 
 export type DataStore = {
-	data: Data;
-	dataPromises: PromiseStatuses | null;
+	data?: Data;
+	promises: PromiseStatuses;
 
 	/**
-	 * Internally sets the promise status for each and every API request (shouldn't be used by the user)
+	 * Internally sets the promise status for each and every API request
 	 * @param key unique id for the promise
 	 * @param status status type
 	 */
-	setDataPromise: (key: string, status: PromiseStatus) => void;
+	setPromise: <T>(key: string, callback: () => Promise<T>) => Promise<T>;
 
 	/**
 	 * explicitly sets the data to a new record

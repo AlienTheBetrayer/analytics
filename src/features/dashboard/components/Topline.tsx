@@ -45,9 +45,9 @@ export const Topline = () => {
 			<div className="flex gap-2 w-full">
 				<span className="flex gap-1 items-center">
 					<div
-						className={`rounded-full w-1.5 h-1.5 ${status?.isLoggedIn !== null ? "bg-[rgb(56,66,255)]" : "bg-red-500"} duration-1000`}
+						className={`rounded-full w-1.5 h-1.5 ${status?.isLoggedIn ? "bg-[rgb(56,66,255)]" : "bg-red-500"} duration-1000`}
 					/>
-					{status?.isLoggedIn === null ? "Syncing..." : "Synced"}
+					{status?.isLoggedIn ? "Syncing..." : "Synced"}
 				</span>
 
 				<Tooltip description="Re-sync all data" className="ml-auto">

@@ -18,13 +18,13 @@ export type DashboardNotification = {
 // the main type
 export type DashboardStore = {
 	// selectedProject
-	selectedProjectId: string | null;
+	selectedProjectId?: string;
 
 	/**
 	 * Sets the currently selected project
 	 * @param idx a uuid of the project
 	 */
-	selectProject: (idx: string | null) => void;
+	selectProject: (idx: string | undefined) => void;
 
 	/**
 	 * explicitly deselects a project that may have been selected

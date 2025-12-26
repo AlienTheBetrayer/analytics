@@ -7,7 +7,7 @@ export const DashboardProjects = () => {
 	// zustand
 	const data = useAppStore((state) => state.data);
 
-	if (data === null) {
+	if (data === undefined) {
 		return <Spinner styles="big" />;
 	}
 

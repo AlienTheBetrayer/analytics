@@ -1,4 +1,3 @@
-import type { PromiseStatus, PromiseStatuses } from "@/hooks/usePromiseStatus";
 import type { User } from "../api/database/user";
 import type { ResponseAxios } from "./utils/axios";
 
@@ -9,15 +8,7 @@ export type AuthenticationStatus = {
 
 export type AuthenticationStore = {
 	// login status
-	status: AuthenticationStatus | null;
-	authenticationPromises: PromiseStatuses | null;
-
-	/**
-	 * Internally sets the promise status for each and every API request (shouldn't be used by the user)
-	 * @param key unique id for the promise
-	 * @param status status type
-	 */
-	setAuthenticationPromise: (key: string, status: PromiseStatus) => void;
+	status?: AuthenticationStatus;
 
 	/**
 	 * sets the current authentication status
@@ -53,10 +44,10 @@ export type AuthenticationStore = {
 	 */
 	refresh: () => Promise<ResponseAxios>;
 
-    /**
-     * Deletes the user from the database + its profile
-     * @param id the id of the user
-     * @returns a promise with the axios response
-     */
-    deleteUser: (id: string) => Promise<ResponseAxios>;
+	/**
+	 * Deletes the user from the database + its profile
+	 * @param id the id of the user
+	 * @returns a promise with the axios response
+	 */
+	deleteUser: (id: string) => Promise<ResponseAxios>;
 };

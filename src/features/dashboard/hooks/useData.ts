@@ -28,7 +28,7 @@ export const useData = () => {
 
 	// every single time we change the project id, we fetch new data
 	useEffect(() => {
-		if (selectedProjectId === null) return;
+		if (selectedProjectId === undefined) return;
 
 		updateProjectData(selectedProjectId, true);
 	}, [selectedProjectId, updateProjectData]);

@@ -6,7 +6,7 @@ import { supabaseServer } from "@/types/server/supabase";
 import { nextResponse } from "@/utils/response";
 
 export const GET = async (request: NextRequest) => {
-	const params = await request.nextUrl.searchParams;
+	const params = request.nextUrl.searchParams;
 	const id = params.get("id");
 	const name = params.get("name");
 

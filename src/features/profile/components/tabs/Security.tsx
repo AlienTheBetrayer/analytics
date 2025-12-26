@@ -17,8 +17,8 @@ type Props = {
 
 export const Security = ({ data }: Props) => {
 	// zustand states
-	const authenticationPromises = useAppStore(
-		(state) => state.authenticationPromises,
+	const promises = useAppStore(
+		(state) => state.promises,
 	);
 
 	// zustand functions
@@ -100,7 +100,7 @@ export const Security = ({ data }: Props) => {
 
 						<hr className="mt-auto" />
 						<Button type="submit">
-							{authenticationPromises?.password_change === "pending" && (
+							{promises.password_change === "pending" && (
 								<Spinner />
 							)}
 							<Image src="/send.svg" width={20} height={20} alt="" />
@@ -119,7 +119,7 @@ export const Security = ({ data }: Props) => {
 								terminateMessageBox.show();
 							}}
 						>
-							{authenticationPromises?.logout === "pending" && <Spinner />}
+							{promises.logout === "pending" && <Spinner />}
 							<Image src="/auth.svg" width={16} height={16} alt="" />
 							Terminate sessions
 						</Button>
@@ -135,7 +135,7 @@ export const Security = ({ data }: Props) => {
 								deleteMessageBox.show();
 							}}
 						>
-							{authenticationPromises?.delete === "pending" && <Spinner />}
+							{promises.delete === "pending" && <Spinner />}
 							<Image src="/cross.svg" width={16} height={16} alt="" />
 							Delete account
 						</Button>

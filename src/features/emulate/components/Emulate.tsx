@@ -18,9 +18,9 @@ export const Emulate = () => {
 	// error handling:
 	// authentcation's missing
 	if (
-		status === null ||
-		status?.isLoggedIn === false ||
-		status?.user.role === "user"
+		status === undefined ||
+		status.isLoggedIn === false ||
+		status.user.role === "user"
 	) {
 		return (
 			<div className="flex flex-col w-full max-w-64 m-auto box">
@@ -30,7 +30,7 @@ export const Emulate = () => {
 	}
 
 	// no data fetched
-	if (data === null) {
+	if (data === undefined) {
 		return (
 			<div className="flex flex-col w-full max-w-72 m-auto box">
 				<FetchPrompt />

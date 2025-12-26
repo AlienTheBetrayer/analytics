@@ -10,9 +10,7 @@ import { Spinner } from "../../spinner/components/Spinner";
 export const AuthenticationToolbox = () => {
 	// zustand
 	const status = useAppStore((state) => state.status);
-	const authenticationPromises = useAppStore(
-		(state) => state.authenticationPromises,
-	);
+	const promises = useAppStore((state) => state.promises);
 
 	// TMEP
 	const logout = useAppStore((state) => state.logout);
@@ -23,8 +21,7 @@ export const AuthenticationToolbox = () => {
         fixed top-4 right-4 items-center z-2 ${status?.isLoggedIn !== true ? "border-awaiting" : ""}`}
 		>
 			<Image src="/auth.svg" alt="" width={20} height={20} />
-			{authenticationPromises === null ||
-			authenticationPromises?.refresh === "pending" ? (
+			{promises.refresh === "pending" ? (
 				<Spinner />
 			) : (
 				<nav className="flex gap-1 items-center">

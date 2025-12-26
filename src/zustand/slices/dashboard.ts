@@ -3,10 +3,7 @@ import type { SliceFunction } from "@/types/zustand/utils/sliceFunction";
 
 export const DashboardSlice: SliceFunction<DashboardStore> = (set, get) => {
 	return {
-		// selectedProject
-		selectedProjectId: null,
-
-		selectProject: (idx: string | null) => {
+		selectProject: (idx: string | undefined) => {
 			const { selectedProjectId } = get();
 			if (selectedProjectId === idx) {
 				return;
@@ -17,11 +14,11 @@ export const DashboardSlice: SliceFunction<DashboardStore> = (set, get) => {
 
 		deselectProject: () => {
 			const { selectedProjectId } = get();
-			if (selectedProjectId === null) {
+			if (selectedProjectId === undefined) {
 				return;
 			}
 
-			set((state) => ({ ...state, selectedProjectId: null }));
+			set((state) => ({ ...state, selectedProjectId: undefined }));
 		},
 
 		// notifications

@@ -25,9 +25,9 @@ const _DashboardEvents = () => {
 	});
 
 	// error / empty data handling
-	if (data === null) return null;
+	if (data === undefined) return null;
 
-	if (selectedProjectId === null) {
+	if (selectedProjectId === undefined) {
 		return <span className="m-auto">Select a project to see events.</span>;
 	}
 

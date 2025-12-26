@@ -23,7 +23,7 @@ export const UserProfile = () => {
 
 	// zustand state
 	const status = useAppStore((state) => state.status);
-	const profilePromises = useAppStore((state) => state.profilePromises);
+	const promises = useAppStore((state) => state.promises);
 	const profiles = useAppStore((state) => state.profiles);
 
 	// zustand functions
@@ -45,12 +45,14 @@ export const UserProfile = () => {
 		  }
 		| undefined
 	>(() => {
-		return profiles === null
+		return profiles === undefined
 			? undefined
-			: Object.values(profiles).find((p) => p.user.username === name);
+			: Object.values(profiles).find(
+					(p) => p.user.username === retrievedUsername,
+				);
 	});
 
-    // fetch if haven't cached
+	// fetch if haven't cached
 	useEffect(() => {
 		if (retrievedUsername === undefined || retrievedData !== undefined) return;
 
@@ -103,8 +105,8 @@ export const UserProfile = () => {
 		);
 	}
 
-    // loading user
-	if (profilePromises?.profile === "pending" || retrievedData === undefined) {
+	// loading user
+	if (promises.profile === "pending" || retrievedData === undefined) {
 		return (
 			<div className="box max-w-lg w-full m-auto">
 				<span className="m-auto">Loading profile...</span>
@@ -113,7 +115,7 @@ export const UserProfile = () => {
 		);
 	}
 
-    // retrieved data from the retrieved user based on the url
+	// retrieved data from the retrieved user based on the url
 	const data = retrievedData;
 
 	return (

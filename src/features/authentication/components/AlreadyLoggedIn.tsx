@@ -6,8 +6,8 @@ import { useAppStore } from "@/zustand/store";
 
 export const AlreadyLoggedIn = () => {
 	// zustand state
-	const authenticationPromises = useAppStore(
-		(state) => state.authenticationPromises,
+	const promises = useAppStore(
+		(state) => state.promises,
 	);
 
 	// zustand functions
@@ -59,7 +59,7 @@ export const AlreadyLoggedIn = () => {
 								logout();
 							}}
 						>
-							{authenticationPromises?.logout === "pending" && <Spinner />}
+							{promises.logout === "pending" && <Spinner />}
 							<Image alt="" src="/auth.svg" width={16} height={16} />
 							Log me out
 						</Button>

@@ -18,7 +18,7 @@ export const ProjectList = ({ data }: Props) => {
 				scrollbarWidth: "thin",
 			}}
 		>
-			{data !== null &&
+			{data !== undefined &&
 				Object.values(data).map((projectData) => (
 					<li key={projectData.project.name}>
 						<LinkButton

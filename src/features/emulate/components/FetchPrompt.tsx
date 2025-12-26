@@ -5,7 +5,7 @@ import { useAppStore } from "@/zustand/store";
 
 export const FetchPrompt = () => {
 	// zustand state
-	const dataPromises = useAppStore((state) => state.dataPromises);
+	const promises = useAppStore((state) => state.promises);
 
 	// zustand functions
 	const updateProjectList = useAppStore((state) => state.updateProjectList);
@@ -28,7 +28,7 @@ export const FetchPrompt = () => {
 						updateProjectList();
 					}}
 				>
-					{dataPromises?.projects === "pending" && <Spinner />}
+					{promises.projects === "pending" && <Spinner />}
 					Fetch
 				</Button>
 				<LinkButton style="button" href="/dashboard">
