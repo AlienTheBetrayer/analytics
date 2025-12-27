@@ -1,11 +1,36 @@
-import type { Profile } from "@/types/api/database/profiles";
+import Image from "next/image";
+import { useState } from "react";
+import { Spinner } from "@/features/spinner/components/Spinner";
+import { Button } from "@/features/ui/button/components/Button";
+import { Select } from "@/features/ui/select/components/Select";
+import type {
+	Profile,
+	ProfileAllowedFriendRequests,
+	ProfileVisibility,
+} from "@/types/api/database/profiles";
 import type { User } from "@/types/api/database/user";
+import { useAppStore } from "@/zustand/store";
 
 type Props = {
 	data: { profile: Profile; user: User };
 };
 
 export const Privacy = ({ data }: Props) => {
+	// zustand state
+	const promises = useAppStore((state) => state.promises);
+
+	// zustand functions
+	const setProfileData = useAppStore((state) => state.setProfileData);
+
+	// input states
+	const [visibility, setVisibility] = useState<ProfileVisibility>(
+		data.profile.visibility,
+	);
+	const [allowedFriendRequests, setAllowedFriendRequests] =
+		useState<ProfileAllowedFriendRequests>(
+			data.profile.allowed_friend_requests,
+		);
+
 	return (
 		<div className="flex flex-col gap-4 p-2 w-full">
 			<div className="flex flex-col gap-2 items-center">
@@ -13,9 +38,7 @@ export const Privacy = ({ data }: Props) => {
 					<mark>{data.user.username}</mark>
 					's profile
 				</span>
-                <span>
-                    Account's Privacy
-                </span>
+				<span>Account's Privacy</span>
 			</div>
 
 			<hr />
@@ -27,9 +50,55 @@ export const Privacy = ({ data }: Props) => {
 					</span>
 				</div>
 				<hr className="sm:w-px! sm:h-full" />
-				<div className="flex flex-col gap-2 h-full w-full grow">
+				<form
+					className="flex flex-col gap-2 w-full"
+					onSubmit={(e) => {
+						e.preventDefault();
+						setProfileData(data.user, {
+							visibility,
+							allowed_friend_requests: allowedFriendRequests,
+						});
+					}}
+				>
+					<label
+						htmlFor="visibility"
+						className="flex justify-between items-center"
+					>
+						<b>Profile's Visibility</b>
+						<small> (who can see your profile?)</small>
+					</label>
+					<Select
+						id="visibility"
+						items={["everyone", "friends", "nobody"]}
+						value={visibility}
+						onChange={(e) => setVisibility(e as ProfileVisibility)}
+					/>
+					<hr />
 
-                </div>
+					<label
+						htmlFor="requests"
+						className="flex justify-between items-center"
+					>
+						<b>Allowed friend requests</b>
+						<small> (can someone send you a friend request?)</small>
+					</label>
+					<Select
+						id="requests"
+						items={["everyone", "nobody"]}
+						value={allowedFriendRequests}
+						onChange={(e) =>
+							setAllowedFriendRequests(e as ProfileAllowedFriendRequests)
+						}
+					/>
+					<hr />
+
+					<hr className="mt-auto" />
+					<Button type="submit">
+						{promises.profile_set === "pending" && <Spinner />}
+						<Image src="/send.svg" width={20} height={20} alt="" />
+						Apply changes
+					</Button>
+				</form>
 			</div>
 		</div>
 	);

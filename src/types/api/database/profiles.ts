@@ -1,4 +1,5 @@
 export type ProfileVisibility = "everyone" | "friends" | "nobody";
+export type ProfileAllowedFriendRequests = "everyone" | "nobody";
 
 export type Profile = {
 	id: string;
@@ -7,4 +8,5 @@ export type Profile = {
 	bio?: string;
 	oneliner?: string;
 	visibility: ProfileVisibility;
+    allowed_friend_requests: ProfileAllowedFriendRequests;
 };
