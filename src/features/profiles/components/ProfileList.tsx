@@ -1,10 +1,15 @@
 "use client";
 
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Spinner } from "@/features/spinner/components/Spinner";
 import { Button } from "@/features/ui/button/components/Button";
-import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
+import { Select } from "@/features/ui/select/components/Select";
 import { useAppStore } from "@/zustand/store";
+import {
+	type ProfileListVersions,
+	ProfileListVersionsArray,
+} from "../types/versions";
+import { Desktop } from "./listversions/Desktop";
 
 export const ProfileList = () => {
 	// zustand state
@@ -13,6 +18,10 @@ export const ProfileList = () => {
 
 	// zustand functions
 	const getAllProfiles = useAppStore((state) => state.getAllProfiles);
+
+	// react states
+	const [listVersion, setListVersion] =
+		useState<ProfileListVersions>("desktop");
 
 	useEffect(() => {
 		getAllProfiles();
@@ -48,6 +57,13 @@ export const ProfileList = () => {
 		);
 	}
 
+	const profileListVersion = () => {
+		switch (listVersion) {
+			case "desktop":
+				return <Desktop profiles={profiles} />;
+		}
+	};
+
 	return (
 		<div className="flex flex-col w-full max-w-lg box m-auto">
 			<div className="flex flex-col gap-4">
@@ -60,30 +76,21 @@ export const ProfileList = () => {
 					</span>
 				</div>
 				<hr />
-				<ul className="flex flex-col gap-2">
-					{Object.values(profiles).map((data) => (
-						<React.Fragment key={data.user.id}>
-							<li className="flex w-full">
-								<LinkButton
-									className="flex w-full justify-start p-2! gap-2"
-									href={`/profile/${data.user.username}`}
-								>
-									<div className="bg-blue-3 rounded-full h-16 aspect-square" />
-									<ul className="grid grid-rows-3 w-full">
-										<li className="flex gap-2">
-                                            {data.profile.name}
-                                        </li>
-										<li className="flex gap-2">
-                                            
-                                        </li>
-										<li className="flex gap-2"></li>
-									</ul>
-								</LinkButton>
-							</li>
-							<hr />
-						</React.Fragment>
-					))}
-				</ul>
+				<div className="flex flex-col gap-2">
+					<span className="flex flex-wrap justify-between ">
+						<b className="whitespace-nowrap">Display type</b>
+						<small className="ml-auto">
+							(gets saved & might not be available on the device)
+						</small>
+					</span>
+					<Select
+						items={ProfileListVersionsArray}
+						value={listVersion}
+						onChange={(e) => setListVersion(e as ProfileListVersions)}
+					/>
+				</div>
+				<hr />
+                {profileListVersion()}
 			</div>
 		</div>
 	);
