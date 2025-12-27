@@ -9,8 +9,8 @@ import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
 import type { Profile } from "@/types/api/database/profiles";
 import type { User } from "@/types/api/database/user";
-import { useAppStore } from "@/zustand/store";
 import { promiseStatus } from "@/utils/status";
+import { useAppStore } from "@/zustand/store";
 
 type Props = {
 	data: { profile: Profile; user: User };
@@ -73,6 +73,7 @@ export const Security = ({ data }: Props) => {
 			{terminateMessageBox.render()}
 
 			<div className="flex flex-col gap-2 items-center">
+
 				<span className="text-foreground-2! text-5!">
 					<mark>{data.user.username}</mark>
 					's profile
@@ -83,6 +84,7 @@ export const Security = ({ data }: Props) => {
 			<hr />
 			<div className="flex flex-col sm:flex-row gap-4 grow w-full">
 				<div className="flex flex-col items-center gap-2 sm:w-80">
+					<span>{data.profile.name}</span>
 					<div className="bg-blue-3 rounded-full w-full max-w-48 aspect-square" />
 					<span className="text-foreground-5!">
 						{data.user.role[0].toUpperCase() + data.user.role.substring(1)}
@@ -117,7 +119,7 @@ export const Security = ({ data }: Props) => {
 							onChange={(e) => setPassword(e)}
 							placeholder="at least 6 characters"
 							minLength={6}
-                            required
+							required
 						/>
 
 						<hr className="mt-auto" />

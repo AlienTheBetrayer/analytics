@@ -18,6 +18,7 @@ export const Overview = ({ data }: Props) => {
 
 			<hr />
 			<div className="flex flex-col gap-2 grow items-center justify-center min-w-0">
+				<span>{data.profile.name}</span>
 				<span>{data.profile.oneliner}</span>
 				<div className="bg-blue-3 rounded-full w-full max-w-64 aspect-square"></div>
 				<span className="text-foreground-5!">

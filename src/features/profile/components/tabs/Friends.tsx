@@ -19,6 +19,7 @@ export const Friends = ({ data }: Props) => {
 			<hr />
 			<div className="flex flex-col sm:flex-row gap-4 grow w-full">
 				<div className="flex flex-col items-center gap-2 sm:w-80">
+					<span>{data.profile.name}</span>
 					<div className="bg-blue-3 rounded-full h-48 aspect-square" />
 					<span className="text-foreground-5!">
 						{data.user.role[0].toUpperCase() + data.user.role.substring(1)}
@@ -27,14 +28,12 @@ export const Friends = ({ data }: Props) => {
 				<hr className="sm:w-px! sm:h-full" />
 
 				<div className="flex flex-col gap-2 w-full">
-                    <span>
-                        <b>Friends</b>
-                    </span>
-                    <ul className='flex flex-col gap-2'>
-                        
-                    </ul>
-                    <hr/>
-                </div>
+					<span>
+						<b>Friends</b>
+					</span>
+					<ul className="flex flex-col gap-2"></ul>
+					<hr />
+				</div>
 			</div>
 		</div>
 	);

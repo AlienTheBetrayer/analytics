@@ -20,6 +20,7 @@ export const Edit = ({ data }: Props) => {
 
 	// input states
 	const [status, setStatus] = useState<string>(data.profile.status ?? "");
+	const [name, setName] = useState<string>(data.profile.name ?? "");
 	const [bio, setBio] = useState<string>(data.profile.bio ?? "");
 	const [oneliner, setOneliner] = useState<string>(data.profile.oneliner ?? "");
 
@@ -36,6 +37,7 @@ export const Edit = ({ data }: Props) => {
 			<hr />
 			<div className="flex flex-col sm:flex-row gap-4 grow w-full">
 				<div className="flex flex-col items-center gap-2 sm:w-80">
+                    <span>{data.profile.name}</span>
 					<div className="bg-blue-3 rounded-full w-full max-w-48 aspect-square" />
 					<span className="text-foreground-5!">
 						{data.user.role[0].toUpperCase() + data.user.role.substring(1)}
@@ -47,9 +49,21 @@ export const Edit = ({ data }: Props) => {
 					className="flex flex-col gap-2 w-full"
 					onSubmit={(e) => {
 						e.preventDefault();
-						setProfileData(data.user, { status, bio, oneliner });
+						setProfileData(data.user, { status, bio, oneliner, name });
 					}}
 				>
+					<label htmlFor="bio" className="flex justify-between items-center">
+						<b>Name</b>
+						<small> (your name, can be fictional)</small>
+					</label>
+					<Input
+						value={name}
+						onChange={(e) => setName(e)}
+						placeholder="24 characters max"
+						maxLength={24}
+					/>
+
+					<hr />
 					<label htmlFor="bio" className="flex justify-between items-center">
 						<b>One-liner</b>
 						<small> (a short phrase that feels yours)</small>

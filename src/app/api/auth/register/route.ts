@@ -56,7 +56,7 @@ export const POST = async (request: NextRequest) => {
 
 		const { error: profileError } = await supabaseServer
 			.from("profiles")
-			.insert({ user_id: userData[0].id });
+			.insert({ user_id: userData[0].id, name: userData[0].username });
 
 		if (profileError) {
 			return nextResponse(profileError, 400);
