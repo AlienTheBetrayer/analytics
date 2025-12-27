@@ -1,10 +1,10 @@
 import Image from "next/image";
 import { useState } from "react";
-import { Spinner } from "@/features/spinner/components/Spinner";
 import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
 import type { Profile } from "@/types/api/database/profiles";
 import type { User } from "@/types/api/database/user";
+import { promiseStatus } from "@/utils/status";
 import { useAppStore } from "@/zustand/store";
 
 type Props = {
@@ -88,7 +88,7 @@ export const Edit = ({ data }: Props) => {
 
 					<hr className="mt-auto" />
 					<Button type="submit">
-						{promises.profile_set === "pending" && <Spinner />}
+						{promiseStatus(promises.profile_set)}
 						<Image src="/send.svg" width={20} height={20} alt="" />
 						Apply changes
 					</Button>

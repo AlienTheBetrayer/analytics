@@ -20,12 +20,24 @@ export const DataSlice: SliceFunction<DataStore> = (set, get) => {
 					...state,
 					promises: { ...state.promises, [key]: "resolved" },
 				}));
+				setTimeout(() => {
+					set((state) => ({
+						...state,
+						promises: { ...state.promises, [key]: "idle" },
+					}));
+				}, 5000);
 				return res;
 			} catch (e) {
 				set((state) => ({
 					...state,
 					promises: { ...state.promises, [key]: "rejected" },
 				}));
+				setTimeout(() => {
+					set((state) => ({
+						...state,
+						promises: { ...state.promises, [key]: "idle" },
+					}));
+				}, 5000);
 				throw e;
 			}
 		},

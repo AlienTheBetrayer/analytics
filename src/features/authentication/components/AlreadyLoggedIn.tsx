@@ -1,14 +1,12 @@
 import Image from "next/image";
-import { Spinner } from "@/features/spinner/components/Spinner";
 import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
+import { promiseStatus } from "@/utils/status";
 import { useAppStore } from "@/zustand/store";
 
 export const AlreadyLoggedIn = () => {
 	// zustand state
-	const promises = useAppStore(
-		(state) => state.promises,
-	);
+	const promises = useAppStore((state) => state.promises);
 
 	// zustand functions
 	const logout = useAppStore((state) => state.logout);
@@ -59,7 +57,7 @@ export const AlreadyLoggedIn = () => {
 								logout();
 							}}
 						>
-							{promises.logout === "pending" && <Spinner />}
+							{promiseStatus(promises.logout)}
 							<Image alt="" src="/auth.svg" width={16} height={16} />
 							Log me out
 						</Button>

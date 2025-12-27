@@ -10,6 +10,7 @@ import { Input } from "@/features/ui/input/components/Input";
 import type { Profile } from "@/types/api/database/profiles";
 import type { User } from "@/types/api/database/user";
 import { useAppStore } from "@/zustand/store";
+import { promiseStatus } from "@/utils/status";
 
 type Props = {
 	data: { profile: Profile; user: User };
@@ -91,7 +92,7 @@ export const Security = ({ data }: Props) => {
 							logout();
 						}}
 					>
-						{promises.logout === "pending" && <Spinner />}
+						{promiseStatus(promises.logout)}
 						<Image width={16} height={16} alt="" src="/auth.svg" />
 						Log out
 					</Button>
@@ -111,7 +112,7 @@ export const Security = ({ data }: Props) => {
 							<small> (a new strong password)</small>
 						</label>
 						<Input
-                        type='password'
+							type="password"
 							value={password}
 							onChange={(e) => setPassword(e)}
 							placeholder="at least 6 characters"
@@ -120,7 +121,7 @@ export const Security = ({ data }: Props) => {
 
 						<hr className="mt-auto" />
 						<Button type="submit">
-							{promises.password_change === "pending" && <Spinner />}
+							{promiseStatus(promises.password_change)}
 							<Image src="/send.svg" width={20} height={20} alt="" />
 							Apply changes
 						</Button>
@@ -163,8 +164,7 @@ export const Security = ({ data }: Props) => {
 												deleteSession(session.id);
 											}}
 										>
-											{promises[`session_logout_${session.id}`] ===
-												"pending" && <Spinner />}
+											{promiseStatus(promises[`session_logout_${session.id}`])}
 											<Image src="/cross.svg" width={16} height={16} alt="" />
 											Terminate
 										</Button>

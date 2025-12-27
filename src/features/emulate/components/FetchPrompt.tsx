@@ -1,6 +1,6 @@
-import { Spinner } from "@/features/spinner/components/Spinner";
 import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
+import { promiseStatus } from "@/utils/status";
 import { useAppStore } from "@/zustand/store";
 
 export const FetchPrompt = () => {
@@ -28,7 +28,7 @@ export const FetchPrompt = () => {
 						updateProjectList();
 					}}
 				>
-					{promises.projects === "pending" && <Spinner />}
+					{promiseStatus(promises.projects)}
 					Fetch
 				</Button>
 				<LinkButton style="button" href="/dashboard">
