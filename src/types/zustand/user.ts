@@ -9,7 +9,7 @@ export type Requests = Record<string, string[]>;
 
 export type UserStore = {
 	profiles?: Profiles;
-    friends?: Friends;
+    friends?: string[];
     friendRequests?: Requests;
 
 	/**
@@ -52,13 +52,26 @@ export type UserStore = {
 	deleteProfileData: (id: string) => void;
 
     /**
-     * gets all the friends that this user has
+     * gets all the friends that we have (if logged in)
+	 * @param caching don't fetch the data if it has already been fetched
+     * @returns a promise containing the response
+     */
+    getFriends: (caching?: boolean) => Promise<ResponseAxios | undefined>;
+
+    /**
+     * gets all the friends' profiles that we have (if logged in)
+	 * @param caching don't fetch the data if it has already been fetched
+     * @returns a promise containing the response
+     */
+    getFriendsProfiles: (caching?: boolean) => Promise<ResponseAxios | undefined>;
+
+    /**
+     * gets all the friend requests this user sent and received
      * @param id the id of the user
 	 * @param caching don't fetch the data if it has already been fetched
      * @returns a promise containing the response
      */
-    getFriends: (id: string, caching?: boolean) => Promise<ResponseAxios | undefined>;
-
+    getFriendRequests: (id: string, caching?: boolean) => Promise<ResponseAxios | undefined>;
     /**
      * gets all the profiles available at the moment
 	 * @param caching don't fetch the data if it has already been fetched
@@ -73,4 +86,11 @@ export type UserStore = {
      * @returns a promise containing the response
      */
     sendFriendRequest: (from_id: string, to_id: string) => Promise<ResponseAxios>;
+
+    /**
+     * unfriends the user
+     * @param id the user you don't want to be friends no more
+     * @returns a promise containing the response
+     */
+    unfriend: (id: string) => Promise<ResponseAxios>;
 };

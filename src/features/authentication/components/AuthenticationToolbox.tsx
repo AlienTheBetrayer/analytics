@@ -9,6 +9,7 @@ import { Spinner } from "../../spinner/components/Spinner";
 export const AuthenticationToolbox = () => {
 	// zustand
 	const status = useAppStore((state) => state.status);
+	const profiles = useAppStore((state) => state.profiles);
 	const promises = useAppStore((state) => state.promises);
 
 	return (
@@ -29,7 +30,7 @@ export const AuthenticationToolbox = () => {
 						>
 							<LinkButton href="/profile">
 								<Image width={16} height={16} alt="" src="/account.svg" />
-								Profile
+								{profiles?.[status.user.id]?.user?.username ?? "Account"}
 							</LinkButton>
 						</Tooltip>
 					) : (

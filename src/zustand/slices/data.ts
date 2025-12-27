@@ -42,7 +42,7 @@ export const DataSlice: SliceFunction<DataStore> = (set, get) => {
 			}
 		},
 
-		setCached: (key: string, flag: boolean) => {
+		setCached: (key: string, flag: boolean = true) => {
 			set((state) => ({ ...state, cached: { ...state.cached, [key]: flag } }));
 		},
 

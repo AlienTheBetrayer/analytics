@@ -32,7 +32,7 @@ export type DataStore = {
      * @param key the unique identifier for the cache request
      * @param flag cached or not
      */
-    setCached: (key: string, flag: boolean) => void;
+    setCached: (key: string, flag?: boolean) => void;
 
 	/**
 	 * explicitly sets the data to a new record

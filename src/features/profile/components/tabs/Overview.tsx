@@ -1,4 +1,6 @@
 import Image from "next/image";
+import { MessageBox } from "@/features/messagebox/components/MessageBox";
+import { usePopup } from "@/features/popup/hooks/usePopup";
 import { Button } from "@/features/ui/button/components/Button";
 import type { Profile } from "@/types/api/database/profiles";
 import type { User } from "@/types/api/database/user";
@@ -18,9 +20,25 @@ export const Overview = ({ data }: Props) => {
 
 	// zustand functinos
 	const sendFriendRequest = useAppStore((state) => state.sendFriendRequest);
+	const unfriend = useAppStore((state) => state.unfriend);
+
+	// message boxes
+	const unfriendMessageBox = usePopup(
+		<MessageBox
+			description="You are about to delete this user from your friends!"
+			onInteract={(res) => {
+				unfriendMessageBox.hide();
+				if (res === "yes") {
+					unfriend(data.user.id);
+				}
+			}}
+		/>,
+	);
 
 	return (
 		<div className="flex flex-col gap-4 p-2 w-full grow">
+			{unfriendMessageBox.render()}
+
 			<div className="flex flex-col gap-2 items-center">
 				<span className="text-foreground-2! text-5!">
 					<mark>{data.user.username}</mark>
@@ -42,8 +60,13 @@ export const Overview = ({ data }: Props) => {
 				{status &&
 					status.user.id !== data.user.id &&
 					data.profile.allowed_friend_requests === "everyone" &&
-					(friends?.[status.user.id].some((id) => id === data.user.id) ? (
-						<Button>
+					(friends?.some((id) => id === data.user.id) ? (
+						<Button
+							onClick={() => {
+								unfriendMessageBox.show();
+							}}
+						>
+							{promiseStatus(promises.unfriend)}
 							<Image src="/cross.svg" width={16} height={16} alt="unfriend" />
 							Unfriend
 						</Button>

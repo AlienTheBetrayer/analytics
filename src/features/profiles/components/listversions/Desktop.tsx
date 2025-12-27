@@ -11,7 +11,6 @@ type Props = {
 
 export const Desktop = ({ profiles }: Props) => {
 	// zustand state
-	const status = useAppStore((state) => state.status);
 	const friends = useAppStore((state) => state.friends);
 
 	return (
@@ -20,8 +19,8 @@ export const Desktop = ({ profiles }: Props) => {
 				(data) =>
 					(data.profile.visibility === "everyone" ||
 						(data.profile.visibility === "friends" &&
-							friends?.[data.user.id].some(
-								(id) => id === status?.user.id,
+							friends?.some(
+								(id) => id === data?.user.id,
 							))) && (
 						<React.Fragment key={data.user.id}>
 							<li className="flex w-full">
