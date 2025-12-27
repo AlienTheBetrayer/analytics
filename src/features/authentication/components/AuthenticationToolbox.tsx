@@ -12,7 +12,7 @@ export const AuthenticationToolbox = () => {
 	const profiles = useAppStore((state) => state.profiles);
 	const promises = useAppStore((state) => state.promises);
 
-	return (
+    return (
 		<div
 			className={`hidden! md:flex! flex-row! gap-4 box p-2
         fixed top-4 right-4 items-center z-2 ${status?.isLoggedIn !== true ? "border-awaiting" : ""}`}

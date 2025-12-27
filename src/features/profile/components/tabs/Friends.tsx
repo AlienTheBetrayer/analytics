@@ -1,3 +1,6 @@
+import { MessageBox } from "@/features/messagebox/components/MessageBox";
+import { usePopup } from "@/features/popup/hooks/usePopup";
+import { Button } from "@/features/ui/button/components/Button";
 import type { Profile } from "@/types/api/database/profiles";
 import type { User } from "@/types/api/database/user";
 import { useAppStore } from "@/zustand/store";
@@ -11,6 +14,13 @@ export const Friends = ({ data }: Props) => {
 	const friends = useAppStore((state) => state.friends);
 	const profiles = useAppStore((state) => state.profiles);
 
+    // messageboxes
+    const unfriendMessageBox = usePopup(<MessageBox description="You are about to unfriend everyone!" onInteract={res => {
+        unfriendMessageBox.hide();
+        if(res === 'yes') {
+
+        }
+    }}/>);
     return (
 		<div className="flex flex-col gap-4 p-2 w-full">
 			<div className="flex flex-col gap-2 items-center">
@@ -34,7 +44,7 @@ export const Friends = ({ data }: Props) => {
 
 				<div className="flex flex-col gap-2 w-full">
 					{friends === undefined || friends.length === 0 ? (
-						<span>Currently you have no friends :(</span>
+						<span>Currently your friend list is empty.</span>
 					) : (
 						<>
 							<span>
@@ -50,7 +60,12 @@ export const Friends = ({ data }: Props) => {
 						</>
 					)}
 
-					<hr />
+					<hr className='mt-auto'/>
+                    <Button onClick={() => {
+                        unfriendMessageBox.show();
+                    }}>
+                        Unfriend everyone
+                    </Button>
 				</div>
 			</div>
 		</div>

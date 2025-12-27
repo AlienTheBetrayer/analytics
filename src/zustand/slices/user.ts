@@ -126,10 +126,11 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
 				};
 
 				set((state) => {
-					const profiles = data.profiles.reduce<Profiles>((acc, item) => {
-						acc[item.user.id] = item;
-						return acc;
-					}, {});
+                    const profiles = { ...state.profiles };
+
+                    data.profiles.forEach(p => {
+                        profiles[p.user.id] = p;
+                    });
 
 					return {
 						...state,
@@ -171,10 +172,11 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
 				};
 
 				set((state) => {
-					const profiles = data.profiles.reduce<Profiles>((acc, item) => {
-						acc[item.user.id] = item;
-						return acc;
-					}, {});
+                    const profiles = { ...state.profiles };
+
+                    data.profiles.forEach(p => {
+                        profiles[p.user.id] = p;
+                    });
 
 					return { ...state, profiles };
 				});
