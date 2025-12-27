@@ -3,6 +3,7 @@ import type { Profile } from "@/types/api/database/profiles";
 import type { User } from "@/types/api/database/user";
 import type { UserStore } from "@/types/zustand/user";
 import type { SliceFunction } from "@/types/zustand/utils/sliceFunction";
+import { Friend } from "@/types/api/database/friends";
 
 export const UserSlice: SliceFunction<UserStore> = (set, get) => {
 	return {
@@ -86,6 +87,24 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
 				delete newProfiles[id];
 
 				return { ...state, profiles: newProfiles };
+			});
+		},
+
+		getFriends: async (id: string, caching: boolean = true) => {
+			const { setPromise, friends } = get();
+
+			if (caching === true && friends?.[id] !== undefined) return;
+
+			return await setPromise("friends", async () => {
+				const res = await axios.get(`/api/auth/friends/${id}`);
+                const data = res.data as Friend[];
+                
+				set((state) => ({
+					...state,
+					friends: { ...state.friends, [id]: res.data },
+				}));
+
+				return res;
 			});
 		},
 	};

@@ -4,8 +4,11 @@ import type { ResponseAxios } from "./utils/axios";
 
 export type Profiles = Record<string, { profile: Profile; user: User }>;
 
+export type Friends = Record<string, User[]>;
+
 export type UserStore = {
 	profiles?: Profiles;
+    friends?: Friends;
 
 	/**
 	 * gets the user's profile by its name
@@ -45,5 +48,12 @@ export type UserStore = {
 	 * @param id the id of the user
 	 */
 	deleteProfileData: (id: string) => void;
+
+    /**
+     * gets all the friends that this user has
+     * @param id the id of the user
+     * @returns a promise containing the response
+     */
+    getFriends: (id: string, caching?: boolean) => Promise<ResponseAxios | undefined>;
 
 };
