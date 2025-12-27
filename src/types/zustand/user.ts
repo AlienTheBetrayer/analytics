@@ -93,4 +93,11 @@ export type UserStore = {
      * @returns a promise containing the response
      */
     unfriend: (id: string) => Promise<ResponseAxios>;
+
+    /**
+     * unfriends everyone
+     * @param id the user you don't want to be friends no more
+     * @returns a promise containing the response
+     */
+    unfriendEveryone: (id: string) => Promise<ResponseAxios>;
 };

@@ -1,8 +1,10 @@
+import Image from "next/image";
 import { MessageBox } from "@/features/messagebox/components/MessageBox";
 import { usePopup } from "@/features/popup/hooks/usePopup";
 import { Button } from "@/features/ui/button/components/Button";
 import type { Profile } from "@/types/api/database/profiles";
 import type { User } from "@/types/api/database/user";
+import { promiseStatus } from "@/utils/status";
 import { useAppStore } from "@/zustand/store";
 
 type Props = {
@@ -13,16 +15,27 @@ export const Friends = ({ data }: Props) => {
 	// zustand states
 	const friends = useAppStore((state) => state.friends);
 	const profiles = useAppStore((state) => state.profiles);
+	const status = useAppStore((state) => state.status);
+	const promises = useAppStore((state) => state.promises);
 
-    // messageboxes
-    const unfriendMessageBox = usePopup(<MessageBox description="You are about to unfriend everyone!" onInteract={res => {
-        unfriendMessageBox.hide();
-        if(res === 'yes') {
+	// zustand functions
+	const unfriendEveryone = useAppStore((state) => state.unfriendEveryone);
 
-        }
-    }}/>);
-    return (
+	// messageboxes
+	const unfriendMessageBox = usePopup(
+		<MessageBox
+			description="You are about to unfriend everyone!"
+			onInteract={(res) => {
+				unfriendMessageBox.hide();
+				if (res === "yes" && status) {
+					unfriendEveryone(status.user.id);
+				}
+			}}
+		/>,
+	);
+	return (
 		<div className="flex flex-col gap-4 p-2 w-full">
+            {unfriendMessageBox.render()}
 			<div className="flex flex-col gap-2 items-center">
 				<span className="text-center text-foreground-2! text-5!">
 					<mark>{data.user.username}</mark>
@@ -51,21 +64,23 @@ export const Friends = ({ data }: Props) => {
 								<b>Friends</b>
 							</span>
 							<ul className="flex flex-col gap-2">
-                                {friends.map(friend => (
-                                    <li key={friend}>
-                                        {profiles?.[friend].profile.name}
-                                    </li>
-                                ))}
-                            </ul>
+								{friends.map((friend) => (
+									<li key={friend}>{profiles?.[friend].profile.name}</li>
+								))}
+							</ul>
 						</>
 					)}
 
-					<hr className='mt-auto'/>
-                    <Button onClick={() => {
-                        unfriendMessageBox.show();
-                    }}>
-                        Unfriend everyone
-                    </Button>
+					<hr className="mt-auto" />
+					<Button
+						onClick={() => {
+							unfriendMessageBox.show();
+						}}
+					>
+						{promiseStatus(promises.unfriend_everyone)}
+						<Image width={16} height={16} alt="" src="/cross.svg" />
+						Unfriend everyone
+					</Button>
 				</div>
 			</div>
 		</div>

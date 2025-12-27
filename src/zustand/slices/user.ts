@@ -2,7 +2,7 @@ import axios from "axios";
 import type { Profile } from "@/types/api/database/profiles";
 import type { User } from "@/types/api/database/user";
 import type { APIResponseType } from "@/types/api/response";
-import type { Profiles, UserStore } from "@/types/zustand/user";
+import type { UserStore } from "@/types/zustand/user";
 import type { SliceFunction } from "@/types/zustand/utils/sliceFunction";
 
 export const UserSlice: SliceFunction<UserStore> = (set, get) => {
@@ -126,11 +126,11 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
 				};
 
 				set((state) => {
-                    const profiles = { ...state.profiles };
+					const profiles = { ...state.profiles };
 
-                    data.profiles.forEach(p => {
-                        profiles[p.user.id] = p;
-                    });
+					data.profiles.forEach((p) => {
+						profiles[p.user.id] = p;
+					});
 
 					return {
 						...state,
@@ -172,11 +172,11 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
 				};
 
 				set((state) => {
-                    const profiles = { ...state.profiles };
+					const profiles = { ...state.profiles };
 
-                    data.profiles.forEach(p => {
-                        profiles[p.user.id] = p;
-                    });
+					data.profiles.forEach((p) => {
+						profiles[p.user.id] = p;
+					});
 
 					return { ...state, profiles };
 				});
@@ -244,6 +244,21 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
 				set((state) => ({
 					...state,
 					friends: state.friends?.filter((f) => f !== id),
+				}));
+
+				return res;
+			});
+		},
+
+		unfriendEveryone: async (id: string) => {
+			const { setPromise } = get();
+
+			return await setPromise("unfriend_everyone", async () => {
+				const res = await axios.post("/api/unfriend-all/", { id });
+
+				set((state) => ({
+					...state,
+					friends: undefined,
 				}));
 
 				return res;
