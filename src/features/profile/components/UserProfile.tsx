@@ -1,18 +1,18 @@
 "use client";
 
-import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AuthRequired } from "@/features/authentication/components/AuthRequired";
 import { retrieveResponse } from "@/features/authentication/utils/retrieveResponse";
-import { Spinner } from "@/features/spinner/components/Spinner";
-import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import type { Profile } from "@/types/api/database/profiles";
 import type { User } from "@/types/api/database/user";
 import type { APIResponseType } from "@/types/api/response";
 import { useAppStore } from "@/zustand/store";
+import { NotFound } from "./NotFound";
+import { PrivateVisiblity } from "./PrivateVisibility";
 import { ProfileEdit, ProfileTabs } from "./ProfileEdit";
 import { Overview } from "./tabs/Overview";
+import { UserLoading } from "./UserLoading";
 
 export const UserProfile = () => {
 	// url
@@ -25,6 +25,7 @@ export const UserProfile = () => {
 	const status = useAppStore((state) => state.status);
 	const promises = useAppStore((state) => state.promises);
 	const profiles = useAppStore((state) => state.profiles);
+	const friends = useAppStore((state) => state.friends);
 
 	// zustand functions
 	const getProfileByName = useAppStore((state) => state.getProfileByName);
@@ -81,42 +82,28 @@ export const UserProfile = () => {
 		responseStatus === "user_not_exists" ||
 		responseStatus === "profile_not_exists"
 	) {
-		return (
-			<div className="box max-w-lg w-full m-auto">
-				<div className="flex flex-col gap-4">
-					<div className="flex flex-col gap-2">
-						<span className="text-center text-foreground-2! text-5!">
-							<u>Wrong</u> user!
-						</span>
-						<span className="text-center">
-							The user has either not created a profile yet or they don't exist.
-						</span>
-					</div>
-
-					<hr />
-					<div>
-						<LinkButton href="/home">
-							<Image width={16} height={16} src="/cube.svg" alt="" />
-							Go back home
-						</LinkButton>
-					</div>
-				</div>
-			</div>
-		);
+		return <NotFound />;
 	}
 
 	// loading user
 	if (promises.profile === "pending" || retrievedData === undefined) {
-		return (
-			<div className="box max-w-lg w-full m-auto">
-				<span className="m-auto">Loading profile...</span>
-				<Spinner styles="big" />
-			</div>
-		);
+		return <UserLoading />;
 	}
 
 	// retrieved data from the retrieved user based on the url
 	const data = retrievedData;
+
+	// private visibility
+	if (
+		!(
+			data.user.id === status?.user.id ||
+			data.profile.visibility === "everyone" ||
+			(data.profile.visibility === "friends" &&
+				friends?.[data.user.id].some((f) => f.id === status?.user.id))
+		)
+	) {
+		return <PrivateVisiblity />;
+	}
 
 	return (
 		<div className="box max-w-3xl w-full m-auto min-h-128 p-0!">
