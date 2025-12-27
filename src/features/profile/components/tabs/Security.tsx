@@ -117,6 +117,7 @@ export const Security = ({ data }: Props) => {
 							onChange={(e) => setPassword(e)}
 							placeholder="at least 6 characters"
 							minLength={6}
+                            required
 						/>
 
 						<hr className="mt-auto" />
