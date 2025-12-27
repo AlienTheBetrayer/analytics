@@ -10,6 +10,7 @@ import {
 	ProfileListVersionsArray,
 } from "../types/versions";
 import { Desktop } from "./listversions/Desktop";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 
 export const ProfileList = () => {
 	// zustand state
@@ -22,6 +23,8 @@ export const ProfileList = () => {
 	// react states
 	const [listVersion, setListVersion] =
 		useState<ProfileListVersions>("desktop");
+    const isMobile = useMediaQuery("(max-width: 640px)");
+    console.log(isMobile);
 
 	useEffect(() => {
 		getAllProfiles();
