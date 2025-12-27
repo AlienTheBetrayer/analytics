@@ -4,13 +4,13 @@ import { useEffect, useState } from "react";
 import { Spinner } from "@/features/spinner/components/Spinner";
 import { Button } from "@/features/ui/button/components/Button";
 import { Select } from "@/features/ui/select/components/Select";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { useAppStore } from "@/zustand/store";
 import {
 	type ProfileListVersions,
 	ProfileListVersionsArray,
 } from "../types/versions";
 import { Desktop } from "./listversions/Desktop";
-import { useMediaQuery } from "@/hooks/useMediaQuery";
 
 export const ProfileList = () => {
 	// zustand state
@@ -20,11 +20,23 @@ export const ProfileList = () => {
 	// zustand functions
 	const getAllProfiles = useAppStore((state) => state.getAllProfiles);
 
-	// react states
+	// list items handling
+	const [listItems, setListItems] = useState<string[]>(
+		ProfileListVersionsArray,
+	);
 	const [listVersion, setListVersion] =
 		useState<ProfileListVersions>("desktop");
-    const isMobile = useMediaQuery("(max-width: 640px)");
-    console.log(isMobile);
+	const isMobile = useMediaQuery("(max-width: 640px)");
+
+	// switching to mobile version when we're on desktop
+	useEffect(() => {
+		if (isMobile) {
+			if (listVersion === "desktop") setListVersion("mobile");
+			setListItems(ProfileListVersionsArray.filter((v) => v !== "desktop"));
+		} else {
+			setListItems(ProfileListVersionsArray);
+		}
+	}, [listVersion, isMobile]);
 
 	useEffect(() => {
 		getAllProfiles();
@@ -68,7 +80,7 @@ export const ProfileList = () => {
 	};
 
 	return (
-		<div className="flex flex-col w-full max-w-lg box m-auto">
+		<div className="flex flex-col w-full max-w-3xl box m-auto">
 			<div className="flex flex-col gap-4">
 				<div className="flex flex-col gap-2">
 					<span className="text-center text-foreground-2! text-5!">
@@ -83,17 +95,17 @@ export const ProfileList = () => {
 					<span className="flex flex-wrap justify-between ">
 						<b className="whitespace-nowrap">Display type</b>
 						<small className="ml-auto">
-							(gets saved & might not be available on the device)
+							(gets saved)
 						</small>
 					</span>
 					<Select
-						items={ProfileListVersionsArray}
+						items={listItems}
 						value={listVersion}
 						onChange={(e) => setListVersion(e as ProfileListVersions)}
 					/>
 				</div>
 				<hr />
-                {profileListVersion()}
+				{profileListVersion()}
 			</div>
 		</div>
 	);

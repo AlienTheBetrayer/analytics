@@ -1,8 +1,9 @@
-import type { PostgrestError, User } from "@supabase/supabase-js";
+import type { PostgrestError } from "@supabase/supabase-js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import type { NextRequest } from "next/server";
 import type { Token } from "@/types/api/database/authentication";
+import type { User } from "@/types/api/database/user";
 import { supabaseServer } from "@/types/server/supabase";
 import { nextResponse } from "@/utils/response";
 
@@ -18,7 +19,7 @@ export const POST = async (request: NextRequest) => {
 		const payload = jwt.verify(
 			refreshToken,
 			process.env.REFRESH_SECRET as string,
-		) as { id: string; role: string, session_id: string };
+		) as { id: string; role: string; session_id: string };
 
 		// get all server-side tokens from the current user
 		const { data: refreshTokensData, error: refreshTokensError } =
@@ -86,7 +87,7 @@ export const POST = async (request: NextRequest) => {
 			{ expiresIn: "15m" },
 		);
 
-        const session_id = crypto.randomUUID();
+		const session_id = crypto.randomUUID();
 
 		const newRefreshToken = jwt.sign(
 			{ session_id, id: payload.id, role: userData[0].role },
@@ -109,11 +110,23 @@ export const POST = async (request: NextRequest) => {
 			.insert({
 				user_id: payload.id,
 				token: await bcrypt.hash(newRefreshToken, 10),
-                session_id
+				session_id,
 			});
 
 		if (refreshRotateError) {
 			return nextResponse(refreshRotateError, 400);
+		}
+
+		// updating last_seen_at
+		const { error: lastSeenError } = await supabaseServer
+			.from("users")
+			.update({
+				last_seen_at: new Date().toISOString(),
+			})
+			.eq("id", userData[0].id);
+
+		if (lastSeenError) {
+			return nextResponse(lastSeenError, 400);
 		}
 
 		const response = nextResponse(

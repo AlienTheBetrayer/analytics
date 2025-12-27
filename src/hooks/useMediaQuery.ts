@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 export const useMediaQuery = (query: string) => {
     // react states
 	const [hasMatched, setHasMatched] = useState<boolean>(
-		window.matchMedia(query).matches,
+		false
 	);
 
     // watching query change

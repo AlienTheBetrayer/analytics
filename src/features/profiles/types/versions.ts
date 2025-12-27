@@ -1,2 +1,2 @@
-export const ProfileListVersionsArray = ["desktop", "compact", "other"];
-export type ProfileListVersions = "desktop" | "compact" | "other";
+export const ProfileListVersionsArray = ["desktop", "mobile", "compact"];
+export type ProfileListVersions = "desktop" | "mobile" | "compact";

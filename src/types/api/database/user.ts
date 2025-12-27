@@ -6,4 +6,5 @@ export type User = {
 	password: string;
 	role: PermissionRole;
 	created_at?: string;
+	last_seen_at?: string;
 };

@@ -6,7 +6,7 @@ export type Profile = {
 	user_id: string;
 	status?: string;
 	bio?: string;
-    name?: string;
+    name: string;
 	oneliner?: string;
 	visibility: ProfileVisibility;
     allowed_friend_requests: ProfileAllowedFriendRequests;
