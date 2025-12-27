@@ -21,7 +21,7 @@ export const Desktop = ({ profiles }: Props) => {
 					(data.profile.visibility === "everyone" ||
 						(data.profile.visibility === "friends" &&
 							friends?.[data.user.id].some(
-								(f) => f.id === status?.user.id,
+								(id) => id === status?.user.id,
 							))) && (
 						<React.Fragment key={data.user.id}>
 							<li className="flex w-full">
@@ -47,7 +47,7 @@ export const Desktop = ({ profiles }: Props) => {
 														Username
 													</small>
 												</span>
-												<span>{data.user.username}</span>
+												<span><b>{data.user.username}</b></span>
 											</li>
 
 											<li className="flex flex-col gap-1">
@@ -62,7 +62,7 @@ export const Desktop = ({ profiles }: Props) => {
 														Name
 													</small>
 												</span>
-												<span>{data.profile.name}</span>
+												<span><b><mark>{data.profile.name}</mark></b></span>
 											</li>
 
 											{data.profile.oneliner && (

@@ -2,13 +2,15 @@ import type { Profile } from "../api/database/profiles";
 import type { User } from "../api/database/user";
 import type { ResponseAxios } from "./utils/axios";
 
-export type Profiles = Record<string, { profile: Profile; user: User }>;
+export type Profiles = Record<string, { profile: Profile; user: User; }>;
 
-export type Friends = Record<string, User[]>;
+export type Friends = Record<string, string[]>;
+export type Requests = Record<string, string[]>;
 
 export type UserStore = {
 	profiles?: Profiles;
     friends?: Friends;
+    friendRequests?: Requests;
 
 	/**
 	 * gets the user's profile by its name
@@ -60,6 +62,15 @@ export type UserStore = {
     /**
      * gets all the profiles available at the moment
 	 * @param caching don't fetch the data if it has already been fetched
+     * @returns a promise containing the response
      */
     getAllProfiles: (caching?: boolean) => Promise<ResponseAxios | undefined>;
+
+    /**
+     * sends a friend request to a specific user
+     * @param from_id the id of the user that sends the request
+     * @param to_id the id of the user that from_id is sending the request to
+     * @returns a promise containing the response
+     */
+    sendFriendRequest: (from_id: string, to_id: string) => Promise<ResponseAxios>;
 };

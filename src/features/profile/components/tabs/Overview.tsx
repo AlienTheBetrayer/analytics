@@ -1,11 +1,24 @@
+import Image from "next/image";
+import { Button } from "@/features/ui/button/components/Button";
 import type { Profile } from "@/types/api/database/profiles";
 import type { User } from "@/types/api/database/user";
+import { promiseStatus } from "@/utils/status";
+import { useAppStore } from "@/zustand/store";
 
 type Props = {
 	data: { profile: Profile; user: User };
 };
 
 export const Overview = ({ data }: Props) => {
+	// zustand
+	const status = useAppStore((state) => state.status);
+	const friendRequests = useAppStore((state) => state.friendRequests);
+	const friends = useAppStore((state) => state.friends);
+	const promises = useAppStore((state) => state.promises);
+
+	// zustand functinos
+	const sendFriendRequest = useAppStore((state) => state.sendFriendRequest);
+
 	return (
 		<div className="flex flex-col gap-4 p-2 w-full grow">
 			<div className="flex flex-col gap-2 items-center">
@@ -13,7 +26,7 @@ export const Overview = ({ data }: Props) => {
 					<mark>{data.user.username}</mark>
 					's profile
 				</span>
-                <span>Profile overview</span>
+				<span>Profile overview</span>
 			</div>
 
 			<hr />
@@ -26,6 +39,28 @@ export const Overview = ({ data }: Props) => {
 				</span>
 				<span>{data.profile.bio}</span>
 				<span>{data.profile.status}</span>
+				{status &&
+					status.user.id !== data.user.id &&
+					data.profile.allowed_friend_requests === "everyone" &&
+					(friends?.[status.user.id].some((id) => id === data.user.id) ? (
+						<Button>
+							<Image src="/cross.svg" width={16} height={16} alt="unfriend" />
+							Unfriend
+						</Button>
+					) : (
+						<Button
+							isEnabled={friendRequests?.[status.user.id]?.every(
+								(id) => id !== data.user.id,
+							)}
+							onClick={() => {
+								sendFriendRequest(status.user.id, data.user.id);
+							}}
+						>
+							{promiseStatus(promises.friend_request)}
+							<Image src="/plus.svg" width={16} height={16} alt="send" />
+							Friend request
+						</Button>
+					))}
 			</div>
 		</div>
 	);

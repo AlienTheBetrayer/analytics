@@ -1,7 +1,7 @@
 import axios from "axios";
-import type { Friend } from "@/types/api/database/friends";
 import type { Profile } from "@/types/api/database/profiles";
 import type { User } from "@/types/api/database/user";
+import type { APIResponseType } from "@/types/api/response";
 import type { Profiles, UserStore } from "@/types/zustand/user";
 import type { SliceFunction } from "@/types/zustand/utils/sliceFunction";
 
@@ -97,7 +97,7 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
 
 			return await setPromise("friends", async () => {
 				const res = await axios.get(`/api/auth/friends/${id}`);
-				const data = res.data as Friend[];
+				console.log(res);
 
 				set((state) => ({
 					...state,
@@ -127,9 +127,58 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
 
 					return { ...state, profiles };
 				});
-                
-                setCached("profiles", true);
+
+				setCached("profiles", true);
 				return res;
+			});
+		},
+
+		sendFriendRequest: async (from_id: string, to_id: string) => {
+			const { setPromise } = get();
+
+			return await setPromise("friend_request", async () => {
+				try {
+					const res = await axios.post("/api/friend-request/", {
+						from_id,
+						to_id,
+					});
+					const responseStatus = res.data.type as APIResponseType;
+
+					switch (responseStatus) {
+						case "friend_request_accepted":
+							set((state) => {
+								const friendRequests = { ...state.friendRequests };
+								friendRequests[from_id] = friendRequests[from_id]?.filter(
+									(id) => id !== to_id,
+								);
+								friendRequests[to_id] = friendRequests[to_id]?.filter(
+									(id) => id !== from_id,
+								);
+
+								const friends = { ...state.friends };
+								friends[from_id] = [...(friends[from_id] ?? []), to_id];
+								friends[to_id] = [...(friends[to_id] ?? []), from_id];
+
+								return { ...state, friendRequests, friends };
+							});
+							break;
+						case "friend_request_sent":
+							set((state) => {
+								const friendRequests = { ...state.friendRequests };
+								friendRequests[to_id] = [
+									...(friendRequests[to_id] ?? []),
+									from_id,
+								];
+
+								return { ...state, friendRequests };
+							});
+							break;
+					}
+
+					return res;
+				} catch (e) {
+					throw e;
+				}
 			});
 		},
 	};

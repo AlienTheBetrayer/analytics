@@ -8,4 +8,8 @@ export type APIResponseType =
 	| "token_theft"
 	| "not_authenticated"
 	| "user_not_exists"
-	| "profile_not_exists";
+	| "profile_not_exists"
+    | "friend_request_already_sent"
+    | "friend_request_accepted"
+    | "friend_request_sent"
+    | "friends_already";

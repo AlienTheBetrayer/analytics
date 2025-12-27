@@ -99,7 +99,7 @@ export const UserProfile = () => {
 			data.user.id === status?.user.id ||
 			data.profile.visibility === "everyone" ||
 			(data.profile.visibility === "friends" &&
-				friends?.[data.user.id].some((f) => f.id === status?.user.id))
+				friends?.[data.user.id].some((id) => id === status?.user.id))
 		)
 	) {
 		return <PrivateVisiblity />;
