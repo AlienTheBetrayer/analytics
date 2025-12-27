@@ -1,9 +1,9 @@
 import axios from "axios";
+import type { Friend } from "@/types/api/database/friends";
 import type { Profile } from "@/types/api/database/profiles";
 import type { User } from "@/types/api/database/user";
-import type { UserStore } from "@/types/zustand/user";
+import type { Profiles, UserStore } from "@/types/zustand/user";
 import type { SliceFunction } from "@/types/zustand/utils/sliceFunction";
-import { Friend } from "@/types/api/database/friends";
 
 export const UserSlice: SliceFunction<UserStore> = (set, get) => {
 	return {
@@ -97,13 +97,38 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
 
 			return await setPromise("friends", async () => {
 				const res = await axios.get(`/api/auth/friends/${id}`);
-                const data = res.data as Friend[];
-                
+				const data = res.data as Friend[];
+
 				set((state) => ({
 					...state,
 					friends: { ...state.friends, [id]: res.data },
 				}));
 
+				return res;
+			});
+		},
+
+		getAllProfiles: async (caching: boolean = true) => {
+			const { setPromise, cached, setCached } = get();
+
+			if (caching === true && cached?.profiles !== undefined) return;
+
+			return await setPromise("profiles", async () => {
+				const res = await axios.get("/api/profiles/");
+				const data = res.data as {
+					profiles: { profile: Profile; user: User }[];
+				};
+
+				set((state) => {
+					const profiles = data.profiles.reduce<Profiles>((acc, item) => {
+						acc[item.user.id] = item;
+						return acc;
+					}, {});
+
+					return { ...state, profiles };
+				});
+                
+                setCached("profiles", true);
 				return res;
 			});
 		},

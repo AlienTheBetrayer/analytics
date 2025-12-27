@@ -18,6 +18,7 @@ export type Data = Record<string, ProjectData>;
 export type DataStore = {
 	data?: Data;
 	promises: PromiseStatuses;
+    cached?: Record<string, boolean>;
 
 	/**
 	 * Internally sets the promise status for each and every API request
@@ -25,6 +26,13 @@ export type DataStore = {
 	 * @param status status type
 	 */
 	setPromise: <T>(key: string, callback: () => Promise<T>) => Promise<T>;
+
+    /**
+     * Internally sets the cached state for the API request
+     * @param key the unique identifier for the cache request
+     * @param flag cached or not
+     */
+    setCached: (key: string, flag: boolean) => void;
 
 	/**
 	 * explicitly sets the data to a new record

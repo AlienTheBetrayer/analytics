@@ -34,7 +34,7 @@ export const Header = () => {
 		>
 			<nav className="flex items-center w-full h-full">
 				{!isMenuOpen ? (
-					<ul className="flex justify-between gap-4 w-full *:flex *:items-center px-4!">
+					<ul className="flex justify-between gap-4 w-full *:flex *:items-center items-center px-4!">
 						<li>
 							<LinkButton href="/home" style="link">
 								<Image
@@ -46,6 +46,10 @@ export const Header = () => {
 								/>
 								Home
 							</LinkButton>
+						</li>
+
+						<li>
+							<LinkButton href="/profiles">Fetch</LinkButton>
 						</li>
 
 						<li className="hidden! md:block!">

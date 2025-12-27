@@ -42,6 +42,10 @@ export const DataSlice: SliceFunction<DataStore> = (set, get) => {
 			}
 		},
 
+		setCached: (key: string, flag: boolean) => {
+			set((state) => ({ ...state, cached: { ...state.cached, [key]: flag } }));
+		},
+
 		setData: (newData) => {
 			set((state) => ({ ...state, data: newData }));
 		},
