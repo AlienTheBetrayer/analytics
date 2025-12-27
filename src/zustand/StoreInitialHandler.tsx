@@ -8,7 +8,6 @@ import { useAppStore } from "./store";
 export const StoreInitialHandler = () => {
 	// zustand states
 	const status = useAppStore((state) => state.status);
-	const getFriendsProfiles = useAppStore((state) => state.getFriendsProfiles);
 
 	// zustand functions
 	const refresh = useAppStore((state) => state.refresh);
@@ -27,9 +26,8 @@ export const StoreInitialHandler = () => {
 	useEffect(() => {
 		if (status) {
 			getProfileById(status.user.id);
-			getFriendsProfiles();
 		}
-	}, [status, getProfileById, getFriendsProfiles]);
+	}, [status, getProfileById]);
 
 	return null;
 };

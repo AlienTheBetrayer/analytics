@@ -29,6 +29,7 @@ export const UserProfile = () => {
 
 	// zustand functions
 	const getProfileByName = useAppStore((state) => state.getProfileByName);
+	const getFriendsProfiles = useAppStore((state) => state.getFriendsProfiles);
 
 	// user id to fetch data from
 	const retrievedUsername = name ?? status?.user.username;
@@ -67,6 +68,10 @@ export const UserProfile = () => {
 
 		get();
 	}, [retrievedData, retrievedUsername, getProfileByName]);
+
+	useEffect(() => {
+		getFriendsProfiles();
+	}, [getFriendsProfiles]);
 
 	// viewing current profile but not logged in
 	if (retrievedUsername === undefined) {
