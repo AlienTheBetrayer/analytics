@@ -3,6 +3,7 @@ import { useMemo } from "react";
 import { MessageBox } from "@/features/messagebox/components/MessageBox";
 import { usePopup } from "@/features/popup/hooks/usePopup";
 import { Button } from "@/features/ui/button/components/Button";
+import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import type { Profile } from "@/types/api/database/profiles";
 import type { User } from "@/types/api/database/user";
 import { promiseStatus } from "@/utils/status";
@@ -53,10 +54,21 @@ export const Overview = ({ data }: Props) => {
 			{unfriendMessageBox.render()}
 
 			<div className="flex flex-col gap-2 items-center">
-				<span className="text-foreground-2! text-5!">
-					<mark>{data.user.username}</mark>
-					's profile
-				</span>
+				<div className="flex w-full relative">
+					<span className="text-foreground-2! text-5! text-center w-full">
+						<mark>{data.user.username}</mark>
+						's profile
+					</span>
+					{status && (
+						<LinkButton
+							href={`/profile/${status.user.username}/friends`}
+							className="absolute right-0 top-0"
+						>
+							<Image width={16} height={16} alt="" src="/friends.svg" />
+							Back
+						</LinkButton>
+					)}
+				</div>
 				<span>Profile overview</span>
 			</div>
 
