@@ -79,8 +79,14 @@ export const UserProfile = () => {
 	}, [getFriendsProfiles, getFriendRequests, status]);
 
 	useEffect(() => {
-		if (status && friendRequests?.[status.user.id]) {
-			getProfiles(friendRequests[status.user.id]);
+		if (
+			status &&
+			friendRequests &&
+			(friendRequests.incoming.length > 0 ||
+				friendRequests.outcoming.length > 0)
+		) {
+			getProfiles(friendRequests.incoming);
+			getProfiles(friendRequests.outcoming);
 		}
 	}, [getProfiles, friendRequests, status]);
 

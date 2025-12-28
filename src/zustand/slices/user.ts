@@ -140,12 +140,12 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
 			});
 		},
 
-		getFriendRequests: async (id: string, caching: boolean = true) => {
+		getFriendRequests: async (id: string, caching: boolean = true, promiseKey: string = "friend_requests") => {
 			const { setPromise, setCached, cached } = get();
 
 			if (caching === true && cached?.friend_requests !== undefined) return;
 
-			return await setPromise("friend_requests", async () => {
+			return await setPromise(promiseKey, async () => {
 				const res = await axios.get(`/api/friend-requests/${id}`);
 				const data = res.data.requests as {
 					id: string;
@@ -154,22 +154,21 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
 				}[];
 
 				set((state) => {
-					const friendRequests: Record<string, string[]> = {};
+					const friendRequests: { incoming: string[]; outcoming: string[] } = {
+						incoming: [],
+						outcoming: [],
+					};
 
 					data.forEach((request) => {
 						if (request.to_id === id) {
-							friendRequests[request.to_id] = [
-								...(friendRequests[request.to_id] ?? []),
-								request.from_id,
-							];
+							// incoming
+                            friendRequests.incoming.push(request.from_id);
 						} else {
-							friendRequests[request.from_id] = [
-								...(friendRequests[request.from_id] ?? []),
-								request.to_id,
-							];
+							// outcoming
+                            friendRequests.outcoming.push(request.to_id);
 						}
 					});
-
+                    console.log(friendRequests);
 					return { ...state, friendRequests };
 				});
 
@@ -218,30 +217,36 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
 					switch (responseStatus) {
 						case "friend_request_accepted":
 							set((state) => {
-								const friendRequests = { ...state.friendRequests };
-								friendRequests[from_id] = friendRequests[from_id]?.filter(
-									(id) => id !== to_id,
-								);
-								friendRequests[to_id] = friendRequests[to_id]?.filter(
-									(id) => id !== from_id,
-								);
-
 								return {
 									...state,
-									friendRequests,
+									friendRequests: state.friendRequests
+										? {
+												incoming: state.friendRequests.incoming.filter(
+													(id) => id !== from_id && id !== to_id,
+												),
+												outcoming: state.friendRequests.incoming.filter(
+													(id) => id !== from_id && id !== to_id,
+												),
+											}
+										: undefined,
 									friends: [...(state.friends ?? []), to_id],
 								};
 							});
 							break;
 						case "friend_request_sent":
 							set((state) => {
-								const friendRequests = { ...state.friendRequests };
-								friendRequests[to_id] = [
-									...(friendRequests[to_id] ?? []),
-									from_id,
-								];
-
-								return { ...state, friendRequests };
+								return {
+									...state,
+									friendRequests: state.friendRequests
+										? {
+												...state.friendRequests,
+												outcoming: {
+													...state.friendRequests?.outcoming,
+													from_id,
+												},
+											}
+										: undefined,
+								};
 							});
 							break;
 					}

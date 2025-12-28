@@ -5,7 +5,7 @@ import type { ResponseAxios } from "./utils/axios";
 export type Profiles = Record<string, { profile: Profile; user: User; }>;
 
 export type Friends = Record<string, string[]>;
-export type Requests = Record<string, string[]>;
+export type Requests = { incoming: string[], outcoming: string[] }; //Record<string, string[]>;
 
 export type UserStore = {
 	profiles?: Profiles;
@@ -79,9 +79,10 @@ export type UserStore = {
      * gets all the friend requests this user sent and received
      * @param id the id of the user
 	 * @param caching don't fetch the data if it has already been fetched
+     * @param promiseKey a custom promise key to subscribe to promise data
      * @returns a promise containing the response
      */
-    getFriendRequests: (id: string, caching?: boolean) => Promise<ResponseAxios | undefined>;
+    getFriendRequests: (id: string, caching?: boolean, promiseKey?: string) => Promise<ResponseAxios | undefined>;
     /**
      * gets all the profiles available at the moment
 	 * @param caching don't fetch the data if it has already been fetched
