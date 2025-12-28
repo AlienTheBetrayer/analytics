@@ -19,13 +19,13 @@ export const HeaderMenu = ({ onInteract }: Props) => {
 		>
 			<div className="flex flex-col gap-4">
 				<li>
-					<LinkButton href="/home" style="button" className="p-4! text-5!">
+					<LinkButton href="/home"  className="p-4! text-5!">
 						<Image src="/cube.svg" width={24} height={24} alt="" />
 						Home
 					</LinkButton>
 				</li>
 				<li>
-					<LinkButton href="/dashboard" style="button" className="p-4! text-5!">
+					<LinkButton href="/dashboard"  className="p-4! text-5!">
 						<Image src="/dashboard.svg" width={24} height={24} alt="" />
 						Dashboard
 					</LinkButton>
@@ -37,7 +37,6 @@ export const HeaderMenu = ({ onInteract }: Props) => {
 					<li>
 						<LinkButton
 							href="/profile"
-							style="button"
 							className={`p-4! text-5!`}
 						>
 							<Image src="/account.svg" width={24} height={24} alt="" />
@@ -49,7 +48,6 @@ export const HeaderMenu = ({ onInteract }: Props) => {
 						<li>
 							<LinkButton
 								href="/register"
-								style="button"
 								className={`p-4! text-5! ${status?.isLoggedIn === false ? "border-awaiting" : ""}`}
 							>
 								<Image src="/plus.svg" width={24} height={24} alt="" />
@@ -59,7 +57,6 @@ export const HeaderMenu = ({ onInteract }: Props) => {
 						<li>
 							<LinkButton
 								href="/login"
-								style="button"
 								className={`p-4! text-5! ${status?.isLoggedIn === false ? "border-awaiting" : ""}`}
 							>
 								<Image src="/auth.svg" width={24} height={24} alt="" />

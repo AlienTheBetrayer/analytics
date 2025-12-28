@@ -128,7 +128,16 @@ export const UserProfile = () => {
 	}
 
 	return (
-		<div className="box max-w-3xl w-full m-auto min-h-128 p-0!">
+		<div
+			className={`box max-w-3xl w-full m-auto min-h-128 p-0!`}
+			style={
+				data.profile.color
+					? {
+							outline: `1px solid ${data.profile.color}`,
+						}
+					: {}
+			}
+		>
 			{data.user.id !== status?.user.id ? (
 				<Overview data={data} />
 			) : (

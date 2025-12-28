@@ -36,7 +36,7 @@ export const Header = () => {
 				{!isMenuOpen ? (
 					<ul className="flex justify-between gap-4 w-full *:flex *:items-center items-center px-4!">
 						<li>
-							<LinkButton href="/home" style="link">
+							<LinkButton href="/home" styles="link">
 								<Image
 									src="/cube.svg"
 									width={18}
@@ -53,7 +53,7 @@ export const Header = () => {
 						</li>
 
 						<li className="hidden! md:block!">
-							<LinkButton href="/dashboard" style="link">
+							<LinkButton href="/dashboard" styles="link">
 								<Image
 									width={18}
 									height={18}

@@ -42,7 +42,6 @@ export const DashboardProject = ({ projectData }: Props) => {
 						<Tooltip description="Go to emulate page" direction="right">
 							<LinkButton
 								className="w-full"
-								style="button"
 								href={`/dashboard/emulate/${projectData.project.id}`}
 							>
 								<Image src="/emulate.svg" width={16} height={16} alt="" />

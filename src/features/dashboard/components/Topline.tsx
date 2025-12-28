@@ -12,7 +12,6 @@ export const Topline = () => {
 		<nav className="flex flex-col items-center gap-2">
 			<div className="flex w-full gap-2">
 				<LinkButton
-					style="button"
 					href="/dashboard/emulate/"
 					className="w-full"
 				>
@@ -20,7 +19,6 @@ export const Topline = () => {
 					<span className="hidden sm:block">Emulate</span>
 				</LinkButton>
 				<LinkButton
-					style="button"
 					href="/dashboard/notifications/"
 					className="w-full"
 				>
@@ -28,7 +26,6 @@ export const Topline = () => {
 					<span className="hidden sm:block">Notifications</span>
 				</LinkButton>
 				<LinkButton
-					style="button"
 					href="/dashboard/profiles/"
 					className="w-full"
 				>

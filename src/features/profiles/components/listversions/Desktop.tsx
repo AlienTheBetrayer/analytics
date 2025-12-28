@@ -26,6 +26,7 @@ export const Desktop = ({ profiles }: Props) => {
 							<li className="flex w-full">
 								<LinkButton
 									className="flex flex-col w-full justify-start items-start p-2! gap-2"
+                                    style={ data.profile.color ? { outline: `1px solid ${data.profile.color}`} : {}}
 									href={`/profile/${data.user.username}`}
 								>
 									<div className="flex w-full gap-2 h-full">

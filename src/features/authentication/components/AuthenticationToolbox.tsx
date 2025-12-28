@@ -12,7 +12,10 @@ export const AuthenticationToolbox = () => {
 	const profiles = useAppStore((state) => state.profiles);
 	const promises = useAppStore((state) => state.promises);
 
-    return (
+	// ui states
+	const loggedProfile = status ? profiles?.[status.user.id] : undefined;
+
+	return (
 		<div
 			className={`hidden! md:flex! flex-row! gap-4 box p-2
         fixed top-4 right-4 items-center z-2 ${status?.isLoggedIn !== true ? "border-awaiting" : ""}`}
@@ -28,9 +31,18 @@ export const AuthenticationToolbox = () => {
 							direction="left"
 							inverted={true}
 						>
-							<LinkButton href="/profile">
+							<LinkButton
+								href="/profile"
+								style={
+									loggedProfile?.profile.color
+										? {
+												outline: `1px solid ${loggedProfile?.profile.color}`,
+											}
+										: {}
+								}
+							>
 								<Image width={16} height={16} alt="" src="/account.svg" />
-								{profiles?.[status.user.id]?.user?.username ?? "Account"}
+								{loggedProfile?.user.username ?? "Account"}
 							</LinkButton>
 						</Tooltip>
 					) : (

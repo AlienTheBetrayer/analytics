@@ -31,7 +31,7 @@ export const FetchPrompt = () => {
 					{promiseStatus(promises.projects)}
 					Fetch
 				</Button>
-				<LinkButton style="button" href="/dashboard">
+				<LinkButton href="/dashboard">
 					Go to dashboard
 				</LinkButton>
 			</div>
