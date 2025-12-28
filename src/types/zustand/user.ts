@@ -59,11 +59,12 @@ export type UserStore = {
     getFriends: (caching?: boolean) => Promise<ResponseAxios | undefined>;
 
     /**
-     * gets all the friends' profiles that we have (if logged in)
+     * gets all the profiles of the user's friends
+     * @param id the id of the user
 	 * @param caching don't fetch the data if it has already been fetched
      * @returns a promise containing the response
      */
-    getFriendsProfiles: (caching?: boolean) => Promise<ResponseAxios | undefined>;
+    getFriendsProfiles: (id: string, caching?: boolean) => Promise<ResponseAxios | undefined>;
 
     /**
      * gets all the friend requests this user sent and received

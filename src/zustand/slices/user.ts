@@ -110,17 +110,16 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
 			});
 		},
 
-		getFriendsProfiles: async (caching: boolean = true) => {
-			const { setPromise, setCached, cached, status } = get();
+		getFriendsProfiles: async (id: string, caching: boolean = true) => {
+			const { setPromise, setCached, cached } = get();
 
 			if (
-				(caching === true && cached?.friends_profiles !== undefined) ||
-				status === undefined
+				(caching === true && cached?.friends_profiles !== undefined)
 			)
 				return;
 
-			return await setPromise("friends_profiles", async () => {
-				const res = await axios.get(`/api/friend-profiles/${status.user.id}`);
+			return await setPromise("friends", async () => {
+				const res = await axios.get(`/api/friend-profiles/${id}`);
 				const data = res.data as {
 					profiles: { profile: Profile; user: User }[];
 				};
@@ -145,17 +144,25 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
 		},
 
 		getFriendRequests: async (id: string, caching: boolean = true) => {
-			const { setPromise } = get();
+			const { setPromise, setCached, cached } = get();
+
+            if (
+				(caching === true && cached?.friends_profiles !== undefined)
+			)
+				return;
 
 			return await setPromise("friend_requests", async () => {
 				const res = await axios.get(`/api/friend-requests/${id}`);
+                const data = res.data.requests as { incoming: string[], outcoming: string []};
+                console.log(data);
 
 				set((state) => {
-					const friends = { ...state.friends };
+					const friendRequests = { ...state.friendRequests };
 
-					return { ...state };
+					return { ...state, friendRequests };
 				});
 
+				setCached("friend_requests");
 				return res;
 			});
 		},

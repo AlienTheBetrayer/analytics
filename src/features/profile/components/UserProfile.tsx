@@ -23,13 +23,13 @@ export const UserProfile = () => {
 
 	// zustand state
 	const status = useAppStore((state) => state.status);
-	const promises = useAppStore((state) => state.promises);
 	const profiles = useAppStore((state) => state.profiles);
 	const friends = useAppStore((state) => state.friends);
 
 	// zustand functions
 	const getProfileByName = useAppStore((state) => state.getProfileByName);
 	const getFriendsProfiles = useAppStore((state) => state.getFriendsProfiles);
+	const getFriendRequests = useAppStore((state) => state.getFriendRequests);
 
 	// user id to fetch data from
 	const retrievedUsername = name ?? status?.user.username;
@@ -70,8 +70,11 @@ export const UserProfile = () => {
 	}, [retrievedData, retrievedUsername, getProfileByName]);
 
 	useEffect(() => {
-		getFriendsProfiles();
-	}, [getFriendsProfiles]);
+		if (status) {
+			getFriendsProfiles(status.user.id);
+			getFriendRequests(status.user.id);
+		}
+	}, [getFriendsProfiles, getFriendRequests, status]);
 
 	// viewing current profile but not logged in
 	if (retrievedUsername === undefined) {
@@ -91,7 +94,7 @@ export const UserProfile = () => {
 	}
 
 	// loading user
-	if (promises.profile === "pending" || retrievedData === undefined) {
+	if (retrievedData === undefined) {
 		return <UserLoading />;
 	}
 

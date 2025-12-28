@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { MessageBox } from "@/features/messagebox/components/MessageBox";
 import { usePopup } from "@/features/popup/hooks/usePopup";
+import { Spinner } from "@/features/spinner/components/Spinner";
 import { Button } from "@/features/ui/button/components/Button";
 import type { Profile } from "@/types/api/database/profiles";
 import type { User } from "@/types/api/database/user";
@@ -35,7 +36,7 @@ export const Friends = ({ data }: Props) => {
 	);
 	return (
 		<div className="flex flex-col gap-4 p-2 w-full">
-            {unfriendMessageBox.render()}
+			{unfriendMessageBox.render()}
 			<div className="flex flex-col gap-2 items-center">
 				<span className="text-center text-foreground-2! text-5!">
 					<mark>{data.user.username}</mark>
@@ -56,7 +57,9 @@ export const Friends = ({ data }: Props) => {
 				<hr className="sm:w-px! sm:h-full" />
 
 				<div className="flex flex-col gap-2 w-full">
-					{friends === undefined || friends.length === 0 ? (
+					{promises.friends === "pending" ? (
+						<Spinner styles="big" />
+					) : friends === undefined || friends.length === 0 ? (
 						<span>Currently your friend list is empty.</span>
 					) : (
 						<>
