@@ -8,11 +8,16 @@ import { useAppStore } from "./store";
 export const StoreInitialHandler = () => {
 	// zustand states
 	const status = useAppStore((state) => state.status);
+	const friendRequests = useAppStore((state) => state.friendRequests);
 
 	// zustand functions
 	const refresh = useAppStore((state) => state.refresh);
 	const getProfileById = useAppStore((state) => state.getProfileById);
-
+	const getFriendsProfiles = useAppStore((state) => state.getFriendsProfiles);
+	const getFriendRequests = useAppStore((state) => state.getFriendRequests);
+	const getProfiles = useAppStore((state) => state.getProfiles);
+	// remove from the other file
+	// fetch upon status
 	// ref
 	const hasInitialized = useRef<boolean>(false);
 
@@ -25,9 +30,23 @@ export const StoreInitialHandler = () => {
 
 	useEffect(() => {
 		if (status) {
-			getProfileById(status.user.id);
+			getProfileById(status.user.id, false);
+			getFriendsProfiles(status.user.id, false);
+			getFriendRequests(status.user.id, false);
 		}
-	}, [status, getProfileById]);
+	}, [getFriendsProfiles, getFriendRequests, getProfileById, status]);
+
+	useEffect(() => {
+		if (
+			status &&
+			friendRequests &&
+			(friendRequests.incoming.length > 0 ||
+				friendRequests.outcoming.length > 0)
+		) {
+			getProfiles(friendRequests.incoming, false);
+			getProfiles(friendRequests.outcoming, false);
+		}
+	}, [getProfiles, friendRequests, status]);
 
 	return null;
 };

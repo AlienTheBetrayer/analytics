@@ -25,14 +25,10 @@ export const UserProfile = () => {
 	const status = useAppStore((state) => state.status);
 	const profiles = useAppStore((state) => state.profiles);
 	const friends = useAppStore((state) => state.friends);
-	const friendRequests = useAppStore((state) => state.friendRequests);
 
 	// zustand functions
 	const getProfileByName = useAppStore((state) => state.getProfileByName);
-	const getFriendsProfiles = useAppStore((state) => state.getFriendsProfiles);
-	const getFriendRequests = useAppStore((state) => state.getFriendRequests);
-	const getProfiles = useAppStore((state) => state.getProfiles);
-
+    
 	// user id to fetch data from
 	const retrievedUsername = name ?? status?.user.username;
 	const retrievedTab =
@@ -70,25 +66,6 @@ export const UserProfile = () => {
 
 		get();
 	}, [retrievedData, retrievedUsername, getProfileByName]);
-
-	useEffect(() => {
-		if (status) {
-			getFriendsProfiles(status.user.id, false);
-			getFriendRequests(status.user.id, false);
-		}
-	}, [getFriendsProfiles, getFriendRequests, status]);
-
-	useEffect(() => {
-		if (
-			status &&
-			friendRequests &&
-			(friendRequests.incoming.length > 0 ||
-				friendRequests.outcoming.length > 0)
-		) {
-			getProfiles(friendRequests.incoming, false);
-			getProfiles(friendRequests.outcoming, false);
-		}
-	}, [getProfiles, friendRequests, status]);
 
 	// viewing current profile but not logged in
 	if (retrievedUsername === undefined) {
