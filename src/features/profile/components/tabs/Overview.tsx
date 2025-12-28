@@ -39,7 +39,7 @@ export const Overview = ({ data }: Props) => {
 	// ui states
 	const hasOutcomingRequest = useMemo(() => {
 		if (status === undefined) return false;
-		return friendRequests?.[status.user.id]?.some((id) => id === data.user.id);
+		return friendRequests?.outcoming.some((id) => id === data.user.id);
 	}, [friendRequests, status, data]);
 
 	return (
