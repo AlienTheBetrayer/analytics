@@ -1,3 +1,4 @@
+import './ProfileDisplay.css';
 import Image from "next/image";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import type { Profile } from "@/types/api/database/profiles";
@@ -13,6 +14,9 @@ export const ProfileDisplay = ({ data }: Props) => {
 		<LinkButton
 			href={`/profile/${data.user.username}`}
 			className="flex justify-start p-2! gap-2 h-full"
+			style={
+				data.profile.color ? { borderColor: `${data.profile.color}` } : {}
+			}
 		>
 			<div className="bg-blue-3 rounded-full h-10 aspect-square"></div>
 
@@ -21,9 +25,9 @@ export const ProfileDisplay = ({ data }: Props) => {
 			<span className="flex flex-col gap-1">
 				<small className="flex gap-1">
 					<Image src="/type.svg" width={16} height={16} alt="" />
-					Name
+					Username
 				</small>
-				<b>{data.profile.name}</b>
+				<b>{data.user.username}</b>
 			</span>
 
 			{data.profile.oneliner && (

@@ -7,11 +7,12 @@ type Props = {
 	items: MenuItem[];
 	type?: "default" | "link";
 	value?: number;
+    color?: string;
 };
 
-export const Menu = ({ items, value, type = "default" }: Props) => {
+export const Menu = ({ items, value, type = "default", color }: Props) => {
 	// controller
-	const controller = useMenu(items, value, type);
+	const controller = useMenu(items, value, type, color);
 
 	return (
 		<div className="flex flex-col grow h-full w-full gap-2">

@@ -56,6 +56,7 @@ export const ProfileEdit = ({ data, tab }: Props) => {
 			value={items.findIndex(
 				(item) => item.title.toLowerCase() === tab.toLowerCase(),
 			)}
+            color={data.profile.color}
 		/>
 	);
 };

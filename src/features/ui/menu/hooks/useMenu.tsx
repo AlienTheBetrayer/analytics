@@ -2,7 +2,12 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import type { MenuItem } from "../types/menu";
 
-export const useMenu = (items: MenuItem[], value?: number, type?: string) => {
+export const useMenu = (
+	items: MenuItem[],
+	value?: number,
+	type?: string,
+	color?: string,
+) => {
 	// states
 	const [selectedItem, setSelectedItem] = useState<number>(value ?? 0);
 
@@ -52,12 +57,13 @@ export const useMenu = (items: MenuItem[], value?: number, type?: string) => {
 	const renderSelect = useCallback(() => {
 		return createPortal(
 			<div
-				className="absolute hidden transition-all duration-300 ease-out h-[1.5px] bg-blue-1 origin-center"
+				className={`absolute hidden transition-all duration-300 ease-out h-[1.5px] origin-center`}
+				style={{ backgroundColor: color ?? "var(--blue-1)" }}
 				ref={selectRef}
 			/>,
 			document.body,
 		);
-	}, []);
+	}, [color]);
 
 	return {
 		selectedItem,

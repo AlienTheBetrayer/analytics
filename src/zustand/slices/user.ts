@@ -347,6 +347,7 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
 					data.profiles.forEach((p) => {
 						profiles[p.user.id] = p;
 					});
+                    
 					return {
 						...state,
 						profiles,

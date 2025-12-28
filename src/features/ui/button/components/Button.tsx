@@ -19,7 +19,7 @@ export const Button = ({
 			onClick={onClick}
 			type="button"
 			disabled={!isEnabled}
-			className={`flex flex-row! gap-1 items-center justify-center cursor-pointer border-2 border-transparent group min-w-8 min-h-8 px-2.5 
+			className={`flex flex-row! gap-1 items-center justify-center cursor-pointer border-2 group min-w-8 min-h-8 px-2.5 
                 ${ButtonStyles[styles]} 
                 ${isEnabled !== true ? "pointer-events-none opacity-30" : ""}
                 ${className ?? ""} `}

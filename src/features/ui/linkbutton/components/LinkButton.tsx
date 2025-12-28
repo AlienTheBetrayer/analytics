@@ -28,7 +28,7 @@ export const LinkButton = forwardRef<HTMLAnchorElement, Props>(
 			<Link
 				ref={ref}
 				href={href}
-                style={style}
+				style={style}
 				className={`flex gap-1 items-center justify-center group ${LinkButtonStyles[styles]} ${isEnabled !== true ? "pointer-events-none opacity-30" : ""} ${className ?? ""} 
                 `}
 			>
