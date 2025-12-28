@@ -2,11 +2,13 @@ import Image from "next/image";
 import { MessageBox } from "@/features/messagebox/components/MessageBox";
 import { usePopup } from "@/features/popup/hooks/usePopup";
 import { Spinner } from "@/features/spinner/components/Spinner";
+import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import type { Profile } from "@/types/api/database/profiles";
 import type { User } from "@/types/api/database/user";
 import { promiseStatus } from "@/utils/status";
 import { useAppStore } from "@/zustand/store";
+import { ProfileDisplay } from "./ProfileDisplay";
 
 type Props = {
 	data: { profile: Profile; user: User };
@@ -18,9 +20,13 @@ export const Friends = ({ data }: Props) => {
 	const profiles = useAppStore((state) => state.profiles);
 	const status = useAppStore((state) => state.status);
 	const promises = useAppStore((state) => state.promises);
+	const friendRequests = useAppStore((state) => state.friendRequests);
 
 	// zustand functions
 	const unfriendEveryone = useAppStore((state) => state.unfriendEveryone);
+	const getProfiles = useAppStore((state) => state.getProfiles);
+	const getFriendRequests = useAppStore((state) => state.getFriendRequests);
+	const getFriends = useAppStore((state) => state.getFriends);
 
 	// messageboxes
 	const unfriendMessageBox = usePopup(
@@ -34,6 +40,7 @@ export const Friends = ({ data }: Props) => {
 			}}
 		/>,
 	);
+
 	return (
 		<div className="flex flex-col gap-4 p-2 w-full">
 			{unfriendMessageBox.render()}
@@ -57,22 +64,112 @@ export const Friends = ({ data }: Props) => {
 				<hr className="sm:w-px! sm:h-full" />
 
 				<div className="flex flex-col gap-2 w-full">
-					{promises.friends === "pending" ? (
+					{status === undefined ? (
 						<Spinner styles="big" />
-					) : friends === undefined || friends.length === 0 ? (
-						<span>Currently your friend list is empty.</span>
 					) : (
 						<>
-							<span>
-								<b>Friends</b>
+							<span className="flex flex-wrap gap-2 items-center">
+								<b>Friend list</b>
+								<Tooltip description="Re-load friends" direction="top">
+									<Button
+										className="p-0!"
+										onClick={() => {
+											getFriends(false);
+											if (friends && friends.length > 0) {
+												getProfiles(friends, false, "RELOADFRIENDS");
+											}
+										}}
+									>
+										<Image
+											src="/reload.svg"
+											width={16}
+											height={16}
+											alt="refresh"
+										/>
+									</Button>
+								</Tooltip>
+								<small className="ml-auto">
+									(all of your friends are here)
+								</small>
 							</span>
-							<ul className="flex flex-col gap-2">
-								{friends.map((friend) => (
-									<li key={friend}>{profiles?.[friend].profile.name}</li>
-								))}
-							</ul>
+							{promises.friends === "pending" ||
+							promises.RELOADFRIENDS === "pending" ? (
+								<Spinner className="mx-auto" />
+							) : friends === undefined || friends.length === 0 ? (
+								<span>No friends</span>
+							) : (
+								<ul
+									className="flex flex-col gap-2 overflow-y-auto max-h-24 scheme-dark"
+									style={{ scrollbarWidth: "thin" }}
+								>
+									{friends.map((friend) => (
+										<li key={friend}>
+											{profiles?.[friend] === undefined ? (
+												<Spinner />
+											) : (
+												<ProfileDisplay data={profiles[friend]} />
+											)}
+										</li>
+									))}
+								</ul>
+							)}
+							<hr />
+
+							<span className="flex flex-wrap gap-2 items-center">
+								<b>Outcoming requests</b>
+								<Tooltip description="Re-load requests" direction="top">
+									<Button
+										className="p-0!"
+										onClick={() => {
+											getFriendRequests(status.user.id, false);
+
+											if (
+												friendRequests &&
+												friendRequests[status.user.id]?.length > 0
+											) {
+												getProfiles(
+													friendRequests[status.user.id],
+													false,
+													"RELOADREQUESTS",
+												);
+											}
+										}}
+									>
+										<Image
+											src="/reload.svg"
+											width={16}
+											height={16}
+											alt="refresh"
+										/>
+									</Button>
+								</Tooltip>
+								<small className="ml-auto">(your outcoming requests)</small>
+							</span>
+
+							{promises.friend_requests === "pending" ||
+							promises.RELOADREQUESTS === "pending" ? (
+								<Spinner className="mx-auto" />
+							) : friendRequests?.[status.user.id] === undefined ? (
+								<span>No outcoming requests</span>
+							) : (
+								<ul
+									className="flex flex-col gap-2 overflow-y-auto max-h-24 scheme-dark"
+									style={{ scrollbarWidth: "thin" }}
+								>
+									{friendRequests[status.user.id].map((request) => (
+										<li key={request}>
+											{profiles?.[request] === undefined ? (
+												<Spinner />
+											) : (
+												<ProfileDisplay data={profiles[request]} />
+											)}
+										</li>
+									))}
+								</ul>
+							)}
 						</>
 					)}
+					<hr />
 
 					<hr className="mt-auto" />
 					<Button

@@ -113,10 +113,7 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
 		getFriendsProfiles: async (id: string, caching: boolean = true) => {
 			const { setPromise, setCached, cached } = get();
 
-			if (
-				(caching === true && cached?.friends_profiles !== undefined)
-			)
-				return;
+			if (caching === true && cached?.friends_profiles !== undefined) return;
 
 			return await setPromise("friends", async () => {
 				const res = await axios.get(`/api/friend-profiles/${id}`);
@@ -146,18 +143,32 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
 		getFriendRequests: async (id: string, caching: boolean = true) => {
 			const { setPromise, setCached, cached } = get();
 
-            if (
-				(caching === true && cached?.friends_profiles !== undefined)
-			)
-				return;
+			if (caching === true && cached?.friend_requests !== undefined) return;
 
 			return await setPromise("friend_requests", async () => {
 				const res = await axios.get(`/api/friend-requests/${id}`);
-                const data = res.data.requests as { incoming: string[], outcoming: string []};
-                console.log(data);
+				const data = res.data.requests as {
+					id: string;
+					from_id: string;
+					to_id: string;
+				}[];
 
 				set((state) => {
-					const friendRequests = { ...state.friendRequests };
+					const friendRequests: Record<string, string[]> = {};
+
+					data.forEach((request) => {
+						if (request.to_id === id) {
+							friendRequests[request.to_id] = [
+								...(friendRequests[request.to_id] ?? []),
+								request.from_id,
+							];
+						} else {
+							friendRequests[request.from_id] = [
+								...(friendRequests[request.from_id] ?? []),
+								request.to_id,
+							];
+						}
+					});
 
 					return { ...state, friendRequests };
 				});
@@ -267,6 +278,47 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
 					...state,
 					friends: undefined,
 				}));
+
+				return res;
+			});
+		},
+
+		getProfiles: async (
+			ids: string[],
+			caching: boolean = true,
+			promiseKey: string = "profiles",
+		) => {
+			const { setPromise, profiles } = get();
+
+			let fetchIds: string[] = ids;
+
+			if (caching) {
+				if (profiles === undefined) return;
+
+				fetchIds = fetchIds.filter((id) => profiles[id] === undefined);
+				if (fetchIds.length === 0) return;
+			}
+
+			return await setPromise(promiseKey, async () => {
+				const res = await axios.post("/api/profiles-select/", {
+					ids: fetchIds,
+				});
+
+				const data = res.data as {
+					profiles: { profile: Profile; user: User }[];
+				};
+
+				set((state) => {
+					const profiles = { ...state.profiles };
+
+					data.profiles.forEach((p) => {
+						profiles[p.user.id] = p;
+					});
+					return {
+						...state,
+						profiles,
+					};
+				});
 
 				return res;
 			});

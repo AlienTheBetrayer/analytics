@@ -22,10 +22,9 @@ export const GET = async (
 			return nextResponse(friendsError, 400);
 		}
 
-		const requests = {
-			incoming: friendsData.filter((data) => data.to_id === id),
-			outcoming: friendsData.filter((data) => data.from_id === id),
-		};
+		const requests = friendsData.filter(
+			(data) => data.to_id === id || data.from_id === id,
+		);
 
 		return nextResponse({ requests }, 200);
 	} catch {

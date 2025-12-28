@@ -45,6 +45,15 @@ export type UserStore = {
 		data: Partial<Profile>,
 	) => Promise<ResponseAxios | undefined>;
 
+    /**
+     * gets all the profiles with the specified user ids
+     * @param ids the array of the ids of the profiles you want to get
+	 * @param caching don't fetch the data if it has already been fetched
+     * @param promiseKey a custom promise key to subscribe to promise changes
+	 * @returns a promise containing the response
+     */
+    getProfiles: (ids: string[], caching?: boolean, promiseKey?: string) => Promise<ResponseAxios | undefined>;
+
 	/**
 	 * deletes the profile from state
 	 * @param id the id of the user

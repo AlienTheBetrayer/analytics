@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { useMemo } from "react";
 import { MessageBox } from "@/features/messagebox/components/MessageBox";
 import { usePopup } from "@/features/popup/hooks/usePopup";
 import { Button } from "@/features/ui/button/components/Button";
@@ -34,6 +35,12 @@ export const Overview = ({ data }: Props) => {
 			}}
 		/>,
 	);
+
+	// ui states
+	const hasOutcomingRequest = useMemo(() => {
+		if (status === undefined) return false;
+		return friendRequests?.[status.user.id]?.some((id) => id === data.user.id);
+	}, [friendRequests, status, data]);
 
 	return (
 		<div className="flex flex-col gap-4 p-2 w-full grow">
@@ -72,16 +79,15 @@ export const Overview = ({ data }: Props) => {
 						</Button>
 					) : (
 						<Button
-							isEnabled={friendRequests?.[status.user.id]?.every(
-								(id) => id !== data.user.id,
-							)}
+							isEnabled={!hasOutcomingRequest}
 							onClick={() => {
 								sendFriendRequest(status.user.id, data.user.id);
 							}}
 						>
 							{promiseStatus(promises.friend_request)}
 							<Image src="/plus.svg" width={16} height={16} alt="send" />
-							Friend request
+                            
+							{hasOutcomingRequest ? "Sent" : "Friend request"}
 						</Button>
 					))}
 			</div>
