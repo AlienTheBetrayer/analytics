@@ -1,4 +1,4 @@
-import './Edit.css';
+import "./Edit.css";
 import Image from "next/image";
 import { useState } from "react";
 import { Button } from "@/features/ui/button/components/Button";
@@ -24,6 +24,8 @@ export const Edit = ({ data }: Props) => {
 	const [name, setName] = useState<string>(data.profile.name ?? "");
 	const [bio, setBio] = useState<string>(data.profile.bio ?? "");
 	const [oneliner, setOneliner] = useState<string>(data.profile.oneliner ?? "");
+	const [color, setColor] = useState<string>(data.profile.color ?? "#000");
+    console.log(color);
 
 	return (
 		<div className="flex flex-col gap-4 p-2 w-full">
@@ -50,11 +52,13 @@ export const Edit = ({ data }: Props) => {
 						Color
 						<small> (everyone will see it)</small>
 					</label>
-						<input
-							id="profile-color"
-							type="color"
-							className="cursor-pointer w-full! h-12 outline-0"
-						/>
+					<input
+						value={color}
+						onChange={(e) => setColor(e.target.value)}
+						id="profile-color"
+						type="color"
+						className="cursor-pointer w-full! h-12 outline-0"
+					/>
 				</div>
 
 				<hr className="sm:w-px! sm:h-full" />
@@ -62,7 +66,7 @@ export const Edit = ({ data }: Props) => {
 					className="flex flex-col gap-2 w-full"
 					onSubmit={(e) => {
 						e.preventDefault();
-						setProfileData(data.user, { status, bio, oneliner, name });
+						setProfileData(data.user, { status, bio, oneliner, name, color });
 					}}
 				>
 					<label htmlFor="bio" className="flex justify-between items-center">

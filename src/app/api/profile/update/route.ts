@@ -4,7 +4,7 @@ import { nextResponse } from "@/utils/response";
 
 export const POST = async (request: NextRequest) => {
 	try {
-		const { user_id, status, oneliner, bio, visibility, name } =
+		const { user_id, status, oneliner, bio, visibility, name, color } =
 			await request.json();
 
 		if (user_id === undefined) {
@@ -21,6 +21,7 @@ export const POST = async (request: NextRequest) => {
 					oneliner,
 					bio,
 					visibility,
+                    color,
 				},
 				{ onConflict: "user_id" },
 			);
