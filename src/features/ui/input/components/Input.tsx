@@ -35,7 +35,7 @@ export const Input = ({
 				required={required}
 				className={`w-full h-full min-h-8 bg-linear-to-bl 
             from-background-2 to-background-1 outline-2 outline-background-5 p-2 rounded-xl focus:outline-blue-1 
-             hover:brightness-125 transition-colors duration-150 focus-visible:brightness-125
+             hover:brightness-125 transition-all duration-300 ease-out focus-visible:brightness-125
             ${(required === true || minLength || maxLength) ? "invalid:outline-red-2! valid:outline-blue-2!" : ""} 
                  ${isEnabled !== true ? "pointer-events-none opacity-30" : ""} 
             ${className ?? ""}`}

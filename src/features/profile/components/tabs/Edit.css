@@ -1,0 +1,22 @@
+input[type="color"]::-moz-color-swatch {
+	border: none;
+}
+
+input[type="color"]::-webkit-color-swatch-wrapper {
+	padding: 0;
+	border-radius: 1000px;
+}
+
+input[type="color"]::-webkit-color-swatch {
+	border: 1px solid transparent;
+	border-radius: 1500;
+    transition: 0.3s ease-out;
+}
+
+input[type="color"]:hover::-webkit-color-swatch {
+    border-color: var(--foreground-7);
+}
+
+input[type="color"]:focus-within::-webkit-color-swatch {
+    border-color: var(--foreground-3);
+}

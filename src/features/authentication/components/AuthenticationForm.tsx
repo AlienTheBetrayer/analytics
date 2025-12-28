@@ -47,7 +47,7 @@ export const AuthenticationForm = ({
 			animate={{ opacity: 1, y: 0 }}
 			exit={{ opacity: 0, y: 5 }}
 			className={`flex flex-col max-w-96 w-full z-2
-                sm:hover:scale-105 duration-300 box
+                sm:hover:scale-105 duration-300 ease-out box
                  ${className ?? ""}`}
 		>
 			{/* topline */}

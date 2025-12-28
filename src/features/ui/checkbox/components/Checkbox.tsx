@@ -22,11 +22,11 @@ export const Checkbox = ({ children, value, onToggle, ...rest }: Props) => {
 			onKeyDown={controller.keyDown}
 			className={`checkbox flex w-full gap-2 h-8 px-2 py-1.5 items-center bg-linear-to-bl 
                 from-background-2 to-background-1 rounded-xl
-             hover:brightness-125 transition-colors duration-150 cursor-pointer outline-2 outline-transparent focus-within:outline-blue-1!`}
+             hover:brightness-125 transition-colors duration-300 ease-out cursor-pointer outline-2 outline-transparent focus-within:outline-blue-1!`}
 			{...rest}
 		>
 			<div
-				className={`flex items-center justify-center aspect-square h-full rounded-xl outline-2 outline-background-5 duration-300
+				className={`flex items-center justify-center aspect-square h-full rounded-xl outline-2 outline-background-5 duration-300 ease-out
                 ${controller.inputValue ? "outline-blue-1" : ""}`}
 			>
 				<Image

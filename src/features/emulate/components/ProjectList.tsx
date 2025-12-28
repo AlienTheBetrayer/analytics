@@ -23,7 +23,7 @@ export const ProjectList = ({ data }: Props) => {
 					<li key={projectData.project.name}>
 						<LinkButton
 							href={`/dashboard/emulate/${projectData.project.id}`}
-							className={`flex flex-row! w-full h-full box hover:brightness-200 active:brightness-300 duration-300 rounded-full!
+							className={`flex flex-row! w-full h-full box hover:brightness-200 active:brightness-300 duration-300 ease-out rounded-full!
                             ${projectData.project.id === id ? "border-blue-1!" : ""}`}
 						>
 							<Image src="/cube.svg" width={20} height={20} alt="" />

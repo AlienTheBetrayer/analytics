@@ -132,7 +132,8 @@ export const useTooltip = (
 				exit={{ opacity: 0 }}
 				style={{ display: "none" }}
 				ref={tooltipRef}
-				className={`tooltip flex items-center py-1 gap-2 px-4 rounded-3xl text-center outline-1 outline-background-5 bg-background-3 z-100 absolute left-0 top-0 hover:brightness-150 duration-300`}
+				className={`tooltip flex items-center py-1 gap-2 px-4 rounded-3xl text-center outline-1 outline-background-5
+                     bg-background-3 z-100 absolute left-0 top-0 hover:brightness-150 duration-300 ease-out`}
 			>
 				<div className="flex flex-col">
 					<span className="max-w-96 w-max break-keep">

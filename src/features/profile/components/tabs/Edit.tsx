@@ -1,3 +1,4 @@
+import './Edit.css';
 import Image from "next/image";
 import { useState } from "react";
 import { Button } from "@/features/ui/button/components/Button";
@@ -37,11 +38,23 @@ export const Edit = ({ data }: Props) => {
 			<hr />
 			<div className="flex flex-col sm:flex-row gap-4 grow w-full">
 				<div className="flex flex-col items-center gap-2 sm:w-80">
-                    <span>{data.profile.name}</span>
+					<span>{data.profile.name}</span>
 					<div className="bg-blue-3 rounded-full w-full max-w-48 aspect-square" />
 					<span className="text-foreground-5!">
 						{data.user.role[0].toUpperCase() + data.user.role.substring(1)}
 					</span>
+					<label
+						htmlFor="profile-color"
+						className="flex justify-between items-center w-full"
+					>
+						Color
+						<small> (everyone will see it)</small>
+					</label>
+						<input
+							id="profile-color"
+							type="color"
+							className="cursor-pointer w-full! h-12 outline-0"
+						/>
 				</div>
 
 				<hr className="sm:w-px! sm:h-full" />

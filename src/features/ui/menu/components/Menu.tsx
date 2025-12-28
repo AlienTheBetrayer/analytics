@@ -1,12 +1,12 @@
 import { Button } from "../../button/components/Button";
+import { LinkButton } from "../../linkbutton/components/LinkButton";
 import { useMenu } from "../hooks/useMenu";
 import type { MenuItem } from "../types/menu";
-import { LinkButton } from "../../linkbutton/components/LinkButton";
 
 type Props = {
 	items: MenuItem[];
 	type?: "default" | "link";
-    value?: number;
+	value?: number;
 };
 
 export const Menu = ({ items, value, type = "default" }: Props) => {
@@ -24,7 +24,7 @@ export const Menu = ({ items, value, type = "default" }: Props) => {
 									controller.buttonRefs.current[idx] = el;
 								}}
 								onClick={() => controller.select(idx)}
-								className={`w-full rounded-none outline-0! border-0! duration-300 bg-transparent hover:bg-background-2! active:bg-background-3!
+								className={`w-full rounded-none outline-0! border-0! duration-300 ease-out bg-transparent hover:bg-background-2! active:bg-background-3!
                                 ${controller.selectedItem === idx ? "bg-background-1! brightness-200" : ""}`}
 							>
 								{item.title}
@@ -35,8 +35,8 @@ export const Menu = ({ items, value, type = "default" }: Props) => {
 								ref={(el) => {
 									controller.buttonRefs.current[idx] = el;
 								}}
-								className={`w-full rounded-none outline-0! border-0! duration-300 bg-transparent hover:bg-background-2! active:bg-background-3!
-                                ${controller.selectedItem === idx ? "bg-background-1! brightness-200" : ""}`}
+								className={`w-full rounded-none outline-0! border-0! duration-300 ease-out focus-visible:bg-background-6! bg-transparent hover:bg-background-2! active:bg-background-3!
+                                ${controller.selectedItem === idx ? "bg-background-3!" : ""}`}
 							>
 								{item.title}
 							</LinkButton>

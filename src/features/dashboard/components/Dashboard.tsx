@@ -16,7 +16,7 @@ export const Dashboard = () => {
 	return (
 		<div
 			className="w-full border-0! max-w-4xl m-auto h-full 
-        lg:hover:scale-105 duration-300 mt-8 sm:mt-0 box"
+        lg:hover:scale-105 duration-300 ease-out mt-8 sm:mt-0 box"
 		>
 			<Topline />
 			<hr />

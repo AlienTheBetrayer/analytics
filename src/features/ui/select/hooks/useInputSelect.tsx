@@ -88,7 +88,7 @@ export const useInputSelect = (
 									type="button"
 									className={`flex w-full items-center bg-linear-to-bl 
             from-background-a-2 to-background-a-1 backdrop-blur-xl p-2 focus:border-blue-1 
-             hover:brightness-125 transition-colors duration-150 cursor-pointer ${item === inputValue ? "brightness-200" : ""}`}
+             hover:brightness-125 transition-colors duration-300 ease-out cursor-pointer ${item === inputValue ? "brightness-200" : ""}`}
 									onClick={() => {
 										value === undefined
 											? setSelectedItem(item)
