@@ -14,7 +14,7 @@ export const ProfileDisplay = ({ data }: Props) => {
 			href={`/profile/${data.user.username}`}
 			className="flex justify-start p-2! gap-2 h-full"
 		>
-			<div className="bg-blue-3 rounded-full h-8 aspect-square"></div>
+			<div className="bg-blue-3 rounded-full h-10 aspect-square"></div>
 
 			<hr className="w-px! h-full! border-background-5!" />
 
@@ -23,7 +23,7 @@ export const ProfileDisplay = ({ data }: Props) => {
 					<Image src="/type.svg" width={16} height={16} alt="" />
 					Name
 				</small>
-				{data.profile.name}
+				<b>{data.profile.name}</b>
 			</span>
 
 			{data.profile.oneliner && (

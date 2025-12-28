@@ -99,11 +99,20 @@ export type UserStore = {
     sendFriendRequest: (from_id: string, to_id: string) => Promise<ResponseAxios>;
 
     /**
-     * unfriends the user
-     * @param id the user you don't want to be friends no more
+     * deletes a friend request (works in both sides)
+     * @param user1_id the id of the first user
+     * @param user2_id the id of the second user
      * @returns a promise containing the response
      */
-    unfriend: (id: string) => Promise<ResponseAxios>;
+    deleteFriendRequest: (user1_id: string, user2_id: string) => Promise<ResponseAxios>
+
+    /**
+     * unfriends the user
+     * @param user1_id the user you don't want to be friends no more
+     * @param user2_id the second user you don't want to be friends no more
+     * @returns a promise containing the response
+     */
+    unfriend: (user1_id: string, user2_id: string) => Promise<ResponseAxios>;
 
     /**
      * unfriends everyone

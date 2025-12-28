@@ -140,7 +140,11 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
 			});
 		},
 
-		getFriendRequests: async (id: string, caching: boolean = true, promiseKey: string = "friend_requests") => {
+		getFriendRequests: async (
+			id: string,
+			caching: boolean = true,
+			promiseKey: string = "friend_requests",
+		) => {
 			const { setPromise, setCached, cached } = get();
 
 			if (caching === true && cached?.friend_requests !== undefined) return;
@@ -162,13 +166,13 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
 					data.forEach((request) => {
 						if (request.to_id === id) {
 							// incoming
-                            friendRequests.incoming.push(request.from_id);
+							friendRequests.incoming.push(request.from_id);
 						} else {
 							// outcoming
-                            friendRequests.outcoming.push(request.to_id);
+							friendRequests.outcoming.push(request.to_id);
 						}
 					});
-                    console.log(friendRequests);
+
 					return { ...state, friendRequests };
 				});
 
@@ -237,15 +241,10 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
 							set((state) => {
 								return {
 									...state,
-									friendRequests: state.friendRequests
-										? {
-												...state.friendRequests,
-												outcoming: {
-													...state.friendRequests?.outcoming,
-													from_id,
-												},
-											}
-										: undefined,
+									friendRequests: {
+										outcoming: [...(state.friendRequests?.outcoming ?? []), to_id],
+										incoming: state.friendRequests?.incoming ?? [],
+									},
 								};
 							});
 							break;
@@ -258,15 +257,44 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
 			});
 		},
 
-		unfriend: async (id: string) => {
+		deleteFriendRequest: async (user1_id: string, user2_id: string) => {
+			const { setPromise } = get();
+
+			return await setPromise("delete_friend_request", async () => {
+				const res = await axios.post("/api/friend-request-reject/", {
+					user1_id,
+					user2_id,
+				});
+
+				set((state) => {
+					if (!state.friendRequests) return state;
+
+					const friendRequests = { ...state.friendRequests };
+					friendRequests.incoming = friendRequests.incoming.filter(
+						(id) => id !== user1_id && id !== user2_id,
+					);
+					friendRequests.outcoming = friendRequests.outcoming.filter(
+						(id) => id !== user1_id && id !== user2_id,
+					);
+
+					return { ...state, friendRequests };
+				});
+
+				return res;
+			});
+		},
+
+		unfriend: async (user1_id: string, user2_id: string) => {
 			const { setPromise } = get();
 
 			return await setPromise("unfriend", async () => {
-				const res = await axios.post("/api/unfriend/", { id });
+				const res = await axios.post("/api/unfriend/", { user1_id, user2_id });
 
 				set((state) => ({
 					...state,
-					friends: state.friends?.filter((f) => f !== id),
+					friends: state.friends?.filter(
+						(f) => f !== user1_id && f !== user2_id,
+					),
 				}));
 
 				return res;

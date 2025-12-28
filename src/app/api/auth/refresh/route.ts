@@ -40,7 +40,6 @@ export const POST = async (request: NextRequest) => {
 			return nextResponse({ error: "Incorrect authentication." }, 400);
 		}
 
-        console.log(refreshTokensData);
 		// compare all the hashes to detect a theft
 		const hashResults = await Promise.all(
 			refreshTokensData.map(async (data) => ({

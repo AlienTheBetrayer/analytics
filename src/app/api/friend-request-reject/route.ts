@@ -10,17 +10,22 @@ export const POST = async (request: NextRequest) => {
 			return nextResponse({ error: "user1_id and user2_id are missing." }, 400);
 		}
 
-		const { error: unfriendError } = await supabaseServer
-			.from("friends")
+		const { error: requestError } = await supabaseServer
+			.from("friend_requests")
 			.delete()
-			.or(`and(user1_id.eq.${user1_id},user2_id.eq.${user2_id}),and(user1_id.eq.${user2_id},user2_id.eq.${user1_id})`);
+			.or(
+				`and(from_id.eq.${user1_id},to_id.eq.${user2_id}),and(from_id.eq.${user2_id},to_id.eq.${user1_id})`,
+			);
 
-        if(unfriendError) {
-            return nextResponse(unfriendError, 400);
-        }
+		if (requestError) {
+			return nextResponse(requestError, 400);
+		}
 
-        return nextResponse({ message: "Successfully unfriended the user!"}, 200);
+		return nextResponse(
+			{ message: "Successfully rejected both friend requests." },
+			200,
+		);
 	} catch {
-		return nextResponse({ error: "Unfriending has failed." }, 400);
+		return nextResponse({ error: "Request rejection has failed." }, 400);
 	}
 };

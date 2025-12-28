@@ -71,12 +71,32 @@ export const Friends = ({ data }: Props) => {
 							<li className="flex flex-col gap-1 min-h-16">
 								{/* friends topline */}
 								<span className="flex flex-wrap gap-2 items-center">
-									<b className="w-full! max-w-32!">Friend list</b>
+									<b>Friend list</b>
 									<Tooltip description="Re-load friends" direction="top">
 										<Button
 											className="p-0!"
 											onClick={() => {
 												getFriends(false);
+												getFriendRequests(status.user.id, false);
+
+												if (friendRequests) {
+													if (friendRequests.incoming.length > 0) {
+														getProfiles(
+															friendRequests.incoming,
+															false,
+															"__reload_incoming_requests",
+														);
+													}
+
+													if (friendRequests.outcoming.length > 0) {
+														getProfiles(
+															friendRequests.outcoming,
+															false,
+															"__reload_outcoming_requests",
+														);
+													}
+												}
+
 												if (friends && friends.length > 0) {
 													getProfiles(friends, false, "__reload_friends");
 												}
@@ -100,7 +120,9 @@ export const Friends = ({ data }: Props) => {
 								promises.__reload_friends === "pending" ? (
 									<Spinner className="mx-auto" />
 								) : friends === undefined || friends.length === 0 ? (
-									<span><small>No friends</small></span>
+									<span>
+										<small>No friends</small>
+									</span>
 								) : (
 									<ul
 										className="flex flex-col gap-2 overflow-y-auto max-h-24 scheme-dark"
@@ -123,37 +145,7 @@ export const Friends = ({ data }: Props) => {
 							<li className="flex flex-col gap-1 min-h-16">
 								{/* incoming requests topline */}
 								<span className="flex flex-wrap gap-2 items-center">
-									<b className="w-full! max-w-32!">Incoming requests</b>
-									<Tooltip description="Re-load requests" direction="top">
-										<Button
-											className="p-0!"
-											onClick={() => {
-												getFriendRequests(
-													status.user.id,
-													false,
-													"__reload_incoming_requests",
-												);
-
-												if (
-													friendRequests &&
-													friendRequests.incoming.length > 0
-												) {
-													getProfiles(
-														friendRequests.incoming,
-														false,
-														"__reload_incoming_requests",
-													);
-												}
-											}}
-										>
-											<Image
-												src="/reload.svg"
-												width={16}
-												height={16}
-												alt="refresh"
-											/>
-										</Button>
-									</Tooltip>
+									<b>Incoming requests</b>
 									<small className="ml-auto">(your incoming requests)</small>
 								</span>
 
@@ -188,37 +180,7 @@ export const Friends = ({ data }: Props) => {
 							<li className="flex flex-col gap-1 min-h-16">
 								{/* outcoming requests topline */}
 								<span className="flex flex-wrap gap-2 items-center">
-									<b className="w-full! max-w-32!">Outcoming requests</b>
-									<Tooltip description="Re-load requests" direction="top">
-										<Button
-											className="p-0!"
-											onClick={() => {
-												getFriendRequests(
-													status.user.id,
-													false,
-													"__reload_outcoming_requests",
-												);
-
-												if (
-													friendRequests &&
-													friendRequests.outcoming.length > 0
-												) {
-													getProfiles(
-														friendRequests.outcoming,
-														false,
-														"__reload_outcoming_requests",
-													);
-												}
-											}}
-										>
-											<Image
-												src="/reload.svg"
-												width={16}
-												height={16}
-												alt="refresh"
-											/>
-										</Button>
-									</Tooltip>
+									<b>Outcoming requests</b>
 									<small className="ml-auto">(your outcoming requests)</small>
 								</span>
 
