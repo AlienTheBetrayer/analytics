@@ -1,0 +1,12 @@
+@keyframes colorSelected {
+    0% {
+        transform: scale(1.5);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.color-selected {
+    animation: 0.9s colorSelected alternate infinite ease-in-out;
+}

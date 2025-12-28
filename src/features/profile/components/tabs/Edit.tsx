@@ -2,6 +2,7 @@ import "./Edit.css";
 import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
 import { type JSX, useState } from "react";
+import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
 import type { Profile } from "@/types/api/database/profiles";
@@ -9,6 +10,7 @@ import type { User } from "@/types/api/database/user";
 import { promiseStatus } from "@/utils/status";
 import { useAppStore } from "@/zustand/store";
 import { fileToBase64 } from "../../utils/fileToBase64";
+import { Colors } from "../modals/Colors";
 
 type Props = {
 	data: { profile: Profile; user: User };
@@ -124,29 +126,24 @@ export const Edit = ({ data }: Props) => {
 					</span>
 
 					{data.profile.avatar && (
-						<Button onClick={() => {
-                            setAvatarFile(undefined);
-                        }}>
+						<Button
+							onClick={() => {
+								setAvatarFile(undefined);
+							}}
+						>
 							<Image src="/cross.svg" width={16} height={16} alt="" />
 							Delete image
 						</Button>
 					)}
 
 					<hr className="mt-auto" />
-					<label
-						htmlFor="profile-color"
-						className="flex justify-between items-center w-full"
+					<Tooltip
+                        direction='top'
+						type="modal"
+						element={<Colors />}
 					>
-						Color
-						<small> (everyone will see it)</small>
-					</label>
-					<input
-						value={color}
-						onChange={(e) => setColor(e.target.value)}
-						id="profile-color"
-						type="color"
-						className="cursor-pointer w-full! h-12 outline-0"
-					/>
+						<Button>Color panel</Button>
+					</Tooltip>
 				</div>
 
 				<hr className="sm:w-px! sm:h-full" />
@@ -157,7 +154,7 @@ export const Edit = ({ data }: Props) => {
 						if (!userStatus) return;
 
 						let retAvatar = data.profile.avatar;
-                        console.log(retAvatar);
+						console.log(retAvatar);
 						if (avatarFile !== undefined) {
 							retAvatar = await fileToBase64(avatarFile);
 						}

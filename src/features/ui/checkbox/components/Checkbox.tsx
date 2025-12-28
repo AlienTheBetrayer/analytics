@@ -37,7 +37,7 @@ export const Checkbox = ({ children, value, onToggle, ...rest }: Props) => {
 					className={`${controller.inputValue ? "opacity-100" : "opacity-0"} transition-all duration-1000`}
 				/>
 			</div>
-			<span>{children}</span>
+			<span className="flex gap-1 w-full">{children}</span>
 		</button>
 	);
 };

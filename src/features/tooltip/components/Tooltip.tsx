@@ -8,7 +8,7 @@ import { getDirectionStyle } from "../utils/getDirectionStyle";
 type Props = {
 	className?: string;
 	children?: React.ReactNode;
-	description: string;
+	description?: string;
 	title?: string;
 	element?: React.ReactNode;
 	isEnabled?: boolean;
@@ -53,7 +53,7 @@ export const Tooltip = ({
 						<div
 							style={directionStyle}
 							ref={controller.ghostRef}
-							className={`flex absolute items-center py-1 gap-2 px-4 text-center z-100 pointer-events-none opacity-0! appearance-none`}
+							className={`flex absolute items-center p-1.5 gap-2 text-center z-100 pointer-events-none opacity-0! appearance-none`}
 						>
 							<div className="flex flex-col">
 								<span className="max-w-96 w-max break-keep">
