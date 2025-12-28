@@ -57,7 +57,10 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
 			});
 		},
 
-		setProfileData: async (user: User, data: Partial<Profile>) => {
+		setProfileData: async (
+			user: User,
+			data: Record<string, string | undefined>,
+		) => {
 			const { setPromise } = get();
 
 			return await setPromise("profile_set", async () => {
@@ -242,7 +245,10 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
 								return {
 									...state,
 									friendRequests: {
-										outcoming: [...(state.friendRequests?.outcoming ?? []), to_id],
+										outcoming: [
+											...(state.friendRequests?.outcoming ?? []),
+											to_id,
+										],
 										incoming: state.friendRequests?.incoming ?? [],
 									},
 								};
@@ -347,7 +353,7 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
 					data.profiles.forEach((p) => {
 						profiles[p.user.id] = p;
 					});
-                    
+
 					return {
 						...state,
 						profiles,

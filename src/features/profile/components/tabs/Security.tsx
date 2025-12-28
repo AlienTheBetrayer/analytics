@@ -83,7 +83,7 @@ export const Security = ({ data }: Props) => {
 
 			<hr />
 			<div className="flex flex-col sm:flex-row gap-4 grow w-full">
-				<div className="flex flex-col items-center gap-2 sm:w-80">
+				<div className="flex flex-col items-center gap-2 w-full sm:max-w-64">
 					<span>{data.profile.name}</span>
 					<div className="bg-blue-3 rounded-full w-full max-w-48 aspect-square" />
 					<span className="text-foreground-5!">

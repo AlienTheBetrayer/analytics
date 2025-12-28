@@ -2,9 +2,9 @@ import type { PostgrestError } from "@supabase/supabase-js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import type { NextRequest } from "next/server";
+import { supabaseServer } from "@/server/private/supabase";
 import type { Token } from "@/types/api/database/authentication";
 import type { User } from "@/types/api/database/user";
-import { supabaseServer } from "@/types/server/supabase";
 import { nextResponse } from "@/utils/response";
 
 export const POST = async (request: NextRequest) => {

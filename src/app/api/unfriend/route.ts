@@ -1,5 +1,5 @@
 import type { NextRequest } from "next/server";
-import { supabaseServer } from "@/types/server/supabase";
+import { supabaseServer } from "@/server/private/supabase";
 import { nextResponse } from "@/utils/response";
 
 export const POST = async (request: NextRequest) => {
@@ -13,13 +13,15 @@ export const POST = async (request: NextRequest) => {
 		const { error: unfriendError } = await supabaseServer
 			.from("friends")
 			.delete()
-			.or(`and(user1_id.eq.${user1_id},user2_id.eq.${user2_id}),and(user1_id.eq.${user2_id},user2_id.eq.${user1_id})`);
+			.or(
+				`and(user1_id.eq.${user1_id},user2_id.eq.${user2_id}),and(user1_id.eq.${user2_id},user2_id.eq.${user1_id})`,
+			);
 
-        if(unfriendError) {
-            return nextResponse(unfriendError, 400);
-        }
+		if (unfriendError) {
+			return nextResponse(unfriendError, 400);
+		}
 
-        return nextResponse({ message: "Successfully unfriended the user!"}, 200);
+		return nextResponse({ message: "Successfully unfriended the user!" }, 200);
 	} catch {
 		return nextResponse({ error: "Unfriending has failed." }, 400);
 	}

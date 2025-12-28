@@ -8,15 +8,15 @@ input[type="color"]::-webkit-color-swatch-wrapper {
 }
 
 input[type="color"]::-webkit-color-swatch {
-	border: 1px solid transparent;
+	border: 3px solid transparent;
 	border-radius: 1500;
     transition: 0.3s ease-out;
 }
 
 input[type="color"]:hover::-webkit-color-swatch {
-    border-color: var(--foreground-7);
+    border-color: var(--blue-1);
 }
 
 input[type="color"]:focus-within::-webkit-color-swatch {
-    border-color: var(--foreground-3);
+    border-color: var(--blue-1);
 }

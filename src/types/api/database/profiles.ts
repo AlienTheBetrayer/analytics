@@ -8,6 +8,7 @@ export type Profile = {
 	bio?: string;
     name: string;
 	oneliner?: string;
+    avatar?: string;
     color?: string;
 	visibility: ProfileVisibility;
     allowed_friend_requests: ProfileAllowedFriendRequests;

@@ -1,8 +1,8 @@
 import type { PostgrestError } from "@supabase/supabase-js";
 import jwt from "jsonwebtoken";
 import type { NextRequest } from "next/server";
+import { supabaseServer } from "@/server/private/supabase";
 import type { Token } from "@/types/api/database/authentication";
-import { supabaseServer } from "@/types/server/supabase";
 import { nextResponse } from "@/utils/response";
 
 export const GET = async (

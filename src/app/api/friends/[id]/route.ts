@@ -1,6 +1,6 @@
 import type { PostgrestError } from "@supabase/supabase-js";
 import type { NextRequest } from "next/server";
-import { supabaseServer } from "@/types/server/supabase";
+import { supabaseServer } from "@/server/private/supabase";
 import { nextResponse } from "@/utils/response";
 
 export const GET = async (
@@ -24,7 +24,7 @@ export const GET = async (
 
 		const friends = friendsData.map((f) => ({
 			id: f.user1_id === id ? f.user2_id : f.user1_id,
-        }));
+		}));
 
 		return nextResponse({ friends }, 200);
 	} catch {

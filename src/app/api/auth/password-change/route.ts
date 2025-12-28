@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import type { NextRequest } from "next/server";
-import { supabaseServer } from "@/types/server/supabase";
+import { supabaseServer } from "@/server/private/supabase";
 import { nextResponse } from "@/utils/response";
 
 export const POST = async (request: NextRequest) => {

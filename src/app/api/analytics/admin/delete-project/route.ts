@@ -1,7 +1,7 @@
 import type { PostgrestError } from "@supabase/supabase-js";
 import type { NextRequest } from "next/server";
+import { supabaseServer } from "@/server/private/supabase";
 import type { Analytics } from "@/types/api/database/analytics";
-import { supabaseServer } from "@/types/server/supabase";
 import { nextResponse } from "@/utils/response";
 
 export const POST = async (request: NextRequest) => {

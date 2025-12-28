@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import type { NextRequest } from "next/server";
-import { supabaseServer } from "@/types/server/supabase";
+import { supabaseServer } from "@/server/private/supabase";
 import { nextResponse } from "@/utils/response";
 
 export const POST = async (request: NextRequest) => {
@@ -36,7 +36,7 @@ export const POST = async (request: NextRequest) => {
 					.from("tokens")
 					.delete()
 					.eq("user_id", payload.id)
-                    .neq("session_id", payload.session_id);
+					.neq("session_id", payload.session_id);
 
 				if (refreshError) {
 					return nextResponse(refreshError, 400);
