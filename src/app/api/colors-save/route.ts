@@ -15,7 +15,7 @@ export const POST = async (request: NextRequest) => {
 		}
 
 		const colorsData = data.map(({ slot, color }) => ({
-			id,
+			user_id: id,
 			slot,
 			color,
 		}));

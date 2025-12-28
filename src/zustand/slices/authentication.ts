@@ -56,7 +56,12 @@ export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (
 						delete newProfiles[status.user.id];
 					}
 
-					return { ...state, status: undefined, profiles: newProfiles };
+					return {
+						...state,
+						status: undefined,
+						profiles: newProfiles,
+						colors: undefined,
+					};
 				});
 
 				return res;

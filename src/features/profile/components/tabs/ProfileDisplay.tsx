@@ -1,4 +1,3 @@
-import './ProfileDisplay.css';
 import Image from "next/image";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import type { Profile } from "@/types/api/database/profiles";

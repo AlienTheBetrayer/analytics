@@ -1,7 +1,7 @@
 import type { PostgrestError } from "@supabase/supabase-js";
 import type { NextRequest } from "next/server";
 import { supabaseServer } from "@/server/private/supabase";
-import type { Colors } from "@/types/api/database/colors";
+import type { Color } from "@/types/api/database/colors";
 import { nextResponse } from "@/utils/response";
 
 export const GET = async (
@@ -14,7 +14,7 @@ export const GET = async (
 		const { data: colorsData, error: colorsError } = (await supabaseServer
 			.from("colors")
 			.select()
-			.eq("user_id", id)) as { data: Colors[]; error: PostgrestError | null };
+			.eq("user_id", id)) as { data: Color[]; error: PostgrestError | null };
 
 		if (colorsError) {
 			return nextResponse(colorsError, 400);

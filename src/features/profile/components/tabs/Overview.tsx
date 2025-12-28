@@ -59,7 +59,7 @@ export const Overview = ({ data }: Props) => {
 						<mark>{data.user.username}</mark>
 						's profile
 					</span>
-					{status && (
+					{status && status.user.id !== data.user.id && (
 						<LinkButton
 							href={`/profile/${status.user.username}/friends`}
 							className="absolute right-0 top-0"

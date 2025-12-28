@@ -1,12 +1,18 @@
 /** biome-ignore-all lint/suspicious/noArrayIndexKey: <> */
-import './Colors.css';
+import "./Colors.css";
 import Image from "next/image";
+import { Spinner } from "@/features/spinner/components/Spinner";
 import { Button } from "@/features/ui/button/components/Button";
+import { promiseStatus } from "@/utils/status";
+import { useAppStore } from "@/zustand/store";
 import { useColorModal } from "../../hooks/useColorModal";
 
 export const COLORS_GRID_SIZE = 4;
 
 export const Colors = () => {
+	// zustand states
+	const promises = useAppStore((state) => state.promises);
+
 	// controller
 	const controller = useColorModal();
 
@@ -17,26 +23,35 @@ export const Colors = () => {
 			</span>
 
 			<div className="flex flex-col h-full gap-4 md:flex-row">
-				<ul
-					className="grid gap-2 w-screen max-w-64 self-center"
-					style={{
-						gridTemplateColumns: `repeat(${COLORS_GRID_SIZE}, minmax(0, 1fr))`,
-					}}
-				>
-					{Array.from({ length: COLORS_GRID_SIZE * COLORS_GRID_SIZE }).map(
-						(_, idx) => (
-							<li key={idx} className={`flex aspect-square ${controller.selectedId === idx ? 'color-selected' : ''}`}>
-								<input
-									value={controller.colors[idx]}
-									onChange={(e) => controller.set(idx, e.target.value)}
-									onClick={() => controller.select(idx)}
-									type="color"
-									className="cursor-pointer outline-0 w-full h-full!"
-								/>
-							</li>
-						),
-					)}
-				</ul>
+				{promises.colors === "pending" ? (
+					<div className="flex w-screen max-w-64">
+						<Spinner styles="big" className="m-auto" />
+					</div>
+				) : (
+					<ul
+						className="grid gap-2 w-screen max-w-64 self-center"
+						style={{
+							gridTemplateColumns: `repeat(${COLORS_GRID_SIZE}, minmax(0, 1fr))`,
+						}}
+					>
+						{Array.from({ length: COLORS_GRID_SIZE * COLORS_GRID_SIZE }).map(
+							(_, idx) => (
+								<li
+									key={idx}
+									className={`flex aspect-square ${controller.selectedId === idx ? "color-selected" : ""}`}
+								>
+									<input
+										value={controller.colors[idx]}
+										onChange={(e) => controller.set(idx, e.target.value)}
+										onClick={() => controller.select(idx)}
+										type="color"
+										className="cursor-pointer outline-0 w-full h-full!"
+									/>
+								</li>
+							),
+						)}
+					</ul>
+				)}
 
 				<hr className="md:w-px! md:h-full! border-background-5!" />
 				<ul className="flex flex-col gap-1.5 w-screen max-w-64 min-w-0">
@@ -89,7 +104,8 @@ export const Colors = () => {
 					)}
 					<hr className="mt-auto" />
 					<li className="w-full *:w-full">
-						<Button>
+						<Button onClick={controller.apply}>
+							{promiseStatus(promises.set_colors)}
 							<Image width={16} height={16} src="/cube.svg" alt="" />
 							<b>
 								<mark>Apply changes</mark>

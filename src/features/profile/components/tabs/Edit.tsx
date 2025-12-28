@@ -23,6 +23,7 @@ export const Edit = ({ data }: Props) => {
 
 	// zustand functions
 	const setProfileData = useAppStore((state) => state.setProfileData);
+	const getColors = useAppStore((state) => state.getColors);
 
 	// input states
 	const [status, setStatus] = useState<string>(data.profile.status ?? "");
@@ -137,12 +138,16 @@ export const Edit = ({ data }: Props) => {
 					)}
 
 					<hr className="mt-auto" />
-					<Tooltip
-                        direction='top'
-						type="modal"
-						element={<Colors />}
-					>
-						<Button>Color panel</Button>
+					<Tooltip direction="top" type="modal" element={<Colors />}>
+						<Button
+							onClick={() => {
+								if (userStatus) {
+									getColors(userStatus.user.id);
+								}
+							}}
+						>
+							Color panel
+						</Button>
 					</Tooltip>
 				</div>
 
@@ -154,8 +159,8 @@ export const Edit = ({ data }: Props) => {
 						if (!userStatus) return;
 
 						let retAvatar = data.profile.avatar;
-						console.log(retAvatar);
-						if (avatarFile !== undefined) {
+
+                        if (avatarFile !== undefined) {
 							retAvatar = await fileToBase64(avatarFile);
 						}
 

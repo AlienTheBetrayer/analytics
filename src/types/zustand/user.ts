@@ -5,12 +5,14 @@ import type { ResponseAxios } from "./utils/axios";
 export type Profiles = Record<string, { profile: Profile; user: User }>;
 
 export type Friends = Record<string, string[]>;
-export type Requests = { incoming: string[]; outcoming: string[] }; //Record<string, string[]>;
+export type Requests = { incoming: string[]; outcoming: string[] }; 
+export type Colors = Record<number, string>;
 
 export type UserStore = {
 	profiles?: Profiles;
 	friends?: string[];
 	friendRequests?: Requests;
+    colors?: Colors;
 
 	/**
 	 * gets the user's profile by its name
@@ -134,4 +136,21 @@ export type UserStore = {
 	 * @returns a promise containing the response
 	 */
 	unfriendEveryone: (id: string) => Promise<ResponseAxios>;
+
+    /**
+     * gets the colors the user had picked
+     * @param id id of the user
+     * @param caching caching the data
+     * @returns a promise containing the response
+     */
+    getColors: (id: string, caching?: boolean) => Promise<ResponseAxios | undefined>;
+
+    
+    /**
+     * sets the colors the user had picked
+     * @param id id of the user
+     * @param data the color slots
+     * @returns a promise containing the response
+     */
+    setColors: (id: string, data: { slot: number, color: string}[] ) => Promise<ResponseAxios | undefined>;
 };

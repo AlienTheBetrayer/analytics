@@ -1,4 +1,5 @@
 import axios from "axios";
+import type { Color } from "@/types/api/database/colors";
 import type { Profile } from "@/types/api/database/profiles";
 import type { User } from "@/types/api/database/user";
 import type { APIResponseType } from "@/types/api/response";
@@ -358,6 +359,57 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
 						...state,
 						profiles,
 					};
+				});
+
+				return res;
+			});
+		},
+
+		getColors: async (id: string, caching: boolean = true) => {
+			const { setPromise, colors } = get();
+
+			if (caching === true && colors) {
+				return;
+			}
+
+			return await setPromise("colors", async () => {
+				const res = await axios.get(`/api/colors/${id}`);
+				const data = res.data as { colors: Color[] };
+
+				set((state) => {
+					const colors = { ...(state.colors ?? {}) };
+					data.colors.forEach(({ slot, color }) => {
+						colors[slot] = color;
+					});
+
+					return { ...state, colors };
+				});
+
+				return res;
+			});
+		},
+
+		setColors: async (id: string, data: { slot: number; color: string }[]) => {
+			const { setPromise } = get();
+
+			if (data.length === 0) {
+				return;
+			}
+
+			return await setPromise("set_colors", async () => {
+				const res = await axios.post("/api/colors-save/", {
+					id,
+					data,
+				});
+
+				set((state) => {
+					const colors = { ...state.colors };
+
+					data.forEach(({ slot, color }) => {
+						colors[slot] = color;
+					});
+
+					return { ...state, colors };
 				});
 
 				return res;
