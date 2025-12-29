@@ -61,6 +61,7 @@ export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (
 						status: undefined,
 						sessions: undefined,
 						friends: undefined,
+                        cached: undefined,
 						profiles: newProfiles,
 						colors: undefined,
 					};
