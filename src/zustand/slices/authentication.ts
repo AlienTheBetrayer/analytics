@@ -59,6 +59,8 @@ export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (
 					return {
 						...state,
 						status: undefined,
+						sessions: undefined,
+						friends: undefined,
 						profiles: newProfiles,
 						colors: undefined,
 					};
@@ -95,7 +97,15 @@ export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (
 			const { setPromise } = get();
 
 			return await setPromise("delete", async () => {
-				return await axios.post("/api/auth/delete", { id });
+				const res = await axios.post("/api/auth/delete", { id });
+
+				set((state) => {
+					const profiles = { ...state.profiles };
+					delete profiles[id];
+					return { ...state, profiles };
+				});
+
+				return res;
 			});
 		},
 

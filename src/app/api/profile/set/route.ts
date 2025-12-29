@@ -1,5 +1,7 @@
+import type { PostgrestError } from "@supabase/supabase-js";
 import type { NextRequest } from "next/server";
 import { supabaseServer } from "@/server/private/supabase";
+import type { Profile } from "@/types/api/database/profiles";
 import { nextResponse } from "@/utils/response";
 
 export const POST = async (request: NextRequest) => {
@@ -21,14 +23,14 @@ export const POST = async (request: NextRequest) => {
 			return nextResponse({ error: "user_id is missing." }, 400);
 		}
 
-        let profileAvatar = avatar;
+		let profileAvatar = avatar;
 
 		// uploading the image if it's a base64 string
 		if (avatar?.startsWith("data:image") && avatar_name && avatar_type) {
 			const base64Data = avatar.split(",")[1];
 			const buffer = Buffer.from(base64Data, "base64");
 			const ext = avatar_name.split(".").pop();
-			const path = `avatars/${user_id}.${ext}`;
+			const path = `avatars/${crypto.randomUUID()}.${ext}`;
 
 			const { error } = await supabaseServer.storage
 				.from("avatars")
@@ -44,12 +46,51 @@ export const POST = async (request: NextRequest) => {
 				.getPublicUrl(path);
 
 			profileAvatar = data.publicUrl;
-		} 
+		}
+
+		const { data: profileData, error: existingProfileError } =
+			(await supabaseServer
+				.from("profiles")
+				.select()
+				.eq("user_id", user_id)) as {
+				data: Profile[];
+				error: PostgrestError | null;
+			};
+
+		// checking if we're deleting avatar or changing it - deleting the old one from the db
+		if (!avatar || avatar !== profileData[0].avatar) {
+			if (existingProfileError) {
+				return nextResponse(existingProfileError, 400);
+			}
+
+			if (profileData[0].avatar) {
+				const { error } = await supabaseServer.storage
+					.from("avatars")
+					.remove([
+						`avatars/${profileData[0].avatar.substring(
+							profileData[0].avatar.lastIndexOf("/") + 1,
+						)}`,
+					]);
+
+				if (error) {
+					return nextResponse({ error: "Avatar deleting failed." }, 400);
+				}
+			}
+		}
 
 		const { error: profileError } = await supabaseServer
 			.from("profiles")
 			.upsert(
-				{ name, user_id, status, oneliner, bio, visibility, color, avatar: profileAvatar },
+				{
+					name,
+					user_id,
+					status,
+					oneliner,
+					bio,
+					visibility,
+					color,
+					avatar: profileAvatar,
+				},
 				{ onConflict: "user_id" },
 			);
 

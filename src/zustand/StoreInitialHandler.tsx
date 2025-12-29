@@ -16,9 +16,8 @@ export const StoreInitialHandler = () => {
 	const getFriendsProfiles = useAppStore((state) => state.getFriendsProfiles);
 	const getFriendRequests = useAppStore((state) => state.getFriendRequests);
 	const getProfiles = useAppStore((state) => state.getProfiles);
-	// remove from the other file
-	// fetch upon status
-	// ref
+
+    // ref
 	const hasInitialized = useRef<boolean>(false);
 
 	useEffect(() => {

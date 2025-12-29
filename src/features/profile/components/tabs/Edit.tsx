@@ -30,11 +30,16 @@ export const Edit = ({ data }: Props) => {
 	const [name, setName] = useState<string>(data.profile.name ?? "");
 	const [bio, setBio] = useState<string>(data.profile.bio ?? "");
 	const [oneliner, setOneliner] = useState<string>(data.profile.oneliner ?? "");
-	const [color, setColor] = useState<string>(data.profile.color ?? "#000");
 
 	// file uploading
 	const [fileError, setFileError] = useState<JSX.Element | undefined>();
 	const [avatarFile, setAvatarFile] = useState<File | undefined>(undefined);
+    const [avatar, setAvatar] = useState<string>(data.profile.avatar ?? "");
+
+	// if we select an image - show an image - otherwise show the profile
+	const avatarImage = avatarFile
+		? URL.createObjectURL(avatarFile)
+		: avatar;
 
 	return (
 		<div className="flex flex-col gap-4 p-2 w-full">
@@ -54,10 +59,10 @@ export const Edit = ({ data }: Props) => {
 						className="relative w-full max-w-48 aspect-square rounded-full overflow-hidden 
                     hover:scale-105 focus-within:scale-105 duration-300 ease-out"
 					>
-						{data.profile.avatar ? (
+						{avatarImage ? (
 							<Image
 								alt="avatar"
-								src={data.profile.avatar}
+								src={avatarImage}
 								layout="fill"
 								objectFit="cover"
 								className="pointer-events-none grayscale-0! invert-0!"
@@ -126,26 +131,46 @@ export const Edit = ({ data }: Props) => {
 						{data.user.role[0].toUpperCase() + data.user.role.substring(1)}
 					</span>
 
-					{data.profile.avatar && (
-						<Button
-							onClick={() => {
-								setAvatarFile(undefined);
-							}}
-						>
-							<Image src="/cross.svg" width={16} height={16} alt="" />
-							Delete image
-						</Button>
-					)}
+					<div className="flex gap-1">
+                        {avatarFile && (
+                            <Button
+								onClick={() => {
+									setAvatarFile(undefined);
+								}}
+							>
+								<Image src="/cross.svg" width={16} height={16} alt="" />
+								Cancel
+							</Button>
+                        )}
+						{avatar && (
+							<Button
+								onClick={() => {
+                                    setAvatarFile(undefined);
+									setAvatar("");
+								}}
+							>
+								<Image src="/delete.svg" width={16} height={16} alt="" />
+								Delete image
+							</Button>
+						)}
+					</div>
 
 					<hr className="mt-auto" />
-					<Tooltip direction="top" type="modal" element={<Colors />}>
+					<Tooltip
+						direction="top"
+						type="modal"
+						element={<Colors />}
+						className="w-full"
+					>
 						<Button
+							className="w-full"
 							onClick={() => {
 								if (userStatus) {
 									getColors(userStatus.user.id);
 								}
 							}}
 						>
+							<Image width={16} height={16} alt="" src="/cube.svg" />
 							Color panel
 						</Button>
 					</Tooltip>
@@ -158,10 +183,9 @@ export const Edit = ({ data }: Props) => {
 						e.preventDefault();
 						if (!userStatus) return;
 
-						let retAvatar = data.profile.avatar;
-
-                        if (avatarFile !== undefined) {
-							retAvatar = await fileToBase64(avatarFile);
+                        let dataAvatar = avatar;
+						if (avatarFile !== undefined) {
+							dataAvatar = await fileToBase64(avatarFile);
 						}
 
 						setProfileData(data.user, {
@@ -169,8 +193,7 @@ export const Edit = ({ data }: Props) => {
 							bio,
 							oneliner,
 							name,
-							color,
-							avatar: retAvatar,
+							avatar: dataAvatar,
 							avatar_name: avatarFile?.name,
 							avatar_type: avatarFile?.type,
 						});

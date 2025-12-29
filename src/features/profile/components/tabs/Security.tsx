@@ -32,8 +32,9 @@ export const Security = ({ data }: Props) => {
 		(state) => state.terminateOtherSessions,
 	);
 
+    // fetching sessions
 	useEffect(() => {
-		getSessions(data.user.id, false);
+		getSessions(data.user.id);
 	}, [getSessions, data.user]);
 
 	// states
@@ -113,6 +114,7 @@ export const Security = ({ data }: Props) => {
 							<b>Password</b>
 							<small> (a new strong password)</small>
 						</label>
+
 						<Input
 							type="password"
 							value={password}
@@ -145,6 +147,7 @@ export const Security = ({ data }: Props) => {
 						</Tooltip>
 						<small className="ml-auto">(all your logged in accounts)</small>
 					</span>
+
 					<ul
 						className="flex flex-col overflow-y-auto h-full max-h-24 scheme-dark gap-px"
 						style={{
@@ -197,6 +200,7 @@ export const Security = ({ data }: Props) => {
 							Terminate other sessions
 						</Button>
 					</Tooltip>
+
 					<Tooltip
 						description="Wipe your account data"
 						direction="bottom"
@@ -209,7 +213,7 @@ export const Security = ({ data }: Props) => {
 							}}
 						>
 							{promises.delete === "pending" && <Spinner />}
-							<Image src="/cross.svg" width={16} height={16} alt="" />
+							<Image src="/delete.svg" width={16} height={16} alt="" />
 							Delete account
 						</Button>
 					</Tooltip>
