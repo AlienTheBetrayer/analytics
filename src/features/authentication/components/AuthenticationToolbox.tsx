@@ -42,9 +42,9 @@ export const AuthenticationToolbox = () => {
 										: {}
 								}
 							>
-								{status && (
+								{status && profiles?.[status.user.id] && (
 									<ProfileImage
-										profile={profiles?.[status.user.id].profile}
+										profile={profiles[status.user.id].profile}
 										width={16}
 										height={16}
 									/>

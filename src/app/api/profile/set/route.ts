@@ -30,7 +30,7 @@ export const POST = async (request: NextRequest) => {
 			const base64Data = avatar.split(",")[1];
 			const buffer = Buffer.from(base64Data, "base64");
 			const ext = avatar_name.split(".").pop();
-			const path = `avatars/${crypto.randomUUID()}.${ext}`;
+			const path = `${user_id}/${crypto.randomUUID()}.${ext}`;
 
 			const { error } = await supabaseServer.storage
 				.from("avatars")
@@ -58,7 +58,7 @@ export const POST = async (request: NextRequest) => {
 			};
 
 		// checking if we're deleting avatar or changing it - deleting the old one from the db
-		if (!avatar || avatar !== profileData[0].avatar) {
+		if (!avatar || profileAvatar !== profileData[0].avatar) {
 			if (existingProfileError) {
 				return nextResponse(existingProfileError, 400);
 			}
@@ -67,7 +67,7 @@ export const POST = async (request: NextRequest) => {
 				const { error } = await supabaseServer.storage
 					.from("avatars")
 					.remove([
-						`avatars/${profileData[0].avatar.substring(
+						`${user_id}/${profileData[0].avatar.substring(
 							profileData[0].avatar.lastIndexOf("/") + 1,
 						)}`,
 					]);

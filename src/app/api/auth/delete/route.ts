@@ -10,6 +10,25 @@ export const POST = async (request: NextRequest) => {
 			return nextResponse({ error: "id is missing." }, 400);
 		}
 
+        // deleting profile images
+		const { data: avatarData, error: avatarError } =
+			await supabaseServer.storage.from("avatars").list(id);
+
+		if (avatarError) {
+			return nextResponse(avatarError, 400);
+		}
+
+		const paths = avatarData.map((data) => `avatars/${id}/${data.name}`);
+
+		const { error: avatarDeleteError } = await supabaseServer.storage
+			.from("avatars")
+			.remove(paths);
+
+		if (avatarDeleteError) {
+			return nextResponse(avatarDeleteError, 400);
+		}
+
+        // deleting the actual user
 		const { error: deleteError } = await supabaseServer
 			.from("users")
 			.delete()
