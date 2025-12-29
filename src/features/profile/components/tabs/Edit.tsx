@@ -179,7 +179,7 @@ export const Edit = ({ data }: Props) => {
 							dataAvatar = await fileToBase64(avatarFile);
 						}
 
-						setProfileData(data.user, {
+						setProfileData(data.user.id, {
 							status,
 							bio,
 							oneliner,

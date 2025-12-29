@@ -10,7 +10,7 @@ export const useColorModal = () => {
 
 	// zustand methods
 	const zustandSetColors = useAppStore((state) => state.setColors);
-	const updateProfileData = useAppStore((state) => state.updateProfileData);
+	const setProfileData = useAppStore((state) => state.setProfileData);
 
 	// internal states
 	const [colors, setColors] = useState<string[]>(
@@ -75,9 +75,9 @@ export const useColorModal = () => {
 		zustandSetColors(status.user.id, colorsData);
 
 		if (selectedId) {
-			updateProfileData(status.user.id, { color: colors[selectedId] });
+			setProfileData(status.user.id, { color: colors[selectedId] });
 		}
-	}, [colors, status, zustandSetColors, updateProfileData, selectedId]);
+	}, [colors, status, zustandSetColors, setProfileData, selectedId]);
 
 	return {
 		colors,

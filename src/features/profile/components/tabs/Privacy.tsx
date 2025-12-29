@@ -56,7 +56,7 @@ export const Privacy = ({ data }: Props) => {
 					className="flex flex-col gap-2 w-full"
 					onSubmit={(e) => {
 						e.preventDefault();
-						setProfileData(data.user, {
+						setProfileData(data.user.id, {
 							visibility,
 							allowed_friend_requests: allowedFriendRequests,
 						});

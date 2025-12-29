@@ -6,18 +6,8 @@ import { nextResponse } from "@/utils/response";
 
 export const POST = async (request: NextRequest) => {
 	try {
-		const {
-			user_id,
-			status,
-			oneliner,
-			bio,
-			visibility,
-			name,
-			color,
-			avatar,
-			avatar_name,
-			avatar_type,
-		} = await request.json();
+		const { user_id, avatar, avatar_name, avatar_type, ...rest } =
+			await request.json();
 
 		if (user_id === undefined) {
 			return nextResponse({ error: "user_id is missing." }, 400);
@@ -82,14 +72,9 @@ export const POST = async (request: NextRequest) => {
 			.from("profiles")
 			.upsert(
 				{
-					name,
 					user_id,
-					status,
-					oneliner,
-					bio,
-					visibility,
-					color,
 					avatar: profileAvatar,
+					...rest,
 				},
 				{ onConflict: "user_id" },
 			);
