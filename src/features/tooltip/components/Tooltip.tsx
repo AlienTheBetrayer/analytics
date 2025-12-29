@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/a11y/noStaticElementInteractions: <explanation> */
 "use client";
 import "./Tooltip.css";
 import { createPortal } from "react-dom";
@@ -57,6 +58,21 @@ export const Tooltip = ({
 				ref={elementRef}
 				onPointerEnter={() => setIsShown(true)}
 				onPointerLeave={() => setIsShown(false)}
+				onFocus={() => {
+					if (pointerEvents) {
+						setIsShown(true);
+					}
+				}}
+				onBlur={() => {
+					if (pointerEvents) {
+						setIsShown(false);
+					}
+				}}
+				onKeyDown={(e) => {
+					if (pointerEvents && e.key === "Escape") {
+						setIsShown(false);
+					}
+				}}
 				className={`w-fit h-fit ${className}`}
 			>
 				{children}

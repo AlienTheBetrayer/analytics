@@ -52,12 +52,12 @@ export const AuthenticationForm = ({
 		>
 			{/* topline */}
 			<div className="relative gap-2 flex flex-wrap items-center w-full border-b border-b-background-5 p-2">
-				<Tooltip description="Easter egg 🌀" direction="top">
+				<Tooltip text="Easter egg 🌀" direction="top">
 					<div className="rounded-full bg-blue-1 w-1.5 h-1.5" />
 				</Tooltip>
 				<span className="text-foreground-5!">{title}</span>
 				<Tooltip
-					description="Come back home"
+					text="Come back home"
 					className="ml-auto"
 					direction="top"
 				>
@@ -119,7 +119,7 @@ export const AuthenticationForm = ({
 				/>
 				<hr />
 
-				<Tooltip description={button.tooltip} direction={"bottom"}>
+				<Tooltip text={button.tooltip} direction={"bottom"}>
 					<Button className="w-full" type="submit">
 						{promises.get("auth_action") === "pending" && <Spinner />}
 						<Image alt="" width={20} height={20} src="/send.svg" />
@@ -132,7 +132,7 @@ export const AuthenticationForm = ({
 				<>
 					<hr />
 					<Tooltip
-						description={"Proceed the authentication"}
+						text={"Proceed the authentication"}
 						direction={"bottom"}
 					>
 						<LinkButton className="w-full" href="/login">

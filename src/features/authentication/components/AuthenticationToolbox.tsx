@@ -29,9 +29,8 @@ export const AuthenticationToolbox = () => {
 				<nav className="flex gap-1 items-center">
 					{status ? (
 						<Tooltip
-							description="Go to your profile"
+							text="Go to your profile"
 							direction="left"
-							inverted={true}
 						>
 							<LinkButton
 								href="/profile"
