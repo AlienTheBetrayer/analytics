@@ -65,7 +65,7 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
 			const { setPromise } = get();
 
 			return await setPromise("profile_set", async () => {
-				const res = await axios.post("/api/profile/update", {
+				const res = await axios.post("/api/profile/set", {
 					user_id: user.id,
 					...data,
 				});
@@ -79,6 +79,37 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
 					};
 
 					return { ...state, profiles: newProfiles };
+				});
+
+				return res;
+			});
+		},
+
+		updateProfileData: async (
+			id: string,
+			data: Record<string, string | undefined>,
+		) => {
+			const { setPromise, profiles } = get();
+
+			if (profiles?.[id] === undefined) {
+				return;
+			}
+
+			return await setPromise("profile_set", async () => {
+				const res = await axios.post("/api/profile/update", {
+					user_id: id,
+					...data,
+				});
+
+				set((state) => {
+					const profiles = { ...(state.profiles ?? {}) };
+
+					profiles[id] = {
+						...profiles[id],
+						profile: { ...profiles[id].profile, ...data },
+					};
+
+					return { ...state, profiles };
 				});
 
 				return res;

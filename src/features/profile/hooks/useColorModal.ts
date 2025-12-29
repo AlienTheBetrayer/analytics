@@ -10,6 +10,7 @@ export const useColorModal = () => {
 
 	// zustand methods
 	const zustandSetColors = useAppStore((state) => state.setColors);
+	const updateProfileData = useAppStore((state) => state.updateProfileData);
 
 	// internal states
 	const [colors, setColors] = useState<string[]>(
@@ -65,14 +66,18 @@ export const useColorModal = () => {
 		if (!status) {
 			return;
 		}
-
+		// check themes
 		const colorsData = colors.map((color, slot) => ({
 			slot,
 			color,
 		}));
 
 		zustandSetColors(status.user.id, colorsData);
-	}, [colors, zustandSetColors, status]);
+
+		if (selectedId) {
+			updateProfileData(status.user.id, { color: colors[selectedId] });
+		}
+	}, [colors, status, zustandSetColors, updateProfileData, selectedId]);
 
 	return {
 		colors,

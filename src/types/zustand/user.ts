@@ -37,13 +37,24 @@ export type UserStore = {
 	) => Promise<ResponseAxios | undefined>;
 
 	/**
-	 * sets or updates the profile data at the given user
+	 * sets the profile data at the given user (undefined empties)
 	 * @param user the user object of the user (not the profile)
 	 * @param data the data that has been changed (hence partial)
 	 * @returns a promise containing the response
 	 */
 	setProfileData: (
 		user: User,
+		data: Record<string, string | undefined>,
+	) => Promise<ResponseAxios>;
+
+    /**
+	 * updates the profile data at the given user
+	 * @param id the id of the user (not the profile)
+	 * @param data the data that has been changed (hence partial)
+	 * @returns a promise containing the response
+	 */
+	updateProfileData: (
+		id: string,
 		data: Record<string, string | undefined>,
 	) => Promise<ResponseAxios | undefined>;
 
