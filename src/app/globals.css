@@ -10,7 +10,8 @@
 	--background-5: hsl(0, 0%, 12%);
 	--background-6: hsl(0, 0%, 14%);
 	--background-7: hsl(0, 0%, 18%);
-	--background-8: hsl(0, 0%, 24%);
+	--background-8: hsl(0, 0%, 20%);
+	--background-9: hsl(0, 0%, 22%);
 
 	--background-a-1: hsla(0, 0%, 4%, 0.3);
 	--background-a-2: hsla(0, 0%, 6%, 0.3);
@@ -26,6 +27,7 @@
 	--foreground-5: hsl(0, 0%, 55%);
 	--foreground-6: hsl(0, 0%, 50%);
 	--foreground-7: hsl(0, 0%, 40%);
+	--foreground-8: hsl(0, 0%, 30%);
 
 	--blue-1: hsl(237, 100%, 61%);
 	--blue-2: hsl(237, 75%, 61%);
@@ -56,6 +58,8 @@
 	--color-background-5: var(--background-5);
 	--color-background-6: var(--background-6);
 	--color-background-7: var(--background-7);
+	--color-background-8: var(--background-8);
+	--color-background-9: var(--background-9);
 
 	--color-background-a-1: var(--background-a-1);
 	--color-background-a-2: var(--background-a-2);
@@ -80,7 +84,8 @@
 	--color-foreground-4: var(--foreground-4);
 	--color-foreground-5: var(--foreground-5);
 	--color-foreground-6: var(--foreground-6);
-	--color-foreground-7: var(--foreground-7);
+	--color-background-7: var(--background-7);
+	--color-foreground-8: var(--foreground-8);
 
 	--text-1: var(--font-1);
 	--text-2: var(--font-2);
@@ -256,7 +261,7 @@ img {
 }
 
 .button:active {
-	border: 2px solid var(--background-8);
+	border: 2px solid var(--foreground-8);
 	background: var(--background-7);
 }
 

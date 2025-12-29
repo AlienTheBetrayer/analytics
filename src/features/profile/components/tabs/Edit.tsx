@@ -169,12 +169,11 @@ export const Edit = ({ data }: Props) => {
 					<hr className="mt-auto" />
 					<Tooltip
 						direction="top"
-						type="modal"
 						element={<Colors />}
-						className="w-full"
+                        className='w-full'
 					>
 						<Button
-							className="w-full"
+							className="w-full!"
 							onClick={() => {
 								if (userStatus) {
 									getColors(userStatus.user.id);

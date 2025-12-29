@@ -17,7 +17,7 @@ export const Colors = () => {
 	const controller = useColorModal();
 
 	return (
-		<div className="box min-w-0! h-screen max-h-128 md:max-h-90">
+		<div className="box min-w-0!" tabIndex={-1}>
 			<span className="flex justify-center items-center w-full">
 				<b>Color panel</b>
 			</span>

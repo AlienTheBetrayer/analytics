@@ -1,75 +1,115 @@
-/** biome-ignore-all lint/a11y/noStaticElementInteractions: <a> */
-import { AnimatePresence } from "motion/react";
-import type React from "react";
-import { useTooltip } from "../hooks/useTooltip";
-import type { TooltipDirection, TooltipType } from "../types/tooltip";
-import { getDirectionStyle } from "../utils/getDirectionStyle";
+"use client";
+import "./Tooltip.css";
+import { createPortal } from "react-dom";
+import { AnimatePresence, motion } from "motion/react";
+import { useEffect, useRef, useState } from "react";
+import type { TooltipDirection } from "../types/Tooltip";
+import { positionTooltip } from "../utils/positionTooltip";
 
 type Props = {
-	className?: string;
-	children?: React.ReactNode;
-	description?: string;
 	title?: string;
+	text?: string;
 	element?: React.ReactNode;
-	isEnabled?: boolean;
 	direction?: TooltipDirection;
-	type?: TooltipType;
-	inverted?: boolean;
+	pointerEvents?: boolean;
+	className?: string;
+	children: React.ReactNode;
 };
 
 export const Tooltip = ({
-	className,
-	children,
-	description,
-	element,
-	isEnabled = true,
 	title,
-	type = "tooltip",
+	text,
+	element,
 	direction = "bottom",
+	className = "",
+	pointerEvents = true,
+	children,
 }: Props) => {
-	// syncing the portal-sent tooltip's position with the ghost tooltip
-	const controller = useTooltip(isEnabled, description, title, element, type);
+	// states
+	const [isShown, setIsShown] = useState<boolean>(false);
 
-	// determining the ghost tooltip's position
-	const directionStyle = getDirectionStyle(direction);
+	// refs
+	const elementRef = useRef<HTMLDivElement | null>(null);
+	const tooltipRef = useRef<HTMLDivElement | null>(null);
+
+	// positioning the tooltip
+	useEffect(() => {
+		if (!isShown) {
+			return;
+		}
+
+		const handle = () => {
+			if (!elementRef.current || !tooltipRef.current) {
+				return;
+			}
+
+			positionTooltip(tooltipRef, elementRef, direction);
+		};
+		handle();
+
+		window.addEventListener("resize", handle);
+		return () => window.removeEventListener("resize", handle);
+	}, [isShown, direction]);
 
 	return (
-		<div
-			className={`relative ${className ?? ""}`}
-			onPointerEnter={controller.enter}
-			onPointerLeave={controller.leave}
-			onPointerDown={controller.toggle}
-			data-tooltip-root={`tooltip-${title}`}
-			onKeyDown={(e) => {
-				if (e.code === "Enter") controller.toggle();
-			}}
-		>
-			{children}
+		<>
+			<div
+				ref={elementRef}
+				onPointerEnter={() => setIsShown(true)}
+				onPointerLeave={() => setIsShown(false)}
+				className={`w-fit h-fit ${className}`}
+			>
+				{children}
+			</div>
 
-			<AnimatePresence>
-				{controller.isShown && isEnabled && (
-					<>
-						{/* ghost */}
-						<div
-							style={directionStyle}
-							ref={controller.ghostRef}
-							className={`flex absolute items-center p-1.5! gap-2 text-center z-100 pointer-events-none opacity-0! appearance-none`}
+			{createPortal(
+				<AnimatePresence>
+					{isShown && (
+						<motion.div
+							className="absolute hidden z-9999 p-1"
+							ref={tooltipRef}
+							initial={{ pointerEvents: pointerEvents ? "all" : "none" }}
+							exit={{ pointerEvents: "none" }}
+							onPointerEnter={() => {
+								if (pointerEvents) {
+									setIsShown(true);
+								}
+							}}
+							onPointerLeave={() => {
+								if (pointerEvents) {
+									setIsShown(false);
+								}
+							}}
 						>
-							<div className="flex flex-col">
-								<span className="max-w-96 w-max break-keep">
-									{title && <h4 className="text-center">{title}</h4>}
-									{description}
-								</span>
-							</div>
-
-							{element}
-						</div>
-
-						{/* the actual tooltip */}
-						{controller.render()}
-					</>
-				)}
-			</AnimatePresence>
-		</div>
+							<motion.div
+								className={`${!element ? "tooltip" : ""}
+                                whitespace-nowrap border-0 outline-0
+                            `}
+								initial={{
+									opacity: 0,
+									pointerEvents: pointerEvents ? "all" : "none",
+								}}
+								animate={{ opacity: 1 }}
+								exit={{ opacity: 0, pointerEvents: "none" }}
+							>
+								{element ? (
+									element
+								) : (
+									<div className="flex flex-col items-center">
+										{title && (
+											<span className="text-background-9!">
+												<b>{title}</b>
+											</span>
+										)}
+										{text && <span className="text-background-9!">{text}</span>}
+									</div>
+								)}
+							</motion.div>
+						</motion.div>
+					)}
+				</AnimatePresence>,
+				document.body,
+			)}
+		</>
 	);
 };
