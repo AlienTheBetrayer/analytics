@@ -23,7 +23,7 @@ export const AlreadyLoggedIn = () => {
 				</p>
 			</div>
 
-			<div className="box max-w-96">
+			<div className="box max-w-lg">
 				<div className="flex flex-col gap-4">
 					<div className="flex flex-col gap-2">
 						<span className="text-center text-foreground-2! text-5! whitespace-nowrap">

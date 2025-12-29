@@ -68,7 +68,8 @@ export const UserProfile = () => {
 	}, [retrievedData, retrievedUsername, getProfileByName]);
 
 	// update state if something about the profile changed
-	const profile = retrievedData && profiles ? profiles[retrievedData?.user.id] : undefined;
+	const profile =
+		retrievedData && profiles ? profiles[retrievedData?.user.id] : undefined;
 	useEffect(() => {
 		if (profile) {
 			setRetrievedData(profile);
@@ -77,11 +78,7 @@ export const UserProfile = () => {
 
 	// viewing current profile but not logged in
 	if (retrievedUsername === undefined) {
-		return (
-			<div className="box max-w-64 w-full m-auto">
-				<AuthRequired description="Log in to see your own profile" />
-			</div>
-		);
+		return <AuthRequired description="Log in to see your own profile" />;
 	}
 
 	// wrong user

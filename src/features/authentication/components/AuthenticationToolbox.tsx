@@ -42,9 +42,15 @@ export const AuthenticationToolbox = () => {
 											}
 										: {}
 								}
+                                className='gap-2!'
 							>
 								{status && profiles?.[status.user.id] && (
-									<ProfileImage profile={profiles[status.user.id].profile} />
+									<ProfileImage
+										profile={profiles[status.user.id].profile}
+										width={16}
+										height={16}
+										className="w-6 aspect-square"
+									/>
 								)}
 								{loggedProfile?.user.username ?? "Account"}
 							</LinkButton>

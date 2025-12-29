@@ -22,11 +22,7 @@ export const Emulate = () => {
 		status.isLoggedIn === false ||
 		status.user.role === "user"
 	) {
-		return (
-			<div className="flex flex-col w-full max-w-64 m-auto box">
-				<AuthRequired />
-			</div>
-		);
+		return <AuthRequired />;
 	}
 
 	// no data fetched
