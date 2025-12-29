@@ -4,6 +4,7 @@ import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import type { Profiles } from "@/types/zustand/user";
 import { relativeTime } from "@/utils/relativeTime";
 import { useAppStore } from "@/zustand/store";
+import { ProfileImage } from "@/features/profile/components/ProfileImage";
 
 type Props = {
 	profiles: Profiles;
@@ -19,18 +20,24 @@ export const Desktop = ({ profiles }: Props) => {
 				(data) =>
 					(data.profile.visibility === "everyone" ||
 						(data.profile.visibility === "friends" &&
-							friends?.some(
-								(id) => id === data?.user.id,
-							))) && (
+							friends?.some((id) => id === data?.user.id))) && (
 						<React.Fragment key={data.user.id}>
 							<li className="flex w-full">
 								<LinkButton
 									className="flex flex-col w-full justify-start items-start p-2! gap-2"
-                                    style={ data.profile.color ? { outline: `1px solid ${data.profile.color}`} : {}}
+									style={
+										data.profile.color
+											? { outline: `1px solid ${data.profile.color}` }
+											: {}
+									}
 									href={`/profile/${data.user.username}`}
 								>
 									<div className="flex w-full gap-2 h-full">
-										<div className="bg-blue-3 rounded-full w-20 aspect-square" />
+										<ProfileImage
+											profile={data.profile}
+											width={64}
+											height={64}
+										/>
 
 										<hr className="h-full! w-px! border-background-5!" />
 
@@ -47,7 +54,9 @@ export const Desktop = ({ profiles }: Props) => {
 														Username
 													</small>
 												</span>
-												<span><b>{data.user.username}</b></span>
+												<span>
+													<b>{data.user.username}</b>
+												</span>
 											</li>
 
 											<li className="flex flex-col gap-1">
@@ -62,7 +71,11 @@ export const Desktop = ({ profiles }: Props) => {
 														Name
 													</small>
 												</span>
-												<span><b><mark>{data.profile.name}</mark></b></span>
+												<span>
+													<b>
+														<mark>{data.profile.name}</mark>
+													</b>
+												</span>
 											</li>
 
 											{data.profile.oneliner && (

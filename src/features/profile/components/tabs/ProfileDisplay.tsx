@@ -3,6 +3,7 @@ import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import type { Profile } from "@/types/api/database/profiles";
 import type { User } from "@/types/api/database/user";
 import { relativeTime } from "@/utils/relativeTime";
+import { ProfileImage } from "../ProfileImage";
 
 type Props = {
 	data: { profile: Profile; user: User };
@@ -13,11 +14,9 @@ export const ProfileDisplay = ({ data }: Props) => {
 		<LinkButton
 			href={`/profile/${data.user.username}`}
 			className="flex justify-start p-2! gap-2 h-full"
-			style={
-				data.profile.color ? { borderColor: `${data.profile.color}` } : {}
-			}
+			style={data.profile.color ? { borderColor: `${data.profile.color}` } : {}}
 		>
-			<div className="bg-blue-3 rounded-full h-10 aspect-square"></div>
+			<ProfileImage profile={data.profile} width={40} height={40} />
 
 			<hr className="w-px! h-full! border-background-5!" />
 

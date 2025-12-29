@@ -10,13 +10,27 @@ input[type="color"]::-webkit-color-swatch-wrapper {
 input[type="color"]::-webkit-color-swatch {
 	border: 3px solid transparent;
 	border-radius: 1500;
-    transition: 0.3s ease-out;
+	transition: 0.3s ease-out;
 }
 
 input[type="color"]:hover::-webkit-color-swatch {
-    border-color: var(--blue-1);
+	border-color: var(--blue-1);
 }
 
 input[type="color"]:focus-within::-webkit-color-swatch {
-    border-color: var(--blue-1);
+	border-color: var(--blue-1);
+}
+
+@keyframes profileFrame {
+	0% {
+		border-color: var(--blue-3);
+	}
+	100% {
+		border-color: transparent;
+	}
+}
+
+.profile-frame {
+	border: 4px solid transparent;
+	animation: 0.5s profileFrame alternate ease-in-out infinite;
 }

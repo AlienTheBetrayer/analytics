@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { ProfileImage } from "@/features/profile/components/ProfileImage";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { useAppStore } from "@/zustand/store";
@@ -41,6 +42,13 @@ export const AuthenticationToolbox = () => {
 										: {}
 								}
 							>
+								{status && (
+									<ProfileImage
+										profile={profiles?.[status.user.id].profile}
+										width={16}
+										height={16}
+									/>
+								)}
 								<Image width={16} height={16} alt="" src="/account.svg" />
 								{loggedProfile?.user.username ?? "Account"}
 							</LinkButton>

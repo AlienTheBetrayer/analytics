@@ -11,6 +11,7 @@ import { promiseStatus } from "@/utils/status";
 import { useAppStore } from "@/zustand/store";
 import { fileToBase64 } from "../../utils/fileToBase64";
 import { Colors } from "../modals/Colors";
+import { ProfileImage } from "../ProfileImage";
 
 type Props = {
 	data: { profile: Profile; user: User };
@@ -34,12 +35,10 @@ export const Edit = ({ data }: Props) => {
 	// file uploading
 	const [fileError, setFileError] = useState<JSX.Element | undefined>();
 	const [avatarFile, setAvatarFile] = useState<File | undefined>(undefined);
-    const [avatar, setAvatar] = useState<string>(data.profile.avatar ?? "");
+	const [avatar, setAvatar] = useState<string>(data.profile.avatar ?? "");
 
 	// if we select an image - show an image - otherwise show the profile
-	const avatarImage = avatarFile
-		? URL.createObjectURL(avatarFile)
-		: avatar;
+	const avatarImage = avatarFile ? URL.createObjectURL(avatarFile) : avatar;
 
 	return (
 		<div className="flex flex-col gap-4 p-2 w-full">
@@ -56,23 +55,15 @@ export const Edit = ({ data }: Props) => {
 				<div className="flex flex-col items-center gap-2 w-full sm:max-w-64">
 					<span>{data.profile.name}</span>
 					<div
-						className="relative w-full max-w-48 aspect-square rounded-full overflow-hidden 
-                    hover:scale-105 focus-within:scale-105 duration-300 ease-out"
+						className="profile-frame relative w-full max-w-48 aspect-square rounded-full overflow-hidden 
+                    duration-300 ease-out"
 					>
-						{avatarImage ? (
-							<Image
-								alt="avatar"
-								src={avatarImage}
-								layout="fill"
-								objectFit="cover"
-								className="pointer-events-none grayscale-0! invert-0!"
-							/>
-						) : (
-							<div className="rounded-full w-full h-full aspect-square bg-blue-3"></div>
-						)}
-						<span className="absolute inset-0 grid place-items-center m-auto mix-blend-difference text-5! text-white!">
-							Upload an image
-						</span>
+						<ProfileImage
+							src={avatarImage}
+							width={192}
+							height={192}
+							profile={data.profile}
+						/>
 
 						<label
 							htmlFor="profile-avatar"
@@ -132,8 +123,8 @@ export const Edit = ({ data }: Props) => {
 					</span>
 
 					<div className="flex gap-1">
-                        {avatarFile && (
-                            <Button
+						{avatarFile && (
+							<Button
 								onClick={() => {
 									setAvatarFile(undefined);
 								}}
@@ -141,11 +132,11 @@ export const Edit = ({ data }: Props) => {
 								<Image src="/cross.svg" width={16} height={16} alt="" />
 								Cancel
 							</Button>
-                        )}
+						)}
 						{avatar && (
 							<Button
 								onClick={() => {
-                                    setAvatarFile(undefined);
+									setAvatarFile(undefined);
 									setAvatar("");
 								}}
 							>
@@ -183,7 +174,7 @@ export const Edit = ({ data }: Props) => {
 						e.preventDefault();
 						if (!userStatus) return;
 
-                        let dataAvatar = avatar;
+						let dataAvatar = avatar;
 						if (avatarFile !== undefined) {
 							dataAvatar = await fileToBase64(avatarFile);
 						}
