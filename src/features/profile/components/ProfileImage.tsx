@@ -6,8 +6,6 @@ type Props = {
 	src?: string;
 	width?: number;
 	height?: number;
-	layout?: string;
-	objectFit?: string;
 	className?: string;
 };
 
@@ -16,8 +14,6 @@ export const ProfileImage = ({
 	src,
 	width,
 	height,
-	layout,
-	objectFit,
 	className,
 	...rest
 }: Props) => {
@@ -30,9 +26,7 @@ export const ProfileImage = ({
 			height={height ?? 16}
 			src={url}
 			alt="pfp"
-			className={`rounded-full ${className ?? ""} aspect-square invert-0! grayscale-0!`}
-			layout={layout}
-			objectFit={objectFit}
+			className={`rounded-full aspect-square invert-0! grayscale-0! ${className ?? ""}`}
 			{...rest}
 		/>
 	) : (

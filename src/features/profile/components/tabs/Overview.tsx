@@ -51,7 +51,7 @@ export const Overview = ({ data }: Props) => {
 	}, [friendRequests, status, data]);
 
 	return (
-		<div className="flex flex-col gap-4 p-2 w-full grow relative">
+		<div className="flex flex-col gap-4 p-4 w-full grow relative">
 			{unfriendMessageBox.render()}
 
 			<div className="flex flex-col gap-2 items-center">
@@ -74,14 +74,19 @@ export const Overview = ({ data }: Props) => {
 			</div>
 
 			<hr />
-			<div className="flex flex-col gap-2 grow items-center justify-center min-w-0">
+			<div className="flex flex-col gap-2 grow items-center justify-center">
 				<span className="text-4!">
 					<b>
 						<mark>{data.profile.name}</mark>
 					</b>
 				</span>
 				<span>{data.profile.oneliner}</span>
-				<ProfileImage profile={data.profile} width={256} height={256} />
+					<ProfileImage
+						profile={data.profile}
+                        width={256}
+                        height={256}
+                        className='w-full max-w-100 aspect-square'
+					/>
 				<span className="text-foreground-5!">
 					{data.user.role[0].toUpperCase() + data.user.role.substring(1)}
 				</span>
@@ -97,7 +102,7 @@ export const Overview = ({ data }: Props) => {
 							}}
 						>
 							{promiseStatus(promises.unfriend)}
-							<Image src="/cross.svg" width={16} height={16} alt="unfriend" />
+							<Image src="/unfriend.svg" width={16} height={16} alt="unfriend" />
 							Unfriend
 						</Button>
 					) : hasIncomingRequest ? (

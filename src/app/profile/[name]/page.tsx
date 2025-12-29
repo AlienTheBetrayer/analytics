@@ -4,7 +4,7 @@ import { UserProfile } from "@/features/profile/components/UserProfile";
 
 const ProfilePage = () => {
 	return (
-		<main className="relative flex flex-col my-auto w-full">
+		<main className="relative flex flex-col w-full">
 			<UserProfile />
 		</main>
 	);

@@ -16,19 +16,19 @@ export const Menu = ({ items, value, type = "default", color }: Props) => {
 
 	return (
 		<div className="flex flex-col grow h-full w-full gap-2">
-			<ul className="p-2 flex items-center rounded-tl-xl rounded-tr-xl overflow-hidden">
+			<ul className="flex items-center">
 				{items.map((item, idx) => (
-					<li key={item.title} className="w-full">
+					<li key={item.title ?? idx} className="w-full">
 						{type === "default" ? (
 							<Button
 								ref={(el) => {
 									controller.buttonRefs.current[idx] = el;
 								}}
 								onClick={() => controller.select(idx)}
-								className={`w-full rounded-none outline-0! border-0! duration-300 ease-out bg-transparent hover:bg-background-2! active:bg-background-3!
+								className={`p-2! w-full rounded-none outline-0! border-0! duration-300 ease-out bg-transparent hover:bg-background-2! active:bg-background-3!
                                 ${controller.selectedItem === idx ? "bg-background-1! brightness-200" : ""}`}
 							>
-								{item.title}
+								{item.titleElement}
 							</Button>
 						) : (
 							<LinkButton
@@ -36,10 +36,11 @@ export const Menu = ({ items, value, type = "default", color }: Props) => {
 								ref={(el) => {
 									controller.buttonRefs.current[idx] = el;
 								}}
-								className={`w-full rounded-none outline-0! border-0! duration-300 ease-out focus-visible:bg-background-6! bg-transparent hover:bg-background-2! active:bg-background-3!
-                                ${controller.selectedItem === idx ? "bg-background-3!" : ""}`}
+								className={`p-2! w-full rounded-none! outline-0! border-0! duration-300 ease-out 
+                                    focus-visible:bg-background-4! bg-transparent hover:bg-background-4! active:bg-background-5!
+                                ${controller.selectedItem === idx ? "bg-background-3! brightness-125" : ""}`}
 							>
-								{item.title}
+								{item.titleElement}
 							</LinkButton>
 						)}
 					</li>

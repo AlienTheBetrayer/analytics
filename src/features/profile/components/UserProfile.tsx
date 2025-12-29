@@ -28,7 +28,7 @@ export const UserProfile = () => {
 
 	// zustand functions
 	const getProfileByName = useAppStore((state) => state.getProfileByName);
-    
+
 	// user id to fetch data from
 	const retrievedUsername = name ?? status?.user.username;
 	const retrievedTab =
@@ -66,6 +66,14 @@ export const UserProfile = () => {
 
 		get();
 	}, [retrievedData, retrievedUsername, getProfileByName]);
+
+	// update state if something about the profile changed
+	const profile = retrievedData && profiles ? profiles[retrievedData?.user.id] : undefined;
+	useEffect(() => {
+		if (profile) {
+			setRetrievedData(profile);
+		}
+	}, [profile]);
 
 	// viewing current profile but not logged in
 	if (retrievedUsername === undefined) {
@@ -106,7 +114,7 @@ export const UserProfile = () => {
 
 	return (
 		<div
-			className={`box max-w-4xl w-full m-auto min-h-128 p-0!`}
+			className={`box max-w-5xl w-full m-auto min-h-128 p-0! rounded-3xl! overflow-hidden`}
 			style={
 				data.profile.color
 					? {

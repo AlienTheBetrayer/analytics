@@ -9,7 +9,7 @@ import type { User } from "@/types/api/database/user";
 import { promiseStatus } from "@/utils/status";
 import { useAppStore } from "@/zustand/store";
 import { ProfileImage } from "../ProfileImage";
-import { ProfileDisplay } from "./ProfileDisplay";
+import { ProfileDisplay } from "../ProfileDisplay";
 
 type Props = {
 	data: { profile: Profile; user: User };
@@ -43,7 +43,7 @@ export const Friends = ({ data }: Props) => {
 	);
 
 	return (
-		<div className="flex flex-col gap-4 p-2 w-full">
+		<div className="flex flex-col gap-4 p-4 w-full">
 			{unfriendMessageBox.render()}
 			<div className="flex flex-col gap-2 items-center">
 				<span className="text-center text-foreground-2! text-5!">
@@ -54,14 +54,10 @@ export const Friends = ({ data }: Props) => {
 			</div>
 
 			<hr />
-			<div className="flex flex-col sm:flex-row gap-4 grow w-full">
-				<div className="flex flex-col items-center gap-2 w-full sm:max-w-64">
+			<div className="flex flex-col md:flex-row gap-4 grow w-full">
+				<div className="flex flex-col items-center gap-2 w-full md:max-w-96">
 					<span>{data.profile.name}</span>
-					<ProfileImage
-						profile={data.profile}
-                        width={192}
-                        height={192}
-					/>
+					<ProfileImage profile={data.profile} width={256} height={256} />
 					<span className="text-foreground-5!">
 						{data.user.role[0].toUpperCase() + data.user.role.substring(1)}
 					</span>
@@ -130,7 +126,7 @@ export const Friends = ({ data }: Props) => {
 									</span>
 								) : (
 									<ul
-										className="flex flex-col gap-2 overflow-y-auto max-h-24 scheme-dark"
+										className="flex flex-col gap-2 overflow-y-auto max-h-36 scheme-dark"
 										style={{ scrollbarWidth: "thin" }}
 									>
 										{friends.map((friend) => (
@@ -165,7 +161,7 @@ export const Friends = ({ data }: Props) => {
 									</span>
 								) : (
 									<ul
-										className="flex flex-col gap-2 overflow-y-auto max-h-24 scheme-dark"
+										className="flex flex-col gap-2 overflow-y-auto max-h-36 scheme-dark"
 										style={{ scrollbarWidth: "thin" }}
 									>
 										{friendRequests.incoming.map((request) => (
@@ -200,7 +196,7 @@ export const Friends = ({ data }: Props) => {
 									</span>
 								) : (
 									<ul
-										className="flex flex-col gap-2 overflow-y-auto max-h-24 scheme-dark"
+										className="flex flex-col gap-2 overflow-y-auto max-h-36 scheme-dark"
 										style={{ scrollbarWidth: "thin" }}
 									>
 										{friendRequests.outcoming.map((request) => (

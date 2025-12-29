@@ -25,8 +25,8 @@ export const useMenu = (
 			const buttonBounds =
 				buttonRefs.current[selectedItem].getBoundingClientRect();
 
-			selectRef.current.style.left = `${buttonBounds.left}px`;
-			selectRef.current.style.top = `${buttonBounds.bottom}px`;
+			selectRef.current.style.left = `${buttonBounds.left + window.scrollX}px`;
+			selectRef.current.style.top = `${buttonBounds.bottom + window.scrollY}px`;
 			selectRef.current.style.display = `block`;
 			selectRef.current.style.width = `${buttonBounds.width}px`;
 
@@ -57,7 +57,7 @@ export const useMenu = (
 	const renderSelect = useCallback(() => {
 		return createPortal(
 			<div
-				className={`absolute hidden transition-all duration-300 ease-out h-[1.5px] origin-center`}
+				className={`absolute hidden transition-all duration-300 ease-out h-px origin-center`}
 				style={{ backgroundColor: color ?? "var(--blue-1)" }}
 				ref={selectRef}
 			/>,

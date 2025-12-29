@@ -34,13 +34,12 @@ export default function RootLayout({
 				className={`${geistSans.variable} ${geistMono.variable} px-4! dotted antialiased overflow-x-hidden min-h-screen flex flex-col relative`}
 			>
 				<Header />
-				<AuthenticationToolbox />
 
 				<div className="absolute inset-0 pointer-events-none">
 					<Meteors />
 				</div>
 
-				<div className="flex flex-col w-full min-h-screen">{children}</div>
+				<div className="flex flex-col w-full">{children}</div>
 			</body>
 		</html>
 	);

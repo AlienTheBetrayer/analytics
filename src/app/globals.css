@@ -2,6 +2,7 @@
 
 /* global variables */
 :root {
+	--background-0: hsl(0, 0%, 2%);
 	--background-1: hsl(0, 0%, 4%);
 	--background-2: hsl(0, 0%, 6%);
 	--background-3: hsl(0, 0%, 8%);
@@ -9,6 +10,7 @@
 	--background-5: hsl(0, 0%, 12%);
 	--background-6: hsl(0, 0%, 14%);
 	--background-7: hsl(0, 0%, 18%);
+	--background-8: hsl(0, 0%, 24%);
 
 	--background-a-1: hsla(0, 0%, 4%, 0.3);
 	--background-a-2: hsla(0, 0%, 6%, 0.3);
@@ -32,8 +34,8 @@
 	--red-2: hsl(0, 75%, 61%);
 	--red-3: hsl(0, 50%, 61%);
 
-	--blue-a-1: rgba(56, 66, 255, 0.6);
-	--red-a-1: rgba(255, 56, 56, 0.6);
+	--blue-a-1: rgba(56, 66, 255, 0.5);
+	--red-a-1: rgba(255, 56, 56, 0.5);
 
 	--font-1: 3rem;
 	--font-2: 2.5rem;
@@ -46,6 +48,7 @@
 
 /* tailwind-specific variables */
 @theme {
+	--color-background-0: var(--background-0);
 	--color-background-1: var(--background-1);
 	--color-background-2: var(--background-2);
 	--color-background-3: var(--background-3);
@@ -121,7 +124,7 @@ html {
 }
 
 body {
-	background: var(--background-1);
+    background: var(--background-1);
 	color: var(--foreground-1);
 	margin: 0;
 	padding: 0;
@@ -226,15 +229,70 @@ img {
 		var(--background-a-3),
 		var(--background-a-1)
 	);
-	backdrop-filter: blur(4px);
+	backdrop-filter: blur(1rem);
 	border-radius: 1rem;
 	border: 1px solid var(--background-5);
 }
 
+.button {
+	display: flex;
+	gap: 0.25rem;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	border: 2px solid var(--background-4);
+	min-width: 2rem;
+	min-height: 2rem;
+	padding: 0 0.5rem;
+	border-radius: 1000;
+	background: var(--background-2);
+	transition: 0.2s all ease-out;
+	outline: 0;
+}
+
+.button:hover {
+	border: 2px solid var(--background-7);
+	background: var(--background-5);
+}
+
+.button:active {
+	border: 2px solid var(--background-8);
+	background: var(--background-7);
+}
+
+.button:focus-visible {
+	border: 2px solid var(--blue-2);
+}
+
+.link {
+	display: flex;
+	gap: 0.25rem;
+	align-items: center;
+	justify-content: center;
+	border-radius: 1000;
+	cursor: pointer;
+	transition: 0.2s all ease-out;
+	outline: 0;
+    border: 0;
+}
+
+.link:hover {
+	color: var(--foreground-1)
+}
+
+.link:active {
+	background: var(--background-5);
+}
+
+.link:focus-visible {
+	border: 2px solid var(--blue-2);
+}
+
+
 /* animations */
 @keyframes borderAwaiting {
 	0% {
-		outline-color: var(--color-blue-1);
+        outline: 2px solid var(--blue-1);
 	}
 }
 

@@ -10,7 +10,7 @@ const LoginPage = () => {
 	const login = useAppStore((state) => state.login);
 
 	return (
-		<main className="w-full h-screen flex flex-col justify-center items-center dotted gap-16">
+		<main className="w-full h-screen flex flex-col items-center dotted gap-16">
 			{status && status.isLoggedIn === true ? (
 				<AlreadyLoggedIn />
 			) : (

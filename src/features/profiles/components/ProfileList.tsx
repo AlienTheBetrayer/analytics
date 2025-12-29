@@ -81,7 +81,7 @@ export const ProfileList = () => {
 
 	return (
 		<div className="flex flex-col w-full max-w-3xl box m-auto">
-			<div className="flex flex-col gap-4">
+			<div className="flex flex-col gap-4 p-2">
 				<div className="flex flex-col gap-2">
 					<span className="text-center text-foreground-2! text-5!">
 						Profiles

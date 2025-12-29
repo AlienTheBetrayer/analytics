@@ -2,6 +2,8 @@ import "./Edit.css";
 import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
 import { type JSX, useState } from "react";
+import { MessageBox } from "@/features/messagebox/components/MessageBox";
+import { usePopup } from "@/features/popup/hooks/usePopup";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
@@ -40,8 +42,23 @@ export const Edit = ({ data }: Props) => {
 	// if we select an image - show an image - otherwise show the profile
 	const avatarImage = avatarFile ? URL.createObjectURL(avatarFile) : avatar;
 
+	// messageboxes
+	const deleteAvatarMessageBox = usePopup(
+		<MessageBox
+			description="After you click Apply Changes your account will no longer have a profile picture until you set it again"
+			onInteract={(res) => {
+				deleteAvatarMessageBox.hide();
+				if (res === "yes") {
+					setAvatarFile(undefined);
+					setAvatar("");
+				}
+			}}
+		/>,
+	);
+
 	return (
-		<div className="flex flex-col gap-4 p-2 w-full">
+		<div className="flex flex-col gap-4 p-4 w-full">
+			{deleteAvatarMessageBox.render()}
 			<div className="flex flex-col gap-2 items-center">
 				<span className="text-foreground-2! text-5!">
 					<mark>{data.user.username}</mark>
@@ -51,23 +68,26 @@ export const Edit = ({ data }: Props) => {
 			</div>
 
 			<hr />
-			<div className="flex flex-col sm:flex-row gap-4 grow w-full">
-				<div className="flex flex-col items-center gap-2 w-full sm:max-w-64">
+			<div className="flex flex-col md:flex-row gap-4 grow w-full">
+				<div className="flex flex-col items-center gap-2 w-full md:max-w-96">
 					<span>{data.profile.name}</span>
 					<div
-						className="profile-frame relative w-full max-w-48 aspect-square rounded-full overflow-hidden 
+						style={{
+							borderColor: data.profile.color,
+						}}
+						className="profile-frame relative w-full max-w-64 aspect-square rounded-full overflow-hidden 
                     duration-300 ease-out"
 					>
 						<ProfileImage
 							src={avatarImage}
-							width={192}
-							height={192}
+							width={256}
+							height={256}
 							profile={data.profile}
 						/>
 
 						<label
 							htmlFor="profile-avatar"
-							className="absolute duration-300 ease-out transitionall border-4 border-transparent 
+							className="absolute duration-300 ease-out transition-all border-4 border-transparent 
                             focus-within:border-blue-1 hover:border-blue-1 left-0 top-0 flex rounded-full w-full h-full aspect-square cursor-pointer z-100"
 						>
 							<input
@@ -123,7 +143,7 @@ export const Edit = ({ data }: Props) => {
 					</span>
 
 					<div className="flex gap-1">
-						{avatarFile && (
+						{avatarFile ? (
 							<Button
 								onClick={() => {
 									setAvatarFile(undefined);
@@ -132,17 +152,17 @@ export const Edit = ({ data }: Props) => {
 								<Image src="/cross.svg" width={16} height={16} alt="" />
 								Cancel
 							</Button>
-						)}
-						{avatar && (
-							<Button
-								onClick={() => {
-									setAvatarFile(undefined);
-									setAvatar("");
-								}}
-							>
-								<Image src="/delete.svg" width={16} height={16} alt="" />
-								Delete image
-							</Button>
+						) : (
+							avatar && (
+								<Button
+									onClick={() => {
+										deleteAvatarMessageBox.show();
+									}}
+								>
+									<Image src="/delete.svg" width={16} height={16} alt="" />
+									Delete image
+								</Button>
+							)
 						)}
 					</div>
 

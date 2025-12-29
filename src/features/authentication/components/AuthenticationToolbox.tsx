@@ -18,10 +18,11 @@ export const AuthenticationToolbox = () => {
 
 	return (
 		<div
-			className={`hidden! md:flex! flex-row! gap-4 box p-2
-        fixed top-4 right-4 items-center z-2 ${status?.isLoggedIn !== true ? "border-awaiting" : ""}`}
+			className={`hidden sm:flex items-center gap-2 p-2 
+                absolute top-0 right-0 z-2
+                bg-background-a-5 backdrop-blur-3xl rounded-full
+                ${status?.isLoggedIn !== true ? "border-awaiting" : ""}`}
 		>
-			<Image src="/auth.svg" alt="" width={20} height={20} />
 			{promises.refresh === "pending" ? (
 				<Spinner />
 			) : (
@@ -43,13 +44,8 @@ export const AuthenticationToolbox = () => {
 								}
 							>
 								{status && profiles?.[status.user.id] && (
-									<ProfileImage
-										profile={profiles[status.user.id].profile}
-										width={16}
-										height={16}
-									/>
+									<ProfileImage profile={profiles[status.user.id].profile} />
 								)}
-								<Image width={16} height={16} alt="" src="/account.svg" />
 								{loggedProfile?.user.username ?? "Account"}
 							</LinkButton>
 						</Tooltip>
@@ -57,7 +53,7 @@ export const AuthenticationToolbox = () => {
 						<>
 							<LinkButton href="/register">
 								<Image width={16} height={16} alt="" src="/plus.svg" />
-								Register
+								Sign up
 							</LinkButton>
 							<LinkButton href="/login">
 								<Image width={16} height={16} alt="" src="/auth.svg" />

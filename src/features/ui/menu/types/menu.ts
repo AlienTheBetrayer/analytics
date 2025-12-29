@@ -1,5 +1,8 @@
+import type React from "react";
+
 export type MenuItem = {
-	title: string;
+	title?: string;
+    titleElement: React.ReactNode;
 	element: React.ReactNode;
-    href?: string;
+	href?: string;
 };

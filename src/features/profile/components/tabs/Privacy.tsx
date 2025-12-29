@@ -33,7 +33,7 @@ export const Privacy = ({ data }: Props) => {
 		);
 
 	return (
-		<div className="flex flex-col gap-4 p-2 w-full">
+		<div className="flex flex-col gap-4 p-4 w-full">
 			<div className="flex flex-col gap-2 items-center">
 				<span className="text-center text-foreground-2! text-5!">
 					<mark>{data.user.username}</mark>
@@ -43,10 +43,10 @@ export const Privacy = ({ data }: Props) => {
 			</div>
 
 			<hr />
-			<div className="flex flex-col sm:flex-row gap-4 grow w-full">
-				<div className="flex flex-col items-center gap-2 w-full sm:max-w-64">
+			<div className="flex flex-col md:flex-row gap-4 grow w-full">
+				<div className="flex flex-col items-center gap-2 w-full md:max-w-96">
 					<span>{data.profile.name}</span>
-					<ProfileImage profile={data.profile} width={192} height={192} />
+					<ProfileImage profile={data.profile} width={256} height={256} />
 					<span className="text-foreground-5!">
 						{data.user.role[0].toUpperCase() + data.user.role.substring(1)}
 					</span>
