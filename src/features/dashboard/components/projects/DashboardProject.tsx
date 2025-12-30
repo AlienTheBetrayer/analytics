@@ -70,7 +70,7 @@ export const DashboardProject = ({ projectData }: Props) => {
 
                     <div className="flex sm:flex-col justify-evenly sm:justify-between w-full h-full items-end">
                         <span>created {relativeTime(projectData.project.created_at)}</span>
-                        <span>seen {relativeTime(projectData.project.last_event_at)}</span>
+                        <span>updated {relativeTime(projectData.project.last_event_at)}</span>
                     </div>
                 </Button>
             </Tooltip>

@@ -74,7 +74,7 @@ const EventProperty = ({
 					{eventType}
 				</small>
 			</span>
-			<span>{value}</span>
+			<span>{value ? value : ' '}</span>
 		</div>
 	);
 };

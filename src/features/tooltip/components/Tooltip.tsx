@@ -14,6 +14,7 @@ type Props = {
     direction?: TooltipDirection;
     disabledPointer?: boolean;
     className?: string;
+    isEnabled?: boolean;
     type?: "tooltip" | "modal";
     children: React.ReactNode;
 };
@@ -25,6 +26,7 @@ export const Tooltip = ({
     direction = "bottom",
     className = "",
     type = "tooltip",
+    isEnabled = true,
     disabledPointer = true,
     children,
 }: Props) => {
@@ -115,7 +117,7 @@ export const Tooltip = ({
         return () => window.removeEventListener("keydown", handle);
     }, []);
 
-    if(!mounted) {
+    if (!mounted) {
         return null;
     }
 
@@ -152,7 +154,7 @@ export const Tooltip = ({
                         setIsShown((prev) => !prev);
                     }
                 }}
-                className={`w-fit h-fit ${className}`}
+                className={`w-fit h-fit ${className} ${isEnabled !== true ? "pointer-events-none" : ""}`}
             >
                 {children}
             </div>

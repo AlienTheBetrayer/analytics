@@ -138,5 +138,17 @@ export const DataSlice: SliceFunction<DataStore> = (set, get) => {
                 return res;
             });
         },
+
+        emulateEvent: async (project_name, event_type, description) => {
+            const { setPromise } = get();
+
+            return await setPromise("emulate", async() => {
+                const res = await axios.post("/api/analytics/send", {
+                    project_name, event_type, description
+                });
+
+                return res;
+            }); 
+        }
     };
 };

@@ -53,14 +53,14 @@ export type DataStore = {
 	syncData: () => Promise<void>;
 
 	/**
-	 * updates or creates all projects and its names / other data
+	 * fetches the project list
 	 * @returns a promise containing the project list array
 	 * @param caching don't fetch the data if it already has been fetched
 	 */
 	updateProjectList: (caching?: boolean) => Promise<Project[] | undefined>;
 
 	/**
-	 * updates or creates the data (events / aggregates) of a specific project
+	 * fetches aggregates and events of this project
 	 * @param id the uuid of the project stored in the database and Project type
 	 * @param caching don't fetch the data if it already has been fetched
 	 * @returns a promise containing the project data for this id
@@ -76,4 +76,13 @@ export type DataStore = {
      * @returns a promise containing the response
      */
     deleteProject: (id: string) => Promise<ResponseAxios | undefined>;
+
+    /**
+     * artificially emulates an event 
+     * @param project_name the name of the project 
+     * @param event_type name of the event (type)
+     * @param description description of the event
+     * @returns a promise containing the response
+     */
+    emulateEvent: (project_name: string, event_type: string, description: string) => Promise<ResponseAxios | undefined>;
 };

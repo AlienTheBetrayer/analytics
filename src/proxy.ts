@@ -3,11 +3,11 @@ import { type NextRequest, NextResponse } from "next/server";
 import { nextResponse } from "./utils/response";
 
 export const proxy = async (request: NextRequest) => {
-    const token = request.cookies.get("accessToken");
+    // const token = request.cookies.get("accessToken");
 
-    if (token === undefined) {
-        return nextResponse({ error: "Unauthorized" }, 400);
-    }
+    // if (token === undefined) {
+    //     return nextResponse({ error: "Unauthorized" }, 400);
+    // }
 
     try {
         return NextResponse.next();
