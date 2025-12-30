@@ -8,124 +8,196 @@ import type { TooltipDirection } from "../types/Tooltip";
 import { positionTooltip } from "../utils/positionTooltip";
 
 type Props = {
-	title?: string;
-	text?: string;
-	element?: React.ReactNode;
-	direction?: TooltipDirection;
-	disabledPointer?: boolean;
-	className?: string;
-	children: React.ReactNode;
+    title?: string;
+    text?: string;
+    element?: React.ReactNode;
+    direction?: TooltipDirection;
+    disabledPointer?: boolean;
+    className?: string;
+    type?: "tooltip" | "modal";
+    children: React.ReactNode;
 };
 
 export const Tooltip = ({
-	title,
-	text,
-	element,
-	direction = "bottom",
-	className = "",
-	disabledPointer = false,
-	children,
+    title,
+    text,
+    element,
+    direction = "bottom",
+    className = "",
+    type = "tooltip",
+    disabledPointer = true,
+    children,
 }: Props) => {
-	// states
-	const [isShown, setIsShown] = useState<boolean>(false);
+    // states
+    const [isShown, setIsShown] = useState<boolean>(false);
 
-	// refs
-	const elementRef = useRef<HTMLDivElement | null>(null);
-	const tooltipRef = useRef<HTMLDivElement | null>(null);
+    // refs
+    const elementRef = useRef<HTMLDivElement | null>(null);
+    const tooltipRef = useRef<HTMLDivElement | null>(null);
+    const hasPositioned = useRef<boolean>(false);
 
-	// positioning the tooltip
-	useEffect(() => {
-		if (!isShown) {
-			return;
-		}
+    useEffect(() => {
+        if (isShown) {
+            return;
+        }
 
-		const handle = () => {
-			if (!elementRef.current || !tooltipRef.current) {
-				return;
-			}
+        hasPositioned.current = false;
+    }, [isShown]);
 
-			positionTooltip(tooltipRef, elementRef, direction);
-		};
-		handle();
+    // positioning the tooltip
+    useEffect(() => {
+        if (!isShown) {
+            return;
+        }
 
-		window.addEventListener("resize", handle);
-		return () => window.removeEventListener("resize", handle);
-	}, [isShown, direction]);
+        const handle = () => {
+            if (!elementRef.current || !tooltipRef.current) {
+                return;
+            }
 
-	return (
-		<>
-			<div
-				ref={elementRef}
-				onPointerEnter={() => setIsShown(true)}
-				onPointerLeave={() => setIsShown(false)}
-				onFocus={() => {
-					if (!disabledPointer) {
-						setIsShown(true);
-					}
-				}}
-				onBlur={() => {
-					if (!disabledPointer) {
-						setIsShown(false);
-					}
-				}}
-				onKeyDown={(e) => {
-					if (!disabledPointer && e.key === "Escape") {
-						setIsShown(false);
-					}
-				}}
-				className={`w-fit h-fit ${className}`}
-			>
-				{children}
-			</div>
+            positionTooltip(tooltipRef, elementRef, direction);
+            requestAnimationFrame(() => {
+                hasPositioned.current = true;
+            });
+        };
+        handle();
 
-			{createPortal(
-				<AnimatePresence>
-					{isShown && (
-						<motion.div
-							className="absolute hidden z-9999 p-1"
-							ref={tooltipRef}
-							initial={{ pointerEvents: !disabledPointer ? "all" : "none" }}
-							exit={{ pointerEvents: "none" }}
-							onPointerEnter={() => {
-								if (!disabledPointer) {
-									setIsShown(true);
-								}
-							}}
-							onPointerLeave={() => {
-								if (!disabledPointer) {
-									setIsShown(false);
-								}
-							}}
-						>
-							<motion.div
-								className={`${!element ? "tooltip" : ""}
+        window.addEventListener("resize", handle);
+        return () => window.removeEventListener("resize", handle);
+    }, [isShown, direction]);
+
+    // click away functionality
+    useEffect(() => {
+        if (!isShown) {
+            return;
+        }
+
+        const handle = (e: PointerEvent) => {
+            if (
+                !tooltipRef.current ||
+                !(e.target instanceof Node) ||
+                !isShown ||
+                !hasPositioned.current
+            ) {
+                return;
+            }
+
+            const contains = tooltipRef.current.contains(e.target);
+
+            if (!contains) {
+                setIsShown(false);
+            }
+        };
+
+        window.addEventListener("pointerdown", handle);
+        return () => window.removeEventListener("pointerdown", handle);
+    }, [isShown]);
+
+    // hotkeys
+    useEffect(() => {
+        const handle = (e: KeyboardEvent) => {
+            switch (e.code) {
+                case "Escape":
+                    setIsShown(false);
+                    break;
+            }
+        };
+
+        window.addEventListener("keydown", handle);
+        return () => window.removeEventListener("keydown", handle);
+    }, []);
+
+    return (
+        <>
+            <div
+                ref={elementRef}
+                onPointerEnter={() => {
+                    if (type === "tooltip") {
+                        setIsShown(true);
+                    }
+                }}
+                onPointerLeave={() => {
+                    if (type === "tooltip") {
+                        setIsShown(false);
+                    }
+                }}
+                onFocus={() => {
+                    if (!disabledPointer && type === "tooltip") {
+                        setIsShown(true);
+                    }
+                }}
+                onKeyDown={(e) => {
+                    if (!disabledPointer && e.key === "Escape" && type === "tooltip") {
+                        setIsShown(false);
+                    }
+
+                    if (!disabledPointer && e.key === "Enter" && type === "modal") {
+                        setIsShown(true);
+                    }
+                }}
+                onPointerDown={() => {
+                    if (type === "modal") {
+                        setIsShown((prev) => !prev);
+                    }
+                }}
+                className={`w-fit h-fit ${className}`}
+            >
+                {children}
+            </div>
+
+            {createPortal(
+                <AnimatePresence>
+                    {isShown && (
+                        <motion.div
+                            className="absolute hidden z-9999 p-1"
+                            ref={tooltipRef}
+                            initial={{ pointerEvents: !disabledPointer ? "all" : "none" }}
+                            exit={{ pointerEvents: "none" }}
+                            onBlur={() => {
+                                if (!disabledPointer) {
+                                    setIsShown(false);
+                                }
+                            }}
+                            onPointerEnter={() => {
+                                if (!disabledPointer && type === "tooltip") {
+                                    setIsShown(true);
+                                }
+                            }}
+                            onPointerLeave={() => {
+                                if (!disabledPointer && type === "tooltip") {
+                                    setIsShown(false);
+                                }
+                            }}
+                        >
+                            <motion.div
+                                className={`${!element ? "tooltip" : ""}
                                 whitespace-nowrap border-0 outline-0
                             `}
-								initial={{
-									opacity: 0,
-									pointerEvents: !disabledPointer ? "all" : "none",
-								}}
-								animate={{ opacity: 1 }}
-								exit={{ opacity: 0, pointerEvents: "none" }}
-							>
-								{element ? (
-									element
-								) : (
-									<div className="flex flex-col items-center">
-										{title && (
-											<span className="text-background-9!">
-												<b>{title}</b>
-											</span>
-										)}
-										{text && <span className="text-background-9!">{text}</span>}
-									</div>
-								)}
-							</motion.div>
-						</motion.div>
-					)}
-				</AnimatePresence>,
-				document.body,
-			)}
-		</>
-	);
+                                initial={{
+                                    opacity: 0,
+                                    pointerEvents: !disabledPointer ? "all" : "none",
+                                }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0, pointerEvents: "none" }}
+                            >
+                                {element ? (
+                                    element
+                                ) : (
+                                    <div className="flex flex-col items-center">
+                                        {title && (
+                                            <span className="text-background-9!">
+                                                <b>{title}</b>
+                                            </span>
+                                        )}
+                                        {text && <span className="text-background-9!">{text}</span>}
+                                    </div>
+                                )}
+                            </motion.div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>,
+                document.body,
+            )}
+        </>
+    );
 };

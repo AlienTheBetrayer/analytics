@@ -13,8 +13,9 @@ type Props = {
 export const DashboardEvent = ({ event }: Props) => {
 	return (
 		<Tooltip
-			description={event.description ?? "No description"}
+			text={event.description ?? "No description"}
 			title={event.type}
+            className='w-full'
 			direction="top"
 		>
 			<li
@@ -41,7 +42,7 @@ export const DashboardEvent = ({ event }: Props) => {
 				/>
 
 				<Tooltip
-					description="Delete this event"
+					text="Delete this event"
 					className="w-full"
 					direction="left"
 				>
