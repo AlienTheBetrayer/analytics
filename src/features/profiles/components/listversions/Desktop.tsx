@@ -16,7 +16,7 @@ export const Desktop = ({ profiles }: Props) => {
                 <React.Fragment key={data.user.id}>
                     <li className="flex w-full">
                         <LinkButton
-                            className="flex flex-col w-full p-4! gap-2 items-start! rounded-2xl!"
+                            className="flex flex-col w-full p-4! gap-2 items-start! rounded-4xl!"
                             style={
                                 data.profile.color
                                     ? { outline: `1px solid ${data.profile.color}` }
@@ -25,7 +25,7 @@ export const Desktop = ({ profiles }: Props) => {
                             href={`/profile/${data.user.username}`}
                         >
                             <div className="flex w-full gap-2 h-full">
-                                <ProfileImage profile={data.profile} width={64} height={64} />
+                                <ProfileImage profile={data.profile} width={130} height={130} />
 
                                 <hr className="h-full! w-px! border-background-5!" />
 

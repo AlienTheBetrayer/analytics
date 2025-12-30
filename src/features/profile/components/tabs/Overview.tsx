@@ -10,6 +10,7 @@ import { promiseStatus } from "@/utils/status";
 import { useAppStore } from "@/zustand/store";
 import { ProfileImage } from "../ProfileImage";
 import axios from "axios";
+import { relativeTime } from "@/utils/relativeTime";
 
 type Props = {
     data: { profile: Profile; user: User };
@@ -57,9 +58,12 @@ export const Overview = ({ data }: Props) => {
 
             <div className="flex flex-col gap-2 items-center">
                 <div className="flex w-full relative">
-                    <span className="text-foreground-2! text-5! text-center w-full">
+                    <span className="relative text-foreground-2! text-5! text-center w-full">
                         <mark>{data.user.username}</mark>
                         &apos;s profile
+                        <span className="absolute right-0 top-0">
+                            seen {relativeTime(data.user.last_seen_at)}
+                        </span>
                     </span>
                     {status && status.user.id !== data.user.id && (
                         <LinkButton
@@ -72,13 +76,13 @@ export const Overview = ({ data }: Props) => {
                     )}
                 </div>
                 <span>Profile overview</span>
-                <Button
+                {/* <Button
                     onClick={() => {
                         axios.post("/api/attempt", { id: data.user.id });
                     }}
                 >
                     Attempt API
-                </Button>
+                </Button> */}
             </div>
 
             <hr />
@@ -102,7 +106,6 @@ export const Overview = ({ data }: Props) => {
                 <span>{data.profile.status}</span>
                 {status &&
                     status.user.id !== data.user.id &&
-                    data.profile.allowed_friend_requests === "everyone" &&
                     (friends?.some((id) => id === data.user.id) ? (
                         <Button
                             onClick={() => {

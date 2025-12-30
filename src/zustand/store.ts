@@ -1,3 +1,4 @@
+"use client";
 import { create } from "zustand";
 import type { UserStore } from "@/types/zustand/user";
 import type { AuthenticationStore } from "../types/zustand/authentication";

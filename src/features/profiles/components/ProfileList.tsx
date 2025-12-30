@@ -6,8 +6,11 @@ import { Button } from "@/features/ui/button/components/Button";
 import { Select } from "@/features/ui/select/components/Select";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { useAppStore } from "@/zustand/store";
-import { type ProfileListVersions, ProfileListVersionsArray } from "../types/versions";
+import { type ProfileListVersions } from "../types/versions";
 import { Desktop } from "./listversions/Desktop";
+import { Compact } from "./listversions/Compact";
+import { Mobile } from "./listversions/Mobile";
+import { useLocalStore } from "@/zustand/localStore";
 
 export const ProfileList = () => {
     // zustand state
@@ -18,27 +21,24 @@ export const ProfileList = () => {
     const getAllProfiles = useAppStore((state) => state.getAllProfiles);
 
     // list items handling
-    const [listItems, setListItems] = useState<string[]>(ProfileListVersionsArray);
-    const [listVersion, setListVersion] = useState<ProfileListVersions>("desktop");
+    const [listItems, setListItems] = useState<string[]>(["desktop", "mobile", "compact"]);
     const isMobile = useMediaQuery("(max-width: 640px)");
 
-    // switching to mobile version when we're on desktop
-    useEffect(() => {
-        requestAnimationFrame(() => {
-            if (isMobile) {
-                if (listVersion === "desktop") {
-                    setListVersion("mobile");
-                }
-                setListItems(ProfileListVersionsArray.filter((v) => v !== "desktop"));
-            } else {
-                setListItems(ProfileListVersionsArray);
-            }
-        });
-    }, [listVersion, isMobile]);
-
+    // fetching
     useEffect(() => {
         getAllProfiles();
     }, [getAllProfiles]);
+
+    // showing desktop tab only on desktop
+    useEffect(() => {
+        requestAnimationFrame(() => {
+            setListItems(isMobile ? ["mobile", "compact"] : ["desktop", "mobile", "compact"]);
+        });
+    }, [isMobile]);
+
+    // localstorage
+    const profilesMenuType = useLocalStore((state) => state.profilesMenuType);
+    const setProfilesMenuType = useLocalStore((state) => state.setProfilesMenuType);
 
     if (profiles === undefined || promises?.profiles === "pending") {
         return (
@@ -71,9 +71,13 @@ export const ProfileList = () => {
     }
 
     const profileListVersion = () => {
-        switch (listVersion) {
+        switch (profilesMenuType) {
             case "desktop":
                 return <Desktop profiles={profiles} />;
+            case "mobile":
+                return <Mobile profiles={profiles} />;
+            case "compact":
+                return <Compact profiles={profiles} />;
         }
     };
 
@@ -92,8 +96,8 @@ export const ProfileList = () => {
                     </span>
                     <Select
                         items={listItems}
-                        value={listVersion}
-                        onChange={(e) => setListVersion(e as ProfileListVersions)}
+                        value={profilesMenuType}
+                        onChange={(e) => setProfilesMenuType(e as ProfileListVersions)}
                     />
                 </div>
                 <hr />
