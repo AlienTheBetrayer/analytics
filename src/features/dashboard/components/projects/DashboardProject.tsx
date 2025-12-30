@@ -1,25 +1,25 @@
 import "./DashboardProject.css";
 import Image from "next/image";
-import { Spinner } from "@/features/spinner/components/Spinner";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
-import { usePromiseStatus } from "@/hooks/usePromiseStatus";
 import type { ProjectData } from "@/types/zustand/data";
 import { relativeTime } from "@/utils/relativeTime";
 import { useAppStore } from "@/zustand/store";
+import { promiseStatus } from "@/utils/status";
 
 type Props = {
     projectData: ProjectData;
 };
 
 export const DashboardProject = ({ projectData }: Props) => {
-    // zustand
+    // zustand state
     const selectedProjectId = useAppStore((state) => state.selectedProjectId);
-    const selectProject = useAppStore((state) => state.selectProject);
+    const promises = useAppStore((state) => state.promises);
 
-    // spinner handling
-    const promises = usePromiseStatus();
+    // zustand functions
+    const selectProject = useAppStore((state) => state.selectProject);
+    const deleteProject = useAppStore((state) => state.deleteProject);
 
     if (!projectData.project) return null;
 
@@ -35,7 +35,10 @@ export const DashboardProject = ({ projectData }: Props) => {
                 element={
                     <div className="flex flex-col gap-1 box">
                         <Tooltip text="Delete this project" direction="right" className="w-full">
-                            <Button className="w-full">
+                            <Button className="w-full" onClick={() => {
+                                deleteProject(projectData.project.id);
+                            }}>
+                                {promiseStatus(promises.project_delete)}
                                 <Image src="/cross.svg" width={16} height={16} alt="" />
                                 Delete
                             </Button>
@@ -60,14 +63,14 @@ export const DashboardProject = ({ projectData }: Props) => {
                     }}
                 >
                     <div className="flex items-center gap-1.5">
-                        {promises.get("project") === "pending" && <Spinner />}
+                        {promiseStatus(promises.project)}
                         <Image src="/link.svg" alt="" width={16} height={16} />
                         <span>{projectData.project.name}</span>
                     </div>
 
                     <div className="flex sm:flex-col justify-evenly sm:justify-between w-full h-full items-end">
-                        <span>{relativeTime(projectData.project.created_at)}</span>
-                        <span>{relativeTime(projectData.project.last_event_at)}</span>
+                        <span>created {relativeTime(projectData.project.created_at)}</span>
+                        <span>seen {relativeTime(projectData.project.last_event_at)}</span>
                     </div>
                 </Button>
             </Tooltip>

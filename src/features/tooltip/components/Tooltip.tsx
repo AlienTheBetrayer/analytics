@@ -28,6 +28,14 @@ export const Tooltip = ({
     disabledPointer = true,
     children,
 }: Props) => {
+    const [mounted, setMounted] = useState<boolean>(false);
+
+    useEffect(() => {
+        requestAnimationFrame(() => {
+            setMounted(true);
+        });
+    }, []);
+
     // states
     const [isShown, setIsShown] = useState<boolean>(false);
 
@@ -106,6 +114,10 @@ export const Tooltip = ({
         window.addEventListener("keydown", handle);
         return () => window.removeEventListener("keydown", handle);
     }, []);
+
+    if(!mounted) {
+        return null;
+    }
 
     return (
         <>

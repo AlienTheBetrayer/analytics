@@ -2,6 +2,7 @@ import type { PromiseStatuses } from "@/hooks/usePromiseStatus";
 import type { ProjectResponseData } from "../api/database";
 import type { AnalyticsMeta } from "../api/database/analytics";
 import type { Project, ProjectAggregate } from "../api/database/projects";
+import { ResponseAxios } from "./utils/axios";
 
 export type ProjectData = {
 	project: Project;
@@ -68,4 +69,11 @@ export type DataStore = {
 		id: string,
 		caching?: boolean,
 	) => Promise<ProjectResponseData | undefined>;
+
+    /**
+     * deletes the project from state and database
+     * @param id the id of the project
+     * @returns a promise containing the response
+     */
+    deleteProject: (id: string) => Promise<ResponseAxios | undefined>;
 };

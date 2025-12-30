@@ -27,7 +27,7 @@ export const DashboardEvents = () => {
         );
     }
 
-    if (data?.[selectedProjectId].events === undefined) {
+    if (data?.[selectedProjectId]?.events === undefined) {
         return (
             <div className="flex flex-col gap-4 h-64 max-h-64 relative">
                 <Spinner styles="big" />
@@ -35,7 +35,7 @@ export const DashboardEvents = () => {
         );
     }
 
-    if (data[selectedProjectId].events.length === 0) {
+    if (data?.[selectedProjectId]?.events.length === 0) {
         return (
             <div className="flex flex-col gap-4 h-64 max-h-64 relative">
                 <span className="m-auto">No events so far...</span>
