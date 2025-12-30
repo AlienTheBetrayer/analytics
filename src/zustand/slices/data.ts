@@ -97,9 +97,8 @@ export const DataSlice: SliceFunction<DataStore> = (set, get) => {
             if (caching === true && data?.[id]?.events !== undefined) return;
 
             return await setPromise(id, async () => {
-                const projectData = (
-                    await refreshedRequest(`/api/analytics/project/${id}/`, "GET")
-                ).data as ProjectResponseData;
+                const projectData = (await refreshedRequest(`/api/analytics/project/${id}/`, "GET"))
+                    .data as ProjectResponseData;
 
                 set((state) => {
                     if (state.data?.[projectData.id] === undefined) return state;
@@ -139,16 +138,39 @@ export const DataSlice: SliceFunction<DataStore> = (set, get) => {
             });
         },
 
-        emulateEvent: async (project_name, event_type, description) => {
+        deleteEvent: async (id: string) => {
             const { setPromise } = get();
 
-            return await setPromise("emulate", async() => {
-                const res = await axios.post("/api/analytics/send", {
-                    project_name, event_type, description
+            return await setPromise(`event_delete_${id}`, async () => {
+                const res = await axios.post("/api/analytics/delete-event/", { id });
+
+                set((state) => {
+                    const data = { ...state.data };
+
+                    for (const [projectId, projectData] of Object.entries(data)) {
+                        const events = projectData.events?.filter((e) => e.id !== id);
+                        data[projectId].events = events;
+                    }
+
+                    return { ...state, data };
                 });
 
                 return res;
-            }); 
-        }
+            });
+        },
+
+        emulateEvent: async (project_name, event_type, description) => {
+            const { setPromise } = get();
+
+            return await setPromise("emulate", async () => {
+                const res = await axios.post("/api/analytics/send", {
+                    project_name,
+                    event_type,
+                    description,
+                });
+
+                return res;
+            });
+        },
     };
 };
