@@ -10,7 +10,7 @@ export const NotFound = () => {
 						<u>Wrong</u> user!
 					</span>
 					<span className="text-center">
-						The user has either not created a profile yet or they don't exist.
+						The user has either not created a profile yet or they don&apos;t exist.
 					</span>
 				</div>
 

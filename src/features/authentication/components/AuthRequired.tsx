@@ -18,7 +18,7 @@ export const AuthRequired = ({ description }: Props) => {
 				</div>
 				<hr />
 				<div className="flex flex-col w-full gap-2">
-					<LinkButton href="/register">
+					<LinkButton href="/signup">
 						<Image width={16} height={16} alt="" src="/plus.svg" />
 						Sign up
 					</LinkButton>

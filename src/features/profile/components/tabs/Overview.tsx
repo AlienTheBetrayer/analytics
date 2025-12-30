@@ -9,157 +9,160 @@ import type { User } from "@/types/api/database/user";
 import { promiseStatus } from "@/utils/status";
 import { useAppStore } from "@/zustand/store";
 import { ProfileImage } from "../ProfileImage";
+import axios from "axios";
 
 type Props = {
-	data: { profile: Profile; user: User };
+    data: { profile: Profile; user: User };
 };
 
 export const Overview = ({ data }: Props) => {
-	// zustand
-	const status = useAppStore((state) => state.status);
-	const friendRequests = useAppStore((state) => state.friendRequests);
-	const friends = useAppStore((state) => state.friends);
-	const promises = useAppStore((state) => state.promises);
+    // zustand
+    const status = useAppStore((state) => state.status);
+    const friendRequests = useAppStore((state) => state.friendRequests);
+    const friends = useAppStore((state) => state.friends);
+    const promises = useAppStore((state) => state.promises);
 
-	// zustand functinos
-	const sendFriendRequest = useAppStore((state) => state.sendFriendRequest);
-	const unfriend = useAppStore((state) => state.unfriend);
-	const deleteFriendRequest = useAppStore((state) => state.deleteFriendRequest);
+    // zustand functinos
+    const sendFriendRequest = useAppStore((state) => state.sendFriendRequest);
+    const unfriend = useAppStore((state) => state.unfriend);
+    const deleteFriendRequest = useAppStore((state) => state.deleteFriendRequest);
 
-	// message boxes
-	const unfriendMessageBox = usePopup(
-		<MessageBox
-			description="You are about to delete this user from your friends!"
-			onInteract={(res) => {
-				unfriendMessageBox.hide();
-				if (res === "yes" && status) {
-					unfriend(status.user.id, data.user.id);
-				}
-			}}
-		/>,
-	);
+    // message boxes
+    const unfriendMessageBox = usePopup(({ hide }) => (
+        <MessageBox
+            description="You are about to delete this user from your friends!"
+            onInteract={(res) => {
+                hide();
+                if (res === "yes" && status) {
+                    unfriend(status.user.id, data.user.id);
+                }
+            }}
+        />
+    ));
 
-	// ui states
-	const hasOutcomingRequest = useMemo(() => {
-		if (status === undefined) return false;
-		return friendRequests?.outcoming.some((id) => id === data.user.id);
-	}, [friendRequests, status, data]);
+    // ui states
+    const hasOutcomingRequest = useMemo(() => {
+        if (status === undefined) return false;
+        return friendRequests?.outcoming.some((id) => id === data.user.id);
+    }, [friendRequests, status, data]);
 
-	const hasIncomingRequest = useMemo(() => {
-		if (status === undefined) return false;
-		return friendRequests?.incoming.some((id) => id === data.user.id);
-	}, [friendRequests, status, data]);
+    const hasIncomingRequest = useMemo(() => {
+        if (status === undefined) return false;
+        return friendRequests?.incoming.some((id) => id === data.user.id);
+    }, [friendRequests, status, data]);
 
-	return (
-		<div className="flex flex-col gap-4 p-4 w-full grow relative">
-			{unfriendMessageBox.render()}
+    return (
+        <div className="flex flex-col gap-4 p-4 w-full grow relative">
+            {unfriendMessageBox.render()}
 
-			<div className="flex flex-col gap-2 items-center">
-				<div className="flex w-full relative">
-					<span className="text-foreground-2! text-5! text-center w-full">
-						<mark>{data.user.username}</mark>
-						's profile
-					</span>
-					{status && status.user.id !== data.user.id && (
-						<LinkButton
-							href={`/profile/${status.user.username}/friends`}
-							className="absolute right-0 top-0"
-						>
-							<Image width={16} height={16} alt="" src="/friends.svg" />
-							Back
-						</LinkButton>
-					)}
-				</div>
-				<span>Profile overview</span>
-			</div>
+            <div className="flex flex-col gap-2 items-center">
+                <div className="flex w-full relative">
+                    <span className="text-foreground-2! text-5! text-center w-full">
+                        <mark>{data.user.username}</mark>
+                        &apos;s profile
+                    </span>
+                    {status && status.user.id !== data.user.id && (
+                        <LinkButton
+                            href={`/profile/${status.user.username}/friends`}
+                            className="absolute right-0 top-0"
+                        >
+                            <Image width={16} height={16} alt="" src="/friends.svg" />
+                            Back
+                        </LinkButton>
+                    )}
+                </div>
+                <span>Profile overview</span>
+                <Button
+                    onClick={() => {
+                        axios.post("/api/attempt", { id: data.user.id });
+                    }}
+                >
+                    Attempt API
+                </Button>
+            </div>
 
-			<hr />
-			<div className="flex flex-col gap-2 grow items-center justify-center">
-				<span className="text-4!">
-					<b>
-						<mark>{data.profile.name}</mark>
-					</b>
-				</span>
-				<span>{data.profile.oneliner}</span>
-					<ProfileImage
-						profile={data.profile}
-                        width={256}
-                        height={256}
-                        className='w-full max-w-100 aspect-square'
-					/>
-				<span className="text-foreground-5!">
-					{data.user.role[0].toUpperCase() + data.user.role.substring(1)}
-				</span>
-				<span>{data.profile.bio}</span>
-				<span>{data.profile.status}</span>
-				{status &&
-					status.user.id !== data.user.id &&
-					data.profile.allowed_friend_requests === "everyone" &&
-					(friends?.some((id) => id === data.user.id) ? (
-						<Button
-							onClick={() => {
-								unfriendMessageBox.show();
-							}}
-						>
-							{promiseStatus(promises.unfriend)}
-							<Image src="/unfriend.svg" width={16} height={16} alt="unfriend" />
-							Unfriend
-						</Button>
-					) : hasIncomingRequest ? (
-						<div className="flex gap-1">
-							<Button
-								onClick={() => {
-									sendFriendRequest(status.user.id, data.user.id);
-								}}
-							>
-								{promiseStatus(promises.friend_request)}
-								<Image
-									src="/checkmark.svg"
-									width={16}
-									height={16}
-									alt="accept"
-								/>
-								Accept
-							</Button>
-							<Button
-								onClick={() => {
-									deleteFriendRequest(status.user.id, data.user.id);
-								}}
-							>
-								{promiseStatus(promises.delete_friend_request)}
-								<Image src="/cross.svg" width={16} height={16} alt="reject" />
-								Reject
-							</Button>
-						</div>
-					) : hasOutcomingRequest ? (
-						<div className="flex gap-1">
-							<Button isEnabled={false}>
-								{promiseStatus(promises.friend_request)}
-								<Image src="/friends.svg" width={16} height={16} alt="sent" />
-								Sent
-							</Button>
-							<Button
-								onClick={() => {
-									deleteFriendRequest(status.user.id, data.user.id);
-								}}
-							>
-								{promiseStatus(promises.delete_friend_request)}
-								<Image src="/auth.svg" width={16} height={16} alt="reject" />
-								Cancel
-							</Button>
-						</div>
-					) : (
-						<Button
-							onClick={() => {
-								sendFriendRequest(status.user.id, data.user.id);
-							}}
-						>
-							{promiseStatus(promises.friend_request)}
-							<Image src="/plus.svg" width={16} height={16} alt="send" />
-							Send
-						</Button>
-					))}
-			</div>
-		</div>
-	);
+            <hr />
+            <div className="flex flex-col gap-2 grow items-center justify-center">
+                <span className="text-4!">
+                    <b>
+                        <mark>{data.profile.name}</mark>
+                    </b>
+                </span>
+                <span>{data.profile.oneliner}</span>
+                <ProfileImage
+                    profile={data.profile}
+                    width={256}
+                    height={256}
+                    className="w-full max-w-100 aspect-square"
+                />
+                <span className="text-foreground-5!">
+                    {data.user.role[0].toUpperCase() + data.user.role.substring(1)}
+                </span>
+                <span>{data.profile.bio}</span>
+                <span>{data.profile.status}</span>
+                {status &&
+                    status.user.id !== data.user.id &&
+                    data.profile.allowed_friend_requests === "everyone" &&
+                    (friends?.some((id) => id === data.user.id) ? (
+                        <Button
+                            onClick={() => {
+                                unfriendMessageBox.show();
+                            }}
+                        >
+                            {promiseStatus(promises.unfriend)}
+                            <Image src="/unfriend.svg" width={16} height={16} alt="unfriend" />
+                            Unfriend
+                        </Button>
+                    ) : hasIncomingRequest ? (
+                        <div className="flex gap-1">
+                            <Button
+                                onClick={() => {
+                                    sendFriendRequest(status.user.id, data.user.id);
+                                }}
+                            >
+                                {promiseStatus(promises.friend_request)}
+                                <Image src="/checkmark.svg" width={16} height={16} alt="accept" />
+                                Accept
+                            </Button>
+                            <Button
+                                onClick={() => {
+                                    deleteFriendRequest(status.user.id, data.user.id);
+                                }}
+                            >
+                                {promiseStatus(promises.delete_friend_request)}
+                                <Image src="/cross.svg" width={16} height={16} alt="reject" />
+                                Reject
+                            </Button>
+                        </div>
+                    ) : hasOutcomingRequest ? (
+                        <div className="flex gap-1">
+                            <Button isEnabled={false}>
+                                {promiseStatus(promises.friend_request)}
+                                <Image src="/friends.svg" width={16} height={16} alt="sent" />
+                                Sent
+                            </Button>
+                            <Button
+                                onClick={() => {
+                                    deleteFriendRequest(status.user.id, data.user.id);
+                                }}
+                            >
+                                {promiseStatus(promises.delete_friend_request)}
+                                <Image src="/auth.svg" width={16} height={16} alt="reject" />
+                                Cancel
+                            </Button>
+                        </div>
+                    ) : (
+                        <Button
+                            onClick={() => {
+                                sendFriendRequest(status.user.id, data.user.id);
+                            }}
+                        >
+                            {promiseStatus(promises.friend_request)}
+                            <Image src="/plus.svg" width={16} height={16} alt="send" />
+                            Send
+                        </Button>
+                    ))}
+            </div>
+        </div>
+    );
 };

@@ -43,11 +43,11 @@ export const Edit = ({ data }: Props) => {
 	const avatarImage = avatarFile ? URL.createObjectURL(avatarFile) : avatar;
 
 	// messageboxes
-	const deleteAvatarMessageBox = usePopup(
+	const deleteAvatarMessageBox = usePopup(({hide}) =>
 		<MessageBox
 			description="After you click Apply Changes your account will no longer have a profile picture until you set it again"
 			onInteract={(res) => {
-				deleteAvatarMessageBox.hide();
+                hide();
 				if (res === "yes") {
 					setAvatarFile(undefined);
 					setAvatar("");
@@ -62,7 +62,7 @@ export const Edit = ({ data }: Props) => {
 			<div className="flex flex-col gap-2 items-center">
 				<span className="text-foreground-2! text-5!">
 					<mark>{data.user.username}</mark>
-					's profile
+					&apos;s profile
 				</span>
 				<span>Appearance editing</span>
 			</div>

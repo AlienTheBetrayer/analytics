@@ -30,11 +30,11 @@ export const Friends = ({ data }: Props) => {
 	const getFriends = useAppStore((state) => state.getFriends);
 
 	// messageboxes
-	const unfriendMessageBox = usePopup(
+	const unfriendMessageBox = usePopup(({hide}) =>
 		<MessageBox
 			description="You are about to unfriend everyone!"
 			onInteract={(res) => {
-				unfriendMessageBox.hide();
+                hide();
 				if (res === "yes" && status) {
 					unfriendEveryone(status.user.id);
 				}
@@ -48,7 +48,7 @@ export const Friends = ({ data }: Props) => {
 			<div className="flex flex-col gap-2 items-center">
 				<span className="text-center text-foreground-2! text-5!">
 					<mark>{data.user.username}</mark>
-					's profile
+					&apos;s profile
 				</span>
 				<span>Your friends</span>
 			</div>
@@ -73,7 +73,7 @@ export const Friends = ({ data }: Props) => {
 								{/* friends topline */}
 								<span className="flex flex-wrap gap-2 items-center">
 									<b>Friend list</b>
-									<Tooltip description="Re-load friends" direction="top">
+									<Tooltip text="Re-load friends" direction="top">
 										<Button
 											className="p-0!"
 											onClick={() => {

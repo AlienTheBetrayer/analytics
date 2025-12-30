@@ -18,7 +18,7 @@ export const AlreadyLoggedIn = () => {
 					Already <mark>authenticated!</mark>
 				</h1>
 				<p>
-					You're already authenticated. Your account is secure and ready, and
+					You&apos;re already authenticated. Your account is secure and ready, and
 					you can continue to your dashboard or any active work.
 				</p>
 			</div>
@@ -50,7 +50,7 @@ export const AlreadyLoggedIn = () => {
 						</span>
 						<span className="text-center">
 							However, if your goal was to log yourself out, you can also do it
-							here, afterwards you'll see the authentication form again
+							here, afterwards you&apos;ll see the authentication form again
 						</span>
 						<Button
 							onClick={() => {

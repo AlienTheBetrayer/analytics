@@ -48,7 +48,7 @@ export type AuthenticationStore = {
 	 * refreshes the user's authentication state and updates the internal status with it
 	 * @returns a promise with the axios response
 	 */
-	refresh: () => Promise<ResponseAxios>;
+	refresh: () => Promise<ResponseAxios | undefined>;
 
 	/**
 	 * Deletes the user from the database + its profile

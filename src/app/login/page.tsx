@@ -19,7 +19,7 @@ const LoginPage = () => {
 						<h1>Authentication</h1>
 						<p>
 							Sign in to your account to continue. If your account is inactive
-							for 7 days, you'll be automatically signed out and asked to log in
+							for 7 days, you&apos;ll be automatically signed out and asked to log in
 							again to ensure your access remains secure.
 						</p>
 					</div>

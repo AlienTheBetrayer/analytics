@@ -12,7 +12,7 @@ type Props = {
 	text?: string;
 	element?: React.ReactNode;
 	direction?: TooltipDirection;
-	pointerEvents?: boolean;
+	disabledPointer?: boolean;
 	className?: string;
 	children: React.ReactNode;
 };
@@ -23,7 +23,7 @@ export const Tooltip = ({
 	element,
 	direction = "bottom",
 	className = "",
-	pointerEvents = true,
+	disabledPointer = false,
 	children,
 }: Props) => {
 	// states
@@ -59,17 +59,17 @@ export const Tooltip = ({
 				onPointerEnter={() => setIsShown(true)}
 				onPointerLeave={() => setIsShown(false)}
 				onFocus={() => {
-					if (pointerEvents) {
+					if (!disabledPointer) {
 						setIsShown(true);
 					}
 				}}
 				onBlur={() => {
-					if (pointerEvents) {
+					if (!disabledPointer) {
 						setIsShown(false);
 					}
 				}}
 				onKeyDown={(e) => {
-					if (pointerEvents && e.key === "Escape") {
+					if (!disabledPointer && e.key === "Escape") {
 						setIsShown(false);
 					}
 				}}
@@ -84,15 +84,15 @@ export const Tooltip = ({
 						<motion.div
 							className="absolute hidden z-9999 p-1"
 							ref={tooltipRef}
-							initial={{ pointerEvents: pointerEvents ? "all" : "none" }}
+							initial={{ pointerEvents: !disabledPointer ? "all" : "none" }}
 							exit={{ pointerEvents: "none" }}
 							onPointerEnter={() => {
-								if (pointerEvents) {
+								if (!disabledPointer) {
 									setIsShown(true);
 								}
 							}}
 							onPointerLeave={() => {
-								if (pointerEvents) {
+								if (!disabledPointer) {
 									setIsShown(false);
 								}
 							}}
@@ -103,7 +103,7 @@ export const Tooltip = ({
                             `}
 								initial={{
 									opacity: 0,
-									pointerEvents: pointerEvents ? "all" : "none",
+									pointerEvents: !disabledPointer ? "all" : "none",
 								}}
 								animate={{ opacity: 1 }}
 								exit={{ opacity: 0, pointerEvents: "none" }}

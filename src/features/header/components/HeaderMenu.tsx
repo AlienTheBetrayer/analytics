@@ -49,11 +49,11 @@ export const HeaderMenu = ({ onInteract }: Props) => {
 						<>
 							<li>
 								<LinkButton
-									href="/register"
+									href="/signup"
 									className={`p-4! text-5! ${!status ? "border-awaiting" : ""}`}
 								>
 									<Image src="/plus.svg" width={24} height={24} alt="" />
-									Register
+									Sign up
 								</LinkButton>
 							</li>
 							<li>

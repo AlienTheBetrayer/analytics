@@ -56,7 +56,7 @@ export const AuthenticationToolbox = () => {
 						</Tooltip>
 					) : (
 						<>
-							<LinkButton href="/register">
+							<LinkButton href="/signup">
 								<Image width={16} height={16} alt="" src="/plus.svg" />
 								Sign up
 							</LinkButton>

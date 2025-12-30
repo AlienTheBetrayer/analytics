@@ -12,4 +12,5 @@ export type APIResponseType =
     | "friend_request_already_sent"
     | "friend_request_accepted"
     | "friend_request_sent"
-    | "friends_already";
+    | "friends_already"
+    | "profile_not_visible";
