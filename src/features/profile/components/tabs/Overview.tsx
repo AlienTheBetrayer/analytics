@@ -9,7 +9,6 @@ import type { User } from "@/types/api/database/user";
 import { promiseStatus } from "@/utils/status";
 import { useAppStore } from "@/zustand/store";
 import { ProfileImage } from "../ProfileImage";
-import axios from "axios";
 import { relativeTime } from "@/utils/relativeTime";
 
 type Props = {
@@ -61,9 +60,11 @@ export const Overview = ({ data }: Props) => {
                     <span className="relative text-foreground-2! text-5! text-center w-full">
                         <mark>{data.user.username}</mark>
                         &apos;s profile
-                        <span className="absolute right-0 top-0">
-                            seen {relativeTime(data.user.last_seen_at)}
-                        </span>
+                        {data.user.id !== status?.user.id && (
+                            <span className="absolute right-0 top-0">
+                                seen {relativeTime(data.user.last_seen_at)}
+                            </span>
+                        )}
                     </span>
                     {status && status.user.id !== data.user.id && (
                         <LinkButton

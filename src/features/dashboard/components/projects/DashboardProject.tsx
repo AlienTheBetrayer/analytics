@@ -21,7 +21,9 @@ export const DashboardProject = ({ projectData }: Props) => {
     const selectProject = useAppStore((state) => state.selectProject);
     const deleteProject = useAppStore((state) => state.deleteProject);
 
-    if (!projectData.project) return null;
+    if (!projectData.project) { 
+        return null;
+    };
 
     return (
         <li className="w-full">
@@ -57,7 +59,7 @@ export const DashboardProject = ({ projectData }: Props) => {
                 }
             >
                 <Button
-                    className={`w-full px-4! py-2! sm:h-16! project-button ${projectData.project.id === selectedProjectId ? "border-blue-1!" : ""}`}
+                    className={`relative w-full px-4! py-2! sm:h-16! project-button ${projectData.project.id === selectedProjectId ? "border-blue-1!" : ""}`}
                     onClick={() => {
                         selectProject(projectData.project?.id ?? undefined);
                     }}
@@ -68,10 +70,16 @@ export const DashboardProject = ({ projectData }: Props) => {
                         <span>{projectData.project.name}</span>
                     </div>
 
-                    <div className="flex sm:flex-col justify-evenly sm:justify-between w-full h-full items-end">
+                    <div className="flex sm:flex-col justify-between w-full h-full items-end">
                         <span>created {relativeTime(projectData.project.created_at)}</span>
                         <span>updated {relativeTime(projectData.project.last_event_at)}</span>
                     </div>
+
+                    <span className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-3!'>
+                        <small>
+                            {projectData.events?.length}
+                        </small>
+                    </span>
                 </Button>
             </Tooltip>
         </li>

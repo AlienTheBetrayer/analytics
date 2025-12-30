@@ -8,7 +8,7 @@ export const FetchPrompt = () => {
 	const promises = useAppStore((state) => state.promises);
 
 	// zustand functions
-	const updateProjectList = useAppStore((state) => state.updateProjectList);
+    const syncData = useAppStore(state => state.syncData);
 
 	return (
 		<div className="flex flex-col gap-4">
@@ -25,7 +25,7 @@ export const FetchPrompt = () => {
 			<div className="flex flex-col gap-2">
 				<Button
 					onClick={() => {
-						updateProjectList();
+                        syncData();
 					}}
 				>
 					{promiseStatus(promises.projects)}

@@ -33,12 +33,12 @@ export const MessageBox = ({
 			<span className="text-center w-full">{description}</span>
 			<hr />
 			<div className="grid grid-cols-2 w-full gap-2">
-				<Tooltip description="Confirm">
+				<Tooltip text="Confirm" className='w-full'>
 					<Button onClick={() => onInteract("yes")} className="w-full">
 						Yes
 					</Button>
 				</Tooltip>
-				<Tooltip description="Reject">
+				<Tooltip text="Reject" className='w-full'>
 					<Button onClick={() => onInteract("no")} className="w-full">
 						No
 					</Button>

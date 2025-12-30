@@ -21,13 +21,13 @@ export const Dashboard = () => {
             <Topline />
             <hr />
 
-            {status?.isLoggedIn === true ? (
-                <div className="grid grid-flow-row lg:grid-flow-col lg:grid-cols-2 gap-4">
+            {status ? (
+                <div className="grid grid-flow-row lg:grid-flow-col lg:grid-cols-2 gap-4 min-h-64">
                     <DashboardProjects />
                     <DashboardEvents />
                 </div>
             ) : (
-                <div className="m-auto flex flex-col items-center justify-center">
+                <div className="m-auto flex flex-col items-center justify-center min-h-64">
                     <span>Authentication is required to see data.</span>
                     <Spinner styles="big" />
                 </div>

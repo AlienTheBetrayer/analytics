@@ -6,7 +6,7 @@ import { ResponseAxios } from "./utils/axios";
 
 export type ProjectData = {
     project: Project;
-    events?: AnalyticsMeta[];
+    events: AnalyticsMeta[];
     aggregates?: ProjectAggregate;
 };
 
@@ -47,10 +47,10 @@ export type DataStore = {
     emptyData: () => void;
 
     /**
-     * WIP
-     * @returns a promise containing the updated version of the data that had already been fetched before the call
+     * syncs all data about projects and its events in a single query
+     * @returns a promise containing the data
      */
-    syncData: () => Promise<void>;
+    syncData: () => Promise<ResponseAxios>;
 
     /**
      * fetches the project list

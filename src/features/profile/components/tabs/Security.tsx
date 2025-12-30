@@ -57,7 +57,7 @@ export const Security = ({ data }: Props) => {
 
     const terminateMessageBox = usePopup(({hide}) => 
         <MessageBox
-            description="You are about to log yourself out of all accounts on all devices!"
+            description="All your other sessions will be terminated."
             onInteract={(res) => {
                 hide();
                 if (res === "yes") {

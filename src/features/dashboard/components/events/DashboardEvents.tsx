@@ -8,6 +8,7 @@ import { DashboardScrollTop } from "./DashboardScrollTop";
 export const DashboardEvents = () => {
     // zustand
     const data = useAppStore((state) => state.data);
+    const promises = useAppStore((state) => state.promises);
     const selectedProjectId = useAppStore((state) => state.selectedProjectId);
 
     // scroll
@@ -27,7 +28,7 @@ export const DashboardEvents = () => {
         );
     }
 
-    if (data?.[selectedProjectId]?.events === undefined) {
+    if (promises[selectedProjectId] === 'pending') {
         return (
             <div className="flex flex-col gap-4 h-64 max-h-64 relative">
                 <Spinner styles="big" />

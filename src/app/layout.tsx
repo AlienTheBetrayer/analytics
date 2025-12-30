@@ -31,7 +31,7 @@ export default function RootLayout({
 			<StoreInitialHandler />
 
 			<body
-				className={`${geistSans.variable} ${geistMono.variable} px-4! dotted antialiased overflow-x-hidden min-h-screen flex flex-col relative`}
+				className={`${geistSans.variable} ${geistMono.variable} px-4! mb-16! dotted antialiased overflow-x-hidden min-h-screen flex flex-col relative`}
 			>
 				<Header />
 

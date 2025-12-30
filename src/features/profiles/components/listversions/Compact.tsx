@@ -62,7 +62,7 @@ export const Compact = ({ profiles }: Props) => {
                                                     height={16}
                                                     alt=""
                                                 />
-                                                <span>Name</span>
+                                                <span>One-liner</span>
                                             </small>
                                             <span>{data.profile.oneliner}</span>
                                         </div>

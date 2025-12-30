@@ -6,6 +6,7 @@ import { useAppStore } from "@/zustand/store";
 import { promiseStatus } from "@/utils/status";
 import { useRef, useState } from "react";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
+import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 
 export const Controller = () => {
     // zustand state
@@ -26,6 +27,7 @@ export const Controller = () => {
     const [eventType, setEventType] = useState<string>("");
     const [description, setDescription] = useState<string>("");
     const [isValid, setIsValid] = useState<boolean>(false);
+    const [emulationStatus, setEmulationStatus] = useState<boolean>(false);
 
     return (
         <div className="flex flex-col gap-4">
@@ -48,7 +50,9 @@ export const Controller = () => {
                             return;
                         }
 
-                        emulateEvent(project_name, eventType, description);
+                        emulateEvent(project_name, eventType, description).then(() => {
+                            setEmulationStatus(true);
+                        });
                     }}
                 >
                     {id === undefined && (
@@ -105,6 +109,18 @@ export const Controller = () => {
                         </Button>
                     </Tooltip>
                 </form>
+
+                {emulationStatus && (
+                    <>
+                        <hr />
+                        <Tooltip className="w-full" text="Go back to the dashboard" direction="top">
+                            <LinkButton className="w-full" href='/dashboard'>
+                                <Image width={16} height={16} src="/launch.svg" alt="" />
+                                View changes
+                            </LinkButton>
+                        </Tooltip>
+                    </>
+                )}
             </div>
         </div>
     );
