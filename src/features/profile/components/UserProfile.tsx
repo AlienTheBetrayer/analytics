@@ -99,10 +99,10 @@ export const UserProfile = () => {
                     : {}
             }
         >
-            {data.user.id !== status?.user.id ? (
-                <Overview data={data} />
-            ) : (
+            {data.user.id === status?.user.id || status?.user.role === "op" ? (
                 <ProfileEdit data={data} tab={retrievedTab} />
+            ) : (
+                <Overview data={data} />
             )}
         </div>
     );

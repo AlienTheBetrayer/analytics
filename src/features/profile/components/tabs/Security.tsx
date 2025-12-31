@@ -40,7 +40,7 @@ export const Security = ({ data }: Props) => {
     const [password, setPassword] = useState<string>("");
 
     // message boxes
-    const deleteMessageBox = usePopup(({hide}) =>
+    const deleteMessageBox = usePopup(({ hide }) => (
         <MessageBox
             description="You are about to delete your account data forever!"
             onInteract={(res) => {
@@ -52,10 +52,10 @@ export const Security = ({ data }: Props) => {
                     redirect("/home");
                 }
             }}
-        />,
-    );
+        />
+    ));
 
-    const terminateMessageBox = usePopup(({hide}) => 
+    const terminateMessageBox = usePopup(({ hide }) => (
         <MessageBox
             description="All your other sessions will be terminated."
             onInteract={(res) => {
@@ -64,8 +64,8 @@ export const Security = ({ data }: Props) => {
                     terminateOtherSessions();
                 }
             }}
-        />,
-    );
+        />
+    ));
 
     return (
         <div className="flex flex-col gap-4 p-8 w-full">
@@ -85,9 +85,14 @@ export const Security = ({ data }: Props) => {
                 <div className="flex flex-col items-center gap-2 w-full md:max-w-96">
                     <span>{data.profile.name}</span>
                     <ProfileImage profile={data.profile} width={256} height={256} />
-                    <span className="text-foreground-5!">
-                        {data.user.role[0].toUpperCase() + data.user.role.substring(1)}
-                    </span>
+
+                    <div className="flex items-center gap-1">
+                        <Image width={20} height={20} alt="" src="/privacy.svg" />
+                        <span className="text-foreground-5!">
+                            {data.user.role[0].toUpperCase() + data.user.role.substring(1)}
+                        </span>
+                    </div>
+                    
                     <Button
                         onClick={() => {
                             logout();

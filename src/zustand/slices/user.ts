@@ -360,7 +360,7 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
         getColors: async (id: string, caching: boolean = true) => {
             const { setPromise, colors } = get();
 
-            if (caching === true && colors) {
+            if (caching === true && colors?.[id]) {
                 return;
             }
 
@@ -371,7 +371,8 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
                 set((state) => {
                     const colors = { ...(state.colors ?? {}) };
                     data.colors.forEach(({ slot, color }) => {
-                        colors[slot] = color;
+                        colors[id] ??= {};
+                        colors[id][slot] = color;
                     });
 
                     return { ...state, colors };

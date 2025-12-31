@@ -6,7 +6,7 @@ export type Profiles = Record<string, { profile: Profile; user: User }>;
 
 export type Friends = Record<string, string[]>;
 export type Requests = { incoming: string[]; outcoming: string[] }; 
-export type Colors = Record<number, string>;
+export type Colors = Record<string, Record<number, string>>;
 
 export type UserStore = {
 	profiles?: Profiles;

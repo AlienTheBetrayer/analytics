@@ -6,15 +6,22 @@ import { Button } from "@/features/ui/button/components/Button";
 import { promiseStatus } from "@/utils/status";
 import { useAppStore } from "@/zustand/store";
 import { useColorModal } from "../../hooks/useColorModal";
+import { Profile } from "@/types/api/database/profiles";
+import { User } from "@/types/api/database/user";
+
 
 export const COLORS_GRID_SIZE = 4;
 
-export const Colors = () => {
+type Props = {
+    data: { profile: Profile; user: User };
+};
+
+export const Colors = ({ data }: Props) => {
     // zustand states
     const promises = useAppStore((state) => state.promises);
 
     // controller
-    const controller = useColorModal();
+    const controller = useColorModal(data);
 
     return (
         <div className="box min-w-0! p-6! rounded-4xl!" tabIndex={-1}>
