@@ -85,6 +85,7 @@ export const Tooltip = ({
         const handle = (e: PointerEvent) => {
             if (
                 !tooltipRef.current ||
+                !elementRef.current ||
                 !(e.target instanceof Node) ||
                 !isShown ||
                 !hasPositioned.current
@@ -92,7 +93,8 @@ export const Tooltip = ({
                 return;
             }
 
-            const contains = tooltipRef.current.contains(e.target);
+            const contains =
+                tooltipRef.current.contains(e.target) || elementRef.current.contains(e.target);
 
             if (!contains) {
                 setIsShown(false);
@@ -167,8 +169,12 @@ export const Tooltip = ({
                             ref={tooltipRef}
                             initial={{ pointerEvents: !disabledPointer ? "all" : "none" }}
                             exit={{ pointerEvents: "none" }}
-                            onBlur={() => {
-                                if (!disabledPointer) {
+                            onBlur={(e) => {
+                                if (
+                                    !disabledPointer &&
+                                    !tooltipRef.current?.contains(e.target) &&
+                                    !elementRef.current?.contains(e.target)
+                                ) {
                                     setIsShown(false);
                                 }
                             }}

@@ -171,6 +171,8 @@ export const Edit = ({ data }: Props) => {
 						direction="top"
 						element={<Colors />}
                         className='w-full'
+                        type='modal'
+                        disabledPointer={false}
 					>
 						<Button
 							className="w-full!"

@@ -10,6 +10,7 @@ import { promiseStatus } from "@/utils/status";
 import { useAppStore } from "@/zustand/store";
 import { ProfileImage } from "../ProfileImage";
 import { relativeTime } from "@/utils/relativeTime";
+import { Tooltip } from "@/features/tooltip/components/Tooltip";
 
 type Props = {
     data: { profile: Profile; user: User };
@@ -56,26 +57,40 @@ export const Overview = ({ data }: Props) => {
             {unfriendMessageBox.render()}
 
             <div className="flex flex-col gap-2 items-center">
-                <div className="flex w-full relative">
-                    <span className="relative text-foreground-2! text-5! text-center w-full">
-                        <mark>{data.user.username}</mark>
-                        &apos;s profile
-                        {data.user.id !== status?.user.id && (
-                            <span className="absolute right-0 top-0">
+                <div className="flex w-full justify-between items-center relative">
+                    {data.user.id !== status?.user.id && (
+                        <div className="flex gap-1 items-center">
+                            <Image width={16} height={16} alt="" src="/calendar.svg" />
+                            <span className="whitespace-nowrap">
                                 seen {relativeTime(data.user.last_seen_at)}
                             </span>
-                        )}
-                    </span>
+                        </div>
+                    )}
+
+                    <div className="absolute left-1/2 top-1/2 -translate-1/2 flex gap-1 items-center">
+                        <Image
+                            width={16}
+                            height={16}
+                            alt=""
+                            src="/friends.svg"
+                            className="invert-80!"
+                        />
+                        <span className="text-foreground-2! text-5! text-center w-full">
+                            {data.user.username}
+                            &apos;s profile
+                        </span>
+                    </div>
+
                     {status && status.user.id !== data.user.id && (
-                        <LinkButton
-                            href={`/profile/${status.user.username}/friends`}
-                            className="absolute right-0 top-0"
-                        >
-                            <Image width={16} height={16} alt="" src="/friends.svg" />
-                            Back
-                        </LinkButton>
+                        <Tooltip text="Go back to your friends tab">
+                            <LinkButton href={`/profile/${status.user.username}/friends`}>
+                                <Image width={16} height={16} alt="" src="/back.svg" />
+                                <span>Back</span>
+                            </LinkButton>
+                        </Tooltip>
                     )}
                 </div>
+
                 <span>Profile overview</span>
                 {/* <Button
                     onClick={() => {
@@ -86,86 +101,150 @@ export const Overview = ({ data }: Props) => {
                 </Button> */}
             </div>
 
-            <hr />
+            <hr className="w-2/3! mx-auto" />
+
             <div className="flex flex-col gap-2 grow items-center justify-center">
-                <span className="text-4!">
-                    <b>
-                        <mark>{data.profile.name}</mark>
-                    </b>
+                <span className="text-3! text-foreground-2!">
+                    <mark>{data.profile.name}</mark>
                 </span>
-                <span>{data.profile.oneliner}</span>
+
+                <hr className="w-1/5!" />
+
+                {data.profile.oneliner && (
+                    <div className="flex flex-col items-center">
+                        <small className="flex gap-1 items-center">
+                            <Image width={16} height={16} alt="" src="/server.svg" />
+                            <span>Title</span>
+                        </small>
+                        <span className="text-foreground-5!">{data.profile.oneliner}</span>
+                    </div>
+                )}
+
                 <ProfileImage
                     profile={data.profile}
                     width={256}
                     height={256}
-                    className="w-full max-w-100 aspect-square"
+                    className="w-full max-w-80 aspect-square hover:scale-105 duration-1000!"
                 />
-                <span className="text-foreground-5!">
-                    {data.user.role[0].toUpperCase() + data.user.role.substring(1)}
-                </span>
-                <span>{data.profile.bio}</span>
-                <span>{data.profile.status}</span>
-                {status &&
-                    status.user.id !== data.user.id &&
-                    (friends?.some((id) => id === data.user.id) ? (
-                        <Button
-                            onClick={() => {
-                                unfriendMessageBox.show();
-                            }}
-                        >
-                            {promiseStatus(promises.unfriend)}
-                            <Image src="/unfriend.svg" width={16} height={16} alt="unfriend" />
-                            Unfriend
-                        </Button>
-                    ) : hasIncomingRequest ? (
-                        <div className="flex gap-1">
+
+                <div className="flex gap-1 items-center">
+                    <Image width={20} height={20} alt="" src="/privacy.svg" />
+                    <span className="text-foreground-5!">
+                        {data.user.role[0].toUpperCase() + data.user.role.substring(1)}
+                    </span>
+                </div>
+
+                <hr className="w-2/5!"/>
+
+                {(data.profile.bio || data.profile.status) && (
+                    <div className="flex flex-col items-center">
+                        <small className="flex gap-1">
+                            <Image width={16} height={16} alt="" src="/description.svg" />
+                            <span>Info</span>
+                        </small>
+                        <span>{data.profile.bio}</span>
+                        <span>{data.profile.status}</span>
+                    </div>
+                )}
+
+                <div className="flex justify-center items-center w-full min-h-8">
+                    {status &&
+                        status.user.id !== data.user.id &&
+                        (friends?.some((id) => id === data.user.id) ? (
                             <Button
                                 onClick={() => {
-                                    sendFriendRequest(status.user.id, data.user.id);
+                                    unfriendMessageBox.show();
                                 }}
                             >
-                                {promiseStatus(promises.friend_request)}
-                                <Image src="/checkmark.svg" width={16} height={16} alt="accept" />
-                                Accept
+                                {promiseStatus(promises.unfriend)}
+                                <Image src="/unfriend.svg" width={16} height={16} alt="unfriend" />
+                                Unfriend
                             </Button>
-                            <Button
-                                onClick={() => {
-                                    deleteFriendRequest(status.user.id, data.user.id);
-                                }}
-                            >
-                                {promiseStatus(promises.delete_friend_request)}
-                                <Image src="/cross.svg" width={16} height={16} alt="reject" />
-                                Reject
-                            </Button>
-                        </div>
-                    ) : hasOutcomingRequest ? (
-                        <div className="flex gap-1">
-                            <Button isEnabled={false}>
-                                {promiseStatus(promises.friend_request)}
-                                <Image src="/friends.svg" width={16} height={16} alt="sent" />
-                                Sent
-                            </Button>
-                            <Button
-                                onClick={() => {
-                                    deleteFriendRequest(status.user.id, data.user.id);
-                                }}
-                            >
-                                {promiseStatus(promises.delete_friend_request)}
-                                <Image src="/auth.svg" width={16} height={16} alt="reject" />
-                                Cancel
-                            </Button>
-                        </div>
-                    ) : (
-                        <Button
-                            onClick={() => {
-                                sendFriendRequest(status.user.id, data.user.id);
-                            }}
-                        >
-                            {promiseStatus(promises.friend_request)}
-                            <Image src="/plus.svg" width={16} height={16} alt="send" />
-                            Send
-                        </Button>
-                    ))}
+                        ) : hasIncomingRequest ? (
+                            <div className="flex gap-1 items-center">
+                                <Tooltip direction="top" text="Accept this friend request">
+                                    <Button
+                                        onClick={() => {
+                                            sendFriendRequest(status.user.id, data.user.id);
+                                        }}
+                                    >
+                                        {promiseStatus(promises.friend_request)}
+                                        <Image
+                                            src="/checkmark.svg"
+                                            width={16}
+                                            height={16}
+                                            alt="accept"
+                                        />
+                                        Accept
+                                    </Button>
+                                </Tooltip>
+
+                                <Tooltip direction="top" text="Reject this friend request">
+                                    <Button
+                                        onClick={() => {
+                                            deleteFriendRequest(status.user.id, data.user.id);
+                                        }}
+                                    >
+                                        {promiseStatus(promises.delete_friend_request)}
+                                        <Image
+                                            src="/cross.svg"
+                                            width={16}
+                                            height={16}
+                                            alt="reject"
+                                        />
+                                        Reject
+                                    </Button>
+                                </Tooltip>
+                            </div>
+                        ) : hasOutcomingRequest ? (
+                            <div className="flex gap-1">
+                                <Tooltip
+                                    direction="top"
+                                    text={`Wait for ${data.user.username} to respond`}
+                                >
+                                    <Button isEnabled={false}>
+                                        {promiseStatus(promises.friend_request)}
+                                        <Image
+                                            src="/friends.svg"
+                                            width={16}
+                                            height={16}
+                                            alt="sent"
+                                        />
+                                        Sent
+                                    </Button>
+                                </Tooltip>
+
+                                <Tooltip direction="top" text="Unsend this request">
+                                    <Button
+                                        onClick={() => {
+                                            deleteFriendRequest(status.user.id, data.user.id);
+                                        }}
+                                    >
+                                        {promiseStatus(promises.delete_friend_request)}
+                                        <Image
+                                            src="/auth.svg"
+                                            width={16}
+                                            height={16}
+                                            alt="reject"
+                                        />
+                                        Cancel
+                                    </Button>
+                                </Tooltip>
+                            </div>
+                        ) : (
+                            <Tooltip direction="top" text="Send a friend request">
+                                <Button
+                                    onClick={() => {
+                                        sendFriendRequest(status.user.id, data.user.id);
+                                    }}
+                                >
+                                    {promiseStatus(promises.friend_request)}
+                                    <Image src="/plus.svg" width={16} height={16} alt="send" />
+                                    Send
+                                </Button>
+                            </Tooltip>
+                        ))}
+                </div>
             </div>
         </div>
     );

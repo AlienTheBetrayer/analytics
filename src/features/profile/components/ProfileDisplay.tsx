@@ -13,7 +13,7 @@ export const ProfileDisplay = ({ data }: Props) => {
 	return (
 		<LinkButton
 			href={`/profile/${data.user.username}`}
-			className="flex justify-start p-4! gap-2 h-full rounded-3xl!"
+			className="flex justify-start p-4! gap-2! h-full rounded-4xl!"
 			style={data.profile.color ? { borderColor: `${data.profile.color}` } : {}}
 		>
 			<ProfileImage profile={data.profile} width={40} height={40} />

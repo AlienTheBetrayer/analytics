@@ -90,7 +90,7 @@ export const UserProfile = () => {
 
     return (
         <div
-            className={`box max-w-5xl w-full m-auto min-h-128 p-0! rounded-3xl! overflow-hidden`}
+            className={`box max-w-5xl w-full m-auto min-h-140 p-0! rounded-3xl! overflow-hidden`}
             style={
                 data.profile.color
                     ? {

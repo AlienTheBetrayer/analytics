@@ -24,20 +24,23 @@ export const MessageBox = ({
 			exit={{ opacity: 0 }}
 			className="flex flex-col justify-between items-center z-999 fixed
              left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 rounded-4xl
-              outline-2 outline-background-5 bg-background-a-2 backdrop-blur-xl p-4 gap-2 min-h-42 w-72"
+              outline-2 outline-background-a-5 bg-background-a-0 backdrop-blur-xl p-4 gap-2 min-h-42 w-72"
 		>
 			<span className="text-center text-5! text-foreground-4!">
 				<u>{title}</u>
 			</span>
 
 			<span className="text-center w-full">{description}</span>
-			<hr />
+			
+            <hr />
+
 			<div className="grid grid-cols-2 w-full gap-2">
 				<Tooltip text="Confirm" className='w-full'>
 					<Button onClick={() => onInteract("yes")} className="w-full">
 						Yes
 					</Button>
 				</Tooltip>
+
 				<Tooltip text="Reject" className='w-full'>
 					<Button onClick={() => onInteract("no")} className="w-full">
 						No

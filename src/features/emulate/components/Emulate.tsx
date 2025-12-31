@@ -32,16 +32,16 @@ export const Emulate = () => {
     // no data fetched
     if (data === undefined) {
         return (
-            <div className="flex flex-col w-full max-w-72 m-auto box">
+            <div className="flex flex-col w-full mt-16 max-w-xl p-6! rounded-4xl! gap-4! m-auto box">
                 <FetchPrompt />
             </div>
         );
     }
-
+    
     // data is fetched and project at the id is not fetched
     if (id !== undefined && data[id] === undefined) {
         return (
-            <div className="flex flex-col w-full max-w-72 m-auto box">
+            <div className="flex flex-col w-full max-w-2xl m-auto box">
                 <FetchPrompt />
                 <hr />
                 <ProjectList data={data} />
@@ -50,7 +50,7 @@ export const Emulate = () => {
     }
 
     return (
-        <div className="flex flex-col w-full max-w-lg box m-auto">
+        <div className="flex flex-col w-full max-w-3xl p-6! rounded-4xl! gap-4! box m-auto">
             <div className="flex flex-col gap-2">
                 <div className="flex flex-wrap">
                     <Button

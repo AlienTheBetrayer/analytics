@@ -2,6 +2,7 @@ import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { promiseStatus } from "@/utils/status";
 import { useAppStore } from "@/zustand/store";
+import Image from "next/image";
 
 export const FetchPrompt = () => {
 	// zustand state
@@ -22,16 +23,19 @@ export const FetchPrompt = () => {
 			</div>
 
 			<hr />
-			<div className="flex flex-col gap-2">
+			<div className="flex flex-col gap-1">
 				<Button
 					onClick={() => {
                         syncData();
 					}}
 				>
 					{promiseStatus(promises.projects)}
+                    <Image width={16} height={16} alt='' src="/download.svg"/>
 					Fetch
 				</Button>
+
 				<LinkButton href="/dashboard">
+                    <Image width={16} height={16} alt='' src="/dashboard.svg"/>
 					Go to dashboard
 				</LinkButton>
 			</div>

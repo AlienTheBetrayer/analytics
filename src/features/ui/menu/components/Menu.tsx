@@ -25,8 +25,8 @@ export const Menu = ({ items, value, type = "default", color }: Props) => {
 									controller.buttonRefs.current[idx] = el;
 								}}
 								onClick={() => controller.select(idx)}
-								className={`p-2! w-full rounded-none outline-0! border-0! duration-300 ease-out bg-transparent hover:bg-background-2! active:bg-background-3!
-                                ${controller.selectedItem === idx ? "bg-background-1! brightness-200" : ""}`}
+								className={`p-2! w-full rounded-none border-0! border-b-2!
+                                ${controller.selectedItem === idx ? "brightness-200" : ""}`}
 							>
 								{item.titleElement}
 							</Button>
@@ -36,9 +36,9 @@ export const Menu = ({ items, value, type = "default", color }: Props) => {
 								ref={(el) => {
 									controller.buttonRefs.current[idx] = el;
 								}}
-								className={`p-2! w-full rounded-none! outline-0! border-0! duration-300 ease-out 
-                                    focus-visible:bg-background-4! bg-transparent! hover:bg-background-4! active:bg-background-5!
-                                ${controller.selectedItem === idx ? "bg-background-3! brightness-175" : ""}`}
+								className={`p-2! rounded-none! border-0! border-b-2! 
+                                    
+                                ${controller.selectedItem === idx ? "brightness-200" : ""}`}
 							>
 								{item.titleElement}
 							</LinkButton>
