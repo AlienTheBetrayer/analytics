@@ -57,7 +57,7 @@ export const Edit = ({ data }: Props) => {
 	);
 
 	return (
-		<div className="flex flex-col gap-4 p-4 w-full">
+		<div className="flex flex-col gap-4 p-8 w-full">
 			{deleteAvatarMessageBox.render()}
 			<div className="flex flex-col gap-2 items-center">
 				<span className="text-foreground-2! text-5!">

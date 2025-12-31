@@ -43,7 +43,7 @@ export const Friends = ({ data }: Props) => {
 	);
 
 	return (
-		<div className="flex flex-col gap-4 p-4 w-full">
+		<div className="flex flex-col gap-4 p-8 w-full">
 			{unfriendMessageBox.render()}
 			<div className="flex flex-col gap-2 items-center">
 				<span className="text-center text-foreground-2! text-5!">

@@ -68,7 +68,7 @@ export const Security = ({ data }: Props) => {
     );
 
     return (
-        <div className="flex flex-col gap-4 p-4 w-full">
+        <div className="flex flex-col gap-4 p-8 w-full">
             {deleteMessageBox.render()}
             {terminateMessageBox.render()}
 

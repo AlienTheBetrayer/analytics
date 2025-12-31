@@ -53,7 +53,7 @@ export const Overview = ({ data }: Props) => {
     }, [friendRequests, status, data]);
 
     return (
-        <div className="flex flex-col gap-4 p-4 w-full grow relative">
+        <div className="flex flex-col gap-4 p-8 w-full grow relative">
             {unfriendMessageBox.render()}
 
             <div className="flex flex-col gap-2 items-center">

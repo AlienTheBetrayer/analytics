@@ -12,7 +12,7 @@ export const FetchPrompt = () => {
     const syncData = useAppStore(state => state.syncData);
 
 	return (
-		<div className="flex flex-col gap-4">
+		<div className="flex flex-col gap-4 p-6! rounded-4xl!">
 			<div className="flex flex-col gap-2">
 				<span className="text-center text-foreground-2! text-5!">
 					Fetch required

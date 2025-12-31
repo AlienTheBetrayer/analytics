@@ -41,7 +41,7 @@ export const Emulate = () => {
     // data is fetched and project at the id is not fetched
     if (id !== undefined && data[id] === undefined) {
         return (
-            <div className="flex flex-col w-full max-w-2xl m-auto box">
+            <div className="flex flex-col w-full max-w-2xl m-auto box p-6! rounded-4xl!">
                 <FetchPrompt />
                 <hr />
                 <ProjectList data={data} />
