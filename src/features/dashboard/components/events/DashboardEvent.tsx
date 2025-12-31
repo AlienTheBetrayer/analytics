@@ -14,11 +14,12 @@ type Props = {
 
 export const DashboardEvent = ({ event }: Props) => {
     // zustand state
-    const promises = useAppStore(state => state.promises);
+    const promises = useAppStore((state) => state.promises);
+    const status = useAppStore((state) => state.status);
 
     // zustand functions
-    const deleteEvent = useAppStore(state => state.deleteEvent);
-    
+    const deleteEvent = useAppStore((state) => state.deleteEvent);
+
     return (
         <Tooltip
             text={event.description ?? "No description"}
@@ -49,10 +50,19 @@ export const DashboardEvent = ({ event }: Props) => {
                     image="/calendar.svg"
                 />
 
-                <Tooltip text="Delete this event" className="w-full" direction="left">
-                    <Button className="w-full" onClick={() => {
-                        deleteEvent(event.id);
-                    }}>
+                <Tooltip
+                    text="Delete this event"
+                    className="w-full"
+                    direction="left"
+                    isEnabled={status?.user.role !== "user"}
+                >
+                    <Button
+                        isEnabled={status?.user.role !== "user"}
+                        className="w-full"
+                        onClick={() => {
+                            deleteEvent(event.id);
+                        }}
+                    >
                         {promiseStatus(promises[`event_delete_${event.id}`])}
                         <Image width={16} height={16} alt="" src="/delete.svg" />
                         Delete
