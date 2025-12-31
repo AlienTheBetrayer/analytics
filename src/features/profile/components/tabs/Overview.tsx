@@ -11,6 +11,7 @@ import { useAppStore } from "@/zustand/store";
 import { ProfileImage } from "../ProfileImage";
 import { relativeTime } from "@/utils/relativeTime";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
+import { RoleEditing } from "../RoleEditing";
 
 type Props = {
     data: { profile: Profile; user: User };
@@ -57,7 +58,7 @@ export const Overview = ({ data }: Props) => {
             {unfriendMessageBox.render()}
 
             <div className="flex flex-col gap-2 items-center">
-                <div className="flex w-full justify-between items-center relative">
+                <div className="flex w-full justify-between items-center relative flex-wrap">
                     {data.user.id !== status?.user.id && (
                         <div className="flex gap-1 items-center">
                             <Image width={16} height={16} alt="" src="/calendar.svg" />
@@ -81,14 +82,28 @@ export const Overview = ({ data }: Props) => {
                         </span>
                     </div>
 
-                    {status && status.user.id !== data.user.id && (
-                        <Tooltip text="Go back to your friends tab">
-                            <LinkButton href={`/profile/${status.user.username}/friends`}>
-                                <Image width={16} height={16} alt="" src="/back.svg" />
-                                <span>Back</span>
-                            </LinkButton>
-                        </Tooltip>
-                    )}
+                    <div className="flex gap-1 items-center">
+                        {status && status.user.role === "op" && (
+                            <Tooltip
+                                type="modal"
+                                disabledPointer={false}
+                                element={<RoleEditing data={data} />}
+                            >
+                                <Button>
+                                    <Image width={16} height={16} alt="" src="/cube.svg" />
+                                </Button>
+                            </Tooltip>
+                        )}
+
+                        {status && status.user.id !== data.user.id && (
+                            <Tooltip text="Go back to your friends tab">
+                                <LinkButton href={`/profile/${status.user.username}/friends`}>
+                                    <Image width={16} height={16} alt="" src="/back.svg" />
+                                    <span>Back</span>
+                                </LinkButton>
+                            </Tooltip>
+                        )}
+                    </div>
                 </div>
 
                 <span>Profile overview</span>

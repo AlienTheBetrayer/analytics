@@ -4,147 +4,155 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 export const useInputSelect = (
-	items: string[],
-	value: string | undefined,
-	onChange?: (item: string) => void,
+    items: string[],
+    value: string | undefined,
+    onChange?: (item: string) => void,
 ) => {
-	// states
-	const [isExpanded, setIsExpanded] = useState<boolean>(false);
-	const [selectedItem, setSelectedItem] = useState<string>(
-		items.length > 0 ? items[0] : "",
-	);
+    // states
+    const [isExpanded, setIsExpanded] = useState<boolean>(false);
+    const [selectedItem, setSelectedItem] = useState<string>(items.length > 0 ? items[0] : "");
 
-	// derived from state
-	const inputValue = (value as string | undefined) ?? selectedItem;
+    // derived from state
+    const inputValue = (value as string | undefined) ?? selectedItem;
 
-	// refs
-	const inputRef = useRef<HTMLButtonElement | null>(null);
-	const expandRef = useRef<HTMLUListElement | null>(null);
+    // refs
+    const inputRef = useRef<HTMLButtonElement | null>(null);
+    const expandRef = useRef<HTMLUListElement | null>(null);
 
-	// position calculating
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <recalculate on expand open>
-	useEffect(() => {
-		const handle = () => {
-			if (!(inputRef.current && expandRef.current)) return;
+    // position calculating
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <recalculate on expand open>
+    useEffect(() => {
+        const handle = () => {
+            if (!(inputRef.current && expandRef.current)) return;
 
-			const inputBounds = inputRef.current.getBoundingClientRect();
+            const inputBounds = inputRef.current.getBoundingClientRect();
 
-			expandRef.current.style.left = `${inputBounds.left}px`;
-			expandRef.current.style.width = `${inputBounds.width}px`;
-			expandRef.current.style.top = `${inputBounds.top + inputBounds.height}px`;
-		};
-		handle();
+            expandRef.current.style.left = `${inputBounds.left}px`;
+            expandRef.current.style.width = `${inputBounds.width}px`;
+            expandRef.current.style.top = `${inputBounds.top + inputBounds.height + window.scrollY}px`;
+        };
+        handle();
 
-		window.addEventListener("resize", handle);
-		return () => window.removeEventListener("resize", handle);
-	}, [isExpanded]);
+        window.addEventListener("resize", handle);
+        return () => window.removeEventListener("resize", handle);
+    }, [isExpanded]);
 
-	// hotkeys
-	useEffect(() => {
-		const handle = (e: KeyboardEvent) => {
-			switch (e.code) {
-				case "Escape":
-					inputRef.current?.blur();
-					setIsExpanded(false);
-					break;
-			}
-		};
+    // hotkeys
+    useEffect(() => {
+        const handle = (e: KeyboardEvent) => {
+            switch (e.code) {
+                case "Escape":
+                    inputRef.current?.blur();
+                    setIsExpanded(false);
+                    break;
+            }
+        };
 
-		window.addEventListener("keydown", handle);
-		return () => window.removeEventListener("keydown", handle);
-	}, []);
+        window.addEventListener("keydown", handle);
+        return () => window.removeEventListener("keydown", handle);
+    }, []);
 
-	// click away
-	useEffect(() => {
-		const handle = (e: PointerEvent) => {
-			if (!(inputRef.current && expandRef.current)) return;
+    // click away
+    useEffect(() => {
+        const handle = (e: PointerEvent) => {
+            if (!(inputRef.current && expandRef.current)) return;
 
-			const el = e.target as HTMLElement;
+            const el = e.target as HTMLElement;
 
-			if (!(inputRef.current.contains(el) || expandRef.current.contains(el))) {
-				setIsExpanded(false);
-			}
-		};
+            if (!(inputRef.current.contains(el) || expandRef.current.contains(el))) {
+                setIsExpanded(false);
+            }
+        };
 
-		window.addEventListener("pointerdown", handle);
-		return () => window.removeEventListener("pointerdown", handle);
-	}, []);
+        window.addEventListener("pointerdown", handle);
+        return () => window.removeEventListener("pointerdown", handle);
+    }, []);
 
-	const render = useCallback(() => {
-		return createPortal(
-			<AnimatePresence>
-				{isExpanded && (
-					<motion.ul
-						className="absolute flex flex-col-reverse overflow-hidden rounded-xl border-2 border-background-5"
-						ref={expandRef}
-						initial={{ height: "0px" }}
-						animate={{ height: "auto" }}
-						exit={{ height: "0px" }}
-						transition={{ type: "spring", stiffness: 200, damping: 30 }}
-					>
-						{items.map((item) => (
-							<li key={item} className="w-full">
-								<button
-									type="button"
-									className={`flex w-full items-center bg-linear-to-bl 
-            from-background-a-2 to-background-a-1 backdrop-blur-xl p-2 focus:border-blue-1 
+    const render = useCallback(() => {
+        return createPortal(
+            <AnimatePresence>
+                {isExpanded && (
+                    <motion.ul
+                        className="absolute flex flex-col-reverse z-1001 overflow-hidden rounded-xl border-2 border-background-5"
+                        ref={expandRef}
+                        initial={{ height: "0px" }}
+                        animate={{ height: "auto" }}
+                        exit={{ height: "0px" }}
+                        transition={{ type: "spring", stiffness: 200, damping: 30 }}
+                    >
+                        {items.map((item) => (
+                            <li key={item} className="w-full">
+                                <button
+                                    type="button"
+                                    className={`flex w-full items-center bg-linear-to-bl 
+            from-background-a-2 to-background-a-1 backdrop-blur-xl p-2  focus:border-blue-1 
              hover:brightness-125 transition-colors duration-300 ease-out cursor-pointer ${item === inputValue ? "brightness-200" : ""}`}
-									onClick={() => {
-										value === undefined
-											? setSelectedItem(item)
-											: onChange?.(item);
-										setIsExpanded(false);
-									}}
-								>
-									{item}
-									{item === inputValue && (
-										<Image
-											src="/checkmark.svg"
-											width={10}
-											height={10}
-											alt="selected"
-											className="ml-auto"
-										/>
-									)}
-								</button>
-							</li>
-						))}
-					</motion.ul>
-				)}
-			</AnimatePresence>,
-			document.body,
-		);
-	}, [items, isExpanded, onChange, value, inputValue]);
+                                    onClick={() => {
+                                        if (value) {
+                                            onChange?.(item);
+                                        } else {
+                                            setSelectedItem(item);
+                                        }
+                                        setIsExpanded(false);
+                                    }}
+                                >
+                                    {item}
+                                    {item === inputValue && (
+                                        <Image
+                                            src="/checkmark.svg"
+                                            width={10}
+                                            height={10}
+                                            alt="selected"
+                                            className="ml-auto"
+                                        />
+                                    )}
+                                </button>
+                            </li>
+                        ))}
+                    </motion.ul>
+                )}
+            </AnimatePresence>,
+            document.body,
+        );
+    }, [items, isExpanded, onChange, value, inputValue]);
 
-	const expandToggle = useCallback(() => {
-		setIsExpanded((prev) => !prev);
-	}, []);
+    const expandToggle = useCallback(() => {
+        setIsExpanded((prev) => !prev);
+    }, []);
 
-	const keyDown = useCallback(
-		(e: React.KeyboardEvent<HTMLButtonElement>) => {
-			const id = items.indexOf(inputValue);
+    const keyDown = useCallback(
+        (e: React.KeyboardEvent<HTMLButtonElement>) => {
+            const id = items.indexOf(inputValue);
 
-			switch (e.code) {
-				case "ArrowUp": {
-					const item = items[id + 1 < items.length ? id + 1 : 0];
-					value === undefined ? setSelectedItem(item) : onChange?.(item);
-					break;
-				}
-				case "ArrowDown": {
-					const item = items[id > 0 ? id - 1 : items.length - 1];
-					value === undefined ? setSelectedItem(item) : onChange?.(item);
-					break;
-				}
-			}
-		},
-		[items, inputValue, value, onChange],
-	);
+            switch (e.code) {
+                case "ArrowUp": {
+                    const item = items[id + 1 < items.length ? id + 1 : 0];
+                    if (value) {
+                        onChange?.(item);
+                    } else {
+                        setSelectedItem(item);
+                    }
+                    break;
+                }
+                case "ArrowDown": {
+                    const item = items[id > 0 ? id - 1 : items.length - 1];
+                    if (value) {
+                        onChange?.(item);
+                    } else {
+                        setSelectedItem(item);
+                    }
+                    break;
+                }
+            }
+        },
+        [items, inputValue, value, onChange],
+    );
 
-	return {
-		inputRef,
-		keyDown,
-		render,
-		expandToggle,
-		inputValue,
-	};
+    return {
+        inputRef,
+        keyDown,
+        render,
+        expandToggle,
+        inputValue,
+    };
 };

@@ -23,7 +23,7 @@ export const HeaderMenu = ({ onInteract }: Props) => {
             animate={{ opacity: 1, pointerEvents: "all" }}
             exit={{ opacity: 0, pointerEvents: "none" }}
             transition={{ duration: 0.5 }}
-            className="fixed z-100 inset-0 bg-background-a-1 backdrop-blur-lg md:hidden w-full h-full overflow-hidden"
+            className="fixed z-100 inset-0 bg-background-a-1 backdrop-blur-3xl md:hidden w-full h-full overflow-hidden"
             onClick={onInteract}
         >
             <ul className="w-full h-full flex flex-col justify-between p-8!">

@@ -408,5 +408,13 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
                 return res;
             });
         },
+
+        changeRole: async (id: string, role: string) => {
+            const { setPromise } = get();
+
+            return await setPromise("role_change", async() => {
+                return await refreshedRequest("/api/role-change", "POST", { id, role });
+            }); 
+        }
     };
 };

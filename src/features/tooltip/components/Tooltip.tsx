@@ -83,20 +83,28 @@ export const Tooltip = ({
         }
 
         const handle = (e: PointerEvent) => {
-            if (
-                !tooltipRef.current ||
-                !elementRef.current ||
-                !(e.target instanceof Node) ||
-                !isShown ||
-                !hasPositioned.current
-            ) {
+            if (!tooltipRef.current || !elementRef.current || !isShown || !hasPositioned.current) {
                 return;
             }
 
-            const contains =
-                tooltipRef.current.contains(e.target) || elementRef.current.contains(e.target);
+            const x = e.clientX;
+            const y = e.clientY;
 
-            if (!contains) {
+            const tooltipBounds = tooltipRef.current.getBoundingClientRect();
+            const tooltipContains =
+                x > tooltipBounds.left &&
+                x < tooltipBounds.right &&
+                y > tooltipBounds.top &&
+                y < tooltipBounds.bottom;
+
+            const elementBounds = elementRef.current.getBoundingClientRect();
+            const elementContains =
+                x > elementBounds.left &&
+                x < elementBounds.right &&
+                y > elementBounds.top &&
+                y < elementBounds.bottom;
+
+            if (!tooltipContains && !elementContains) {
                 setIsShown(false);
             }
         };
@@ -165,19 +173,11 @@ export const Tooltip = ({
                 <AnimatePresence>
                     {isShown && (
                         <motion.div
-                            className="absolute hidden z-9999 p-1"
+                            className="absolute hidden z-1000 p-1"
                             ref={tooltipRef}
                             initial={{ pointerEvents: !disabledPointer ? "all" : "none" }}
                             exit={{ pointerEvents: "none" }}
-                            onBlur={(e) => {
-                                if (
-                                    !disabledPointer &&
-                                    !tooltipRef.current?.contains(e.target) &&
-                                    !elementRef.current?.contains(e.target)
-                                ) {
-                                    setIsShown(false);
-                                }
-                            }}
+
                             onPointerEnter={() => {
                                 if (!disabledPointer && type === "tooltip") {
                                     setIsShown(true);

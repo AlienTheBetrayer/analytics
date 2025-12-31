@@ -238,14 +238,14 @@ img {
 	display: flex;
 	flex-direction: column;
 	gap: 0.5rem;
-	padding: 1rem;
+	padding: 1.5rem;
 	background: linear-gradient(
 		137deg,
 		var(--background-a-8),
 		hsla(0, 0%, 0%, 0.9)
 	);
-	backdrop-filter: blur(0.8rem);
-	border-radius: 1rem;
+	backdrop-filter: blur(0.75rem);
+	border-radius: 2rem;
 	border: 1px solid var(--background-a-5);
 }
 
@@ -258,7 +258,7 @@ img {
 	border: 2px solid var(--background-a-4);
 	min-width: 2rem;
 	min-height: 2rem;
-	padding: 0 0.5rem;
+	padding: 0.4rem 0.4rem;
 	border-radius: 1000;
 	background: var(--background-a-0);
     backdrop-filter: blur(1rem);

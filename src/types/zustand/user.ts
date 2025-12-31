@@ -153,4 +153,12 @@ export type UserStore = {
      * @returns a promise containing the response
      */
     setColors: (id: string, data: { slot: number, color: string}[] ) => Promise<ResponseAxios | undefined>;
+
+    /**
+     * changes the user's role and permissions with it
+     * @param id the id of the user
+     * @param role the role
+     * @returns a promise containing the response
+     */
+    changeRole: (id: string, role: string) => Promise<ResponseAxios>;
 };
