@@ -3,6 +3,7 @@ import type { NextRequest } from "next/server";
 import { supabaseServer } from "@/server/private/supabase";
 import type { Profile } from "@/types/api/database/profiles";
 import { nextResponse } from "@/utils/response";
+import { tokenVerify } from "@/utils/tokenVerify";
 
 export const POST = async (request: NextRequest) => {
 	try {
@@ -12,6 +13,8 @@ export const POST = async (request: NextRequest) => {
 		if (user_id === undefined) {
 			return nextResponse({ error: "user_id is missing." }, 400);
 		}
+
+        tokenVerify(request, user_id);
 
 		let profileAvatar = avatar;
 

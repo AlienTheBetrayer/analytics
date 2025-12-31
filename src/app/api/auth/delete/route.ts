@@ -1,6 +1,7 @@
 import type { NextRequest } from "next/server";
 import { supabaseServer } from "@/server/private/supabase";
 import { nextResponse } from "@/utils/response";
+import { tokenVerify } from "@/utils/tokenVerify";
 
 export const POST = async (request: NextRequest) => {
 	try {
@@ -9,6 +10,8 @@ export const POST = async (request: NextRequest) => {
 		if (id === undefined) {
 			return nextResponse({ error: "id is missing." }, 400);
 		}
+
+        tokenVerify(request, id);
 
         // deleting profile images
 		const { data: avatarData, error: avatarError } =

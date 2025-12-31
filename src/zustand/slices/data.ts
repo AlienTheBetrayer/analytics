@@ -4,7 +4,6 @@ import type { Project } from "@/types/api/database/projects";
 import type { Data, DataStore } from "@/types/zustand/data";
 import type { SliceFunction } from "@/types/zustand/utils/sliceFunction";
 import { refreshedRequest } from "@/utils/refreshedRequest";
-import axios from "axios";
 
 export const DataSlice: SliceFunction<DataStore> = (set, get) => {
     return {
@@ -123,7 +122,9 @@ export const DataSlice: SliceFunction<DataStore> = (set, get) => {
             const { setPromise } = get();
 
             return await setPromise("project_delete", async () => {
-                const res = await axios.post("/api/analytics/delete-project/", { project_id: id });
+                const res = await refreshedRequest("/api/analytics/delete-project/", "POST", {
+                    project_id: id,
+                });
 
                 set((state) => {
                     const data = { ...state.data };
@@ -140,7 +141,7 @@ export const DataSlice: SliceFunction<DataStore> = (set, get) => {
             const { setPromise } = get();
 
             return await setPromise(`event_delete_${id}`, async () => {
-                const res = await axios.post("/api/analytics/delete-event/", { id });
+                const res = await refreshedRequest("/api/analytics/delete-event/", "POST", { id });
 
                 set((state) => {
                     const data = { ...state.data };
@@ -161,7 +162,7 @@ export const DataSlice: SliceFunction<DataStore> = (set, get) => {
             const { setPromise } = get();
 
             return await setPromise("emulate", async () => {
-                const res = await axios.post("/api/analytics/send", {
+                const res = await refreshedRequest("/api/analytics/send", "POST", {
                     project_name,
                     event_type,
                     description,
@@ -172,14 +173,16 @@ export const DataSlice: SliceFunction<DataStore> = (set, get) => {
         },
 
         syncData: async () => {
-            const { setPromise, updateProjectList, emptyData } = get();
+            const { setPromise, emptyData } = get();
             emptyData();
 
             const { data: stateData } = get();
 
             return await setPromise("sync", async () => {
-                await updateProjectList(false);
-                const res = await axios.get("/api/sync");
+                const projects = (await refreshedRequest("/api/analytics/projects/", "GET"))
+                    .data as Project[];
+
+                const res = await refreshedRequest("/api/sync", "GET");
                 const data = res.data as (Analytics & { event: AnalyticsMeta; project: Project })[];
 
                 set((state) => {
@@ -199,6 +202,13 @@ export const DataSlice: SliceFunction<DataStore> = (set, get) => {
                             ...newData[entry.project.id].events,
                             entry.event,
                         ];
+                    }
+
+                    const valuesData = Object.values(newData);
+                    for (const project of Object.values(projects)) {
+                        if (!valuesData.find((v) => v.project.id === project.id)) {
+                            newData[project.id] = { events: [], project };
+                        }
                     }
 
                     return { ...state, data: newData };

@@ -1,13 +1,16 @@
 import type { NextRequest } from "next/server";
 import { supabaseServer } from "@/server/private/supabase";
 import { nextResponse } from "@/utils/response";
+import { tokenVerify } from "@/utils/tokenVerify";
 
 export const POST = async (
-	_request: NextRequest,
+	request: NextRequest,
 	{ params }: { params: Promise<{ id: string }> },
 ) => {
 	try {
 		const { id } = await params;
+
+        tokenVerify(request, id);
 
 		const { error: logoutError } = await supabaseServer
 			.from("tokens")

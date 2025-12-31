@@ -5,9 +5,9 @@ import { nextResponse } from "@/utils/response";
 
 export const POST = async (request: NextRequest) => {
 	try {
-		const refreshToken = request.cookies.get("refreshToken")?.value;
+		const accessToken = request.cookies.get("accessToken")?.value;
 
-		if (refreshToken === undefined) {
+		if (accessToken === undefined) {
 			return nextResponse({ error: "Not logged in." }, 400);
 		}
 
@@ -15,31 +15,31 @@ export const POST = async (request: NextRequest) => {
 		const type = params.get("type") ?? "all";
 
 		const payload = jwt.verify(
-			refreshToken,
-			process.env.REFRESH_SECRET as string,
+			accessToken,
+			process.env.ACCESS_SECRET as string,
 		) as { id: string; role: string; session_id: string };
 
 		switch (type) {
 			case "all": {
-				const { error: refreshError } = await supabaseServer
+				const { error: accessError } = await supabaseServer
 					.from("tokens")
 					.delete()
 					.eq("user_id", payload.id);
 
-				if (refreshError) {
-					return nextResponse(refreshError, 400);
+				if (accessError) {
+					return nextResponse(accessError, 400);
 				}
 				break;
 			}
 			case "other": {
-				const { error: refreshError } = await supabaseServer
+				const { error: accessError } = await supabaseServer
 					.from("tokens")
 					.delete()
 					.eq("user_id", payload.id)
 					.neq("session_id", payload.session_id);
 
-				if (refreshError) {
-					return nextResponse(refreshError, 400);
+				if (accessError) {
+					return nextResponse(accessError, 400);
 				}
 
 				break;

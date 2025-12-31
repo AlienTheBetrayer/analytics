@@ -1,6 +1,7 @@
 import type { NextRequest } from "next/server";
 import { supabaseServer } from "@/server/private/supabase";
 import { nextResponse } from "@/utils/response";
+import { tokenVerify } from "@/utils/tokenVerify";
 
 export const POST = async (request: NextRequest) => {
 	try {
@@ -16,6 +17,8 @@ export const POST = async (request: NextRequest) => {
 				400,
 			);
 		}
+
+        tokenVerify(request, from_id);
 
 		// checking if we're already friends - reject
 		const { data: alreadyData, error: alreadyError } = await supabaseServer

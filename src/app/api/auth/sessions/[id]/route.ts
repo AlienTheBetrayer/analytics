@@ -4,6 +4,7 @@ import type { NextRequest } from "next/server";
 import { supabaseServer } from "@/server/private/supabase";
 import type { Token } from "@/types/api/database/authentication";
 import { nextResponse } from "@/utils/response";
+import { tokenVerify } from "@/utils/tokenVerify";
 
 export const GET = async (
 	request: NextRequest,
@@ -11,6 +12,8 @@ export const GET = async (
 ) => {
 	try {
 		const id = (await params).id;
+
+        tokenVerify(request, id);
 
 		const { data: sessionsData, error: sessionsError } = (await supabaseServer
 			.from("tokens")

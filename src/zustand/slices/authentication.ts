@@ -1,6 +1,7 @@
 import axios from "axios";
 import type { AuthenticationSession, AuthenticationStore } from "@/types/zustand/authentication";
 import type { SliceFunction } from "@/types/zustand/utils/sliceFunction";
+import { refreshedRequest } from "@/utils/refreshedRequest";
 
 export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (set, get) => {
     return {
@@ -43,7 +44,7 @@ export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (set, get
             const { setPromise, status } = get();
 
             return await setPromise("logout", async () => {
-                const res = await axios.post("/api/auth/logout");
+                const res = await refreshedRequest("/api/auth/logout", "POST");
                 set((state) => {
                     const newProfiles = { ...(state.profiles ?? {}) };
                     if (status !== undefined) {
@@ -52,11 +53,11 @@ export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (set, get
 
                     return {
                         ...state,
+                        profiles: newProfiles,
                         status: undefined,
                         sessions: undefined,
                         friends: undefined,
                         cached: undefined,
-                        profiles: newProfiles,
                         colors: undefined,
                     };
                 });
@@ -91,7 +92,7 @@ export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (set, get
             const { setPromise } = get();
 
             return await setPromise("delete", async () => {
-                const res = await axios.post("/api/auth/delete", { id });
+                const res = await refreshedRequest("/api/auth/delete", "POST", { id });
 
                 set((state) => {
                     const profiles = { ...state.profiles };
@@ -109,7 +110,7 @@ export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (set, get
             if (caching === true && runningSessions !== undefined) return;
 
             return await setPromise("sessions", async () => {
-                const res = await axios.get(`/api/auth/sessions/${id}`);
+                const res = await refreshedRequest(`/api/auth/sessions/${id}`, "GET");
                 const data = res.data as {
                     sessions: AuthenticationSession[];
                 };
@@ -127,7 +128,7 @@ export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (set, get
             const { setPromise } = get();
 
             return await setPromise(`session_logout_${id}`, async () => {
-                const res = await axios.post(`/api/auth/logout/${id}`);
+                const res = await refreshedRequest(`/api/auth/logout/${id}`, "POST");
 
                 set((state) => ({
                     ...state,
@@ -141,7 +142,7 @@ export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (set, get
         terminateAllSessions: async () => {
             const { setPromise } = get();
             return await setPromise(`sessions_terminate`, async () => {
-                const res = await axios.post(`/api/auth/terminate/`);
+                const res = await refreshedRequest(`/api/auth/terminate/`, "POST");
 
                 set((state) => ({
                     ...state,
@@ -157,7 +158,7 @@ export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (set, get
             const { setPromise } = get();
 
             return await setPromise(`sessions_terminate`, async () => {
-                const res = await axios.post(`/api/auth/terminate?type=other`);
+                const res = await refreshedRequest(`/api/auth/terminate?type=other`, "POST");
 
                 set((state) => ({
                     ...state,
@@ -172,7 +173,10 @@ export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (set, get
             const { setPromise } = get();
 
             return await setPromise(`password_change`, async () => {
-                return await axios.post(`/api/auth/password-change/`, { id, password });
+                return await refreshedRequest(`/api/auth/password-change/`, "POST", {
+                    id,
+                    password,
+                });
             });
         },
     };

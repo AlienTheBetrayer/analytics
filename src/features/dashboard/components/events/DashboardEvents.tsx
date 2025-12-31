@@ -36,7 +36,7 @@ export const DashboardEvents = () => {
         );
     }
 
-    if (data?.[selectedProjectId]?.events.length === 0) {
+    if (data?.[selectedProjectId]?.events?.length === 0) {
         return (
             <div className="flex flex-col gap-4 h-64 max-h-64 relative">
                 <span className="m-auto">No events so far...</span>
@@ -50,7 +50,7 @@ export const DashboardEvents = () => {
     return (
         <div className="flex flex-col gap-4 h-64 max-h-64 relative">
             <hr className="block! lg:hidden!" />
-            <DashboardEventList events={data[selectedProjectId].events} scrollRef={scroll.ref} />
+            <DashboardEventList events={data[selectedProjectId]?.events} scrollRef={scroll.ref} />
             <DashboardScrollTop isVisible={hasScrolledEnough} scrollRef={scroll.ref} />
         </div>
     );

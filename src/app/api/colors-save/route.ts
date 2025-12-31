@@ -1,6 +1,7 @@
 import type { NextRequest } from "next/server";
 import { supabaseServer } from "@/server/private/supabase";
 import { nextResponse } from "@/utils/response";
+import { tokenVerify } from "@/utils/tokenVerify";
 
 export const POST = async (request: NextRequest) => {
 	try {
@@ -13,6 +14,8 @@ export const POST = async (request: NextRequest) => {
 		if (id === undefined || data === undefined) {
 			return nextResponse({ error: "id and data are missing." }, 400);
 		}
+
+        tokenVerify(request, id);
 
 		const colorsData = data.map(({ slot, color }) => ({
 			user_id: id,

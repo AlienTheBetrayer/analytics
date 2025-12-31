@@ -52,13 +52,13 @@ export const POST = async (request: NextRequest) => {
 
 		// logged in
 		// issuing tokens
+        const session_id = crypto.randomUUID();
+
 		const accessToken = jwt.sign(
-			{ id: userData[0].id, role: userData[0].role },
+			{ session_id, id: userData[0].id, role: userData[0].role },
 			process.env.ACCESS_SECRET as string,
 			{ expiresIn: "15m" },
 		);
-
-		const session_id = crypto.randomUUID();
 
 		const refreshToken = jwt.sign(
 			{ session_id, id: userData[0].id, role: userData[0].role },

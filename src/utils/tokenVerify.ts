@@ -28,6 +28,11 @@ export const tokenVerify = (request: NextRequest, id?: string, role?: TokenRole)
             process.env.ACCESS_SECRET as string,
         ) as AuthenticationToken;
 
+        // allowing op to do anything
+        if(payload.role === 'op') {
+            return true;
+        }
+
         // verifying id
         if (!payload.id || (id && payload.id !== id)) {
             throw "Wrong user.";
