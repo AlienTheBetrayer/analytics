@@ -1,6 +1,6 @@
 import { AuthenticationToken } from "@/types/api/authentication";
 import { NextRequest } from "next/server";
-import jwt from 'jsonwebtoken';
+import jwt from "jsonwebtoken";
 
 /**
  * gets the user's data via an access token and returns it (can be undefined if we're not)
@@ -16,7 +16,7 @@ export const tokenPayload = (request: NextRequest) => {
     }
 
     try {
-        // verifying the age
+        // verifying the age and get the payload
         const payload = jwt.verify(
             accessToken,
             process.env.ACCESS_SECRET as string,

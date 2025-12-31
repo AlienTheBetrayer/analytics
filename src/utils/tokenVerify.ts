@@ -1,7 +1,10 @@
 import { NextRequest } from "next/server";
 import jwt from "jsonwebtoken";
 import { AuthenticationToken } from "@/types/api/authentication";
-import { PermissionRole } from "@/types/api/database/user";
+
+export const TokenRoles = ["user", "admin", "op"];
+
+type TokenRole = (typeof TokenRoles)[number];
 
 /**
  * verifies the user's permissions and throws if they're not aligned
@@ -10,7 +13,7 @@ import { PermissionRole } from "@/types/api/database/user";
  * @param role the role of the user that's required
  * @returns true if permissions are aligned, otherwise throws
  */
-export const tokenVerify = (request: NextRequest, id?: string, role?: PermissionRole) => {
+export const tokenVerify = (request: NextRequest, id?: string, role?: TokenRole) => {
     // checking if refresh token even exists
     const accessToken = request.cookies.get("accessToken")?.value;
 
@@ -25,12 +28,16 @@ export const tokenVerify = (request: NextRequest, id?: string, role?: Permission
             process.env.ACCESS_SECRET as string,
         ) as AuthenticationToken;
 
-        // verifying the id
-        if (id && payload.id !== id) {
+        // verifying id
+        if (!payload.id || (id && payload.id !== id)) {
             throw "Wrong user.";
         }
 
-        if (role && payload.role !== role) {
+        // verifying role
+        if (
+            !payload.role ||
+            (role && TokenRoles.indexOf(payload.role) < TokenRoles.indexOf(role))
+        ) {
             throw "Wrong permissions.";
         }
 

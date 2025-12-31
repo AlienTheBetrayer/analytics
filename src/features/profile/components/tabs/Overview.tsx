@@ -92,13 +92,6 @@ export const Overview = ({ data }: Props) => {
                 </div>
 
                 <span>Profile overview</span>
-                {/* <Button
-                    onClick={() => {
-                        axios.post("/api/attempt", { id: data.user.id });
-                    }}
-                >
-                    Attempt API
-                </Button> */}
             </div>
 
             <hr className="w-2/3! mx-auto" />
@@ -134,7 +127,7 @@ export const Overview = ({ data }: Props) => {
                     </span>
                 </div>
 
-                <hr className="w-2/5!"/>
+                <hr className="w-2/5!" />
 
                 {(data.profile.bio || data.profile.status) && (
                     <div className="flex flex-col items-center">
