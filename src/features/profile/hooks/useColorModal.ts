@@ -15,7 +15,10 @@ export const useColorModal = (data: { profile: Profile; user: User }) => {
 
     // internal states
     const [colors, setColors] = useState<string[]>(
-        Array.from({ length: COLORS_GRID_SIZE * COLORS_GRID_SIZE }, () => "#000000"),
+        Array.from(
+            { length: COLORS_GRID_SIZE * COLORS_GRID_SIZE },
+            () => "#000000"
+        )
     );
 
     // assigning colors to ours
@@ -24,7 +27,9 @@ export const useColorModal = (data: { profile: Profile; user: User }) => {
             requestAnimationFrame(() => {
                 setColors(() => {
                     const colors = [];
-                    for (const [slot, color] of Object.entries(zustandColors[data.user.id])) {
+                    for (const [slot, color] of Object.entries(
+                        zustandColors[data.user.id]
+                    )) {
                         colors[Number(slot)] = color;
                     }
                     return colors;
@@ -43,11 +48,19 @@ export const useColorModal = (data: { profile: Profile; user: User }) => {
     }, []);
 
     const clear = useCallback(() => {
-        setColors(Array.from({ length: COLORS_GRID_SIZE * COLORS_GRID_SIZE }, () => "#000000"));
+        setColors(
+            Array.from(
+                { length: COLORS_GRID_SIZE * COLORS_GRID_SIZE },
+                () => "#000000"
+            )
+        );
     }, []);
 
     const palette = useCallback(() => {
-        const palette = generateColorPalette(COLORS_GRID_SIZE * COLORS_GRID_SIZE, hueRotation);
+        const palette = generateColorPalette(
+            COLORS_GRID_SIZE * COLORS_GRID_SIZE,
+            hueRotation
+        );
         setColors(palette);
     }, [hueRotation]);
 
@@ -69,6 +82,22 @@ export const useColorModal = (data: { profile: Profile; user: User }) => {
         }
     }, [colors, data.user, zustandSetColors, setProfileData, selectedId]);
 
+    const randomSelect = useCallback(() => {
+        let rand = Math.floor(
+            Math.random() * COLORS_GRID_SIZE * COLORS_GRID_SIZE
+        );
+
+        if (rand < 0) {
+            rand = 0;
+        }
+
+        if (rand >= COLORS_GRID_SIZE * COLORS_GRID_SIZE) {
+            rand = COLORS_GRID_SIZE * COLORS_GRID_SIZE - 1;
+        }
+
+        setSelectedId(rand);
+    }, []);
+
     return {
         colors,
         set,
@@ -79,5 +108,6 @@ export const useColorModal = (data: { profile: Profile; user: User }) => {
         clear,
         apply,
         palette,
+        randomSelect,
     };
 };

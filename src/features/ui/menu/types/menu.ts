@@ -5,4 +5,5 @@ export type MenuItem = {
     titleElement: React.ReactNode;
 	element: React.ReactNode;
 	href?: string;
+    tooltip?: string;
 };

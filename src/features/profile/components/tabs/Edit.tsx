@@ -31,7 +31,9 @@ export const Edit = ({ data }: Props) => {
     const [status, setStatus] = useState<string>(data.profile.status ?? "");
     const [name, setName] = useState<string>(data.profile.name ?? "");
     const [bio, setBio] = useState<string>(data.profile.bio ?? "");
-    const [oneliner, setOneliner] = useState<string>(data.profile.oneliner ?? "");
+    const [oneliner, setOneliner] = useState<string>(
+        data.profile.oneliner ?? ""
+    );
 
     // file uploading
     const [fileError, setFileError] = useState<JSX.Element | undefined>();
@@ -70,57 +72,59 @@ export const Edit = ({ data }: Props) => {
             <div className="flex flex-col md:flex-row gap-4 grow w-full">
                 <div className="flex flex-col items-center gap-2 w-full md:max-w-96">
                     <span>{data.profile.name}</span>
-                    <div
-                        style={{
-                            borderColor: data.profile.color,
-                        }}
-                        className="profile-frame relative w-full max-w-64 aspect-square rounded-full overflow-hidden 
+                    <Tooltip text="Change your profile image" direction="top">
+                        <div
+                            style={{
+                                borderColor: data.profile.color,
+                            }}
+                            className="profile-frame relative w-full max-w-64 aspect-square rounded-full overflow-hidden 
                     duration-300 ease-out"
-                    >
-                        <ProfileImage
-                            src={avatarImage}
-                            width={256}
-                            height={256}
-                            profile={data.profile}
-                        />
-
-                        <label
-                            htmlFor="profile-avatar"
-                            className="absolute duration-300 ease-out transition-all border-4 border-transparent 
-                            focus-within:border-blue-1 hover:border-blue-1 left-0 top-0 flex rounded-full w-full h-full aspect-square cursor-pointer z-100"
                         >
-                            <input
-                                onChange={(e) => {
-                                    const file = e.target.files?.[0];
-                                    if (!file) return;
-
-                                    // > 0.5 MB error handling
-                                    if (file.size / 1024 / 1024 > 0.5) {
-                                        setFileError(
-                                            <>
-                                                Size has to be
-                                                <u> less </u>
-                                                than{" "}
-                                                <mark>
-                                                    <b>0.5 MB!</b>
-                                                </mark>
-                                            </>,
-                                        );
-                                        setTimeout(() => {
-                                            setFileError(undefined);
-                                        }, 10000);
-                                        return;
-                                    }
-
-                                    setAvatarFile(file);
-                                }}
-                                id="profile-avatar"
-                                type="file"
-                                accept="image/*"
-                                className="absolute left-0 top-0 w-0 h-0 opacity-0"
+                            <ProfileImage
+                                src={avatarImage}
+                                width={256}
+                                height={256}
+                                profile={data.profile}
                             />
-                        </label>
-                    </div>
+
+                            <label
+                                htmlFor="profile-avatar"
+                                className="absolute duration-300 ease-out transition-all border-4 border-transparent 
+                            focus-within:border-blue-1 hover:border-blue-1 left-0 top-0 flex rounded-full w-full h-full aspect-square cursor-pointer z-100"
+                            >
+                                <input
+                                    onChange={(e) => {
+                                        const file = e.target.files?.[0];
+                                        if (!file) return;
+
+                                        // > 0.5 MB error handling
+                                        if (file.size / 1024 / 1024 > 0.5) {
+                                            setFileError(
+                                                <>
+                                                    Size has to be
+                                                    <u> less </u>
+                                                    than{" "}
+                                                    <mark>
+                                                        <b>0.5 MB!</b>
+                                                    </mark>
+                                                </>
+                                            );
+                                            setTimeout(() => {
+                                                setFileError(undefined);
+                                            }, 10000);
+                                            return;
+                                        }
+
+                                        setAvatarFile(file);
+                                    }}
+                                    id="profile-avatar"
+                                    type="file"
+                                    accept="image/*"
+                                    className="absolute left-0 top-0 w-0 h-0 opacity-0"
+                                />
+                            </label>
+                        </div>
+                    </Tooltip>
 
                     <AnimatePresence>
                         {fileError && (
@@ -136,32 +140,52 @@ export const Edit = ({ data }: Props) => {
                     </AnimatePresence>
 
                     <div className="flex items-center gap-1">
-                        <Image width={20} height={20} alt="" src="/privacy.svg" />
+                        <Image
+                            width={20}
+                            height={20}
+                            alt=""
+                            src="/privacy.svg"
+                        />
                         <span className="text-foreground-5!">
-                            {data.user.role[0].toUpperCase() + data.user.role.substring(1)}
+                            {data.user.role[0].toUpperCase() +
+                                data.user.role.substring(1)}
                         </span>
                     </div>
-                    
+
                     <div className="flex gap-1">
                         {avatarFile ? (
-                            <Button
-                                onClick={() => {
-                                    setAvatarFile(undefined);
-                                }}
-                            >
-                                <Image src="/cross.svg" width={16} height={16} alt="" />
-                                Cancel
-                            </Button>
-                        ) : (
-                            avatar && (
+                            <Tooltip text="Cancel image changing">
                                 <Button
                                     onClick={() => {
-                                        deleteAvatarMessageBox.show();
+                                        setAvatarFile(undefined);
                                     }}
                                 >
-                                    <Image src="/delete.svg" width={16} height={16} alt="" />
-                                    Delete image
+                                    <Image
+                                        src="/cross.svg"
+                                        width={16}
+                                        height={16}
+                                        alt=""
+                                    />
+                                    Cancel
                                 </Button>
+                            </Tooltip>
+                        ) : (
+                            avatar && (
+                                <Tooltip text="Wipe profile image">
+                                    <Button
+                                        onClick={() => {
+                                            deleteAvatarMessageBox.show();
+                                        }}
+                                    >
+                                        <Image
+                                            src="/delete.svg"
+                                            width={16}
+                                            height={16}
+                                            alt=""
+                                        />
+                                        Delete image
+                                    </Button>
+                                </Tooltip>
                             )
                         )}
                     </div>
@@ -180,7 +204,12 @@ export const Edit = ({ data }: Props) => {
                                 getColors(data.user.id);
                             }}
                         >
-                            <Image width={16} height={16} alt="" src="/cube.svg" />
+                            <Image
+                                width={16}
+                                height={16}
+                                alt=""
+                                src="/cube.svg"
+                            />
                             Color panel
                         </Button>
                     </Tooltip>
@@ -208,7 +237,10 @@ export const Edit = ({ data }: Props) => {
                         });
                     }}
                 >
-                    <label htmlFor="bio" className="flex justify-between items-center">
+                    <label
+                        htmlFor="bio"
+                        className="flex justify-between items-center"
+                    >
                         <b>Name</b>
                         <small> (your name, can be fictional)</small>
                     </label>
@@ -220,7 +252,10 @@ export const Edit = ({ data }: Props) => {
                     />
 
                     <hr />
-                    <label htmlFor="bio" className="flex justify-between items-center">
+                    <label
+                        htmlFor="bio"
+                        className="flex justify-between items-center"
+                    >
                         <b>One-liner</b>
                         <small> (a short phrase that feels yours)</small>
                     </label>
@@ -232,7 +267,10 @@ export const Edit = ({ data }: Props) => {
                     />
 
                     <hr />
-                    <label htmlFor="status" className="flex justify-between items-center">
+                    <label
+                        htmlFor="status"
+                        className="flex justify-between items-center"
+                    >
                         <b>Status</b>
                         <small> (a short text capturing your mood)</small>
                     </label>
@@ -245,9 +283,15 @@ export const Edit = ({ data }: Props) => {
                     />
 
                     <hr />
-                    <label htmlFor="bio" className="flex justify-between items-center">
+                    <label
+                        htmlFor="bio"
+                        className="flex justify-between items-center"
+                    >
                         <b>Bio</b>
-                        <small> (a long piece of text, describe yourself)</small>
+                        <small>
+                            {" "}
+                            (a long piece of text, describe yourself)
+                        </small>
                     </label>
                     <Input
                         value={bio}
@@ -257,11 +301,23 @@ export const Edit = ({ data }: Props) => {
                     />
 
                     <hr className="mt-auto" />
-                    <Button type="submit">
-                        {promiseStatus(promises.profile_set)}
-                        <Image src="/send.svg" width={20} height={20} alt="" />
-                        Apply changes
-                    </Button>
+
+                    <Tooltip
+                        text="Save all of your changes"
+                        className="w-full"
+                        direction="top"
+                    >
+                        <Button type="submit" className="w-full">
+                            {promiseStatus(promises.profile_set)}
+                            <Image
+                                src="/send.svg"
+                                width={20}
+                                height={20}
+                                alt=""
+                            />
+                            Apply changes
+                        </Button>
+                    </Tooltip>
                 </form>
             </div>
         </div>

@@ -11,7 +11,7 @@ const RegisterPage = () => {
 
 	return (
 		<main className="w-full h-screen flex flex-col items-center dotted gap-16">
-			{status && status.isLoggedIn === true ? (
+			{status ? (
 				<AlreadyLoggedIn />
 			) : (
 				<>

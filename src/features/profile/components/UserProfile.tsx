@@ -28,7 +28,7 @@ export const UserProfile = () => {
     const getProfileByName = useAppStore((state) => state.getProfileByName);
 
     // user id to fetch data from
-    const retrievedUsername = name ?? status?.user.username;
+    const retrievedUsername = name ?? status?.username;
     const retrievedTab = (tab && ProfileTabs.find((t) => t === tab)) || "overview";
 
     // getting data + status
@@ -99,7 +99,7 @@ export const UserProfile = () => {
                     : {}
             }
         >
-            {data.user.id === status?.user.id || status?.user.role === "op" ? (
+            {data.user.id === status?.id || status?.role === "op" ? (
                 <ProfileEdit data={data} tab={retrievedTab} />
             ) : (
                 <Overview data={data} />

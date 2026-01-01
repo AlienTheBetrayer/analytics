@@ -22,7 +22,7 @@ export const refreshedRequest = async (
 	} catch {
 		try {
             // if internal check fails, we try to refresh the token and attempt it again
-			await axios.post("api/auth/refresh");
+			await axios.post("/api/auth/refresh");
 			return await axios.request({ url: route, data, method: type, ...config });
 		} catch {
             // ultimately if it fails the second time we halt the connection

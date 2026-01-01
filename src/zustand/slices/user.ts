@@ -95,7 +95,7 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
             if ((caching === true && cached?.friends !== undefined) || status === undefined) return;
 
             return await setPromise("friends", async () => {
-                const res = await refreshedRequest(`/api/friends/${status.user.id}`, "GET");
+                const res = await refreshedRequest(`/api/friends/${status.id}`, "GET");
                 const data = res.data as { friends: { id: string }[] };
 
                 set((state) => ({ ...state, friends: data.friends.map((f) => f.id) }));

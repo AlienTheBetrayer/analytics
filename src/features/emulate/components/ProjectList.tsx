@@ -3,6 +3,7 @@ import { useParams } from "next/navigation";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import type { Data } from "@/types/zustand/data";
 import { relativeTime } from "@/utils/relativeTime";
+import { Tooltip } from "@/features/tooltip/components/Tooltip";
 
 type Props = {
     data: Data;
@@ -22,21 +23,35 @@ export const ProjectList = ({ data }: Props) => {
             {data !== undefined &&
                 Object.values(data).map((projectData) => (
                     <li key={projectData.project.name}>
-                        <LinkButton
-                            href={`/dashboard/emulate/${projectData.project.id}`}
-                            className={`flex flex-row! w-full h-full box p-4!
-                            ${projectData.project.id === id ? "border-blue-1!" : ""}`}
+                        <Tooltip
+                            className="w-full"
+                            text={projectData.project.name}
+                            direction='top'
                         >
-                            <Image src="/cube.svg" width={16} height={16} alt="" />
+                            <LinkButton
+                                href={`/dashboard/emulate/${projectData.project.id}`}
+                                className={`flex flex-row! w-full h-full box p-4!
+                            ${projectData.project.id === id ? "border-blue-1!" : ""}`}
+                            >
+                                <Image
+                                    src="/cube.svg"
+                                    width={16}
+                                    height={16}
+                                    alt=""
+                                />
 
-                            <span>{projectData.project.name}</span>
+                                <span>{projectData.project.name}</span>
 
-                            <span className="ml-auto">
-                                <small>
-                                    updated {relativeTime(projectData.project.last_event_at)}
-                                </small>
-                            </span>
-                        </LinkButton>
+                                <span className="ml-auto">
+                                    <small>
+                                        updated{" "}
+                                        {relativeTime(
+                                            projectData.project.last_event_at
+                                        )}
+                                    </small>
+                                </span>
+                            </LinkButton>
+                        </Tooltip>
                     </li>
                 ))}
         </ul>

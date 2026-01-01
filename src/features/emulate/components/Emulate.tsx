@@ -25,7 +25,7 @@ export const Emulate = () => {
 
     // error handling:
     // authentcation's missing
-    if (status === undefined || status.isLoggedIn === false || status.user.role === "user") {
+    if (status === undefined || status.role === "user") {
         return <AuthRequired />;
     }
 
@@ -37,7 +37,7 @@ export const Emulate = () => {
             </div>
         );
     }
-    
+
     // data is fetched and project at the id is not fetched
     if (id !== undefined && data[id] === undefined) {
         return (
@@ -53,27 +53,52 @@ export const Emulate = () => {
         <div className="flex flex-col w-full max-w-3xl p-6! rounded-4xl! gap-4! box m-auto">
             <div className="flex flex-col gap-2">
                 <div className="flex flex-wrap">
-                    <Button
-                        onClick={() => {
-                            updateProjectList();
-                        }}
-                    >
-                        {promiseStatus(promises.projects)}
-                        <Image width={16} height={16} alt="" src="/download.svg" />
-                        Re-fetch
-                    </Button>
+                    <Tooltip direction="top" text="Reload project data">
+                        <Button
+                            onClick={() => {
+                                updateProjectList();
+                            }}
+                        >
+                            {promiseStatus(promises.projects)}
+                            <Image
+                                width={16}
+                                height={16}
+                                alt=""
+                                src="/download.svg"
+                            />
+                            Re-fetch
+                        </Button>
+                    </Tooltip>
 
                     {id === undefined ? (
-                        <Tooltip className="ml-auto" direction="top" text="To the dashboard">
+                        <Tooltip
+                            className="ml-auto"
+                            direction="top"
+                            text="To the dashboard"
+                        >
                             <LinkButton href="/dashboard">
-                                <Image src="/back.svg" alt="" width={16} height={16} />
+                                <Image
+                                    src="/back.svg"
+                                    alt=""
+                                    width={16}
+                                    height={16}
+                                />
                                 Go back
                             </LinkButton>
                         </Tooltip>
                     ) : (
-                        <Tooltip className="ml-auto" direction="top" text="Remove selection">
+                        <Tooltip
+                            className="ml-auto"
+                            direction="top"
+                            text="Remove selection"
+                        >
                             <LinkButton href="/dashboard/emulate">
-                                <Image src="/cross.svg" alt="" width={16} height={16} />
+                                <Image
+                                    src="/cross.svg"
+                                    alt=""
+                                    width={16}
+                                    height={16}
+                                />
                                 De-select
                             </LinkButton>
                         </Tooltip>
@@ -85,7 +110,8 @@ export const Emulate = () => {
                             <u>No project data</u>
                         </span>
                         <span className="text-center">
-                            Try re-fetching. If that does not help - database is empty.
+                            Try re-fetching. If that does not help - database is
+                            empty.
                         </span>
                     </>
                 ) : (
@@ -94,7 +120,8 @@ export const Emulate = () => {
                             Project selection
                         </span>
                         <span className="text-center">
-                            Select a project first to emulate events / aggregates
+                            Select a project first to emulate events /
+                            aggregates
                         </span>
                     </>
                 )}

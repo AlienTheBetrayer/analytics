@@ -29,7 +29,9 @@ export const Security = ({ data }: Props) => {
     const getSessions = useAppStore((state) => state.getSessions);
     const deleteSession = useAppStore((state) => state.deleteSession);
     const changePassword = useAppStore((state) => state.changePassword);
-    const terminateOtherSessions = useAppStore((state) => state.terminateOtherSessions);
+    const terminateOtherSessions = useAppStore(
+        (state) => state.terminateOtherSessions
+    );
 
     // fetching sessions
     useEffect(() => {
@@ -84,24 +86,41 @@ export const Security = ({ data }: Props) => {
             <div className="flex flex-col md:flex-row gap-4 grow w-full">
                 <div className="flex flex-col items-center gap-2 w-full md:max-w-96">
                     <span>{data.profile.name}</span>
-                    <ProfileImage profile={data.profile} width={256} height={256} />
+                    <ProfileImage
+                        profile={data.profile}
+                        width={256}
+                        height={256}
+                    />
 
                     <div className="flex items-center gap-1">
-                        <Image width={20} height={20} alt="" src="/privacy.svg" />
+                        <Image
+                            width={20}
+                            height={20}
+                            alt=""
+                            src="/privacy.svg"
+                        />
                         <span className="text-foreground-5!">
-                            {data.user.role[0].toUpperCase() + data.user.role.substring(1)}
+                            {data.user.role[0].toUpperCase() +
+                                data.user.role.substring(1)}
                         </span>
                     </div>
-                    
-                    <Button
-                        onClick={() => {
-                            logout();
-                        }}
-                    >
-                        {promiseStatus(promises.logout)}
-                        <Image width={16} height={16} alt="" src="/auth.svg" />
-                        Log out
-                    </Button>
+
+                    <Tooltip text="Log yourself out">
+                        <Button
+                            onClick={() => {
+                                logout();
+                            }}
+                        >
+                            {promiseStatus(promises.logout)}
+                            <Image
+                                width={16}
+                                height={16}
+                                alt=""
+                                src="/auth.svg"
+                            />
+                            Log out
+                        </Button>
+                    </Tooltip>
                 </div>
 
                 <hr className="sm:w-px! sm:h-full" />
@@ -113,7 +132,10 @@ export const Security = ({ data }: Props) => {
                             changePassword(data.user.id, password);
                         }}
                     >
-                        <label htmlFor="bio" className="flex justify-between items-center">
+                        <label
+                            htmlFor="bio"
+                            className="flex justify-between items-center"
+                        >
                             <b>Password</b>
                             <small> (a new strong password)</small>
                         </label>
@@ -128,27 +150,46 @@ export const Security = ({ data }: Props) => {
                         />
 
                         <hr className="mt-auto" />
-                        <Button type="submit">
-                            {promiseStatus(promises.password_change)}
-                            <Image src="/send.svg" width={20} height={20} alt="" />
-                            Apply changes
-                        </Button>
+
+                        <Tooltip className="w-full" text="Change your password">
+                            <Button type="submit" className="w-full">
+                                {promiseStatus(promises.password_change)}
+                                <Image
+                                    src="/send.svg"
+                                    width={20}
+                                    height={20}
+                                    alt=""
+                                />
+                                Apply changes
+                            </Button>
+                        </Tooltip>
                     </form>
 
                     <hr />
                     <span className="flex items-center gap-2">
                         <b>Sessions</b>
-                        <Tooltip text="Re-load visible sessions" direction="top" disabledPointer>
+                        <Tooltip
+                            text="Re-load visible sessions"
+                            direction="top"
+                            disabledPointer
+                        >
                             <Button
                                 className="p-0!"
                                 onClick={() => {
                                     getSessions(data.user.id, false);
                                 }}
                             >
-                                <Image src="/reload.svg" width={16} height={16} alt="refresh" />
+                                <Image
+                                    src="/reload.svg"
+                                    width={16}
+                                    height={16}
+                                    alt="refresh"
+                                />
                             </Button>
                         </Tooltip>
-                        <small className="ml-auto">(all your logged in accounts)</small>
+                        <small className="ml-auto">
+                            (all your logged in accounts)
+                        </small>
                     </span>
 
                     <ul
@@ -157,14 +198,17 @@ export const Security = ({ data }: Props) => {
                             scrollbarWidth: "thin",
                         }}
                     >
-                        {runningSessions !== undefined && promises.sessions !== "pending" ? (
+                        {runningSessions !== undefined &&
+                        promises.sessions !== "pending" ? (
                             runningSessions.map((session) => (
                                 <React.Fragment key={session.id}>
                                     <li
                                         className={`grid grid-cols-[1fr_40%] gap-4 items-center rounded-2xl p-2! ${session.isCurrent ? "border border-blue-2" : ""}`}
                                     >
                                         <span className="truncate">
-                                            {session.isCurrent ? "CURRENT SESSION" : session.id}
+                                            {session.isCurrent
+                                                ? "CURRENT SESSION"
+                                                : session.id}
                                         </span>
                                         <Button
                                             isEnabled={!session.isCurrent}
@@ -173,9 +217,16 @@ export const Security = ({ data }: Props) => {
                                             }}
                                         >
                                             {promiseStatus(
-                                                promises[`session_logout_${session.id}`],
+                                                promises[
+                                                    `session_logout_${session.id}`
+                                                ]
                                             )}
-                                            <Image src="/cross.svg" width={16} height={16} alt="" />
+                                            <Image
+                                                src="/cross.svg"
+                                                width={16}
+                                                height={16}
+                                                alt=""
+                                            />
                                             Terminate
                                         </Button>
                                     </li>
@@ -183,7 +234,11 @@ export const Security = ({ data }: Props) => {
                                 </React.Fragment>
                             ))
                         ) : (
-                            <Spinner className="m-auto" width={24} height={24} />
+                            <Spinner
+                                className="m-auto"
+                                width={24}
+                                height={24}
+                            />
                         )}
                     </ul>
 
@@ -200,8 +255,15 @@ export const Security = ({ data }: Props) => {
                                 terminateMessageBox.show();
                             }}
                         >
-                            {promises.sessions_terminate === "pending" && <Spinner />}
-                            <Image src="/auth.svg" width={16} height={16} alt="" />
+                            {promises.sessions_terminate === "pending" && (
+                                <Spinner />
+                            )}
+                            <Image
+                                src="/auth.svg"
+                                width={16}
+                                height={16}
+                                alt=""
+                            />
                             Terminate other sessions
                         </Button>
                     </Tooltip>
@@ -219,7 +281,12 @@ export const Security = ({ data }: Props) => {
                             }}
                         >
                             {promises.delete === "pending" && <Spinner />}
-                            <Image src="/delete.svg" width={16} height={16} alt="" />
+                            <Image
+                                src="/delete.svg"
+                                width={16}
+                                height={16}
+                                alt=""
+                            />
                             Delete account
                         </Button>
                     </Tooltip>

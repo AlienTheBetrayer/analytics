@@ -6,63 +6,84 @@ import type { TooltipDirection } from "../types/Tooltip";
  * @param elementRef the hovered element
  */
 export const positionTooltip = (
-	tooltipRef: React.RefObject<HTMLDivElement | null>,
-	elementRef: React.RefObject<HTMLDivElement | null>,
-	direction: TooltipDirection = "bottom",
+    tooltipRef: React.RefObject<HTMLDivElement | null>,
+    elementRef: React.RefObject<HTMLDivElement | null>,
+    direction: TooltipDirection = "bottom"
 ) => {
-	// safety flag
-	if (!tooltipRef.current || !elementRef.current) {
-		return;
-	}
+    // safety flag
+    if (!tooltipRef.current || !elementRef.current) {
+        return;
+    }
 
-	// getting the bounds of the element
-	const elementBounds = elementRef.current.getBoundingClientRect();
+    // getting the bounds of the element
+    const elementBounds = elementRef.current.getBoundingClientRect();
 
-	// calculating and setting the direction
-	let left = 0;
-	let top = 0;
-	switch (direction) {
-		case "bottom": {
-			left = elementBounds.left + elementBounds.width / 2 + window.scrollX;
-			top = elementBounds.bottom + window.scrollY;
-			tooltipRef.current.style.translate = `-50% 0`;
-			break;
-		}
-		case "top": {
-			left = elementBounds.left + elementBounds.width / 2 + window.scrollX;
-			top = elementBounds.top + window.scrollY;
-			tooltipRef.current.style.translate = `-50% -100%`;
-			break;
-		}
-		case "left": {
-			left = elementBounds.left + window.scrollY;
-			top = elementBounds.top + elementBounds.height / 2 + window.scrollY;
-			tooltipRef.current.style.translate = `-100% -50%`;
-			break;
-		}
-		case "right": {
-			left = elementBounds.right + window.scrollY;
-			top = elementBounds.top + elementBounds.height / 2 + window.scrollY;
-			tooltipRef.current.style.translate = `0 -50%`;
-			break;
-		}
-	}
+    // calculating and setting the direction
+    let left = 0;
+    let top = 0;
 
-	// setting the initial positions
-	tooltipRef.current.style.display = "flex";
-	tooltipRef.current.style.left = `${left}px`;
-	tooltipRef.current.style.top = `${top}px`;
+    tooltipRef.current.style.display = "flex";
+    const tooltipBounds = tooltipRef.current.getBoundingClientRect();
 
-	// window boundary overflow check
-	const tooltipBounds = tooltipRef.current.getBoundingClientRect();
-	let dx = 0;
-	if (tooltipBounds.left < 0) {
-		dx = -tooltipBounds.left + 2;
-	} else if (tooltipBounds.right > window.innerWidth) {
-		dx = window.innerWidth - tooltipBounds.right - 4;
-	}
+    switch (direction) {
+        case "bottom": {
+            left =
+                elementBounds.left +
+                elementBounds.width / 2 +
+                window.scrollX -
+                tooltipBounds.width / 2;
+            top = elementBounds.bottom + window.scrollY;
+            break;
+        }
+        case "top": {
+            left =
+                elementBounds.left +
+                elementBounds.width / 2 +
+                window.scrollX -
+                tooltipBounds.width / 2;
+            top = elementBounds.top + window.scrollY - tooltipBounds.height;
+            break;
+        }
+        case "left": {
+            left = elementBounds.left + window.scrollX - tooltipBounds.width;
+            top =
+                elementBounds.top +
+                elementBounds.height / 2 +
+                window.scrollY -
+                tooltipBounds.height / 2;
+            break;
+        }
+        case "right": {
+            left = elementBounds.right + window.scrollX;
+            top =
+                elementBounds.top +
+                elementBounds.height / 2 +
+                window.scrollY -
+                tooltipBounds.height / 2;
+            break;
+        }
+    }
 
-	// setting the updated safe positions
-	tooltipRef.current.style.left = `${left + dx}px`;
-	tooltipRef.current.style.top = `${top}px`;
+    // setting the initial positions
+    tooltipRef.current.style.left = `${left}px`;
+    tooltipRef.current.style.top = `${top}px`;
+
+    // // window boundary overflow check
+    let dx = 0;
+    if (left < 0) {
+        dx = -left + 2;
+    } else if (left + tooltipBounds.width > window.innerWidth) {
+        dx = window.innerWidth - left - tooltipBounds.width - 4;
+    }
+
+    let dy = 0;
+    if (top < 0) {
+        dy = -top + 2;
+    } else if (top + tooltipBounds.height > window.innerHeight) {
+        dy = window.innerHeight - top - tooltipBounds.height - 2;
+    }
+
+    // setting the updated safe positions
+    tooltipRef.current.style.left = `${left + dx}px`;
+    tooltipRef.current.style.top = `${top + dy}px`;
 };

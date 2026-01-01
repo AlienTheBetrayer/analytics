@@ -69,6 +69,9 @@ export const Tooltip = ({
             requestAnimationFrame(() => {
                 hasPositioned.current = true;
             });
+            setTimeout(() => {
+                positionTooltip(tooltipRef, elementRef, direction);
+            }, 0);
         };
         handle();
 
@@ -83,7 +86,12 @@ export const Tooltip = ({
         }
 
         const handle = (e: PointerEvent) => {
-            if (!tooltipRef.current || !elementRef.current || !isShown || !hasPositioned.current) {
+            if (
+                !tooltipRef.current ||
+                !elementRef.current ||
+                !isShown ||
+                !hasPositioned.current
+            ) {
                 return;
             }
 
@@ -146,16 +154,29 @@ export const Tooltip = ({
                     }
                 }}
                 onFocus={() => {
-                    if (!disabledPointer && type === "tooltip") {
+                    if (type === "tooltip") {
                         setIsShown(true);
                     }
                 }}
+                onBlur={(e) => {
+                    if (!tooltipRef.current?.contains(e.relatedTarget)) {
+                        setIsShown(false);
+                    }
+                }}
                 onKeyDown={(e) => {
-                    if (!disabledPointer && e.key === "Escape" && type === "tooltip") {
+                    if (
+                        !disabledPointer &&
+                        e.key === "Escape" &&
+                        type === "tooltip"
+                    ) {
                         setIsShown(false);
                     }
 
-                    if (!disabledPointer && e.key === "Enter" && type === "modal") {
+                    if (
+                        !disabledPointer &&
+                        e.key === "Enter" &&
+                        type === "modal"
+                    ) {
                         setIsShown(true);
                     }
                 }}
@@ -175,9 +196,12 @@ export const Tooltip = ({
                         <motion.div
                             className="absolute hidden z-1000 p-1"
                             ref={tooltipRef}
-                            initial={{ pointerEvents: !disabledPointer ? "all" : "none" }}
+                            initial={{
+                                pointerEvents: !disabledPointer
+                                    ? "all"
+                                    : "none",
+                            }}
                             exit={{ pointerEvents: "none" }}
-
                             onPointerEnter={() => {
                                 if (!disabledPointer && type === "tooltip") {
                                     setIsShown(true);
@@ -195,10 +219,17 @@ export const Tooltip = ({
                             `}
                                 initial={{
                                     opacity: 0,
-                                    pointerEvents: !disabledPointer ? "all" : "none",
+                                    scale: type === "tooltip" ? 0.75 : 0.975,
+                                    pointerEvents: !disabledPointer
+                                        ? "all"
+                                        : "none",
                                 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0, pointerEvents: "none" }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{
+                                    opacity: 0,
+                                    pointerEvents: "none",
+                                    scale: type === "tooltip" ? 0.75 : 0.975,
+                                }}
                             >
                                 {element ? (
                                     element
@@ -209,14 +240,18 @@ export const Tooltip = ({
                                                 <b>{title}</b>
                                             </span>
                                         )}
-                                        {text && <span className="text-background-9!">{text}</span>}
+                                        {text && (
+                                            <span className="text-background-9!">
+                                                {text}
+                                            </span>
+                                        )}
                                     </div>
                                 )}
                             </motion.div>
                         </motion.div>
                     )}
                 </AnimatePresence>,
-                document.body,
+                document.body
             )}
         </>
     );

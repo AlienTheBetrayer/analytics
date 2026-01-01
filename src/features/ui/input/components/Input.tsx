@@ -27,6 +27,8 @@ export const Input = ({
     // controller
     const controller = useInput();
 
+    const { inputRef } = controller;
+
     return (
         <div className="relative ">
             <input
@@ -40,9 +42,11 @@ export const Input = ({
                  ${isEnabled !== true ? "pointer-events-none opacity-30" : ""} 
             ${className ?? ""}`}
                 value={inputValue}
-                ref={controller.inputRef}
+                ref={inputRef}
                 onChange={(e) =>
-                    value === undefined ? setData(e.target.value) : onChange?.(e.target.value)
+                    value === undefined
+                        ? setData(e.target.value)
+                        : onChange?.(e.target.value)
                 }
                 maxLength={maxLength}
                 minLength={minLength}

@@ -1,9 +1,17 @@
 import axios from "axios";
-import type { AuthenticationSession, AuthenticationStore } from "@/types/zustand/authentication";
+import type {
+    AuthenticationSession,
+    AuthenticationStore,
+} from "@/types/zustand/authentication";
 import type { SliceFunction } from "@/types/zustand/utils/sliceFunction";
 import { refreshedRequest } from "@/utils/refreshedRequest";
+import { User } from "@/types/api/database/user";
+import { AuthenticationToken } from "@/types/api/authentication";
 
-export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (set, get) => {
+export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (
+    set,
+    get
+) => {
     return {
         setStatus: (status) => {
             set((state) => ({ ...state, status }));
@@ -30,10 +38,20 @@ export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (set, get
                     username,
                     password,
                 });
+                const data = res.data as {
+                    user: User;
+                    payload: AuthenticationToken;
+                };
+                const {
+                    id,
+                    role,
+                    session_id,
+                    username: payloadUsername,
+                } = data.payload;
 
                 set((state) => ({
                     ...state,
-                    status: { isLoggedIn: true, user: res.data.user },
+                    status: { id, role, session_id, username: payloadUsername },
                 }));
 
                 return res;
@@ -48,7 +66,7 @@ export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (set, get
                 set((state) => {
                     const newProfiles = { ...(state.profiles ?? {}) };
                     if (status !== undefined) {
-                        delete newProfiles[status.user.id];
+                        delete newProfiles[status.id];
                     }
 
                     return {
@@ -66,33 +84,13 @@ export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (set, get
             });
         },
 
-        refresh: async () => {
-            const { setPromise } = get();
-
-            return await setPromise("refresh", async () => {
-                try {
-                    const res = await axios.post("/api/auth/refresh");
-
-                    set((state) => ({
-                        ...state,
-                        status: { isLoggedIn: true, user: res.data.user },
-                    }));
-
-                    return res;
-                } catch {
-                    set((state) => ({
-                        ...state,
-                        status: undefined,
-                    }));
-                }
-            });
-        },
-
         deleteUser: async (id: string) => {
             const { setPromise } = get();
 
             return await setPromise("delete", async () => {
-                const res = await refreshedRequest("/api/auth/delete", "POST", { id });
+                const res = await refreshedRequest("/api/auth/delete", "POST", {
+                    id,
+                });
 
                 set((state) => {
                     const profiles = { ...state.profiles };
@@ -110,7 +108,10 @@ export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (set, get
             if (caching === true && runningSessions !== undefined) return;
 
             return await setPromise("sessions", async () => {
-                const res = await refreshedRequest(`/api/auth/sessions/${id}`, "GET");
+                const res = await refreshedRequest(
+                    `/api/auth/sessions/${id}`,
+                    "GET"
+                );
                 const data = res.data as {
                     sessions: AuthenticationSession[];
                 };
@@ -128,11 +129,16 @@ export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (set, get
             const { setPromise } = get();
 
             return await setPromise(`session_logout_${id}`, async () => {
-                const res = await refreshedRequest(`/api/auth/logout/${id}`, "POST");
+                const res = await refreshedRequest(
+                    `/api/auth/logout/${id}`,
+                    "POST"
+                );
 
                 set((state) => ({
                     ...state,
-                    runningSessions: state.runningSessions?.filter((s) => s.id !== id),
+                    runningSessions: state.runningSessions?.filter(
+                        (s) => s.id !== id
+                    ),
                 }));
 
                 return res;
@@ -142,7 +148,10 @@ export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (set, get
         terminateAllSessions: async () => {
             const { setPromise } = get();
             return await setPromise(`sessions_terminate`, async () => {
-                const res = await refreshedRequest(`/api/auth/terminate/`, "POST");
+                const res = await refreshedRequest(
+                    `/api/auth/terminate/`,
+                    "POST"
+                );
 
                 set((state) => ({
                     ...state,
@@ -158,11 +167,16 @@ export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (set, get
             const { setPromise } = get();
 
             return await setPromise(`sessions_terminate`, async () => {
-                const res = await refreshedRequest(`/api/auth/terminate?type=other`, "POST");
+                const res = await refreshedRequest(
+                    `/api/auth/terminate?type=other`,
+                    "POST"
+                );
 
                 set((state) => ({
                     ...state,
-                    runningSessions: state.runningSessions?.filter((s) => s.isCurrent),
+                    runningSessions: state.runningSessions?.filter(
+                        (s) => s.isCurrent
+                    ),
                 }));
 
                 return res;
@@ -173,11 +187,28 @@ export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (set, get
             const { setPromise } = get();
 
             return await setPromise(`password_change`, async () => {
-                return await refreshedRequest(`/api/auth/password-change/`, "POST", {
-                    id,
-                    password,
-                });
+                return await refreshedRequest(
+                    `/api/auth/password-change/`,
+                    "POST",
+                    {
+                        id,
+                        password,
+                    }
+                );
             });
+        },
+
+        getSession: async () => {
+            const res = await axios.get("/api/auth/session");
+            const data = res.data as { payload: AuthenticationToken };
+            const { id, role, session_id, username } = data.payload;
+
+            set((state) => ({
+                ...state,
+                status: { id, role, session_id, username },
+            }));
+
+            return res;
         },
     };
 };

@@ -54,10 +54,10 @@ export const DashboardEvent = ({ event }: Props) => {
                     text="Delete this event"
                     className="w-full"
                     direction="left"
-                    isEnabled={status?.user.role !== "user"}
+                    isEnabled={status?.role !== "user"}
                 >
                     <Button
-                        isEnabled={status?.user.role !== "user"}
+                        isEnabled={status?.role !== "user"}
                         className="w-full"
                         onClick={() => {
                             deleteEvent(event.id);

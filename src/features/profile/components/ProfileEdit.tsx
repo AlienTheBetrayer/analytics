@@ -26,6 +26,7 @@ export const ProfileEdit = ({ data, tab }: Props) => {
             ),
             href: `/profile/${data.user.username}/overview`,
             element: <Overview data={data} />,
+            tooltip: "The home page of your profile"
         },
         {
             title: "edit",
@@ -37,6 +38,7 @@ export const ProfileEdit = ({ data, tab }: Props) => {
             ),
             href: `/profile/${data.user.username}/edit`,
             element: <Edit data={data} />,
+            tooltip: "Edit the visible fields"
         },
         {
             title: "security",
@@ -48,6 +50,7 @@ export const ProfileEdit = ({ data, tab }: Props) => {
             ),
             href: `/profile/${data.user.username}/security`,
             element: <Security data={data} />,
+            tooltip: "Secure your account"
         },
         {
             title: "friends",
@@ -59,6 +62,7 @@ export const ProfileEdit = ({ data, tab }: Props) => {
             ),
             href: `/profile/${data.user.username}/friends`,
             element: <Friends data={data} />,
+            tooltip: "See your friends and requests"
         },
     ];
 

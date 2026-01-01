@@ -15,7 +15,7 @@ export const HeaderMenu = ({ onInteract }: Props) => {
     const profiles = useAppStore((state) => state.profiles);
 
     // ui states
-    const loggedProfile = status ? profiles?.[status.user.id] : undefined;
+    const loggedProfile = status ? profiles?.[status.id] : undefined;
 
     return (
         <motion.nav
@@ -43,12 +43,12 @@ export const HeaderMenu = ({ onInteract }: Props) => {
                 </div>
 
                 <div className="flex flex-col gap-4">
-                    {status && status.isLoggedIn === true ? (
+                    {status  ? (
                         <li>
                             <LinkButton href="/profile" className={`p-4! text-5!`}>
-                                {status && profiles?.[status.user.id] && (
+                                {status && profiles?.[status.id] && (
                                     <ProfileImage
-                                        profile={profiles[status.user.id].profile}
+                                        profile={profiles[status.id].profile}
                                         width={16}
                                         height={16}
                                         className="w-12 aspect-square"

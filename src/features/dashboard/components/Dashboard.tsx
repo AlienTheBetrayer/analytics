@@ -7,9 +7,9 @@ import { DashboardProjects } from "./projects/DashboardProjects";
 import { Topline } from "./Topline";
 
 export const Dashboard = () => {
-    // zustand
-    const status = useAppStore((state) => state.status);
-
+    // zustand states
+    const status = useAppStore(state => state.status);
+    
     // helper hook to initialize zustand's requests
     useData();
 

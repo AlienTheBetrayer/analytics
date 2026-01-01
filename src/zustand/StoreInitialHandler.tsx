@@ -11,11 +11,11 @@ export const StoreInitialHandler = () => {
     const friendRequests = useAppStore((state) => state.friendRequests);
 
     // zustand functions
-    const refresh = useAppStore((state) => state.refresh);
     const getProfileById = useAppStore((state) => state.getProfileById);
     const getFriendsProfiles = useAppStore((state) => state.getFriendsProfiles);
     const getFriendRequests = useAppStore((state) => state.getFriendRequests);
     const getProfiles = useAppStore((state) => state.getProfiles);
+    const getSession = useAppStore((state) => state.getSession);
 
     // ref
     const hasInitialized = useRef<boolean>(false);
@@ -23,17 +23,17 @@ export const StoreInitialHandler = () => {
     useEffect(() => {
         if (hasInitialized.current === false) {
             try {
-                refresh();
+                getSession();
             } catch {}
             hasInitialized.current = true;
         }
-    }, [refresh]);
+    }, [getSession]);
 
     useEffect(() => {
         if (status) {
-            getProfileById(status.user.id, false);
-            getFriendsProfiles(status.user.id, false);
-            getFriendRequests(status.user.id, false);
+            getProfileById(status.id, false);
+            getFriendsProfiles(status.id, false);
+            getFriendRequests(status.id, false);
         }
     }, [getFriendsProfiles, getFriendRequests, getProfileById, status]);
 

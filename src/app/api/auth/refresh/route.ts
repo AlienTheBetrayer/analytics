@@ -16,20 +16,25 @@ export const POST = async (request: NextRequest) => {
 
     try {
         // if refresh token hasn't expired - issue a new access token
-        const payload = jwt.verify(refreshToken, process.env.REFRESH_SECRET as string) as {
+        const payload = jwt.verify(
+            refreshToken,
+            process.env.REFRESH_SECRET as string
+        ) as {
             id: string;
             role: string;
             session_id: string;
+            username: string;
         };
 
         // get all server-side tokens from the current user
-        const { data: refreshTokensData, error: refreshTokensError } = (await supabaseServer
-            .from("tokens")
-            .select()
-            .eq("user_id", payload.id)) as {
-            data: Token[];
-            error: PostgrestError | null;
-        };
+        const { data: refreshTokensData, error: refreshTokensError } =
+            (await supabaseServer
+                .from("tokens")
+                .select()
+                .eq("user_id", payload.id)) as {
+                data: Token[];
+                error: PostgrestError | null;
+            };
 
         if (refreshTokensError) {
             return nextResponse(refreshTokensError, 400);
@@ -45,13 +50,17 @@ export const POST = async (request: NextRequest) => {
             refreshTokensData.map(async (data) => ({
                 id: data.id,
                 matched: await bcrypt.compare(refreshToken, data.token),
-            })),
+            }))
         );
 
         const hasMatched = hashResults.some((r) => r.matched);
 
         if (hasMatched === false) {
-            const response = nextResponse({ error: "Token theft detection" }, 400, "token_theft");
+            const response = nextResponse(
+                { error: "Token theft detection" },
+                400,
+                "token_theft"
+            );
 
             response.cookies.delete("accessToken");
             response.cookies.delete("refreshToken");
@@ -80,15 +89,25 @@ export const POST = async (request: NextRequest) => {
         const session_id = crypto.randomUUID();
 
         const accessToken = jwt.sign(
-            { session_id, id: payload.id, role: userData[0].role },
+            {
+                session_id,
+                id: payload.id,
+                role: userData[0].role,
+                username: userData[0].username,
+            },
             process.env.ACCESS_SECRET as string,
-            { expiresIn: "15m" },
+            { expiresIn: "15m" }
         );
 
         const newRefreshToken = jwt.sign(
-            { session_id, id: payload.id, role: userData[0].role },
+            {
+                session_id,
+                id: payload.id,
+                role: userData[0].role,
+                username: userData[0].username,
+            },
             process.env.REFRESH_SECRET as string,
-            { expiresIn: "7d" },
+            { expiresIn: "7d" }
         );
 
         // replace the token from the database
@@ -101,11 +120,13 @@ export const POST = async (request: NextRequest) => {
             return nextResponse(refreshDeleteError, 400);
         }
 
-        const { error: refreshRotateError } = await supabaseServer.from("tokens").insert({
-            user_id: payload.id,
-            token: await bcrypt.hash(newRefreshToken, 10),
-            session_id,
-        });
+        const { error: refreshRotateError } = await supabaseServer
+            .from("tokens")
+            .insert({
+                user_id: payload.id,
+                token: await bcrypt.hash(newRefreshToken, 10),
+                session_id,
+            });
 
         if (refreshRotateError) {
             return nextResponse(refreshRotateError, 400);
@@ -126,7 +147,7 @@ export const POST = async (request: NextRequest) => {
         const response = nextResponse(
             { message: "Authenticated!", user: userData[0] },
             200,
-            "user_refreshed",
+            "user_refreshed"
         );
 
         response.cookies.set({
@@ -147,6 +168,10 @@ export const POST = async (request: NextRequest) => {
 
         return response;
     } catch {
-        return nextResponse({ error: "Not authenticated" }, 401, "not_authenticated");
+        return nextResponse(
+            { error: "Not authenticated" },
+            401,
+            "not_authenticated"
+        );
     }
 };

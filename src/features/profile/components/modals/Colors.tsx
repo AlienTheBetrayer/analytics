@@ -8,7 +8,7 @@ import { useAppStore } from "@/zustand/store";
 import { useColorModal } from "../../hooks/useColorModal";
 import { Profile } from "@/types/api/database/profiles";
 import { User } from "@/types/api/database/user";
-
+import { Tooltip } from "@/features/tooltip/components/Tooltip";
 
 export const COLORS_GRID_SIZE = 4;
 
@@ -47,22 +47,24 @@ export const Colors = ({ data }: Props) => {
                             gridTemplateColumns: `repeat(${COLORS_GRID_SIZE}, minmax(0, 1fr))`,
                         }}
                     >
-                        {Array.from({ length: COLORS_GRID_SIZE * COLORS_GRID_SIZE }).map(
-                            (_, idx) => (
-                                <li
-                                    key={idx}
-                                    className={`flex aspect-square ${controller.selectedId === idx ? "color-selected" : ""}`}
-                                >
-                                    <input
-                                        value={controller.colors[idx]}
-                                        onChange={(e) => controller.set(idx, e.target.value)}
-                                        onClick={() => controller.select(idx)}
-                                        type="color"
-                                        className="cursor-pointer outline-0 w-full h-full!"
-                                    />
-                                </li>
-                            ),
-                        )}
+                        {Array.from({
+                            length: COLORS_GRID_SIZE * COLORS_GRID_SIZE,
+                        }).map((_, idx) => (
+                            <li
+                                key={idx}
+                                className={`flex aspect-square ${controller.selectedId === idx ? "color-selected" : ""}`}
+                            >
+                                <input
+                                    value={controller.colors[idx]}
+                                    onChange={(e) =>
+                                        controller.set(idx, e.target.value)
+                                    }
+                                    onClick={() => controller.select(idx)}
+                                    type="color"
+                                    className="cursor-pointer outline-0 w-full h-full!"
+                                />
+                            </li>
+                        ))}
                     </ul>
                 )}
 
@@ -76,39 +78,68 @@ export const Colors = ({ data }: Props) => {
                     </li>
 
                     <li className="flex flex-col w-full *:w-full gap-1">
-                        <Button>
-                            <Image width={16} height={16} src="/random.svg" alt="" />
-                            Randomly select
-                        </Button>
+                        <Tooltip
+                            className="w-full"
+                            text="Select a random color"
+                        >
+                            <Button
+                                onClick={controller.randomSelect}
+                                className="w-full"
+                            >
+                                <Image
+                                    width={16}
+                                    height={16}
+                                    src="/random.svg"
+                                    alt=""
+                                />
+                                Randomly select
+                            </Button>
+                        </Tooltip>
                     </li>
 
                     <li className="flex flex-col w-full *:w-full gap-1">
-                        <Button onClick={controller.palette}>
-                            <Image width={16} height={16} src="/type.svg" alt="" />
-                            Generate a palette
-                        </Button>
+                        <Tooltip className="w-full" text="Create a palette">
+                            <Button
+                                onClick={controller.palette}
+                                className="w-full"
+                            >
+                                <Image
+                                    width={16}
+                                    height={16}
+                                    src="/type.svg"
+                                    alt=""
+                                />
+                                Generate a palette
+                            </Button>
+                        </Tooltip>
                     </li>
 
                     <hr />
 
-                    <li className="flex flex-col gap-1">
-                        <label htmlFor="hue-rotation" className="self-start">
-                            <b>Hue Rotation</b>
-                        </label>
+                    <Tooltip className="w-full" text="Smoothness of colors">
+                        <li className="flex flex-col gap-1">
+                            <label
+                                htmlFor="hue-rotation"
+                                className="self-start"
+                            >
+                                <b>Hue Rotation</b>
+                            </label>
 
-                        <input
-                            id="hue-rotation"
-                            type="range"
-                            className="w-full"
-                            value={controller.hueRotation}
-                            min={0}
-                            max={8}
-                            step={0.01}
-                            onChange={(e) => {
-                                controller.setHueRotation(Number(e.target.value));
-                            }}
-                        />
-                    </li>
+                            <input
+                                id="hue-rotation"
+                                type="range"
+                                value={controller.hueRotation}
+                                min={0}
+                                max={8}
+                                step={0.01}
+                                onChange={(e) => {
+                                    controller.setHueRotation(
+                                        Number(e.target.value)
+                                    );
+                                }}
+                            />
+                        </li>
+                    </Tooltip>
 
                     <hr />
 
@@ -119,9 +150,12 @@ export const Colors = ({ data }: Props) => {
                         <div
                             className="w-full h-5 rounded-full"
                             style={{
-                                background: controller.selectedId
-                                    ? controller.colors[controller.selectedId]
-                                    : "#000",
+                                background:
+                                    controller.selectedId !== undefined
+                                        ? controller.colors[
+                                              controller.selectedId
+                                          ]
+                                        : "#000",
                             }}
                         ></div>
                     </li>
@@ -129,20 +163,40 @@ export const Colors = ({ data }: Props) => {
                     <hr className="mt-auto" />
 
                     <li className="w-full *:w-full">
-                        <Button onClick={controller.apply}>
-                            {promiseStatus(promises.set_colors)}
-                            <Image width={16} height={16} src="/cube.svg" alt="" />
-                            <b>
-                                <mark>Apply changes</mark>
-                            </b>
-                        </Button>
+                        <Tooltip text="Save your palette / color">
+                            <Button
+                                onClick={controller.apply}
+                                className="w-full"
+                            >
+                                {promiseStatus(promises.set_colors)}
+                                <Image
+                                    width={16}
+                                    height={16}
+                                    src="/cube.svg"
+                                    alt=""
+                                />
+                                <b>
+                                    <mark>Apply changes</mark>
+                                </b>
+                            </Button>
+                        </Tooltip>
                     </li>
 
                     <li className="w-full *:w-full">
-                        <Button onClick={controller.clear}>
-                            <Image width={16} height={16} src="/cross.svg" alt="" />
-                            <u>Clear</u>
-                        </Button>
+                        <Tooltip text="Clear the palette">
+                            <Button
+                                onClick={controller.clear}
+                                className="w-full"
+                            >
+                                <Image
+                                    width={16}
+                                    height={16}
+                                    src="/cross.svg"
+                                    alt=""
+                                />
+                                <u>Clear</u>
+                            </Button>
+                        </Tooltip>
                     </li>
                 </ul>
             </div>
