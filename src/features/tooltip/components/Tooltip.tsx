@@ -4,7 +4,7 @@ import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { positionTooltip } from "../utils/positionTooltip";
-import { TooltipDirection } from "../types/Tooltip";
+import { TooltipDirection } from "../types/tooltip";
 
 type Props = {
     title?: string;

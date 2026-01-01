@@ -1,4 +1,4 @@
-import type { TooltipDirection } from "../types/Tooltip";
+import type { TooltipDirection } from "../types/tooltip";
 
 /**
  * positions a tooltip with all directions
