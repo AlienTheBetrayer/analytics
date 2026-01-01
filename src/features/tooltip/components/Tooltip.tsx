@@ -1,11 +1,10 @@
-/** biome-ignore-all lint/a11y/noStaticElementInteractions: <explanation> */
 "use client";
 import "./Tooltip.css";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
-import type { TooltipDirection } from "../types/Tooltip";
 import { positionTooltip } from "../utils/positionTooltip";
+import { TooltipDirection } from "../types/Tooltip";
 
 type Props = {
     title?: string;
