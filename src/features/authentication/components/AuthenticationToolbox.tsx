@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { ProfileImage } from "@/features/profile/components/ProfileImage";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
@@ -20,66 +19,41 @@ export const AuthenticationToolbox = () => {
                 bg-background-a-5 backdrop-blur-3xl rounded-full
                 ${!visibleProfile ? "border-awaiting" : ""}`}
         >
-            {!visibleProfile ? (
-                <Tooltip
-                    type="modal"
-                    direction="left"
-                    disabledPointer={false}
-                    element={<ToolboxElements />}
-                >
-                    <Button>
-                        <Spinner />
-                    </Button>
-                </Tooltip>
-            ) : (
-                <nav className="flex gap-1 items-center p-2 h-full">
-                    {visibleProfile ? (
-                        <Tooltip text="Go to your profile" direction="left">
-                            <LinkButton
-                                href="/profile"
-                                style={
-                                    visibleProfile.color
-                                        ? {
-                                              outline: `1px solid ${visibleProfile.color}`,
-                                          }
-                                        : {}
-                                }
-                                className="gap-2!"
-                            >
-                                <ProfileImage
-                                    profile={visibleProfile}
-                                    width={16}
-                                    height={16}
-                                    className="w-6 aspect-square"
-                                />
-                                {visibleProfile.username ?? "Account"}
-                            </LinkButton>
-                        </Tooltip>
-                    ) : (
-                        <>
-                            <LinkButton href="/signup">
-                                <Image
-                                    width={16}
-                                    height={16}
-                                    alt=""
-                                    src="/plus.svg"
-                                />
-                                Sign up
-                            </LinkButton>
-
-                            <LinkButton href="/login">
-                                <Image
-                                    width={16}
-                                    height={16}
-                                    alt=""
-                                    src="/auth.svg"
-                                />
-                                Log in
-                            </LinkButton>
-                        </>
-                    )}
-                </nav>
-            )}
+            <nav className="flex gap-1 items-center justify-center min-h-14 min-w-14">
+                {visibleProfile ? (
+                    <Tooltip text="Go to your profile" direction="left">
+                        <LinkButton
+                            href="/profile"
+                            style={
+                                visibleProfile.color
+                                    ? {
+                                          outline: `1px solid ${visibleProfile.color}`,
+                                      }
+                                    : {}
+                            }
+                            className="gap-2! p-0.5!"
+                        >
+                            <ProfileImage
+                                profile={visibleProfile}
+                                width={16}
+                                height={16}
+                                className="w-8 aspect-square"
+                            />
+                        </LinkButton>
+                    </Tooltip>
+                ) : (
+                    <Tooltip
+                        type="modal"
+                        direction="left"
+                        disabledPointer={false}
+                        element={<ToolboxElements />}
+                    >
+                        <Button>
+                            <Spinner />
+                        </Button>
+                    </Tooltip>
+                )}
+            </nav>
         </div>
     );
 };
