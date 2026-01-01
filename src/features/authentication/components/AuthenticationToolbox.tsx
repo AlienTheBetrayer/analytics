@@ -72,6 +72,7 @@ export const AuthenticationToolbox = () => {
                                 />
                                 Sign up
                             </LinkButton>
+                            
                             <LinkButton href="/login">
                                 <Image
                                     width={16}

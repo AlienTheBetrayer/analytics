@@ -56,7 +56,7 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
             });
         },
 
-        setProfileData: async (id: string, data: Record<string, string | undefined>) => {
+        setProfileData: async (id: string, data: Record<string, string | undefined | null>) => {
             const { setPromise } = get();
 
             return await setPromise("profile_set", async () => {

@@ -44,7 +44,7 @@ export type UserStore = {
 	 */
 	setProfileData: (
         id: string,
-        data: Record<string, string | undefined>,
+        data: Record<string, string | undefined | null>,
 	) => Promise<ResponseAxios>;
 
 	/**

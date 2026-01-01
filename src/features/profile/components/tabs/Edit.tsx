@@ -38,7 +38,7 @@ export const Edit = ({ data }: Props) => {
     // file uploading
     const [fileError, setFileError] = useState<JSX.Element | undefined>();
     const [avatarFile, setAvatarFile] = useState<File | undefined>(undefined);
-    const [avatar, setAvatar] = useState<string>(data.profile.avatar ?? "");
+    const [avatar, setAvatar] = useState<string | null | undefined>(data.profile.avatar ?? undefined); 
 
     // if we select an image - show an image - otherwise show the profile
     const avatarImage = avatarFile ? URL.createObjectURL(avatarFile) : avatar;
@@ -51,7 +51,7 @@ export const Edit = ({ data }: Props) => {
                 hide();
                 if (res === "yes") {
                     setAvatarFile(undefined);
-                    setAvatar("");
+                    setAvatar(null);
                 }
             }}
         />
@@ -81,7 +81,7 @@ export const Edit = ({ data }: Props) => {
                     duration-300 ease-out"
                         >
                             <ProfileImage
-                                src={avatarImage}
+                                src={avatarImage ?? ""}
                                 width={256}
                                 height={256}
                                 profile={data.profile}
@@ -222,7 +222,7 @@ export const Edit = ({ data }: Props) => {
                         e.preventDefault();
 
                         let dataAvatar = avatar;
-                        if (avatarFile !== undefined) {
+                        if (avatarFile) {
                             dataAvatar = await fileToBase64(avatarFile);
                         }
 
