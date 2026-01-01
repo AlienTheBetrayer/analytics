@@ -1,8 +1,9 @@
 import Image from "next/image";
 import type { Profile } from "@/types/api/database/profiles";
+import { VisibleProfile } from "@/types/zustand/local/ui";
 
 type Props = {
-    profile?: Profile;
+    profile?: Profile | VisibleProfile;
     src?: string;
     width?: number;
     height?: number;

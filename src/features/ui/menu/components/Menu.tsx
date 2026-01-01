@@ -17,30 +17,36 @@ export const Menu = ({ items, value, type = "default", color }: Props) => {
 
     return (
         <div className="flex flex-col grow h-full w-full gap-2">
-            <ul className="flex items-center">
+            <ul className="flex items-center h-12">
                 {items.map((item, idx) => (
-                    <li key={item.title ?? idx} className="w-full">
+                    <li key={item.title ?? idx} className="w-full h-full!">
                         {type === "default" ? (
-                            <Tooltip className='w-full' text={item.tooltip ?? item.title}>
+                            <Tooltip
+                                className="w-full"
+                                text={item.tooltip ?? item.title}
+                            >
                                 <Button
                                     ref={(el) => {
                                         controller.buttonRefs.current[idx] = el;
                                     }}
                                     onClick={() => controller.select(idx)}
-                                    className={`p-2! w-full rounded-none border-0! border-b-2!
+                                    className={`p-2! w-full h-full rounded-none! border-0! border-b-2!
                                     ${controller.selectedItem === idx ? "brightness-200" : ""}`}
                                 >
                                     {item.titleElement}
                                 </Button>
                             </Tooltip>
                         ) : (
-                            <Tooltip className='w-full' text={item.tooltip ?? item.title}>
+                            <Tooltip
+                                className="w-full h-full!"
+                                text={item.tooltip ?? item.title}
+                            >
                                 <LinkButton
                                     href={item.href ?? "/"}
                                     ref={(el) => {
                                         controller.buttonRefs.current[idx] = el;
                                     }}
-                                    className={`p-2! rounded-none! border-0! border-b-2! 
+                                    className={`p-2! rounded-none! border-0! border-b-2! h-full!
                                     
                                 ${controller.selectedItem === idx ? "brightness-200" : ""}`}
                                 >
@@ -50,6 +56,7 @@ export const Menu = ({ items, value, type = "default", color }: Props) => {
                         )}
                     </li>
                 ))}
+
                 {controller.renderSelect()}
             </ul>
 

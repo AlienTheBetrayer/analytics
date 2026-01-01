@@ -58,7 +58,10 @@ export type AuthenticationStore = {
      * @param caching don't fetch the data if it has already been fetched
      * @returns a promise containing the response
      */
-    getSessions: (id: string, caching?: boolean) => Promise<ResponseAxios | undefined>;
+    getSessions: (
+        id: string,
+        caching?: boolean
+    ) => Promise<ResponseAxios | undefined>;
 
     /**
      * deletes a specific session with the id, making the user with that session unable to login

@@ -6,7 +6,7 @@ import { tokenVerify } from "@/utils/tokenVerify";
 
 export const GET = async (
     request: NextRequest,
-    { params }: { params: Promise<{ id: string }> },
+    { params }: { params: Promise<{ id: string }> }
 ) => {
     try {
         const { id } = await params;
@@ -25,10 +25,15 @@ export const GET = async (
             return nextResponse(friendsError, 400);
         }
 
-        const requests = friendsData.filter((data) => data.to_id === id || data.from_id === id);
+        const requests = friendsData.filter(
+            (data) => data.to_id === id || data.from_id === id
+        );
 
         return nextResponse({ requests }, 200);
     } catch {
-        return nextResponse({ error: "Failed getting friends' requests." }, 400);
+        return nextResponse(
+            { error: "Failed getting friends' requests." },
+            400
+        );
     }
 };

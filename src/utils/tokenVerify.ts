@@ -18,6 +18,7 @@ export const tokenVerify = (request: NextRequest, id?: string, role?: TokenRole)
     const accessToken = request.cookies.get("accessToken")?.value;
 
     if (!accessToken) {
+        console.log("bobi");
         throw "Not authenticated.";
     }
 
@@ -30,11 +31,13 @@ export const tokenVerify = (request: NextRequest, id?: string, role?: TokenRole)
 
         // allowing op to do anything
         if(payload.role === 'op') {
+            console.log("DFDF");
             return true;
         }
 
         // verifying id
         if (!payload.id || (id && payload.id !== id)) {
+            console.log("dfdf");
             throw "Wrong user.";
         }
 
@@ -43,6 +46,7 @@ export const tokenVerify = (request: NextRequest, id?: string, role?: TokenRole)
             !payload.role ||
             (role && TokenRoles.indexOf(payload.role) < TokenRoles.indexOf(role))
         ) {
+            console.log("peni");
             throw "Wrong permissions.";
         }
 

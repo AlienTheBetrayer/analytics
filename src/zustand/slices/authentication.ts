@@ -199,16 +199,20 @@ export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (
         },
 
         getSession: async () => {
-            const res = await axios.get("/api/auth/session");
-            const data = res.data as { payload: AuthenticationToken };
-            const { id, role, session_id, username } = data.payload;
+            try {
+                const res = await axios.get("/api/auth/session");
+                const data = res.data as { payload: AuthenticationToken };
+                const { id, role, session_id, username } = data.payload;
 
-            set((state) => ({
-                ...state,
-                status: { id, role, session_id, username },
-            }));
+                set((state) => ({
+                    ...state,
+                    status: { id, role, session_id, username },
+                }));
 
-            return res;
+                return res;
+            } catch (e) {
+                throw { e };
+            }
         },
     };
 };

@@ -29,10 +29,13 @@ export const UserProfile = () => {
 
     // user id to fetch data from
     const retrievedUsername = name ?? status?.username;
-    const retrievedTab = (tab && ProfileTabs.find((t) => t === tab)) || "overview";
+    const retrievedTab =
+        (tab && ProfileTabs.find((t) => t === tab)) || "overview";
 
     // getting data + status
-    const [responseStatus, setResponseStatus] = useState<APIResponseType | undefined>();
+    const [responseStatus, setResponseStatus] = useState<
+        APIResponseType | undefined
+    >();
     const [retrievedData, setRetrievedData] = useState<
         | {
               user: User;
@@ -42,16 +45,19 @@ export const UserProfile = () => {
     >(() => {
         return profiles === undefined
             ? undefined
-            : Object.values(profiles).find((p) => p.user.username === retrievedUsername);
+            : Object.values(profiles).find(
+                  (p) => p.user.username === retrievedUsername
+              );
     });
 
     // fetch if haven't cached
     useEffect(() => {
-        if (retrievedUsername === undefined || retrievedData !== undefined) return;
+        if (retrievedUsername === undefined || retrievedData !== undefined)
+            return;
 
         const get = async () => {
             const res = await retrieveResponse(
-                async () => await getProfileByName(retrievedUsername),
+                async () => await getProfileByName(retrievedUsername)
             );
             setResponseStatus(res.retrievedResponse.type);
             setRetrievedData(res.axiosResponse?.data);
@@ -61,7 +67,10 @@ export const UserProfile = () => {
     }, [retrievedData, retrievedUsername, getProfileByName]);
 
     // update state if something about the profile changed
-    const profile = retrievedData && profiles ? profiles[retrievedData?.user.id] : undefined;
+    const profile =
+        retrievedData && profiles
+            ? profiles[retrievedData?.user.id]
+            : undefined;
     useEffect(() => {
         if (profile) {
             requestAnimationFrame(() => {
@@ -76,7 +85,10 @@ export const UserProfile = () => {
     }
 
     // wrong user
-    if (responseStatus === "user_not_exists" || responseStatus === "profile_not_exists") {
+    if (
+        responseStatus === "user_not_exists" ||
+        responseStatus === "profile_not_exists"
+    ) {
         return <NotFound />;
     }
 

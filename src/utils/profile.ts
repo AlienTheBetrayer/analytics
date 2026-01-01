@@ -71,7 +71,6 @@ export const updateDb = async (user_id: string, rest: Record<string, string | nu
         );
 
     if (profileError) {
-        console.log(profileError);
         throw nextResponse(profileError, 400);
     }
 
