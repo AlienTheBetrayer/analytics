@@ -36,36 +36,16 @@ export const POST = async (request: NextRequest) => {
                 error: PostgrestError | null;
             };
 
+        console.log(payload, refreshTokensData);
         if (refreshTokensError) {
+            console.log("ERROR");
             return nextResponse(refreshTokensError, 400);
         }
 
         // detecting token substitution
         if (refreshTokensData.length === 0) {
+            console.log("LENGTH");
             return nextResponse({ error: "Incorrect authentication." }, 400);
-        }
-
-        // compare all the hashes to detect a theft
-        const hashResults = await Promise.all(
-            refreshTokensData.map(async (data) => ({
-                id: data.id,
-                matched: await bcrypt.compare(refreshToken, data.token),
-            }))
-        );
-
-        const hasMatched = hashResults.some((r) => r.matched);
-
-        if (hasMatched === false) {
-            const response = nextResponse(
-                { error: "Token theft detection" },
-                400,
-                "token_theft"
-            );
-
-            response.cookies.delete("accessToken");
-            response.cookies.delete("refreshToken");
-
-            return response;
         }
 
         // align permissions
@@ -117,6 +97,7 @@ export const POST = async (request: NextRequest) => {
             .eq("session_id", payload.session_id);
 
         if (refreshDeleteError) {
+            console.log("dfsfsdfsdf");
             return nextResponse(refreshDeleteError, 400);
         }
 
@@ -129,6 +110,8 @@ export const POST = async (request: NextRequest) => {
             });
 
         if (refreshRotateError) {
+            console.log("penitia");
+
             return nextResponse(refreshRotateError, 400);
         }
 
@@ -141,6 +124,7 @@ export const POST = async (request: NextRequest) => {
             .eq("id", userData[0].id);
 
         if (lastSeenError) {
+            console.log("doi tall over again");
             return nextResponse(lastSeenError, 400);
         }
 

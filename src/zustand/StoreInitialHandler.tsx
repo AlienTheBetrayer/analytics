@@ -11,13 +11,9 @@ import { User } from "@/types/api/database/user";
 export const StoreInitialHandler = () => {
     // zustand states
     const status = useAppStore((state) => state.status);
-    const friendRequests = useAppStore((state) => state.friendRequests);
 
     // zustand functions
     const getProfileById = useAppStore((state) => state.getProfileById);
-    const getFriendsProfiles = useAppStore((state) => state.getFriendsProfiles);
-    const getFriendRequests = useAppStore((state) => state.getFriendRequests);
-    const getProfiles = useAppStore((state) => state.getProfiles);
     const getSession = useAppStore((state) => state.getSession);
 
     // zustand local store
@@ -56,30 +52,8 @@ export const StoreInitialHandler = () => {
                 .catch(() => {
                     setVisibleProfile(undefined);
                 });
-
-            getFriendsProfiles(status.id, false);
-            getFriendRequests(status.id, false);
         }
-    }, [
-        getFriendsProfiles,
-        getFriendRequests,
-        getProfileById,
-        setVisibleProfile,
-        status,
-    ]);
-
-    // getting friend request's profiles
-    useEffect(() => {
-        if (
-            status &&
-            friendRequests &&
-            (friendRequests.incoming.length > 0 ||
-                friendRequests.outcoming.length > 0)
-        ) {
-            getProfiles(friendRequests.incoming, false);
-            getProfiles(friendRequests.outcoming, false);
-        }
-    }, [getProfiles, friendRequests, status]);
+    }, [getProfileById, setVisibleProfile, status]);
 
     return null;
 };

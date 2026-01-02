@@ -23,9 +23,13 @@ export const UserProfile = () => {
     // zustand state
     const status = useAppStore((state) => state.status);
     const profiles = useAppStore((state) => state.profiles);
+    const friendRequests = useAppStore((state) => state.friendRequests);
 
     // zustand functions
     const getProfileByName = useAppStore((state) => state.getProfileByName);
+    const getProfiles = useAppStore((state) => state.getProfiles);
+    const getFriendsProfiles = useAppStore((state) => state.getFriendsProfiles);
+    const getFriendRequests = useAppStore((state) => state.getFriendRequests);
 
     // user id to fetch data from
     const retrievedUsername = name ?? status?.username;
@@ -79,6 +83,28 @@ export const UserProfile = () => {
         }
     }, [profile]);
 
+    useEffect(() => {
+        if (!status) {
+            return;
+        }
+
+        getFriendsProfiles(status.id, false);
+        getFriendRequests(status.id, false);
+    }, [status, getFriendsProfiles, getFriendRequests]);
+
+    // getting friend request's profiles
+    useEffect(() => {
+        if (
+            status &&
+            friendRequests &&
+            (friendRequests.incoming.length > 0 ||
+                friendRequests.outcoming.length > 0)
+        ) {
+            getProfiles(friendRequests.incoming, false);
+            getProfiles(friendRequests.outcoming, false);
+        }
+    }, [getProfiles, friendRequests, status]);
+
     // viewing current profile but not logged in
     if (retrievedUsername === undefined) {
         return <AuthRequired description="Log in to see your own profile" />;
@@ -102,7 +128,7 @@ export const UserProfile = () => {
 
     return (
         <div
-            className={`box max-w-5xl w-full m-auto min-h-140 p-0! rounded-4xl! overflow-hidden`}
+            className={`box max-w-6xl w-full m-auto min-h-140 p-0! rounded-4xl! overflow-hidden`}
             style={
                 data.profile.color
                     ? {
