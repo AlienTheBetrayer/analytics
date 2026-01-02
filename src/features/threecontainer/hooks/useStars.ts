@@ -28,7 +28,7 @@ export const useStars = (
                     0
                 )
         );
-    }, [viewport]);
+    }, [viewport.width, viewport.height]);
 
     // noise + matrix
     const matrix = useMemo(() => new Matrix4(), []);
@@ -44,7 +44,7 @@ export const useStars = (
 
         for (let i = 0; i < base.length; i++) {
             const b = base[i];
-            const dz = noise(b.y * 10, b.x * 10, Math.cos(t)) * 0.1;
+            const dz = noise(b.x * 10, b.y * 10, Math.cos(t)) * 0.15;
             pos.set(b.x, b.y, b.z + dz);
 
             matrix.setPosition(pos);
