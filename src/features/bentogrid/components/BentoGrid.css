@@ -1,0 +1,19 @@
+.bento-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+
+    grid-template-areas:
+        "a b"
+        "a a";
+
+    min-height: 2rem;
+    min-width: 2rem;
+    background-color: red;
+    width: 100%;
+}
+
+.bento-grid > div {
+    color: red;
+}

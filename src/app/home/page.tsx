@@ -1,10 +1,14 @@
 "use client";
 
+import { BentoGrid } from "@/features/bentogrid/components/BentoGrid";
+
 const HomePage = () => {
     return (
         <main className="relative w-full min-h-screen flex flex-col items-center">
             <div className="flex flex-col gap-8 text-center max-w-3xl">
                 <h2>Reimagination of what I had been doing</h2>
+
+                <BentoGrid />
 
                 <div className="flex flex-col gap-4">
                     <p>

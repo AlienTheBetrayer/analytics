@@ -237,6 +237,7 @@ img {
 .box {
     display: flex;
     flex-direction: column;
+    position: relative;
     gap: 0.5rem;
     padding: 1.5rem;
     background: linear-gradient(
