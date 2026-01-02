@@ -24,7 +24,7 @@ export const Header = () => {
     }, [isMenuOpen, disabledScroll]);
 
     return (
-        <header className="sticky my-8 flex w-full items-center! h-12 z-3 duration-500 transition-all *:bg-background-a-2 *:border-2 *:border-background-3">
+        <header className="sticky my-8 top-8 flex w-full items-center! h-12 z-3 duration-500 transition-all *:bg-background-a-2 *:border-2 *:border-background-3">
             <nav className="flex absolute left-1/2 -translate-1/2 top-1/2 items-center w-full sm:w-fit h-full mx-auto  backdrop-blur-3xl rounded-full p-2">
                 <ul className="flex justify-between gap-4 w-full *:flex *:items-center items-center px-4!">
                     <li>
