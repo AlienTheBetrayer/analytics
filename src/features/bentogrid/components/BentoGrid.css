@@ -1,28 +1,60 @@
 .bento-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     grid-auto-rows: 10rem;
-    gap: 0.75rem;
+    gap: 1rem;
 
     grid-template-areas:
-        "a b b e"
-        "a c c e"
-        "d d d f"
-        "g g g f"
+        "e f f f k"
+        "e d c c k"
+        "e d o l l"
+        "e d o l l"
+        "a a b b b";
+}
+
+@media (max-width: 1024px) {
+    .bento-grid {
+        grid-template-columns: repeat(6, 1fr);
+
+        grid-template-areas:
+            "f f f f f f"
+            "d d c c c c"
+            "e e o o k k"
+            "e e o o l l"
+            "a a o o l l"
+            "b b b b l l";
+    }
 }
 
 @media (max-width: 768px) {
     .bento-grid {
-        grid-template-areas: 
-        "a b c e"
-        "a b c e"
-        "d d d d"
-        "g g g g"
-        "f f f f"
+        grid-template-areas:
+            "f f f f f f"
+            "e e e c c c"
+            "e e e k k k"
+            "d d d o o o"
+            "a a a o o o"
+            "b b b l l l";
     }
 }
 
-.bento-grid div {
+@media (max-width: 640px) {
+    .bento-grid {
+        grid-template-columns: 1fr;
+        grid-template-areas: none;
+    }
+
+    .bento-grid > div {
+        grid-area: auto !important;
+    }
+}
+
+.bento-grid > div {
     display: grid;
     place-items: center;
+    transition: 0.2s filter ease-out;
+}
+
+.bento-grid > div:hover {
+    filter: brightness(2);
 }
