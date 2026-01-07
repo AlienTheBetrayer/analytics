@@ -1,9 +1,4 @@
-// authForm
-export type DashboardAuthForm = {
-    type: "register" | "login" | "logout";
-    username?: string;
-    password?: string;
-};
+import { Event } from "../tables/project";
 
 // notifications
 export type DashboardNotificationType = "information" | "error" | "warning";
@@ -15,11 +10,49 @@ export type DashboardNotification = {
     createdAt?: Date;
 };
 
+export type FilterType = Record<
+    string,
+    {
+        projectSorting?: {
+            column?: string;
+            direction?: "ascendant" | "descendant";
+        };
+        projectSearch?: string;
+
+        eventsSorting?: {
+            column?: string;
+            direction?: "ascendant" | "descendant";
+        };
+        eventsSearch?: string;
+        eventsFiltering?: Record<string, boolean>;
+    }
+>;
+
 // the main type
 export type DashboardStore = {
     // selectedProject
     selectedProjectId?: string;
-    eventFilters: Record<string, boolean>;
+    filter: FilterType;
+
+    /**
+     * filter multi-function
+     * @param events names of events to change visibility
+     * @param flag a visibility flag
+     */
+    setFilter: (options: {
+        project_id: string;
+        type:
+            | "project-sort"
+            | "project-search"
+            | "event-sort"
+            | "event-search"
+            | "event-filter";
+        search?: string;
+        column?: string[];
+        direction?: "ascendant" | "descendant";
+        events?: Event[];
+        flag?: boolean;
+    }) => void;
 
     /**
      * Sets the currently selected project
@@ -31,16 +64,6 @@ export type DashboardStore = {
      * explicitly deselects a project that may have been selected
      */
     deselectProject: () => void;
-
-    /**
-     * filters events
-     * @param events names of events to change visibility
-     * @param flag a visibility flag
-     */
-    setEventFilters: (options: {
-        events: string[];
-        flag: boolean;
-    }) => void;
 
     // notifications
     notifications: DashboardNotification[];

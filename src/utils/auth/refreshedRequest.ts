@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import axios, { type AxiosRequestConfig } from "axios";
 
 type RefreshedRequestAllowedType = "POST" | "GET";
@@ -18,16 +19,18 @@ export const refreshedRequest = async (
 ) => {
     try {
         // attempts to perform a request
-        return await axios.request({
+        const res = await axios.request({
             url: route,
             data,
             method: type,
             ...config,
         });
-    } catch {
+        return res;
+    } catch (error) {
+        console.error(error);
         try {
             // if internal check fails, we try to refresh the token and attempt it again
-            await axios.post("/api/auth/refresh");
+            const res = await axios.post("/api/auth/refresh");
             return await axios.request({
                 url: route,
                 data,

@@ -1,6 +1,7 @@
 import { Spinner } from "@/features/spinner/components/Spinner";
 import { useAppStore } from "@/zustand/store";
 import { DashboardProject } from "./DashboardProject";
+import { ProjectTopline } from "../topline/projects/ProjectTopline";
 
 export const DashboardProjects = () => {
     // zustand
@@ -12,6 +13,8 @@ export const DashboardProjects = () => {
 
     return (
         <div className="flex flex-col gap-4 relative max-h-64">
+            {/* <ProjectTopline/> */}
+
             <ul
                 className="flex flex-col gap-2 h-full overflow-y-auto overflow-x-hidden scheme-dark"
                 style={{

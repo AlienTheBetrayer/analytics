@@ -2,7 +2,7 @@
 import "./Tooltip.css";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "motion/react";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { positionTooltip } from "../utils/positionTooltip";
 import { TooltipDirection } from "../types/tooltip";
 
@@ -18,7 +18,7 @@ type Props = {
     children: React.ReactNode;
 };
 
-export const Tooltip = ({
+export const Tooltip = React.memo(function TooltipFunction({
     title,
     text,
     element,
@@ -28,7 +28,7 @@ export const Tooltip = ({
     isEnabled = true,
     disabledPointer = true,
     children,
-}: Props) => {
+}: Props) {
     const [mounted, setMounted] = useState<boolean>(false);
 
     useEffect(() => {
@@ -86,15 +86,20 @@ export const Tooltip = ({
         }
 
         const handle = (e: PointerEvent | FocusEvent) => {
-            const target = e.target as Node;
+            const target = e.target as HTMLElement;
 
+            if (!target) return;
+
+            // 1. Ignore clicks inside the tooltip
             if (
+                elementRef.current?.contains(target) ||
                 tooltipRef.current?.contains(target) ||
-                elementRef.current?.contains(target)
+                target.closest("[data-tooltip]")
             ) {
                 return;
             }
 
+            // 3. Clicked outside -> hide tooltip
             setIsShown(false);
         };
 
@@ -160,7 +165,7 @@ export const Tooltip = ({
                         setIsShown(true);
                     }
                 }}
-                onPointerUp={() => {
+                onClick={() => {
                     if (type === "modal") {
                         setIsShown((prev) => !prev);
                     }
@@ -216,14 +221,24 @@ export const Tooltip = ({
                                 ) : (
                                     <div className="flex flex-col items-center">
                                         {title && (
-                                            <span className="text-background-9!">
+                                            <motion.span
+                                                className="text-background-9!"
+                                                key={title}
+                                                initial={{ opacity: 0 }}
+                                                animate={{ opacity: 1 }}
+                                            >
                                                 <b>{title}</b>
-                                            </span>
+                                            </motion.span>
                                         )}
                                         {text && (
-                                            <span className="text-background-9!">
+                                            <motion.span
+                                                className="text-background-9!"
+                                                key={text}
+                                                initial={{ opacity: 0 }}
+                                                animate={{ opacity: 1 }}
+                                            >
                                                 {text}
-                                            </span>
+                                            </motion.span>
                                         )}
                                     </div>
                                 )}
@@ -235,4 +250,4 @@ export const Tooltip = ({
             )}
         </>
     );
-};
+});

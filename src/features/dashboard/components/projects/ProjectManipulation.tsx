@@ -1,3 +1,5 @@
+import { MessageBox } from "@/features/messagebox/components/MessageBox";
+import { usePopup } from "@/features/popup/hooks/usePopup";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
@@ -18,8 +20,44 @@ export const ProjectManipulation = ({ data }: Props) => {
     // zustand functions
     const deleteData = useAppStore((state) => state.deleteData);
 
+    // messageboxes
+    const deleteProjectBox = usePopup(({ hide }) => (
+        <MessageBox
+            description="You will delete every single data entry about this project, including events, aggregates!"
+            onInteract={(res) => {
+                hide();
+                if (res === "yes") {
+                    deleteData({
+                        id: [data.project.id],
+                        type: "project",
+                        promiseKey: `projectDelete_${data.project.id}`,
+                    });
+                }
+            }}
+        />
+    ));
+
+    const deleteEventsBox = usePopup(({ hide }) => (
+        <MessageBox
+            description="You will delete every single event in this project!"
+            onInteract={(res) => {
+                hide();
+                if (res === "yes") {
+                    deleteData({
+                        id: data.events.map((e) => e.id),
+                        type: "event",
+                        promiseKey: `eventsDelete_${data.project.id}`,
+                    });
+                }
+            }}
+        />
+    ));
+
     return (
         <div className="flex flex-col box min-w-sm gap-4!">
+            {deleteProjectBox.render()}
+            {deleteEventsBox.render()}
+
             <div className="flex flex-col gap-1 items-center">
                 <Image
                     alt=""
@@ -76,11 +114,7 @@ export const ProjectManipulation = ({ data }: Props) => {
                             <Button
                                 className="w-full"
                                 onClick={() => {
-                                    deleteData({
-                                        id: [data.project.id],
-                                        type: "project",
-                                        promiseKey: `projectDelete_${data.project.id}`,
-                                    });
+                                    deleteProjectBox.show();
                                 }}
                                 isEnabled={status?.role !== "user"}
                             >
@@ -106,11 +140,7 @@ export const ProjectManipulation = ({ data }: Props) => {
                             <Button
                                 className="w-full"
                                 onClick={() => {
-                                    deleteData({
-                                        id: data.events.map((e) => e.id),
-                                        type: "event",
-                                        promiseKey: `eventsDelete_${data.project.id}`,
-                                    });
+                                    deleteEventsBox.show();
                                 }}
                                 isEnabled={status?.role !== "user"}
                             >

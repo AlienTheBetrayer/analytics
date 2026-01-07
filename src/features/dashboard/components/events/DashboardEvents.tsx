@@ -4,7 +4,7 @@ import { useScroll } from "@/hooks/useScroll";
 import { useAppStore } from "@/zustand/store";
 import { DashboardEventList } from "./DashboardEventList";
 import { DashboardScrollTop } from "./DashboardScrollTop";
-import { EventFilter } from "./EventFilter";
+import { EventTopline } from "../topline/events/EventTopline";
 
 export const DashboardEvents = () => {
     // zustand
@@ -55,7 +55,7 @@ export const DashboardEvents = () => {
         <div className="flex flex-col gap-4 h-64 max-h-64 relative">
             <hr className="block! lg:hidden!" />
 
-            <EventFilter data={data} />
+            <EventTopline data={data} />
 
             <DashboardEventList
                 events={data.events}

@@ -22,7 +22,7 @@ export const MessageBox = ({
 			initial={{ opacity: 0 }}
 			animate={{ opacity: 1 }}
 			exit={{ opacity: 0 }}
-			className="flex flex-col justify-between items-center z-999 fixed
+			className="flex flex-col justify-between items-center z-1005 fixed
              left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 rounded-4xl
               outline-2 outline-background-a-5 bg-background-a-0 backdrop-blur-xl p-4 gap-2 min-h-42 w-72"
 		>

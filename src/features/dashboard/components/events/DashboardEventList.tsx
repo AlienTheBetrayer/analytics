@@ -1,16 +1,17 @@
 "use client";
-import { Event } from "@/types/tables/project";
 import { DashboardEvent } from "./DashboardEvent";
-import { useAppStore } from "@/zustand/store";
+import { useEventList } from "../../hooks/useEventList";
 
 type Props = {
-    events?: Event[];
     scrollRef: React.RefObject<HTMLUListElement | null>;
 };
 
-export const DashboardEventList = ({ events, scrollRef }: Props) => {
-    // zustand state
-    const eventFilters = useAppStore(state => state.eventFilters);
+export const DashboardEventList = ({ scrollRef }: Props) => {
+    const { filteredEvents } = useEventList();
+
+    if (!filteredEvents) {
+        return;
+    }
 
     return (
         <ul
@@ -20,14 +21,12 @@ export const DashboardEventList = ({ events, scrollRef }: Props) => {
                 scrollbarWidth: "thin",
             }}
         >
-            {events &&
-                [...events].reverse().map((event) => (
-                    event.type && eventFilters[event.type] !== false &&
-                    <DashboardEvent
-                        event={event}
-                        key={event.id}
-                    />
-                ))}
+            {filteredEvents.map((event) => (
+                <DashboardEvent
+                    event={event}
+                    key={event.id}
+                />
+            ))}
         </ul>
     );
 };

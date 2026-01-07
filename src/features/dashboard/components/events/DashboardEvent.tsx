@@ -53,7 +53,7 @@ export const DashboardEvent = ({ event }: Props) => {
                     image="/description.svg"
                 />
                 <EventProperty
-                    eventType="When"
+                    eventType="Date"
                     value={relativeTime(event.created_at)}
                     image="/calendar.svg"
                 />

@@ -9,13 +9,8 @@ type Props = {
 
 export const Select = ({ items, value, onChange, ...rest }: Props) => {
     // controller
-    const controller = useInputSelect(
-        items,
-        value as string | undefined,
-        onChange
-    );
-
-    const { inputRef, expandToggle, inputValue, keyDown, render } = controller;
+    const { inputRef, expandToggle, inputValue, keyDown, render } =
+        useInputSelect(items, value as string | undefined, onChange);
 
     useEffect(() => {
         requestAnimationFrame(() => {

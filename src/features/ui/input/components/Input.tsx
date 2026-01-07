@@ -36,18 +36,19 @@ export const Input = ({
                 type="text"
                 required={required}
                 className={`w-full h-full min-h-8 bg-linear-to-bl 
-            from-background-2 to-background-1 outline-1 outline-background-5 p-2 rounded-xl focus:outline-blue-1 
+            from-background-2 to-background-1 outline-2 outline-background-5 p-2 rounded-xl focus:outline-blue-1 
              hover:brightness-125 transition-all duration-300 ease-out focus-visible:brightness-125
-            ${required === true || minLength || maxLength ? "invalid:outline-red-2! valid:outline-blue-2!" : ""} 
+            ${required === true || minLength || maxLength ? "invalid:outline-red-1! valid:outline-blue-1!" : ""} 
                  ${isEnabled !== true ? "pointer-events-none opacity-30" : ""} 
             ${className ?? ""}`}
                 value={inputValue}
                 ref={inputRef}
-                onChange={(e) =>
-                    value === undefined
-                        ? setData(e.target.value)
-                        : onChange?.(e.target.value)
-                }
+                onChange={(e) => {
+                    if (!value) {
+                        setData(e.target.value);
+                    }
+                    onChange?.(e.target.value);
+                }}
                 maxLength={maxLength}
                 minLength={minLength}
                 {...rest}
@@ -61,12 +62,11 @@ export const Input = ({
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: 5 }}
                         onClick={() => {
-                            if (value === undefined) {
+                            if (!value) {
                                 setData("");
-                            } else {
-                                onChange?.("");
-                                onDelete?.();
                             }
+                            onDelete?.();
+                            onChange?.("");
                         }}
                     >
                         ✕
