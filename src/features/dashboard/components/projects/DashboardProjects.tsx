@@ -4,9 +4,9 @@ import { DashboardProject } from "./DashboardProject";
 
 export const DashboardProjects = () => {
     // zustand
-    const data = useAppStore((state) => state.data);
+    const projects = useAppStore((state) => state.projects);
 
-    if (data === undefined || Object.values(data).length === 0) {
+    if (!Object.values(projects).length) {
         return <Spinner styles="big" />;
     }
 
@@ -18,8 +18,11 @@ export const DashboardProjects = () => {
                     scrollbarWidth: "thin",
                 }}
             >
-                {Object.entries(data).map(([id, projectData]) => (
-                    <DashboardProject key={id} projectData={projectData} />
+                {Object.values(projects).map((project) => (
+                    <DashboardProject
+                        key={project.id}
+                        id={project.id}
+                    />
                 ))}
             </ul>
         </div>

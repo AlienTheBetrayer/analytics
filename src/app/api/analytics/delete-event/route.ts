@@ -1,9 +1,9 @@
 import type { PostgrestError } from "@supabase/supabase-js";
 import type { NextRequest } from "next/server";
 import { supabaseServer } from "@/server/private/supabase";
-import type { AnalyticsMeta } from "@/types/api/database/analytics";
-import { nextResponse } from "@/utils/response";
-import { tokenVerify } from "@/utils/tokenVerify";
+import { tokenVerify } from "@/utils/auth/tokenVerify";
+import { nextResponse } from "@/utils/api/response";
+import { Event } from "@/types/tables/project";
 
 export const POST = async (request: NextRequest) => {
     try {
@@ -15,14 +15,15 @@ export const POST = async (request: NextRequest) => {
 
         tokenVerify(request, undefined, "admin");
 
-        const { data: analyticsMetaData, error: metaError } = (await supabaseServer
-            .from("analytics_meta")
-            .delete()
-            .eq("id", id)
-            .select()) as {
-            data: AnalyticsMeta[];
-            error: PostgrestError | null;
-        };
+        const { data: analyticsMetaData, error: metaError } =
+            (await supabaseServer
+                .from("analytics_meta")
+                .delete()
+                .eq("id", id)
+                .select()) as {
+                data: Event[];
+                error: PostgrestError | null;
+            };
 
         if (metaError) {
             return nextResponse(metaError, 400);
@@ -32,7 +33,7 @@ export const POST = async (request: NextRequest) => {
             {
                 message: `Successfully deleted ${analyticsMetaData[0].type} event!`,
             },
-            200,
+            200
         );
     } catch (e) {
         const message = e instanceof Error ? e.message : "unknown error";

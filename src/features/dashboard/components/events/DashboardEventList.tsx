@@ -1,9 +1,9 @@
 "use client";
-import type { AnalyticsMeta } from "@/types/api/database/analytics";
+import { Event } from "@/types/tables/project";
 import { DashboardEvent } from "./DashboardEvent";
 
 type Props = {
-    events?: AnalyticsMeta[];
+    events?: Event[];
     scrollRef: React.RefObject<HTMLUListElement | null>;
 };
 
@@ -17,9 +17,12 @@ export const DashboardEventList = ({ events, scrollRef }: Props) => {
             }}
         >
             {events &&
-                [...events]
-                    .reverse()
-                    .map((event) => <DashboardEvent event={event} key={event.id} />)}
+                [...events].reverse().map((event) => (
+                    <DashboardEvent
+                        event={event}
+                        key={event.id}
+                    />
+                ))}
         </ul>
     );
 };

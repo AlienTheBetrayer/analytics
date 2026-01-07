@@ -7,7 +7,7 @@ import { DashboardScrollTop } from "./DashboardScrollTop";
 
 export const DashboardEvents = () => {
     // zustand
-    const data = useAppStore((state) => state.data);
+    const events = useAppStore((state) => state.events);
     const promises = useAppStore((state) => state.promises);
     const selectedProjectId = useAppStore((state) => state.selectedProjectId);
 
@@ -18,9 +18,9 @@ export const DashboardEvents = () => {
     });
 
     // error / empty data handling
-    if (data === undefined) return null;
+    if (!events) return null;
 
-    if (selectedProjectId === undefined) {
+    if (!selectedProjectId) {
         return (
             <div className="flex flex-col gap-4 h-64 max-h-64 relative">
                 <span className="m-auto">Select a project to see events.</span>
@@ -28,7 +28,7 @@ export const DashboardEvents = () => {
         );
     }
 
-    if (promises[selectedProjectId] === 'pending') {
+    if (promises[selectedProjectId] === "pending") {
         return (
             <div className="flex flex-col gap-4 h-64 max-h-64 relative">
                 <Spinner styles="big" />
@@ -36,7 +36,7 @@ export const DashboardEvents = () => {
         );
     }
 
-    if (data?.[selectedProjectId]?.events?.length === 0) {
+    if (!events[selectedProjectId]?.length) {
         return (
             <div className="flex flex-col gap-4 h-64 max-h-64 relative">
                 <span className="m-auto">No events so far...</span>
@@ -47,11 +47,20 @@ export const DashboardEvents = () => {
         );
     }
 
+    // state-derived ui states
+    const data = { events: events[selectedProjectId] };
+
     return (
         <div className="flex flex-col gap-4 h-64 max-h-64 relative">
             <hr className="block! lg:hidden!" />
-            <DashboardEventList events={data[selectedProjectId]?.events} scrollRef={scroll.ref} />
-            <DashboardScrollTop isVisible={hasScrolledEnough} scrollRef={scroll.ref} />
+            <DashboardEventList
+                events={data.events}
+                scrollRef={scroll.ref}
+            />
+            <DashboardScrollTop
+                isVisible={hasScrolledEnough}
+                scrollRef={scroll.ref}
+            />
         </div>
     );
 };

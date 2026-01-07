@@ -4,17 +4,16 @@ import { MessageBox } from "@/features/messagebox/components/MessageBox";
 import { usePopup } from "@/features/popup/hooks/usePopup";
 import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
-import type { Profile } from "@/types/api/database/profiles";
-import type { User } from "@/types/api/database/user";
-import { promiseStatus } from "@/utils/status";
+import { Profile, User } from "@/types/tables/account";
 import { useAppStore } from "@/zustand/store";
 import { ProfileImage } from "../ProfileImage";
-import { relativeTime } from "@/utils/relativeTime";
+import { relativeTime } from "@/utils/other/relativeTime";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
-import { RoleEditing } from "../RoleEditing";
+import { RoleEditing } from "../modals/RoleEditing";
+import { promiseStatus } from "@/utils/other/status";
 
 type Props = {
-    data: { profile: Profile; user: User };
+    data: { user: User; profile: Profile };
 };
 
 export const Overview = ({ data }: Props) => {
@@ -25,11 +24,7 @@ export const Overview = ({ data }: Props) => {
     const promises = useAppStore((state) => state.promises);
 
     // zustand functinos
-    const sendFriendRequest = useAppStore((state) => state.sendFriendRequest);
-    const unfriend = useAppStore((state) => state.unfriend);
-    const deleteFriendRequest = useAppStore(
-        (state) => state.deleteFriendRequest
-    );
+    const modifyFriendship = useAppStore((state) => state.modifyFriendship);
 
     // message boxes
     const unfriendMessageBox = usePopup(({ hide }) => (
@@ -38,7 +33,12 @@ export const Overview = ({ data }: Props) => {
             onInteract={(res) => {
                 hide();
                 if (res === "yes" && status) {
-                    unfriend(status.id, data.user.id);
+                    modifyFriendship({
+                        from_id: status.id,
+                        to_id: data.user.id,
+                        type: "unfriend",
+                        promiseKey: "unfriend",
+                    });
                 }
             }}
         />
@@ -46,13 +46,13 @@ export const Overview = ({ data }: Props) => {
 
     // ui states
     const hasOutcomingRequest = useMemo(() => {
-        if (status === undefined) return false;
-        return friendRequests?.outcoming.some((id) => id === data.user.id);
+        return (
+            status && friendRequests[status.id]?.outcoming?.has(data.user.id)
+        );
     }, [friendRequests, status, data]);
 
     const hasIncomingRequest = useMemo(() => {
-        if (status === undefined) return false;
-        return friendRequests?.incoming.some((id) => id === data.user.id);
+        return status && friendRequests[status.id]?.incoming?.has(data.user.id);
     }, [friendRequests, status, data]);
 
     return (
@@ -130,14 +130,14 @@ export const Overview = ({ data }: Props) => {
                         </span>
                     </div>
                 )}
-                
+
                 <span className="text-3! text-foreground-2!">
                     <mark>{data.profile.name}</mark>
                 </span>
 
                 <hr className="w-1/5!" />
 
-                {data.profile.oneliner && (
+                {data.profile.title && (
                     <div className="flex flex-col items-center">
                         <small className="flex gap-1 items-center">
                             <Image
@@ -149,7 +149,7 @@ export const Overview = ({ data }: Props) => {
                             <span>Title</span>
                         </small>
                         <span className="text-foreground-5!">
-                            {data.profile.oneliner}
+                            {data.profile.title}
                         </span>
                     </div>
                 )}
@@ -162,7 +162,12 @@ export const Overview = ({ data }: Props) => {
                 />
 
                 <div className="flex gap-1 items-center">
-                    <Image width={20} height={20} alt="" src="/privacy.svg" />
+                    <Image
+                        width={20}
+                        height={20}
+                        alt=""
+                        src="/privacy.svg"
+                    />
                     <span className="text-foreground-5!">
                         {data.user.role[0].toUpperCase() +
                             data.user.role.substring(1)}
@@ -190,7 +195,7 @@ export const Overview = ({ data }: Props) => {
                 <div className="flex justify-center items-center w-full min-h-8">
                     {status &&
                         status.id !== data.user.id &&
-                        (friends?.some((id) => id === data.user.id) ? (
+                        (friends[data.user.id]?.has(status.id) ? (
                             <Button
                                 onClick={() => {
                                     unfriendMessageBox.show();
@@ -213,17 +218,19 @@ export const Overview = ({ data }: Props) => {
                                 >
                                     <Button
                                         onClick={() => {
-                                            sendFriendRequest(
-                                                status.id,
-                                                data.user.id
-                                            );
+                                            modifyFriendship({
+                                                from_id: status.id,
+                                                to_id: data.user.id,
+                                                type: "request-accept",
+                                                promiseKey: "requestAccept",
+                                            });
                                         }}
                                     >
-                                        {promiseStatus(promises.friend_request)}
+                                        {promiseStatus(promises.requestAccept)}
                                         <Image
                                             src="/checkmark.svg"
-                                            width={16}
-                                            height={16}
+                                            width={12}
+                                            height={12}
                                             alt="accept"
                                         />
                                         Accept
@@ -236,15 +243,15 @@ export const Overview = ({ data }: Props) => {
                                 >
                                     <Button
                                         onClick={() => {
-                                            deleteFriendRequest(
-                                                status.id,
-                                                data.user.id
-                                            );
+                                            modifyFriendship({
+                                                from_id: status.id,
+                                                to_id: data.user.id,
+                                                type: "request-reject",
+                                                promiseKey: "requestReject",
+                                            });
                                         }}
                                     >
-                                        {promiseStatus(
-                                            promises.delete_friend_request
-                                        )}
+                                        {promiseStatus(promises.requestReject)}
                                         <Image
                                             src="/cross.svg"
                                             width={16}
@@ -262,7 +269,6 @@ export const Overview = ({ data }: Props) => {
                                     text={`Wait for ${data.user.username} to respond`}
                                 >
                                     <Button isEnabled={false}>
-                                        {promiseStatus(promises.friend_request)}
                                         <Image
                                             src="/friends.svg"
                                             width={16}
@@ -279,15 +285,15 @@ export const Overview = ({ data }: Props) => {
                                 >
                                     <Button
                                         onClick={() => {
-                                            deleteFriendRequest(
-                                                status.id,
-                                                data.user.id
-                                            );
+                                            modifyFriendship({
+                                                from_id: status.id,
+                                                to_id: data.user.id,
+                                                type: "request-reject",
+                                                promiseKey: "requestUnsend",
+                                            });
                                         }}
                                     >
-                                        {promiseStatus(
-                                            promises.delete_friend_request
-                                        )}
+                                        {promiseStatus(promises.requestUnsend)}
                                         <Image
                                             src="/auth.svg"
                                             width={16}
@@ -305,13 +311,15 @@ export const Overview = ({ data }: Props) => {
                             >
                                 <Button
                                     onClick={() => {
-                                        sendFriendRequest(
-                                            status.id,
-                                            data.user.id
-                                        );
+                                        modifyFriendship({
+                                            from_id: status.id,
+                                            to_id: data.user.id,
+                                            type: "request-send",
+                                            promiseKey: "requestSend",
+                                        });
                                     }}
                                 >
-                                    {promiseStatus(promises.friend_request)}
+                                    {promiseStatus(promises.requestSend)}
                                     <Image
                                         src="/plus.svg"
                                         width={16}

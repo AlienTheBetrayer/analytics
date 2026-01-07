@@ -3,15 +3,15 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import type { NextRequest } from "next/server";
 import { supabaseServer } from "@/server/private/supabase";
-import type { User } from "@/types/api/database/user";
-import { nextResponse } from "@/utils/response";
+import { nextResponse } from "@/utils/api/response";
+import { Profile, User } from "@/types/tables/account";
 
 export const POST = async (request: NextRequest) => {
     try {
         // json body checking
         const { username, password } = await request.json();
 
-        if (username === undefined || password === undefined) {
+        if (!username || !password) {
             return nextResponse(
                 { error: "username or password are missing." },
                 400,
@@ -22,17 +22,19 @@ export const POST = async (request: NextRequest) => {
         // user checking
         const { data: userData, error: userError } = (await supabaseServer
             .from("users")
-            .select()
-            .eq("username", username)) as {
-            data: User[];
+            .select(`*, profile:profiles(*)`)
+            .eq("username", username)
+            ) as {
+            data: (User & { profile: Profile })[];
             error: PostgrestError | null;
         };
 
         if (userError) {
+            console.error(userError);
             return nextResponse(userError, 400);
         }
 
-        if (userData.length === 0) {
+        if (!userData.length) {
             return nextResponse(
                 { error: "The user has not been created yet." },
                 400,
@@ -43,11 +45,15 @@ export const POST = async (request: NextRequest) => {
         // password comparing
         const isPasswordCorrect = await bcrypt.compare(
             password,
-            userData[0].password
+            userData[0].password!
         );
 
-        if (isPasswordCorrect === false) {
-            return nextResponse({ error: "Invalid credentials" }, 401);
+        if (!isPasswordCorrect) {
+            return nextResponse(
+                { error: "Invalid credentials" },
+                401,
+                "invalid_credentials"
+            );
         }
 
         // logged in
@@ -117,12 +123,13 @@ export const POST = async (request: NextRequest) => {
             });
 
         if (refreshError) {
+            console.error(refreshError);
             return nextResponse(refreshError, 400);
         }
 
         return res;
-    } catch (e) {
-        const message = e instanceof Error ? e.message : "unknown error";
-        return nextResponse({ error: message }, 400);
+    } catch (error) {
+        console.error(error);
+        return nextResponse({ error: "Failed logging in the user." }, 400);
     }
 };

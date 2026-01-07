@@ -1,13 +1,14 @@
-import type { ProjectResponseData } from "@/types/api/database";
-import { Analytics, AnalyticsMeta } from "@/types/api/database/analytics";
-import type { Project } from "@/types/api/database/projects";
-import type { Data, DataStore } from "@/types/zustand/data";
+import { ResponseSync } from "@/types/api/responses/analytics";
+import type { DataStore } from "@/types/zustand/data";
 import type { SliceFunction } from "@/types/zustand/utils/sliceFunction";
-import { refreshedRequest } from "@/utils/refreshedRequest";
+import { refreshedRequest } from "@/utils/auth/refreshedRequest";
 
 export const DataSlice: SliceFunction<DataStore> = (set, get) => {
     return {
         promises: {},
+        aggregates: {},
+        events: {},
+        projects: {},
 
         setPromise: async (key, callback) => {
             set((state) => ({
@@ -28,7 +29,8 @@ export const DataSlice: SliceFunction<DataStore> = (set, get) => {
                     }));
                 }, 5000);
                 return res;
-            } catch (e) {
+            } catch (error) {
+                console.error(error);
                 set((state) => ({
                     ...state,
                     promises: { ...state.promises, [key]: "rejected" },
@@ -39,183 +41,120 @@ export const DataSlice: SliceFunction<DataStore> = (set, get) => {
                         promises: { ...state.promises, [key]: "idle" },
                     }));
                 }, 5000);
-                throw e;
+                return error;
             }
         },
 
-        setCached: (key: string, flag: boolean = true) => {
-            set((state) => ({ ...state, cached: { ...state.cached, [key]: flag } }));
-        },
-
-        setData: (newData) => {
-            set((state) => ({ ...state, data: newData }));
-        },
-
-        emptyData: () => {
-            set((state) => ({ ...state, data: undefined }));
-        },
-
-        updateProjectList: async (caching: boolean = false) => {
-            const { data, setPromise } = get();
-
-            if (caching === true && data !== undefined) return;
-
-            return await setPromise("projects", async () => {
-                const projects = (await refreshedRequest("/api/analytics/projects/", "GET"))
-                    .data as Project[];
-                set((state) => {
-                    const newData = { ...(state.data ?? {}) };
-
-                    for (const project of Object.values(projects)) {
-                        newData[project.id] = {
-                            ...newData[project.id],
-                            events:
-                                newData[project.id]?.events?.length > 0
-                                    ? newData[project.id].events
-                                    : [],
-                            project,
-                        };
-                    }
-
-                    return { ...state, data: newData };
-                });
-
-                return projects;
-            });
-        },
-
-        updateProjectData: async (id: string, caching: boolean = false) => {
-            const { data, setPromise } = get();
-
-            if (caching === true && data?.[id]?.events?.length !== 0) {
-                return;
-            }
-
-            return await setPromise(id, async () => {
-                const projectData = (await refreshedRequest(`/api/analytics/project/${id}/`, "GET"))
-                    .data as ProjectResponseData;
-
-                set((state) => {
-                    if (state.data?.[projectData.id] === undefined) {
-                        return state;
-                    }
-
-                    const newData = { ...(state.data ?? {}) };
-
-                    newData[projectData.id] = {
-                        ...newData[projectData.id],
-                        events: projectData.metaData ?? [],
-                        aggregates: projectData.aggregates,
-                    };
-
-                    return {
-                        ...state,
-                        data: newData,
-                    };
-                });
-
-                return projectData;
-            });
-        },
-
-        deleteProject: async (id: string) => {
+        deleteData: async (options) => {
             const { setPromise } = get();
 
-            return await setPromise("project_delete", async () => {
-                const res = await refreshedRequest("/api/analytics/delete-project/", "POST", {
-                    project_id: id,
-                });
+            return await setPromise(
+                options?.promiseKey ?? "deleteEvent",
+                async () => {
+                    await refreshedRequest("/api/analytics/delete/", "POST", {
+                        id: options.id,
+                        type: options.type,
+                    });
 
-                set((state) => {
-                    const data = { ...state.data };
-                    delete data[id];
+                    set((state) => {
+                        switch (options.type) {
+                            case "event": {
+                                const events = { ...state.events };
 
-                    return { ...state, data };
-                });
+                                for (const [id, stateEvents] of Object.entries(
+                                    events
+                                )) {
+                                    events[id] = stateEvents.filter(
+                                        (e) => !options.id.includes(e.id)
+                                    );
+                                }
 
-                return res;
-            });
+                                return { ...state, events };
+                            }
+                            case "project": {
+                                const projects = { ...state.projects };
+                                const events = { ...state.events };
+                                const aggregates = { ...state.aggregates };
+
+                                for (const id of options.id) {
+                                    delete projects[id];
+                                    delete events[id];
+                                    delete aggregates[id];
+                                }
+
+                                return {
+                                    ...state,
+                                    projects,
+                                    events,
+                                    aggregates,
+                                };
+                            }
+                        }
+                    });
+                }
+            );
         },
 
-        deleteEvent: async (id: string) => {
+        deleteState: () => {
+            set((state) => ({
+                ...state,
+                projects: {},
+                events: {},
+                aggregates: {},
+            }));
+        },
+
+        sync: async (options) => {
             const { setPromise } = get();
 
-            return await setPromise(`event_delete_${id}`, async () => {
-                const res = await refreshedRequest("/api/analytics/delete-event/", "POST", { id });
+            return await setPromise(
+                options?.promiseKey ?? "sync",
+                async () => {
+                    const res = await refreshedRequest("/api/analytics/sync", "GET");
 
-                set((state) => {
-                    const data = { ...state.data };
+                    const data = res.data as ResponseSync;
 
-                    for (const [projectId, projectData] of Object.entries(data)) {
-                        const events = projectData.events?.filter((e) => e.id !== id);
-                        data[projectId].events = events;
-                    }
+                    set((state) => {
+                        const projects = { ...state.projects };
+                        const events = { ...state.events };
+                        const aggregates = { ...state.aggregates };
 
-                    return { ...state, data };
-                });
+                        for (const entry of Object.values(data)) {
+                            projects[entry.id] = {
+                                id: entry.id,
+                                name: entry.name,
+                                created_at: entry.created_at,
+                                last_event_at: entry.last_event_at,
+                            };
 
-                return res;
-            });
-        },
+                            if (entry.events) {
+                                events[entry.id] = entry.events;
+                            }
 
-        emulateEvent: async (project_name, event_type, description) => {
-            const { setPromise } = get();
-
-            return await setPromise("emulate", async () => {
-                const res = await refreshedRequest("/api/analytics/send", "POST", {
-                    project_name,
-                    event_type,
-                    description,
-                });
-
-                return res;
-            });
-        },
-
-        syncData: async () => {
-            const { setPromise, emptyData } = get();
-            emptyData();
-
-            const { data: stateData } = get();
-
-            return await setPromise("sync", async () => {
-                const projects = (await refreshedRequest("/api/analytics/projects/", "GET"))
-                    .data as Project[];
-
-                const res = await refreshedRequest("/api/sync", "GET");
-                const data = res.data as (Analytics & { event: AnalyticsMeta; project: Project })[];
-
-                set((state) => {
-                    const newData: Data = stateData ?? {};
-
-                    for (const entry of Object.values(data)) {
-                        newData[entry.project.id] = {
-                            ...newData[entry.project.id],
-                            project: entry.project,
-                        };
-
-                        if (!newData[entry.project.id].events) {
-                            newData[entry.project.id].events = [];
+                            if (entry.aggregates?.length) {
+                                aggregates[entry.id] = entry.aggregates[0];
+                            }
                         }
 
-                        newData[entry.project.id].events = [
-                            ...newData[entry.project.id].events,
-                            entry.event,
-                        ];
-                    }
+                        return { ...state, projects, events, aggregates };
+                    });
+                }
+            );
+        },
 
-                    const valuesData = Object.values(newData);
-                    for (const project of Object.values(projects)) {
-                        if (!valuesData.find((v) => v.project.id === project.id)) {
-                            newData[project.id] = { events: [], project };
-                        }
-                    }
-
-                    return { ...state, data: newData };
-                });
-
-                return res;
-            });
+        emulateEvent: async (options) => {
+            const { setPromise } = get();
+            console.log(options);
+            return await setPromise(
+                options.promiseKey ?? "emulateEvent",
+                async () => {
+                    await refreshedRequest("/api/analytics/send", "POST", {
+                        project_name: options.project_name,
+                        event_type: options.event_type,
+                        description: options.description,
+                    });
+                }
+            );
         },
     };
 };

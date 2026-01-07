@@ -3,15 +3,11 @@
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AuthRequired } from "@/features/authentication/components/AuthRequired";
-import { retrieveResponse } from "@/features/authentication/utils/retrieveResponse";
-import type { Profile } from "@/types/api/database/profiles";
-import type { User } from "@/types/api/database/user";
-import type { APIResponseType } from "@/types/api/response";
 import { useAppStore } from "@/zustand/store";
-import { NotFound } from "./NotFound";
 import { ProfileEdit, ProfileTabs } from "./ProfileEdit";
 import { Overview } from "./tabs/Overview";
 import { UserLoading } from "./UserLoading";
+import { NotFound } from "./NotFound";
 
 export const UserProfile = () => {
     // url
@@ -22,125 +18,70 @@ export const UserProfile = () => {
 
     // zustand state
     const status = useAppStore((state) => state.status);
+    const users = useAppStore((state) => state.users);
     const profiles = useAppStore((state) => state.profiles);
-    const friendRequests = useAppStore((state) => state.friendRequests);
 
     // zustand functions
-    const getProfileByName = useAppStore((state) => state.getProfileByName);
-    const getProfiles = useAppStore((state) => state.getProfiles);
-    const getFriendsProfiles = useAppStore((state) => state.getFriendsProfiles);
-    const getFriendRequests = useAppStore((state) => state.getFriendRequests);
+    const getUsers = useAppStore((state) => state.getUsers);
 
     // user id to fetch data from
     const retrievedUsername = name ?? status?.username;
     const retrievedTab =
         (tab && ProfileTabs.find((t) => t === tab)) || "overview";
 
-    // getting data + status
-    const [responseStatus, setResponseStatus] = useState<
-        APIResponseType | undefined
-    >();
-    const [retrievedData, setRetrievedData] = useState<
-        | {
-              user: User;
-              profile: Profile;
-          }
-        | undefined
-    >(() => {
-        return profiles === undefined
-            ? undefined
-            : Object.values(profiles).find(
-                  (p) => p.user.username === retrievedUsername
-              );
-    });
+    const [error, setError] = useState<"no_user" | "no_profile" | undefined>();
 
     // fetch if haven't cached
     useEffect(() => {
-        if (retrievedUsername === undefined || retrievedData !== undefined)
-            return;
-
-        const get = async () => {
-            const res = await retrieveResponse(
-                async () => await getProfileByName(retrievedUsername)
-            );
-            setResponseStatus(res.retrievedResponse.type);
-            setRetrievedData(res.axiosResponse?.data);
-        };
-
-        get();
-    }, [retrievedData, retrievedUsername, getProfileByName]);
-
-    // update state if something about the profile changed
-    const profile =
-        retrievedData && profiles
-            ? profiles[retrievedData?.user.id]
-            : undefined;
-    useEffect(() => {
-        if (profile) {
-            requestAnimationFrame(() => {
-                setRetrievedData(profile);
-            });
-        }
-    }, [profile]);
-
-    useEffect(() => {
-        if (!status) {
+        if (!retrievedUsername) {
             return;
         }
 
-        getFriendsProfiles(status.id, false);
-        getFriendRequests(status.id, false);
-    }, [status, getFriendsProfiles, getFriendRequests]);
-
-    // getting friend request's profiles
-    useEffect(() => {
-        if (
-            status &&
-            friendRequests &&
-            (friendRequests.incoming.length > 0 ||
-                friendRequests.outcoming.length > 0)
-        ) {
-            getProfiles(friendRequests.incoming, false);
-            getProfiles(friendRequests.outcoming, false);
-        }
-    }, [getProfiles, friendRequests, status]);
+        getUsers({
+            username: [retrievedUsername],
+            select: ["profile", "friend_requests", "friends"],
+        }).then((data) => {
+            if (data && !data?.length) {
+                setError("no_user");
+                return;
+            }
+        });
+    }, [retrievedUsername, getUsers]);
 
     // viewing current profile but not logged in
-    if (retrievedUsername === undefined) {
+    if (!retrievedUsername) {
         return <AuthRequired description="Log in to see your own profile" />;
     }
 
     // wrong user
-    if (
-        responseStatus === "user_not_exists" ||
-        responseStatus === "profile_not_exists"
-    ) {
+    if (error === "no_user" || error === "no_profile") {
         return <NotFound />;
     }
 
-    // loading user
-    if (retrievedData === undefined) {
+    const user = Object.values(users).find(
+        (u) => u.username === retrievedUsername
+    );
+
+    if (!user || !profiles[user.id]) {
         return <UserLoading />;
     }
 
-    // retrieved data from the retrieved user based on the url
-    const data = retrievedData;
+    const retrievedData = { user, profile: profiles[user.id] };
 
     return (
         <div
-            className={`box max-w-6xl w-full m-auto min-h-140 p-0! rounded-4xl! overflow-hidden`}
-            style={
-                data.profile.color
-                    ? {
-                          outline: `1px solid ${data.profile.color}`,
-                      }
-                    : {}
-            }
+            className={`box max-w-7xl w-full m-auto min-h-160 p-0! rounded-4xl! overflow-hidden`}
+            style={{
+                outline: `1px solid ${retrievedData.profile?.color ?? "transparent"}`,
+            }}
         >
-            {data.user.id === status?.id || status?.role === "op" ? (
-                <ProfileEdit data={data} tab={retrievedTab} />
+            {retrievedData.user.id === status?.id || status?.role === "op" ? (
+                <ProfileEdit
+                    data={retrievedData}
+                    tab={retrievedTab}
+                />
             ) : (
-                <Overview data={data} />
+                <Overview data={retrievedData} />
             )}
         </div>
     );

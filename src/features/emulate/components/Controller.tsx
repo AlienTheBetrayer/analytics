@@ -3,14 +3,14 @@ import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
 import Image from "next/image";
 import { useAppStore } from "@/zustand/store";
-import { promiseStatus } from "@/utils/status";
+import { promiseStatus } from "@/utils/other/status";
 import { useRef, useState } from "react";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 
 export const Controller = () => {
     // zustand state
-    const data = useAppStore((state) => state.data);
+    const projects = useAppStore((state) => state.projects);
     const promises = useAppStore((state) => state.promises);
 
     // zustand functions
@@ -32,9 +32,14 @@ export const Controller = () => {
     return (
         <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-2">
-                <span className="text-center text-foreground-2! text-5!">Emulation</span>
-                <span className="text-center">Enter data that will be sent to the database</span>
+                <span className="text-center text-foreground-2! text-5!">
+                    Emulation
+                </span>
+                <span className="text-center">
+                    Enter data that will be sent to the database
+                </span>
             </div>
+            
             <div className="flex flex-col gap-2">
                 <form
                     className="flex flex-col gap-2"
@@ -45,19 +50,26 @@ export const Controller = () => {
                     onSubmit={(e) => {
                         e.preventDefault();
 
-                        const project_name = id === undefined ? name : data?.[id].project.name;
+                        const project_name = !id ? name : projects[id]?.name;
                         if (!project_name) {
                             return;
                         }
 
-                        emulateEvent(project_name, eventType, description).then(() => {
+                        emulateEvent({
+                            project_name,
+                            event_type: eventType,
+                            description,
+                        }).then(() => {
                             setEmulationStatus(true);
                         });
                     }}
                 >
-                    {id === undefined && (
+                    {!id && (
                         <>
-                            <label htmlFor="custom-name" className="flex flex-wrap">
+                            <label
+                                htmlFor="custom-name"
+                                className="flex flex-wrap"
+                            >
                                 Custom project&apos;s name
                                 <small className="ml-auto">
                                     (since you didn&apos;t select any)
@@ -74,9 +86,14 @@ export const Controller = () => {
                         </>
                     )}
 
-                    <label htmlFor="event-type" className="flex flex-wrap">
+                    <label
+                        htmlFor="event-type"
+                        className="flex flex-wrap"
+                    >
                         Event type
-                        <small className="ml-auto">(page_view, effect_click, ...)</small>
+                        <small className="ml-auto">
+                            (page_view, effect_click, ...)
+                        </small>
                     </label>
                     <Input
                         id="event-type"
@@ -87,7 +104,10 @@ export const Controller = () => {
                         onChange={(e) => setEventType(e)}
                     />
 
-                    <label htmlFor="description" className="flex flex-wrap">
+                    <label
+                        htmlFor="description"
+                        className="flex flex-wrap"
+                    >
                         Description
                         <small className="ml-auto">(optional)</small>
                     </label>
@@ -101,10 +121,23 @@ export const Controller = () => {
 
                     <hr className="mt-8" />
 
-                    <Tooltip className="w-full" text="Emulate an event" isEnabled={isValid}>
-                        <Button type="submit" className="w-full" isEnabled={isValid}>
-                            {promiseStatus(promises.emulate)}
-                            <Image width={20} height={20} src="/send.svg" alt="" />
+                    <Tooltip
+                        className="w-full"
+                        text="Emulate an event"
+                        isEnabled={isValid}
+                    >
+                        <Button
+                            type="submit"
+                            className="w-full"
+                            isEnabled={isValid}
+                        >
+                            {promiseStatus(promises.emulateEvent)}
+                            <Image
+                                width={20}
+                                height={20}
+                                src="/send.svg"
+                                alt=""
+                            />
                             Send
                         </Button>
                     </Tooltip>
@@ -113,9 +146,21 @@ export const Controller = () => {
                 {emulationStatus && (
                     <>
                         <hr />
-                        <Tooltip className="w-full" text="Go back to the dashboard" direction="top">
-                            <LinkButton className="w-full" href='/dashboard'>
-                                <Image width={16} height={16} src="/launch.svg" alt="" />
+                        <Tooltip
+                            className="w-full"
+                            text="Go back to the dashboard"
+                            direction="top"
+                        >
+                            <LinkButton
+                                className="w-full"
+                                href="/dashboard"
+                            >
+                                <Image
+                                    width={16}
+                                    height={16}
+                                    src="/launch.svg"
+                                    alt=""
+                                />
                                 View changes
                             </LinkButton>
                         </Tooltip>

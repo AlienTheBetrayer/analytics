@@ -21,7 +21,7 @@ export const AuthenticationToolbox = () => {
         >
             <nav className="flex gap-1 items-center justify-center min-h-14 min-w-14">
                 {visibleProfile ? (
-                    <Tooltip text="Go to your profile" direction="left">
+                    <Tooltip text="Go to your profile" direction="bottom">
                         <LinkButton
                             href="/profile"
                             style={
@@ -48,7 +48,7 @@ export const AuthenticationToolbox = () => {
                         disabledPointer={false}
                         element={<ToolboxElements />}
                     >
-                        <Button>
+                        <Button className='p-0!'>
                             <Spinner />
                         </Button>
                     </Tooltip>

@@ -1,59 +1,46 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { useAppStore } from "./store";
 import { useLocalStore } from "./localStore";
-import { Profile } from "@/types/api/database/profiles";
-import { User } from "@/types/api/database/user";
+import { AuthenticationToken } from "@/types/auth/authentication";
 
 /**
  * A pure component that handles the initial data loading / state management.
  */
 export const StoreInitialHandler = () => {
-    // zustand states
-    const status = useAppStore((state) => state.status);
-
     // zustand functions
-    const getProfileById = useAppStore((state) => state.getProfileById);
-    const getSession = useAppStore((state) => state.getSession);
-
-    // zustand local store
+    const getSessions = useAppStore((state) => state.getSessions);
+    const getUsers = useAppStore((state) => state.getUsers);
     const setVisibleProfile = useLocalStore((state) => state.setVisibleProfile);
-
-    // ref
-    const hasInitialized = useRef<boolean>(false);
 
     // authenticating session
     useEffect(() => {
-        if (hasInitialized.current === false) {
-            getSession().catch(() => {
-                setVisibleProfile(undefined);
-            });
-            hasInitialized.current = true;
-        }
-    }, [getSession, setVisibleProfile]);
+        getSessions({ type: "current" })
+            .then((token) => {
+                if (!token || !("role" in token)) {
+                    return;
+                }
+                const authToken = token as AuthenticationToken;
 
-    // getting our profile
-    useEffect(() => {
-        if (status) {
-            getProfileById(status.id, false)
-                .then((res) => {
-                    const data = res?.data as { profile: Profile; user: User };
-
-                    if (!data) {
+                getUsers({
+                    select: ["profile", "friend_requests", "friends"],
+                    id: [authToken.id],
+                    caching: false,
+                }).then((user) => {
+                    if (!user?.length) {
                         return;
                     }
-
                     setVisibleProfile({
-                        username: data.user.username,
-                        avatar: data.profile.avatar,
-                        color: data.profile.color,
+                        username: user[0].username,
+                        avatar_url: user[0].profile?.avatar_url,
+                        color: user[0].profile?.color,
                     });
-                })
-                .catch(() => {
-                    setVisibleProfile(undefined);
                 });
-        }
-    }, [getProfileById, setVisibleProfile, status]);
+            })
+            .catch(() => {
+                setVisibleProfile(undefined);
+            });
+    }, [getUsers, getSessions, setVisibleProfile]);
 
     return null;
 };

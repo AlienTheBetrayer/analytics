@@ -3,12 +3,12 @@ import "./Colors.css";
 import Image from "next/image";
 import { Spinner } from "@/features/spinner/components/Spinner";
 import { Button } from "@/features/ui/button/components/Button";
-import { promiseStatus } from "@/utils/status";
+import { promiseStatus } from "@/utils/other/status";
 import { useAppStore } from "@/zustand/store";
 import { useColorModal } from "../../hooks/useColorModal";
-import { Profile } from "@/types/api/database/profiles";
-import { User } from "@/types/api/database/user";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
+import { Profile, User } from "@/types/tables/account";
+import { useEffect } from "react";
 
 export const COLORS_GRID_SIZE = 4;
 
@@ -18,16 +18,31 @@ type Props = {
 
 export const Colors = ({ data }: Props) => {
     // zustand states
+    const colors = useAppStore((state) => state.colors);
     const promises = useAppStore((state) => state.promises);
+    const getUsers = useAppStore((state) => state.getUsers);
 
     // controller
     const controller = useColorModal(data);
 
+    // fetching
+    useEffect(() => {
+        getUsers({ id: [data.user.id], select: ["colors"] });
+    }, [data, getUsers]);
+
     return (
-        <div className="box min-w-0! p-6! rounded-4xl!" tabIndex={-1}>
+        <div
+            className="box min-w-0! p-6! rounded-4xl!"
+            tabIndex={-1}
+        >
             <div className="flex w-full items-center justify-between">
                 <span className="flex items-center w-full gap-1">
-                    <Image width={16} height={16} alt="" src="/cube.svg" />
+                    <Image
+                        width={16}
+                        height={16}
+                        alt=""
+                        src="/cube.svg"
+                    />
                     <b>Color panel</b>
                 </span>
                 <span>
@@ -36,9 +51,12 @@ export const Colors = ({ data }: Props) => {
             </div>
 
             <div className="flex flex-col h-full gap-4 md:flex-row">
-                {promises.colors === "pending" ? (
+                {!colors[data.user.id] ? (
                     <div className="flex w-screen max-w-64">
-                        <Spinner styles="big" className="m-auto" />
+                        <Spinner
+                            styles="big"
+                            className="m-auto"
+                        />
                     </div>
                 ) : (
                     <ul
@@ -98,7 +116,10 @@ export const Colors = ({ data }: Props) => {
                     </li>
 
                     <li className="flex flex-col w-full *:w-full gap-1">
-                        <Tooltip className="w-full" text="Create a palette">
+                        <Tooltip
+                            className="w-full"
+                            text="Create a palette"
+                        >
                             <Button
                                 onClick={controller.palette}
                                 className="w-full"
@@ -116,7 +137,10 @@ export const Colors = ({ data }: Props) => {
 
                     <hr />
 
-                    <Tooltip className="w-full" text="Smoothness of colors">
+                    <Tooltip
+                        className="w-full"
+                        text="Smoothness of colors"
+                    >
                         <li className="flex flex-col gap-1">
                             <label
                                 htmlFor="hue-rotation"
@@ -168,7 +192,7 @@ export const Colors = ({ data }: Props) => {
                                 onClick={controller.apply}
                                 className="w-full"
                             >
-                                {promiseStatus(promises.set_colors)}
+                                {promiseStatus(promises.colorsUpdate)}
                                 <Image
                                     width={16}
                                     height={16}

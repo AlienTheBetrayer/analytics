@@ -2,108 +2,106 @@ import type { PostgrestError } from "@supabase/supabase-js";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { supabaseServer } from "@/server/private/supabase";
-import type { AnalyticsMeta } from "@/types/api/database/analytics";
-import type { Project, ProjectAggregate } from "@/types/api/database/projects";
-import { nextResponse } from "@/utils/response";
+import { Aggregate, Event, Project } from "@/types/tables/project";
+import { nextResponse } from "@/utils/api/response";
 
 export const POST = async (request: NextRequest) => {
-	try {
-		const { project_name, event_type, description } = await request.json();
+    try {
+        const { project_name, event_type, description } = await request.json();
 
-		if (project_name === undefined || event_type === undefined) {
-			return nextResponse(
-				{ error: "project_name & event_type are missing." },
-				400,
-			);
-		}
+        if (project_name === undefined || event_type === undefined) {
+            return nextResponse(
+                { error: "project_name & event_type are missing." },
+                400
+            );
+        }
 
-		// 1. inserting / updating a project
-		const { data: projectData, error: projectError } = (await supabaseServer
-			.from("projects")
-			.upsert(
-				{ name: project_name, last_event_at: new Date().toISOString() },
-				{ onConflict: "name" },
-			)
-			.select()) as { data: Project[]; error: PostgrestError | null };
+        // 1. inserting / updating a project
+        const { data: projectData, error: projectError } = (await supabaseServer
+            .from("projects")
+            .upsert(
+                { name: project_name, last_event_at: new Date().toISOString() },
+                { onConflict: "name" }
+            )
+            .select()) as { data: Project[]; error: PostgrestError | null };
 
-		if (projectError) {
-			return nextResponse({ projectError }, 400);
-		}
+        if (projectError) {
+            console.error(projectError);
+            return nextResponse({ projectError }, 400);
+        }
 
-		// 2. inserting / updating new metadata
-		const { data: analyticsMetaData, error: analyticsMetaError } =
-			(await supabaseServer
-				.from("analytics_meta")
-				.upsert({ type: event_type, description })
-				.select()) as {
-				data: AnalyticsMeta[];
-				error: PostgrestError | null;
-			};
+        // 2. inserting / updating new metadata
+        const { error: eventsError } = (await supabaseServer
+            .from("events")
+            .upsert({
+                type: event_type,
+                description,
+                project_id: projectData[0].id,
+            })
+            .select()) as {
+            data: Event[];
+            error: PostgrestError | null;
+        };
 
-		if (analyticsMetaError) {
-			return nextResponse({ analyticsMetaError }, 400);
-		}
+        if (eventsError) {
+            console.error(eventsError);
+            return nextResponse({ eventsError }, 400);
+        }
 
-		// 3. creating the analytics row
-		const { error: analyticsError } = await supabaseServer
-			.from("analytics")
-			.upsert({
-				project_id: projectData[0].id,
-				analytics_meta_id: analyticsMetaData[0].id,
-			});
+        // 3. inserting / updating a project aggregate
+        const { data: projectAggregatesData, error: projectAggregatesError } =
+            (await supabaseServer
+                .from("aggregates")
+                .select()
+                .eq("id", projectData[0].id)) as {
+                data: Aggregate[];
+                error: PostgrestError | null;
+            };
 
-		if (analyticsError) {
-			return nextResponse({ analyticsError }, 400);
-		}
+        if (projectAggregatesError) {
+            console.error(projectAggregatesError);
+            return nextResponse({ projectAggregatesError }, 400);
+        }
 
-		// 4. inserting / updating a project aggregate
-		const { data: projectAggregatesData, error: projectAggregatesError1 } =
-			(await supabaseServer
-				.from("project_aggregates")
-				.select()
-				.eq("id", projectData[0].id)) as {
-				data: ProjectAggregate[];
-				error: PostgrestError | null;
-			};
+        const { error: aggregatesError } = await supabaseServer
+            .from("aggregates")
+            .upsert(
+                {
+                    project_id: projectData[0].id,
 
-		if (projectAggregatesError1) {
-			return nextResponse({ projectAggregatesError1 }, 400);
-		}
+                    visits:
+                        event_type === "page_view"
+                            ? (projectAggregatesData?.[0]?.visits ?? 0) + 1
+                            : (projectAggregatesData?.[0]?.visits ?? 0),
+                },
+                { onConflict: "id" }
+            );
 
-		const { error: projectAggregatesError } = await supabaseServer
-			.from("project_aggregates")
-			.upsert(
-				{
-					id: projectData[0].id,
-					visits:
-						event_type === "page_view"
-							? (projectAggregatesData?.[0]?.visits ?? 0) + 1
-							: (projectAggregatesData?.[0]?.visits ?? 0),
-				},
-				{ onConflict: "id" },
-			);
+        if (aggregatesError) {
+            console.error(aggregatesError);
+            return nextResponse({ aggregatesError }, 400);
+        }
 
-		if (projectAggregatesError) {
-			return nextResponse({ projectAggregatesError }, 400);
-		}
-
-		return nextResponse({ message: "Successfully created an event!" }, 200);
-	} catch (e) {
-		const message = e instanceof Error ? e.message : "unknown error";
-		return nextResponse({ error: message }, 400);
-	}
+        return nextResponse({ message: "Successfully created an event!" }, 200);
+    } catch (error) {
+        console.error(error);
+        return nextResponse(
+            { error: "Failed sending the analytics from the SDK." },
+            400
+        );
+    }
 };
 
 export const OPTIONS = () => {
-	return NextResponse.json(
-		{},
-		{
-			headers: {
-				"Access-Control-Allow-Origin": "*",
-				"Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-				"Access-Control-Allow-Headers": "Content-Type, Authorization",
-			},
-			status: 200,
-		},
-	);
+    return NextResponse.json(
+        {},
+        {
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+                "Access-Control-Allow-Headers": "Content-Type, Authorization",
+            },
+            status: 200,
+        }
+    );
 };

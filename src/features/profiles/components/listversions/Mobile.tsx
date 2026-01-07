@@ -2,7 +2,7 @@ import React from "react";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import type { Profiles } from "@/types/zustand/user";
 import { ProfileImage } from "@/features/profile/components/ProfileImage";
-import { relativeTime } from "@/utils/relativeTime";
+import { relativeTime } from "@/utils/other/relativeTime";
 import Image from "next/image";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 

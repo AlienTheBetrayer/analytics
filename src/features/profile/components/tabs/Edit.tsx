@@ -7,13 +7,13 @@ import { usePopup } from "@/features/popup/hooks/usePopup";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
-import type { Profile } from "@/types/api/database/profiles";
-import type { User } from "@/types/api/database/user";
-import { promiseStatus } from "@/utils/status";
+
+import { promiseStatus } from "@/utils/other/status";
 import { useAppStore } from "@/zustand/store";
 import { fileToBase64 } from "../../utils/fileToBase64";
 import { Colors } from "../modals/Colors";
 import { ProfileImage } from "../ProfileImage";
+import { Profile, User } from "@/types/tables/account";
 
 type Props = {
     data: { profile: Profile; user: User };
@@ -24,21 +24,20 @@ export const Edit = ({ data }: Props) => {
     const promises = useAppStore((state) => state.promises);
 
     // zustand functions
-    const setProfileData = useAppStore((state) => state.setProfileData);
-    const getColors = useAppStore((state) => state.getColors);
+    const updateUser = useAppStore((state) => state.updateUser);
 
     // input states
     const [status, setStatus] = useState<string>(data.profile.status ?? "");
     const [name, setName] = useState<string>(data.profile.name ?? "");
     const [bio, setBio] = useState<string>(data.profile.bio ?? "");
-    const [oneliner, setOneliner] = useState<string>(
-        data.profile.oneliner ?? ""
-    );
+    const [title, setTitle] = useState<string>(data.profile.title ?? "");
 
     // file uploading
     const [fileError, setFileError] = useState<JSX.Element | undefined>();
     const [avatarFile, setAvatarFile] = useState<File | undefined>(undefined);
-    const [avatar, setAvatar] = useState<string | null | undefined>(data.profile.avatar ?? undefined); 
+    const [avatar, setAvatar] = useState<string | null | undefined>(
+        data.profile.avatar_url ?? undefined
+    );
 
     // if we select an image - show an image - otherwise show the profile
     const avatarImage = avatarFile ? URL.createObjectURL(avatarFile) : avatar;
@@ -72,10 +71,13 @@ export const Edit = ({ data }: Props) => {
             <div className="flex flex-col md:flex-row gap-4 grow w-full">
                 <div className="flex flex-col items-center gap-2 w-full md:max-w-96">
                     <span>{data.profile.name}</span>
-                    <Tooltip text="Change your profile image" direction="top">
+                    <Tooltip
+                        text="Change your profile image"
+                        direction="top"
+                    >
                         <div
                             style={{
-                                borderColor: data.profile.color,
+                                borderColor: data.profile.color ?? "#fff",
                             }}
                             className="profile-frame relative w-full max-w-64 aspect-square rounded-full overflow-hidden 
                     duration-300 ease-out"
@@ -201,7 +203,7 @@ export const Edit = ({ data }: Props) => {
                         <Button
                             className="w-full!"
                             onPointerDown={() => {
-                                getColors(data.user.id);
+                                // getColors(data.user.id);
                             }}
                         >
                             <Image
@@ -226,25 +228,29 @@ export const Edit = ({ data }: Props) => {
                             dataAvatar = await fileToBase64(avatarFile);
                         }
 
-                        setProfileData(data.user.id, {
-                            status,
-                            bio,
-                            oneliner,
-                            name,
-                            avatar: dataAvatar,
-                            avatar_name: avatarFile?.name,
-                            avatar_type: avatarFile?.type,
+                        updateUser({
+                            id: data.user.id,
+                            data: {
+                                status,
+                                bio,
+                                title,
+                                name,
+                                avatar_url: dataAvatar,
+                                avatar_name: avatarFile?.name,
+                                avatar_type: avatarFile?.type,
+                            },
                         });
                     }}
                 >
                     <label
-                        htmlFor="bio"
+                        htmlFor="name"
                         className="flex justify-between items-center"
                     >
                         <b>Name</b>
                         <small> (your name, can be fictional)</small>
                     </label>
                     <Input
+                        id="name"
                         value={name}
                         onChange={(e) => setName(e)}
                         placeholder="24 characters max"
@@ -253,15 +259,16 @@ export const Edit = ({ data }: Props) => {
 
                     <hr />
                     <label
-                        htmlFor="bio"
+                        htmlFor="title"
                         className="flex justify-between items-center"
                     >
-                        <b>One-liner</b>
+                        <b>Title</b>
                         <small> (a short phrase that feels yours)</small>
                     </label>
                     <Input
-                        value={oneliner}
-                        onChange={(e) => setOneliner(e)}
+                        id="title"
+                        value={title}
+                        onChange={(e) => setTitle(e)}
                         placeholder="24 characters max"
                         maxLength={24}
                     />
@@ -307,8 +314,11 @@ export const Edit = ({ data }: Props) => {
                         className="w-full"
                         direction="top"
                     >
-                        <Button type="submit" className="w-full">
-                            {promiseStatus(promises.profile_set)}
+                        <Button
+                            type="submit"
+                            className="w-full"
+                        >
+                            {promiseStatus(promises.updateUser)}
                             <Image
                                 src="/send.svg"
                                 width={20}

@@ -1,25 +1,18 @@
 import Image from "next/image";
 import { Menu } from "@/features/ui/menu/components/Menu";
-import type { Profile } from "@/types/api/database/profiles";
-import type { User } from "@/types/api/database/user";
 import { Edit } from "./tabs/Edit";
 import { Friends } from "./tabs/Friends";
 import { Overview } from "./tabs/Overview";
 import { Security } from "./tabs/Security";
 import { useMemo } from "react";
+import { Profile, User } from "@/types/tables/account";
 
 type Props = {
-    data: { profile: Profile; user: User };
+    data: { user: User; profile: Profile };
     tab: string;
 };
 
-export const ProfileTabs = [
-    "overview",
-    "edit",
-    "privacy",
-    "security",
-    "friends",
-];
+export const ProfileTabs = ["overview", "edit", "security", "friends"];
 
 export const ProfileEdit = ({ data, tab }: Props) => {
     const items = useMemo(

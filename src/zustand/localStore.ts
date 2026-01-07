@@ -1,18 +1,16 @@
 "use client";
-import { UIStore } from "@/types/zustand/local/ui";
+import { LocalStore } from "@/types/zustand/local";
 import { create } from "zustand";
-import { UISlice } from "./slices/local/ui";
+import { LocalSlice } from "./slices/local";
 import { persist } from "zustand/middleware";
 
-export type LocalStoreType = UIStore;
-
-export const useLocalStore = create<LocalStoreType>()(
+export const useLocalStore = create<LocalStore>()(
     persist(
         (set, get) => ({
-            ...UISlice(set, get),
+            ...LocalSlice(set, get),
         }),
         {
             name: "local-store",
-        },
-    ),
+        }
+    )
 );

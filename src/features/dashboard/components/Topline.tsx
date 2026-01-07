@@ -3,49 +3,76 @@ import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { useAppStore } from "@/zustand/store";
 import { Button } from "../../ui/button/components/Button";
-import { promiseStatus } from "@/utils/status";
+import { promiseStatus } from "@/utils/other/status";
 
 export const Topline = () => {
     // zustand states
     const promises = useAppStore((state) => state.promises);
-    const data = useAppStore((state) => state.data);
 
     // zustand functions
-    const syncData = useAppStore((state) => state.syncData);
+    const sync = useAppStore((state) => state.sync);
 
     return (
         <nav className="flex flex-col items-center gap-2">
             <div className="flex w-full gap-2">
-                <Tooltip text="Emulate fake events" direction="top" className="w-full">
-                    <LinkButton href="/dashboard/emulate/" className="w-full">
-                        <Image width={16} height={16} alt="emulate" src="/emulate.svg" />
+                <Tooltip
+                    text="Emulate fake events"
+                    direction="top"
+                    className="w-full"
+                >
+                    <LinkButton
+                        href="/dashboard/emulate/"
+                        className="w-full"
+                    >
+                        <Image
+                            width={16}
+                            height={16}
+                            alt="emulate"
+                            src="/emulate.svg"
+                        />
                         <span>Emulate events</span>
                     </LinkButton>
                 </Tooltip>
             </div>
             <hr />
             <div className="flex gap-1 w-full items-center">
-                <Image src="/server.svg" alt="" width={16} height={16} />
+                <Image
+                    src="/server.svg"
+                    alt=""
+                    width={16}
+                    height={16}
+                />
                 <span>Client</span>
             </div>
 
             <div className="flex gap-2 w-full">
                 <span className="flex gap-1 items-center">
                     <div
-                        className={`rounded-full w-1.5 h-1.5 ${data ? "bg-[rgb(56,66,255)]" : "bg-red-500"} duration-1000`}
+                        className={`rounded-full w-1.5 h-1.5 ${promises.sync === "pending" ? "bg-red-500" : "bg-[rgb(56,66,255)]"} duration-1000`}
                     />
-                    {data ? "Synced" : "Syncing..."}
+                    {promises.sync === "pending" ? "Syncing..." : "Synced"}
                 </span>
 
-                <Tooltip text="Re-sync all data" className="ml-auto" disabledPointer>
+                <Tooltip
+                    text="Re-sync all data"
+                    className="ml-auto"
+                    disabledPointer
+                >
                     <Button
                         onClick={() => {
-                            syncData();
+                            sync();
                         }}
                     >
                         {promiseStatus(promises.sync)}
-                        <Image src="/download.svg" alt="" width={16} height={16} />
-                        <mark>Sync</mark>
+                        <Image
+                            src="/download.svg"
+                            alt=""
+                            width={16}
+                            height={16}
+                        />
+                        <b>
+                            <mark>Sync</mark>
+                        </b>
                     </Button>
                 </Tooltip>
             </div>

@@ -1,164 +1,109 @@
-import type { Profile } from "../api/database/profiles";
-import type { User } from "../api/database/user";
-import type { ResponseAxios } from "./utils/axios";
-
-export type Profiles = Record<string, { profile: Profile; user: User }>;
-
-export type Friends = Record<string, string[]>;
-export type Requests = { incoming: string[]; outcoming: string[] }; 
-export type Colors = Record<string, Record<number, string>>;
+import { CachedUser } from "../api/responses/users";
+import { Profile, User } from "../tables/account";
 
 export type UserStore = {
-	profiles?: Profiles;
-	friends?: string[];
-	friendRequests?: Requests;
-    colors?: Colors;
-
-	/**
-	 * gets the user's profile by its name
-	 * @param name the name of the user
-	 * @param caching don't fetch the data if it has already been fetched
-	 * @returns a promise containing the response
-	 */
-	getProfileByName: (
-		id: string,
-		caching?: boolean,
-	) => Promise<ResponseAxios | undefined>;
-
-	/**
-	 * gets the user's profile by its id
-	 * @param id the id of the user
-	 * @param caching don't fetch the data if it has already been fetched
-	 * @returns a promise containing the response
-	 */
-	getProfileById: (
-		id: string,
-		caching?: boolean,
-	) => Promise<ResponseAxios | undefined>;
-
-	/**
-	 * sets or updates profile data at the given user (undefined empties)
-	 * @param id the id of the user object of the user (not the profile)
-	 * @param data the data that has been changed (hence partial)
-	 * @returns a promise containing the response
-	 */
-	setProfileData: (
-        id: string,
-        data: Record<string, string | undefined | null>,
-	) => Promise<ResponseAxios>;
-
-	/**
-	 * gets all the profiles with the specified user ids
-	 * @param ids the array of the ids of the profiles you want to get
-	 * @param caching don't fetch the data if it has already been fetched
-	 * @param promiseKey a custom promise key to subscribe to promise changes
-	 * @returns a promise containing the response
-	 */
-	getProfiles: (
-		ids: string[],
-		caching?: boolean,
-		promiseKey?: string,
-	) => Promise<ResponseAxios | undefined>;
-
-	/**
-	 * deletes the profile from state
-	 * @param id the id of the user
-	 */
-	deleteProfileData: (id: string) => void;
-
-	/**
-	 * gets all the friends that we have (if logged in)
-	 * @param caching don't fetch the data if it has already been fetched
-	 * @returns a promise containing the response
-	 */
-	getFriends: (caching?: boolean) => Promise<ResponseAxios | undefined>;
-
-	/**
-	 * gets all the profiles of the user's friends
-	 * @param id the id of the user
-	 * @param caching don't fetch the data if it has already been fetched
-	 * @returns a promise containing the response
-	 */
-	getFriendsProfiles: (
-		id: string,
-		caching?: boolean,
-	) => Promise<ResponseAxios | undefined>;
-
-	/**
-	 * gets all the friend requests this user sent and received
-	 * @param id the id of the user
-	 * @param caching don't fetch the data if it has already been fetched
-	 * @param promiseKey a custom promise key to subscribe to promise data
-	 * @returns a promise containing the response
-	 */
-	getFriendRequests: (
-		id: string,
-		caching?: boolean,
-		promiseKey?: string,
-	) => Promise<ResponseAxios | undefined>;
-	/**
-	 * gets all the profiles available at the moment
-	 * @param caching don't fetch the data if it has already been fetched
-	 * @returns a promise containing the response
-	 */
-	getAllProfiles: (caching?: boolean) => Promise<ResponseAxios | undefined>;
-
-	/**
-	 * sends a friend request to a specific user
-	 * @param from_id the id of the user that sends the request
-	 * @param to_id the id of the user that from_id is sending the request to
-	 * @returns a promise containing the response
-	 */
-	sendFriendRequest: (from_id: string, to_id: string) => Promise<ResponseAxios>;
-
-	/**
-	 * deletes a friend request (works in both sides)
-	 * @param user1_id the id of the first user
-	 * @param user2_id the id of the second user
-	 * @returns a promise containing the response
-	 */
-	deleteFriendRequest: (
-		user1_id: string,
-		user2_id: string,
-	) => Promise<ResponseAxios>;
-
-	/**
-	 * unfriends the user
-	 * @param user1_id the user you don't want to be friends no more
-	 * @param user2_id the second user you don't want to be friends no more
-	 * @returns a promise containing the response
-	 */
-	unfriend: (user1_id: string, user2_id: string) => Promise<ResponseAxios>;
-
-	/**
-	 * unfriends everyone
-	 * @param id the user you don't want to be friends no more
-	 * @returns a promise containing the response
-	 */
-	unfriendEveryone: (id: string) => Promise<ResponseAxios>;
+    users: Record<string, User>;
+    profiles: Record<string, Profile>;
+    friends: Record<string, Set<string>>;
+    friendRequests: Record<
+        string,
+        { incoming: Set<string>; outcoming: Set<string> }
+    >;
+    colors: Record<string, { slot: number; color: string }[]>;
 
     /**
-     * gets the colors the user had picked
-     * @param id id of the user
-     * @param caching caching the data
-     * @returns a promise containing the response
+     * gets all the users and their data with filtering options
+     * @param id the ids of the users to fetch
+     * @param username the usernames of the users to fetch
+     * @param select select filtering
+     * @param promiseKey custom promise key to get promise data
+     * @param caching whether to cache
+     * @returns cached user object array with everything in it
      */
-    getColors: (id: string, caching?: boolean) => Promise<ResponseAxios | undefined>;
+    getUsers: (options: {
+        id?: string[];
+        username?: string[];
+        select?: (
+            | "user"
+            | "profile"
+            | "colors"
+            | "friends"
+            | "friend_requests"
+        )[];
+        promiseKey?: string;
+        caching?: boolean;
+    }) => Promise<CachedUser[] | undefined>;
 
-    
     /**
-     * sets the colors the user had picked
-     * @param id id of the user
-     * @param data the color slots
-     * @returns a promise containing the response
+     * sets or updates user data at the given user
+     * @param id the id of the user object of the user (not the profile)
+     * @param data the data that has been changed (hence partial)
+     * @param promiseKey a unique key for the promise status
      */
-    setColors: (id: string, data: { slot: number, color: string}[] ) => Promise<ResponseAxios | undefined>;
+    updateUser: (options: {
+        id: string;
+        data: {
+            name?: string;
+            title?: string;
+            status?: string;
+            bio?: string;
+            colors?: { slot: number; color: string }[];
+            color?: string;
+            avatar_url?: string | null;
+            avatar_name?: string;
+            avatar_type?: string;
+            role?: string;
+            password?: string;
+        };
+        promiseKey?: string;
+    }) => Promise<void>;
 
     /**
-     * changes the user's role and permissions with it
-     * @param id the id of the user
-     * @param role the role
-     * @returns a promise containing the response
+     * sends/rejects a friend request and adds/removes from friends
+     * @param from_id the id of the user that sends the request
+     * @param to_id the id of the user that from_id is sending the request to
+     * @param type the type of the request
+     * @param promiseKey a unique key for the promise status
      */
-    changeRole: (id: string, role: string) => Promise<ResponseAxios>;
+    modifyFriendship: (options: {
+        from_id: string;
+        to_id?: string;
+        type:
+            | "request-send"
+            | "request-accept"
+            | "request-reject"
+            | "unfriend"
+            | "unfriend-all";
+        promiseKey?: string;
+    }) => Promise<void>;
+
+    // /**
+    //  * deletes a friend request (works in both sides)
+    //  * @param user1_id the id of the first user
+    //  * @param user2_id the id of the second user
+    //  * @returns a promise containing the response
+    //  */
+    // deleteFriendRequest: (
+    //     user1_id: string,
+    //     user2_id: string
+    // ) => Promise<ResponseAxios>;
+
+    // /**
+    //  * sets the colors the user had picked
+    //  * @param id id of the user
+    //  * @param data the color slots
+    //  * @returns a promise containing the response
+    //  */
+    // setColors: (
+    //     id: string,
+    //     data: { slot: number; color: string }[]
+    // ) => Promise<ResponseAxios | undefined>;
+
+    // /**
+    //  * changes the user's role and permissions with it
+    //  * @param id the id of the user
+    //  * @param role the role
+    //  * @returns a promise containing the response
+    //  */
+    // changeRole: (id: string, role: string) => Promise<ResponseAxios>;
 };

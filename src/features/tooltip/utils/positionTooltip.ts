@@ -70,17 +70,17 @@ export const positionTooltip = (
 
     // // window boundary overflow check
     let dx = 0;
-    if (left < 0) {
-        dx = -left + 2;
-    } else if (left + tooltipBounds.width > window.innerWidth) {
-        dx = window.innerWidth - left - tooltipBounds.width - 4;
+    if (left < scrollX) {
+        dx = scrollX -left + 2;
+    } else if (left + tooltipBounds.width > scrollX + window.innerWidth) {
+        dx = scrollX + window.innerWidth - left - tooltipBounds.width - 4;
     }
 
     let dy = 0;
-    if (top < 0) {
-        dy = -top + 2;
-    } else if (top + tooltipBounds.height > window.innerHeight) {
-        dy = window.innerHeight - top - tooltipBounds.height - 2;
+    if (top < scrollY) {
+        dy = scrollY -top + 2;
+    } else if (top + tooltipBounds.height > scrollY + window.innerHeight) {
+        dy = scrollY + window.innerHeight - top - tooltipBounds.height - 2;
     }
 
     // setting the updated safe positions

@@ -8,7 +8,7 @@ import { FetchPrompt } from "./FetchPrompt";
 import { ProjectList } from "./ProjectList";
 import { Button } from "@/features/ui/button/components/Button";
 import Image from "next/image";
-import { promiseStatus } from "@/utils/status";
+import { promiseStatus } from "@/utils/other/status";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 
 export const Emulate = () => {
@@ -16,12 +16,12 @@ export const Emulate = () => {
     const { id } = useParams<{ id: string | undefined }>();
 
     // zustand states
-    const data = useAppStore((state) => state.data);
+    const projects = useAppStore((state) => state.projects);
     const status = useAppStore((state) => state.status);
     const promises = useAppStore((state) => state.promises);
 
-    // zustand functions
-    const updateProjectList = useAppStore((state) => state.updateProjectList);
+    // zustand functinos
+    const sync = useAppStore((state) => state.sync);
 
     // error handling:
     // authentcation's missing
@@ -30,7 +30,7 @@ export const Emulate = () => {
     }
 
     // no data fetched
-    if (data === undefined) {
+    if (!projects) {
         return (
             <div className="flex flex-col w-full mt-16 max-w-xl p-6! rounded-4xl! gap-4! m-auto box">
                 <FetchPrompt />
@@ -39,12 +39,12 @@ export const Emulate = () => {
     }
 
     // data is fetched and project at the id is not fetched
-    if (id !== undefined && data[id] === undefined) {
+    if (id && !projects[id]) {
         return (
             <div className="flex flex-col w-full max-w-2xl m-auto box p-6! rounded-4xl!">
                 <FetchPrompt />
                 <hr />
-                <ProjectList data={data} />
+                <ProjectList />
             </div>
         );
     }
@@ -53,24 +53,29 @@ export const Emulate = () => {
         <div className="flex flex-col w-full max-w-3xl p-6! rounded-4xl! gap-4! box m-auto">
             <div className="flex flex-col gap-2">
                 <div className="flex flex-wrap">
-                    <Tooltip direction="top" text="Reload project data">
+                    <Tooltip
+                        direction="top"
+                        text="Reload project data"
+                    >
                         <Button
                             onClick={() => {
-                                updateProjectList();
+                                sync();
                             }}
                         >
-                            {promiseStatus(promises.projects)}
+                            {promiseStatus(promises.sync)}
                             <Image
                                 width={16}
                                 height={16}
                                 alt=""
                                 src="/download.svg"
                             />
-                            Re-fetch
+                            <b>
+                                <mark>Sync</mark>
+                            </b>
                         </Button>
                     </Tooltip>
 
-                    {id === undefined ? (
+                    {!id ? (
                         <Tooltip
                             className="ml-auto"
                             direction="top"
@@ -104,7 +109,7 @@ export const Emulate = () => {
                         </Tooltip>
                     )}
                 </div>
-                {!data || Object.values(data).length === 0 ? (
+                {!Object.values(projects).length ? (
                     <>
                         <span className="text-center text-foreground-2! text-5! whitespace-nowrap">
                             <u>No project data</u>
@@ -127,8 +132,12 @@ export const Emulate = () => {
                 )}
             </div>
 
-            <hr />
-            <ProjectList data={data} />
+            {!!Object.values(projects).length && (
+                <>
+                    <hr />
+                    <ProjectList />
+                </>
+            )}
 
             <hr />
             <Controller />

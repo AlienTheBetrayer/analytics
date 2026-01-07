@@ -1,17 +1,17 @@
 import Image from "next/image";
 import { redirect } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { MessageBox } from "@/features/messagebox/components/MessageBox";
 import { usePopup } from "@/features/popup/hooks/usePopup";
 import { Spinner } from "@/features/spinner/components/Spinner";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
-import type { Profile } from "@/types/api/database/profiles";
-import type { User } from "@/types/api/database/user";
-import { promiseStatus } from "@/utils/status";
+import { promiseStatus } from "@/utils/other/status";
 import { useAppStore } from "@/zustand/store";
 import { ProfileImage } from "../ProfileImage";
+import { Profile, User } from "@/types/tables/account";
+import { useLocalStore } from "@/zustand/localStore";
 
 type Props = {
     data: { profile: Profile; user: User };
@@ -20,22 +20,20 @@ type Props = {
 export const Security = ({ data }: Props) => {
     // zustand states
     const promises = useAppStore((state) => state.promises);
-    const runningSessions = useAppStore((state) => state.runningSessions);
+    const sessions = useAppStore((state) => state.sessions);
+    const status = useAppStore((state) => state.status);
 
     // zustand functions
     const logout = useAppStore((state) => state.logout);
+    const updateUser = useAppStore((state) => state.updateUser);
     const deleteUser = useAppStore((state) => state.deleteUser);
-    const deleteProfileData = useAppStore((state) => state.deleteProfileData);
     const getSessions = useAppStore((state) => state.getSessions);
-    const deleteSession = useAppStore((state) => state.deleteSession);
-    const changePassword = useAppStore((state) => state.changePassword);
-    const terminateOtherSessions = useAppStore(
-        (state) => state.terminateOtherSessions
-    );
+    const terminateSessions = useAppStore((state) => state.terminateSessions);
+    const setVisibleProfile = useLocalStore((state) => state.setVisibleProfile);
 
     // fetching sessions
     useEffect(() => {
-        getSessions(data.user.id);
+        getSessions({ user_id: data.user.id });
     }, [getSessions, data.user]);
 
     // states
@@ -48,14 +46,25 @@ export const Security = ({ data }: Props) => {
             onInteract={(res) => {
                 hide();
                 if (res === "yes") {
-                    deleteProfileData(data.user.id);
                     deleteUser(data.user.id);
-                    logout();
-                    redirect("/home");
+                    if (data.user.id === status?.id) {
+                        logout();
+                        setVisibleProfile(undefined);
+                        redirect("/home");
+                    }
                 }
             }}
         />
     ));
+
+    // ui sessions
+    const currentSessions = useMemo(() => {
+        if (!sessions[data.user.id]?.length || !status) {
+            return undefined;
+        }
+
+        return [...sessions[data.user.id].sort((a) => (a.isCurrent ? -1 : 1))];
+    }, [sessions, data, status]);
 
     const terminateMessageBox = usePopup(({ hide }) => (
         <MessageBox
@@ -63,7 +72,24 @@ export const Security = ({ data }: Props) => {
             onInteract={(res) => {
                 hide();
                 if (res === "yes") {
-                    terminateOtherSessions();
+                    // no sessions (ensuring safety + types)
+                    if (!currentSessions?.length) {
+                        return;
+                    }
+
+                    const notCurrent = currentSessions
+                        ?.filter((s) => !s.isCurrent)
+                        .map((s) => s.id);
+
+                    // if by some accident there's no current sessions
+                    if (notCurrent.length === currentSessions.length) {
+                        return;
+                    }
+
+                    terminateSessions({
+                        user_id: data.user.id,
+                        ids: notCurrent,
+                    });
                 }
             }}
         />
@@ -109,6 +135,7 @@ export const Security = ({ data }: Props) => {
                         <Button
                             onClick={() => {
                                 logout();
+                                setVisibleProfile(undefined);
                             }}
                         >
                             {promiseStatus(promises.logout)}
@@ -129,7 +156,10 @@ export const Security = ({ data }: Props) => {
                         className="flex flex-col gap-2"
                         onSubmit={(e) => {
                             e.preventDefault();
-                            changePassword(data.user.id, password);
+                            updateUser({
+                                id: data.user.id,
+                                data: { password },
+                            });
                         }}
                     >
                         <label
@@ -151,9 +181,15 @@ export const Security = ({ data }: Props) => {
 
                         <hr className="mt-auto" />
 
-                        <Tooltip className="w-full" text="Change your password">
-                            <Button type="submit" className="w-full">
-                                {promiseStatus(promises.password_change)}
+                        <Tooltip
+                            className="w-full"
+                            text="Change your password"
+                        >
+                            <Button
+                                type="submit"
+                                className="w-full"
+                            >
+                                {promiseStatus(promises.updateUser)}
                                 <Image
                                     src="/send.svg"
                                     width={20}
@@ -176,15 +212,23 @@ export const Security = ({ data }: Props) => {
                             <Button
                                 className="p-0!"
                                 onClick={() => {
-                                    getSessions(data.user.id, false);
+                                    getSessions({
+                                        user_id: data.user.id,
+                                        caching: false,
+                                        promiseKey: "sessionsReload",
+                                    });
                                 }}
                             >
-                                <Image
-                                    src="/reload.svg"
-                                    width={16}
-                                    height={16}
-                                    alt="refresh"
-                                />
+                                {promises.sessionsReload === "pending" ? (
+                                    <Spinner />
+                                ) : (
+                                    <Image
+                                        src="/reload.svg"
+                                        width={16}
+                                        height={16}
+                                        alt="refresh"
+                                    />
+                                )}
                             </Button>
                         </Tooltip>
                         <small className="ml-auto">
@@ -193,32 +237,35 @@ export const Security = ({ data }: Props) => {
                     </span>
 
                     <ul
-                        className="flex flex-col overflow-y-auto h-full max-h-36 scheme-dark gap-px"
+                        className="flex flex-col overflow-y-auto h-full max-h-42 scheme-dark gap-px"
                         style={{
                             scrollbarWidth: "thin",
                         }}
                     >
-                        {runningSessions !== undefined &&
-                        promises.sessions !== "pending" ? (
-                            runningSessions.map((session) => (
-                                <React.Fragment key={session.id}>
+                        {currentSessions ? (
+                            currentSessions.map((token) => (
+                                <React.Fragment key={token.id}>
                                     <li
-                                        className={`grid grid-cols-[1fr_40%] gap-4 items-center rounded-2xl p-2! ${session.isCurrent ? "border border-blue-2" : ""}`}
+                                        className={`grid grid-cols-[1fr_40%] gap-4 items-center rounded-2xl p-2! ${token.isCurrent ? "border border-blue-2" : ""}`}
                                     >
                                         <span className="truncate">
-                                            {session.isCurrent
+                                            {token.isCurrent
                                                 ? "CURRENT SESSION"
-                                                : session.id}
+                                                : token.id}
                                         </span>
                                         <Button
-                                            isEnabled={!session.isCurrent}
+                                            isEnabled={!token.isCurrent}
                                             onClick={async () => {
-                                                deleteSession(session.id);
+                                                terminateSessions({
+                                                    ids: [token.id],
+                                                    user_id: data.user.id,
+                                                    promiseKey: `terminateSessions_${token.id}`,
+                                                });
                                             }}
                                         >
                                             {promiseStatus(
                                                 promises[
-                                                    `session_logout_${session.id}`
+                                                    `terminateSessions_${token.id}`
                                                 ]
                                             )}
                                             <Image
@@ -230,15 +277,21 @@ export const Security = ({ data }: Props) => {
                                             Terminate
                                         </Button>
                                     </li>
-                                    <hr />
+                                    <hr className="w-4/5! mx-auto" />
                                 </React.Fragment>
                             ))
                         ) : (
-                            <Spinner
-                                className="m-auto"
-                                width={24}
-                                height={24}
-                            />
+                            <div className="flex flex-col gap-1 m-auto items-center">
+                                {promises.getSessions === "pending" ||
+                                promises.sessionsReload === "pending" ? (
+                                    <Spinner
+                                        width={24}
+                                        height={24}
+                                    />
+                                ) : (
+                                    <span>No sessions</span>
+                                )}
+                            </div>
                         )}
                     </ul>
 
@@ -255,9 +308,7 @@ export const Security = ({ data }: Props) => {
                                 terminateMessageBox.show();
                             }}
                         >
-                            {promises.sessions_terminate === "pending" && (
-                                <Spinner />
-                            )}
+                            {promiseStatus(promises.terminateSessions)}
                             <Image
                                 src="/auth.svg"
                                 width={16}

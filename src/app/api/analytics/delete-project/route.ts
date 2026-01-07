@@ -3,7 +3,7 @@ import type { NextRequest } from "next/server";
 import { supabaseServer } from "@/server/private/supabase";
 import type { Analytics } from "@/types/api/database/analytics";
 import { nextResponse } from "@/utils/response";
-import { tokenVerify } from "@/utils/tokenVerify";
+import { tokenVerify } from "@/utils/auth/tokenVerify";
 
 export const POST = async (request: NextRequest) => {
     try {
@@ -16,20 +16,23 @@ export const POST = async (request: NextRequest) => {
         tokenVerify(request, undefined, "admin");
 
         // 1. delete all analytic events related to the project (if any exist)
-        const { data: analyticsData, error: analyticsError } = (await supabaseServer
-            .from("analytics")
-            .select()
-            .eq("project_id", project_id)) as {
-            data: Analytics[];
-            error: PostgrestError | null;
-        };
+        const { data: analyticsData, error: analyticsError } =
+            (await supabaseServer
+                .from("analytics")
+                .select()
+                .eq("project_id", project_id)) as {
+                data: Analytics[];
+                error: PostgrestError | null;
+            };
 
         if (analyticsError) {
             return nextResponse(analyticsError, 400);
         }
 
         if (analyticsData.length > 0) {
-            const analyticsDataIDs = analyticsData.map((a) => a.analytics_meta_id);
+            const analyticsDataIDs = analyticsData.map(
+                (a) => a.analytics_meta_id
+            );
 
             const { error: analyticsMetaError } = await supabaseServer
                 .from("analytics_meta")
@@ -50,7 +53,10 @@ export const POST = async (request: NextRequest) => {
             return nextResponse(projectError, 400);
         }
 
-        return nextResponse({ message: "Successfully deleted all data about this project!" }, 200);
+        return nextResponse(
+            { message: "Successfully deleted all data about this project!" },
+            200
+        );
     } catch (e) {
         const message = e instanceof Error ? e.message : "unknown error";
         return nextResponse({ error: message }, 400);

@@ -1,15 +1,14 @@
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
-import type { Data } from "@/types/zustand/data";
-import { relativeTime } from "@/utils/relativeTime";
+import { relativeTime } from "@/utils/other/relativeTime";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
+import { useAppStore } from "@/zustand/store";
 
-type Props = {
-    data: Data;
-};
+export const ProjectList = () => {
+    // zustand state
+    const projects = useAppStore((state) => state.projects);
 
-export const ProjectList = ({ data }: Props) => {
     // url
     const { id } = useParams<{ id: string | undefined }>();
 
@@ -20,40 +19,36 @@ export const ProjectList = ({ data }: Props) => {
                 scrollbarWidth: "thin",
             }}
         >
-            {data !== undefined &&
-                Object.values(data).map((projectData) => (
-                    <li key={projectData.project.name}>
-                        <Tooltip
-                            className="w-full"
-                            text={projectData.project.name}
-                            direction='top'
+            {Object.values(projects).map((data) => (
+                <li key={data.name}>
+                    <Tooltip
+                        className="w-full"
+                        text={data.name}
+                        direction="top"
+                    >
+                        <LinkButton
+                            href={`/dashboard/emulate/${data.id}`}
+                            className={`flex flex-row! w-full h-full box p-4!
+                            ${data.id === id ? "border-blue-1!" : ""}`}
                         >
-                            <LinkButton
-                                href={`/dashboard/emulate/${projectData.project.id}`}
-                                className={`flex flex-row! w-full h-full box p-4!
-                            ${projectData.project.id === id ? "border-blue-1!" : ""}`}
-                            >
-                                <Image
-                                    src="/cube.svg"
-                                    width={16}
-                                    height={16}
-                                    alt=""
-                                />
+                            <Image
+                                src="/cube.svg"
+                                width={16}
+                                height={16}
+                                alt=""
+                            />
 
-                                <span>{projectData.project.name}</span>
+                            <span>{data.name}</span>
 
-                                <span className="ml-auto">
-                                    <small>
-                                        updated{" "}
-                                        {relativeTime(
-                                            projectData.project.last_event_at
-                                        )}
-                                    </small>
-                                </span>
-                            </LinkButton>
-                        </Tooltip>
-                    </li>
-                ))}
+                            <span className="ml-auto">
+                                <small>
+                                    updated {relativeTime(data.last_event_at)}
+                                </small>
+                            </span>
+                        </LinkButton>
+                    </Tooltip>
+                </li>
+            ))}
         </ul>
     );
 };

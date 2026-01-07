@@ -1,56 +1,36 @@
-import jwt from "jsonwebtoken";
 import type { NextRequest } from "next/server";
 import { supabaseServer } from "@/server/private/supabase";
-import { nextResponse } from "@/utils/response";
+import { nextResponse } from "@/utils/api/response";
+import { tokenVerify } from "@/utils/auth/tokenVerify";
 
 export const POST = async (request: NextRequest) => {
-	try {
-		const accessToken = request.cookies.get("accessToken")?.value;
+    try {
+        const { user_id, ids } = await request.json();
 
-		if (accessToken === undefined) {
-			return nextResponse({ error: "Not logged in." }, 400);
-		}
+        if (!user_id || !ids?.length) {
+            console.error("user_id and ids[] are missing.");
+            return nextResponse({ error: "user_id and ids[] are missing." });
+        }
 
-		const params = request.nextUrl.searchParams;
-		const type = params.get("type") ?? "all";
+        tokenVerify(request, [user_id]);
 
-		const payload = jwt.verify(
-			accessToken,
-			process.env.ACCESS_SECRET as string,
-		) as { id: string; role: string; session_id: string };
+        const { error } = await supabaseServer
+            .from("tokens")
+            .delete()
+            .eq("user_id", user_id)
+            .in("id", ids);
 
-		switch (type) {
-			case "all": {
-				const { error: accessError } = await supabaseServer
-					.from("tokens")
-					.delete()
-					.eq("user_id", payload.id);
+        if (error) {
+            console.error(error);
+            return nextResponse(error, 400);
+        }
 
-				if (accessError) {
-					return nextResponse(accessError, 400);
-				}
-				break;
-			}
-			case "other": {
-				const { error: accessError } = await supabaseServer
-					.from("tokens")
-					.delete()
-					.eq("user_id", payload.id)
-					.neq("session_id", payload.session_id);
-
-				if (accessError) {
-					return nextResponse(accessError, 400);
-				}
-
-				break;
-			}
-		}
-
-		return nextResponse(
-			{ message: "Successfully terminated all sessions!" },
-			200,
-		);
-	} catch {
-		return nextResponse({ error: "Failed terminating all sessions." }, 400);
-	}
+        return nextResponse(
+            { message: "Successfully terminated sessions!" },
+            200
+        );
+    } catch (error) {
+        console.error(error);
+        return nextResponse({ error: "Failed terminatingsessions." }, 400);
+    }
 };

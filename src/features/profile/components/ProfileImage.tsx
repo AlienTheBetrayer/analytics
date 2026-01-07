@@ -1,6 +1,6 @@
 import Image from "next/image";
-import type { Profile } from "@/types/api/database/profiles";
-import { VisibleProfile } from "@/types/zustand/local/ui";
+import { VisibleProfile } from "@/types/zustand/local";
+import { Profile } from "@/types/tables/account";
 
 type Props = {
     profile?: Profile | VisibleProfile;
@@ -10,9 +10,16 @@ type Props = {
     className?: string;
 };
 
-export const ProfileImage = ({ profile, src, width, height, className, ...rest }: Props) => {
+export const ProfileImage = ({
+    profile,
+    src,
+    width,
+    height,
+    className,
+    ...rest
+}: Props) => {
     // ui derived states
-    const url = src ?? profile?.avatar;
+    const url = src ?? profile?.avatar_url;
 
     return url ? (
         <Image

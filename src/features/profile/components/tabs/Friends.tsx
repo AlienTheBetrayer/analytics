@@ -4,12 +4,12 @@ import { usePopup } from "@/features/popup/hooks/usePopup";
 import { Spinner } from "@/features/spinner/components/Spinner";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
-import type { Profile } from "@/types/api/database/profiles";
-import type { User } from "@/types/api/database/user";
-import { promiseStatus } from "@/utils/status";
+import { Profile, User } from "@/types/tables/account";
+import { promiseStatus } from "@/utils/other/status";
 import { useAppStore } from "@/zustand/store";
 import { ProfileImage } from "../ProfileImage";
 import { ProfileDisplay } from "../ProfileDisplay";
+import { useEffect, useMemo } from "react";
 
 type Props = {
     data: { profile: Profile; user: User };
@@ -19,14 +19,13 @@ export const Friends = ({ data }: Props) => {
     // zustand states
     const friends = useAppStore((state) => state.friends);
     const profiles = useAppStore((state) => state.profiles);
+    const users = useAppStore((state) => state.users);
     const promises = useAppStore((state) => state.promises);
     const friendRequests = useAppStore((state) => state.friendRequests);
 
     // zustand functions
-    const unfriendEveryone = useAppStore((state) => state.unfriendEveryone);
-    const getProfiles = useAppStore((state) => state.getProfiles);
-    const getFriendRequests = useAppStore((state) => state.getFriendRequests);
-    const getFriends = useAppStore((state) => state.getFriends);
+    const modifyFriendship = useAppStore((state) => state.modifyFriendship);
+    const getUsers = useAppStore((state) => state.getUsers);
 
     // messageboxes
     const unfriendMessageBox = usePopup(({ hide }) => (
@@ -35,11 +34,59 @@ export const Friends = ({ data }: Props) => {
             onInteract={(res) => {
                 hide();
                 if (res === "yes") {
-                    unfriendEveryone(data.user.id);
+                    modifyFriendship({
+                        from_id: data.user.id,
+                        type: "unfriend-all",
+                        promiseKey: "unfriendAll"
+                    });
                 }
             }}
         />
     ));
+
+    // fetching data
+    useEffect(() => {
+        getUsers({
+            select: ["friends", "friend_requests"],
+            id: [data.user.id],
+        });
+    }, [getUsers, data]);
+
+    useEffect(() => {
+        getUsers({
+            select: ["profile"],
+            id: [
+                ...(friends[data.user.id] ?? []),
+                ...(friendRequests?.[data.user.id]?.incoming ?? []),
+                ...(friendRequests?.[data.user.id]?.outcoming ?? []),
+            ],
+        });
+    }, [friends, friendRequests, data, getUsers]);
+
+    // ui states
+    const availableFriends = useMemo(() => {
+        if (!friends[data.user.id]?.size) {
+            return [];
+        }
+
+        return [...friends[data.user.id]];
+    }, [friends, data]);
+
+    const incomingRequests = useMemo(() => {
+        if (!friendRequests[data.user.id]?.incoming?.size) {
+            return [];
+        }
+
+        return [...friendRequests[data.user.id].incoming];
+    }, [friendRequests, data]);
+
+    const outcomingRequests = useMemo(() => {
+        if (!friendRequests[data.user.id]?.outcoming?.size) {
+            return [];
+        }
+
+        return [...friendRequests[data.user.id].outcoming];
+    }, [friendRequests, data]);
 
     return (
         <div className="flex flex-col gap-4 p-8 w-full">
@@ -56,11 +103,21 @@ export const Friends = ({ data }: Props) => {
             <div className="flex flex-col md:flex-row gap-4 grow w-full">
                 <div className="flex flex-col items-center gap-2 w-full md:max-w-96">
                     <span>{data.profile.name}</span>
-                    <ProfileImage profile={data.profile} width={256} height={256} />
+                    <ProfileImage
+                        profile={data.profile}
+                        width={256}
+                        height={256}
+                    />
                     <div className="flex items-center gap-1">
-                        <Image width={20} height={20} alt="" src="/privacy.svg" />
+                        <Image
+                            width={20}
+                            height={20}
+                            alt=""
+                            src="/privacy.svg"
+                        />
                         <span className="text-foreground-5!">
-                            {data.user.role[0].toUpperCase() + data.user.role.substring(1)}
+                            {data.user.role[0].toUpperCase() +
+                                data.user.role.substring(1)}
                         </span>
                     </div>
                 </div>
@@ -72,52 +129,43 @@ export const Friends = ({ data }: Props) => {
                             {/* friends topline */}
                             <span className="flex flex-wrap gap-2 items-center">
                                 <b>Friend list</b>
-                                <Tooltip text="Re-load friends" direction="top">
+                                <Tooltip
+                                    text="Re-load friends"
+                                    direction="top"
+                                >
                                     <Button
                                         className="p-0!"
                                         onClick={() => {
-                                            getFriends(false);
-                                            getFriendRequests(data.user.id, false);
-
-                                            if (friendRequests) {
-                                                if (friendRequests.incoming.length > 0) {
-                                                    getProfiles(
-                                                        friendRequests.incoming,
-                                                        false,
-                                                        "__reload_incoming_requests",
-                                                    );
-                                                }
-
-                                                if (friendRequests.outcoming.length > 0) {
-                                                    getProfiles(
-                                                        friendRequests.outcoming,
-                                                        false,
-                                                        "__reload_outcoming_requests",
-                                                    );
-                                                }
-                                            }
-
-                                            if (friends && friends.length > 0) {
-                                                getProfiles(friends, false, "__reload_friends");
-                                            }
+                                            getUsers({
+                                                select: ["friends", "friend_requests"],
+                                                id: [data.user.id],
+                                                promiseKey: "friendsReload",
+                                                caching: false,
+                                            });
                                         }}
                                     >
-                                        <Image
-                                            src="/reload.svg"
-                                            width={16}
-                                            height={16}
-                                            alt="refresh"
-                                        />
+                                        {promises.friendsReload ===
+                                        "pending" ? (
+                                            <Spinner />
+                                        ) : (
+                                            <Image
+                                                src="/reload.svg"
+                                                width={16}
+                                                height={16}
+                                                alt="refresh"
+                                            />
+                                        )}
                                     </Button>
                                 </Tooltip>
-                                <small className="ml-auto">(all of your friends are here)</small>
+                                <small className="ml-auto">
+                                    (all your friends are here)
+                                </small>
                             </span>
 
                             {/* friends list */}
-                            {promises.friends === "pending" ||
-                            promises.__reload_friends === "pending" ? (
+                            {promises.friends === "pending" ? (
                                 <Spinner className="mx-auto" />
-                            ) : friends === undefined || friends.length === 0 ? (
+                            ) : !availableFriends.length ? (
                                 <span>
                                     <small>No friends</small>
                                 </span>
@@ -126,12 +174,17 @@ export const Friends = ({ data }: Props) => {
                                     className="flex flex-col gap-2 overflow-y-auto max-h-36 scheme-dark"
                                     style={{ scrollbarWidth: "thin" }}
                                 >
-                                    {friends.map((friend) => (
-                                        <li key={friend}>
-                                            {profiles?.[friend] === undefined ? (
+                                    {availableFriends.map((id) => (
+                                        <li key={id}>
+                                            {!profiles?.[id] ? (
                                                 <Spinner />
                                             ) : (
-                                                <ProfileDisplay data={profiles[friend]} />
+                                                <ProfileDisplay
+                                                    data={{
+                                                        profile: profiles[id],
+                                                        user: users[id],
+                                                    }}
+                                                />
                                             )}
                                         </li>
                                     ))}
@@ -144,15 +197,15 @@ export const Friends = ({ data }: Props) => {
                             {/* incoming requests topline */}
                             <span className="flex flex-wrap gap-2 items-center">
                                 <b>Incoming requests</b>
-                                <small className="ml-auto">(your incoming requests)</small>
+                                <small className="ml-auto">
+                                    (your incoming requests)
+                                </small>
                             </span>
 
                             {/* incoming requests */}
-                            {promises.friend_requests === "pending" ||
-                            promises.__reload_incoming_requests === "pending" ? (
+                            {promises.friend_requests === "pending" ? (
                                 <Spinner className="mx-auto" />
-                            ) : friendRequests?.incoming === undefined ||
-                              friendRequests.incoming.length === 0 ? (
+                            ) : !incomingRequests.length ? (
                                 <span>
                                     <small>No incoming requests</small>
                                 </span>
@@ -161,12 +214,17 @@ export const Friends = ({ data }: Props) => {
                                     className="flex flex-col gap-2 overflow-y-auto max-h-36 scheme-dark"
                                     style={{ scrollbarWidth: "thin" }}
                                 >
-                                    {friendRequests.incoming.map((request) => (
-                                        <li key={request}>
-                                            {profiles?.[request] === undefined ? (
+                                    {incomingRequests.map((id) => (
+                                        <li key={id}>
+                                            {!profiles?.[id] ? (
                                                 <Spinner />
                                             ) : (
-                                                <ProfileDisplay data={profiles[request]} />
+                                                <ProfileDisplay
+                                                    data={{
+                                                        profile: profiles[id],
+                                                        user: users[id],
+                                                    }}
+                                                />
                                             )}
                                         </li>
                                     ))}
@@ -179,15 +237,15 @@ export const Friends = ({ data }: Props) => {
                             {/* outcoming requests topline */}
                             <span className="flex flex-wrap gap-2 items-center">
                                 <b>Outcoming requests</b>
-                                <small className="ml-auto">(your outcoming requests)</small>
+                                <small className="ml-auto">
+                                    (your outcoming requests)
+                                </small>
                             </span>
 
                             {/* outcoming requests */}
-                            {promises.friend_requests === "pending" ||
-                            promises.__reload_outcoming_requests === "pending" ? (
+                            {promises.friend_requests === "pending" ? (
                                 <Spinner className="mx-auto" />
-                            ) : friendRequests?.outcoming === undefined ||
-                              friendRequests.outcoming.length === 0 ? (
+                            ) : !outcomingRequests.length ? (
                                 <span>
                                     <small>No outcoming requests</small>
                                 </span>
@@ -196,12 +254,17 @@ export const Friends = ({ data }: Props) => {
                                     className="flex flex-col gap-2 overflow-y-auto max-h-36 scheme-dark"
                                     style={{ scrollbarWidth: "thin" }}
                                 >
-                                    {friendRequests.outcoming.map((request) => (
-                                        <li key={request}>
-                                            {profiles?.[request] === undefined ? (
+                                    {outcomingRequests.map((id) => (
+                                        <li key={id}>
+                                            {!profiles?.[id] ? (
                                                 <Spinner />
                                             ) : (
-                                                <ProfileDisplay data={profiles[request]} />
+                                                <ProfileDisplay
+                                                    data={{
+                                                        profile: profiles[id],
+                                                        user: users[id],
+                                                    }}
+                                                />
                                             )}
                                         </li>
                                     ))}
@@ -217,8 +280,13 @@ export const Friends = ({ data }: Props) => {
                             unfriendMessageBox.show();
                         }}
                     >
-                        {promiseStatus(promises.unfriend_everyone)}
-                        <Image width={16} height={16} alt="" src="/cross.svg" />
+                        {promiseStatus(promises.unfriendAll)}
+                        <Image
+                            width={16}
+                            height={16}
+                            alt=""
+                            src="/cross.svg"
+                        />
                         Unfriend everyone
                     </Button>
                 </div>

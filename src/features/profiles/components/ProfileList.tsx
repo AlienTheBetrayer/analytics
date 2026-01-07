@@ -40,7 +40,7 @@ export const ProfileList = () => {
     const profilesMenuType = useLocalStore((state) => state.profilesMenuType);
     const setProfilesMenuType = useLocalStore((state) => state.setProfilesMenuType);
 
-    if (profiles === undefined || promises?.profiles === "pending") {
+    if (!profiles || promises?.profiles === "pending") {
         return (
             <div className="flex flex-col w-full max-w-lg box m-auto">
                 <div className="flex flex-col gap-4">

@@ -1,20 +1,102 @@
 import axios from "axios";
-import type {
-    AuthenticationSession,
-    AuthenticationStore,
-} from "@/types/zustand/authentication";
+import type { AuthenticationStore } from "@/types/zustand/authentication";
 import type { SliceFunction } from "@/types/zustand/utils/sliceFunction";
-import { refreshedRequest } from "@/utils/refreshedRequest";
-import { User } from "@/types/api/database/user";
-import { AuthenticationToken } from "@/types/api/authentication";
+import { refreshedRequest } from "@/utils/auth/refreshedRequest";
+import { AuthenticationToken } from "@/types/auth/authentication";
+import { ResponseLogin, ResponseSession } from "@/types/api/responses/auth";
 
 export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (
     set,
     get
 ) => {
     return {
+        sessions: {},
+
         setStatus: (status) => {
             set((state) => ({ ...state, status }));
+        },
+
+        getSessions: async (options) => {
+            const { setPromise, sessions } = get();
+
+            // caching / invalidating
+            if (
+                (options.caching ?? true) &&
+                options.user_id &&
+                options.type !== "current" &&
+                sessions[options.user_id]
+            ) {
+                return;
+            }
+
+            if (!options.user_id && options.type === "all") {
+                throw "[getSessions]: user_id is missing.";
+            }
+
+            return await setPromise(
+                options.promiseKey ?? "getSessions",
+                async () => {
+                    const res = await refreshedRequest(
+                        `/api/auth/sessions`,
+                        "GET",
+                        undefined,
+                        {
+                            params: {
+                                user_id: options.user_id,
+                                type: options.type ?? "all",
+                            },
+                        }
+                    );
+
+                    if (options.user_id) {
+                        const data = res.data.sessions as ResponseSession[];
+                        const id = options.user_id;
+
+                        set((state) => ({
+                            ...state,
+                            sessions: {
+                                ...state.sessions,
+                                [id]: data,
+                            },
+                        }));
+
+                        return data;
+                    } else {
+                        const session = res.data.session as AuthenticationToken;
+
+                        set((state) => ({
+                            ...state,
+                            status: session,
+                        }));
+
+                        return session;
+                    }
+                }
+            );
+        },
+
+        terminateSessions: async (options) => {
+            const { setPromise } = get();
+
+            return await setPromise(
+                options.promiseKey ?? "terminateSessions",
+                async () => {
+                    await refreshedRequest(`/api/auth/terminate/`, "POST", {
+                        user_id: options.user_id,
+                        ids: options.ids,
+                    });
+
+                    set((state) => {
+                        const sessions = { ...state.sessions };
+
+                        sessions[options.user_id] = sessions[
+                            options.user_id
+                        ].filter((sid) => !options.ids.includes(sid.id));
+
+                        return { ...state, sessions };
+                    });
+                }
+            );
         },
 
         register: async (username, password) => {
@@ -26,7 +108,7 @@ export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (
                     password,
                 });
 
-                return res;
+                return res.data as ResponseLogin;
             });
         },
 
@@ -38,10 +120,9 @@ export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (
                     username,
                     password,
                 });
-                const data = res.data as {
-                    user: User;
-                    payload: AuthenticationToken;
-                };
+
+                const data = res.data as ResponseLogin;
+
                 const {
                     id,
                     role,
@@ -54,165 +135,54 @@ export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (
                     status: { id, role, session_id, username: payloadUsername },
                 }));
 
-                return res;
+                return data;
             });
         },
 
-        logout: async () => {
-            const { setPromise, status } = get();
+        logout: async (options) => {
+            const { setPromise } = get();
 
-            return await setPromise("logout", async () => {
-                const res = await refreshedRequest("/api/auth/logout", "POST");
-                set((state) => {
-                    const newProfiles = { ...(state.profiles ?? {}) };
-                    if (status !== undefined) {
-                        delete newProfiles[status.id];
-                    }
+            return await setPromise(
+                options?.promiseKey ?? "logout",
+                async () => {
+                    await refreshedRequest("/api/auth/logout", "POST");
 
-                    return {
-                        ...state,
-                        profiles: newProfiles,
-                        status: undefined,
-                        sessions: undefined,
-                        friends: undefined,
-                        cached: undefined,
-                        colors: undefined,
-                    };
-                });
-
-                return res;
-            });
+                    set((state) => ({ ...state, status: undefined }));
+                }
+            );
         },
 
         deleteUser: async (id: string) => {
             const { setPromise } = get();
 
             return await setPromise("delete", async () => {
-                const res = await refreshedRequest("/api/auth/delete", "POST", {
+                await refreshedRequest("/api/auth/delete", "POST", {
                     id,
                 });
 
                 set((state) => {
                     const profiles = { ...state.profiles };
+                    const users = { ...state.users };
+                    const colors = { ...state.colors };
+                    const friendRequests = { ...state.friendRequests };
+                    const friends = { ...state.friends };
+
                     delete profiles[id];
-                    return { ...state, profiles };
+                    delete users[id];
+                    delete colors[id];
+                    delete friendRequests[id];
+                    delete friends[id];
+
+                    return {
+                        ...state,
+                        profiles,
+                        users,
+                        colors,
+                        friendRequests,
+                        friends,
+                    };
                 });
-
-                return res;
             });
-        },
-
-        getSessions: async (id: string, caching: boolean = true) => {
-            const { setPromise, runningSessions } = get();
-
-            if (caching === true && runningSessions !== undefined) return;
-
-            return await setPromise("sessions", async () => {
-                const res = await refreshedRequest(
-                    `/api/auth/sessions/${id}`,
-                    "GET"
-                );
-                const data = res.data as {
-                    sessions: AuthenticationSession[];
-                };
-
-                set((state) => ({
-                    ...state,
-                    runningSessions: data.sessions,
-                }));
-
-                return res;
-            });
-        },
-
-        deleteSession: async (id: string) => {
-            const { setPromise } = get();
-
-            return await setPromise(`session_logout_${id}`, async () => {
-                const res = await refreshedRequest(
-                    `/api/auth/logout/${id}`,
-                    "POST"
-                );
-
-                set((state) => ({
-                    ...state,
-                    runningSessions: state.runningSessions?.filter(
-                        (s) => s.id !== id
-                    ),
-                }));
-
-                return res;
-            });
-        },
-
-        terminateAllSessions: async () => {
-            const { setPromise } = get();
-            return await setPromise(`sessions_terminate`, async () => {
-                const res = await refreshedRequest(
-                    `/api/auth/terminate/`,
-                    "POST"
-                );
-
-                set((state) => ({
-                    ...state,
-                    runningSessions: undefined,
-                    status: undefined,
-                }));
-
-                return res;
-            });
-        },
-
-        terminateOtherSessions: async () => {
-            const { setPromise } = get();
-
-            return await setPromise(`sessions_terminate`, async () => {
-                const res = await refreshedRequest(
-                    `/api/auth/terminate?type=other`,
-                    "POST"
-                );
-
-                set((state) => ({
-                    ...state,
-                    runningSessions: state.runningSessions?.filter(
-                        (s) => s.isCurrent
-                    ),
-                }));
-
-                return res;
-            });
-        },
-
-        changePassword: async (id: string, password: string) => {
-            const { setPromise } = get();
-
-            return await setPromise(`password_change`, async () => {
-                return await refreshedRequest(
-                    `/api/auth/password-change/`,
-                    "POST",
-                    {
-                        id,
-                        password,
-                    }
-                );
-            });
-        },
-
-        getSession: async () => {
-            try {
-                const res = await axios.get("/api/auth/session");
-                const data = res.data as { payload: AuthenticationToken };
-                const { id, role, session_id, username } = data.payload;
-
-                set((state) => ({
-                    ...state,
-                    status: { id, role, session_id, username },
-                }));
-
-                return res;
-            } catch (e) {
-                throw { e };
-            }
         },
     };
 };

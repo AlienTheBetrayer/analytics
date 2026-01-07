@@ -3,13 +3,13 @@ import "./DashboardEvent.css";
 import Image from "next/image";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
-import type { AnalyticsMeta } from "@/types/api/database/analytics";
-import { relativeTime } from "@/utils/relativeTime";
+import { relativeTime } from "@/utils/other/relativeTime";
 import { useAppStore } from "@/zustand/store";
-import { promiseStatus } from "@/utils/status";
+import { promiseStatus } from "@/utils/other/status";
+import { Event } from "@/types/tables/project";
 
 type Props = {
-    event: AnalyticsMeta;
+    event: Event;
 };
 
 export const DashboardEvent = ({ event }: Props) => {
@@ -18,7 +18,7 @@ export const DashboardEvent = ({ event }: Props) => {
     const status = useAppStore((state) => state.status);
 
     // zustand functions
-    const deleteEvent = useAppStore((state) => state.deleteEvent);
+    const deleteData = useAppStore((state) => state.deleteData);
 
     return (
         <Tooltip
@@ -33,15 +33,23 @@ export const DashboardEvent = ({ event }: Props) => {
             px-4! py-2! hover:brightness-200 duration-300 ease-out transition-all"
             >
                 <div className="absolute inset-0 grid place-items-center pointer-events-none select-none">
-                    <span className={`text-5xl! opacity-30 transition-all duration-300 ease-out`}>
-                        <small>{event.type[0].toUpperCase()}</small>
+                    <span
+                        className={`text-5xl! opacity-30 transition-all duration-300 ease-out`}
+                    >
+                        {event.type && (
+                            <small>{event.type[0].toUpperCase()}</small>
+                        )}
                     </span>
                 </div>
 
-                <EventProperty eventType="Type" value={event.type} image="/type.svg" />
+                <EventProperty
+                    eventType="Type"
+                    value={event.type}
+                    image="/type.svg"
+                />
                 <EventProperty
                     eventType="Description"
-                    value={event.description ?? "No description"}
+                    value={event.description}
                     image="/description.svg"
                 />
                 <EventProperty
@@ -60,11 +68,20 @@ export const DashboardEvent = ({ event }: Props) => {
                         isEnabled={status?.role !== "user"}
                         className="w-full"
                         onClick={() => {
-                            deleteEvent(event.id);
+                            deleteData({
+                                id: [event.id],
+                                type: "event",
+                                promiseKey: `eventDelete_${event.id}`,
+                            });
                         }}
                     >
-                        {promiseStatus(promises[`event_delete_${event.id}`])}
-                        <Image width={16} height={16} alt="" src="/delete.svg" />
+                        {promiseStatus(promises[`eventDelete_${event.id}`])}
+                        <Image
+                            width={16}
+                            height={16}
+                            alt=""
+                            src="/delete.svg"
+                        />
                         Delete
                     </Button>
                 </Tooltip>
@@ -75,21 +92,41 @@ export const DashboardEvent = ({ event }: Props) => {
 
 type PropertyProps = {
     eventType: string;
-    value: string;
+    value?: string;
     className?: string;
     image?: string;
 };
 
-const EventProperty = ({ eventType, value, image, className }: PropertyProps) => {
+const EventProperty = ({
+    eventType,
+    value,
+    image,
+    className,
+}: PropertyProps) => {
     return (
-        <div className={`dashboard-event-element flex flex-col ${className ?? ""}`}>
+        <div
+            className={`dashboard-event-element flex flex-col ${className ?? ""}`}
+        >
             <span>
                 <small className="flex items-center gap-1">
-                    {image && <Image alt="" src={image} width={16} height={16} />}
+                    {image && (
+                        <Image
+                            alt=""
+                            src={image}
+                            width={16}
+                            height={16}
+                        />
+                    )}
                     {eventType}
                 </small>
             </span>
-            <span>{value ? value : " "}</span>
+            {value ? (
+                <span>{value}</span>
+            ) : (
+                <span>
+                    <small>None</small>
+                </span>
+            )}
         </div>
     );
 };

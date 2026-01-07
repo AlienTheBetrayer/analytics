@@ -10,13 +10,13 @@ import { DataSlice } from "./slices/data";
 import { UserSlice } from "./slices/user";
 
 export type StoreType = AuthenticationStore &
-	DashboardStore &
-	DataStore &
-	UserStore;
+    DashboardStore &
+    DataStore &
+    UserStore;
 
 export const useAppStore = create<StoreType>((set, get) => ({
-	...AuthenticationSlice(set, get),
-	...DashboardSlice(set, get),
-	...DataSlice(set, get),
-	...UserSlice(set, get),
+    ...AuthenticationSlice(set, get),
+    ...DashboardSlice(set, get),
+    ...DataSlice(set, get),
+    ...UserSlice(set, get),
 }));

@@ -1,14 +1,13 @@
 import { motion } from "motion/react";
 import Image from "next/image";
 import { useState } from "react";
-import { usePromiseStatus } from "@/hooks/usePromiseStatus";
-import type { ResponseAxios } from "@/types/zustand/utils/axios";
-import { Spinner } from "../../spinner/components/Spinner";
 import { Tooltip } from "../../tooltip/components/Tooltip";
 import { Button } from "../../ui/button/components/Button";
 import { Input } from "../../ui/input/components/Input";
 import { LinkButton } from "../../ui/linkbutton/components/LinkButton";
-import { type RetrievedResponse, retrieveResponse } from "../utils/retrieveResponse";
+import { ResponseLogin } from "@/types/api/responses/auth";
+import { useAppStore } from "@/zustand/store";
+import { promiseStatus } from "@/utils/other/status";
 
 type Props = {
     title: string;
@@ -16,7 +15,10 @@ type Props = {
         text: string;
         tooltip: string;
     };
-    onSubmit: (username: string, password: string) => Promise<ResponseAxios>;
+    onSubmit: (
+        username: string,
+        password: string
+    ) => Promise<ResponseLogin>;
     className?: string;
     type?: "login" | "register";
 };
@@ -28,15 +30,15 @@ export const AuthenticationForm = ({
     className,
     type = "login",
 }: Props) => {
+    // zustand states
+    const promises = useAppStore((state) => state.promises);
+
     // input states
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
 
     // authentication internal states
-    const [response, setResponse] = useState<RetrievedResponse | undefined>();
-
-    // spinners
-    const promises = usePromiseStatus();
+    const [response, setResponse] = useState<ResponseLogin | undefined>();
 
     return (
         <motion.div
@@ -49,12 +51,23 @@ export const AuthenticationForm = ({
         >
             {/* topline */}
             <div className="relative gap-2 flex flex-wrap items-center w-full border-b border-b-background-5 p-2">
-                <Tooltip text="Easter egg 🌀" direction="top">
+                <Tooltip
+                    text="Easter egg 🌀"
+                    direction="top"
+                >
                     <div className="rounded-full bg-blue-1 w-1.5 h-1.5" />
                 </Tooltip>
                 <span className="text-foreground-5!">{title}</span>
-                <Tooltip text="Come back home" className="ml-auto" direction="top" disabledPointer>
-                    <LinkButton className="ml-auto" href="/home">
+                <Tooltip
+                    text="Come back home"
+                    className="ml-auto"
+                    direction="top"
+                    disabledPointer
+                >
+                    <LinkButton
+                        className="ml-auto"
+                        href="/home"
+                    >
                         ✕ Back
                     </LinkButton>
                 </Tooltip>
@@ -67,20 +80,16 @@ export const AuthenticationForm = ({
                     e.preventDefault();
 
                     if (e.currentTarget.checkValidity()) {
-                        promises.wrap("auth_action", async () => {
-                            const res = await retrieveResponse(
-                                async () => await onSubmit(username, password),
-                            );
-                            setResponse(res.retrievedResponse);
-                        });
-                    }
-
-                    if (e.currentTarget.checkValidity()) {
-                        promises.wrap("register", async () => {});
+                        const res = await onSubmit(username, password);
+                        console.log(res);
+                        setResponse(res);
                     }
                 }}
             >
-                <label htmlFor="username" className="flex justify-between">
+                <label
+                    htmlFor="username"
+                    className="flex justify-between"
+                >
                     Username
                     {type === "register" && <small>(your unique name)</small>}
                 </label>
@@ -96,9 +105,14 @@ export const AuthenticationForm = ({
                 />
                 <hr />
 
-                <label htmlFor="password" className="flex justify-between">
+                <label
+                    htmlFor="password"
+                    className="flex justify-between"
+                >
                     Password
-                    {type === "register" && <small>(create a strong password)</small>}
+                    {type === "register" && (
+                        <small>(create a strong password)</small>
+                    )}
                 </label>
                 <Input
                     id="password"
@@ -118,9 +132,19 @@ export const AuthenticationForm = ({
                     className="w-full"
                     disabledPointer
                 >
-                    <Button className="w-full" type="submit">
-                        {promises.get("auth_action") === "pending" && <Spinner />}
-                        <Image alt="" width={20} height={20} src="/send.svg" />
+                    <Button
+                        className="w-full"
+                        type="submit"
+                    >
+                        {promises.login && promiseStatus(promises.login)}
+                        {promises.register && promiseStatus(promises.register)}
+
+                        <Image
+                            alt=""
+                            width={20}
+                            height={20}
+                            src="/send.svg"
+                        />
                         {button.text}
                     </Button>
                 </Tooltip>
@@ -129,8 +153,16 @@ export const AuthenticationForm = ({
             {response?.type === "user_registered" && (
                 <>
                     <hr />
-                    <Tooltip text="Proceed the authentication" direction="bottom" disabledPointer>
-                        <LinkButton className="w-full" href="/login">
+                    <Tooltip
+                        text="Proceed the authentication"
+                        direction="bottom"
+                        disabledPointer
+                        className='w-full'
+                    >
+                        <LinkButton
+                            className="w-full"
+                            href="/login"
+                        >
                             Redirect to log in
                         </LinkButton>
                     </Tooltip>
@@ -138,14 +170,14 @@ export const AuthenticationForm = ({
             )}
 
             {/* status message */}
-            {response !== undefined && (
+            {response && (
                 <>
                     <hr />
                     <div className="flex gap-2 items-center mx-auto">
                         <div
-                            className={`rounded-full w-2 h-2 ${response.status === "ok" ? "bg-blue-1" : "bg-red-1"} shrink-0`}
+                            className={`rounded-full w-2 h-2 ${response.type ? "bg-blue-1" : "bg-red-1"} shrink-0`}
                         />
-                        <span>{response.message}</span>
+                        <span>{response.response?.data.error || response.message}</span>
                     </div>
                 </>
             )}

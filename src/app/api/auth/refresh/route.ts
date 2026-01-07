@@ -3,9 +3,9 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import type { NextRequest } from "next/server";
 import { supabaseServer } from "@/server/private/supabase";
-import type { Token } from "@/types/api/database/authentication";
-import type { User } from "@/types/api/database/user";
-import { nextResponse } from "@/utils/response";
+import { nextResponse } from "@/utils/api/response";
+import { User } from "@/types/tables/account";
+import { AuthenticationToken } from "@/types/auth/authentication";
 
 export const POST = async (request: NextRequest) => {
     const refreshToken = request.cookies.get("refreshToken")?.value;
@@ -32,19 +32,18 @@ export const POST = async (request: NextRequest) => {
                 .from("tokens")
                 .select()
                 .eq("user_id", payload.id)) as {
-                data: Token[];
+                data: AuthenticationToken[];
                 error: PostgrestError | null;
             };
 
-        console.log(payload, refreshTokensData);
         if (refreshTokensError) {
-            console.log("ERROR");
+            console.error(refreshTokensError);
             return nextResponse(refreshTokensError, 400);
         }
 
         // detecting token substitution
         if (refreshTokensData.length === 0) {
-            console.log("LENGTH");
+            console.error("Incorrect authentication.");
             return nextResponse({ error: "Incorrect authentication." }, 400);
         }
 
@@ -58,10 +57,12 @@ export const POST = async (request: NextRequest) => {
         };
 
         if (userError) {
+            console.error(userError);
             return nextResponse(userError, 400);
         }
 
         if (userData.length === 0) {
+            console.error("The user does not exist.");
             return nextResponse({ error: "The user does not exist." }, 400);
         }
 
@@ -97,7 +98,7 @@ export const POST = async (request: NextRequest) => {
             .eq("session_id", payload.session_id);
 
         if (refreshDeleteError) {
-            console.log("dfsfsdfsdf");
+            console.error(refreshDeleteError);
             return nextResponse(refreshDeleteError, 400);
         }
 
@@ -110,22 +111,8 @@ export const POST = async (request: NextRequest) => {
             });
 
         if (refreshRotateError) {
-            console.log("penitia");
-
+            console.error(refreshRotateError);
             return nextResponse(refreshRotateError, 400);
-        }
-
-        // updating last_seen_at
-        const { error: lastSeenError } = await supabaseServer
-            .from("users")
-            .update({
-                last_seen_at: new Date().toISOString(),
-            })
-            .eq("id", userData[0].id);
-
-        if (lastSeenError) {
-            console.log("doi tall over again");
-            return nextResponse(lastSeenError, 400);
         }
 
         const response = nextResponse(
@@ -151,7 +138,8 @@ export const POST = async (request: NextRequest) => {
         });
 
         return response;
-    } catch {
+    } catch (error) {
+        console.error(error);
         return nextResponse(
             { error: "Not authenticated" },
             401,

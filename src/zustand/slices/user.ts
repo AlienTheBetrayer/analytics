@@ -1,420 +1,570 @@
-import type { Color } from "@/types/api/database/colors";
-import type { Profile } from "@/types/api/database/profiles";
-import type { User } from "@/types/api/database/user";
-import type { APIResponseType } from "@/types/api/response";
+import { ResponseUsers } from "@/types/api/responses/users";
+import { APIResponseType } from "@/types/response";
 import type { UserStore } from "@/types/zustand/user";
 import type { SliceFunction } from "@/types/zustand/utils/sliceFunction";
-import { refreshedRequest } from "@/utils/refreshedRequest";
+import { refreshedRequest } from "@/utils/auth/refreshedRequest";
 
 export const UserSlice: SliceFunction<UserStore> = (set, get) => {
     return {
-        getProfileByName: async (name: string, caching: boolean = true) => {
-            const { setPromise, profiles } = get();
+        colors: {},
+        friendRequests: {},
+        friends: {},
+        profiles: {},
+        users: {},
 
-            if (caching === true && profiles) {
-                const found = Object.values(profiles).find((p) => p.user.username === name);
+        getUsers: async (options) => {
+            const {
+                setPromise,
+                profiles,
+                users,
+                colors,
+                friends,
+                friendRequests,
+            } = get();
 
-                if (found) return;
+            const ids = new Set<string>(
+                (options.caching ?? true) ? [] : options.id
+            );
+            const usernames = new Set<string>(
+                (options.caching ?? true) ? [] : options.username
+            );
+
+            // caching
+            if (options.caching ?? true) {
+                // if we prefer name-based filtering - get those ids
+                const existingUsernames = new Map<string, string>(
+                    Object.values(users).map(({ id, username }) => [
+                        username,
+                        id,
+                    ])
+                );
+
+                const cacheFilter = (type: "id" | "name") => {
+                    for (const entry of (type === "id"
+                        ? options.id
+                        : options.username) ?? []) {
+                        for (const selection of options.select ?? ["user"]) {
+                            switch (selection) {
+                                case "profile": {
+                                    if (type === "id") {
+                                        if (!profiles[entry]) {
+                                            ids.add(entry);
+                                        }
+                                    } else {
+                                        const id = existingUsernames.get(entry);
+                                        if (!id || !profiles[id]) {
+                                            usernames.add(entry);
+                                        }
+                                    }
+                                    break;
+                                }
+                                case "user": {
+                                    if (type === "id") {
+                                        if (!users[entry]) {
+                                            ids.add(entry);
+                                        }
+                                    } else {
+                                        const id = existingUsernames.get(entry);
+                                        if (!id || !users[id]) {
+                                            usernames.add(entry);
+                                        }
+                                    }
+                                    break;
+                                }
+                                case "friend_requests": {
+                                    if (type === "id") {
+                                        if (!friendRequests[entry]) {
+                                            ids.add(entry);
+                                        }
+                                    } else {
+                                        const id = existingUsernames.get(entry);
+                                        if (!id || !friendRequests[id]) {
+                                            usernames.add(entry);
+                                        }
+                                    }
+                                    break;
+                                }
+                                case "friends": {
+                                    if (type === "id") {
+                                        if (!friends[entry]) {
+                                            ids.add(entry);
+                                        }
+                                    } else {
+                                        const id = existingUsernames.get(entry);
+                                        if (!id || !friends[id]) {
+                                            usernames.add(entry);
+                                        }
+                                    }
+                                    break;
+                                }
+                                case "colors": {
+                                    if (type === "id") {
+                                        if (!colors[entry]) {
+                                            ids.add(entry);
+                                        }
+                                    } else {
+                                        const id = existingUsernames.get(entry);
+                                        if (!id || !colors[id]) {
+                                            usernames.add(entry);
+                                        }
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                };
+
+                if (options.id?.length) {
+                    cacheFilter("id");
+                } else if (options.username?.length) {
+                    cacheFilter("name");
+                }
             }
 
-            return await setPromise("profile", async () => {
-                const res = await refreshedRequest(`/api/profile?name=${name}`, "GET");
+            if (!ids.size && !usernames.size) {
+                return;
+            }
 
-                set((state) => {
-                    const newProfiles = { ...(state.profiles ?? {}) };
-                    newProfiles[res.data.user.id] = {
-                        profile: res.data.profile,
-                        user: res.data.user,
-                    };
-
-                    return { ...state, profiles: newProfiles };
-                });
-
-                return res;
-            });
-        },
-
-        getProfileById: async (id: string, caching: boolean = true) => {
-            const { setPromise, profiles } = get();
-
-            if (caching === true && profiles?.[id] !== undefined) return;
-
-            return await setPromise("profile", async () => {
-                const res = await refreshedRequest(`/api/profile?id=${id}`, "GET");
-
-                set((state) => {
-                    const newProfiles = { ...(state.profiles ?? {}) };
-                    newProfiles[id] = {
-                        profile: res.data.profile,
-                        user: res.data.user,
-                    };
-
-                    return { ...state, profiles: newProfiles };
-                });
-
-                return res;
-            });
-        },
-
-        setProfileData: async (id: string, data: Record<string, string | undefined | null>) => {
-            const { setPromise } = get();
-
-            return await setPromise("profile_set", async () => {
-                const res = await refreshedRequest("/api/profile/set", "POST", {
-                    user_id: id,
-                    ...data,
-                });
-
-                set((state) => {
-                    const newProfiles = { ...(state.profiles ?? {}) };
-
-                    newProfiles[id] = {
-                        ...newProfiles[id],
-                        profile: { ...newProfiles[id].profile, ...data },
-                    };
-
-                    return { ...state, profiles: newProfiles };
-                });
-
-                return res;
-            });
-        },
-
-        deleteProfileData: (id: string) => {
-            set((state) => {
-                const newProfiles = { ...(state.profiles ?? {}) };
-                delete newProfiles[id];
-
-                return { ...state, profiles: newProfiles };
-            });
-        },
-
-        getFriends: async (caching: boolean = true) => {
-            const { setPromise, setCached, cached, status } = get();
-
-            if ((caching === true && cached?.friends !== undefined) || status === undefined) return;
-
-            return await setPromise("friends", async () => {
-                const res = await refreshedRequest(`/api/friends/${status.id}`, "GET");
-                const data = res.data as { friends: { id: string }[] };
-
-                set((state) => ({ ...state, friends: data.friends.map((f) => f.id) }));
-
-                setCached("friends");
-                return res;
-            });
-        },
-
-        getFriendsProfiles: async (id: string, caching: boolean = true) => {
-            const { setPromise, setCached, cached } = get();
-
-            if (caching === true && cached?.friends_profiles !== undefined) return;
-
-            return await setPromise("friends", async () => {
-                const res = await refreshedRequest(`/api/friend-profiles/${id}`, "GET");
-                const data = res.data as {
-                    profiles: { profile: Profile; user: User }[];
-                };
-
-                set((state) => {
-                    const profiles = { ...state.profiles };
-
-                    data.profiles.forEach((p) => {
-                        profiles[p.user.id] = p;
-                    });
-
-                    return {
-                        ...state,
-                        profiles,
-                        friends: data.profiles.map((p) => p.user.id),
-                    };
-                });
-
-                setCached("friends_profiles");
-                return res;
-            });
-        },
-
-        getFriendRequests: async (
-            id: string,
-            caching: boolean = true,
-            promiseKey: string = "friend_requests",
-        ) => {
-            const { setPromise, setCached, cached } = get();
-
-            if (caching === true && cached?.friend_requests !== undefined) return;
-
-            return await setPromise(promiseKey, async () => {
-                const res = await refreshedRequest(`/api/friend-requests/${id}`, "GET");
-                const data = res.data.requests as {
-                    id: string;
-                    from_id: string;
-                    to_id: string;
-                }[];
-
-                set((state) => {
-                    const friendRequests: { incoming: string[]; outcoming: string[] } = {
-                        incoming: [],
-                        outcoming: [],
-                    };
-
-                    data.forEach((request) => {
-                        if (request.to_id === id) {
-                            // incoming
-                            friendRequests.incoming.push(request.from_id);
-                        } else {
-                            // outcoming
-                            friendRequests.outcoming.push(request.to_id);
+            // request
+            return await setPromise(
+                options.promiseKey ?? "getUsers",
+                async () => {
+                    const res = await refreshedRequest(
+                        "/api/users/",
+                        "GET",
+                        undefined,
+                        {
+                            params: {
+                                id: [...ids].join(",") || undefined,
+                                username: [...usernames].join(",") || undefined,
+                                type:
+                                    (options.select ?? ["user"])?.join(",") ||
+                                    undefined,
+                            },
                         }
-                    });
+                    );
 
-                    return { ...state, friendRequests };
-                });
+                    const data = res.data.users as ResponseUsers[];
 
-                setCached("friend_requests");
-                return res;
-            });
-        },
-
-        getAllProfiles: async (caching: boolean = true) => {
-            const { setPromise, cached, setCached } = get();
-
-            if (caching === true && cached?.profiles !== undefined) return;
-
-            return await setPromise("profiles", async () => {
-                const res = await refreshedRequest("/api/profiles/", "GET");
-                const data = res.data as {
-                    profiles: { profile: Profile; user: User }[];
-                };
-
-                set((state) => {
-                    const profiles = { ...state.profiles };
-
-                    data.profiles.forEach((p) => {
-                        profiles[p.user.id] = p;
-                    });
-
-                    return { ...state, profiles };
-                });
-
-                setCached("profiles");
-                return res;
-            });
-        },
-
-        sendFriendRequest: async (from_id: string, to_id: string) => {
-            const { setPromise } = get();
-
-            return await setPromise("friend_request", async () => {
-                try {
-                    const res = await refreshedRequest("/api/friend-request/", "POST", {
-                        from_id,
-                        to_id,
-                    });
-                    const responseStatus = res.data.type as APIResponseType;
-
-                    switch (responseStatus) {
-                        case "friend_request_accepted":
-                            set((state) => {
-                                return {
-                                    ...state,
-                                    friendRequests: state.friendRequests
-                                        ? {
-                                              incoming: state.friendRequests.incoming.filter(
-                                                  (id) => id !== from_id && id !== to_id,
-                                              ),
-                                              outcoming: state.friendRequests.incoming.filter(
-                                                  (id) => id !== from_id && id !== to_id,
-                                              ),
-                                          }
-                                        : undefined,
-                                    friends: [...(state.friends ?? []), to_id],
-                                };
-                            });
-                            break;
-                        case "friend_request_sent":
-                            set((state) => {
-                                return {
-                                    ...state,
-                                    friendRequests: {
-                                        outcoming: [
-                                            ...(state.friendRequests?.outcoming ?? []),
-                                            to_id,
-                                        ],
-                                        incoming: state.friendRequests?.incoming ?? [],
-                                    },
-                                };
-                            });
-                            break;
+                    if (!data) {
+                        return;
                     }
 
-                    return res;
-                } catch (e) {
-                    throw e;
+                    set((state) => {
+                        const friends = { ...state.friends };
+                        const profiles = { ...state.profiles };
+                        const users = { ...state.users };
+                        const friendRequests = { ...state.friendRequests };
+                        const colors = { ...state.colors };
+
+                        data.forEach((user) => {
+                            if (user.friends) {
+                                friends[user.id] = new Set([
+                                    ...(friends[user.id] ?? []),
+                                    ...(user.friends ?? []),
+                                ]);
+                            }
+
+                            if (user.colors) {
+                                colors[user.id] = user.colors;
+                            }
+
+                            if (user.profile) {
+                                profiles[user.id] = user.profile;
+                            }
+
+                            if (user.incoming || user.outcoming) {
+                                friendRequests[user.id] = {
+                                    incoming: new Set([
+                                        ...(friendRequests[user.id]?.incoming ??
+                                            []),
+                                        ...(user.incoming ?? []),
+                                    ]),
+                                    outcoming: new Set([
+                                        ...(friendRequests[user.id]
+                                            ?.outcoming ?? []),
+                                        ...(user.outcoming ?? []),
+                                    ]),
+                                };
+                            }
+
+                            users[user.id] = {
+                                id: user.id,
+                                role: user.role,
+                                username: user.username,
+                                created_at: user.created_at,
+                                last_seen_at: user.last_seen_at,
+                            };
+                        });
+
+                        return {
+                            ...state,
+                            friends,
+                            profiles,
+                            colors,
+                            users,
+                            friendRequests,
+                        };
+                    });
+
+                    return data.map(
+                        ({
+                            id,
+                            role,
+                            username,
+                            colors,
+                            friends,
+                            created_at,
+                            incoming,
+                            outcoming,
+                            last_seen_at,
+                            profile,
+                        }) => ({
+                            id,
+                            role,
+                            username,
+                            colors,
+                            created_at,
+                            last_seen_at,
+                            profile,
+                            friends: new Set([...(friends ?? [])]),
+                            incoming: new Set([...(incoming ?? [])]),
+                            outcoming: new Set([...(outcoming ?? [])]),
+                        })
+                    );
                 }
-            });
+            );
         },
 
-        deleteFriendRequest: async (user1_id: string, user2_id: string) => {
+        updateUser: async (options) => {
             const { setPromise } = get();
 
-            return await setPromise("delete_friend_request", async () => {
-                const res = await refreshedRequest("/api/friend-request-reject/", "POST", {
-                    user1_id,
-                    user2_id,
-                });
-
-                set((state) => {
-                    if (!state.friendRequests) return state;
-
-                    const friendRequests = { ...state.friendRequests };
-                    friendRequests.incoming = friendRequests.incoming.filter(
-                        (id) => id !== user1_id && id !== user2_id,
-                    );
-                    friendRequests.outcoming = friendRequests.outcoming.filter(
-                        (id) => id !== user1_id && id !== user2_id,
-                    );
-
-                    return { ...state, friendRequests };
-                });
-
-                return res;
-            });
-        },
-
-        unfriend: async (user1_id: string, user2_id: string) => {
-            const { setPromise } = get();
-
-            return await setPromise("unfriend", async () => {
-                const res = await refreshedRequest("/api/unfriend/", "POST", {
-                    user1_id,
-                    user2_id,
-                });
-
-                set((state) => ({
-                    ...state,
-                    friends: state.friends?.filter((f) => f !== user1_id && f !== user2_id),
-                }));
-
-                return res;
-            });
-        },
-
-        unfriendEveryone: async (id: string) => {
-            const { setPromise } = get();
-
-            return await setPromise("unfriend_everyone", async () => {
-                const res = await refreshedRequest("/api/unfriend-all/", "POST", { id });
-
-                set((state) => ({
-                    ...state,
-                    friends: undefined,
-                }));
-
-                return res;
-            });
-        },
-
-        getProfiles: async (
-            ids: string[],
-            caching: boolean = true,
-            promiseKey: string = "profiles",
-        ) => {
-            const { setPromise, profiles } = get();
-
-            let fetchIds: string[] = ids;
-
-            if (caching) {
-                if (profiles === undefined) return;
-
-                fetchIds = fetchIds.filter((id) => profiles[id] === undefined);
-                if (fetchIds.length === 0) return;
-            }
-
-            return await setPromise(promiseKey, async () => {
-                const res = await refreshedRequest("/api/profiles-select/", "POST", {
-                    ids: fetchIds,
-                });
-
-                const data = res.data as {
-                    profiles: { profile: Profile; user: User }[];
-                };
-
+            await setPromise(options.promiseKey ?? "updateUser", async () => {
                 set((state) => {
                     const profiles = { ...state.profiles };
-
-                    data.profiles.forEach((p) => {
-                        profiles[p.user.id] = p;
-                    });
-
-                    return {
-                        ...state,
-                        profiles,
-                    };
-                });
-
-                return res;
-            });
-        },
-
-        getColors: async (id: string, caching: boolean = true) => {
-            const { setPromise, colors } = get();
-
-            if (caching === true && colors?.[id]) {
-                return;
-            }
-
-            return await setPromise("colors", async () => {
-                const res = await refreshedRequest(`/api/colors/${id}`, "GET");
-                const data = res.data as { colors: Color[] };
-
-                set((state) => {
-                    const colors = { ...(state.colors ?? {}) };
-                    data.colors.forEach(({ slot, color }) => {
-                        colors[id] ??= {};
-                        colors[id][slot] = color;
-                    });
-
-                    return { ...state, colors };
-                });
-
-                return res;
-            });
-        },
-
-        setColors: async (id: string, data: { slot: number; color: string }[]) => {
-            const { setPromise } = get();
-
-            if (data.length === 0) {
-                return;
-            }
-
-            return await setPromise("set_colors", async () => {
-                const res = await refreshedRequest("/api/colors-save/", "POST", {
-                    id,
-                    data,
-                });
-
-                set((state) => {
                     const colors = { ...state.colors };
+                    const users = { ...state.users };
 
-                    data.forEach(({ slot, color }) => {
-                        colors[slot] = color;
-                    });
+                    if (!profiles[options.id]) {
+                        return state;
+                    }
 
-                    return { ...state, colors };
+                    if (options.data.colors) {
+                        colors[options.id] = options.data.colors;
+                    }
+
+                    if ("color" in options.data) {
+                        profiles[options.id].color = options.data.color;
+                    }
+
+                    if ("name" in options.data) {
+                        profiles[options.id].name = options.data.name ?? "";
+                    }
+
+                    if ("status" in options.data) {
+                        profiles[options.id].status = options.data.status ?? "";
+                    }
+
+                    if ("bio" in options.data) {
+                        profiles[options.id].bio = options.data.bio ?? "";
+                    }
+
+                    if ("title" in options.data) {
+                        profiles[options.id].title = options.data.title ?? "";
+                    }
+
+                    if ("role" in options.data) {
+                        users[options.id].role = options.data.role ?? "user";
+                    }
+
+                    return { ...state, profiles, colors };
                 });
 
-                return res;
+                return await refreshedRequest("/api/user-update", "POST", {
+                    user_id: options.id,
+                    ...options.data,
+                });
             });
         },
 
-        changeRole: async (id: string, role: string) => {
+        modifyFriendship: async (options) => {
             const { setPromise } = get();
 
-            return await setPromise("role_change", async() => {
-                return await refreshedRequest("/api/role-change", "POST", { id, role });
-            }); 
-        }
+            return await setPromise(
+                options.promiseKey ?? "modifyFriendship",
+                async () => {
+                    try {
+                        const res = await refreshedRequest(
+                            "/api/friend/",
+                            "POST",
+                            {
+                                from_id: options.from_id,
+                                to_id: options.to_id,
+                                type: options.type ?? "request-send",
+                            }
+                        );
+
+                        switch (res.data.type as APIResponseType) {
+                            case "friend_request_accepted": {
+                                set((state) => {
+                                    if (!options.to_id) {
+                                        return state;
+                                    }
+
+                                    const friendRequests = {
+                                        ...state.friendRequests,
+                                    };
+                                    const friends = { ...state.friends };
+
+                                    friendRequests[
+                                        options.from_id
+                                    ]?.incoming?.delete(options.to_id);
+                                    friendRequests[
+                                        options.to_id
+                                    ]?.incoming?.delete(options.from_id);
+                                    friendRequests[
+                                        options.from_id
+                                    ]?.outcoming?.delete(options.to_id);
+                                    friendRequests[
+                                        options.to_id
+                                    ]?.outcoming?.delete(options.from_id);
+
+                                    friends[options.from_id] = new Set([
+                                        ...(friends[options.from_id] ?? []),
+                                        options.to_id,
+                                    ]);
+                                    friends[options.to_id] = new Set([
+                                        ...(friends[options.to_id] ?? []),
+                                        options.from_id,
+                                    ]);
+
+                                    return {
+                                        ...state,
+                                        friendRequests,
+                                        friends,
+                                    };
+                                });
+                                break;
+                            }
+                            case "friend_request_sent": {
+                                set((state) => {
+                                    if (!options.to_id) {
+                                        return state;
+                                    }
+
+                                    const friendRequests = {
+                                        ...state.friendRequests,
+                                    };
+
+                                    friendRequests[options.from_id] = {
+                                        outcoming: new Set([
+                                            ...(friendRequests[options.from_id]
+                                                ?.outcoming ?? []),
+                                            options.to_id,
+                                        ]),
+                                        incoming: new Set([
+                                            ...(friendRequests[options.from_id]
+                                                ?.incoming ?? []),
+                                        ]),
+                                    };
+
+                                    friendRequests[options.to_id] = {
+                                        outcoming: new Set([
+                                            ...(friendRequests[options.to_id]
+                                                ?.outcoming ?? []),
+                                        ]),
+                                        incoming: new Set([
+                                            ...(friendRequests[options.to_id]
+                                                ?.incoming ?? []),
+                                            options.from_id,
+                                        ]),
+                                    };
+
+                                    return { ...state, friendRequests };
+                                });
+                                break;
+                            }
+                            case "friend_request_rejected": {
+                                set((state) => {
+                                    if (!options.to_id) {
+                                        return state;
+                                    }
+
+                                    const friendRequests = {
+                                        ...state.friendRequests,
+                                    };
+
+                                    friendRequests[
+                                        options.from_id
+                                    ]?.incoming?.delete(options.to_id);
+                                    friendRequests[
+                                        options.to_id
+                                    ]?.incoming?.delete(options.from_id);
+                                    friendRequests[
+                                        options.from_id
+                                    ]?.outcoming?.delete(options.to_id);
+                                    friendRequests[
+                                        options.to_id
+                                    ]?.outcoming?.delete(options.from_id);
+
+                                    return { ...state, friendRequests };
+                                });
+                                break;
+                            }
+                            case "unfriended": {
+                                set((state) => {
+                                    if (!options.to_id) {
+                                        return state;
+                                    }
+
+                                    const friends = { ...state.friends };
+                                    const fromFriends = new Set(
+                                        friends[options.from_id]
+                                    );
+                                    fromFriends.delete(options.to_id);
+                                    friends[options.from_id] = fromFriends;
+
+                                    const toFriends = new Set(
+                                        friends[options.to_id]
+                                    );
+                                    toFriends.delete(options.from_id);
+                                    friends[options.to_id] = toFriends;
+
+                                    return { ...state, friends };
+                                });
+                                break;
+                            }
+                            case "all_unfriended": {
+                                set((state) => {
+                                    const friends = { ...state.friends };
+                                    delete friends[options.from_id];
+
+                                    return { ...state, friends };
+                                });
+                                break;
+                            }
+                        }
+                    } catch (e) {
+                        throw e;
+                    }
+                }
+            );
+        },
+
+        // deleteFriendRequest: async (user1_id: string, user2_id: string) => {
+        //     const { setPromise } = get();
+
+        //     return await setPromise("delete_friend_request", async () => {
+        //         const res = await refreshedRequest(
+        //             "/api/friend-request-reject/",
+        //             "POST",
+        //             {
+        //                 user1_id,
+        //                 user2_id,
+        //             }
+        //         );
+
+        //         set((state) => {
+        //             if (!state.friendRequests) return state;
+
+        //             const friendRequests = { ...state.friendRequests };
+        //             friendRequests.incoming = friendRequests.incoming.filter(
+        //                 (id) => id !== user1_id && id !== user2_id
+        //             );
+        //             friendRequests.outcoming = friendRequests.outcoming.filter(
+        //                 (id) => id !== user1_id && id !== user2_id
+        //             );
+
+        //             return { ...state, friendRequests };
+        //         });
+
+        //         return res;
+        //     });
+        // },
+
+        // unfriend: async (user1_id: string, user2_id: string) => {
+        //     const { setPromise } = get();
+
+        //     return await setPromise("unfriend", async () => {
+        //         const res = await refreshedRequest("/api/unfriend/", "POST", {
+        //             user1_id,
+        //             user2_id,
+        //         });
+
+        //         set((state) => ({
+        //             ...state,
+        //             friends: state.friends?.filter(
+        //                 (f) => f !== user1_id && f !== user2_id
+        //             ),
+        //         }));
+
+        //         return res;
+        //     });
+        // },
+
+        // unfriendEveryone: async (id: string) => {
+        //     const { setPromise } = get();
+
+        //     return await setPromise("unfriend_everyone", async () => {
+        //         const res = await refreshedRequest(
+        //             "/api/unfriend-all/",
+        //             "POST",
+        //             { id }
+        //         );
+
+        //         set((state) => ({
+        //             ...state,
+        //             friends: undefined,
+        //         }));
+
+        //         return res;
+        //     });
+        // },
+
+        // setColors: async (
+        //     id: string,
+        //     data: { slot: number; color: string }[]
+        // ) => {
+        //     const { setPromise } = get();
+
+        //     if (data.length === 0) {
+        //         return;
+        //     }
+
+        //     return await setPromise("set_colors", async () => {
+        //         const res = await refreshedRequest(
+        //             "/api/colors-save/",
+        //             "POST",
+        //             {
+        //                 id,
+        //                 data,
+        //             }
+        //         );
+
+        //         set((state) => {
+        //             const colors = { ...state.colors };
+
+        //             data.forEach(({ slot, color }) => {
+        //                 colors[slot] = color;
+        //             });
+
+        //             return { ...state, colors };
+        //         });
+
+        //         return res;
+        //     });
+        // },
+
+        // changeRole: async (id: string, role: string) => {
+        //     const { setPromise } = get();
+
+        //     return await setPromise("role_change", async () => {
+        //         return await refreshedRequest("/api/role-change", "POST", {
+        //             id,
+        //             role,
+        //         });
+        //     });
+        // },
     };
 };

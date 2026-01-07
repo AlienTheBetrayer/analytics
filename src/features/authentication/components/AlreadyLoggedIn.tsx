@@ -1,9 +1,10 @@
 import Image from "next/image";
 import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
-import { promiseStatus } from "@/utils/status";
+import { promiseStatus } from "@/utils/other/status";
 import { useAppStore } from "@/zustand/store";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
+import { useLocalStore } from "@/zustand/localStore";
 
 export const AlreadyLoggedIn = () => {
     // zustand state
@@ -11,6 +12,7 @@ export const AlreadyLoggedIn = () => {
 
     // zustand functions
     const logout = useAppStore((state) => state.logout);
+    const setVisibleProfile = useLocalStore((state) => state.setVisibleProfile);
 
     return (
         <>
@@ -51,7 +53,10 @@ export const AlreadyLoggedIn = () => {
                             </LinkButton>
                         </Tooltip>
 
-                        <Tooltip className="w-full" text="Analytics dashboard">
+                        <Tooltip
+                            className="w-full"
+                            text="Analytics dashboard"
+                        >
                             <LinkButton href="/dashboard">
                                 <Image
                                     alt=""
@@ -75,11 +80,15 @@ export const AlreadyLoggedIn = () => {
                             authentication form again
                         </span>
 
-                        <Tooltip className="w-full" text="Exit">
+                        <Tooltip
+                            className="w-full"
+                            text="Exit"
+                        >
                             <Button
                                 className="w-full"
                                 onClick={() => {
                                     logout();
+                                    setVisibleProfile(undefined);
                                 }}
                             >
                                 {promiseStatus(promises.logout)}

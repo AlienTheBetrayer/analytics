@@ -2,16 +2,14 @@ import { useCallback, useEffect, useState } from "react";
 import { useAppStore } from "@/zustand/store";
 import { COLORS_GRID_SIZE } from "../components/modals/Colors";
 import { generateColorPalette } from "../utils/generateColorPalette";
-import { Profile } from "@/types/api/database/profiles";
-import { User } from "@/types/api/database/user";
+import { Profile, User } from "@/types/tables/account";
 
 export const useColorModal = (data: { profile: Profile; user: User }) => {
     // zustand state
-    const zustandColors = useAppStore((state) => state.colors);
+    const stateColors = useAppStore((state) => state.colors);
 
     // zustand methods
-    const zustandSetColors = useAppStore((state) => state.setColors);
-    const setProfileData = useAppStore((state) => state.setProfileData);
+    const updateUser = useAppStore((state) => state.updateUser);
 
     // internal states
     const [colors, setColors] = useState<string[]>(
@@ -23,20 +21,18 @@ export const useColorModal = (data: { profile: Profile; user: User }) => {
 
     // assigning colors to ours
     useEffect(() => {
-        if (zustandColors?.[data.user.id]) {
+        if (stateColors[data.user.id]?.length) {
             requestAnimationFrame(() => {
                 setColors(() => {
                     const colors = [];
-                    for (const [slot, color] of Object.entries(
-                        zustandColors[data.user.id]
-                    )) {
+                    for (const { slot, color } of stateColors[data.user.id]) {
                         colors[Number(slot)] = color;
                     }
                     return colors;
                 });
             });
         }
-    }, [zustandColors, data.user]);
+    }, [stateColors, data.user]);
 
     // states
     const [selectedId, setSelectedId] = useState<number | undefined>();
@@ -75,12 +71,17 @@ export const useColorModal = (data: { profile: Profile; user: User }) => {
             color,
         }));
 
-        zustandSetColors(data.user.id, colorsData);
-
         if (selectedId) {
-            setProfileData(data.user.id, { color: colors[selectedId] });
+            updateUser({
+                id: data.user.id,
+                data: {
+                    color: colors[selectedId],
+                    colors: colorsData,
+                },
+                promiseKey: "colorsUpdate",
+            });
         }
-    }, [colors, data.user, zustandSetColors, setProfileData, selectedId]);
+    }, [colors, data.user, updateUser, selectedId]);
 
     const randomSelect = useCallback(() => {
         let rand = Math.floor(
