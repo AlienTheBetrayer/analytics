@@ -4,22 +4,39 @@ import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
 import { Event } from "@/types/tables/project";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
+import { useMemo } from "react";
 
 type Props = {
     data: { events: Event[] };
 };
 
 export const EventFilter = ({ data }: Props) => {
-    // state-derived
-    const eventTypes = [
-        ...new Set(data.events.map((e) => e.type).filter(Boolean) as string[]),
-    ];
-
     // zustand-state
     const eventFilters = useAppStore((state) => state.eventFilters);
 
     // zustand functions
     const setEventFilters = useAppStore((state) => state.setEventFilters);
+
+    // state-derived
+    const eventTypes = useMemo(
+        () => [
+            ...new Set(
+                data.events.map((e) => e.type).filter(Boolean) as string[]
+            ),
+        ],
+        [data]
+    );
+
+    // ui states
+    const hasFiltered = useMemo(() => {
+        for (const filter of Object.keys(eventFilters)) {
+            if (eventTypes.includes(filter)) {
+                return true;
+            }
+        }
+
+        return false;
+    }, [eventTypes, eventFilters]);
 
     return (
         <div className="box p-0!">
@@ -109,6 +126,13 @@ export const EventFilter = ({ data }: Props) => {
                             src="/filter.svg"
                             width={16}
                             height={16}
+                        />
+
+                        <div
+                            className="absolute right-1 top-1 rounded-full w-1 h-1"
+                            style={{
+                                background: hasFiltered ? "var(--blue-1)" : "transparent"
+                            }}
                         />
                     </Button>
                 </Tooltip>
