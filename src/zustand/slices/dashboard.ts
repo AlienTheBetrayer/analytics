@@ -2,41 +2,57 @@ import type { DashboardStore } from "@/types/zustand/dashboard";
 import type { SliceFunction } from "@/types/zustand/utils/sliceFunction";
 
 export const DashboardSlice: SliceFunction<DashboardStore> = (set, get) => {
-	return {
-		selectProject: (idx: string | undefined) => {
-			const { selectedProjectId } = get();
-			if (selectedProjectId === idx) {
-				return;
-			}
+    return {
+        notifications: [],
+        eventFilters: {},
 
-			set((state) => ({ ...state, selectedProjectId: idx }));
-		},
+        selectProject: (idx: string | undefined) => {
+            const { selectedProjectId } = get();
+            if (selectedProjectId === idx) {
+                return;
+            }
 
-		deselectProject: () => {
-			const { selectedProjectId } = get();
-			if (selectedProjectId === undefined) {
-				return;
-			}
+            set((state) => ({ ...state, selectedProjectId: idx }));
+        },
 
-			set((state) => ({ ...state, selectedProjectId: undefined }));
-		},
+        deselectProject: () => {
+            const { selectedProjectId } = get();
+            if (selectedProjectId === undefined) {
+                return;
+            }
 
-		// notifications
-		notifications: [],
+            set((state) => ({ ...state, selectedProjectId: undefined }));
+        },
 
-		setNotifications: (notifications) => {
-			set((state) => ({ ...state, notifications }));
-		},
+        setEventFilters: (options) => {
+            set((state) => {
+                if (!options.events.length) {
+                    return state;
+                }
 
-		pushNotification: (notification) => {
-			set((state) => ({
-				...state,
-				notifications: [...state.notifications, notification],
-			}));
-		},
+                const eventFilters = { ...state.eventFilters };
 
-		clearNotifications: () => {
-			set((state) => ({ ...state, notifications: [] }));
-		},
-	};
+                for (const event of options.events) {
+                    eventFilters[event] = options.flag;
+                }
+
+                return { ...state, eventFilters };
+            });
+        },
+
+        setNotifications: (notifications) => {
+            set((state) => ({ ...state, notifications }));
+        },
+
+        pushNotification: (notification) => {
+            set((state) => ({
+                ...state,
+                notifications: [...state.notifications, notification],
+            }));
+        },
+
+        clearNotifications: () => {
+            set((state) => ({ ...state, notifications: [] }));
+        },
+    };
 };

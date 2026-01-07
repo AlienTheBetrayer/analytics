@@ -1,6 +1,7 @@
 "use client";
 import { Event } from "@/types/tables/project";
 import { DashboardEvent } from "./DashboardEvent";
+import { useAppStore } from "@/zustand/store";
 
 type Props = {
     events?: Event[];
@@ -8,6 +9,9 @@ type Props = {
 };
 
 export const DashboardEventList = ({ events, scrollRef }: Props) => {
+    // zustand state
+    const eventFilters = useAppStore(state => state.eventFilters);
+
     return (
         <ul
             ref={scrollRef}
@@ -18,6 +22,7 @@ export const DashboardEventList = ({ events, scrollRef }: Props) => {
         >
             {events &&
                 [...events].reverse().map((event) => (
+                    event.type && eventFilters[event.type] !== false &&
                     <DashboardEvent
                         event={event}
                         key={event.id}

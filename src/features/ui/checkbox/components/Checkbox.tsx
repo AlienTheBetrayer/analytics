@@ -4,9 +4,9 @@ import type { ComponentPropsWithoutRef } from "react";
 import { useCheckbox } from "../hooks/useCheckbox";
 
 type Props = {
-	onToggle?: () => void;
+	onToggle?: (flag: boolean) => void;
 	value?: boolean;
-} & Omit<Omit<ComponentPropsWithoutRef<"button">, "onChange">, "value">;
+} & Omit<Omit<ComponentPropsWithoutRef<"button">, "onToggle">, "value">;
 
 export const Checkbox = ({ children, value, onToggle, ...rest }: Props) => {
 	// controller

@@ -37,7 +37,6 @@ const LoginPage = () => {
                         onSubmit={async (username, password) => {
                             const data = await login(username, password);
 
-                            console.log(data);
                             if (data?.user) {
                                 setVisibleProfile({
                                     username: data.user.username,

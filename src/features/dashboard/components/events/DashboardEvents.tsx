@@ -4,6 +4,7 @@ import { useScroll } from "@/hooks/useScroll";
 import { useAppStore } from "@/zustand/store";
 import { DashboardEventList } from "./DashboardEventList";
 import { DashboardScrollTop } from "./DashboardScrollTop";
+import { EventFilter } from "./EventFilter";
 
 export const DashboardEvents = () => {
     // zustand
@@ -53,6 +54,9 @@ export const DashboardEvents = () => {
     return (
         <div className="flex flex-col gap-4 h-64 max-h-64 relative">
             <hr className="block! lg:hidden!" />
+
+            <EventFilter data={data} />
+
             <DashboardEventList
                 events={data.events}
                 scrollRef={scroll.ref}

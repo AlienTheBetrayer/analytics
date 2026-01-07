@@ -66,7 +66,7 @@ export const DashboardProject = ({ id }: Props) => {
                             <span>{data.project.name}</span>
                         </div>
 
-                        <div className="flex sm:flex-col justify-between w-full h-full items-end">
+                        <div className="flex sm:flex-col flex-wrap justify-between w-full h-full items-end ">
                             <span>
                                 created {relativeTime(data.project.created_at)}
                             </span>
@@ -76,7 +76,7 @@ export const DashboardProject = ({ id }: Props) => {
                             </span>
                         </div>
 
-                        <div className="absolute left-1/2 top-2/3 sm:top-1/2 -translate-x-1/2 -translate-y-1/2 flex gap-8">
+                        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex gap-8">
                             <span className="text-3!">
                                 <small>{data.events?.length}</small>
                                 <small className="text-6!">events</small>

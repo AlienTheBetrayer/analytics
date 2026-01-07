@@ -81,7 +81,6 @@ export const AuthenticationForm = ({
 
                     if (e.currentTarget.checkValidity()) {
                         const res = await onSubmit(username, password);
-                        console.log(res);
                         setResponse(res);
                     }
                 }}

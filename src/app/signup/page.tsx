@@ -33,7 +33,6 @@ const RegisterPage = () => {
                         }}
                         onSubmit={async (username, password) => {
                             const data = await register(username, password);
-                            console.log(data);
                             return data;
                         }}
                     />

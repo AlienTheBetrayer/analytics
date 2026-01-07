@@ -1,1 +1,9 @@
-export type TooltipDirection = "top" | "bottom" | "left" | "right";
+export type TooltipDirection =
+    | "top"
+    | "bottom"
+    | "left"
+    | "right"
+    | "bottom-right"
+    | "bottom-left"
+    | "top-right"
+    | "top-left";

@@ -62,6 +62,26 @@ export const positionTooltip = (
                 tooltipBounds.height / 2;
             break;
         }
+        case "bottom-right": {
+            left = elementBounds.right + window.scrollX;
+            top = elementBounds.top + window.scrollY - 4;
+            break;
+        }
+        case "bottom-left": {
+            left = elementBounds.left + window.scrollX - tooltipBounds.width;
+            top = elementBounds.top + window.scrollY - 4;
+            break;
+        }
+        case "top-right": {
+            left = elementBounds.right + window.scrollX;
+            top = elementBounds.top + window.scrollY + 4 - tooltipBounds.height + elementBounds.height;
+            break;
+        }
+        case "top-left": {
+            left = elementBounds.left + window.scrollX - tooltipBounds.width;
+            top = elementBounds.top + window.scrollY + 4 - tooltipBounds.height + elementBounds.height;
+            break;
+        }
     }
 
     // setting the initial positions
@@ -71,14 +91,14 @@ export const positionTooltip = (
     // // window boundary overflow check
     let dx = 0;
     if (left < scrollX) {
-        dx = scrollX -left + 2;
+        dx = scrollX - left + 2;
     } else if (left + tooltipBounds.width > scrollX + window.innerWidth) {
         dx = scrollX + window.innerWidth - left - tooltipBounds.width - 4;
     }
 
     let dy = 0;
     if (top < scrollY) {
-        dy = scrollY -top + 2;
+        dy = scrollY - top + 2;
     } else if (top + tooltipBounds.height > scrollY + window.innerHeight) {
         dy = scrollY + window.innerHeight - top - tooltipBounds.height - 2;
     }

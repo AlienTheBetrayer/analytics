@@ -67,6 +67,7 @@ export const Tooltip = ({
             positionTooltip(tooltipRef, elementRef, direction);
             requestAnimationFrame(() => {
                 hasPositioned.current = true;
+                tooltipRef.current?.focus({ preventScroll: true });
             });
             setTimeout(() => {
                 positionTooltip(tooltipRef, elementRef, direction);
@@ -84,40 +85,25 @@ export const Tooltip = ({
             return;
         }
 
-        const handle = (e: PointerEvent) => {
+        const handle = (e: PointerEvent | FocusEvent) => {
+            const target = e.target as Node;
+
             if (
-                !tooltipRef.current ||
-                !elementRef.current ||
-                !isShown ||
-                !hasPositioned.current
+                tooltipRef.current?.contains(target) ||
+                elementRef.current?.contains(target)
             ) {
                 return;
             }
 
-            const x = e.clientX;
-            const y = e.clientY;
-
-            const tooltipBounds = tooltipRef.current.getBoundingClientRect();
-            const tooltipContains =
-                x > tooltipBounds.left &&
-                x < tooltipBounds.right &&
-                y > tooltipBounds.top &&
-                y < tooltipBounds.bottom;
-
-            const elementBounds = elementRef.current.getBoundingClientRect();
-            const elementContains =
-                x > elementBounds.left &&
-                x < elementBounds.right &&
-                y > elementBounds.top &&
-                y < elementBounds.bottom;
-
-            if (!tooltipContains && !elementContains) {
-                setIsShown(false);
-            }
+            setIsShown(false);
         };
 
         window.addEventListener("pointerdown", handle);
-        return () => window.removeEventListener("pointerdown", handle);
+        window.addEventListener("focusin", handle);
+        return () => {
+            window.removeEventListener("pointerdown", handle);
+            window.removeEventListener("focusin", handle);
+        };
     }, [isShown]);
 
     // hotkeys
@@ -157,11 +143,6 @@ export const Tooltip = ({
                         setIsShown(true);
                     }
                 }}
-                onBlur={(e) => {
-                    if (!tooltipRef.current?.contains(e.relatedTarget)) {
-                        setIsShown(false);
-                    }
-                }}
                 onKeyDown={(e) => {
                     if (
                         !disabledPointer &&
@@ -179,7 +160,7 @@ export const Tooltip = ({
                         setIsShown(true);
                     }
                 }}
-                onPointerDown={() => {
+                onPointerUp={() => {
                     if (type === "modal") {
                         setIsShown((prev) => !prev);
                     }

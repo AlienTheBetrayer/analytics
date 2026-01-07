@@ -105,7 +105,11 @@ export const DataSlice: SliceFunction<DataStore> = (set, get) => {
         },
 
         sync: async (options) => {
-            const { setPromise } = get();
+            const { setPromise, projects } = get();
+
+            if((options?.caching ?? true) && Object.values(projects).length) {
+                return;
+            }
 
             return await setPromise(
                 options?.promiseKey ?? "sync",
@@ -144,7 +148,6 @@ export const DataSlice: SliceFunction<DataStore> = (set, get) => {
 
         emulateEvent: async (options) => {
             const { setPromise } = get();
-            console.log(options);
             return await setPromise(
                 options.promiseKey ?? "emulateEvent",
                 async () => {

@@ -60,7 +60,7 @@ export const Topline = () => {
                 >
                     <Button
                         onClick={() => {
-                            sync();
+                            sync({ caching: false });
                         }}
                     >
                         {promiseStatus(promises.sync)}

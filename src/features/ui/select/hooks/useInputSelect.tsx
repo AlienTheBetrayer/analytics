@@ -6,11 +6,13 @@ import { createPortal } from "react-dom";
 export const useInputSelect = (
     items: string[],
     value: string | undefined,
-    onChange?: (item: string) => void,
+    onChange?: (item: string) => void
 ) => {
     // states
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
-    const [selectedItem, setSelectedItem] = useState<string>(items.length > 0 ? items[0] : "");
+    const [selectedItem, setSelectedItem] = useState<string>(
+        items.length > 0 ? items[0] : ""
+    );
 
     // derived from state
     const inputValue = (value as string | undefined) ?? selectedItem;
@@ -23,7 +25,9 @@ export const useInputSelect = (
     // biome-ignore lint/correctness/useExhaustiveDependencies: <recalculate on expand open>
     useEffect(() => {
         const handle = () => {
-            if (!(inputRef.current && expandRef.current)) return;
+            if (!(inputRef.current && expandRef.current)) {
+                return;
+            }
 
             const inputBounds = inputRef.current.getBoundingClientRect();
 
@@ -54,18 +58,25 @@ export const useInputSelect = (
 
     // click away
     useEffect(() => {
-        const handle = (e: PointerEvent) => {
-            if (!(inputRef.current && expandRef.current)) return;
+        const handle = (e: PointerEvent | FocusEvent) => {
+            const target = e.target as Node;
 
-            const el = e.target as HTMLElement;
-
-            if (!(inputRef.current.contains(el) || expandRef.current.contains(el))) {
-                setIsExpanded(false);
+            if (
+                inputRef.current?.contains(target) ||
+                expandRef.current?.contains(target)
+            ) {
+                return;
             }
+
+            setIsExpanded(false);
         };
 
         window.addEventListener("pointerdown", handle);
-        return () => window.removeEventListener("pointerdown", handle);
+        window.addEventListener("focusin", handle);
+        return () => {
+            window.removeEventListener("pointerdown", handle);
+            window.removeEventListener("focusin", handle);
+        };
     }, []);
 
     const render = useCallback(() => {
@@ -73,21 +84,26 @@ export const useInputSelect = (
             <AnimatePresence>
                 {isExpanded && (
                     <motion.ul
-                        className="absolute flex flex-col-reverse z-1001 overflow-hidden rounded-xl border-2 border-background-5"
+                        className="absolute flex flex-col z-1001 overflow-hidden rounded-xl border-2 border-background-5"
                         ref={expandRef}
                         initial={{ height: "0px" }}
                         animate={{ height: "auto" }}
                         exit={{ height: "0px" }}
-                        transition={{ type: "spring", stiffness: 200, damping: 30 }}
+                        transition={{
+                            type: "spring",
+                            stiffness: 200,
+                            damping: 30,
+                        }}
                     >
                         {items.map((item) => (
-                            <li key={item} className="w-full">
+                            <li key={item}>
                                 <button
                                     type="button"
-                                    className={`flex w-full items-center bg-linear-to-bl 
-            from-background-a-2 to-background-a-1 backdrop-blur-xl p-2  focus:border-blue-1 
-             hover:brightness-125 transition-colors duration-300 ease-out cursor-pointer ${item === inputValue ? "brightness-200" : ""}`}
-                                    onClick={() => {
+                                    className={`flex items-center  w-full
+            bg-background-a-2 backdrop-blur-xl p-2 focus:border-blue-1 
+             hover:bg-background-a-9 active:bg-background-a-11 active:text-foreground-1! transition-colors duration-300 ease-out cursor-pointer ${item === inputValue ? "brightness-200" : ""}`}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
                                         if (value) {
                                             onChange?.(item);
                                         } else {
@@ -96,7 +112,10 @@ export const useInputSelect = (
                                         setIsExpanded(false);
                                     }}
                                 >
-                                    {item}
+                                    <span className="whitespace-nowrap text-ellipsis">
+                                        {item}
+                                    </span>
+
                                     {item === inputValue && (
                                         <Image
                                             src="/checkmark.svg"
@@ -112,7 +131,7 @@ export const useInputSelect = (
                     </motion.ul>
                 )}
             </AnimatePresence>,
-            document.body,
+            document.body
         );
     }, [items, isExpanded, onChange, value, inputValue]);
 
@@ -126,7 +145,8 @@ export const useInputSelect = (
 
             switch (e.code) {
                 case "ArrowUp": {
-                    const item = items[id + 1 < items.length ? id + 1 : 0];
+                    const item = items[id > 0 ? id - 1 : items.length - 1];
+
                     if (value) {
                         onChange?.(item);
                     } else {
@@ -135,7 +155,8 @@ export const useInputSelect = (
                     break;
                 }
                 case "ArrowDown": {
-                    const item = items[id > 0 ? id - 1 : items.length - 1];
+                    const item = items[id + 1 < items.length ? id + 1 : 0];
+
                     if (value) {
                         onChange?.(item);
                     } else {
@@ -145,7 +166,7 @@ export const useInputSelect = (
                 }
             }
         },
-        [items, inputValue, value, onChange],
+        [items, inputValue, value, onChange]
     );
 
     return {

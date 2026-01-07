@@ -40,8 +40,8 @@ export const useHeader = () => {
             }, 50);
         };
 
-        window.addEventListener("scroll", handle);
-        return () => window.removeEventListener("scroll", handle);
+        window?.addEventListener("scroll", handle);
+        return () => window?.removeEventListener("scroll", handle);
     }, []);
 
     useEffect(() => {

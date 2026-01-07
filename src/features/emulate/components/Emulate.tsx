@@ -59,7 +59,7 @@ export const Emulate = () => {
                     >
                         <Button
                             onClick={() => {
-                                sync();
+                                sync({ caching: false });
                             }}
                         >
                             {promiseStatus(promises.sync)}

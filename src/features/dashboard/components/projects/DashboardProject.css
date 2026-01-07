@@ -10,8 +10,8 @@
 	}
 
 	.project-button {
-		grid-template-columns: 1fr;
-		justify-items: center;
+        display: flex;
+        flex-direction: column;
 		gap: 0.5rem;
 	}
 }
