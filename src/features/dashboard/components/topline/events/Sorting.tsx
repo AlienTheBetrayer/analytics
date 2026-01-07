@@ -1,15 +1,14 @@
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { Select } from "@/features/ui/select/components/Select";
+import { EventColumns } from "@/types/zustand/dashboard";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
-
-const AvailableTypes = ["Type", "Description", "Date"];
 
 export const Sorting = () => {
     // zustand-state
     const selectedProjectId = useAppStore((state) => state.selectedProjectId);
-    const filter = useAppStore((state) => state.filter);
+    const eventFilters = useAppStore((state) => state.eventFilters);
     const setFilter = useAppStore((state) => state.setFilter);
 
     if (!selectedProjectId) {
@@ -36,16 +35,16 @@ export const Sorting = () => {
                     text="Column to sort by"
                 >
                     <Select
-                        items={AvailableTypes}
+                        items={["Type", "Description", "Created Date"]}
                         value={
-                            filter[selectedProjectId]?.eventsSorting?.column ??
-                            "Date"
+                            eventFilters[selectedProjectId]?.eventsSorting?.column ??
+                            "Created Date"
                         }
                         onChange={(item) => {
                             setFilter({
                                 project_id: selectedProjectId,
                                 type: "event-sort",
-                                column: [item],
+                                column: [item as EventColumns],
                             });
                         }}
                     />
@@ -54,7 +53,7 @@ export const Sorting = () => {
                 <Tooltip
                     direction="top"
                     text={
-                        filter[selectedProjectId]?.eventsSorting?.direction ===
+                        eventFilters[selectedProjectId]?.eventsSorting?.direction ===
                         "ascendant"
                             ? "Ascendant"
                             : "Descendant"
@@ -67,7 +66,7 @@ export const Sorting = () => {
                                 project_id: selectedProjectId,
                                 type: "event-sort",
                                 direction:
-                                    filter[selectedProjectId]?.eventsSorting
+                                    eventFilters[selectedProjectId]?.eventsSorting
                                         ?.direction === "ascendant"
                                         ? "descendant"
                                         : "ascendant",
@@ -82,7 +81,7 @@ export const Sorting = () => {
                             className="duration-500! ease-out!"
                             style={{
                                 transform:
-                                    filter[selectedProjectId]?.eventsSorting
+                                    eventFilters[selectedProjectId]?.eventsSorting
                                         ?.direction === "ascendant"
                                         ? `rotate(180deg)`
                                         : `rotate(0deg)`,
@@ -95,7 +94,7 @@ export const Sorting = () => {
 
             <div className="flex w-full">
                 <Tooltip
-                    text="Show all events"
+                    text="Remove sorting filters"
                     className="w-full"
                 >
                     <Button
@@ -104,7 +103,7 @@ export const Sorting = () => {
                             setFilter({
                                 type: "event-sort",
                                 project_id: selectedProjectId,
-                                column: ["Date"],
+                                column: ["Created Date"],
                                 direction: "descendant",
                             });
                         }}

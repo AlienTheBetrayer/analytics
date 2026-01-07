@@ -10,7 +10,7 @@ import { Wipe } from "./Wipe";
 export const EventTopline = () => {
     // zustand-state
     const selectedProjectId = useAppStore((state) => state.selectedProjectId);
-    const filter = useAppStore((state) => state.filter);
+    const eventFilters = useAppStore((state) => state.eventFilters);
 
     return (
         <div
@@ -46,7 +46,7 @@ export const EventTopline = () => {
                         <div
                             className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500"
                             style={{
-                                background: filter[selectedProjectId ?? ""]
+                                background: eventFilters[selectedProjectId ?? ""]
                                     ?.eventsFiltering
                                     ? "var(--blue-1)"
                                     : "transparent",
@@ -75,7 +75,7 @@ export const EventTopline = () => {
                             className="duration-500! ease-out!"
                             style={{
                                 transform:
-                                    filter[selectedProjectId ?? ""]?.eventsSorting
+                                    eventFilters[selectedProjectId ?? ""]?.eventsSorting
                                         ?.direction === "ascendant"
                                         ? `rotate(180deg)`
                                         : `rotate(0deg)`,
@@ -85,7 +85,7 @@ export const EventTopline = () => {
                         <div
                             className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500"
                             style={{
-                                background: filter[selectedProjectId ?? ""]
+                                background: eventFilters[selectedProjectId ?? ""]
                                     ?.eventsSorting
                                     ? "var(--blue-1)"
                                     : "transparent",

@@ -1,15 +1,14 @@
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { Select } from "@/features/ui/select/components/Select";
+import { ProjectColumns } from "@/types/zustand/dashboard";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
-
-const AvailableTypes = ["Type", "Description", "Date"];
 
 export const Sorting = () => {
     // zustand-state
     const selectedProjectId = useAppStore((state) => state.selectedProjectId);
-    const filter = useAppStore((state) => state.filter);
+    const projectFilters = useAppStore((state) => state.projectFilters);
     const setFilter = useAppStore((state) => state.setFilter);
 
     if (!selectedProjectId) {
@@ -36,16 +35,16 @@ export const Sorting = () => {
                     text="Column to sort by"
                 >
                     <Select
-                        items={AvailableTypes}
+                        items={["Name", "Created Date", "Updated Date"]}
                         value={
-                            filter[selectedProjectId]?.projectSorting?.column ??
-                            "Date"
+                            projectFilters?.projectSorting?.column ??
+                            "Created Date"
                         }
                         onChange={(item) => {
                             setFilter({
                                 project_id: selectedProjectId,
                                 type: "project-sort",
-                                column: [item],
+                                column: [item as ProjectColumns],
                             });
                         }}
                     />
@@ -54,7 +53,7 @@ export const Sorting = () => {
                 <Tooltip
                     direction="top"
                     text={
-                        filter[selectedProjectId]?.projectSorting?.direction ===
+                        projectFilters?.projectSorting?.direction ===
                         "ascendant"
                             ? "Ascendant"
                             : "Descendant"
@@ -65,9 +64,9 @@ export const Sorting = () => {
                         onClick={() => {
                             setFilter({
                                 project_id: selectedProjectId,
-                                type: "event-sort",
+                                type: "project-sort",
                                 direction:
-                                    filter[selectedProjectId]?.projectSorting
+                                    projectFilters?.projectSorting
                                         ?.direction === "ascendant"
                                         ? "descendant"
                                         : "ascendant",
@@ -82,7 +81,7 @@ export const Sorting = () => {
                             className="duration-500! ease-out!"
                             style={{
                                 transform:
-                                    filter[selectedProjectId]?.projectSorting
+                                    projectFilters?.projectSorting
                                         ?.direction === "ascendant"
                                         ? `rotate(180deg)`
                                         : `rotate(0deg)`,
@@ -95,7 +94,7 @@ export const Sorting = () => {
 
             <div className="flex w-full">
                 <Tooltip
-                    text="Show all events"
+                    text="Remove sorting filters"
                     className="w-full"
                 >
                     <Button
@@ -104,7 +103,7 @@ export const Sorting = () => {
                             setFilter({
                                 type: "project-sort",
                                 project_id: selectedProjectId,
-                                column: ["Date"],
+                                column: ["Created Date"],
                                 direction: "descendant",
                             });
                         }}

@@ -10,17 +10,30 @@ export type DashboardNotification = {
     createdAt?: Date;
 };
 
-export type FilterType = Record<
+export type ProjectColumns =
+    | "Name"
+    | "Created Date"
+    | "Updated Date"
+    | (string & {});
+export type EventColumns =
+    | "Type"
+    | "Description"
+    | "Created Date"
+    | (string & {});
+
+export type ProjectFilter = {
+    projectSorting?: {
+        column?: ProjectColumns;
+        direction?: "ascendant" | "descendant";
+    };
+    projectSearch?: string;
+};
+
+export type EventFilter = Record<
     string,
     {
-        projectSorting?: {
-            column?: string;
-            direction?: "ascendant" | "descendant";
-        };
-        projectSearch?: string;
-
         eventsSorting?: {
-            column?: string;
+            column?: EventColumns;
             direction?: "ascendant" | "descendant";
         };
         eventsSearch?: string;
@@ -32,7 +45,8 @@ export type FilterType = Record<
 export type DashboardStore = {
     // selectedProject
     selectedProjectId?: string;
-    filter: FilterType;
+    eventFilters: EventFilter;
+    projectFilters: ProjectFilter;
 
     /**
      * filter multi-function
@@ -48,7 +62,7 @@ export type DashboardStore = {
             | "event-search"
             | "event-filter";
         search?: string;
-        column?: string[];
+        column?: (EventColumns | ProjectColumns)[];
         direction?: "ascendant" | "descendant";
         events?: Event[];
         flag?: boolean;

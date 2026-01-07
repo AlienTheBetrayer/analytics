@@ -6,13 +6,13 @@ import { useEffect, useState } from "react";
 
 export const Search = () => {
     // zustand
-    const filter = useAppStore((state) => state.filter);
+    const projectFilters = useAppStore((state) => state.projectFilters);
     const selectedProjectId = useAppStore((state) => state.selectedProjectId);
     const setFilter = useAppStore((state) => state.setFilter);
 
     // input debouncing
     const [searchValue, setSearchValue] = useState<string>(
-        selectedProjectId ? (filter[selectedProjectId]?.projectSearch ?? "") : ""
+        selectedProjectId ? (projectFilters?.projectSearch ?? "") : ""
     );
 
     const debounced = useDebounced(searchValue, 75);
@@ -23,7 +23,7 @@ export const Search = () => {
         }
 
         setFilter({
-            type: "event-search",
+            type: "project-search",
             project_id: selectedProjectId,
             search: debounced,
         });

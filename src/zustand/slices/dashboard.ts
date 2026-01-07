@@ -1,14 +1,20 @@
-import type { DashboardStore } from "@/types/zustand/dashboard";
+import type {
+    DashboardStore,
+    EventColumns,
+    ProjectColumns,
+} from "@/types/zustand/dashboard";
 import type { SliceFunction } from "@/types/zustand/utils/sliceFunction";
 
 export const DashboardSlice: SliceFunction<DashboardStore> = (set, get) => {
     return {
         notifications: [],
-        filter: {},
+        eventFilters: {},
+        projectFilters: {},
 
         setFilter: ({ project_id, ...options }) => {
             set((state) => {
-                const filter = { ...state.filter };
+                const eventFilters = { ...state.eventFilters };
+                let projectFilters = { ...state.projectFilters };
 
                 switch (options.type) {
                     case "event-search": {
@@ -16,30 +22,35 @@ export const DashboardSlice: SliceFunction<DashboardStore> = (set, get) => {
                             throw "options.search is not a string.";
                         }
 
-                        filter[project_id] = {
-                            ...(filter[project_id] ?? {}),
+                        eventFilters[project_id] = {
+                            ...(eventFilters[project_id] ?? {}),
                             eventsSearch: options.search,
                         };
                         break;
                     }
                     case "event-sort": {
-                        if (options.column?.length) {
-                            filter[project_id] = {
-                                ...(filter[project_id] ?? {}),
+                        if (
+                            options.column?.length &&
+                            ["Type", "Description", "Created Date"].includes(
+                                options.column[0]
+                            )
+                        ) {
+                            eventFilters[project_id] = {
+                                ...(eventFilters[project_id] ?? {}),
                                 eventsSorting: {
-                                    ...(filter[project_id]?.eventsSorting ??
-                                        {}),
-                                    column: options.column[0],
+                                    ...(eventFilters[project_id]
+                                        ?.eventsSorting ?? {}),
+                                    column: options.column[0] as EventColumns,
                                 },
                             };
                         }
 
                         if (options.direction) {
-                            filter[project_id] = {
-                                ...(filter[project_id] ?? {}),
+                            eventFilters[project_id] = {
+                                ...(eventFilters[project_id] ?? {}),
                                 eventsSorting: {
-                                    ...(filter[project_id]?.eventsSorting ??
-                                        {}),
+                                    ...(eventFilters[project_id]
+                                        ?.eventsSorting ?? {}),
                                     direction: options.direction,
                                 },
                             };
@@ -57,11 +68,11 @@ export const DashboardSlice: SliceFunction<DashboardStore> = (set, get) => {
                         }
 
                         for (const column of options.column) {
-                            filter[project_id] = {
-                                ...(filter[project_id] ?? {}),
+                            eventFilters[project_id] = {
+                                ...(eventFilters[project_id] ?? {}),
                                 eventsFiltering: {
-                                    ...(filter[project_id]?.eventsFiltering ??
-                                        {}),
+                                    ...(eventFilters[project_id]
+                                        ?.eventsFiltering ?? {}),
                                     [column]: options.flag,
                                 },
                             };
@@ -74,30 +85,42 @@ export const DashboardSlice: SliceFunction<DashboardStore> = (set, get) => {
                             throw "options.search is not a string.";
                         }
 
-                        filter[project_id] = {
-                            ...(filter[project_id] ?? {}),
+                        projectFilters = {
+                            ...(projectFilters ?? {}),
                             projectSearch: options.search,
                         };
                         break;
                     }
                     case "project-sort": {
-                        if (!options.column?.length) {
-                            throw "options.column are not strings.";
+                        if (
+                            options.column?.length &&
+                            ["Name", "Created Date", "Updated Date"].includes(
+                                options.column[0]
+                            )
+                        ) {
+                            projectFilters = {
+                                ...(projectFilters ?? {}),
+                                projectSorting: {
+                                    ...(projectFilters?.projectSorting ?? {}),
+                                    column: options.column[0] as ProjectColumns,
+                                },
+                            };
                         }
 
-                        filter[project_id] = {
-                            ...(filter[project_id] ?? {}),
-                            projectSorting: {
-                                ...(filter[project_id]?.projectSorting ?? {}),
-                                column: options.column[0],
-                                direction: options.direction ?? "ascendant",
-                            },
-                        };
+                        if (options.direction) {
+                            projectFilters = {
+                                ...(projectFilters ?? {}),
+                                projectSorting: {
+                                    ...(projectFilters?.projectSorting ?? {}),
+                                    direction: options.direction,
+                                },
+                            };
+                        }
                         break;
                     }
                 }
 
-                return { ...state, filter };
+                return { ...state, eventFilters, projectFilters };
             });
         },
 

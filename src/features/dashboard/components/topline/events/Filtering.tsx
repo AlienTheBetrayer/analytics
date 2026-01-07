@@ -8,7 +8,7 @@ export const Filtering = () => {
     // zustand-state
     const selectedProjectId = useAppStore((state) => state.selectedProjectId);
     const events = useAppStore((state) => state.events);
-    const filter = useAppStore((state) => state.filter);
+    const eventFilters = useAppStore((state) => state.eventFilters);
     const setFilter = useAppStore((state) => state.setFilter);
 
     if (!selectedProjectId) {
@@ -46,7 +46,7 @@ export const Filtering = () => {
                             type: "event-filter",
                         });
                     }}
-                    value={filter[selectedProjectId]?.eventsFiltering?.[type]}
+                    value={eventFilters[selectedProjectId]?.eventsFiltering?.[type]}
                 >
                     {type}
                 </Checkbox>

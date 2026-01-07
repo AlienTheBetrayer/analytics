@@ -11,7 +11,7 @@ import { Manipulation } from "./Manipulation";
 export const ProjectTopline = () => {
     // zustand-state
     const selectedProjectId = useAppStore((state) => state.selectedProjectId);
-    const filter = useAppStore((state) => state.filter);
+    const projectFilters = useAppStore((state) => state.projectFilters);
 
     return (
         <div
@@ -33,7 +33,7 @@ export const ProjectTopline = () => {
                 element={<Sorting />}
             >
                 <Tooltip
-                    text="Sort events"
+                    text="Sort projects"
                     direction="top"
                 >
                     <Button className="aspect-square">
@@ -45,9 +45,8 @@ export const ProjectTopline = () => {
                             className="duration-500! ease-out!"
                             style={{
                                 transform:
-                                    filter[selectedProjectId ?? ""]
-                                        ?.projectSorting?.direction ===
-                                    "ascendant"
+                                    projectFilters?.projectSorting
+                                        ?.direction === "ascendant"
                                         ? `rotate(180deg)`
                                         : `rotate(0deg)`,
                             }}
@@ -56,8 +55,7 @@ export const ProjectTopline = () => {
                         <div
                             className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500"
                             style={{
-                                background: filter[selectedProjectId ?? ""]
-                                    ?.projectSorting
+                                background: projectFilters?.projectSorting
                                     ? "var(--blue-1)"
                                     : "transparent",
                             }}
@@ -67,8 +65,8 @@ export const ProjectTopline = () => {
             </Tooltip>
 
             <Search key={selectedProjectId} />
-                            
-            <Manipulation/>
+
+            <Manipulation />
             <Deselect />
             <Wipe />
         </div>

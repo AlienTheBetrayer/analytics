@@ -9,17 +9,21 @@ export const useEventList = () => {
     // zustand state
     const selectedProjectId = useAppStore((state) => state.selectedProjectId);
     const events = useAppStore((state) => state.events);
-    const filter = useAppStore((state) => state.filter);
+    const eventFilters = useAppStore((state) => state.eventFilters);
 
     // all events
     const allEvents = selectedProjectId && events[selectedProjectId];
 
     // filter events
-    const search = selectedProjectId && filter[selectedProjectId]?.eventsSearch;
-    const filtering =
-        selectedProjectId && filter[selectedProjectId]?.eventsFiltering;
-    const sorting =
-        selectedProjectId && filter[selectedProjectId]?.eventsSorting;
+    const search = selectedProjectId
+        ? eventFilters[selectedProjectId]?.eventsSearch
+        : undefined;
+    const filtering = selectedProjectId
+        ? eventFilters[selectedProjectId]?.eventsFiltering
+        : undefined;
+    const sorting = selectedProjectId
+        ? eventFilters[selectedProjectId]?.eventsSorting
+        : undefined;
 
     // filtering & memoization
     const filteredEvents = useMemo(() => {
@@ -43,7 +47,7 @@ export const useEventList = () => {
         }
 
         // sorting
-        const column = (!sorting ? "date" : (sorting.column ?? "date")).toLowerCase();
+        const column = sorting?.column ?? "Created Date";
         const direction = !sorting
             ? -1
             : (sorting.direction ?? "descendant") === "descendant"
@@ -51,7 +55,7 @@ export const useEventList = () => {
               : 1;
 
         switch (column) {
-            case "type": {
+            case "Type": {
                 filtered.sort((a, b) =>
                     !a.type || !b.type
                         ? 0
@@ -59,7 +63,7 @@ export const useEventList = () => {
                 );
                 break;
             }
-            case "description": {
+            case "Description": {
                 filtered.sort((a, b) =>
                     !a.description || !b.description
                         ? 0
@@ -68,7 +72,7 @@ export const useEventList = () => {
                 );
                 break;
             }
-            case "date": {
+            case "Created Date": {
                 filtered.sort((a, b) =>
                     !a.created_at || !b.created_at
                         ? 0
