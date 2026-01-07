@@ -3,12 +3,16 @@ import { STARS_QUANTITY, useStars } from "../../hooks/useStars";
 import { useRef } from "react";
 import { InstancedMesh } from "three";
 
-export const ContainerInstances = () => {
+type Props = {
+    isHovered?: boolean;
+}
+
+export const ContainerInstances = ({ isHovered }: Props) => {
     // refs
     const instancesRef = useRef<InstancedMesh | null>(null);
 
     // controller
-    useStars(instancesRef);
+    useStars(instancesRef, isHovered);
 
     return (
         <Instances ref={instancesRef}>

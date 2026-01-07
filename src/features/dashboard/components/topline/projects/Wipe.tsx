@@ -9,14 +9,13 @@ import Image from "next/image";
 export const Wipe = () => {
     // zustand
     const deleteData = useAppStore((state) => state.deleteData);
-    const events = useAppStore((state) => state.events);
     const promises = useAppStore((state) => state.promises);
     const selectedProjectId = useAppStore((state) => state.selectedProjectId);
 
-    // message boxes
-    const deleteEventsBox = usePopup(({ hide }) => (
+    // messageboxes
+    const deleteProjectBox = usePopup(({ hide }) => (
         <MessageBox
-            description="You will delete every single event and their related data in this project!"
+            description="You will delete every single data entry about this project, including events, aggregates!"
             onInteract={(res) => {
                 hide();
                 if (!selectedProjectId) {
@@ -25,9 +24,9 @@ export const Wipe = () => {
 
                 if (res === "yes") {
                     deleteData({
-                        id: events[selectedProjectId]?.map((e) => e.id),
-                        type: "event",
-                        promiseKey: `eventsDeleteTopline`,
+                        id: [selectedProjectId],
+                        type: "project",
+                        promiseKey: `projectsDeleteTopline`,
                     });
                 }
             }}
@@ -36,19 +35,18 @@ export const Wipe = () => {
 
     return (
         <>
-            {deleteEventsBox.render()}
+            {deleteProjectBox.render()}
             <Tooltip
-                className="ml-auto"
-                text="Wipe all events"
+                text="Wipe this project"
                 direction="top"
             >
                 <Button
                     className="text-6! p-0!"
                     onClick={() => {
-                        deleteEventsBox.show();
+                        deleteProjectBox.show();
                     }}
                 >
-                    {promiseStatus(promises.eventsDeleteTopline)}
+                    {promiseStatus(promises.projectsDeleteTopline)}
                     <Image
                         alt="delete"
                         src="/delete.svg"

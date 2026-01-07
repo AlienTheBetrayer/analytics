@@ -12,7 +12,7 @@ export const Search = () => {
 
     // input debouncing
     const [searchValue, setSearchValue] = useState<string>(
-        selectedProjectId ? (filter[selectedProjectId]?.eventsSearch ?? "") : ""
+        selectedProjectId ? (filter[selectedProjectId]?.projectSearch ?? "") : ""
     );
 
     const debounced = useDebounced(searchValue, 75);

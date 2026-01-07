@@ -25,8 +25,7 @@ export const Dashboard = () => {
 
     return (
         <div
-            className="w-full max-w-7xl m-auto min-h-128
-        lg:hover:scale-102 duration-300 ease-out mt-8 sm:mt-0 box"
+            className="w-full max-w-7xl m-auto min-h-200 mt-8 sm:mt-0 box"
         >
             <Topline />
             <hr className="w-5/6! mx-auto!" />

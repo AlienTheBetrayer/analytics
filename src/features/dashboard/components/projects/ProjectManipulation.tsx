@@ -3,19 +3,16 @@ import { usePopup } from "@/features/popup/hooks/usePopup";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
-import { Event, Project } from "@/types/tables/project";
 import { promiseStatus } from "@/utils/other/status";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 
-type Props = {
-    data: { project: Project; events: Event[] };
-};
-
-export const ProjectManipulation = ({ data }: Props) => {
+export const ProjectManipulation = () => {
     // zustand states
     const status = useAppStore((state) => state.status);
     const promises = useAppStore((state) => state.promises);
+    const events = useAppStore((state) => state.events);
+    const selectedProjectId = useAppStore((state) => state.selectedProjectId);
 
     // zustand functions
     const deleteData = useAppStore((state) => state.deleteData);
@@ -26,11 +23,15 @@ export const ProjectManipulation = ({ data }: Props) => {
             description="You will delete every single data entry about this project, including events, aggregates!"
             onInteract={(res) => {
                 hide();
+                if (!selectedProjectId) {
+                    return;
+                }
+
                 if (res === "yes") {
                     deleteData({
-                        id: [data.project.id],
+                        id: [selectedProjectId],
                         type: "project",
-                        promiseKey: `projectDelete_${data.project.id}`,
+                        promiseKey: `projectDelete_${selectedProjectId}`,
                     });
                 }
             }}
@@ -42,11 +43,15 @@ export const ProjectManipulation = ({ data }: Props) => {
             description="You will delete every single event in this project!"
             onInteract={(res) => {
                 hide();
+                if (!selectedProjectId || !events[selectedProjectId]) {
+                    return;
+                }
+
                 if (res === "yes") {
                     deleteData({
-                        id: data.events.map((e) => e.id),
+                        id: events[selectedProjectId].map((e) => e.id),
                         type: "event",
-                        promiseKey: `eventsDelete_${data.project.id}`,
+                        promiseKey: `eventsDelete_${selectedProjectId}`,
                     });
                 }
             }}
@@ -54,7 +59,7 @@ export const ProjectManipulation = ({ data }: Props) => {
     ));
 
     return (
-        <div className="flex flex-col box min-w-sm gap-4!">
+        <div className="flex flex-col box w-screen! max-w-sm! gap-4!">
             {deleteProjectBox.render()}
             {deleteEventsBox.render()}
 
@@ -68,7 +73,7 @@ export const ProjectManipulation = ({ data }: Props) => {
                 <span className="text-5! text-foreground-5!">
                     Project manipulation
                 </span>
-                <p>
+                <p className="whitespace-normal text-center">
                     Alter this project&apos;s data in every way you could have
                     imagined
                 </p>
@@ -77,13 +82,13 @@ export const ProjectManipulation = ({ data }: Props) => {
 
             <Tooltip
                 text="Go to emulate page"
-                direction="right"
+                direction="top"
                 className="w-full"
                 isEnabled={status?.role !== "user"}
             >
                 <LinkButton
                     className="w-full"
-                    href={`/dashboard/emulate/${data.project.id}`}
+                    href={`/dashboard/emulate/${selectedProjectId}`}
                     isEnabled={status?.role !== "user"}
                 >
                     <Image
@@ -104,7 +109,7 @@ export const ProjectManipulation = ({ data }: Props) => {
                         <u>Data wiping</u>
                     </span>
                 </div>
-                <div className="grid grid-cols-2">
+                <div className="flex flex-col sm:flex-row *:w-full ">
                     <li>
                         <Tooltip
                             text="Wipe all of this project's data"
@@ -119,7 +124,9 @@ export const ProjectManipulation = ({ data }: Props) => {
                                 isEnabled={status?.role !== "user"}
                             >
                                 {promiseStatus(
-                                    promises[`projectDelete_${data.project.id}`]
+                                    promises[
+                                        `projectDelete_${selectedProjectId}`
+                                    ]
                                 )}
                                 <Image
                                     src="/delete.svg"
@@ -145,7 +152,9 @@ export const ProjectManipulation = ({ data }: Props) => {
                                 isEnabled={status?.role !== "user"}
                             >
                                 {promiseStatus(
-                                    promises[`eventsDelete_${data.project.id}`]
+                                    promises[
+                                        `eventsDelete_${selectedProjectId}`
+                                    ]
                                 )}
                                 <Image
                                     src="/type.svg"

@@ -12,12 +12,19 @@ export const EventTopline = () => {
     const selectedProjectId = useAppStore((state) => state.selectedProjectId);
     const filter = useAppStore((state) => state.filter);
 
-    if (!selectedProjectId) {
-        return null;
-    }
-
     return (
-        <div className="box p-0! flex-row! items-center">
+        <div
+            className={`box p-0! gap-1! flex-row! items-center ${!selectedProjectId ? "opacity-30" : ""}`}
+            inert={!selectedProjectId}
+        >
+            {!selectedProjectId && (
+                <div className="select-none pointer-events-none absolute inset-0 grid place-items-center z-1">
+                    <span>
+                        <mark>Select</mark> a project to access
+                    </span>
+                </div>
+            )}
+
             <Tooltip
                 disabledPointer={false}
                 type="modal"
@@ -39,7 +46,7 @@ export const EventTopline = () => {
                         <div
                             className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500"
                             style={{
-                                background: filter[selectedProjectId]
+                                background: filter[selectedProjectId ?? ""]
                                     ?.eventsFiltering
                                     ? "var(--blue-1)"
                                     : "transparent",
@@ -68,7 +75,7 @@ export const EventTopline = () => {
                             className="duration-500! ease-out!"
                             style={{
                                 transform:
-                                    filter[selectedProjectId]?.eventsSorting
+                                    filter[selectedProjectId ?? ""]?.eventsSorting
                                         ?.direction === "ascendant"
                                         ? `rotate(180deg)`
                                         : `rotate(0deg)`,
@@ -78,7 +85,7 @@ export const EventTopline = () => {
                         <div
                             className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500"
                             style={{
-                                background: filter[selectedProjectId]
+                                background: filter[selectedProjectId ?? ""]
                                     ?.eventsSorting
                                     ? "var(--blue-1)"
                                     : "transparent",

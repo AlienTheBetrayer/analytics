@@ -5,7 +5,6 @@ import { Button } from "@/features/ui/button/components/Button";
 import { relativeTime } from "@/utils/other/relativeTime";
 import { useAppStore } from "@/zustand/store";
 import { promiseStatus } from "@/utils/other/status";
-import { ProjectManipulation } from "./ProjectManipulation";
 
 type Props = {
     id: string;
@@ -36,58 +35,47 @@ export const DashboardProject = ({ id }: Props) => {
     return (
         <li className="w-full">
             <Tooltip
-                title={`${data.project.name}'s actions`}
-                text="Specific to this project"
-                direction="top"
                 className="w-full"
-                type="modal"
-                disabledPointer={false}
-                element={<ProjectManipulation data={data} />}
+                text={data.project.name}
+                direction="top"
             >
-                <Tooltip
-                    className="w-full"
-                    text={data.project.name}
-                    direction="top"
+                <Button
+                    className={`relative w-full px-4! py-2! sm:h-16! project-button ${data.project.id === selectedProjectId ? "border-blue-1!" : ""}`}
+                    onClick={() => {
+                        selectProject(data.project?.id ?? undefined);
+                    }}
                 >
-                    <Button
-                        className={`relative w-full px-4! py-2! sm:h-16! project-button ${data.project.id === selectedProjectId ? "border-blue-1!" : ""}`}
-                        onClick={() => {
-                            selectProject(data.project?.id ?? undefined);
-                        }}
-                    >
-                        <div className="flex items-center gap-1.5">
-                            {promiseStatus(promises.project)}
-                            <Image
-                                src="/link.svg"
-                                alt=""
-                                width={16}
-                                height={16}
-                            />
-                            <span>{data.project.name}</span>
-                        </div>
+                    <div className="flex items-center gap-1.5">
+                        {promiseStatus(promises.project)}
+                        <Image
+                            src="/link.svg"
+                            alt=""
+                            width={16}
+                            height={16}
+                        />
+                        <span>{data.project.name}</span>
+                    </div>
 
-                        <div className="flex sm:flex-col flex-wrap justify-between w-full h-full items-end ">
-                            <span>
-                                created {relativeTime(data.project.created_at)}
-                            </span>
-                            <span>
-                                updated{" "}
-                                {relativeTime(data.project.last_event_at)}
-                            </span>
-                        </div>
+                    <div className="flex sm:flex-col flex-wrap justify-between w-full h-full items-end ">
+                        <span>
+                            created {relativeTime(data.project.created_at)}
+                        </span>
+                        <span>
+                            updated {relativeTime(data.project.last_event_at)}
+                        </span>
+                    </div>
 
-                        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex gap-8">
-                            <span className="text-3!">
-                                <small>{data.events?.length}</small>
-                                <small className="text-6!">events</small>
-                            </span>
-                            <span className="text-3!">
-                                <small>{data.aggregates?.visits ?? 0}</small>
-                                <small className="text-6!">visits</small>
-                            </span>
-                        </div>
-                    </Button>
-                </Tooltip>
+                    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex gap-8">
+                        <span className="text-3!">
+                            <small>{data.events?.length}</small>
+                            <small className="text-6!">events</small>
+                        </span>
+                        <span className="text-3!">
+                            <small>{data.aggregates?.visits ?? 0}</small>
+                            <small className="text-6!">visits</small>
+                        </span>
+                    </div>
+                </Button>
             </Tooltip>
         </li>
     );

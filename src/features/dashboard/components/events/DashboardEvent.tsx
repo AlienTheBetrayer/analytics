@@ -79,10 +79,9 @@ export const DashboardEvent = ({ event }: Props) => {
                         <Image
                             width={16}
                             height={16}
-                            alt=""
+                            alt="delete"
                             src="/delete.svg"
                         />
-                        Delete
                     </Button>
                 </Tooltip>
             </li>

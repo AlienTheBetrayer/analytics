@@ -49,7 +49,6 @@ export const useEventList = () => {
             : (sorting.direction ?? "descendant") === "descendant"
               ? -1
               : 1;
-        console.log(column, direction);
 
         switch (column) {
             case "type": {

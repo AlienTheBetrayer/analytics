@@ -79,6 +79,7 @@ export const Overview = ({ data }: Props) => {
                         {status && status.role === "op" && (
                             <Tooltip
                                 type="modal"
+                                direction="bottom-right"
                                 disabledPointer={false}
                                 element={<RoleEditing data={data} />}
                             >
