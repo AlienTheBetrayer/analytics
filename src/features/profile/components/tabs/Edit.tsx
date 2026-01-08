@@ -200,12 +200,7 @@ export const Edit = ({ data }: Props) => {
                         type="modal"
                         disabledPointer={false}
                     >
-                        <Button
-                            className="w-full!"
-                            onPointerDown={() => {
-                                // getColors(data.user.id);
-                            }}
-                        >
+                        <Button className="w-full!">
                             <Image
                                 width={16}
                                 height={16}
@@ -244,10 +239,13 @@ export const Edit = ({ data }: Props) => {
                 >
                     <label
                         htmlFor="name"
-                        className="flex justify-between items-center"
+                        className="flex items-center"
                     >
                         <b>Name</b>
-                        <small> (your name, can be fictional)</small>
+                        <small className="ml-auto text-ellipsis-left">
+                            {" "}
+                            (your name, can be fictional)
+                        </small>
                     </label>
                     <Input
                         id="name"
@@ -260,10 +258,12 @@ export const Edit = ({ data }: Props) => {
                     <hr />
                     <label
                         htmlFor="title"
-                        className="flex justify-between items-center"
+                        className="flex items-center"
                     >
                         <b>Title</b>
-                        <small> (a short phrase that feels yours)</small>
+                        <small className="ml-auto text-ellipsis-left">
+                            (a short phrase that feels yours)
+                        </small>
                     </label>
                     <Input
                         id="title"
@@ -276,10 +276,11 @@ export const Edit = ({ data }: Props) => {
                     <hr />
                     <label
                         htmlFor="status"
-                        className="flex justify-between items-center"
+                        className="flex items-center"
                     >
                         <b>Status</b>
-                        <small> (a short text capturing your mood)</small>
+                        <small className="ml-auto text-ellipsis-left">
+                        (a short text capturing your mood)</small>
                     </label>
                     <Input
                         id="status"
@@ -292,10 +293,10 @@ export const Edit = ({ data }: Props) => {
                     <hr />
                     <label
                         htmlFor="bio"
-                        className="flex justify-between items-center"
+                        className="flex items-center"
                     >
                         <b>Bio</b>
-                        <small>
+                        <small className="ml-auto text-ellipsis-left">
                             {" "}
                             (a long piece of text, describe yourself)
                         </small>

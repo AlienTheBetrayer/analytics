@@ -37,7 +37,7 @@ export const Friends = ({ data }: Props) => {
                     modifyFriendship({
                         from_id: data.user.id,
                         type: "unfriend-all",
-                        promiseKey: "unfriendAll"
+                        promiseKey: "unfriendAll",
                     });
                 }
             }}
@@ -125,10 +125,18 @@ export const Friends = ({ data }: Props) => {
 
                 <div className="flex flex-col gap-2 w-full">
                     <ul className="flex flex-col gap-2 w-full">
-                        <li className="flex flex-col gap-1 min-h-16">
+                        <li className="flex flex-col gap-1 min-h-24">
                             {/* friends topline */}
-                            <span className="flex flex-wrap gap-2 items-center">
+                            <span className="flex  gap-2 items-center whitespace-nowrap">
+                                <Image
+                                    alt=""
+                                    width={16}
+                                    height={16}
+                                    src="/friends.svg"
+                                />
+
                                 <b>Friend list</b>
+
                                 <Tooltip
                                     text="Re-load friends"
                                     direction="top"
@@ -137,7 +145,10 @@ export const Friends = ({ data }: Props) => {
                                         className="p-0!"
                                         onClick={() => {
                                             getUsers({
-                                                select: ["friends", "friend_requests"],
+                                                select: [
+                                                    "friends",
+                                                    "friend_requests",
+                                                ],
                                                 id: [data.user.id],
                                                 promiseKey: "friendsReload",
                                                 caching: false,
@@ -157,7 +168,7 @@ export const Friends = ({ data }: Props) => {
                                         )}
                                     </Button>
                                 </Tooltip>
-                                <small className="ml-auto">
+                                <small className="ml-auto text-ellipsis-left">
                                     (all your friends are here)
                                 </small>
                             </span>
@@ -171,7 +182,7 @@ export const Friends = ({ data }: Props) => {
                                 </span>
                             ) : (
                                 <ul
-                                    className="flex flex-col gap-2 overflow-y-auto max-h-36 scheme-dark"
+                                    className="flex flex-col gap-2 overflow-y-auto max-h-128 scheme-dark"
                                     style={{ scrollbarWidth: "thin" }}
                                 >
                                     {availableFriends.map((id) => (
@@ -193,11 +204,19 @@ export const Friends = ({ data }: Props) => {
                             <hr />
                         </li>
 
-                        <li className="flex flex-col gap-1 min-h-16">
+                        <li className="flex flex-col gap-1 min-h-24">
                             {/* incoming requests topline */}
-                            <span className="flex flex-wrap gap-2 items-center">
+                            <span className="flex gap-2 items-center whitespace-nowrap">
+                                <Image
+                                    alt=""
+                                    width={16}
+                                    height={16}
+                                    src="/plus.svg"
+                                />
+
                                 <b>Incoming requests</b>
-                                <small className="ml-auto">
+
+                                <small className="ml-auto text-ellipsis-left">
                                     (your incoming requests)
                                 </small>
                             </span>
@@ -211,7 +230,7 @@ export const Friends = ({ data }: Props) => {
                                 </span>
                             ) : (
                                 <ul
-                                    className="flex flex-col gap-2 overflow-y-auto max-h-36 scheme-dark"
+                                    className="flex flex-col gap-2 overflow-y-auto max-h-128 scheme-dark"
                                     style={{ scrollbarWidth: "thin" }}
                                 >
                                     {incomingRequests.map((id) => (
@@ -230,14 +249,22 @@ export const Friends = ({ data }: Props) => {
                                     ))}
                                 </ul>
                             )}
-                            <hr />
+                            <hr className='mt-auto!'/>
                         </li>
 
-                        <li className="flex flex-col gap-1 min-h-16">
+                        <li className="flex flex-col gap-1 min-h-24">
                             {/* outcoming requests topline */}
-                            <span className="flex flex-wrap gap-2 items-center">
+                            <span className="flex gap-2 items-center whitespace-nowrap">
+                                <Image
+                                    alt=""
+                                    width={16}
+                                    height={16}
+                                    src="/send.svg"
+                                />
+
                                 <b>Outcoming requests</b>
-                                <small className="ml-auto">
+
+                                <small className="ml-auto text-ellipsis-left">
                                     (your outcoming requests)
                                 </small>
                             </span>
@@ -251,7 +278,7 @@ export const Friends = ({ data }: Props) => {
                                 </span>
                             ) : (
                                 <ul
-                                    className="flex flex-col gap-2 overflow-y-auto max-h-36 scheme-dark"
+                                    className="flex flex-col gap-2 overflow-y-auto max-h-128 scheme-dark"
                                     style={{ scrollbarWidth: "thin" }}
                                 >
                                     {outcomingRequests.map((id) => (
@@ -270,7 +297,6 @@ export const Friends = ({ data }: Props) => {
                                     ))}
                                 </ul>
                             )}
-                            <hr />
                         </li>
                     </ul>
 

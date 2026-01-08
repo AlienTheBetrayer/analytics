@@ -61,7 +61,7 @@ export const Overview = ({ data }: Props) => {
 
             <div className="flex flex-col gap-2 items-center">
                 <div className="flex w-full justify-between items-center relative flex-wrap">
-                    <div className="absolute left-1/2 top-1/2 -translate-1/2 flex gap-1 items-center">
+                    <div className="absolute left-1/2 top-1/2 -translate-1/2 flex gap-2 items-center">
                         <Image
                             width={16}
                             height={16}
@@ -69,7 +69,7 @@ export const Overview = ({ data }: Props) => {
                             src="/friends.svg"
                             className="invert-80!"
                         />
-                        <span className="text-foreground-2! text-5! text-center w-full">
+                        <span className="text-foreground-2! text-5! text-center w-full whitespace-nowrap">
                             {data.user.username}
                             &apos;s profile
                         </span>

@@ -164,10 +164,12 @@ export const Security = ({ data }: Props) => {
                     >
                         <label
                             htmlFor="bio"
-                            className="flex justify-between items-center"
+                            className="flex items-center"
                         >
                             <b>Password</b>
-                            <small> (a new strong password)</small>
+                            <small className="ml-auto text-ellipsis-left">
+                                (a new strong password)
+                            </small>
                         </label>
 
                         <Input
@@ -231,7 +233,7 @@ export const Security = ({ data }: Props) => {
                                 )}
                             </Button>
                         </Tooltip>
-                        <small className="ml-auto">
+                        <small className="ml-auto text-ellipsis-left">
                             (all your logged in accounts)
                         </small>
                     </span>
@@ -246,36 +248,54 @@ export const Security = ({ data }: Props) => {
                             currentSessions.map((token) => (
                                 <React.Fragment key={token.id}>
                                     <li
-                                        className={`grid grid-cols-[1fr_40%] gap-4 items-center rounded-2xl p-2! ${token.isCurrent ? "border border-blue-2" : ""}`}
+                                        className={`flex gap-1 items-center rounded-2xl p-2! ${token.isCurrent ? "border border-blue-2" : ""}`}
                                     >
-                                        <span className="truncate">
-                                            {token.isCurrent
-                                                ? "CURRENT SESSION"
-                                                : token.id}
-                                        </span>
-                                        <Button
+                                        {token.isCurrent ? (
+                                            <>
+                                                <Image
+                                                    alt=""
+                                                    width={20}
+                                                    height={20}
+                                                    src="/privacy.svg"
+                                                />
+                                                <span>Ongoing session</span>
+                                            </>
+                                        ) : (
+                                            <span className="truncate">
+                                                {token.id}
+                                            </span>
+                                        )}
+
+                                        <Tooltip
+                                            className="ml-auto"
+                                            direction="top"
+                                            text="Log out & delete this session"
                                             isEnabled={!token.isCurrent}
-                                            onClick={async () => {
-                                                terminateSessions({
-                                                    ids: [token.id],
-                                                    user_id: data.user.id,
-                                                    promiseKey: `terminateSessions_${token.id}`,
-                                                });
-                                            }}
                                         >
-                                            {promiseStatus(
-                                                promises[
-                                                    `terminateSessions_${token.id}`
-                                                ]
-                                            )}
-                                            <Image
-                                                src="/cross.svg"
-                                                width={16}
-                                                height={16}
-                                                alt=""
-                                            />
-                                            Terminate
-                                        </Button>
+                                            <Button
+                                                isEnabled={!token.isCurrent}
+                                                onClick={async () => {
+                                                    terminateSessions({
+                                                        ids: [token.id],
+                                                        user_id: data.user.id,
+                                                        promiseKey: `terminateSessions_${token.id}`,
+                                                    });
+                                                }}
+                                            >
+                                                {promiseStatus(
+                                                    promises[
+                                                        `terminateSessions_${token.id}`
+                                                    ]
+                                                )}
+                                                <Image
+                                                    src="/cross.svg"
+                                                    width={16}
+                                                    height={16}
+                                                    alt=""
+                                                />
+                                                Terminate
+                                            </Button>
+                                        </Tooltip>
                                     </li>
                                     <hr className="w-4/5! mx-auto" />
                                 </React.Fragment>
