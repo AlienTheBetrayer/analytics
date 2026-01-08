@@ -52,6 +52,7 @@ export const FriendButton = ({ data }: Props) => {
 
     return (
         <div className="flex justify-center items-center w-full min-h-8">
+            {unfriendMessageBox.render()}
             {status &&
                 status.id !== data.user.id &&
                 (friends[data.user.id]?.has(status.id) ? (

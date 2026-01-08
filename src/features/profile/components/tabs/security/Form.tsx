@@ -30,6 +30,7 @@ export const Form = ({ data }: Props) => {
         <div className="flex flex-col gap-2 h-full w-full grow">
             {deleteMessageBox.render()}
             {terminateMessageBox.render()}
+            
             <form
                 className="flex flex-col gap-2"
                 onSubmit={(e) => {

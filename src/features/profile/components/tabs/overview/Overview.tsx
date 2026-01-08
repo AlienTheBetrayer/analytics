@@ -1,11 +1,7 @@
 import Image from "next/image";
-import { Button } from "@/features/ui/button/components/Button";
-import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { Profile, User } from "@/types/tables/account";
 import { useAppStore } from "@/zustand/store";
 import { ProfileImage } from "../../ProfileImage";
-import { Tooltip } from "@/features/tooltip/components/Tooltip";
-import { RoleEditing } from "../../modals/RoleEditing";
 import { FriendButton } from "./FriendButton";
 import { StatusBio } from "./StatusBio";
 import { LastSeen } from "./LastSeen";
@@ -37,41 +33,7 @@ export const Overview = ({ data }: Props) => {
                         </span>
                     </div>
 
-                    <div className="flex gap-1 items-center">
-                        {status && status.role === "op" && (
-                            <Tooltip
-                                type="modal"
-                                direction="bottom-right"
-                                disabledPointer={false}
-                                element={<RoleEditing data={data} />}
-                            >
-                                <Button>
-                                    <Image
-                                        width={16}
-                                        height={16}
-                                        alt=""
-                                        src="/cube.svg"
-                                    />
-                                </Button>
-                            </Tooltip>
-                        )}
-
-                        {status && status.id !== data.user.id && (
-                            <Tooltip text="Go back to friends">
-                                <LinkButton
-                                    href={`/profile/${status.username}/friends`}
-                                >
-                                    <Image
-                                        width={16}
-                                        height={16}
-                                        alt=""
-                                        src="/back.svg"
-                                    />
-                                    <span>Back</span>
-                                </LinkButton>
-                            </Tooltip>
-                        )}
-                    </div>
+                    <div className="flex gap-1 items-center"></div>
                 </div>
 
                 <span>Profile overview</span>

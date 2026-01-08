@@ -4,16 +4,16 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AuthRequired } from "@/features/authentication/components/AuthRequired";
 import { useAppStore } from "@/zustand/store";
-import { ProfileEdit, ProfileTabs } from "./ProfileEdit";
 import { Overview } from "./tabs/overview/Overview";
 import { UserLoading } from "./UserLoading";
 import { NotFound } from "./NotFound";
+import { Content } from "./display/Content";
+import { Topline } from "./display/Topline";
 
 export const UserProfile = () => {
     // url
-    const { name, tab } = useParams<{
+    const { name } = useParams<{
         name: string | undefined;
-        tab: string | undefined;
     }>();
 
     // zustand state
@@ -26,8 +26,6 @@ export const UserProfile = () => {
 
     // user id to fetch data from
     const retrievedUsername = name ?? status?.username;
-    const retrievedTab =
-        (tab && ProfileTabs.find((t) => t === tab)) || "overview";
 
     const [error, setError] = useState<"no_user" | "no_profile" | undefined>();
 
@@ -68,6 +66,22 @@ export const UserProfile = () => {
 
     const retrievedData = { user, profile: profiles[user.id] };
 
+    if (retrievedData.user.id === status?.id || status?.role === "op") {
+        return (
+            <>
+                <Topline data={retrievedData} />
+                <div
+                    className={`box max-w-7xl mt-2 w-full m-auto min-h-160 p-0! rounded-4xl! overflow-hidden`}
+                    style={{
+                        outline: `1px solid ${retrievedData.profile?.color ?? "transparent"}`,
+                    }}
+                >
+                    <Content data={retrievedData} />
+                </div>
+            </>
+        );
+    }
+
     return (
         <div
             className={`box max-w-7xl w-full m-auto min-h-160 p-0! rounded-4xl! overflow-hidden`}
@@ -75,14 +89,7 @@ export const UserProfile = () => {
                 outline: `1px solid ${retrievedData.profile?.color ?? "transparent"}`,
             }}
         >
-            {retrievedData.user.id === status?.id || status?.role === "op" ? (
-                <ProfileEdit
-                    data={retrievedData}
-                    tab={retrievedTab}
-                />
-            ) : (
-                <Overview data={retrievedData} />
-            )}
+            <Overview data={retrievedData} />
         </div>
     );
 };

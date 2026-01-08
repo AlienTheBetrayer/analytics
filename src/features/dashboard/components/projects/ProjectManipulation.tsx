@@ -59,7 +59,7 @@ export const ProjectManipulation = () => {
     ));
 
     return (
-        <div className="flex flex-col box w-screen! max-w-sm! gap-4!">
+        <div className="flex flex-col box w-screen! max-w-md! gap-4!">
             {deleteProjectBox.render()}
             {deleteEventsBox.render()}
 

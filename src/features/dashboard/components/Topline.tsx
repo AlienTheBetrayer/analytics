@@ -22,13 +22,13 @@ export const Topline = () => {
                     direction="top"
                 >
                     <LinkButton
-                        href="/emulate/"
+                        href="/home/"
                         className="p-0!"
                     >
                         <Image
                             width={16}
                             height={16}
-                            alt="emulate"
+                            alt="home"
                             src="/home.svg"
                         />
                     </LinkButton>
