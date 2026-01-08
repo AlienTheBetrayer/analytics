@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { AuthRequired } from "@/features/authentication/components/AuthRequired";
 import { useAppStore } from "@/zustand/store";
 import { ProfileEdit, ProfileTabs } from "./ProfileEdit";
-import { Overview } from "./tabs/Overview";
+import { Overview } from "./tabs/overview/Overview";
 import { UserLoading } from "./UserLoading";
 import { NotFound } from "./NotFound";
 

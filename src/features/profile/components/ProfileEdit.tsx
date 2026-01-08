@@ -1,11 +1,11 @@
 import Image from "next/image";
 import { Menu } from "@/features/ui/menu/components/Menu";
-import { Edit } from "./tabs/Edit";
-import { Friends } from "./tabs/Friends";
-import { Overview } from "./tabs/Overview";
-import { Security } from "./tabs/Security";
+import { Edit } from "./tabs/edit/Edit";
+import { Friends } from "./tabs/friends/Friends";
+import { Overview } from "./tabs/overview/Overview";
 import { useMemo } from "react";
 import { Profile, User } from "@/types/tables/account";
+import { Security } from "./tabs/security/Security";
 
 type Props = {
     data: { user: User; profile: Profile };
