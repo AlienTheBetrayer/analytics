@@ -40,7 +40,7 @@ export const DashboardProject = ({ id }: Props) => {
                 direction="top"
             >
                 <Button
-                    className={`relative w-full px-4! py-2! sm:h-16! project-button ${data.project.id === selectedProjectId ? "border-blue-1!" : ""}`}
+                    className={`relative w-full px-4! py-2! sm:h-16! project-button justify-between! items-center duration-300! ${data.project.id === selectedProjectId ? "border-blue-1!" : ""}`}
                     onClick={() => {
                         selectProject(data.project?.id ?? undefined);
                     }}
@@ -48,20 +48,36 @@ export const DashboardProject = ({ id }: Props) => {
                     <div className="flex items-center gap-1.5">
                         {promiseStatus(promises.project)}
                         <Image
-                            src="/link.svg"
+                            src="/cube.svg"
                             alt=""
                             width={16}
                             height={16}
+                            className='invert-60!'
                         />
-                        <span>{data.project.name}</span>
+                        <span className='text-5! text-foreground-4!'>
+                            {data.project.name}
+                        </span>
                     </div>
 
-                    <div className="flex sm:flex-col flex-wrap justify-between w-full h-full items-end ">
-                        <span>
-                            created {relativeTime(data.project.created_at)}
+                    <div className="flex gap-1 items-center">
+                        <span className="flex gap-1 items-center ">
+                            <Image
+                                src="/plus.svg"
+                                alt="created"
+                                width={16}
+                                height={16}
+                            />
+                            {relativeTime(data.project.created_at)}
                         </span>
-                        <span>
-                            updated {relativeTime(data.project.last_event_at)}
+
+                        <span className="flex gap-1 items-center">
+                            <Image
+                                src="/pencil.svg"
+                                alt="updated"
+                                width={16}
+                                height={16}
+                            />
+                            {relativeTime(data.project.last_event_at)}
                         </span>
                     </div>
 

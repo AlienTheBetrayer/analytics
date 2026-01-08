@@ -1,18 +1,13 @@
 .project-button {
-	display: grid;
-	grid-template-columns: 1fr 1fr;
+    display: flex;
 	gap: 1rem;
 }
 
 @media (max-width: 640px) {
-	.events-span {
-		display: none;
-	}
-
 	.project-button {
-        display: flex;
         flex-direction: column;
 		gap: 0.5rem;
+        min-height: 8rem;
 	}
 }
 

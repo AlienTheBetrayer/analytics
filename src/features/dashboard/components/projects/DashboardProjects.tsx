@@ -7,7 +7,7 @@ export const DashboardProjects = () => {
     const { filteredProjects } = useProjectList();
 
     return (
-        <div className="flex flex-col gap-4 relative max-h-256">
+        <div className="flex flex-col gap-3 relative max-h-256">
             <ProjectTopline />
             <hr />
 

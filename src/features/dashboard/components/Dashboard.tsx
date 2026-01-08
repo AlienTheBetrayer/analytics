@@ -33,12 +33,12 @@ export const Dashboard = () => {
     }
 
     return (
-        <div className="w-full max-w-7xl m-auto min-h-200 mt-8 sm:mt-0 box">
+        <div className="w-full max-w-7xl m-auto min-h-200 mt-8 sm:mt-0 box gap-3!">
             <Topline />
-            
-            <hr className="w-5/6! mx-auto!" />
 
-            <div className="grid grid-flow-row lg:grid-flow-col lg:grid-cols-2 gap-4 grow">
+            <hr />
+
+            <div className="flex flex-col md:flex-row gap-2 lg:gap-4 grow *:w-full">
                 <DashboardProjects />
                 <DashboardEvents />
             </div>

@@ -1,4 +1,4 @@
-import { formatDistanceToNow, parseISO } from "date-fns";
+import { formatDistanceToNowStrict, parseISO } from "date-fns";
 
 /**
  * gets the proximity to a given date and then converts it to a human-like version
@@ -6,8 +6,10 @@ import { formatDistanceToNow, parseISO } from "date-fns";
  * @returns a string containing a human-like proximity to the date
  */
 export const relativeTime = (date: string | undefined) => {
-	if (date === undefined) return "";
+    if (!date) {
+        return "";
+    }
 
-	const parsedDate = parseISO(date);
-	return formatDistanceToNow(parsedDate, { addSuffix: true });
+    const parsedDate = parseISO(date);
+    return formatDistanceToNowStrict(parsedDate, { addSuffix: true });
 };

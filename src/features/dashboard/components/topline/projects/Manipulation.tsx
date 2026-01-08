@@ -6,13 +6,11 @@ import { ProjectManipulation } from "../../projects/ProjectManipulation";
 export const Manipulation = () => {
     return (
         <Tooltip
-            className="ml-auto"
             text="Advanced editing"
             direction="top"
         >
             <Tooltip
                 text="De-select the project"
-                className="ml-auto"
                 direction="bottom-left"
                 element={<ProjectManipulation />}
                 disabledPointer={false}

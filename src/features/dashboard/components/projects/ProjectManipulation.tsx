@@ -88,7 +88,7 @@ export const ProjectManipulation = () => {
             >
                 <LinkButton
                     className="w-full"
-                    href={`/dashboard/emulate/${selectedProjectId}`}
+                    href={`/emulate/${selectedProjectId}`}
                     isEnabled={status?.role !== "user"}
                 >
                     <Image

@@ -7,6 +7,7 @@ import { Search } from "./Search";
 import { Wipe } from "./Wipe";
 import { Deselect } from "./Deselect";
 import { Manipulation } from "./Manipulation";
+import { Emulate } from "./Emulate";
 
 export const ProjectTopline = () => {
     // zustand-state
@@ -15,16 +16,17 @@ export const ProjectTopline = () => {
 
     return (
         <div
-            className={`box p-0! gap-1! flex-row! items-center ${!selectedProjectId ? "opacity-30" : ""}`}
+            className={`box p-0! gap-1! flex-row! transition-all duration-500 h-10 items-center ${!selectedProjectId ? "opacity-30" : ""}`}
             inert={!selectedProjectId}
         >
-            {!selectedProjectId && (
-                <div className="select-none pointer-events-none absolute inset-0 grid place-items-center z-1">
-                    <span>
-                        <mark>Select</mark> a project to access
-                    </span>
-                </div>
-            )}
+            <div
+                className="select-none pointer-events-none absolute transition-all duration-500 inset-0 grid place-items-center z-1"
+                style={{ opacity: selectedProjectId ? 0 : 1 }}
+            >
+                <span>
+                    <mark>Select</mark> a project to access
+                </span>
+            </div>
 
             <Tooltip
                 disabledPointer={false}
@@ -66,9 +68,12 @@ export const ProjectTopline = () => {
 
             <Search key={selectedProjectId} />
 
-            <Manipulation />
-            <Deselect />
-            <Wipe />
+            <div className="flex items-center gap-1 ml-auto">
+                <Emulate/>
+                <Manipulation />
+                <Deselect />
+                <Wipe />
+            </div>
         </div>
     );
 };

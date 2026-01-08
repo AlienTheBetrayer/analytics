@@ -13,49 +13,75 @@ export const Topline = () => {
     const sync = useAppStore((state) => state.sync);
 
     return (
-        <nav className="flex flex-col items-center gap-2">
-            <div className="flex w-full gap-2">
+        <div
+            className={`box p-0! flex-row! flex-wrap transition-all duration-500 items-center h-10!`}
+        >
+            <div className="flex gap-1 items-center">
                 <Tooltip
-                    text="Emulate fake events"
+                    text="Go back home"
                     direction="top"
-                    className="w-full"
                 >
                     <LinkButton
-                        href="/dashboard/emulate/"
-                        className="w-full"
+                        href="/emulate/"
+                        className="p-0!"
                     >
                         <Image
                             width={16}
                             height={16}
                             alt="emulate"
+                            src="/home.svg"
+                        />
+                    </LinkButton>
+                </Tooltip>
+
+                <Tooltip
+                    text="Emulate fake events"
+                    direction="top"
+                >
+                    <LinkButton
+                        href="/emulate/"
+                        className="p-0! sm:px-2!"
+                    >
+                        <Image
+                            width={16}
+                            height={16}
+                            alt="emulation"
                             src="/emulate.svg"
                         />
-                        <span>Emulate events</span>
+                        <span className="hidden sm:block">Emulation</span>
+                    </LinkButton>
+                </Tooltip>
+
+                <Tooltip
+                    text="Previous notifications"
+                    direction="top"
+                >
+                    <LinkButton
+                        href="/notifications/"
+                        className="p-0! sm:px-2!"
+                    >
+                        <Image
+                            width={16}
+                            height={16}
+                            alt="notifications"
+                            src="/send.svg"
+                        />
+                        <span className="hidden sm:block">Notifications</span>
                     </LinkButton>
                 </Tooltip>
             </div>
-            <hr />
-            <div className="flex gap-1 w-full items-center">
-                <Image
-                    src="/server.svg"
-                    alt=""
-                    width={16}
-                    height={16}
+
+            <span className="flex gap-1 items-center absolute left-1/2 -translate-1/2 top-1/2">
+                <div
+                    className={`rounded-full w-1 h-1 ${promises.sync === "pending" ? "bg-red-500" : "bg-[rgb(56,66,255)]"} duration-500`}
                 />
-                <span>Client</span>
-            </div>
+                {promises.sync === "pending" ? "Syncing..." : "Synced"}
+            </span>
 
-            <div className="flex gap-2 w-full">
-                <span className="flex gap-1 items-center">
-                    <div
-                        className={`rounded-full w-1.5 h-1.5 ${promises.sync === "pending" ? "bg-red-500" : "bg-[rgb(56,66,255)]"} duration-1000`}
-                    />
-                    {promises.sync === "pending" ? "Syncing..." : "Synced"}
-                </span>
-
+            <div className="flex gap-1 ml-auto items-center">
                 <Tooltip
                     text="Re-sync all data"
-                    className="ml-auto"
+                    direction="top"
                     disabledPointer
                 >
                     <Button
@@ -70,12 +96,10 @@ export const Topline = () => {
                             width={16}
                             height={16}
                         />
-                        <b>
-                            <mark>Sync</mark>
-                        </b>
+                        <mark>Sync</mark>
                     </Button>
                 </Tooltip>
             </div>
-        </nav>
+        </div>
     );
 };

@@ -13,12 +13,21 @@ export const FetchPrompt = () => {
 
     return (
         <div className="flex flex-col gap-4 p-6! rounded-4xl!">
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 items-center">
+                <Image
+                    alt=""
+                    src="/prohibited.svg"
+                    width={16}
+                    height={16}
+                />
                 <span className="text-center text-foreground-2! text-5!">
                     Fetch required
                 </span>
                 <span className="text-center">
-                    The project / data has not been fetched yet
+                    The project you were trying to access has <u>not</u> been
+                    fetched yet. Check your <b>URL</b> or try to{" "}
+                    <mark>re-fetch</mark> below and the project list will be
+                    shown. If nothing helps, then the data is absent.
                 </span>
             </div>
 
@@ -30,12 +39,22 @@ export const FetchPrompt = () => {
                     }}
                 >
                     {promiseStatus(promises.sync)}
-                    <Image width={16} height={16} alt="" src="/download.svg" />
+                    <Image
+                        width={16}
+                        height={16}
+                        alt=""
+                        src="/download.svg"
+                    />
                     Fetch
                 </Button>
 
                 <LinkButton href="/dashboard">
-                    <Image width={16} height={16} alt="" src="/dashboard.svg" />
+                    <Image
+                        width={16}
+                        height={16}
+                        alt=""
+                        src="/dashboard.svg"
+                    />
                     Go to dashboard
                 </LinkButton>
             </div>

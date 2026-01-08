@@ -27,7 +27,7 @@ export const ProjectList = () => {
                         direction="top"
                     >
                         <LinkButton
-                            href={`/dashboard/emulate/${data.id}`}
+                            href={`/emulate/${data.id}`}
                             className={`flex flex-row! w-full h-full box p-4!
                             ${data.id === id ? "border-blue-1!" : ""}`}
                         >
@@ -40,11 +40,9 @@ export const ProjectList = () => {
 
                             <span>{data.name}</span>
 
-                            <span className="ml-auto">
-                                <small>
-                                    updated {relativeTime(data.last_event_at)}
-                                </small>
-                            </span>
+                            <small className="ml-auto text-ellipsis-left">
+                                updated {relativeTime(data.last_event_at)}
+                            </small>
                         </LinkButton>
                     </Tooltip>
                 </li>

@@ -14,16 +14,17 @@ export const EventTopline = () => {
 
     return (
         <div
-            className={`box p-0! gap-1! flex-row! items-center ${!selectedProjectId ? "opacity-30" : ""}`}
+            className={`box p-0! gap-1! flex-row! transition-all duration-500 h-10 items-center ${!selectedProjectId ? "opacity-30" : ""}`}
             inert={!selectedProjectId}
         >
-            {!selectedProjectId && (
-                <div className="select-none pointer-events-none absolute inset-0 grid place-items-center z-1">
-                    <span>
-                        <mark>Select</mark> a project to access
-                    </span>
-                </div>
-            )}
+            <div
+                className="select-none pointer-events-none transition-all duration-500 absolute inset-0 grid place-items-center z-1"
+                style={{ opacity: selectedProjectId ? 0 : 1 }}
+            >
+                <span>
+                    <mark>Select</mark> a project to access
+                </span>
+            </div>
 
             <Tooltip
                 disabledPointer={false}
@@ -46,8 +47,9 @@ export const EventTopline = () => {
                         <div
                             className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500"
                             style={{
-                                background: eventFilters[selectedProjectId ?? ""]
-                                    ?.eventsFiltering
+                                background: eventFilters[
+                                    selectedProjectId ?? ""
+                                ]?.eventsFiltering
                                     ? "var(--blue-1)"
                                     : "transparent",
                             }}
@@ -75,8 +77,9 @@ export const EventTopline = () => {
                             className="duration-500! ease-out!"
                             style={{
                                 transform:
-                                    eventFilters[selectedProjectId ?? ""]?.eventsSorting
-                                        ?.direction === "ascendant"
+                                    eventFilters[selectedProjectId ?? ""]
+                                        ?.eventsSorting?.direction ===
+                                    "ascendant"
                                         ? `rotate(180deg)`
                                         : `rotate(0deg)`,
                             }}
@@ -85,8 +88,9 @@ export const EventTopline = () => {
                         <div
                             className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500"
                             style={{
-                                background: eventFilters[selectedProjectId ?? ""]
-                                    ?.eventsSorting
+                                background: eventFilters[
+                                    selectedProjectId ?? ""
+                                ]?.eventsSorting
                                     ? "var(--blue-1)"
                                     : "transparent",
                             }}

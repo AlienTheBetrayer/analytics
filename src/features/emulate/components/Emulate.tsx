@@ -69,9 +69,7 @@ export const Emulate = () => {
                                 alt=""
                                 src="/download.svg"
                             />
-                            <b>
-                                <mark>Sync</mark>
-                            </b>
+                            <mark>Sync</mark>
                         </Button>
                     </Tooltip>
 
@@ -97,7 +95,7 @@ export const Emulate = () => {
                             direction="top"
                             text="Remove selection"
                         >
-                            <LinkButton href="/dashboard/emulate">
+                            <LinkButton href="/emulate">
                                 <Image
                                     src="/cross.svg"
                                     alt=""

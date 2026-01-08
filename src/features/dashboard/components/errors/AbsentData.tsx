@@ -14,6 +14,8 @@ export const AbsentData = () => {
         <div className="flex flex-col items-center justify-center mt-30">
             <div className="flex flex-col gap-8 items-center">
                 <div className="flex flex-col gap-2 items-center">
+                    {promiseStatus(promises.sync)}
+
                     <div className="relative flex gap-1">
                         <Image
                             width={20}
@@ -61,7 +63,7 @@ export const AbsentData = () => {
                         text="Emulate synthetic events"
                         className="w-full"
                     >
-                        <LinkButton href="/dashboard/emulate">
+                        <LinkButton href="/emulate">
                             <Image
                                 width={16}
                                 height={16}

@@ -39,7 +39,7 @@ export const Controller = () => {
                     Enter data that will be sent to the database
                 </span>
             </div>
-            
+
             <div className="flex flex-col gap-2">
                 <form
                     className="flex flex-col gap-2"
@@ -68,10 +68,10 @@ export const Controller = () => {
                         <>
                             <label
                                 htmlFor="custom-name"
-                                className="flex flex-wrap"
+                                className="flex whitespace-nowrap"
                             >
                                 Custom project&apos;s name
-                                <small className="ml-auto">
+                                <small className="text-ellipsis-left ml-auto">
                                     (since you didn&apos;t select any)
                                 </small>
                             </label>
@@ -88,11 +88,11 @@ export const Controller = () => {
 
                     <label
                         htmlFor="event-type"
-                        className="flex flex-wrap"
+                        className="flex whitespace-nowrap"
                     >
                         Event type
-                        <small className="ml-auto">
-                            (page_view, effect_click, ...)
+                        <small className="text-ellipsis-left ml-auto">
+                            (page_view, effect_click, other)
                         </small>
                     </label>
                     <Input
@@ -106,10 +106,12 @@ export const Controller = () => {
 
                     <label
                         htmlFor="description"
-                        className="flex flex-wrap"
+                        className="flex whitespace-nowrap"
                     >
                         Description
-                        <small className="ml-auto">(optional)</small>
+                        <small className="text-ellipsis-left ml-auto">
+                            (optional)
+                        </small>
                     </label>
                     <Input
                         id="description"
@@ -133,12 +135,12 @@ export const Controller = () => {
                         >
                             {promiseStatus(promises.emulateEvent)}
                             <Image
-                                width={20}
-                                height={20}
-                                src="/send.svg"
+                                width={16}
+                                height={16}
+                                src="/cubeadd.svg"
                                 alt=""
                             />
-                            Send
+                            Emulate
                         </Button>
                     </Tooltip>
                 </form>
