@@ -4,6 +4,7 @@ import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { ProfileImage } from "@/features/profile/components/ProfileImage";
 import { useLocalStore } from "@/zustand/localStore";
+import { Tooltip } from "@/features/tooltip/components/Tooltip";
 
 type Props = {
     onInteract: () => void;
@@ -25,23 +26,31 @@ export const HeaderMenu = ({ onInteract }: Props) => {
             <ul className="w-full h-full flex flex-col justify-between p-8!">
                 <div className="flex flex-col gap-4">
                     <li>
-                        <LinkButton href="/home" className="p-4! text-5!">
+                        <LinkButton
+                            href="/home"
+                            className="p-4! text-5!"
+                        >
                             <Image
                                 src="/cube.svg"
-                                width={24}
-                                height={24}
+                                width={16}
+                                height={16}
                                 alt=""
+                                className="w-5 aspect-square"
                             />
                             Home
                         </LinkButton>
                     </li>
                     <li>
-                        <LinkButton href="/dashboard" className="p-4! text-5!">
+                        <LinkButton
+                            href="/dashboard"
+                            className="p-4! text-5!"
+                        >
                             <Image
                                 src="/dashboard.svg"
-                                width={24}
-                                height={24}
+                                width={16}
+                                height={16}
                                 alt=""
+                                className="w-5 aspect-square"
                             />
                             Dashboard
                         </LinkButton>
@@ -49,7 +58,7 @@ export const HeaderMenu = ({ onInteract }: Props) => {
                 </div>
 
                 <div className="flex flex-col gap-4">
-                    {visibleProfile && (
+                    {visibleProfile ? (
                         <li>
                             <LinkButton
                                 href="/profile"
@@ -59,11 +68,55 @@ export const HeaderMenu = ({ onInteract }: Props) => {
                                     profile={visibleProfile}
                                     width={16}
                                     height={16}
-                                    className="w-8 aspect-square"
+                                    className="w-5 aspect-square"
                                 />
                                 {visibleProfile.username ?? "Account"}
                             </LinkButton>
                         </li>
+                    ) : (
+                        <>
+                            <li>
+                                <Tooltip
+                                    text="Create an account"
+                                    className="w-full"
+                                >
+                                    <LinkButton
+                                        href="/signup"
+                                        className="p-4! text-5!"
+                                    >
+                                        <Image
+                                            width={16}
+                                            height={16}
+                                            alt=""
+                                            src="/pencil.svg"
+                                            className="w-5 aspect-square"
+                                        />
+                                        Sign up
+                                    </LinkButton>
+                                </Tooltip>
+                            </li>
+
+                            <li>
+                                <Tooltip
+                                    text="Log in an existing account"
+                                    className="w-full"
+                                >
+                                    <LinkButton
+                                        href="/login"
+                                        className="p-4! text-5!"
+                                    >
+                                        <Image
+                                            width={16}
+                                            height={16}
+                                            alt=""
+                                            src="/security.svg"
+                                            className="w-5 aspect-square"
+                                        />
+                                        Log in
+                                    </LinkButton>
+                                </Tooltip>
+                            </li>
+                        </>
                     )}
                 </div>
 
@@ -72,9 +125,10 @@ export const HeaderMenu = ({ onInteract }: Props) => {
                         <Button className="p-4! text-5! w-full">
                             <Image
                                 src="/cross.svg"
-                                width={24}
-                                height={24}
+                                width={16}
+                                height={16}
                                 alt=""
+                                className="w-5 aspect-square"
                             />
                             Hide
                         </Button>

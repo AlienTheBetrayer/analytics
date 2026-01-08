@@ -15,10 +15,7 @@ type Props = {
         text: string;
         tooltip: string;
     };
-    onSubmit: (
-        username: string,
-        password: string
-    ) => Promise<ResponseLogin>;
+    onSubmit: (username: string, password: string) => Promise<ResponseLogin>;
     className?: string;
     type?: "login" | "register";
 };
@@ -49,7 +46,16 @@ export const AuthenticationForm = ({
                 sm:hover:scale-105 duration-300 ease-out box
                  ${className ?? ""}`}
         >
+            <div className="w-full flex justify-center items-center">
+                <Image
+                    alt=""
+                    width={20}
+                    height={20}
+                    src={`${type === "login" ? "/security.svg" : "/pencil.svg"}`}
+                />
+            </div>
             {/* topline */}
+
             <div className="relative gap-2 flex flex-wrap items-center w-full border-b border-b-background-5 p-2">
                 <Tooltip
                     text="Easter egg 🌀"
@@ -156,7 +162,7 @@ export const AuthenticationForm = ({
                         text="Proceed the authentication"
                         direction="bottom"
                         disabledPointer
-                        className='w-full'
+                        className="w-full"
                     >
                         <LinkButton
                             className="w-full"
@@ -176,7 +182,9 @@ export const AuthenticationForm = ({
                         <div
                             className={`rounded-full w-2 h-2 ${response.type ? "bg-blue-1" : "bg-red-1"} shrink-0`}
                         />
-                        <span>{response.response?.data.error || response.message}</span>
+                        <span>
+                            {response.response?.data.error || response.message}
+                        </span>
                     </div>
                 </>
             )}

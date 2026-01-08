@@ -17,17 +17,10 @@ export const ProfileList = () => {
     const profiles = useAppStore((state) => state.profiles);
     const promises = useAppStore((state) => state.promises);
 
-    // zustand functions
-    const getAllProfiles = useAppStore((state) => state.getAllProfiles);
-
     // list items handling
     const [listItems, setListItems] = useState<string[]>(["desktop", "mobile", "compact"]);
     const isMobile = useMediaQuery("(max-width: 640px)");
 
-    // fetching
-    useEffect(() => {
-        getAllProfiles();
-    }, [getAllProfiles]);
 
     // showing desktop tab only on desktop
     useEffect(() => {
@@ -58,7 +51,6 @@ export const ProfileList = () => {
                         </span>
                         <Button
                             onClick={() => {
-                                getAllProfiles(false);
                             }}
                         >
                             Re-fetch
