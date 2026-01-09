@@ -20,7 +20,6 @@ export const Role = ({ data }: Props) => {
                     />
                 </div>
             }
-            disabledPointer={false}
         >
             <div className="flex gap-1 items-center box p-1.5! flex-row! border-0!">
                 <Image

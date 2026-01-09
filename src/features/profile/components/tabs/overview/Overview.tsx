@@ -34,11 +34,9 @@ export const Overview = ({ data }: Props) => {
                             &apos;s profile
                         </span>
                     </div>
-
-                    <div className="flex gap-1 items-center"></div>
                 </div>
-
                 <span>Profile overview</span>
+                <ColorSwatches data={data} />
             </div>
 
             <hr className="w-2/3! mx-auto" />
@@ -46,7 +44,7 @@ export const Overview = ({ data }: Props) => {
             <div className="flex flex-col gap-2 grow items-center justify-center">
                 {data.user.id !== status?.id && <LastSeen data={data} />}
 
-                <span className="text-3! text-foreground-2!">
+                <span className="text-3! text-foreground-3!">
                     {data.profile.name}
                 </span>
 
@@ -66,7 +64,6 @@ export const Overview = ({ data }: Props) => {
 
                 <Role data={data} />
 
-                <ColorSwatches data={data} />
                 <hr className="w-2/5!" />
 
                 <StatusBio data={data} />

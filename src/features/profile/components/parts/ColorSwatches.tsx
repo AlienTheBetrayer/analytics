@@ -20,7 +20,6 @@ export const ColorSwatches = ({ data }: Props) => {
                 <Tooltip
                     key={`${c.slot}${c.color}`}
                     direction="top"
-                    disabledPointer={false}
                     element={
                         <div className="box p-4!">
                             <div
