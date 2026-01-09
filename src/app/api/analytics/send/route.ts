@@ -9,7 +9,7 @@ export const POST = async (request: NextRequest) => {
     try {
         const { project_name, event_type, description } = await request.json();
 
-        if (project_name === undefined || event_type === undefined) {
+        if (!project_name || !event_type) {
             return nextResponse(
                 { error: "project_name & event_type are missing." },
                 400
@@ -31,12 +31,12 @@ export const POST = async (request: NextRequest) => {
         }
 
         // 2. inserting / updating new metadata
-        const { error: eventsError } = (await supabaseServer
+        const { data: eventsData, error: eventsError } = (await supabaseServer
             .from("events")
             .upsert({
                 type: event_type,
                 description,
-                project_id: projectData[0].id,
+                project_id: projectData?.[0]?.id,
             })
             .select()) as {
             data: Event[];
@@ -53,7 +53,7 @@ export const POST = async (request: NextRequest) => {
             (await supabaseServer
                 .from("aggregates")
                 .select()
-                .eq("id", projectData[0].id)) as {
+                .eq("project_id", projectData?.[0]?.id)) as {
                 data: Aggregate[];
                 error: PostgrestError | null;
             };
@@ -63,26 +63,38 @@ export const POST = async (request: NextRequest) => {
             return nextResponse({ projectAggregatesError }, 400);
         }
 
-        const { error: aggregatesError } = await supabaseServer
-            .from("aggregates")
-            .upsert(
-                {
-                    project_id: projectData[0].id,
+        const { data: aggregatesData, error: aggregatesError } =
+            await supabaseServer
+                .from("aggregates")
+                .upsert(
+                    {
+                        project_id: projectData[0].id,
 
-                    visits:
-                        event_type === "page_view"
-                            ? (projectAggregatesData?.[0]?.visits ?? 0) + 1
-                            : (projectAggregatesData?.[0]?.visits ?? 0),
-                },
-                { onConflict: "id" }
-            );
+                        visits:
+                            event_type === "page_view"
+                                ? (projectAggregatesData?.[0]?.visits ?? 0) + 1
+                                : (projectAggregatesData?.[0]?.visits ?? 0),
+                    },
+                    { onConflict: "project_id" }
+                )
+                .select();
 
         if (aggregatesError) {
             console.error(aggregatesError);
             return nextResponse({ aggregatesError }, 400);
         }
 
-        return nextResponse({ message: "Successfully created an event!" }, 200);
+        return nextResponse(
+            {
+                message: "Successfully created an event!",
+                sent: {
+                    project: projectData?.[0],
+                    event: eventsData?.[0],
+                    aggregate: aggregatesData?.[0],
+                },
+            },
+            200
+        );
     } catch (error) {
         console.error(error);
         return nextResponse(

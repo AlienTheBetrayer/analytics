@@ -1,4 +1,4 @@
-import { ResponseSync } from "@/types/api/responses/analytics";
+import { ResponseSent, ResponseSync } from "@/types/api/responses/analytics";
 import type { DataStore } from "@/types/zustand/data";
 import type { SliceFunction } from "@/types/zustand/utils/sliceFunction";
 import { refreshedRequest } from "@/utils/auth/refreshedRequest";
@@ -87,6 +87,7 @@ export const DataSlice: SliceFunction<DataStore> = (set, get) => {
                                     projects,
                                     events,
                                     aggregates,
+                                    selectedProjectId: undefined,
                                 };
                             }
                         }
@@ -101,49 +102,51 @@ export const DataSlice: SliceFunction<DataStore> = (set, get) => {
                 projects: {},
                 events: {},
                 aggregates: {},
+                selectedProjectId: undefined,
             }));
         },
 
         sync: async (options) => {
             const { setPromise, projects } = get();
 
-            if((options?.caching ?? true) && Object.values(projects).length) {
+            if ((options?.caching ?? true) && Object.values(projects).length) {
                 return;
             }
 
-            return await setPromise(
-                options?.promiseKey ?? "sync",
-                async () => {
-                    const res = await refreshedRequest("/api/analytics/sync", "GET");
+            return await setPromise(options?.promiseKey ?? "sync", async () => {
+                const res = await refreshedRequest(
+                    "/api/analytics/sync",
+                    "GET"
+                );
 
-                    const data = res.data as ResponseSync;
+                const data = res.data as ResponseSync;
 
-                    set((state) => {
-                        const projects = { ...state.projects };
-                        const events = { ...state.events };
-                        const aggregates = { ...state.aggregates };
+                set((state) => {
+                    const projects = { ...state.projects };
+                    const events = { ...state.events };
+                    const aggregates = { ...state.aggregates };
 
-                        for (const entry of Object.values(data)) {
-                            projects[entry.id] = {
-                                id: entry.id,
-                                name: entry.name,
-                                created_at: entry.created_at,
-                                last_event_at: entry.last_event_at,
-                            };
+                    for (const entry of Object.values(data)) {
+                        projects[entry.id] = {
+                            id: entry.id,
+                            name: entry.name,
+                            created_at: entry.created_at,
+                            last_event_at: entry.last_event_at,
+                        };
 
-                            if (entry.events) {
-                                events[entry.id] = entry.events;
-                            }
-
-                            if (entry.aggregates?.length) {
-                                aggregates[entry.id] = entry.aggregates[0];
-                            }
+                        if (entry.events) {
+                            events[entry.id] = entry.events;
                         }
+                        console.log(entry);
 
-                        return { ...state, projects, events, aggregates };
-                    });
-                }
-            );
+                        if (entry.aggregates?.length) {
+                            aggregates[entry.id] = entry.aggregates[0];
+                        }
+                    }
+
+                    return { ...state, projects, events, aggregates };
+                });
+            });
         },
 
         emulateEvent: async (options) => {
@@ -151,10 +154,31 @@ export const DataSlice: SliceFunction<DataStore> = (set, get) => {
             return await setPromise(
                 options.promiseKey ?? "emulateEvent",
                 async () => {
-                    await refreshedRequest("/api/analytics/send", "POST", {
-                        project_name: options.project_name,
-                        event_type: options.event_type,
-                        description: options.description,
+                    const res = await refreshedRequest(
+                        "/api/analytics/send",
+                        "POST",
+                        {
+                            project_name: options.project_name,
+                            event_type: options.event_type,
+                            description: options.description,
+                        }
+                    );
+
+                    const data = res.data.sent as ResponseSent;
+
+                    set((state) => {
+                        const projects = { ...state.projects };
+                        const events = { ...state.events };
+                        const aggregates = { ...state.aggregates };
+
+                        projects[data.project.id] = data.project;
+                        aggregates[data.project.id] = data.aggregate;
+                        events[data.project.id] = [
+                            ...(events?.[data.project.id] ?? []),
+                            data.event,
+                        ];
+
+                        return { ...state, projects, events, aggregates };
                     });
                 }
             );

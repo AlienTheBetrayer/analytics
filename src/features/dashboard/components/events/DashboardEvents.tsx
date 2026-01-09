@@ -31,7 +31,6 @@ export const DashboardEvents = () => {
         return (
             <div className="flex flex-col gap-4 max-h-256 relative">
                 <EventTopline />
-
                 <NoEvents />
             </div>
         );

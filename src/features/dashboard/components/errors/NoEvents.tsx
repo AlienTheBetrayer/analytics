@@ -27,9 +27,10 @@ export const NoEvents = () => {
                     </span>
 
                     <p className="max-w-100 text-center">
-                        Currently you are unauthenticated or <u>lacking</u>{" "}
-                        certain permissions to view the analytics{" "}
-                        <mark>data</mark>. <b>Contact</b> us for the details.
+                        The project you selected does <u>not</u> have any events
+                        yet. You can try sending them from the{" "}
+                        <mark>emulation</mark> page or wait for the analytics
+                        data to be <b>gathered</b>.
                     </p>
                 </div>
 

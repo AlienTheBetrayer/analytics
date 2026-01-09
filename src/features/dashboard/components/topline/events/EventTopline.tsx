@@ -14,11 +14,11 @@ export const EventTopline = () => {
 
     return (
         <div
-            className={`box p-0! gap-1! flex-row! transition-all duration-500 h-10 items-center ${!selectedProjectId ? "opacity-30" : ""}`}
+            className={`box p-0! gap-1! flex-row! transition-all duration-300 h-10 min-h-10 items-center ${!selectedProjectId ? "opacity-30" : ""}`}
             inert={!selectedProjectId}
         >
             <div
-                className="select-none pointer-events-none transition-all duration-500 absolute inset-0 grid place-items-center z-1"
+                className="select-none pointer-events-none transition-all duration-300 absolute inset-0 grid place-items-center z-1"
                 style={{ opacity: selectedProjectId ? 0 : 1 }}
             >
                 <span>
@@ -45,7 +45,7 @@ export const EventTopline = () => {
                         />
 
                         <div
-                            className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500"
+                            className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-300"
                             style={{
                                 background: eventFilters[
                                     selectedProjectId ?? ""
@@ -74,7 +74,7 @@ export const EventTopline = () => {
                             src="/sort.svg"
                             width={16}
                             height={16}
-                            className="duration-500! ease-out!"
+                            className="duration-300! ease-out!"
                             style={{
                                 transform:
                                     eventFilters[selectedProjectId ?? ""]
@@ -86,7 +86,7 @@ export const EventTopline = () => {
                         />
 
                         <div
-                            className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500"
+                            className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-300"
                             style={{
                                 background: eventFilters[
                                     selectedProjectId ?? ""

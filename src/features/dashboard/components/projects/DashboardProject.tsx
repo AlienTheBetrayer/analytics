@@ -45,7 +45,7 @@ export const DashboardProject = ({ id }: Props) => {
                         selectProject(data.project?.id ?? undefined);
                     }}
                 >
-                    <div className="flex items-center gap-1.5">
+                    <div className="flex items-center gap-1">
                         {promiseStatus(promises.project)}
                         <Image
                             src="/cube.svg"
@@ -54,7 +54,7 @@ export const DashboardProject = ({ id }: Props) => {
                             height={16}
                             className='invert-60!'
                         />
-                        <span className='text-5! text-foreground-4!'>
+                        <span className='text-6! text-foreground-4!'>
                             {data.project.name}
                         </span>
                     </div>

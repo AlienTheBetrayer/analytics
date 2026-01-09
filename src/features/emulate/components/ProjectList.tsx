@@ -27,7 +27,7 @@ export const ProjectList = () => {
                         direction="top"
                     >
                         <LinkButton
-                            href={`/emulate/${data.id}`}
+                            href={`/emulate/${data.id !== id ? data.id : ""}`}
                             className={`flex flex-row! w-full h-full box p-4!
                             ${data.id === id ? "border-blue-1!" : ""}`}
                         >
