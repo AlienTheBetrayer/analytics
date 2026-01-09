@@ -14,7 +14,7 @@ export const Topline = () => {
 
     return (
         <div
-            className={`box p-0! flex-row! flex-wrap transition-all duration-500 items-center h-10!`}
+            className={`box w-full max-w-7xl mx-auto my-2 p-0! flex-row! flex-wrap transition-all duration-500 items-center h-10!`}
         >
             <div className="flex gap-1 items-center">
                 <Tooltip
@@ -23,7 +23,7 @@ export const Topline = () => {
                 >
                     <LinkButton
                         href="/home/"
-                        className="p-0! sm:px-2!"
+                        className="p-0! md:px-2!"
                     >
                         <Image
                             width={16}
@@ -31,7 +31,7 @@ export const Topline = () => {
                             alt="home"
                             src="/home.svg"
                         />
-                        <span className="hidden sm:block">Home</span>
+                        <span className="hidden md:block">Home</span>
                     </LinkButton>
                 </Tooltip>
 
@@ -41,7 +41,7 @@ export const Topline = () => {
                 >
                     <LinkButton
                         href="/emulate/"
-                        className="p-0! sm:px-2!"
+                        className="p-0! md:px-2!"
                     >
                         <Image
                             width={16}
@@ -49,7 +49,7 @@ export const Topline = () => {
                             alt="emulation"
                             src="/emulate.svg"
                         />
-                        <span className="hidden sm:block">Emulation</span>
+                        <span className="hidden md:block">Emulation</span>
                     </LinkButton>
                 </Tooltip>
 
@@ -59,7 +59,7 @@ export const Topline = () => {
                 >
                     <LinkButton
                         href="/notifications/"
-                        className="p-0! sm:px-2!"
+                        className="p-0! md:px-2!"
                     >
                         <Image
                             width={16}
@@ -67,16 +67,14 @@ export const Topline = () => {
                             alt="notifications"
                             src="/send.svg"
                         />
-                        <span className="hidden sm:block">Notifications</span>
+                        <span className="hidden md:block">Notifications</span>
                     </LinkButton>
                 </Tooltip>
             </div>
 
             <span className="flex gap-1 items-center absolute left-1/2 -translate-1/2 top-1/2">
-                <div
-                    className={`rounded-full w-1 h-1 ${promises.sync === "pending" ? "bg-red-500" : "bg-[rgb(56,66,255)]"} duration-500`}
-                />
-                {promises.sync === "pending" ? "Syncing..." : "Synced"}
+                <div className="rounded-full w-1 h-1 bg-blue-1" />
+                Dashboard
             </span>
 
             <div className="flex gap-1 ml-auto items-center">

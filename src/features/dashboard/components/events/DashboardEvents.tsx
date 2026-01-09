@@ -21,9 +21,7 @@ export const DashboardEvents = () => {
     if (!selectedProjectId) {
         return (
             <div className="flex flex-col gap-4 max-h-256 relative">
-                <hr className="block! lg:hidden!" />
                 <EventTopline />
-
                 <NoProjectSelected />
             </div>
         );
@@ -32,7 +30,6 @@ export const DashboardEvents = () => {
     if (!events[selectedProjectId ?? ""]?.length) {
         return (
             <div className="flex flex-col gap-4 max-h-256 relative">
-                <hr className="block! lg:hidden!" />
                 <EventTopline />
 
                 <NoEvents />
@@ -42,7 +39,6 @@ export const DashboardEvents = () => {
 
     return (
         <div className="flex flex-col gap-3 max-h-256 relative">
-            <hr className="block! md:hidden!" />
             <EventTopline />
             <hr />
 

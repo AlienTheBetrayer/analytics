@@ -33,15 +33,17 @@ export const Dashboard = () => {
     }
 
     return (
-        <div className="w-full max-w-7xl m-auto min-h-200 mt-8 sm:mt-0 box gap-3!">
+        <>
             <Topline />
+            <div className="w-full max-w-7xl m-auto min-h-200 mt-8 sm:mt-0 box gap-3!">
+                <hr />
 
-            <hr />
-
-            <div className="flex flex-col md:flex-row gap-2 lg:gap-4 grow *:w-full">
-                <DashboardProjects />
-                <DashboardEvents />
+                <div className="flex flex-col md:flex-row gap-8 md:gap-4 grow *:w-full">
+                    <DashboardProjects />
+                    <hr className='md:hidden'/>
+                    <DashboardEvents />
+                </div>
             </div>
-        </div>
+        </>
     );
 };

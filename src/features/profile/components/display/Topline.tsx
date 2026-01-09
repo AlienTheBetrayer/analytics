@@ -1,4 +1,3 @@
-import "./Topline.css";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
@@ -22,6 +21,11 @@ export const Topline = ({ data }: Props) => {
         <div
             className={`box p-0! gap-2! my-2 flex-row! max-w-7xl w-full m-auto transition-all duration-500 h-10 items-center`}
         >
+            <span className="flex gap-1 items-center absolute left-1/2 -translate-1/2 top-1/2">
+                <div className="rounded-full w-1 h-1 bg-blue-1" />
+                Profile
+            </span>
+
             <Tooltip
                 text="Go back home"
                 direction="top"
