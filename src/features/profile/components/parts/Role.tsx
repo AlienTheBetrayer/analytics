@@ -13,7 +13,11 @@ export const Role = ({ data }: Props) => {
             direction="bottom"
             element={
                 <div className="box">
-                    <ProfileImage profile={data.profile} width={64} height={64}/>
+                    <ProfileImage
+                        profile={data.profile}
+                        width={64}
+                        height={64}
+                    />
                 </div>
             }
             disabledPointer={false}

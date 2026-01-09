@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { VisibleProfile } from "@/types/zustand/local";
 import { Profile } from "@/types/tables/account";
+import { CSSProperties } from "react";
 
 type Props = {
     profile?: Profile | VisibleProfile;
@@ -8,6 +9,7 @@ type Props = {
     width?: number;
     height?: number;
     className?: string;
+    style?: CSSProperties;
 };
 
 export const ProfileImage = ({
@@ -15,6 +17,7 @@ export const ProfileImage = ({
     src,
     width,
     height,
+    style,
     className,
     ...rest
 }: Props) => {
@@ -28,6 +31,7 @@ export const ProfileImage = ({
             src={url}
             alt="pfp"
             className={`rounded-full aspect-square invert-0! grayscale-0! ${className ?? ""}`}
+            style={{ ...style }}
             {...rest}
         />
     ) : (
@@ -37,6 +41,7 @@ export const ProfileImage = ({
                 background: profile?.color ?? "var(--blue-3)",
                 width,
                 height,
+                ...style,
             }}
         />
     );

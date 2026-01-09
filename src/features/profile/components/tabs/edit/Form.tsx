@@ -49,8 +49,14 @@ export const Form = ({ avatar, avatarFile, data }: EditAvatarProps) => {
         >
             <label
                 htmlFor="name"
-                className="flex items-center"
+                className="flex items-center gap-1"
             >
+                <Image
+                    alt=""
+                    width={16}
+                    height={16}
+                    src="/account.svg"
+                />
                 <b>Name</b>
                 <small className="ml-auto text-ellipsis-left">
                     {" "}
@@ -68,8 +74,14 @@ export const Form = ({ avatar, avatarFile, data }: EditAvatarProps) => {
             <hr />
             <label
                 htmlFor="title"
-                className="flex items-center"
+                className="flex items-center gap-1"
             >
+                <Image
+                    alt=""
+                    width={16}
+                    height={16}
+                    src="/type.svg"
+                />
                 <b>Title</b>
                 <small className="ml-auto text-ellipsis-left">
                     (a short phrase that feels yours)
@@ -86,8 +98,14 @@ export const Form = ({ avatar, avatarFile, data }: EditAvatarProps) => {
             <hr />
             <label
                 htmlFor="status"
-                className="flex items-center"
+                className="flex items-center gap-1"
             >
+                <Image
+                    alt=""
+                    width={16}
+                    height={16}
+                    src="/pencil.svg"
+                />
                 <b>Status</b>
                 <small className="ml-auto text-ellipsis-left">
                     (a short text capturing your mood)
@@ -104,8 +122,14 @@ export const Form = ({ avatar, avatarFile, data }: EditAvatarProps) => {
             <hr />
             <label
                 htmlFor="bio"
-                className="flex items-center"
+                className="flex items-center gap-1"
             >
+                <Image
+                    alt=""
+                    width={16}
+                    height={16}
+                    src="/menu.svg"
+                />
                 <b>Bio</b>
                 <small className="ml-auto text-ellipsis-left">
                     {" "}

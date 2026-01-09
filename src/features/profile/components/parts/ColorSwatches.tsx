@@ -23,7 +23,10 @@ export const ColorSwatches = ({ data }: Props) => {
                     disabledPointer={false}
                     element={
                         <div className="box p-4!">
-                            <div style={{ background: c.color }} className='w-8 h-8 rounded-xl'/>
+                            <div
+                                style={{ background: c.color }}
+                                className="w-8 h-8 rounded-xl"
+                            />
                         </div>
                     }
                 >

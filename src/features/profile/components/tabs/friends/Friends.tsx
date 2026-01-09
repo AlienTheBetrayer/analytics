@@ -66,7 +66,7 @@ export const Friends = ({ data }: Props) => {
                             width={16}
                             height={16}
                             alt=""
-                            src="/cross.svg"
+                            src="/delete.svg"
                         />
                         Unfriend everyone
                     </Button>

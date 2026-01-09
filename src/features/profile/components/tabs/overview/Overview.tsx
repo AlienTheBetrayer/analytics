@@ -26,11 +26,11 @@ export const Overview = ({ data }: Props) => {
                             width={16}
                             height={16}
                             alt=""
-                            src="/friends.svg"
+                            src="/book.svg"
                             className="invert-60!"
                         />
                         <span className="text-foreground-4! text-5! text-center w-full whitespace-nowrap">
-                            {data.user.username}
+                            <mark>{data.user.username}</mark>
                             &apos;s profile
                         </span>
                     </div>
@@ -47,7 +47,7 @@ export const Overview = ({ data }: Props) => {
                 {data.user.id !== status?.id && <LastSeen data={data} />}
 
                 <span className="text-3! text-foreground-2!">
-                    <mark>{data.profile.name}</mark>
+                    {data.profile.name}
                 </span>
 
                 <hr className="w-1/5!" />
@@ -58,15 +58,18 @@ export const Overview = ({ data }: Props) => {
                     profile={data.profile}
                     width={256}
                     height={256}
-                    className="w-full max-w-80 aspect-square hover:scale-105 duration-1000!"
+                    className="w-full max-w-80 aspect-square hover:scale-102 outline-1 duration-500!"
+                    style={{
+                        outlineColor: data.profile.color ?? "transparent",
+                    }}
                 />
 
                 <Role data={data} />
 
+                <ColorSwatches data={data} />
                 <hr className="w-2/5!" />
 
                 <StatusBio data={data} />
-                <ColorSwatches data={data} />
 
                 <hr className="w-1/5!" />
                 <FriendButton data={data} />

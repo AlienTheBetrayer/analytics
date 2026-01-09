@@ -29,7 +29,7 @@ export const Sessions = ({ data, currentSessions }: Props) => {
                 currentSessions.map((token) => (
                     <React.Fragment key={token.id}>
                         <li
-                            className={`flex gap-1 items-center rounded-full p-2! ${token.isCurrent ? "border border-blue-2" : ""}`}
+                            className={`flex gap-2 items-center rounded-full p-2! px-4! ${token.isCurrent ? "border border-blue-2" : ""}`}
                         >
                             {token.isCurrent ? (
                                 <>
@@ -39,7 +39,7 @@ export const Sessions = ({ data, currentSessions }: Props) => {
                                         height={20}
                                         src="/privacy.svg"
                                     />
-                                    <span>Ongoing session</span>
+                                    <span>Ongoing</span>
                                 </>
                             ) : (
                                 <span className="truncate">{token.id}</span>

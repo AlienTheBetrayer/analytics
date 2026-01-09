@@ -30,7 +30,7 @@ export const Form = ({ data }: Props) => {
         <div className="flex flex-col gap-2 h-full w-full grow">
             {deleteMessageBox.render()}
             {terminateMessageBox.render()}
-            
+
             <form
                 className="flex flex-col gap-2"
                 onSubmit={(e) => {
@@ -43,8 +43,14 @@ export const Form = ({ data }: Props) => {
             >
                 <label
                     htmlFor="bio"
-                    className="flex items-center"
+                    className="flex items-center gap-1"
                 >
+                    <Image
+                        alt=""
+                        width={16}
+                        height={16}
+                        src="/security.svg"
+                    />
                     <b>Password</b>
                     <small className="ml-auto text-ellipsis-left">
                         (a new strong password)
@@ -84,7 +90,14 @@ export const Form = ({ data }: Props) => {
 
             <hr />
             <span className="flex items-center gap-2">
+                <Image
+                    alt=""
+                    width={16}
+                    height={16}
+                    src="/auth.svg"
+                />
                 <b>Sessions</b>
+
                 <Tooltip
                     text="Re-load visible sessions"
                     direction="top"
@@ -105,8 +118,8 @@ export const Form = ({ data }: Props) => {
                         ) : (
                             <Image
                                 src="/reload.svg"
-                                width={16}
-                                height={16}
+                                width={12}
+                                height={12}
                                 alt="refresh"
                             />
                         )}

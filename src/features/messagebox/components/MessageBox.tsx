@@ -20,7 +20,7 @@ export const MessageBox = ({ description, onInteract }: Props) => {
             exit={{ opacity: 0 }}
             className="flex flex-col justify-between items-center z-1005 fixed
              left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 rounded-4xl
-              outline-2 outline-background-a-5 bg-background-a-0 backdrop-blur-2xl p-4 gap-4 min-h-42 w-80"
+              outline-2 outline-background-a-5 bg-background-a-0 backdrop-blur-2xl p-4 gap-4 w-full max-w-80"
         >
             <div className="flex flex-col gap-1 items-center">
                 <Image

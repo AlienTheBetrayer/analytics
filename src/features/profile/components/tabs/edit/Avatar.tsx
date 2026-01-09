@@ -9,6 +9,7 @@ import { MessageBox } from "@/features/messagebox/components/MessageBox";
 import { usePopup } from "@/features/popup/hooks/usePopup";
 import Image from "next/image";
 import { Role } from "../../parts/Role";
+import { ColorSwatches } from "../../parts/ColorSwatches";
 
 export type EditAvatarProps = {
     data: { profile: Profile; user: User };
@@ -167,6 +168,8 @@ export const Avatar = ({
                 )}
             </div>
 
+            <ColorSwatches data={data} />
+            
             <hr className="mt-auto" />
             <Tooltip
                 direction="top"
