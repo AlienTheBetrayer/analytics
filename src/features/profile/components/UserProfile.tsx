@@ -37,7 +37,7 @@ export const UserProfile = () => {
 
         getUsers({
             username: [retrievedUsername],
-            select: ["profile", "friend_requests", "friends"],
+            select: ["profile", "friend_requests", "friends", "colors"],
         }).then((data) => {
             if (data && !data?.length) {
                 setError("no_user");

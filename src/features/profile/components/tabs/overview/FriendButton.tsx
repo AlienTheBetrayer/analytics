@@ -53,23 +53,29 @@ export const FriendButton = ({ data }: Props) => {
     return (
         <div className="flex justify-center items-center w-full min-h-8">
             {unfriendMessageBox.render()}
+
             {status &&
                 status.id !== data.user.id &&
                 (friends[data.user.id]?.has(status.id) ? (
-                    <Button
-                        onClick={() => {
-                            unfriendMessageBox.show();
-                        }}
+                    <Tooltip
+                        direction="top"
+                        text="Unfriend this user"
                     >
-                        {promiseStatus(promises.unfriend)}
-                        <Image
-                            src="/unfriend.svg"
-                            width={16}
-                            height={16}
-                            alt="unfriend"
-                        />
-                        Unfriend
-                    </Button>
+                        <Button
+                            onClick={() => {
+                                unfriendMessageBox.show();
+                            }}
+                        >
+                            {promiseStatus(promises.unfriend)}
+                            <Image
+                                src="/unfriend.svg"
+                                width={16}
+                                height={16}
+                                alt="unfriend"
+                            />
+                            Unfriend
+                        </Button>
+                    </Tooltip>
                 ) : hasIncomingRequest ? (
                     <div className="flex gap-1 items-center">
                         <Tooltip

@@ -7,6 +7,7 @@ import { StatusBio } from "./StatusBio";
 import { LastSeen } from "./LastSeen";
 import { Title } from "./Title";
 import { Role } from "../../parts/Role";
+import { ColorSwatches } from "../../parts/ColorSwatches";
 
 type Props = {
     data: { user: User; profile: Profile };
@@ -60,11 +61,14 @@ export const Overview = ({ data }: Props) => {
                     className="w-full max-w-80 aspect-square hover:scale-105 duration-1000!"
                 />
 
-                <Role data={data}/>
+                <Role data={data} />
 
                 <hr className="w-2/5!" />
 
                 <StatusBio data={data} />
+                <ColorSwatches data={data} />
+
+                <hr className="w-1/5!" />
                 <FriendButton data={data} />
             </div>
         </div>
