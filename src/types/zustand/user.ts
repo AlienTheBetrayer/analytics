@@ -76,34 +76,4 @@ export type UserStore = {
             | "unfriend-all";
         promiseKey?: string;
     }) => Promise<void>;
-
-    // /**
-    //  * deletes a friend request (works in both sides)
-    //  * @param user1_id the id of the first user
-    //  * @param user2_id the id of the second user
-    //  * @returns a promise containing the response
-    //  */
-    // deleteFriendRequest: (
-    //     user1_id: string,
-    //     user2_id: string
-    // ) => Promise<ResponseAxios>;
-
-    // /**
-    //  * sets the colors the user had picked
-    //  * @param id id of the user
-    //  * @param data the color slots
-    //  * @returns a promise containing the response
-    //  */
-    // setColors: (
-    //     id: string,
-    //     data: { slot: number; color: string }[]
-    // ) => Promise<ResponseAxios | undefined>;
-
-    // /**
-    //  * changes the user's role and permissions with it
-    //  * @param id the id of the user
-    //  * @param role the role
-    //  * @returns a promise containing the response
-    //  */
-    // changeRole: (id: string, role: string) => Promise<ResponseAxios>;
 };
