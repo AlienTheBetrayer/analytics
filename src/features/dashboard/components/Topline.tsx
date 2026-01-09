@@ -23,7 +23,7 @@ export const Topline = () => {
                 >
                     <LinkButton
                         href="/home/"
-                        className="p-0!"
+                        className="p-0! sm:px-2!"
                     >
                         <Image
                             width={16}
@@ -31,6 +31,7 @@ export const Topline = () => {
                             alt="home"
                             src="/home.svg"
                         />
+                        <span className="hidden sm:block">Home</span>
                     </LinkButton>
                 </Tooltip>
 

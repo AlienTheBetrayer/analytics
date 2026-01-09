@@ -82,7 +82,7 @@ export const UserProfile = () => {
             <>
                 <Topline data={retrievedData} />
                 <div
-                    className={`box max-w-7xl mt-2 w-full m-auto p-0! rounded-3xl! overflow-hidden`}
+                    className={`box max-w-7xl w-full m-auto p-0! rounded-3xl! overflow-hidden`}
                 >
                     <Content data={retrievedData} />
                 </div>

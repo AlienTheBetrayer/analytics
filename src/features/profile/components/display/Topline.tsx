@@ -20,7 +20,7 @@ export const Topline = ({ data }: Props) => {
 
     return (
         <div
-            className={`box p-0! gap-2! flex-row! max-w-7xl w-full m-auto transition-all duration-500 h-10 items-center`}
+            className={`box p-0! gap-2! my-2 flex-row! max-w-7xl w-full m-auto transition-all duration-500 h-10 items-center`}
         >
             <Tooltip
                 text="Go back home"
@@ -28,7 +28,7 @@ export const Topline = ({ data }: Props) => {
             >
                 <LinkButton
                     href="/home/"
-                    className={`p-0!`}
+                    className={`p-0! md:px-2!`}
                 >
                     <Image
                         width={16}
@@ -36,6 +36,7 @@ export const Topline = ({ data }: Props) => {
                         alt="home"
                         src="/home.svg"
                     />
+                    <span className="hidden md:block">Home</span>
                 </LinkButton>
             </Tooltip>
 
@@ -50,17 +51,36 @@ export const Topline = ({ data }: Props) => {
                         disabledPointer={false}
                         element={<RoleEditing data={data} />}
                     >
-                        <Button className="p-0!">
+                        <Button className="p-0! md:px-2!">
                             <Image
                                 width={16}
                                 height={16}
                                 alt=""
                                 src="/cube.svg"
                             />
+                            <span className="hidden md:block">Admin panel</span>
                         </Button>
                     </Tooltip>
                 </Tooltip>
             )}
+
+            <Tooltip
+                text="Notification centre"
+                direction="top"
+            >
+                <LinkButton
+                    href="/notifications/"
+                    className={`p-0! md:px-2!`}
+                >
+                    <Image
+                        width={16}
+                        height={16}
+                        alt="notifications"
+                        src="/send.svg"
+                    />
+                    <span className="hidden md:block">Notifications</span>
+                </LinkButton>
+            </Tooltip>
 
             {status && status.id !== data.user.id && (
                 <Tooltip text="Go back to friends tab">
