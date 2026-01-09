@@ -29,7 +29,7 @@ export const Sessions = ({ data, currentSessions }: Props) => {
                 currentSessions.map((token) => (
                     <React.Fragment key={token.id}>
                         <li
-                            className={`flex gap-1 items-center rounded-2xl p-2! ${token.isCurrent ? "border border-blue-2" : ""}`}
+                            className={`flex gap-1 items-center rounded-full p-2! ${token.isCurrent ? "border border-blue-2" : ""}`}
                         >
                             {token.isCurrent ? (
                                 <>

@@ -8,6 +8,7 @@ import { FriendList } from "./FriendList";
 import { IncomingList } from "./IncomingList";
 import { OutcomingList } from "./OutcomingList";
 import { useFriends } from "@/features/profile/hooks/useFriends";
+import { Role } from "../../parts/Role";
 
 type Props = {
     data: { profile: Profile; user: User };
@@ -29,11 +30,11 @@ export const Friends = ({ data }: Props) => {
                     <mark>{data.user.username}</mark>
                     &apos;s profile
                 </span>
-                <span>Your friends</span>
+                <span>Friends & Friend requests</span>
             </div>
 
             <hr />
-            
+
             <div className="flex flex-col md:flex-row gap-4 grow w-full">
                 <div className="flex flex-col items-center gap-2 w-full md:max-w-96">
                     <span>{data.profile.name}</span>
@@ -42,19 +43,7 @@ export const Friends = ({ data }: Props) => {
                         width={256}
                         height={256}
                     />
-                    <div className="flex items-center gap-1">
-                        <Image
-                            width={20}
-                            height={20}
-                            alt=""
-                            src="/privacy.svg"
-                        />
-                        <span className="text-foreground-5!">
-                            {data.user.role &&
-                                data.user.role[0].toUpperCase() +
-                                    data.user.role.substring(1)}
-                        </span>
-                    </div>
+                    <Role data={data}/>
                 </div>
 
                 <hr className="sm:w-px! sm:h-full" />

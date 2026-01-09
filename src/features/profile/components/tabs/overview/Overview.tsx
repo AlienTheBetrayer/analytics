@@ -6,6 +6,7 @@ import { FriendButton } from "./FriendButton";
 import { StatusBio } from "./StatusBio";
 import { LastSeen } from "./LastSeen";
 import { Title } from "./Title";
+import { Role } from "../../parts/Role";
 
 type Props = {
     data: { user: User; profile: Profile };
@@ -25,9 +26,9 @@ export const Overview = ({ data }: Props) => {
                             height={16}
                             alt=""
                             src="/friends.svg"
-                            className="invert-80!"
+                            className="invert-60!"
                         />
-                        <span className="text-foreground-2! text-5! text-center w-full whitespace-nowrap">
+                        <span className="text-foreground-4! text-5! text-center w-full whitespace-nowrap">
                             {data.user.username}
                             &apos;s profile
                         </span>
@@ -59,18 +60,7 @@ export const Overview = ({ data }: Props) => {
                     className="w-full max-w-80 aspect-square hover:scale-105 duration-1000!"
                 />
 
-                <div className="flex gap-1 items-center">
-                    <Image
-                        width={20}
-                        height={20}
-                        alt=""
-                        src="/privacy.svg"
-                    />
-                    <span className="text-foreground-5!">
-                        {data.user.role[0].toUpperCase() +
-                            data.user.role.substring(1)}
-                    </span>
-                </div>
+                <Role data={data}/>
 
                 <hr className="w-2/5!" />
 

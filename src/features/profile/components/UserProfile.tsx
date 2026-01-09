@@ -71,10 +71,7 @@ export const UserProfile = () => {
             <>
                 <Topline data={retrievedData} />
                 <div
-                    className={`box max-w-7xl mt-2 w-full m-auto min-h-160 p-0! rounded-4xl! overflow-hidden`}
-                    style={{
-                        outline: `1px solid ${retrievedData.profile?.color ?? "transparent"}`,
-                    }}
+                    className={`box max-w-7xl mt-2 w-full m-auto p-0! rounded-3xl! overflow-hidden`}
                 >
                     <Content data={retrievedData} />
                 </div>
@@ -84,10 +81,7 @@ export const UserProfile = () => {
 
     return (
         <div
-            className={`box max-w-7xl w-full m-auto min-h-160 p-0! rounded-4xl! overflow-hidden`}
-            style={{
-                outline: `1px solid ${retrievedData.profile?.color ?? "transparent"}`,
-            }}
+            className={`box max-w-7xl w-full m-auto p-0! rounded-3xl! overflow-hidden`}
         >
             <Overview data={retrievedData} />
         </div>

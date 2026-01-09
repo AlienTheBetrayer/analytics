@@ -16,7 +16,7 @@ export const Topline = ({ data }: Props) => {
     // zustand
     const status = useAppStore((state) => state.status);
 
-    const { tab } = useParams<{ tab: string }>();
+    const { tab } = useParams<{ tab?: string }>();
 
     return (
         <div
@@ -41,19 +41,24 @@ export const Topline = ({ data }: Props) => {
 
             {status && status.role === "op" && (
                 <Tooltip
-                    type="modal"
-                    direction="right"
-                    disabledPointer={false}
-                    element={<RoleEditing data={data} />}
+                    direction="top"
+                    text="Administrator panel"
                 >
-                    <Button className="p-0!">
-                        <Image
-                            width={16}
-                            height={16}
-                            alt=""
-                            src="/cube.svg"
-                        />
-                    </Button>
+                    <Tooltip
+                        type="modal"
+                        direction="right"
+                        disabledPointer={false}
+                        element={<RoleEditing data={data} />}
+                    >
+                        <Button className="p-0!">
+                            <Image
+                                width={16}
+                                height={16}
+                                alt=""
+                                src="/cube.svg"
+                            />
+                        </Button>
+                    </Tooltip>
                 </Tooltip>
             )}
 
@@ -89,7 +94,7 @@ export const Topline = ({ data }: Props) => {
                         src="/launch.svg"
                     />
                     <span className="hidden sm:block">Overview</span>
-                    {tab === "overview" && (
+                    {(!tab || tab === "overview") && (
                         <div className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500 tab-selection" />
                     )}
                 </LinkButton>

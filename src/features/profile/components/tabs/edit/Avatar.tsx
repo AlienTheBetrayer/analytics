@@ -8,6 +8,7 @@ import React, { JSX } from "react";
 import { MessageBox } from "@/features/messagebox/components/MessageBox";
 import { usePopup } from "@/features/popup/hooks/usePopup";
 import Image from "next/image";
+import { Role } from "../../parts/Role";
 
 export type EditAvatarProps = {
     data: { profile: Profile; user: User };
@@ -25,7 +26,12 @@ export type EditAvatarProps = {
     ];
 };
 
-export const Avatar = ({ data, fileError, avatarFile, avatar }: EditAvatarProps) => {
+export const Avatar = ({
+    data,
+    fileError,
+    avatarFile,
+    avatar,
+}: EditAvatarProps) => {
     // derived states
     const avatarImage = avatarFile[0]
         ? URL.createObjectURL(avatarFile[0])
@@ -121,20 +127,7 @@ export const Avatar = ({ data, fileError, avatarFile, avatar }: EditAvatarProps)
                 )}
             </AnimatePresence>
 
-            <div className="flex items-center gap-1">
-                <Image
-                    width={20}
-                    height={20}
-                    alt=""
-                    src="/privacy.svg"
-                />
-                {data.user.role && (
-                    <span className="text-foreground-5!">
-                        {data.user.role[0].toUpperCase() +
-                            data.user.role.substring(1)}
-                    </span>
-                )}
-            </div>
+            <Role data={data} />
 
             <div className="flex gap-1">
                 {avatarFile[0] ? (

@@ -8,6 +8,7 @@ import { Profile, User } from "@/types/tables/account";
 import { useLocalStore } from "@/zustand/localStore";
 import { ProfileImage } from "../../ProfileImage";
 import { Form } from "./Form";
+import { Role } from "../../parts/Role";
 
 type Props = {
     data: { profile: Profile; user: User };
@@ -47,18 +48,7 @@ export const Security = ({ data }: Props) => {
                         height={256}
                     />
 
-                    <div className="flex items-center gap-1">
-                        <Image
-                            width={20}
-                            height={20}
-                            alt=""
-                            src="/privacy.svg"
-                        />
-                        <span className="text-foreground-5!">
-                            {data.user.role[0].toUpperCase() +
-                                data.user.role.substring(1)}
-                        </span>
-                    </div>
+                    <Role data={data} />
 
                     <Tooltip text="Log yourself out">
                         <Button
