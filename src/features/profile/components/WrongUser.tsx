@@ -1,10 +1,10 @@
-import Image from "next/image";
 import { Spinner } from "@/features/spinner/components/Spinner";
-import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
+import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { useAppStore } from "@/zustand/store";
+import Image from "next/image";
 
-export const AuthRequired = () => {
+export const WrongUser = () => {
     // zustand
     const promises = useAppStore((state) => state.promises);
 
@@ -13,65 +13,46 @@ export const AuthRequired = () => {
             <div className="flex flex-col gap-4 items-center">
                 <div className="flex flex-col gap-2 items-center">
                     <div className="relative flex gap-1">
-                        {promises.login === "pending" ||
-                        promises.getSessions === "pending" ? (
+                        {promises.getUsers === "pending" ? (
                             <Spinner styles="big" />
                         ) : (
                             <Image
                                 alt=""
                                 width={16}
                                 height={16}
-                                src="/auth.svg"
+                                src="/book.svg"
                             />
                         )}
                     </div>
 
                     <span className="text-5! text-foreground-5!">
-                        <mark>Authentication</mark> is required
+                        User <u>not found</u>
                     </span>
 
                     <p className="max-w-100 text-center">
-                        You are currently <u>not</u> authenticated or lack
-                        certain permissions to view this content. <b>Contact</b>{" "}
-                        us if you think there is something wrong.
+                        We could <u>not</u> find this user nor their profile.
+                        Make sure the username you are searching for is the{" "}
+                        <b>correct</b>. one.
                     </p>
                 </div>
 
                 <hr />
                 <div className="flex flex-col gap-2 items-center w-full">
                     <Tooltip
-                        text="Create a new account"
+                        text="Return to the front page"
                         className="w-full"
                     >
                         <LinkButton
                             className="w-full"
-                            href="/signup"
+                            href="/home"
                         >
                             <Image
                                 width={16}
                                 height={16}
                                 alt=""
-                                src="/pencil.svg"
+                                src="/cube.svg"
                             />
-                            Sign up
-                        </LinkButton>
-                    </Tooltip>
-
-                    <Tooltip
-                        text="Log in an existing account"
-                        className="w-full"
-                    >
-                        <LinkButton
-                            className="w-full"
-                            href="/login"
-                        >
-                            <Image
-                                width={16}
-                                height={16}
-                                alt=""
-                                src="/auth.svg"
-                            />
-                            Log in
+                            Go back home
                         </LinkButton>
                     </Tooltip>
                 </div>

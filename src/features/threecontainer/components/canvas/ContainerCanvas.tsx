@@ -16,7 +16,7 @@ export const ContainerCanvas = () => {
             className="absolute! inset-0 z-0"
         >
             <Canvas>
-                <ContainerInstances isHovered={isHovered}/>
+                <ContainerInstances isHovered={isHovered} />
                 <ambientLight />
             </Canvas>
         </motion.div>

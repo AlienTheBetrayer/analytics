@@ -25,7 +25,7 @@ export const Emulate = () => {
 
     // error handling:
     // authentcation's missing
-    if (status === undefined || status.role === "user") {
+    if (!status || status?.role === "user") {
         return <AuthRequired />;
     }
 

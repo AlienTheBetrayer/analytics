@@ -5,8 +5,7 @@ import { useEffect, useState } from "react";
 import { AuthRequired } from "@/features/authentication/components/AuthRequired";
 import { useAppStore } from "@/zustand/store";
 import { Overview } from "./tabs/overview/Overview";
-import { UserLoading } from "./UserLoading";
-import { NotFound } from "./NotFound";
+import { WrongUser } from "./WrongUser";
 import { Content } from "./display/Content";
 import { Topline } from "./display/Topline";
 
@@ -48,20 +47,32 @@ export const UserProfile = () => {
 
     // viewing current profile but not logged in
     if (!retrievedUsername) {
-        return <AuthRequired description="Log in to see your own profile" />;
-    }
-
-    // wrong user
-    if (error === "no_user" || error === "no_profile") {
-        return <NotFound />;
+        return (
+            <div
+                className={`box max-w-7xl mt-2 w-full m-auto p-0! min-h-120 rounded-3xl! overflow-hidden`}
+            >
+                <AuthRequired />
+            </div>
+        );
     }
 
     const user = Object.values(users).find(
         (u) => u.username === retrievedUsername
     );
 
-    if (!user || !profiles[user.id]) {
-        return <UserLoading />;
+    if (
+        !user ||
+        !profiles[user.id] ||
+        error === "no_user" ||
+        error === "no_profile"
+    ) {
+        return (
+            <div
+                className={`box max-w-7xl mt-2 w-full m-auto p-0! min-h-120 rounded-3xl! overflow-hidden`}
+            >
+                <WrongUser />
+            </div>
+        );
     }
 
     const retrievedData = { user, profile: profiles[user.id] };
