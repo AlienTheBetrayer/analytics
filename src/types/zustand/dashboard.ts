@@ -4,10 +4,11 @@ import { Event } from "../tables/project";
 export type DashboardNotificationType = "information" | "error" | "warning";
 
 export type DashboardNotification = {
+    id: string;
     status: DashboardNotificationType;
-    title: string;
+    title?: string;
     description?: string;
-    createdAt?: Date;
+    sentAt?: Date;
 };
 
 export type ProjectColumns =
@@ -44,10 +45,13 @@ export type EventFilter = Record<
 // the main type
 export type DashboardStore = {
     // selectedProject
+    notifications: {
+        dashboard: Record<string, DashboardNotification>;
+        account: Record<string, DashboardNotification>;
+    };
     selectedProjectId?: string;
     eventFilters: EventFilter;
     projectFilters: ProjectFilter;
-
     /**
      * filter multi-function
      * @param events names of events to change visibility
@@ -75,27 +79,20 @@ export type DashboardStore = {
     selectProject: (idx: string | undefined) => void;
 
     /**
-     * explicitly deselects a project that may have been selected
+     * pushes a new notification into an existing array of notifications
+     * @param notification a new notification
      */
-    deselectProject: () => void;
-
-    // notifications
-    notifications: DashboardNotification[];
-
-    /**
-     * explicitly sets notifications array
-     * @param notifications an array of notifications
-     */
-    setNotifications: (notifications: DashboardNotification[]) => void;
+    pushNotification: (options: {
+        status: DashboardNotificationType;
+        title?: string;
+        description?: string;
+        type: "dashboard" | "account";
+    }) => void;
 
     /**
      * explicitly clears all notifications that have been sent
      */
-    clearNotifications: () => void;
-
-    /**
-     * pushes a new notification into an existing array of notifications
-     * @param notification a new notification
-     */
-    pushNotification: (notification: DashboardNotification) => void;
+    clearNotifications: (options: {
+        type: "dashboard" | "account" | "all";
+    }) => void;
 };

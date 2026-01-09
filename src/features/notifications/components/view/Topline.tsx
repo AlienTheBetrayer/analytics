@@ -112,6 +112,27 @@ export const Topline = () => {
                     )}
                 </LinkButton>
             </Tooltip>
+
+            <Tooltip
+                text="Push synthetic notifications"
+                direction="top"
+            >
+                <LinkButton
+                    href={`/notifications/emulate`}
+                    className={`p-0! sm:px-2!`}
+                >
+                    <Image
+                        width={16}
+                        height={16}
+                        alt="emulate"
+                        src="/emulate.svg"
+                    />
+                    <span className="hidden sm:block">Emulate</span>
+                    {tab === "emulate" && (
+                        <div className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500 tab-selection" />
+                    )}
+                </LinkButton>
+            </Tooltip>
         </div>
     );
 };

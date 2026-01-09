@@ -5,7 +5,7 @@ import { DashboardEvents } from "./events/DashboardEvents";
 import { DashboardProjects } from "./projects/DashboardProjects";
 import { Topline } from "./Topline";
 import { AbsentData } from "./errors/AbsentData";
-import { AuthRequired } from "./errors/AuthRequired";
+import { AuthRequired } from "@/features/authentication/components/AuthRequired";
 
 export const Dashboard = () => {
     // zustand states
@@ -40,7 +40,7 @@ export const Dashboard = () => {
 
                 <div className="flex flex-col md:flex-row gap-8 md:gap-4 grow *:w-full">
                     <DashboardProjects />
-                    <hr className='md:hidden'/>
+                    <hr className="md:hidden" />
                     <DashboardEvents />
                 </div>
             </div>

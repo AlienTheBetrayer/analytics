@@ -7,7 +7,7 @@ import type { SliceFunction } from "@/types/zustand/utils/sliceFunction";
 
 export const DashboardSlice: SliceFunction<DashboardStore> = (set, get) => {
     return {
-        notifications: [],
+        notifications: { dashboard: {}, account: {} },
         eventFilters: {},
         projectFilters: {},
 
@@ -133,28 +133,64 @@ export const DashboardSlice: SliceFunction<DashboardStore> = (set, get) => {
             set((state) => ({ ...state, selectedProjectId: idx }));
         },
 
-        deselectProject: () => {
-            const { selectedProjectId } = get();
-            if (selectedProjectId === undefined) {
-                return;
-            }
+        pushNotification: (options) => {
+            set((state) => {
+                const notifications = { ...state.notifications };
 
-            set((state) => ({ ...state, selectedProjectId: undefined }));
+                const id = crypto.randomUUID();
+                console.log(id);
+
+                const notification = {
+                    id,
+                    status: options.status,
+                    description: options.description,
+                    title: options.title,
+                    sentAt: new Date()
+                };
+
+                switch (options.type) {
+                    case "account": {
+                        notifications.account = {
+                            ...notifications.account,
+                            [id]: notification,
+                        };
+                        break;
+                    }
+                    case "dashboard": {
+                        notifications.dashboard = {
+                            ...notifications.dashboard,
+                            [id]: notification,
+                        };
+                        break;
+                    }
+                }
+
+                return { ...state, notifications };
+            });
         },
 
-        setNotifications: (notifications) => {
-            set((state) => ({ ...state, notifications }));
-        },
+        clearNotifications: (options) => {
+            set((state) => {
+                const notifications = { ...state.notifications };
 
-        pushNotification: (notification) => {
-            set((state) => ({
-                ...state,
-                notifications: [...state.notifications, notification],
-            }));
-        },
+                switch (options.type) {
+                    case "account": {
+                        notifications.account = {};
+                        break;
+                    }
+                    case "dashboard": {
+                        notifications.dashboard = {};
+                        break;
+                    }
+                    case "all": {
+                        notifications.account = {};
+                        notifications.dashboard = {};
+                        break;
+                    }
+                }
 
-        clearNotifications: () => {
-            set((state) => ({ ...state, notifications: [] }));
+                return { ...state, notifications };
+            });
         },
     };
 };

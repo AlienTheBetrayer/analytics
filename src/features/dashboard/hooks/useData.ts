@@ -10,16 +10,16 @@ export const useData = () => {
 
     // zustand functions
     const deleteState = useAppStore((state) => state.deleteState);
-    const deselectProject = useAppStore((state) => state.deselectProject);
+    const selectProject = useAppStore((state) => state.selectProject);
     const sync = useAppStore((state) => state.sync);
 
-    // fetching initial data if we're logged in and clearing everything if we log out
+    // fetching initial data if we're logged in and clearing everything when we log out
     useEffect(() => {
         if (!status) {
             deleteState();
-            deselectProject();
+            selectProject(undefined);
         } else {
             sync();
         }
-    }, [status, deleteState, deselectProject, sync]);
+    }, [status, deleteState, selectProject, sync]);
 };

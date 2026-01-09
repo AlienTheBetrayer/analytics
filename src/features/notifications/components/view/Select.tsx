@@ -1,15 +1,25 @@
+import { useAppStore } from "@/zustand/store";
 import { useParams } from "next/navigation";
-import { Account } from "../tabs/account/Account";
-import { Dashboard } from "../tabs/dashboard/Dashboard";
+import { Display } from "../Display";
+import { Emulate } from "../Emulate";
 
 export const Select = () => {
+    // zustand
+    const notifications = useAppStore((state) => state.notifications);
+
+    // url
     const { tab } = useParams<{ tab?: string }>();
 
     switch (tab) {
         default:
-        case "dashboard":
-            return <Dashboard />;
-        case "account":
-            return <Account />;
+        case "dashboard": {
+            return <Display data={notifications.dashboard} />;
+        }
+        case "account": {
+            return <Display data={notifications.account} />;
+        }
+        case "emulate": {
+            return <Emulate />;
+        }
     }
 };
