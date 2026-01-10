@@ -3,8 +3,13 @@ import { useAppStore } from "@/zustand/store";
 import { Select } from "./view/Select";
 import { Topline } from "./view/Topline";
 import { AuthRequired } from "@/features/authentication/components/AuthRequired";
+import { NotificationRoute } from "../types/notifications";
 
-export const Notifications = () => {
+type Props = {
+    type: NotificationRoute;
+};
+
+export const Notifications = ({ type }: Props) => {
     // zustand
     const status = useAppStore((state) => state.status);
 
@@ -18,9 +23,9 @@ export const Notifications = () => {
 
     return (
         <>
-            <Topline />
+            <Topline type={type} />
             <div className="box w-full max-w-7xl mx-auto min-h-128">
-                <Select />
+                <Select type={type} />
             </div>
         </>
     );

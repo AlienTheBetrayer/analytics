@@ -1,5 +1,6 @@
 import { relativeTime } from "@/utils/other/relativeTime";
 import { DashboardNotification } from "@/types/zustand/dashboard";
+import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 
 type Props = {
     data: Record<string, DashboardNotification>;
@@ -11,12 +12,13 @@ export const Display = ({ data }: Props) => {
             {Object.values(data).map((notification) => (
                 <li
                     key={notification.id}
-                    className="box"
                 >
+                    <LinkButton className='box' href={`/notification/${notification.id}`}>
                     <span>{notification.id}</span>
                     <span>
                         {relativeTime(notification.sentAt?.toISOString())}
                     </span>
+                    </LinkButton>
                 </li>
             ))}
         </ul>

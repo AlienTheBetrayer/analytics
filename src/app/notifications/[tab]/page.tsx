@@ -1,3 +1,3 @@
-import NotificationPage from "../page";
+import NotificationsPage from "../page";
 
-export default NotificationPage;
+export default NotificationsPage;

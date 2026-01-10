@@ -1,7 +1,7 @@
 import { Notifications } from "@/features/notifications/components/Notifications";
 
 const NotificationsPage = () => {
-    return <Notifications type="general" />;
+    return <Notifications type="specific" />;
 };
 
 export default NotificationsPage;

@@ -38,7 +38,7 @@ export const Topline = ({ data }: Props) => {
                         width={16}
                         height={16}
                         alt="home"
-                        src="/home.svg"
+                        src="/cube.svg"
                     />
                     <span className="hidden md:block">Home</span>
                 </LinkButton>
