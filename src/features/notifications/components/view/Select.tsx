@@ -23,11 +23,15 @@ export const Select = ({ type }: Props) => {
 
     // clearing the unread status
     useEffect(() => {
-        if (tab === "emulate") {
+        if (tab !== "dashboard" && tab !== "account" && tab !== "all" && !tab) {
             return;
         }
-        //// FIX THIS /////////////////////////////
-        clearUnread({ tab: (tab ?? "all") as "dashboard" | "account" });
+
+        const tabs = !tab || tab === "all" ? ["dashboard", "account"] : [tab];
+
+        for (const tab of tabs) {
+            clearUnread({ tab: tab as "dashboard" | "account" });
+        }
     }, [tab, clearUnread]);
 
     switch (type) {
