@@ -85,9 +85,30 @@ export const Topline = ({ type }: Props) => {
             )}
 
             <Tooltip
-                text="Dashboard-only notifications"
+                text="All notifications"
                 direction="top"
                 className="ml-auto"
+            >
+                <LinkButton
+                    href={`/notifications/all`}
+                    className={`p-0! sm:px-2!`}
+                >
+                    <Image
+                        width={16}
+                        height={16}
+                        alt="all"
+                        src="/server.svg"
+                    />
+                    <span className="hidden sm:block">All</span>
+                    {(tab === "all" || (!tab && !id)) && (
+                        <div className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500 tab-selection" />
+                    )}
+                </LinkButton>
+            </Tooltip>
+
+            <Tooltip
+                text="Dashboard-only notifications"
+                direction="top"
             >
                 <LinkButton
                     href={`/notifications/dashboard`}
@@ -100,7 +121,7 @@ export const Topline = ({ type }: Props) => {
                         src="/book.svg"
                     />
                     <span className="hidden sm:block">Dashboard</span>
-                    {(tab === "dashboard" || (!tab && !id)) && (
+                    {tab === "dashboard" && (
                         <div className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500 tab-selection" />
                     )}
                     {unreadTabs.has("dashboard") && (

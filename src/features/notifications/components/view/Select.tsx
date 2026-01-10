@@ -1,11 +1,13 @@
 import { useAppStore } from "@/zustand/store";
 import { useParams } from "next/navigation";
-import { Display } from "../Display";
 import { Emulate } from "../Emulate";
 import { useEffect } from "react";
 import { AbsentNotification } from "../errors/AbsentNotification";
 import { Notification } from "../specific/Notification";
 import { NotificationRoute } from "../../types/notifications";
+import { All } from "../All";
+import { Dashboard } from "../Dashboard";
+import { Account } from "../Account";
 
 type Props = {
     type: NotificationRoute;
@@ -21,22 +23,25 @@ export const Select = ({ type }: Props) => {
 
     // clearing the unread status
     useEffect(() => {
-        if (tab !== "dashboard" && tab !== "account" && !tab) {
+        if (tab === "emulate") {
             return;
         }
-
-        clearUnread({ tab: (tab ?? "dashboard") as "dashboard" | "account" });
+        //// FIX THIS /////////////////////////////
+        clearUnread({ tab: (tab ?? "all") as "dashboard" | "account" });
     }, [tab, clearUnread]);
 
     switch (type) {
         case "general": {
             switch (tab) {
                 default:
+                case "all": {
+                    return <All />;
+                }
                 case "dashboard": {
-                    return <Display data={notifications.dashboard} />;
+                    return <Dashboard />;
                 }
                 case "account": {
-                    return <Display data={notifications.account} />;
+                    return <Account />;
                 }
                 case "emulate": {
                     return <Emulate />;

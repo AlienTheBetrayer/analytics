@@ -25,11 +25,12 @@ export const Emulate = () => {
                     width={16}
                     height={16}
                     src="/emulate.svg"
-                    className="invert-70!"
+                    className="invert-60!"
                 />
                 <span className="text-foreground-5!">
                     Synthetic notifications
                 </span>
+                <hr className="w-2/3! mx-auto mt-4" />
             </div>
 
             <form
