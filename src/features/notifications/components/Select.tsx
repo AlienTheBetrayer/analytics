@@ -1,8 +1,7 @@
 import { useAppStore } from "@/zustand/store";
 import { useParams } from "next/navigation";
 import { useEffect } from "react";
-import { AbsentNotification } from "./errors/AbsentNotification";
-import { Notification } from "./specific/Notification";
+import { Notification } from "./tabs/notification/Notification";
 import { NotificationRoute } from "../types/notifications";
 import { Dashboard } from "./tabs/dashboard/Dashboard";
 import { Account } from "./tabs/account/Account";
@@ -16,11 +15,10 @@ type Props = {
 
 export const Select = ({ type }: Props) => {
     // zustand
-    const notifications = useAppStore((state) => state.notifications);
     const clearUnread = useAppStore((state) => state.clearUnread);
 
     // url
-    const { id, tab } = useParams<{ id?: string; tab?: string }>();
+    const { tab } = useParams<{ id?: string; tab?: string }>();
 
     // clearing the unread status
     useEffect(() => {
@@ -57,18 +55,7 @@ export const Select = ({ type }: Props) => {
             }
         }
         case "specific": {
-            const idData =
-                id &&
-                (notifications.account[id] || notifications.dashboard[id]);
-
-            if (!idData) {
-                return <AbsentNotification />;
-            }
-
-            if (id) {
-                return <Notification data={idData} />;
-            }
-            break;
+            return <Notification />;
         }
     }
 };

@@ -1,39 +1,39 @@
 import { Filtering } from "@/features/dashboard/components/topline/events/Filtering";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
-import { useAppStore } from "@/zustand/store";
+import { DashboardNotification } from "@/types/zustand/dashboard";
 import Image from "next/image";
 
-export const Topline = () => {
-    // zustand
-    const notifications = useAppStore((state) => state.notifications);
-    const hasNotification = !!Object.keys(notifications.account).length;
+type Props = {
+    data: DashboardNotification | undefined;
+};
 
+export const Topline = ({ data }: Props) => {
     return (
         <div
-            className={`box p-0! gap-1! flex-row! transition-all duration-300 h-10 min-h-10 items-center ${!hasNotification ? "opacity-30" : ""}`}
-            inert={!hasNotification}
+            className={`box p-0! gap-1! flex-row! transition-all duration-300 h-10 min-h-10 items-center ${!data ? "opacity-30" : ""}`}
+            inert={!data}
         >
             <div
                 className="absolute flex gap-1 items-center left-1/2 top-1/2 -translate-1/2 transition-all duration-500"
-                style={{ opacity: !hasNotification ? 0 : 1 }}
+                style={{ opacity: !data ? 0 : 1 }}
             >
                 <div className="rounded-full w-1 h-1 transition-all duration-500 tab-selection" />
                 <Image
                     alt=""
                     width={16}
                     height={16}
-                    src="/account.svg"
+                    src="/send.svg"
                 />
-                <span>Account-only</span>
+                <span>Notification</span>
             </div>
 
             <div
                 className="select-none pointer-events-none transition-all duration-300 absolute inset-0 grid place-items-center z-1"
-                style={{ opacity: hasNotification ? 0 : 1 }}
+                style={{ opacity: data ? 0 : 1 }}
             >
                 <span>
-                    <mark>Fetch</mark> notifications to access
+                    <mark>Select</mark> an existing notification to access
                 </span>
             </div>
 

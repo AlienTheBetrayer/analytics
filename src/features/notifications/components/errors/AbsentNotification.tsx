@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export const AbsentNotification = () => {
     return (
-        <div className="flex flex-col items-center justify-center mt-16">
+        <div className="flex flex-col items-center justify-center mt-8">
             <div className="flex flex-col gap-8 items-center">
                 <div className="flex flex-col gap-2 items-center">
                     <div className="relative flex gap-1">
