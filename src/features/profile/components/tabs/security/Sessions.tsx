@@ -76,7 +76,7 @@ export const Sessions = ({ data, currentSessions }: Props) => {
                                 </Button>
                             </Tooltip>
                         </li>
-                        <hr className="w-4/5! mx-auto" />
+                        <hr/>
                     </React.Fragment>
                 ))
             ) : (

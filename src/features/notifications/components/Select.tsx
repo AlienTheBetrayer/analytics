@@ -1,13 +1,14 @@
 import { useAppStore } from "@/zustand/store";
 import { useParams } from "next/navigation";
-import { Emulate } from "../Emulate";
 import { useEffect } from "react";
-import { AbsentNotification } from "../errors/AbsentNotification";
-import { Notification } from "../specific/Notification";
-import { NotificationRoute } from "../../types/notifications";
-import { All } from "../All";
-import { Dashboard } from "../Dashboard";
-import { Account } from "../Account";
+import { AbsentNotification } from "./errors/AbsentNotification";
+import { Notification } from "./specific/Notification";
+import { NotificationRoute } from "../types/notifications";
+import { Dashboard } from "./tabs/dashboard/Dashboard";
+import { Account } from "./tabs/account/Account";
+import { All } from "./tabs/All";
+import { Emulate } from "./tabs/Emulate";
+import { Preferences } from "./tabs/Preferences";
 
 type Props = {
     type: NotificationRoute;
@@ -49,6 +50,9 @@ export const Select = ({ type }: Props) => {
                 }
                 case "emulate": {
                     return <Emulate />;
+                }
+                case "preferences": {
+                    return <Preferences />;
                 }
             }
         }

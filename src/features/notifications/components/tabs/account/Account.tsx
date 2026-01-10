@@ -1,11 +1,7 @@
-import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import { Display } from "./Display";
 
 export const Account = () => {
-    // zustand
-    const notifications = useAppStore((state) => state.notifications);
-
     return (
         <div className="flex flex-col gap-2">
             <div className="flex flex-col items-center">
@@ -20,7 +16,7 @@ export const Account = () => {
                 <hr className="mt-4" />
             </div>
 
-            <Display data={notifications.account}/>
+            <Display />
         </div>
     );
 };

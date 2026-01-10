@@ -1,0 +1,32 @@
+import { relativeTime } from "@/utils/other/relativeTime";
+import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
+import { useAppStore } from "@/zustand/store";
+import { AbsentNotifications } from "../../errors/AbsentNotifications";
+
+export const Display = () => {
+    // zustand
+    const notifications = useAppStore((state) => state.notifications);
+    const data = notifications.dashboard;
+
+    if (!Object.keys(data).length) {
+        return <AbsentNotifications />;
+    }
+
+    return (
+        <ul className="flex flex-col gap-2">
+            {Object.values(data).map((notification) => (
+                <li key={notification.id}>
+                    <LinkButton
+                        className="box"
+                        href={`/notification/${notification.id}`}
+                    >
+                        <span>{notification.id}</span>
+                        <span>
+                            {relativeTime(notification.sentAt?.toISOString())}
+                        </span>
+                    </LinkButton>
+                </li>
+            ))}
+        </ul>
+    );
+};

@@ -71,7 +71,7 @@ export const Form = ({ avatar, avatarFile, data }: EditAvatarProps) => {
                 maxLength={24}
             />
 
-            <hr />
+            <hr className='mb-4'/>
             <label
                 htmlFor="title"
                 className="flex items-center gap-1"
@@ -95,7 +95,7 @@ export const Form = ({ avatar, avatarFile, data }: EditAvatarProps) => {
                 maxLength={24}
             />
 
-            <hr />
+            <hr className='mb-4'/>
             <label
                 htmlFor="status"
                 className="flex items-center gap-1"
@@ -119,7 +119,7 @@ export const Form = ({ avatar, avatarFile, data }: EditAvatarProps) => {
                 placeholder="48 characters max"
             />
 
-            <hr />
+            <hr className='mb-4'/>
             <label
                 htmlFor="bio"
                 className="flex items-center gap-1"

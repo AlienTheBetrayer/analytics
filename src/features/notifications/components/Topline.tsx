@@ -3,7 +3,7 @@ import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import { NotificationRoute } from "../../types/notifications";
+import { NotificationRoute } from "../types/notifications";
 
 type Props = {
     type: NotificationRoute;
@@ -170,6 +170,27 @@ export const Topline = ({ type }: Props) => {
                     />
                     <span className="hidden sm:block">Emulate</span>
                     {tab === "emulate" && (
+                        <div className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500 tab-selection" />
+                    )}
+                </LinkButton>
+            </Tooltip>
+
+            <Tooltip
+                text="Notifications preferences"
+                direction="top"
+            >
+                <LinkButton
+                    href="/notifications/preferences"
+                    className={`p-0! md:px-2!`}
+                >
+                    <Image
+                        width={16}
+                        height={16}
+                        alt="preferences"
+                        src="/settings.svg"
+                    />
+                    <span className="hidden md:block">Preferences</span>
+                    {tab === "preferences" && (
                         <div className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500 tab-selection" />
                     )}
                 </LinkButton>

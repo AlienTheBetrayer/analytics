@@ -1,7 +1,7 @@
 "use client";
 import { useAppStore } from "@/zustand/store";
-import { Select } from "./view/Select";
-import { Topline } from "./view/Topline";
+import { Select } from "./Select";
+import { Topline } from "./Topline";
 import { AuthRequired } from "@/features/authentication/components/AuthRequired";
 import { NotificationRoute } from "../types/notifications";
 

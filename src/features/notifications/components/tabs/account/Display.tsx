@@ -1,13 +1,13 @@
 import { relativeTime } from "@/utils/other/relativeTime";
-import { DashboardNotification } from "@/types/zustand/dashboard";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
-import { AbsentNotifications } from "./errors/AbsentNotifications";
+import { useAppStore } from "@/zustand/store";
+import { AbsentNotifications } from "../../errors/AbsentNotifications";
 
-type Props = {
-    data: Record<string, DashboardNotification>;
-};
+export const Display = () => {
+    // zustand
+    const notifications = useAppStore((state) => state.notifications);
+    const data = notifications.account;
 
-export const Display = ({ data }: Props) => {
     if (!Object.keys(data).length) {
         return <AbsentNotifications />;
     }

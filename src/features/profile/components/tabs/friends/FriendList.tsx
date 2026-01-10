@@ -101,7 +101,7 @@ export const FriendList = ({ data }: Props) => {
                     ))}
                 </ul>
             )}
-            <hr />
+            <hr/>
         </li>
     );
 };
