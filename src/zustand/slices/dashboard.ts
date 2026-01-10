@@ -140,7 +140,6 @@ export const DashboardSlice: SliceFunction<DashboardStore> = (set, get) => {
                 const unreadTabs = new Set(state.unreadTabs);
 
                 const id = crypto.randomUUID();
-                console.log(id);
 
                 const notification = {
                     id,
@@ -169,31 +168,50 @@ export const DashboardSlice: SliceFunction<DashboardStore> = (set, get) => {
                     }
                 }
 
-                return { ...state, notifications, unreadTabs };
+                return {
+                    ...state,
+                    notifications,
+                    unreadTabs,
+                    lastNotificationId: id,
+                };
             });
         },
 
         clearNotifications: (options) => {
             set((state) => {
                 const notifications = { ...state.notifications };
+                let lastNotificationId = state.lastNotificationId;
 
                 switch (options.type) {
                     case "account": {
+                        if (
+                            state.lastNotificationId &&
+                            notifications.account[state.lastNotificationId]
+                        ) {
+                            lastNotificationId = undefined;
+                        }
                         notifications.account = {};
                         break;
                     }
                     case "dashboard": {
+                        if (
+                            state.lastNotificationId &&
+                            notifications.dashboard[state.lastNotificationId]
+                        ) {
+                            lastNotificationId = undefined;
+                        }
                         notifications.dashboard = {};
                         break;
                     }
                     case "all": {
+                        lastNotificationId = undefined;
                         notifications.account = {};
                         notifications.dashboard = {};
                         break;
                     }
                 }
 
-                return { ...state, notifications };
+                return { ...state, notifications, lastNotificationId };
             });
         },
 

@@ -49,9 +49,10 @@ export type DashboardStore = {
         dashboard: Record<string, DashboardNotification>;
         account: Record<string, DashboardNotification>;
     };
+    lastNotificationId?: string;
 
     selectedProjectId?: string;
-
+    
     unreadTabs: Set<string>;
 
     eventFilters: EventFilter;

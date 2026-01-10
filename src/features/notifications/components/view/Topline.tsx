@@ -12,9 +12,10 @@ type Props = {
 export const Topline = ({ type }: Props) => {
     // zustand
     const unreadTabs = useAppStore((state) => state.unreadTabs);
+    const lastNotificationId = useAppStore((state) => state.lastNotificationId);
 
     // url
-    const { tab } = useParams<{ tab?: string }>();
+    const { id, tab } = useParams<{ id?: string; tab?: string }>();
 
     return (
         <div
@@ -63,6 +64,26 @@ export const Topline = ({ type }: Props) => {
                 </Tooltip>
             )}
 
+            {lastNotificationId && !id && (
+                <Tooltip
+                    text="View the most recent notification"
+                    direction="top"
+                >
+                    <LinkButton
+                        href={`/notification/${lastNotificationId}`}
+                        className={`p-0! md:px-2!`}
+                    >
+                        <Image
+                            width={16}
+                            height={16}
+                            alt="latest"
+                            src="/calendar.svg"
+                        />
+                        <span className="hidden md:block">Latest</span>
+                    </LinkButton>
+                </Tooltip>
+            )}
+
             <Tooltip
                 text="Dashboard-only notifications"
                 direction="top"
@@ -79,7 +100,7 @@ export const Topline = ({ type }: Props) => {
                         src="/book.svg"
                     />
                     <span className="hidden sm:block">Dashboard</span>
-                    {tab === "dashboard" && (
+                    {(tab === "dashboard" || (!tab && !id)) && (
                         <div className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500 tab-selection" />
                     )}
                     {unreadTabs.has("dashboard") && (

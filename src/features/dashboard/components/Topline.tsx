@@ -29,7 +29,7 @@ export const Topline = () => {
                             width={16}
                             height={16}
                             alt="home"
-                            src="/home.svg"
+                            src="/cube.svg"
                         />
                         <span className="hidden md:block">Home</span>
                     </LinkButton>
@@ -54,7 +54,7 @@ export const Topline = () => {
                 </Tooltip>
 
                 <Tooltip
-                    text="Previous notifications"
+                    text="Notification centre"
                     direction="top"
                 >
                     <LinkButton
