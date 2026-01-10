@@ -18,7 +18,6 @@ export const Topline = ({ data }: Props) => {
                 className="absolute flex gap-1 items-center left-1/2 top-1/2 -translate-1/2 transition-all duration-500"
                 style={{ opacity: !data ? 0 : 1 }}
             >
-                <div className="rounded-full w-1 h-1 transition-all duration-500 tab-selection" />
                 <Image
                     alt=""
                     width={16}

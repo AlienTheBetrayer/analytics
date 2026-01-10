@@ -6,6 +6,7 @@ import { DashboardNotificationType } from "@/types/zustand/dashboard";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import { useState } from "react";
+import { Topline } from "../toplines/emulate/Topline";
 
 export const Emulate = () => {
     // zustand
@@ -19,20 +20,8 @@ export const Emulate = () => {
 
     return (
         <div className="flex flex-col gap-2 grow">
-            <div className="flex flex-col items-center">
-                <Image
-                    alt=""
-                    width={16}
-                    height={16}
-                    src="/emulate.svg"
-                    className="invert-60!"
-                />
-                <span className="text-foreground-5!">
-                    Synthetic notifications
-                </span>
-                <hr className="w-2/3! mx-auto mt-4" />
-            </div>
-
+            <Topline />
+            <hr/>
             <form
                 className="flex flex-col gap-2 grow"
                 onSubmit={(e) => {
