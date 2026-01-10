@@ -10,6 +10,7 @@ export const DashboardSlice: SliceFunction<DashboardStore> = (set, get) => {
         notifications: { dashboard: {}, account: {} },
         eventFilters: {},
         projectFilters: {},
+        unreadTabs: new Set(),
 
         setFilter: ({ project_id, ...options }) => {
             set((state) => {
@@ -136,6 +137,7 @@ export const DashboardSlice: SliceFunction<DashboardStore> = (set, get) => {
         pushNotification: (options) => {
             set((state) => {
                 const notifications = { ...state.notifications };
+                const unreadTabs = new Set(state.unreadTabs);
 
                 const id = crypto.randomUUID();
                 console.log(id);
@@ -145,7 +147,7 @@ export const DashboardSlice: SliceFunction<DashboardStore> = (set, get) => {
                     status: options.status,
                     description: options.description,
                     title: options.title,
-                    sentAt: new Date()
+                    sentAt: new Date(),
                 };
 
                 switch (options.type) {
@@ -154,6 +156,7 @@ export const DashboardSlice: SliceFunction<DashboardStore> = (set, get) => {
                             ...notifications.account,
                             [id]: notification,
                         };
+                        unreadTabs.add("account");
                         break;
                     }
                     case "dashboard": {
@@ -161,11 +164,12 @@ export const DashboardSlice: SliceFunction<DashboardStore> = (set, get) => {
                             ...notifications.dashboard,
                             [id]: notification,
                         };
+                        unreadTabs.add("dashboard");
                         break;
                     }
                 }
 
-                return { ...state, notifications };
+                return { ...state, notifications, unreadTabs };
             });
         },
 
@@ -191,6 +195,15 @@ export const DashboardSlice: SliceFunction<DashboardStore> = (set, get) => {
 
                 return { ...state, notifications };
             });
+        },
+
+        clearUnread: (options) => {
+            set((state) => ({
+                ...state,
+                unreadTabs: new Set(
+                    state.unreadTabs.difference(new Set([options.tab]))
+                ),
+            }));
         },
     };
 };

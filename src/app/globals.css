@@ -353,3 +353,16 @@ img {
 .tab-selection {
     animation: 0.5s tabSelection ease-in-out forwards;
 }
+
+@keyframes tabUnread {
+    0% {
+        background-color: transparent;
+    }
+    100% {
+        background-color: var(--red-1);
+    }
+}
+
+.tab-unread {
+    animation: 0.5s tabUnread ease-in-out forwards;
+}

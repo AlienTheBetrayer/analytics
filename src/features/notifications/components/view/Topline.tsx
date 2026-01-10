@@ -1,12 +1,16 @@
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
+import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 
 export const Topline = () => {
+    // zustand
+    const unreadTabs = useAppStore((state) => state.unreadTabs);
+
+    // url
     const { tab } = useParams<{ tab?: string }>();
 
-    console.log(tab);
     return (
         <div
             className={`box w-full max-w-7xl mx-auto p-0! my-2 gap-1! flex-row! transition-all duration-500 h-10 items-center`}
@@ -89,6 +93,9 @@ export const Topline = () => {
                     {(!tab || tab === "dashboard") && (
                         <div className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500 tab-selection" />
                     )}
+                    {unreadTabs.has("dashboard") && (
+                        <div className="absolute right-1 top-1 z-1 rounded-full w-1 h-1 transition-all duration-500 tab-unread" />
+                    )}
                 </LinkButton>
             </Tooltip>
 
@@ -109,6 +116,9 @@ export const Topline = () => {
                     <span className="hidden sm:block">Account</span>
                     {tab === "account" && (
                         <div className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500 tab-selection" />
+                    )}
+                    {unreadTabs.has("account") && (
+                        <div className="absolute right-1 top-1 z-1 rounded-full w-1 h-1 transition-all duration-500 tab-unread" />
                     )}
                 </LinkButton>
             </Tooltip>

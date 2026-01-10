@@ -49,9 +49,14 @@ export type DashboardStore = {
         dashboard: Record<string, DashboardNotification>;
         account: Record<string, DashboardNotification>;
     };
+
     selectedProjectId?: string;
+
+    unreadTabs: Set<string>;
+
     eventFilters: EventFilter;
     projectFilters: ProjectFilter;
+
     /**
      * filter multi-function
      * @param events names of events to change visibility
@@ -95,4 +100,10 @@ export type DashboardStore = {
     clearNotifications: (options: {
         type: "dashboard" | "account" | "all";
     }) => void;
+
+    /**
+     * clears the unread status on a given tab
+     * @param options tab on which you might have the unread status
+     */
+    clearUnread: (options: { tab: "dashboard" | "account" }) => void;
 };
