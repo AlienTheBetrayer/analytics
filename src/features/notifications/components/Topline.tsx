@@ -97,7 +97,7 @@ export const Topline = ({ type }: Props) => {
                         width={16}
                         height={16}
                         alt="all"
-                        src="/server.svg"
+                        src="/cubes.svg"
                     />
                     <span className="hidden sm:block">All</span>
                     {(tab === "all" || (!tab && !id)) && (
@@ -106,19 +106,17 @@ export const Topline = ({ type }: Props) => {
                 </LinkButton>
             </Tooltip>
 
+            <hr className="w-px! h-1/2 bg-background-a-8" />
             <Tooltip
                 text="Dashboard-only notifications"
                 direction="top"
             >
-                <LinkButton
-                    href={`/notifications/dashboard`}
-                    className={`p-0! sm:px-2!`}
-                >
+                <LinkButton href={`/notifications/dashboard`}>
                     <Image
                         width={16}
                         height={16}
                         alt="home"
-                        src="/book.svg"
+                        src="/dashboard.svg"
                     />
                     <span className="hidden sm:block">Dashboard</span>
                     {tab === "dashboard" && (
@@ -134,15 +132,12 @@ export const Topline = ({ type }: Props) => {
                 text="Account-only notifications"
                 direction="top"
             >
-                <LinkButton
-                    href={`/notifications/account`}
-                    className={`p-0! sm:px-2!`}
-                >
+                <LinkButton href={`/notifications/account`}>
                     <Image
                         width={16}
                         height={16}
                         alt="home"
-                        src="/launch.svg"
+                        src="/account.svg"
                     />
                     <span className="hidden sm:block">Account</span>
                     {tab === "account" && (
@@ -154,21 +149,18 @@ export const Topline = ({ type }: Props) => {
                 </LinkButton>
             </Tooltip>
 
+            <hr className="w-px! h-1/2 bg-background-a-8" />
             <Tooltip
                 text="Push synthetic notifications"
                 direction="top"
             >
-                <LinkButton
-                    href={`/notifications/emulate`}
-                    className={`p-0! sm:px-2!`}
-                >
+                <LinkButton href={`/notifications/emulate`}>
                     <Image
                         width={16}
                         height={16}
                         alt="emulate"
                         src="/emulate.svg"
                     />
-                    <span className="hidden sm:block">Emulate</span>
                     {tab === "emulate" && (
                         <div className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500 tab-selection" />
                     )}
@@ -179,17 +171,13 @@ export const Topline = ({ type }: Props) => {
                 text="Notifications preferences"
                 direction="top"
             >
-                <LinkButton
-                    href="/notifications/preferences"
-                    className={`p-0! md:px-2!`}
-                >
+                <LinkButton href="/notifications/preferences">
                     <Image
                         width={16}
                         height={16}
                         alt="preferences"
                         src="/settings.svg"
                     />
-                    <span className="hidden md:block">Preferences</span>
                     {tab === "preferences" && (
                         <div className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500 tab-selection" />
                     )}

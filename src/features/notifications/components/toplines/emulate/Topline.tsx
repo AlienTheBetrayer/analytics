@@ -20,7 +20,6 @@ export const Topline = () => {
             </div>
 
             <Tooltip
-                className="ml-auto"
                 direction="top"
                 text="Generate a random notification"
             >

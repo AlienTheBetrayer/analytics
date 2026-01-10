@@ -30,38 +30,20 @@ export const AbsentNotification = () => {
                 <hr />
                 <div className="flex flex-col gap-1 items-center w-full">
                     <Tooltip
-                        text="Go to notifications"
+                        text="Emulate a synthetic event"
                         className="w-full"
                     >
                         <LinkButton
-                            href="/notifications"
+                            href="/notifications/emulate"
                             className="w-full"
                         >
                             <Image
                                 width={16}
                                 height={16}
                                 alt=""
-                                src="/send.svg"
+                                src="/emulate.svg"
                             />
-                            Notification centre
-                        </LinkButton>
-                    </Tooltip>
-
-                    <Tooltip
-                        text="Go to home"
-                        className="w-full"
-                    >
-                        <LinkButton
-                            href="/home"
-                            className="w-full"
-                        >
-                            <Image
-                                width={16}
-                                height={16}
-                                alt=""
-                                src="/cube.svg"
-                            />
-                            Home
+                            Emulate
                         </LinkButton>
                     </Tooltip>
                 </div>

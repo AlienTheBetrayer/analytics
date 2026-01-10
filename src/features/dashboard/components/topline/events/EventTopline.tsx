@@ -98,6 +98,8 @@ export const EventTopline = () => {
                     </Button>
                 </Tooltip>
             </Tooltip>
+            <hr className="w-px! h-1/2 bg-background-a-9" />
+
             <Search key={selectedProjectId} />
 
             <Wipe />

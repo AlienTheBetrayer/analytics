@@ -19,10 +19,10 @@ export const Deselect = () => {
                 }}
             >
                 <Image
-                    alt="go back"
-                    src="/back.svg"
-                    width={16}
-                    height={16}
+                    alt="deselect"
+                    src="/select.svg"
+                    width={14}
+                    height={14}
                 />
             </Button>
         </Tooltip>

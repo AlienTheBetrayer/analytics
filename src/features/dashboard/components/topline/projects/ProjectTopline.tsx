@@ -65,13 +65,16 @@ export const ProjectTopline = () => {
                     </Button>
                 </Tooltip>
             </Tooltip>
+            <hr className="w-px! h-1/2 bg-background-a-11" />
 
             <Search key={selectedProjectId} />
 
-            <div className="flex items-center gap-1 ml-auto">
-                <Emulate/>
-                <Manipulation />
+            <div className="flex items-center gap-1 ml-auto h-full">
                 <Deselect />
+
+                <hr className="w-px! h-1/2 bg-background-a-8" />
+                <Emulate />
+                <Manipulation />
                 <Wipe />
             </div>
         </div>

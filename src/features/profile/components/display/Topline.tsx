@@ -44,30 +44,6 @@ export const Topline = ({ data }: Props) => {
                 </LinkButton>
             </Tooltip>
 
-            {status && status.role === "op" && (
-                <Tooltip
-                    direction="top"
-                    text="Administrator panel"
-                >
-                    <Tooltip
-                        type="modal"
-                        direction="right"
-                        disabledPointer={false}
-                        element={<RoleEditing data={data} />}
-                    >
-                        <Button className="p-0! md:px-2!">
-                            <Image
-                                width={16}
-                                height={16}
-                                alt=""
-                                src="/cube.svg"
-                            />
-                            <span className="hidden md:block">Admin panel</span>
-                        </Button>
-                    </Tooltip>
-                </Tooltip>
-            )}
-
             <Tooltip
                 text="Notification centre"
                 direction="top"
@@ -86,20 +62,56 @@ export const Topline = ({ data }: Props) => {
                 </LinkButton>
             </Tooltip>
 
-            {status && status.id !== data.user.id && (
-                <Tooltip text="Go back to friends tab">
-                    <LinkButton
-                        href={`/profile/${status.username}/friends`}
-                        className="p-0!"
+            {status && status.role === "op" && (
+                <>
+                    <hr className="w-px! h-1/2 bg-background-a-8" />
+                    <Tooltip
+                        direction="top"
+                        text="Administrator panel"
                     >
-                        <Image
-                            width={16}
-                            height={16}
-                            alt=""
-                            src="/back.svg"
-                        />
-                    </LinkButton>
-                </Tooltip>
+                        <Tooltip
+                            type="modal"
+                            direction="right"
+                            disabledPointer={false}
+                            element={<RoleEditing data={data} />}
+                        >
+                            <Button className="p-0! md:px-2!">
+                                <Image
+                                    width={16}
+                                    height={16}
+                                    alt=""
+                                    src="/cube.svg"
+                                />
+                                <span className="hidden md:block">
+                                    Admin panel
+                                </span>
+                            </Button>
+                        </Tooltip>
+                    </Tooltip>
+                </>
+            )}
+
+            {status && status.id !== data.user.id && (
+                <>
+                    <hr className="w-px! h-1/2 bg-background-a-8" />
+
+                    <Tooltip
+                        text="Go back to friends tab"
+                        direction="top"
+                    >
+                        <LinkButton
+                            href={`/profile/${status.username}/friends`}
+                            className="p-0!"
+                        >
+                            <Image
+                                width={16}
+                                height={16}
+                                alt=""
+                                src="/back.svg"
+                            />
+                        </LinkButton>
+                    </Tooltip>
+                </>
             )}
 
             <Tooltip
