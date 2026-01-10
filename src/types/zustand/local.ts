@@ -9,7 +9,7 @@ export type VisibleProfile = {
 };
 
 // notifications
-export type DashboardNotificationType = "information" | "error" | "warning";
+export type DashboardNotificationType = "Information" | "Error" | "Warning";
 
 export type DashboardNotification = {
     id: string;
@@ -17,6 +17,34 @@ export type DashboardNotification = {
     title?: string;
     description?: string;
     sentAt?: string;
+};
+
+export type FilterColumn =
+    | "Error"
+    | "Warning"
+    | "Information"
+    | "Title"
+    | "Description"
+    | "Status"
+    | "Sent Date";
+
+// filters
+export type AccountFilter = {
+    sorting?: {
+        column?: FilterColumn;
+        direction?: "ascendant" | "descendant";
+    };
+    search?: string;
+    filtering?: Record<string, boolean>;
+};
+
+export type DashboardFilter = {
+    sorting?: {
+        column?: FilterColumn;
+        direction?: "ascendant" | "descendant";
+    };
+    search?: string;
+    filtering?: Record<string, boolean>;
 };
 
 export type LocalStore = {
@@ -27,9 +55,15 @@ export type LocalStore = {
     };
     lastNotificationId?: string;
     unreadTabs: Record<string, boolean>;
+
+    // settings
     preferences: {
         visibility: boolean;
-    }
+    };
+
+    // filters
+    accountFilter: AccountFilter;
+    dashboardFilter: DashboardFilter;
 
     // profiles
     profilesMenuType: ProfileMenuType;
@@ -58,7 +92,7 @@ export type LocalStore = {
         status: DashboardNotificationType;
         title?: string;
         description?: string;
-        type: "dashboard" | "account";
+        type: "Dashboard" | "Account";
     }) => void;
 
     /**
@@ -66,18 +100,37 @@ export type LocalStore = {
      * @param type which tabs should be cleared
      */
     clearNotifications: (options: {
-        type: "dashboard" | "account" | "all";
+        type: "Dashboard" | "Account" | "All";
     }) => void;
 
     /**
      * clears the unread status on a given tab
      * @param tab tab on which you might have the unread status
      */
-    clearUnread: (options: { tab: "dashboard" | "account" }) => void;
+    clearUnread: (options: { tab: "Dashboard" | "Account" }) => void;
 
     /**
      * updates the preferences (don't provide a value if you want it unchanged)
      * @param visibility whether to show the notifications' popups
      */
     updatePreferences: (options: { visibility?: boolean }) => void;
+
+    /**
+     * filter multi-function
+     * @param events names of events to change visibility
+     * @param flag a visibility flag
+     */
+    setFilter: (options: {
+        type:
+            | "account-sort"
+            | "account-search"
+            | "account-filter"
+            | "dashboard-sort"
+            | "dashboard-search"
+            | "dashboard-filter";
+        search?: string;
+        column?: FilterColumn[];
+        direction?: "ascendant" | "descendant";
+        flag?: boolean;
+    }) => void;
 };

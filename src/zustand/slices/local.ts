@@ -13,6 +13,8 @@ export const LocalSlice: SliceFunction<LocalStore, LocalStore> = (set) => {
         preferences: {
             visibility: true,
         },
+        accountFilter: {},
+        dashboardFilter: {},
 
         setProfilesMenuType: (type: ProfileMenuType) => {
             set((state) => ({ ...state, profilesMenuType: type }));
@@ -38,7 +40,7 @@ export const LocalSlice: SliceFunction<LocalStore, LocalStore> = (set) => {
                 };
 
                 switch (options.type) {
-                    case "account": {
+                    case "Account": {
                         notifications.account = {
                             ...notifications.account,
                             [id]: notification,
@@ -46,7 +48,7 @@ export const LocalSlice: SliceFunction<LocalStore, LocalStore> = (set) => {
                         unreadTabs.account = true;
                         break;
                     }
-                    case "dashboard": {
+                    case "Dashboard": {
                         notifications.dashboard = {
                             ...notifications.dashboard,
                             [id]: notification,
@@ -71,7 +73,7 @@ export const LocalSlice: SliceFunction<LocalStore, LocalStore> = (set) => {
                 let lastNotificationId = state.lastNotificationId;
 
                 switch (options.type) {
-                    case "account": {
+                    case "Account": {
                         if (
                             state.lastNotificationId &&
                             notifications.account[state.lastNotificationId]
@@ -81,7 +83,7 @@ export const LocalSlice: SliceFunction<LocalStore, LocalStore> = (set) => {
                         notifications.account = {};
                         break;
                     }
-                    case "dashboard": {
+                    case "Dashboard": {
                         if (
                             state.lastNotificationId &&
                             notifications.dashboard[state.lastNotificationId]
@@ -91,7 +93,7 @@ export const LocalSlice: SliceFunction<LocalStore, LocalStore> = (set) => {
                         notifications.dashboard = {};
                         break;
                     }
-                    case "all": {
+                    case "All": {
                         lastNotificationId = undefined;
                         notifications.account = {};
                         notifications.dashboard = {};
@@ -122,6 +124,128 @@ export const LocalSlice: SliceFunction<LocalStore, LocalStore> = (set) => {
                 }
 
                 return { ...state, preferences };
+            });
+        },
+
+        setFilter: (options) => {
+            set((state) => {
+                let accountFilter = { ...state.accountFilter };
+                let dashboardFilter = { ...state.dashboardFilter };
+
+                switch (options.type) {
+                    case "account-search": {
+                        if (!(typeof options.search === "string")) {
+                            throw "options.search is not a string.";
+                        }
+
+                        accountFilter = {
+                            ...(accountFilter ?? {}),
+                            search: options.search,
+                        };
+                        break;
+                    }
+                    case "account-sort": {
+                        if (options.column?.length) {
+                            accountFilter = {
+                                ...(accountFilter ?? {}),
+                                sorting: {
+                                    ...(accountFilter?.sorting ?? {}),
+                                    column: options.column[0],
+                                },
+                            };
+                        }
+
+                        if (options.direction) {
+                            accountFilter = {
+                                ...(accountFilter ?? {}),
+                                sorting: {
+                                    ...(accountFilter?.sorting ?? {}),
+                                    direction: options.direction,
+                                },
+                            };
+                        }
+                        break;
+                    }
+                    case "account-filter": {
+                        if (
+                            !(
+                                typeof options.flag === "boolean" &&
+                                options.column?.length
+                            )
+                        ) {
+                            throw "options/flag/column are not defined.";
+                        }
+
+                        for (const column of options.column) {
+                            accountFilter = {
+                                ...(accountFilter ?? {}),
+                                filtering: {
+                                    ...(accountFilter?.filtering ?? {}),
+                                    [column]: options.flag,
+                                },
+                            };
+                        }
+
+                        break;
+                    }
+                    case "dashboard-search": {
+                        if (!(typeof options.search === "string")) {
+                            throw "options.search is not a string.";
+                        }
+
+                        dashboardFilter = {
+                            ...(dashboardFilter ?? {}),
+                            search: options.search,
+                        };
+                        break;
+                    }
+                    case "dashboard-sort": {
+                        if (options.column?.length) {
+                            dashboardFilter = {
+                                ...(dashboardFilter ?? {}),
+                                sorting: {
+                                    ...(dashboardFilter?.sorting ?? {}),
+                                    column: options.column[0],
+                                },
+                            };
+                        }
+
+                        if (options.direction) {
+                            dashboardFilter = {
+                                ...(dashboardFilter ?? {}),
+                                sorting: {
+                                    ...(dashboardFilter?.sorting ?? {}),
+                                    direction: options.direction,
+                                },
+                            };
+                        }
+                        break;
+                    }
+                    case "dashboard-filter": {
+                        if (
+                            !(
+                                typeof options.flag === "boolean" &&
+                                options.column?.length
+                            )
+                        ) {
+                            throw "options/flag/column are not defined.";
+                        }
+
+                        for (const column of options.column) {
+                            dashboardFilter = {
+                                ...(dashboardFilter ?? {}),
+                                filtering: {
+                                    ...(dashboardFilter?.filtering ?? {}),
+                                    [column]: options.flag,
+                                },
+                            };
+                        }
+
+                        break;
+                    }
+                }
+
+                return { ...state, dashboardFilter, accountFilter };
             });
         },
     };

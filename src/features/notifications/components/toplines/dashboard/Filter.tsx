@@ -1,43 +1,25 @@
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
-import { useAppStore } from "@/zustand/store";
+import { FilterColumn } from "@/types/zustand/local";
+import { useLocalStore } from "@/zustand/localStore";
 import Image from "next/image";
 import { useMemo } from "react";
 
-export const Filtering = () => {
+export const Filter = () => {
     // zustand-state
-    const selectedProjectId = useAppStore((state) => state.selectedProjectId);
-    const events = useAppStore((state) => state.events);
-    const eventFilters = useAppStore((state) => state.eventFilters);
-    const setFilter = useAppStore((state) => state.setFilter);
+    const notifications = useLocalStore((state) => state.notifications);
+    const dashboardFilter = useLocalStore((state) => state.dashboardFilter);
+    const setFilter = useLocalStore((state) => state.setFilter);
 
-    const eventsCount = useMemo(() => {
-        if (!selectedProjectId) {
-            return;
-        }
-
+    const notificationCount = useMemo(() => {
         const count: Record<string, number> = {};
-        for (const event of events[selectedProjectId]) {
-            if (event.type) {
-                count[event.type] = (count[event.type] ?? 0) + 1;
-            }
+        for (const notification of Object.values(notifications.dashboard)) {
+            count[notification.status] = (count[notification.status] ?? 0) + 1;
         }
 
         return count;
-    }, [events, selectedProjectId]);
-
-    if (!selectedProjectId) {
-        return null;
-    }
-
-    const uniqueEventTypes = Array.from(
-        new Set<string>(
-            events[selectedProjectId]
-                .map((e) => e.type)
-                .filter(Boolean) as string[]
-        )
-    );
+    }, [notifications]);
 
     return (
         <div className="box p-3! min-w-64">
@@ -50,29 +32,28 @@ export const Filtering = () => {
                 />
                 Type filtering
             </span>
+
             <hr />
-            {uniqueEventTypes.map((type) => (
+            {["Error", "Warning", "Information"].map((type) => (
                 <Checkbox
                     key={type}
                     onToggle={(flag) => {
                         setFilter({
-                            project_id: selectedProjectId,
-                            column: [type],
+                            type: "dashboard-filter",
+                            column: [type as FilterColumn],
                             flag,
-                            type: "event-filter",
                         });
                     }}
-                    value={
-                        eventFilters[selectedProjectId]?.eventsFiltering?.[type]
-                    }
+                    value={dashboardFilter.filtering?.[type]}
                 >
                     <span>{type}</span>
 
                     <span className="ml-auto">
-                        <small>{eventsCount?.[type] ?? 0}</small>
+                        <small>{notificationCount[type] ?? 0}</small>
                     </span>
                 </Checkbox>
             ))}
+
             <hr />
             <div className="grid grid-cols-2 gap-1">
                 <Tooltip
@@ -83,10 +64,9 @@ export const Filtering = () => {
                         className="w-full"
                         onClick={() => {
                             setFilter({
-                                project_id: selectedProjectId,
-                                column: uniqueEventTypes,
+                                column: ["Error", "Information", "Warning"],
                                 flag: true,
-                                type: "event-filter",
+                                type: "dashboard-filter",
                             });
                         }}
                     >
@@ -110,10 +90,9 @@ export const Filtering = () => {
                         className="w-full"
                         onClick={() => {
                             setFilter({
-                                project_id: selectedProjectId,
-                                column: uniqueEventTypes,
+                                column: ["Error", "Information", "Warning"],
                                 flag: false,
-                                type: "event-filter",
+                                type: "dashboard-filter",
                             });
                         }}
                     >

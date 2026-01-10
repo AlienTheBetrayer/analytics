@@ -1,18 +1,22 @@
-import { Filtering } from "@/features/dashboard/components/topline/events/Filtering";
 import { MessageBox } from "@/features/messagebox/components/MessageBox";
 import { usePopup } from "@/features/popup/hooks/usePopup";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { useLocalStore } from "@/zustand/localStore";
 import Image from "next/image";
+import { Filter } from "./Filter";
+import { Sort } from "./Sort";
+import { Search } from "./Search";
 
 export const Topline = () => {
     // zustand
+    const dashboardFilter = useLocalStore((state) => state.dashboardFilter);
     const notifications = useLocalStore((state) => state.notifications);
-    const hasNotification = !!Object.keys(notifications.dashboard).length;
     const clearNotifications = useLocalStore(
         (state) => state.clearNotifications
     );
+
+    const hasNotification = !!Object.keys(notifications.dashboard).length;
 
     // messageboxes
     const deleteBox = usePopup(({ hide }) => (
@@ -21,7 +25,7 @@ export const Topline = () => {
             onInteract={(res) => {
                 hide();
                 if (res === "yes") {
-                    clearNotifications({ type: "account" });
+                    clearNotifications({ type: "Dashboard" });
                 }
             }}
         />
@@ -33,19 +37,6 @@ export const Topline = () => {
             inert={!hasNotification}
         >
             {deleteBox.render()}
-
-            <div
-                className="absolute flex gap-1 items-center left-1/2 top-1/2 -translate-1/2 transition-all duration-500"
-                style={{ opacity: !hasNotification ? 0 : 1 }}
-            >
-                <Image
-                    alt=""
-                    width={16}
-                    height={16}
-                    src="/dashboard.svg"
-                />
-                <span>Dashboard-only</span>
-            </div>
 
             <div
                 className="select-none pointer-events-none transition-all duration-300 absolute inset-0 grid place-items-center z-1"
@@ -60,10 +51,10 @@ export const Topline = () => {
                 disabledPointer={false}
                 type="modal"
                 direction="bottom-right"
-                element={<Filtering />}
+                element={<Filter />}
             >
                 <Tooltip
-                    text="Filter events"
+                    text="Filter dashboard notifications"
                     direction="top"
                 >
                     <Button className="aspect-square">
@@ -76,17 +67,56 @@ export const Topline = () => {
 
                         <div
                             className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-300"
-                            // style={{
-                            //     background: eventFilters[
-                            //         selectedProjectId ?? ""
-                            //     ]?.eventsFiltering
-                            //         ? "var(--blue-1)"
-                            //         : "transparent",
-                            // }}
+                            style={{
+                                background: dashboardFilter.filtering
+                                    ? "var(--blue-1)"
+                                    : "transparent",
+                            }}
                         />
                     </Button>
                 </Tooltip>
             </Tooltip>
+
+            <Tooltip
+                disabledPointer={false}
+                type="modal"
+                direction="bottom-right"
+                element={<Sort />}
+            >
+                <Tooltip
+                    text="Sort dashboard notifications"
+                    direction="top"
+                >
+                    <Button className="aspect-square">
+                        <Image
+                            alt="sort"
+                            src="/sort.svg"
+                            width={16}
+                            height={16}
+                            className="duration-500! ease-out!"
+                            style={{
+                                transform:
+                                    dashboardFilter?.sorting?.direction ===
+                                    "ascendant"
+                                        ? `rotate(180deg)`
+                                        : `rotate(0deg)`,
+                            }}
+                        />
+
+                        <div
+                            className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-300"
+                            style={{
+                                background: dashboardFilter.sorting
+                                    ? "var(--blue-1)"
+                                    : "transparent",
+                            }}
+                        />
+                    </Button>
+                </Tooltip>
+            </Tooltip>
+
+            <hr className="w-px! h-1/2! bg-background-a-11" />
+            <Search />
 
             <Tooltip
                 className="ml-auto"

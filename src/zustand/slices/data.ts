@@ -137,7 +137,6 @@ export const DataSlice: SliceFunction<DataStore> = (set, get) => {
                         if (entry.events) {
                             events[entry.id] = entry.events;
                         }
-                        console.log(entry);
 
                         if (entry.aggregates?.length) {
                             aggregates[entry.id] = entry.aggregates[0];

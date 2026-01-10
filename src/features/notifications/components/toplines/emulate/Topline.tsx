@@ -27,8 +27,8 @@ export const Topline = () => {
                     className="p-0!"
                     onClick={() => {
                         pushNotification({
-                            status: "error",
-                            type: "account",
+                            status: "Error",
+                            type: "Account",
                             description: "",
                             title: "zyablik",
                         });

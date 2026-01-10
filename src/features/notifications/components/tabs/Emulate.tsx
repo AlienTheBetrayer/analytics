@@ -27,8 +27,8 @@ export const Emulate = () => {
                 onSubmit={(e) => {
                     e.preventDefault();
                     pushNotification({
-                        status: status.toLowerCase() as DashboardNotificationType,
-                        type: type.toLowerCase() as "dashboard" | "account",
+                        status: status as DashboardNotificationType,
+                        type: type as "Account" | "Dashboard",
                         description,
                         title,
                     });

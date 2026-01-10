@@ -26,10 +26,10 @@ export const Select = ({ type }: Props) => {
             return;
         }
 
-        const tabs = !tab || tab === "all" ? ["dashboard", "account"] : [tab];
+        const tabs = !tab || tab === "all" ? ["Dashboard", "Account"] : [tab];
 
         for (const tab of tabs) {
-            clearUnread({ tab: tab as "dashboard" | "account" });
+            clearUnread({ tab: tab as "Dashboard" | "Account" });
         }
     }, [tab, clearUnread]);
 

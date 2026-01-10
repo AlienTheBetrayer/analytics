@@ -45,7 +45,7 @@ export const EventTopline = () => {
                         />
 
                         <div
-                            className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-300"
+                            className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500"
                             style={{
                                 background: eventFilters[
                                     selectedProjectId ?? ""
@@ -74,7 +74,7 @@ export const EventTopline = () => {
                             src="/sort.svg"
                             width={16}
                             height={16}
-                            className="duration-300! ease-out!"
+                            className="duration-500! ease-out!"
                             style={{
                                 transform:
                                     eventFilters[selectedProjectId ?? ""]
@@ -86,7 +86,7 @@ export const EventTopline = () => {
                         />
 
                         <div
-                            className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-300"
+                            className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500"
                             style={{
                                 background: eventFilters[
                                     selectedProjectId ?? ""
