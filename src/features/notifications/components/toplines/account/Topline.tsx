@@ -3,14 +3,16 @@ import { MessageBox } from "@/features/messagebox/components/MessageBox";
 import { usePopup } from "@/features/popup/hooks/usePopup";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
-import { useAppStore } from "@/zustand/store";
+import { useLocalStore } from "@/zustand/localStore";
 import Image from "next/image";
 
 export const Topline = () => {
     // zustand
-    const notifications = useAppStore((state) => state.notifications);
+    const notifications = useLocalStore((state) => state.notifications);
     const hasNotification = !!Object.keys(notifications.account).length;
-    const clearNotifications = useAppStore((state) => state.clearNotifications);
+    const clearNotifications = useLocalStore(
+        (state) => state.clearNotifications
+    );
 
     // messageboxes
     const deleteBox = usePopup(({ hide }) => (

@@ -4,19 +4,29 @@ import { Topline } from "../toplines/preferences/Topline";
 import Image from "next/image";
 import { useState } from "react";
 import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
+import { useLocalStore } from "@/zustand/localStore";
 
 export const Preferences = () => {
+    // zustand
+    const preferences = useLocalStore((state) => state.preferences);
+    const updatePreferences = useLocalStore((state) => state.updatePreferences);
+
     // react states
-    const [visibility, setVisibility] = useState<boolean>(true);
+    const [visibility, setVisibility] = useState<boolean>(
+        preferences.visibility
+    );
 
     return (
         <div className="flex flex-col gap-2 grow">
             <Topline />
+            
             <hr />
+
             <form
                 className="flex flex-col gap-2 grow"
                 onSubmit={(e) => {
                     e.preventDefault();
+                    updatePreferences({ visibility });
                 }}
             >
                 <label
@@ -31,7 +41,7 @@ export const Preferences = () => {
                 <Checkbox
                     id="visibility"
                     value={visibility}
-                    onToggle={(f) => setVisibility(f)}
+                    onToggle={(flag) => setVisibility(flag)}
                 >
                     Visibility
                 </Checkbox>

@@ -1,4 +1,3 @@
-import { useAppStore } from "@/zustand/store";
 import { useParams } from "next/navigation";
 import { useEffect } from "react";
 import { Notification } from "./tabs/notification/Notification";
@@ -8,6 +7,7 @@ import { Account } from "./tabs/account/Account";
 import { All } from "./tabs/All";
 import { Emulate } from "./tabs/Emulate";
 import { Preferences } from "./tabs/Preferences";
+import { useLocalStore } from "@/zustand/localStore";
 
 type Props = {
     type: NotificationRoute;
@@ -15,7 +15,7 @@ type Props = {
 
 export const Select = ({ type }: Props) => {
     // zustand
-    const clearUnread = useAppStore((state) => state.clearUnread);
+    const clearUnread = useLocalStore((state) => state.clearUnread);
 
     // url
     const { tab } = useParams<{ id?: string; tab?: string }>();

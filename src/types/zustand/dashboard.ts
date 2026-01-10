@@ -1,16 +1,5 @@
 import { Event } from "../tables/project";
 
-// notifications
-export type DashboardNotificationType = "information" | "error" | "warning";
-
-export type DashboardNotification = {
-    id: string;
-    status: DashboardNotificationType;
-    title?: string;
-    description?: string;
-    sentAt?: Date;
-};
-
 export type ProjectColumns =
     | "Name"
     | "Created Date"
@@ -44,17 +33,7 @@ export type EventFilter = Record<
 
 // the main type
 export type DashboardStore = {
-    // selectedProject
-    notifications: {
-        dashboard: Record<string, DashboardNotification>;
-        account: Record<string, DashboardNotification>;
-    };
-    lastNotificationId?: string;
-
     selectedProjectId?: string;
-    
-    unreadTabs: Set<string>;
-
     eventFilters: EventFilter;
     projectFilters: ProjectFilter;
 
@@ -83,28 +62,4 @@ export type DashboardStore = {
      * @param idx a uuid of the project
      */
     selectProject: (idx: string | undefined) => void;
-
-    /**
-     * pushes a new notification into an existing array of notifications
-     * @param notification a new notification
-     */
-    pushNotification: (options: {
-        status: DashboardNotificationType;
-        title?: string;
-        description?: string;
-        type: "dashboard" | "account";
-    }) => void;
-
-    /**
-     * explicitly clears all notifications that have been sent
-     */
-    clearNotifications: (options: {
-        type: "dashboard" | "account" | "all";
-    }) => void;
-
-    /**
-     * clears the unread status on a given tab
-     * @param options tab on which you might have the unread status
-     */
-    clearUnread: (options: { tab: "dashboard" | "account" }) => void;
 };

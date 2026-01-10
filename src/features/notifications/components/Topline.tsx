@@ -1,9 +1,9 @@
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
-import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { NotificationRoute } from "../types/notifications";
+import { useLocalStore } from "@/zustand/localStore";
 
 type Props = {
     type: NotificationRoute;
@@ -11,8 +11,10 @@ type Props = {
 
 export const Topline = ({ type }: Props) => {
     // zustand
-    const unreadTabs = useAppStore((state) => state.unreadTabs);
-    const lastNotificationId = useAppStore((state) => state.lastNotificationId);
+    const unreadTabs = useLocalStore((state) => state.unreadTabs);
+    const lastNotificationId = useLocalStore(
+        (state) => state.lastNotificationId
+    );
 
     // url
     const { id, tab } = useParams<{ id?: string; tab?: string }>();
@@ -122,7 +124,7 @@ export const Topline = ({ type }: Props) => {
                     {tab === "dashboard" && (
                         <div className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500 tab-selection" />
                     )}
-                    {unreadTabs.has("dashboard") && (
+                    {unreadTabs.dashboard && (
                         <div className="absolute right-1 top-1 z-1 rounded-full w-1 h-1 transition-all duration-500 tab-unread" />
                     )}
                 </LinkButton>
@@ -143,7 +145,7 @@ export const Topline = ({ type }: Props) => {
                     {tab === "account" && (
                         <div className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500 tab-selection" />
                     )}
-                    {unreadTabs.has("account") && (
+                    {unreadTabs.account && (
                         <div className="absolute right-1 top-1 z-1 rounded-full w-1 h-1 transition-all duration-500 tab-unread" />
                     )}
                 </LinkButton>

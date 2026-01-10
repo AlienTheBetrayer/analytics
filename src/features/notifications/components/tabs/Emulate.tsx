@@ -2,15 +2,15 @@ import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
 import { Select } from "@/features/ui/select/components/Select";
-import { DashboardNotificationType } from "@/types/zustand/dashboard";
-import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import { useState } from "react";
 import { Topline } from "../toplines/emulate/Topline";
+import { useLocalStore } from "@/zustand/localStore";
+import { DashboardNotificationType } from "@/types/zustand/local";
 
 export const Emulate = () => {
     // zustand
-    const pushNotification = useAppStore((state) => state.pushNotification);
+    const pushNotification = useLocalStore((state) => state.pushNotification);
 
     // react states
     const [status, setStatus] = useState<string>("Information");
@@ -21,7 +21,7 @@ export const Emulate = () => {
     return (
         <div className="flex flex-col gap-2 grow">
             <Topline />
-            <hr/>
+            <hr />
             <form
                 className="flex flex-col gap-2 grow"
                 onSubmit={(e) => {

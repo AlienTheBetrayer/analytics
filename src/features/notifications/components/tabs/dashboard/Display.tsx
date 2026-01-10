@@ -1,11 +1,11 @@
 import { relativeTime } from "@/utils/other/relativeTime";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
-import { useAppStore } from "@/zustand/store";
 import { AbsentNotifications } from "../../errors/AbsentNotifications";
+import { useLocalStore } from "@/zustand/localStore";
 
 export const Display = () => {
     // zustand
-    const notifications = useAppStore((state) => state.notifications);
+    const notifications = useLocalStore((state) => state.notifications);
     const data = notifications.dashboard;
 
     if (!Object.keys(data).length) {
@@ -22,7 +22,7 @@ export const Display = () => {
                     >
                         <span>{notification.id}</span>
                         <span>
-                            {relativeTime(notification.sentAt?.toISOString())}
+                            {relativeTime(notification.sentAt)}
                         </span>
                     </LinkButton>
                 </li>

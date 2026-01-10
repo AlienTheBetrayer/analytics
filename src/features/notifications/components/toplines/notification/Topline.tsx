@@ -1,7 +1,7 @@
 import { Filtering } from "@/features/dashboard/components/topline/events/Filtering";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
-import { DashboardNotification } from "@/types/zustand/dashboard";
+import { DashboardNotification } from "@/types/zustand/local";
 import Image from "next/image";
 
 type Props = {

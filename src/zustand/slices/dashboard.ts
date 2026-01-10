@@ -7,10 +7,8 @@ import type { SliceFunction } from "@/types/zustand/utils/sliceFunction";
 
 export const DashboardSlice: SliceFunction<DashboardStore> = (set, get) => {
     return {
-        notifications: { dashboard: {}, account: {} },
         eventFilters: {},
         projectFilters: {},
-        unreadTabs: new Set(),
 
         setFilter: ({ project_id, ...options }) => {
             set((state) => {
@@ -132,96 +130,6 @@ export const DashboardSlice: SliceFunction<DashboardStore> = (set, get) => {
             }
 
             set((state) => ({ ...state, selectedProjectId: idx }));
-        },
-
-        pushNotification: (options) => {
-            set((state) => {
-                const notifications = { ...state.notifications };
-                const unreadTabs = new Set(state.unreadTabs);
-
-                const id = crypto.randomUUID();
-
-                const notification = {
-                    id,
-                    status: options.status,
-                    description: options.description,
-                    title: options.title,
-                    sentAt: new Date(),
-                };
-
-                switch (options.type) {
-                    case "account": {
-                        notifications.account = {
-                            ...notifications.account,
-                            [id]: notification,
-                        };
-                        unreadTabs.add("account");
-                        break;
-                    }
-                    case "dashboard": {
-                        notifications.dashboard = {
-                            ...notifications.dashboard,
-                            [id]: notification,
-                        };
-                        unreadTabs.add("dashboard");
-                        break;
-                    }
-                }
-
-                return {
-                    ...state,
-                    notifications,
-                    unreadTabs,
-                    lastNotificationId: id,
-                };
-            });
-        },
-
-        clearNotifications: (options) => {
-            set((state) => {
-                const notifications = { ...state.notifications };
-                let lastNotificationId = state.lastNotificationId;
-
-                switch (options.type) {
-                    case "account": {
-                        if (
-                            state.lastNotificationId &&
-                            notifications.account[state.lastNotificationId]
-                        ) {
-                            lastNotificationId = undefined;
-                        }
-                        notifications.account = {};
-                        break;
-                    }
-                    case "dashboard": {
-                        if (
-                            state.lastNotificationId &&
-                            notifications.dashboard[state.lastNotificationId]
-                        ) {
-                            lastNotificationId = undefined;
-                        }
-                        notifications.dashboard = {};
-                        break;
-                    }
-                    case "all": {
-                        lastNotificationId = undefined;
-                        notifications.account = {};
-                        notifications.dashboard = {};
-                        break;
-                    }
-                }
-
-                return { ...state, notifications, lastNotificationId };
-            });
-        },
-
-        clearUnread: (options) => {
-            set((state) => ({
-                ...state,
-                unreadTabs: new Set(
-                    state.unreadTabs.difference(new Set([options.tab]))
-                ),
-            }));
         },
     };
 };
