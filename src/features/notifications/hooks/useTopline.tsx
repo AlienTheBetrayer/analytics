@@ -12,6 +12,7 @@ export const useTopline = (
     type: DashboardNotificationTab
 ) => {
     // zustand
+    const notifications = useLocalStore((state) => state.notifications);
     const clearNotifications = useLocalStore(
         (state) => state.clearNotifications
     );
@@ -23,7 +24,16 @@ export const useTopline = (
             onInteract={(res) => {
                 hide();
                 if (res === "yes") {
-                    clearNotifications({ type });
+                    clearNotifications({
+                        id:
+                            type === "Account"
+                                ? Object.values(notifications.account).map(
+                                      (n) => n.id
+                                  )
+                                : Object.values(notifications.dashboard).map(
+                                      (n) => n.id
+                                  ),
+                    });
                 }
             }}
         />

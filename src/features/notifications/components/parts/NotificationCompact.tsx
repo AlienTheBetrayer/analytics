@@ -3,6 +3,7 @@ import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { DashboardNotification } from "@/types/zustand/local";
 import { relativeTime } from "@/utils/other/relativeTime";
+import { useLocalStore } from "@/zustand/localStore";
 import Image from "next/image";
 
 type Props = {
@@ -22,6 +23,11 @@ const NotificationColors = {
 };
 
 export const NotificationCompact = ({ notification }: Props) => {
+    // zustand
+    const clearNotifications = useLocalStore(
+        (state) => state.clearNotifications
+    );
+
     return (
         <div className="flex flex-col gap-1">
             <div
@@ -53,7 +59,11 @@ export const NotificationCompact = ({ notification }: Props) => {
                         text="Delete this notification"
                         direction="top"
                     >
-                        <Button>
+                        <Button
+                            onClick={() => {
+                                clearNotifications({ id: [notification.id] });
+                            }}
+                        >
                             <Image
                                 width={16}
                                 height={16}

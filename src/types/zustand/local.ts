@@ -106,10 +106,10 @@ export type LocalStore = {
 
     /**
      * explicitly clears all notifications that have been sent
-     * @param type which tabs should be cleared
+     * @param id which tabs should be cleared
      */
     clearNotifications: (options: {
-        type: DashboardNotificationTab | "All";
+        id: string[]
     }) => void;
 
     /**

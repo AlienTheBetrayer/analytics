@@ -79,51 +79,18 @@ export const LocalSlice: SliceFunction<LocalStore, LocalStore> = (set) => {
         clearNotifications: (options) => {
             set((state) => {
                 const notifications = { ...state.notifications };
-                let accountFilter = { ...state.accountFilter };
-                let dashboardFilter = { ...state.dashboardFilter };
 
-                let lastNotificationId = state.lastNotificationId;
+                const lastNotificationId = options.id.includes(state.lastNotificationId ?? "") ? undefined : state.lastNotificationId;
 
-                switch (options.type) {
-                    case "Account": {
-                        if (
-                            state.lastNotificationId &&
-                            notifications.account[state.lastNotificationId]
-                        ) {
-                            lastNotificationId = undefined;
-                        }
-                        notifications.account = {};
-                        accountFilter = {};
-
-                        break;
-                    }
-                    case "Dashboard": {
-                        if (
-                            state.lastNotificationId &&
-                            notifications.dashboard[state.lastNotificationId]
-                        ) {
-                            lastNotificationId = undefined;
-                        }
-                        notifications.dashboard = {};
-                        dashboardFilter = {};
-                        break;
-                    }
-                    case "All": {
-                        lastNotificationId = undefined;
-                        notifications.account = {};
-                        notifications.dashboard = {};
-                        dashboardFilter = {};
-                        accountFilter = {};
-                        break;
-                    }
+                for (const id of options.id) {
+                    delete notifications.account[id];
+                    delete notifications.dashboard[id];
                 }
 
                 return {
                     ...state,
                     notifications,
                     lastNotificationId,
-                    dashboardFilter,
-                    accountFilter,
                 };
             });
         },
