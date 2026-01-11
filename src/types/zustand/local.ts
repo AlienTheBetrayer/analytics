@@ -55,6 +55,7 @@ export type LocalStore = {
     };
     lastNotificationId?: string;
     unreadTabs: Record<string, boolean>;
+    notificationListeners: Set<(notification: DashboardNotification) => void>; // doesn't hit the persistence, purely in memory
 
     // settings
     preferences: {
@@ -132,5 +133,21 @@ export type LocalStore = {
         column?: FilterColumn[];
         direction?: "ascendant" | "descendant";
         flag?: boolean;
+    }) => void;
+
+    /**
+     * attaches function to the memory (will be called upon notification push)
+     * @param callback the function that will be called upon new notification
+     */
+    addNotificationListener: (options: {
+        callback: (notification: DashboardNotification) => void;
+    }) => void;
+
+    /**
+     * detaches the callback from the memory
+     * @param callback the function to remove from the listener memory
+     */
+    removeNotificationListener: (options: {
+        callback: (notification: DashboardNotification) => void;
     }) => void;
 };

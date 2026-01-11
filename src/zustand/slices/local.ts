@@ -1,11 +1,12 @@
 import {
+    DashboardNotification,
     LocalStore,
     ProfileMenuType,
     VisibleProfile,
 } from "@/types/zustand/local";
 import { SliceFunction } from "@/types/zustand/utils/sliceFunction";
 
-export const LocalSlice: SliceFunction<LocalStore, LocalStore> = (set) => {
+export const LocalSlice: SliceFunction<LocalStore, LocalStore> = (set, get) => {
     return {
         profilesMenuType: "desktop",
         notifications: { dashboard: {}, account: {} },
@@ -15,6 +16,7 @@ export const LocalSlice: SliceFunction<LocalStore, LocalStore> = (set) => {
         },
         accountFilter: {},
         dashboardFilter: {},
+        notificationListeners: new Set(),
 
         setProfilesMenuType: (type: ProfileMenuType) => {
             set((state) => ({ ...state, profilesMenuType: type }));
@@ -25,13 +27,16 @@ export const LocalSlice: SliceFunction<LocalStore, LocalStore> = (set) => {
         },
 
         pushNotification: (options) => {
+            const { notificationListeners, preferences } = get();
+
             set((state) => {
                 const notifications = { ...state.notifications };
                 const unreadTabs = { ...state.unreadTabs };
 
+                // creating the notification
                 const id = crypto.randomUUID();
 
-                const notification = {
+                const notification: DashboardNotification = {
                     id,
                     status: options.status,
                     description: options.description,
@@ -39,6 +44,14 @@ export const LocalSlice: SliceFunction<LocalStore, LocalStore> = (set) => {
                     sentAt: new Date().toISOString(),
                 };
 
+                // running the callbacks
+                if (preferences.visibility) {
+                    for (const listener of notificationListeners) {
+                        listener(notification);
+                    }
+                }
+
+                // storing it in memory
                 switch (options.type) {
                     case "Account": {
                         notifications.account = {
@@ -246,6 +259,36 @@ export const LocalSlice: SliceFunction<LocalStore, LocalStore> = (set) => {
                 }
 
                 return { ...state, dashboardFilter, accountFilter };
+            });
+        },
+
+        addNotificationListener: (options) => {
+            set((state) => {
+                const notificationListeners = new Set(
+                    typeof state.notificationListeners[Symbol.iterator] ===
+                        "function"
+                        ? state.notificationListeners
+                        : []
+                );
+
+                notificationListeners.add(options.callback);
+
+                return { ...state, notificationListeners };
+            });
+        },
+
+        removeNotificationListener: (options) => {
+            set((state) => {
+                const notificationListeners = new Set(
+                    typeof state.notificationListeners[Symbol.iterator] ===
+                        "function"
+                        ? state.notificationListeners
+                        : []
+                );
+
+                notificationListeners.delete(options.callback);
+
+                return { ...state, notificationListeners };
             });
         },
     };

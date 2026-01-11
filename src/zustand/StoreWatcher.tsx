@@ -7,7 +7,7 @@ import { AuthenticationToken } from "@/types/auth/authentication";
 /**
  * A pure component that handles the initial data loading / state management.
  */
-export const StoreInitialHandler = () => {
+export const StoreWatcher = () => {
     // zustand functions
     const getSessions = useAppStore((state) => state.getSessions);
     const getUsers = useAppStore((state) => state.getUsers);
