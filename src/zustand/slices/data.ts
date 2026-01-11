@@ -9,6 +9,38 @@ export const DataSlice: SliceFunction<DataStore> = (set, get) => {
         aggregates: {},
         events: {},
         projects: {},
+        notificationListeners: new Set(),
+
+        addListener: (options) => {
+            set((state) => {
+                const notificationListeners = new Set(
+                    state.notificationListeners
+                );
+                notificationListeners.add(options.callback);
+
+                return { ...state, notificationListeners };
+            });
+        },
+
+        removeListener: (options) => {
+            set((state) => {
+                const notificationListeners = new Set(
+                    state.notificationListeners
+                );
+                notificationListeners.delete(options.callback);
+
+                return { ...state, notificationListeners };
+            });
+        },
+
+        runListeners: (options) => {
+            const { notificationListeners } = get();
+            console.log("ranning", notificationListeners);
+
+            for (const listener of notificationListeners) {
+                listener(options.notification);
+            }
+        },
 
         setPromise: async (key, callback) => {
             set((state) => ({

@@ -6,7 +6,7 @@ import {
 } from "@/types/zustand/local";
 import { SliceFunction } from "@/types/zustand/utils/sliceFunction";
 
-export const LocalSlice: SliceFunction<LocalStore, LocalStore> = (set, get) => {
+export const LocalSlice: SliceFunction<LocalStore, LocalStore> = (set) => {
     return {
         profilesMenuType: "desktop",
         notifications: { dashboard: {}, account: {} },
@@ -16,7 +16,6 @@ export const LocalSlice: SliceFunction<LocalStore, LocalStore> = (set, get) => {
         },
         accountFilter: {},
         dashboardFilter: {},
-        notificationListeners: new Set(),
 
         setProfilesMenuType: (type: ProfileMenuType) => {
             set((state) => ({ ...state, profilesMenuType: type }));
@@ -27,8 +26,6 @@ export const LocalSlice: SliceFunction<LocalStore, LocalStore> = (set, get) => {
         },
 
         pushNotification: (options) => {
-            const { notificationListeners, preferences } = get();
-
             set((state) => {
                 const notifications = { ...state.notifications };
                 const unreadTabs = { ...state.unreadTabs };
@@ -41,15 +38,9 @@ export const LocalSlice: SliceFunction<LocalStore, LocalStore> = (set, get) => {
                     status: options.status,
                     description: options.description,
                     title: options.title,
+                    type: options.type,
                     sentAt: new Date().toISOString(),
                 };
-
-                // running the callbacks
-                if (preferences.visibility) {
-                    for (const listener of notificationListeners) {
-                        listener(notification);
-                    }
-                }
 
                 // storing it in memory
                 switch (options.type) {
@@ -259,36 +250,6 @@ export const LocalSlice: SliceFunction<LocalStore, LocalStore> = (set, get) => {
                 }
 
                 return { ...state, dashboardFilter, accountFilter };
-            });
-        },
-
-        addNotificationListener: (options) => {
-            set((state) => {
-                const notificationListeners = new Set(
-                    typeof state.notificationListeners[Symbol.iterator] ===
-                        "function"
-                        ? state.notificationListeners
-                        : []
-                );
-
-                notificationListeners.add(options.callback);
-
-                return { ...state, notificationListeners };
-            });
-        },
-
-        removeNotificationListener: (options) => {
-            set((state) => {
-                const notificationListeners = new Set(
-                    typeof state.notificationListeners[Symbol.iterator] ===
-                        "function"
-                        ? state.notificationListeners
-                        : []
-                );
-
-                notificationListeners.delete(options.callback);
-
-                return { ...state, notificationListeners };
             });
         },
     };

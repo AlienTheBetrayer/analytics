@@ -1,27 +1,29 @@
 "use client";
 import { useEffect } from "react";
+import { useAppStore } from "./store";
 import { useLocalStore } from "./localStore";
-import { DashboardNotification } from "@/types/zustand/local";
+import { DashboardNotificationPartial } from "@/types/zustand/local";
 
 export const LocalStoreWatcher = () => {
-    // zustand
-    const addNotificationListener = useLocalStore(
-        (state) => state.addNotificationListener
-    );
+    //  store
+    const addListener = useAppStore((state) => state.addListener);
+    const removeListener = useAppStore((state) => state.removeListener);
 
-    const removeNotificationListener = useLocalStore(
-        (state) => state.removeNotificationListener
-    );
+    // localstore
+    const pushNotification = useLocalStore((state) => state.pushNotification);
 
     // attaching listeners
     useEffect(() => {
-        const handle = (notification: DashboardNotification) => {
+        const handle = (notification: DashboardNotificationPartial) => {
+            pushNotification({ ...notification });
         };
 
-        addNotificationListener({ callback: handle });
+        addListener({ callback: handle });
 
-        return () => removeNotificationListener({ callback: handle });
-    }, [addNotificationListener, removeNotificationListener]);
+        return () => {
+            removeListener({ callback: handle });
+        };
+    }, [addListener, removeListener, pushNotification]);
 
     return null;
 };

@@ -1,18 +1,41 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { PromiseStatuses } from "@/hooks/usePromiseStatus";
 import { Aggregate, Event, Project } from "../tables/project";
+import { DashboardNotificationPartial } from "./local";
 
 export type DataStore = {
-    // cache / promises
+    // cache / promises / other
     promises: PromiseStatuses;
     cached?: Record<string, boolean>;
+    notificationListeners: Set<(event: DashboardNotificationPartial) => void>;
 
     // dashboard-related
     projects: Record<string, Project>;
     events: Record<string, Event[]>;
     aggregates: Record<string, Aggregate>;
+    /**
+     * attaches function to the memory (will be called upon notification push)
+     * @param callback the function that will be called upon new notification
+     */
+    addListener: (options: {
+        callback: (event: DashboardNotificationPartial) => void;
+    }) => void;
+    /**
+     * detaches the callback from the memory
+     * @param callback the function to remove from the listener memory
+     */
+    removeListener: (options: {
+        callback: (event: DashboardNotificationPartial) => void;
+    }) => void;
 
-    // cache / promises
+    /**
+     * runs through all the attached listener callbacks with the notification
+     * @param notification the value to feed the listeners
+     */
+    runListeners: (options: {
+        notification: DashboardNotificationPartial;
+    }) => void;
+
     /**
      * Internally sets the promise status for each and every API request
      * @param key unique id for the promise

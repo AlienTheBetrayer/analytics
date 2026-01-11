@@ -10,13 +10,22 @@ export type VisibleProfile = {
 
 // notifications
 export type DashboardNotificationType = "Information" | "Error" | "Warning";
+export type DashboardNotificationTab = "Account" | "Dashboard";
 
 export type DashboardNotification = {
     id: string;
     status: DashboardNotificationType;
-    title?: string;
+    type: DashboardNotificationTab;
+    title: string;
     description?: string;
     sentAt?: string;
+};
+
+export type DashboardNotificationPartial = {
+    title: string;
+    description?: string;
+    status: DashboardNotificationType;
+    type: DashboardNotificationTab;
 };
 
 export type FilterColumn =
@@ -55,7 +64,6 @@ export type LocalStore = {
     };
     lastNotificationId?: string;
     unreadTabs: Record<string, boolean>;
-    notificationListeners: Set<(notification: DashboardNotification) => void>; // doesn't hit the persistence, purely in memory
 
     // settings
     preferences: {
@@ -89,26 +97,21 @@ export type LocalStore = {
      * @param description description of the notification
      * @param type tab that receives the notification
      */
-    pushNotification: (options: {
-        status: DashboardNotificationType;
-        title?: string;
-        description?: string;
-        type: "Dashboard" | "Account";
-    }) => void;
+    pushNotification: (options: DashboardNotificationPartial) => void;
 
     /**
      * explicitly clears all notifications that have been sent
      * @param type which tabs should be cleared
      */
     clearNotifications: (options: {
-        type: "Dashboard" | "Account" | "All";
+        type: DashboardNotificationTab | "All";
     }) => void;
 
     /**
      * clears the unread status on a given tab
      * @param tab tab on which you might have the unread status
      */
-    clearUnread: (options: { tab: "Dashboard" | "Account" }) => void;
+    clearUnread: (options: { tab: DashboardNotificationTab }) => void;
 
     /**
      * updates the preferences (don't provide a value if you want it unchanged)
@@ -133,21 +136,5 @@ export type LocalStore = {
         column?: FilterColumn[];
         direction?: "ascendant" | "descendant";
         flag?: boolean;
-    }) => void;
-
-    /**
-     * attaches function to the memory (will be called upon notification push)
-     * @param callback the function that will be called upon new notification
-     */
-    addNotificationListener: (options: {
-        callback: (notification: DashboardNotification) => void;
-    }) => void;
-
-    /**
-     * detaches the callback from the memory
-     * @param callback the function to remove from the listener memory
-     */
-    removeNotificationListener: (options: {
-        callback: (notification: DashboardNotification) => void;
     }) => void;
 };
