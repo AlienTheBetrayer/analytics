@@ -14,7 +14,7 @@ export const Topline = () => {
 
     return (
         <div
-            className={`box w-full max-w-7xl mx-auto my-2 p-0! flex-row! flex-wrap transition-all duration-500 items-center h-10!`}
+            className={`box w-full max-w-400 mx-auto my-2 p-0! flex-row! flex-wrap transition-all duration-500 items-center h-10!`}
         >
             <div className="flex gap-1 items-center">
                 <Tooltip

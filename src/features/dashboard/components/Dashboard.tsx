@@ -18,7 +18,7 @@ export const Dashboard = () => {
 
     if (!status) {
         return (
-            <div className="w-full max-w-7xl m-auto min-h-200 mt-8 sm:mt-0 box">
+            <div className="w-full max-w-400 m-auto min-h-200 mt-8 sm:mt-0 box">
                 <AuthRequired />
             </div>
         );
@@ -26,7 +26,7 @@ export const Dashboard = () => {
 
     if (!Object.values(projects)?.length) {
         return (
-            <div className="w-full max-w-7xl m-auto min-h-200 mt-8 sm:mt-0 box">
+            <div className="w-full max-w-400 m-auto min-h-200 mt-8 sm:mt-0 box">
                 <AbsentData />
             </div>
         );
@@ -35,7 +35,7 @@ export const Dashboard = () => {
     return (
         <>
             <Topline />
-            <div className="w-full max-w-7xl m-auto min-h-200 mt-8 sm:mt-0 box gap-3!">
+            <div className="w-full max-w-400 m-auto min-h-200 mt-8 sm:mt-0 box gap-3!">
                 <hr />
 
                 <div className="flex flex-col md:flex-row gap-8 md:gap-4 grow *:w-full">

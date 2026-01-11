@@ -27,7 +27,7 @@ export const Emulate = () => {
     // authentcation's missing
     if (!status || status?.role === "user") {
         return (
-            <div className="flex flex-col w-full mt-16 max-w-7xl p-6! rounded-4xl! gap-4! m-auto box">
+            <div className="flex flex-col w-full mt-16 max-w-400 p-6! rounded-4xl! gap-4! m-auto box">
                 <AuthRequired />
             </div>
         );
@@ -36,7 +36,7 @@ export const Emulate = () => {
     // no data fetched
     if (!projects) {
         return (
-            <div className="flex flex-col w-full mt-16 max-w-7xl p-6! rounded-4xl! gap-4! m-auto box">
+            <div className="flex flex-col w-full mt-16 max-w-400 p-6! rounded-4xl! gap-4! m-auto box">
                 <FetchPrompt />
             </div>
         );
@@ -45,7 +45,7 @@ export const Emulate = () => {
     // data is fetched and project at the id is not fetched
     if (id && !projects[id]) {
         return (
-            <div className="flex flex-col w-full max-w-7xl m-auto box p-6! rounded-4xl!">
+            <div className="flex flex-col w-full max-w-400 m-auto box p-6! rounded-4xl!">
                 <FetchPrompt />
                 <hr />
                 <ProjectList />
@@ -54,7 +54,7 @@ export const Emulate = () => {
     }
 
     return (
-        <div className="flex flex-col w-full max-w-7xl p-6! rounded-4xl! gap-4! box m-auto">
+        <div className="flex flex-col w-full max-w-400 p-6! rounded-4xl! gap-4! box m-auto">
             <div className="flex flex-col gap-2">
                 <div className="flex flex-wrap">
                     <Tooltip

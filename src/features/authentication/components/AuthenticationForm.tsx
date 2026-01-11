@@ -42,7 +42,7 @@ export const AuthenticationForm = ({
             initial={{ opacity: 0, y: 5 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 5 }}
-            className={`flex flex-col max-w-lg w-full z-2
+            className={`flex flex-col max-w-400 w-full z-2
                 sm:hover:scale-105 duration-300 ease-out box
                  ${className ?? ""}`}
         >

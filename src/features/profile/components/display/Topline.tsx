@@ -19,7 +19,7 @@ export const Topline = ({ data }: Props) => {
 
     return (
         <div
-            className={`box p-0! gap-2! my-2 flex-row! max-w-7xl w-full m-auto transition-all duration-500 h-10 items-center`}
+            className={`box p-0! gap-2! my-2 flex-row! max-w-400 w-full m-auto transition-all duration-500 h-10 items-center`}
         >
             <span className="flex gap-1 items-center absolute left-1/2 -translate-1/2 top-1/2">
                 <div className="rounded-full w-1 h-1 bg-blue-1" />

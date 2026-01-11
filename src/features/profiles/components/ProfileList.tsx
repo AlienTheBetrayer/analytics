@@ -35,7 +35,7 @@ export const ProfileList = () => {
 
     if (!profiles || promises?.profiles === "pending") {
         return (
-            <div className="flex flex-col w-full max-w-lg box m-auto">
+            <div className="flex flex-col w-full max-w-400 box m-auto">
                 <div className="flex flex-col gap-4">
                     <div className="flex flex-col gap-2">
                         <span className="text-center text-foreground-2! text-5!">

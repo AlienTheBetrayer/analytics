@@ -21,15 +21,13 @@ export const Header = () => {
         <header
             ref={headerRef}
             className="sticky mt-16 sm:mt-8 mb-16 rounded-full backdrop-blur-md 
-        p-1 flex w-full max-w-7xl mx-auto items-center! z-3
+        p-1 flex w-full max-w-400 mx-auto items-center! z-3
         duration-500 ease-in-out transition-all *:bg-background-a-2 *:border-2 *:border-background-3"
         >
             <nav className="flex absolute left-1/2 -translate-1/2 top-1/2 items-center w-full sm:w-fit mx-auto  backdrop-blur-2xl rounded-full p-2">
                 <ul className="flex justify-between gap-4 w-full h-full! *:flex *:items-center items-center px-4!">
                     <li>
-                        <Tooltip
-                            text="Front page"
-                        >
+                        <Tooltip text="Front page">
                             <LinkButton
                                 href="/home"
                                 styles="link"

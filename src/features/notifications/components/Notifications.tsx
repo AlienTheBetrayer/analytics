@@ -15,7 +15,7 @@ export const Notifications = ({ type }: Props) => {
 
     if (!status) {
         return (
-            <div className="box w-full max-w-7xl mx-auto min-h-128">
+            <div className="box w-full max-w-400 mx-auto min-h-128">
                 <AuthRequired />
             </div>
         );
@@ -24,7 +24,7 @@ export const Notifications = ({ type }: Props) => {
     return (
         <>
             <Topline type={type} />
-            <div className="box w-full max-w-7xl mx-auto min-h-128">
+            <div className="box w-full max-w-400 mx-auto min-h-128">
                 <Select type={type} />
             </div>
         </>

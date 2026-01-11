@@ -49,7 +49,7 @@ export const UserProfile = () => {
     if (!retrievedUsername) {
         return (
             <div
-                className={`box max-w-7xl mt-2 w-full m-auto p-0! min-h-120 rounded-3xl! overflow-hidden`}
+                className={`box max-w-400 mt-2 w-full m-auto p-0! min-h-120 rounded-3xl! overflow-hidden`}
             >
                 <AuthRequired />
             </div>
@@ -68,7 +68,7 @@ export const UserProfile = () => {
     ) {
         return (
             <div
-                className={`box max-w-7xl mt-2 w-full m-auto p-0! min-h-120 rounded-3xl! overflow-hidden`}
+                className={`box max-w-400 mt-2 w-full m-auto p-0! min-h-120 rounded-3xl! overflow-hidden`}
             >
                 <WrongUser />
             </div>
@@ -82,7 +82,7 @@ export const UserProfile = () => {
             <>
                 <Topline data={retrievedData} />
                 <div
-                    className={`box max-w-7xl w-full m-auto p-0! rounded-3xl! overflow-hidden`}
+                    className={`box max-w-400 w-full m-auto p-0! rounded-3xl! overflow-hidden`}
                 >
                     <Content data={retrievedData} />
                 </div>
@@ -92,7 +92,7 @@ export const UserProfile = () => {
 
     return (
         <div
-            className={`box max-w-7xl w-full m-auto p-0! rounded-3xl! overflow-hidden`}
+            className={`box max-w-400 w-full m-auto p-0! rounded-3xl! overflow-hidden`}
         >
             <Overview data={retrievedData} />
         </div>
