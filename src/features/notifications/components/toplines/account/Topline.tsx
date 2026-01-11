@@ -1,5 +1,3 @@
-import { MessageBox } from "@/features/messagebox/components/MessageBox";
-import { usePopup } from "@/features/popup/hooks/usePopup";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { useLocalStore } from "@/zustand/localStore";
@@ -7,6 +5,9 @@ import Image from "next/image";
 import { Filter } from "./Filter";
 import { Sort } from "./Sort";
 import { Search } from "./Search";
+import { useTopline } from "@/features/notifications/hooks/useTopline";
+import { dotColors } from "@/utils/other/dotColors";
+import { useMemo } from "react";
 
 export const Topline = () => {
     // zustand
@@ -16,31 +17,20 @@ export const Topline = () => {
 
     // zusatnd functions
     const toggleCollapsed = useLocalStore((state) => state.toggleCollapsed);
-    const clearNotifications = useLocalStore(
-        (state) => state.clearNotifications
-    );
-
     const hasNotification = !!Object.keys(notifications.account).length;
 
-    // messageboxes
-    const deleteBox = usePopup(({ hide }) => (
-        <MessageBox
-            description="Deleting will clear all the notifications that you had on this specific tab"
-            onInteract={(res) => {
-                hide();
-                if (res === "yes") {
-                    clearNotifications({ type: "Account" });
-                }
-            }}
-        />
-    ));
+    const { messageBox } = useTopline(accountFilter, "Account");
+
+    const filterColor = useMemo(() => {
+        return dotColors(accountFilter.filtering);
+    }, [accountFilter]);
 
     return (
         <div
             className={`box p-0! gap-1! flex-row! transition-all duration-300 h-10 min-h-10 items-center ${!hasNotification ? "opacity-30" : ""}`}
             inert={!hasNotification}
         >
-            {deleteBox.render()}
+            {messageBox.render()}
 
             <div
                 className="select-none pointer-events-none transition-all duration-300 absolute inset-0 grid place-items-center z-1"
@@ -100,9 +90,7 @@ export const Topline = () => {
                         <div
                             className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-300"
                             style={{
-                                background: accountFilter.filtering
-                                    ? "var(--blue-1)"
-                                    : "transparent",
+                                background: filterColor,
                             }}
                         />
                     </Button>
@@ -157,7 +145,7 @@ export const Topline = () => {
             >
                 <Button
                     className="p-0!"
-                    onClick={deleteBox.show}
+                    onClick={messageBox.show}
                 >
                     <Image
                         alt=""

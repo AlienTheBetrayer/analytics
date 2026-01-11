@@ -79,6 +79,9 @@ export const LocalSlice: SliceFunction<LocalStore, LocalStore> = (set) => {
         clearNotifications: (options) => {
             set((state) => {
                 const notifications = { ...state.notifications };
+                let accountFilter = { ...state.accountFilter };
+                let dashboardFilter = { ...state.dashboardFilter };
+
                 let lastNotificationId = state.lastNotificationId;
 
                 switch (options.type) {
@@ -90,6 +93,8 @@ export const LocalSlice: SliceFunction<LocalStore, LocalStore> = (set) => {
                             lastNotificationId = undefined;
                         }
                         notifications.account = {};
+                        accountFilter = {};
+
                         break;
                     }
                     case "Dashboard": {
@@ -100,17 +105,26 @@ export const LocalSlice: SliceFunction<LocalStore, LocalStore> = (set) => {
                             lastNotificationId = undefined;
                         }
                         notifications.dashboard = {};
+                        dashboardFilter = {};
                         break;
                     }
                     case "All": {
                         lastNotificationId = undefined;
                         notifications.account = {};
                         notifications.dashboard = {};
+                        dashboardFilter = {};
+                        accountFilter = {};
                         break;
                     }
                 }
 
-                return { ...state, notifications, lastNotificationId };
+                return {
+                    ...state,
+                    notifications,
+                    lastNotificationId,
+                    dashboardFilter,
+                    accountFilter,
+                };
             });
         },
 

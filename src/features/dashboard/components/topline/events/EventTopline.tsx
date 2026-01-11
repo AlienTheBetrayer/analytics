@@ -6,11 +6,20 @@ import { Sorting } from "./Sorting";
 import { Filtering } from "./Filtering";
 import { Search } from "./Search";
 import { Wipe } from "./Wipe";
+import { useMemo } from "react";
+import { dotColors } from "@/utils/other/dotColors";
 
 export const EventTopline = () => {
     // zustand-state
     const selectedProjectId = useAppStore((state) => state.selectedProjectId);
     const eventFilters = useAppStore((state) => state.eventFilters);
+
+    const filterColor = useMemo(() => {
+        if (!selectedProjectId) {
+            return "transparent";
+        }
+        return dotColors(eventFilters[selectedProjectId]?.eventsFiltering);
+    }, [eventFilters, selectedProjectId]);
 
     return (
         <div
@@ -47,11 +56,7 @@ export const EventTopline = () => {
                         <div
                             className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500"
                             style={{
-                                background: eventFilters[
-                                    selectedProjectId ?? ""
-                                ]?.eventsFiltering
-                                    ? "var(--blue-1)"
-                                    : "transparent",
+                                background: filterColor,
                             }}
                         />
                     </Button>

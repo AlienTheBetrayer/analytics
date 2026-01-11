@@ -1,7 +1,12 @@
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
+import {
+    DashboardNotificationTab,
+    DashboardNotificationType,
+} from "@/types/zustand/local";
 import { useLocalStore } from "@/zustand/localStore";
 import Image from "next/image";
+import { lorem } from "txtgen";
 
 export const Topline = () => {
     // zustand
@@ -26,11 +31,18 @@ export const Topline = () => {
                 <Button
                     className="p-0!"
                     onClick={() => {
+                        const statuses = ["Error", "Warning", "Information"];
+                        const types = ["Account", "Dashboard"];
+
                         pushNotification({
-                            status: "Error",
-                            type: "Account",
-                            description: "",
-                            title: "zyablik",
+                            status: statuses[
+                                Math.round(Math.random() * 2)
+                            ] as DashboardNotificationType,
+                            type: types[
+                                Math.round(Math.random())
+                            ] as DashboardNotificationTab,
+                            description: lorem(3, 5),
+                            title: lorem(1, 1),
                         });
                     }}
                 >

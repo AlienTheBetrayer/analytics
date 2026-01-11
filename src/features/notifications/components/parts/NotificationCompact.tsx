@@ -17,7 +17,7 @@ const NotificationImages = {
 
 const NotificationColors = {
     Error: "var(--red-1)",
-    Warning: "var(--red-3)",
+    Warning: "var(--orange-1)",
     Information: "var(--blue-1)",
 };
 

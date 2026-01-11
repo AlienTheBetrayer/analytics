@@ -35,7 +35,6 @@ export const DataSlice: SliceFunction<DataStore> = (set, get) => {
 
         runListeners: (options) => {
             const { notificationListeners } = get();
-            console.log("ranning", notificationListeners);
 
             for (const listener of notificationListeners) {
                 listener(options.notification);
