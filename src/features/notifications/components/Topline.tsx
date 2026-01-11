@@ -59,7 +59,7 @@ export const Topline = ({ type }: Props) => {
                             width={16}
                             height={16}
                             alt="home"
-                            src="/notification.svg"
+                            src="/back.svg"
                         />
                         <span className="hidden md:block">Notifications</span>
                     </LinkButton>
