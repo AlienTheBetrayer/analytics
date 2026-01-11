@@ -1,8 +1,7 @@
-import { relativeTime } from "@/utils/other/relativeTime";
-import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { AbsentNotifications } from "../../errors/AbsentNotifications";
 import { useLocalStore } from "@/zustand/localStore";
 import { useDashboardList } from "@/features/notifications/hooks/useDashboardList";
+import { NotificationCompact } from "../../parts/NotificationCompact";
 
 export const Display = () => {
     // zustand
@@ -19,16 +18,8 @@ export const Display = () => {
         <ul className="flex flex-col gap-2">
             {filtered?.map((notification) => (
                 <li key={notification.id}>
-                    <LinkButton
-                        className="box"
-                        href={`/notification/${notification.id}`}
-                    >
-                        <span>{notification.id}</span>
-                        <span>{notification.title}</span>
-                        <span>{notification.description}</span>
-                        <span>{notification.status}</span>
-                        <span>{relativeTime(notification.sentAt)}</span>
-                    </LinkButton>
+                    <NotificationCompact notification={notification} />
+                    <hr className="mt-4 mb-4" />
                 </li>
             ))}
         </ul>

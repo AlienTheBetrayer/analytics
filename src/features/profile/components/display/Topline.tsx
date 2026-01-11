@@ -56,7 +56,7 @@ export const Topline = ({ data }: Props) => {
                         width={16}
                         height={16}
                         alt="notifications"
-                        src="/send.svg"
+                        src="/notification.svg"
                     />
                     <span className="hidden md:block">Notifications</span>
                 </LinkButton>

@@ -5,6 +5,7 @@ export const Account = () => {
     return (
         <div className="flex flex-col gap-2">
             <Topline />
+
             <hr />
             <Display />
         </div>

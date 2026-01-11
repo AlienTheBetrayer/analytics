@@ -40,7 +40,7 @@ export const Filtering = () => {
     );
 
     return (
-        <div className="box p-3! min-w-64">
+        <div className="box p-3! min-w-81">
             <span className="flex flex-col items-center">
                 <Image
                     alt="filter"
