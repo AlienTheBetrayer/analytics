@@ -1,5 +1,6 @@
-import { DashboardNotification } from "@/types/zustand/dashboard";
+import { DashboardNotification } from "@/types/zustand/local";
 import { AbsentNotification } from "../../errors/AbsentNotification";
+import { NotificationCompact } from "../../parts/NotificationCompact";
 
 type Props = {
     data: DashboardNotification | undefined;
@@ -11,13 +12,9 @@ export const Display = ({ data }: Props) => {
     }
 
     return (
-        <div>
-            <div className="box">
-                <span>{data.id}</span>
-                <span>{data.status}</span>
-                <span>{data.title}</span>
-                <span>{data.description}</span>
-            </div>
+        <div className="flex flex-col gap-2">
+            <NotificationCompact notification={data} />
+            <hr className="my-4" />
         </div>
     );
 };

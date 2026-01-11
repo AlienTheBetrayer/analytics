@@ -26,7 +26,7 @@ export const Display = () => {
             {filtered?.map((notification) => (
                 <li key={notification.id}>
                     <NotificationCompact notification={notification} />
-                    <hr className="mt-4 mb-4" />
+                    <hr className="my-4" />
                 </li>
             ))}
         </ul>

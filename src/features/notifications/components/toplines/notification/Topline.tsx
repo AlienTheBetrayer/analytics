@@ -22,7 +22,7 @@ export const Topline = ({ data }: Props) => {
                     alt=""
                     width={16}
                     height={16}
-                    src="/send.svg"
+                    src="/notification.svg"
                 />
                 <span>Notification</span>
             </div>

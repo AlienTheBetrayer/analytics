@@ -23,9 +23,9 @@ const NotificationColors = {
 
 export const NotificationCompact = ({ notification }: Props) => {
     return (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-1">
             <div
-                className={`box w-full max-w-7xl  justify-between! mx-auto p-0! gap-1! flex-row! transition-all duration-500 h-10 items-center`}
+                className={`box w-full max-w-7xl justify-between! mx-auto p-0! gap-1! flex-row! transition-all duration-500 min-h-10 h-10 items-center`}
             >
                 <div className="flex gap-1 items-center min-h-8 min-w-8 justify-center">
                     <small>
@@ -66,15 +66,53 @@ export const NotificationCompact = ({ notification }: Props) => {
             </div>
 
             <LinkButton
-                className="box p-0! rounded-4xl!"
+                className="box rounded-4xl! sm:grid! grid-cols-[30%_auto_70%] gap-4! h-full"
                 href={`/notification/${notification.id}`}
             >
-                <div className="flex flex-col gap-1">
-                    <span>{notification.id}</span>
-                    <span>{notification.title}</span>
-                    <span>{notification.description}</span>
-                    <span>{notification.status}</span>
-                    <span>{relativeTime(notification.sentAt)}</span>
+                <div className="h-full grid place-items-center gap-1">
+                    <span className="flex items-center gap-1 text-6! text-foreground-5!">
+                        <div
+                            className="w-1 h-1 rounded-full"
+                            style={{
+                                background:
+                                    NotificationColors[notification.status],
+                            }}
+                        />
+                        {notification.title}
+                    </span>
+
+                    <small>
+                        <Image
+                            alt=""
+                            width={42}
+                            height={42}
+                            src={`${NotificationImages[notification.status]}`}
+                        />
+                    </small>
+                </div>
+
+                <hr className="w-3/4! sm:w-px! sm:h-3/4" />
+
+                <div className="flex flex-col items-center">
+                    <span className="flex gap-1 items-center">
+                        <Image
+                            alt=""
+                            width={16}
+                            height={16}
+                            src="/menu.svg"
+                        />
+                        {notification.description}
+                    </span>
+
+                    <span className="flex gap-1 items-center">
+                        <Image
+                            alt=""
+                            width={16}
+                            height={16}
+                            src="/calendar.svg"
+                        />
+                        {relativeTime(notification.sentAt)}
+                    </span>
                 </div>
             </LinkButton>
         </div>
