@@ -16,6 +16,11 @@ export const LocalSlice: SliceFunction<LocalStore, LocalStore> = (set) => {
         },
         accountFilter: {},
         dashboardFilter: {},
+        collapsedTabs: {
+            account: true,
+            all: true,
+            dashboard: true,
+        },
 
         setProfilesMenuType: (type: ProfileMenuType) => {
             set((state) => ({ ...state, profilesMenuType: type }));
@@ -251,6 +256,41 @@ export const LocalSlice: SliceFunction<LocalStore, LocalStore> = (set) => {
 
                 return { ...state, dashboardFilter, accountFilter };
             });
+        },
+
+        toggleCollapsed: (options) => {
+            switch (options.tab) {
+                case "Account": {
+                    set((state) => ({
+                        ...state,
+                        collapsedTabs: {
+                            ...state.collapsedTabs,
+                            account: !state.collapsedTabs.account,
+                        },
+                    }));
+                    break;
+                }
+                case "Dashboard": {
+                    set((state) => ({
+                        ...state,
+                        collapsedTabs: {
+                            ...state.collapsedTabs,
+                            dashboard: !state.collapsedTabs.dashboard,
+                        },
+                    }));
+                    break;
+                }
+                case "All": {
+                    set((state) => ({
+                        ...state,
+                        collapsedTabs: {
+                            ...state.collapsedTabs,
+                            all: !state.collapsedTabs.all,
+                        },
+                    }));
+                    break;
+                }
+            }
         },
     };
 };

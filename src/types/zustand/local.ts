@@ -64,6 +64,11 @@ export type LocalStore = {
     };
     lastNotificationId?: string;
     unreadTabs: Record<string, boolean>;
+    collapsedTabs: {
+        all: boolean;
+        dashboard: boolean;
+        account: boolean;
+    }
 
     // settings
     preferences: {
@@ -137,4 +142,11 @@ export type LocalStore = {
         direction?: "ascendant" | "descendant";
         flag?: boolean;
     }) => void;
+
+    /**
+     * toggles the collapsed state for the notification tab
+     * @param tab the tab you want to hide / show
+     * @param flag whether to collapse or expand
+     */
+    toggleCollapsed: (options: { tab: DashboardNotificationTab | "All" }) => void;
 };

@@ -11,10 +11,14 @@ import { Search } from "./Search";
 export const Topline = () => {
     // zustand
     const dashboardFilter = useLocalStore((state) => state.dashboardFilter);
+    const collapsedTabs = useLocalStore((state) => state.collapsedTabs);
     const notifications = useLocalStore((state) => state.notifications);
+
+    // zustand functions
     const clearNotifications = useLocalStore(
         (state) => state.clearNotifications
     );
+    const toggleCollapsed = useLocalStore((state) => state.toggleCollapsed);
 
     const hasNotification = !!Object.keys(notifications.dashboard).length;
 
@@ -46,6 +50,34 @@ export const Topline = () => {
                     <mark>Fetch</mark> notifications to access
                 </span>
             </div>
+
+            <Tooltip
+                text={`${!collapsedTabs.dashboard ? "Expand" : "Collapse"}`}
+                direction="top"
+            >
+                <Button
+                    className="aspect-square p-0!"
+                    onClick={() => {
+                        toggleCollapsed({ tab: "Dashboard" });
+                    }}
+                >
+                    <Image
+                        alt="expand"
+                        src="/collapse.svg"
+                        width={24}
+                        height={24}
+                    />
+
+                    <div
+                        className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-300"
+                        style={{
+                            background: !collapsedTabs.dashboard
+                                ? "var(--orange-1)"
+                                : "transparent",
+                        }}
+                    />
+                </Button>
+            </Tooltip>
 
             <Tooltip
                 disabledPointer={false}

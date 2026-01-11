@@ -45,6 +45,9 @@
     --red-1: hsl(0, 100%, 61%);
     --red-2: hsl(0, 75%, 61%);
     --red-3: hsl(0, 50%, 61%);
+    --orange-1: hsl(30, 100%, 61%);
+    --orange-2: hsl(30, 75%, 61%);
+    --orange-3: hsl(30, 50%, 61%);
 
     --blue-a-1: rgba(56, 66, 255, 0.5);
     --red-a-1: rgba(255, 56, 56, 0.5);
@@ -92,6 +95,9 @@
     --color-red-1: var(--red-1);
     --color-red-2: var(--red-2);
     --color-red-3: var(--red-3);
+    --color-orange-1: var(--orange-1);
+    --color-orange-2: var(--orange-2);
+    --color-orange-3: var(--orange-3);
 
     --color-blue-a-1: var(--blue-a-1);
     --color-red-a-1: var(--red-a-1);
