@@ -271,6 +271,15 @@ export const LocalSlice: SliceFunction<LocalStore, LocalStore> = (set) => {
 
                         break;
                     }
+                    case "dashboard-filter-all": {
+                        if (!(typeof options.flag === "boolean")) {
+                            throw "options/flag are not defined.";
+                        }
+
+                        
+
+                        break;
+                    }
                 }
 
                 return { ...state, dashboardFilter, accountFilter };

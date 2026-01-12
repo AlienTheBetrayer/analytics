@@ -130,9 +130,11 @@ export type LocalStore = {
             | "account-sort"
             | "account-search"
             | "account-filter"
+            | "account-filter-all"
             | "dashboard-sort"
             | "dashboard-search"
-            | "dashboard-filter";
+            | "dashboard-filter"
+            | "dashboard-filter-all";
         search?: string;
         column?: FilterColumn[];
         direction?: "ascendant" | "descendant";

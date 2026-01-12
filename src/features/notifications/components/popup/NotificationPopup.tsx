@@ -1,12 +1,9 @@
-import { Tooltip } from "@/features/tooltip/components/Tooltip";
-import { DashboardNotificationPartial } from "@/types/zustand/local";
-import Image from "next/image";
-import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { Topline } from "./Topline";
 import { motion } from "motion/react";
+import { NotificationPartial } from "@/types/zustand/local";
 
 type Props = {
-    notification: DashboardNotificationPartial;
+    notification: NotificationPartial;
     onInteract?: () => void;
 };
 
@@ -34,18 +31,6 @@ export const NotificationPopup = ({ notification, onInteract }: Props) => {
                         {notification.title}
                     </span>
                     <span>{notification.description}</span>
-                    <hr />
-                    <Tooltip text="Notification centre">
-                        <LinkButton href="/notifications">
-                            <Image
-                                alt=""
-                                width={16}
-                                height={16}
-                                src="/notification.svg"
-                            />
-                            <span>Notification centre</span>
-                        </LinkButton>
-                    </Tooltip>
                 </div>
             </div>
         </motion.div>

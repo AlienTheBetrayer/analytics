@@ -14,6 +14,7 @@ export const LocalStoreWatcher = () => {
 
     // localstore
     const pushNotification = useLocalStore((state) => state.pushNotification);
+    const preferences = useLocalStore((state) => state.preferences);
 
     // popup states
     const [mounted, setMounted] = useState<boolean>(false);
@@ -29,7 +30,10 @@ export const LocalStoreWatcher = () => {
 
         const handle = (notification: NotificationPartial) => {
             pushNotification({ ...notification });
-            setNotification(notification);
+
+            if (preferences.visibility) {
+                setNotification(notification);
+            }
         };
 
         addListener({ callback: handle });
@@ -37,14 +41,14 @@ export const LocalStoreWatcher = () => {
         return () => {
             removeListener({ callback: handle });
         };
-    }, [addListener, removeListener, pushNotification]);
+    }, [addListener, removeListener, pushNotification, preferences]);
 
     useEffect(() => {
         if (!notification) {
             return;
         }
 
-        setTimeout(() => setNotification(undefined), 10000);
+        setTimeout(() => setNotification(undefined), 7500);
     }, [notification]);
 
     return (

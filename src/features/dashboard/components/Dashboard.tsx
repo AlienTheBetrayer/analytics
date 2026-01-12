@@ -1,20 +1,38 @@
 "use client";
 import { useAppStore } from "@/zustand/store";
-import { useData } from "../hooks/useData";
 import { DashboardEvents } from "./events/DashboardEvents";
 import { DashboardProjects } from "./projects/DashboardProjects";
 import { Topline } from "./Topline";
 import { AbsentData } from "./errors/AbsentData";
 import { AuthRequired } from "@/features/authentication/components/AuthRequired";
+import { useEffect, useRef } from "react";
 
 export const Dashboard = () => {
     // zustand states
-
     const status = useAppStore((state) => state.status);
     const projects = useAppStore((state) => state.projects);
 
-    // helper hook to initialize zustand's requests
-    useData();
+    // zustand functions
+    const deleteState = useAppStore((state) => state.deleteState);
+    const selectProject = useAppStore((state) => state.selectProject);
+    const sync = useAppStore((state) => state.sync);
+
+    const hasFetched = useRef<boolean>(false);
+
+    // fetching
+    useEffect(() => {
+        if (!status) {
+            hasFetched.current = false;
+            deleteState();
+            selectProject(undefined);
+        } else {
+            if (hasFetched.current) {
+                return;
+            }
+            hasFetched.current = true;
+            sync();
+        }
+    }, [status, deleteState, selectProject, sync]);
 
     if (!status) {
         return (

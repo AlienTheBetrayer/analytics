@@ -1,14 +1,15 @@
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
-import { DashboardNotificationPartial } from "@/types/zustand/local";
+import { NotificationPartial } from "@/types/zustand/local";
 import {
     NotificationImages,
     NotificationColors,
 } from "../parts/NotificationCompact";
 import Image from "next/image";
+import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 
 type Props = {
-    notification: DashboardNotificationPartial;
+    notification: NotificationPartial;
     onInteract?: () => void;
 };
 
@@ -34,6 +35,17 @@ export const Topline = ({ notification, onInteract }: Props) => {
 
                 <span>{notification.status}</span>
             </div>
+
+            <Tooltip text="Notification centre">
+                <LinkButton href="/notifications">
+                    <Image
+                        alt=""
+                        width={16}
+                        height={16}
+                        src="/notification.svg"
+                    />
+                </LinkButton>
+            </Tooltip>
 
             <Tooltip
                 text="Hide"
