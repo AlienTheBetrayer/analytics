@@ -20,7 +20,7 @@ export const Topline = () => {
 
     const hasNotification = !!Object.keys(notifications.dashboard).length;
 
-    const { messageBox } = useTopline(dashboardFilter, "Dashboard");
+    const { messageBox } = useTopline("Dashboard");
 
     const filterColor = useMemo(() => {
         return dotColors(dashboardFilter.filtering);
@@ -60,7 +60,7 @@ export const Topline = () => {
                     />
 
                     <div
-                        className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-300"
+                        className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500"
                         style={{
                             background: !collapsedTabs.dashboard
                                 ? "var(--orange-1)"
@@ -89,7 +89,7 @@ export const Topline = () => {
                         />
 
                         <div
-                            className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-300"
+                            className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500"
                             style={{
                                 background: filterColor,
                             }}
@@ -125,7 +125,7 @@ export const Topline = () => {
                         />
 
                         <div
-                            className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-300"
+                            className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500"
                             style={{
                                 background: dashboardFilter.sorting
                                     ? "var(--blue-1)"

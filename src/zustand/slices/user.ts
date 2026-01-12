@@ -295,8 +295,10 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
                         notification: {
                             status: "Information",
                             title: `Updated ${users[options.id].username}!`,
-                            description: "Any data may have been changed regarding this user.",
-                            type: "Account",
+                            description:
+                                "Any data may have been changed regarding this user.",
+                            tab: "Account",
+                            type: "PROFILE_EDITED",
                         },
                     });
 
@@ -307,7 +309,8 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
                             status: "Error",
                             title: `Failed updating ${users[options.id].username}.`,
                             description: JSON.stringify(e),
-                            type: "Account",
+                            tab: "Account",
+                            type: "PROFILE_EDITED",
                         },
                     });
                 }

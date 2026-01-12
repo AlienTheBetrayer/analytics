@@ -19,7 +19,7 @@ export const Topline = () => {
     const toggleCollapsed = useLocalStore((state) => state.toggleCollapsed);
     const hasNotification = !!Object.keys(notifications.account).length;
 
-    const { messageBox } = useTopline(accountFilter, "Account");
+    const { messageBox } = useTopline("Account");
 
     const filterColor = useMemo(() => {
         return dotColors(accountFilter.filtering);
@@ -59,7 +59,7 @@ export const Topline = () => {
                     />
 
                     <div
-                        className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-300"
+                        className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500"
                         style={{
                             background: !collapsedTabs.account
                                 ? "var(--orange-1)"
@@ -88,7 +88,7 @@ export const Topline = () => {
                         />
 
                         <div
-                            className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-300"
+                            className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500"
                             style={{
                                 background: filterColor,
                             }}
@@ -124,7 +124,7 @@ export const Topline = () => {
                         />
 
                         <div
-                            className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-300"
+                            className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500"
                             style={{
                                 background: accountFilter.sorting
                                     ? "var(--blue-1)"

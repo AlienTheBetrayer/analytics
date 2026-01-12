@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useAppStore } from "./store";
 import { useLocalStore } from "./localStore";
-import { DashboardNotificationPartial } from "@/types/zustand/local";
+import { NotificationPartial } from "@/types/zustand/local";
 import { createPortal } from "react-dom";
 import { AnimatePresence } from "motion/react";
 import { NotificationPopup } from "@/features/notifications/components/popup/NotificationPopup";
@@ -18,7 +18,7 @@ export const LocalStoreWatcher = () => {
     // popup states
     const [mounted, setMounted] = useState<boolean>(false);
     const [notification, setNotification] = useState<
-        DashboardNotificationPartial | undefined
+        NotificationPartial | undefined
     >(undefined);
 
     // attaching listeners
@@ -27,7 +27,7 @@ export const LocalStoreWatcher = () => {
             setMounted(true);
         });
 
-        const handle = (notification: DashboardNotificationPartial) => {
+        const handle = (notification: NotificationPartial) => {
             pushNotification({ ...notification });
             setNotification(notification);
         };

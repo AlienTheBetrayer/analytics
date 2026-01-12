@@ -36,7 +36,12 @@ export const useAccountList = () => {
 
         // column-filtering
         if (filtering) {
-            filtered = filtered.filter((e) => filtering[e.status]);
+            filtered = filtered.filter(
+                (e) =>
+                    filtering[e.status] ||
+                    filtering[e.title] ||
+                    (e.type && filtering[e.type])
+            );
         }
 
         // sorting

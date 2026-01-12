@@ -1,9 +1,6 @@
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
-import {
-    DashboardNotificationTab,
-    DashboardNotificationType,
-} from "@/types/zustand/local";
+import { NotificationStatus, NotificationTab } from "@/types/zustand/local";
 import { useLocalStore } from "@/zustand/localStore";
 import Image from "next/image";
 import { lorem } from "txtgen";
@@ -32,17 +29,18 @@ export const Topline = () => {
                     className="p-0!"
                     onClick={() => {
                         const statuses = ["Error", "Warning", "Information"];
-                        const types = ["Account", "Dashboard"];
+                        const tabs = ["Account", "Dashboard"];
 
                         pushNotification({
                             status: statuses[
                                 Math.round(Math.random() * 2)
-                            ] as DashboardNotificationType,
-                            type: types[
+                            ] as NotificationStatus,
+                            tab: tabs[
                                 Math.round(Math.random())
-                            ] as DashboardNotificationTab,
+                            ] as NotificationTab,
                             description: lorem(3, 5),
                             title: lorem(1, 1),
+                            type: "EMULATED",
                         });
                     }}
                 >

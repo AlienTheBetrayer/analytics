@@ -36,9 +36,13 @@ export const useDashboardList = () => {
 
         // column-filtering
         if (filtering) {
-            filtered = filtered.filter((e) => filtering[e.status]);
+            filtered = filtered.filter(
+                (e) =>
+                    filtering[e.status] ||
+                    filtering[e.title] ||
+                    (e.type && filtering[e.type])
+            );
         }
-
         // sorting
         const column = sorting?.column ?? "Sent Date";
         const direction = !sorting

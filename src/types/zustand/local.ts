@@ -9,23 +9,26 @@ export type VisibleProfile = {
 };
 
 // notifications
-export type DashboardNotificationType = "Information" | "Error" | "Warning";
-export type DashboardNotificationTab = "Account" | "Dashboard";
+export type NotificationStatus = "Information" | "Error" | "Warning";
+export type NotificationTab = "Account" | "Dashboard";
+export type NotificationType = "ANALYTICS_SYNCED" | "PROFILE_EDITED" | "EMULATED";
 
 export type DashboardNotification = {
     id: string;
-    status: DashboardNotificationType;
-    type: DashboardNotificationTab;
+    status: NotificationStatus;
+    tab: NotificationTab;
+    type?: NotificationType;
     title: string;
     description?: string;
     sentAt?: string;
 };
 
-export type DashboardNotificationPartial = {
+export type NotificationPartial = {
     title: string;
+    status: NotificationStatus;
+    tab: NotificationTab;
     description?: string;
-    status: DashboardNotificationType;
-    type: DashboardNotificationTab;
+    type?: NotificationType;
 };
 
 export type FilterColumn =
@@ -35,7 +38,8 @@ export type FilterColumn =
     | "Title"
     | "Description"
     | "Status"
-    | "Sent Date";
+    | "Sent Date"
+    | (string & {});
 
 // filters
 export type AccountFilter = {
@@ -68,7 +72,7 @@ export type LocalStore = {
         all: boolean;
         dashboard: boolean;
         account: boolean;
-    }
+    };
 
     // settings
     preferences: {
@@ -102,21 +106,19 @@ export type LocalStore = {
      * @param description description of the notification
      * @param type tab that receives the notification
      */
-    pushNotification: (options: DashboardNotificationPartial) => void;
+    pushNotification: (options: NotificationPartial) => void;
 
     /**
      * explicitly clears all notifications that have been sent
      * @param id which tabs should be cleared
      */
-    clearNotifications: (options: {
-        id: string[]
-    }) => void;
+    clearNotifications: (options: { id: string[] }) => void;
 
     /**
      * clears the unread status on a given tab
      * @param tab tab on which you might have the unread status
      */
-    clearUnread: (options: { tab: DashboardNotificationTab }) => void;
+    clearUnread: (options: { tab: NotificationTab }) => void;
 
     /**
      * updates the preferences (don't provide a value if you want it unchanged)
@@ -148,5 +150,5 @@ export type LocalStore = {
      * @param tab the tab you want to hide / show
      * @param flag whether to collapse or expand
      */
-    toggleCollapsed: (options: { tab: DashboardNotificationTab | "All" }) => void;
+    toggleCollapsed: (options: { tab: NotificationTab }) => void;
 };

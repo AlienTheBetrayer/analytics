@@ -1,25 +1,19 @@
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
-import { FilterColumn } from "@/types/zustand/local";
 import { useLocalStore } from "@/zustand/localStore";
 import Image from "next/image";
-import { useMemo } from "react";
+import { useState } from "react";
+import { FilterSelector } from "../../FilterSelector";
+import { FilterTabType } from "../account/Filter";
 
 export const Filter = () => {
     // zustand-state
-    const notifications = useLocalStore((state) => state.notifications);
     const dashboardFilter = useLocalStore((state) => state.dashboardFilter);
     const setFilter = useLocalStore((state) => state.setFilter);
 
-    const notificationCount = useMemo(() => {
-        const count: Record<string, number> = {};
-        for (const notification of Object.values(notifications.dashboard)) {
-            count[notification.status] = (count[notification.status] ?? 0) + 1;
-        }
-
-        return count;
-    }, [notifications]);
+    // react states
+    const [filterTab, setFilterTab] = useState<FilterTabType>("Status");
 
     return (
         <div className="box p-3! min-w-81">
@@ -33,26 +27,25 @@ export const Filter = () => {
                 Type filtering
             </span>
 
-            <hr />
-            {["Error", "Warning", "Information"].map((type) => (
-                <Checkbox
-                    key={type}
-                    onToggle={(flag) => {
-                        setFilter({
-                            type: "dashboard-filter",
-                            column: [type as FilterColumn],
-                            flag,
-                        });
-                    }}
-                    value={dashboardFilter.filtering?.[type]}
-                >
-                    <span>{type}</span>
+            <div className="flex gap-1 items-center">
+                {["Status", "Type", "Title"].map((type) => (
+                    <Checkbox
+                        key={type}
+                        onToggle={() => {
+                            setFilterTab(type as "Status" | "Type" | "Title");
+                        }}
+                        value={filterTab === type}
+                    >
+                        <span>{type}</span>
+                    </Checkbox>
+                ))}
+            </div>
 
-                    <span className="ml-auto">
-                        <small>{notificationCount[type] ?? 0}</small>
-                    </span>
-                </Checkbox>
-            ))}
+            <hr />
+            <FilterSelector
+                tab={filterTab}
+                notificationTab="Dashboard"
+            />
 
             <hr />
             <div className="grid grid-cols-2 gap-1">
@@ -63,8 +56,16 @@ export const Filter = () => {
                     <Button
                         className="w-full"
                         onClick={() => {
+                            const keys =
+                                dashboardFilter.filtering &&
+                                Object.keys(dashboardFilter.filtering);
+
+                            if (!keys) {
+                                return;
+                            }
+
                             setFilter({
-                                column: ["Error", "Information", "Warning"],
+                                column: keys,
                                 flag: true,
                                 type: "dashboard-filter",
                             });
@@ -89,8 +90,16 @@ export const Filter = () => {
                     <Button
                         className="w-full"
                         onClick={() => {
+                            const keys =
+                                dashboardFilter.filtering &&
+                                Object.keys(dashboardFilter.filtering);
+
+                            if (!keys) {
+                                return;
+                            }
+
                             setFilter({
-                                column: ["Error", "Information", "Warning"],
+                                column: keys,
                                 flag: false,
                                 type: "dashboard-filter",
                             });

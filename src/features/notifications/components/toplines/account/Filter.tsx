@@ -1,25 +1,20 @@
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
-import { FilterColumn } from "@/types/zustand/local";
 import { useLocalStore } from "@/zustand/localStore";
 import Image from "next/image";
-import { useMemo } from "react";
+import { useState } from "react";
+import { FilterSelector } from "../../FilterSelector";
+
+export type FilterTabType = "Status" | "Type" | "Title";
 
 export const Filter = () => {
-    // zustand-state
-    const notifications = useLocalStore((state) => state.notifications);
+    // zustand
     const accountFilter = useLocalStore((state) => state.accountFilter);
     const setFilter = useLocalStore((state) => state.setFilter);
 
-    const notificationCount = useMemo(() => {
-        const count: Record<string, number> = {};
-        for (const notification of Object.values(notifications.account)) {
-            count[notification.status] = (count[notification.status] ?? 0) + 1;
-        }
-
-        return count;
-    }, [notifications]);
+    // react states
+    const [filterTab, setFilterTab] = useState<FilterTabType>("Status");
 
     return (
         <div className="box p-3! min-w-81">
@@ -30,28 +25,28 @@ export const Filter = () => {
                     width={16}
                     height={16}
                 />
-                Type filtering
+                Filtering
             </span>
 
+            <div className="flex gap-1 items-center">
+                {["Status", "Type", "Title"].map((type) => (
+                    <Checkbox
+                        key={type}
+                        onToggle={() => {
+                            setFilterTab(type as "Status" | "Type" | "Title");
+                        }}
+                        value={filterTab === type}
+                    >
+                        <span>{type}</span>
+                    </Checkbox>
+                ))}
+            </div>
+
             <hr />
-            {["Error", "Warning", "Information"].map((type) => (
-                <Checkbox
-                    key={type}
-                    onToggle={(flag) => {
-                        setFilter({
-                            type: "account-filter",
-                            column: [type as FilterColumn],
-                            flag,
-                        });
-                    }}
-                    value={accountFilter.filtering?.[type]}
-                >
-                    <span>{type}</span>
-                    <span className="ml-auto">
-                        <small>{notificationCount[type] ?? 0}</small>
-                    </span>
-                </Checkbox>
-            ))}
+            <FilterSelector
+                tab={filterTab}
+                notificationTab="Account"
+            />
 
             <hr />
             <div className="grid grid-cols-2 gap-1">
@@ -62,8 +57,16 @@ export const Filter = () => {
                     <Button
                         className="w-full"
                         onClick={() => {
+                            const keys =
+                                accountFilter.filtering &&
+                                Object.keys(accountFilter.filtering);
+
+                            if (!keys) {
+                                return;
+                            }
+
                             setFilter({
-                                column: ["Error", "Information", "Warning"],
+                                column: keys,
                                 flag: true,
                                 type: "account-filter",
                             });
@@ -88,8 +91,16 @@ export const Filter = () => {
                     <Button
                         className="w-full"
                         onClick={() => {
+                            const keys =
+                                accountFilter.filtering &&
+                                Object.keys(accountFilter.filtering);
+
+                            if (!keys) {
+                                return;
+                            }
+
                             setFilter({
-                                column: ["Error", "Information", "Warning"],
+                                column: keys,
                                 flag: false,
                                 type: "account-filter",
                             });

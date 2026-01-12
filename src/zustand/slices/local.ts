@@ -43,12 +43,13 @@ export const LocalSlice: SliceFunction<LocalStore, LocalStore> = (set) => {
                     status: options.status,
                     description: options.description,
                     title: options.title,
+                    tab: options.tab,
                     type: options.type,
                     sentAt: new Date().toISOString(),
                 };
 
                 // storing it in memory
-                switch (options.type) {
+                switch (options.tab) {
                     case "Account": {
                         notifications.account = {
                             ...notifications.account,
@@ -80,7 +81,11 @@ export const LocalSlice: SliceFunction<LocalStore, LocalStore> = (set) => {
             set((state) => {
                 const notifications = { ...state.notifications };
 
-                const lastNotificationId = options.id.includes(state.lastNotificationId ?? "") ? undefined : state.lastNotificationId;
+                const lastNotificationId = options.id.includes(
+                    state.lastNotificationId ?? ""
+                )
+                    ? undefined
+                    : state.lastNotificationId;
 
                 for (const id of options.id) {
                     delete notifications.account[id];
@@ -257,16 +262,6 @@ export const LocalSlice: SliceFunction<LocalStore, LocalStore> = (set) => {
                         collapsedTabs: {
                             ...state.collapsedTabs,
                             dashboard: !state.collapsedTabs.dashboard,
-                        },
-                    }));
-                    break;
-                }
-                case "All": {
-                    set((state) => ({
-                        ...state,
-                        collapsedTabs: {
-                            ...state.collapsedTabs,
-                            all: !state.collapsedTabs.all,
                         },
                     }));
                     break;
