@@ -6,9 +6,7 @@ import { useLocalStore } from "@/zustand/localStore";
 export const useTopline = (tab: NotificationTab) => {
     // zustand
     const notifications = useLocalStore((state) => state.notifications);
-    const clearNotifications = useLocalStore(
-        (state) => state.clearNotifications
-    );
+    const clearData = useLocalStore((state) => state.clearData);
 
     // messageboxes
     const messageBox = usePopup(({ hide }) => (
@@ -21,13 +19,15 @@ export const useTopline = (tab: NotificationTab) => {
                     return;
                 }
 
-                clearNotifications({
+                clearData({
                     id: Object.values(
                         tab === "Account"
                             ? notifications.account
                             : notifications.dashboard
                     ).map((n) => n.id),
+                    type: "notifications",
                 });
+                clearData({ type: "filters", tab });
             }}
         />
     ));

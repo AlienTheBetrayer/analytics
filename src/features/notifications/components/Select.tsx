@@ -15,7 +15,7 @@ type Props = {
 
 export const Select = ({ type }: Props) => {
     // zustand
-    const clearUnread = useLocalStore((state) => state.clearUnread);
+    const clearData = useLocalStore((state) => state.clearData);
 
     // url
     const { tab } = useParams<{ id?: string; tab?: string }>();
@@ -29,9 +29,9 @@ export const Select = ({ type }: Props) => {
         const tabs = !tab || tab === "all" ? ["Dashboard", "Account"] : [tab];
 
         for (const tab of tabs) {
-            clearUnread({ tab: tab as "Dashboard" | "Account" });
+            clearData({ tab: tab as "Dashboard" | "Account", type: "unread" });
         }
-    }, [tab, clearUnread]);
+    }, [tab, clearData]);
 
     switch (type) {
         case "general": {

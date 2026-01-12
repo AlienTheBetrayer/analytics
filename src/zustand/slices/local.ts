@@ -77,36 +77,69 @@ export const LocalSlice: SliceFunction<LocalStore, LocalStore> = (set) => {
             });
         },
 
-        clearNotifications: (options) => {
+        clearData: (options) => {
             set((state) => {
-                const notifications = { ...state.notifications };
+                switch (options.type) {
+                    case "filters": {
+                        if (!options.tab) {
+                            throw "[tab] is undefined";
+                        }
 
-                const lastNotificationId = options.id.includes(
-                    state.lastNotificationId ?? ""
-                )
-                    ? undefined
-                    : state.lastNotificationId;
+                        switch (options.tab) {
+                            case "Account": {
+                                let accountFilter = { ...state.accountFilter };
+                                accountFilter = {
+                                    filtering: undefined,
+                                    search: undefined,
+                                    sorting: undefined,
+                                };
+                                return { ...state, accountFilter };
+                            }
+                            case "Dashboard": {
+                                let dashboardFilter = {
+                                    ...state.dashboardFilter,
+                                };
+                                dashboardFilter = {
+                                    filtering: undefined,
+                                    search: undefined,
+                                    sorting: undefined,
+                                };
+                                return { ...state, dashboardFilter };
+                            }
+                        }
+                    }
 
-                for (const id of options.id) {
-                    delete notifications.account[id];
-                    delete notifications.dashboard[id];
+                    case "unread": {
+                        if (!options.tab) {
+                            throw "[tab] is undefined";
+                        }
+
+                        const unreadTabs = { ...state.unreadTabs };
+
+                        delete unreadTabs[options.tab];
+                        return { ...state, unreadTabs };
+                    }
+
+                    case "notifications": {
+                        if (!options.id?.length) {
+                            throw "[id] is undefined";
+                        }
+
+                        const notifications = { ...state.notifications };
+                        const lastNotificationId = options.id.includes(
+                            state.lastNotificationId ?? ""
+                        )
+                            ? undefined
+                            : state.lastNotificationId;
+
+                        for (const id of options.id) {
+                            delete notifications.account[id];
+                            delete notifications.dashboard[id];
+                        }
+
+                        return { ...state, notifications, lastNotificationId };
+                    }
                 }
-
-                return {
-                    ...state,
-                    notifications,
-                    lastNotificationId,
-                };
-            });
-        },
-
-        clearUnread: (options) => {
-            set((state) => {
-                const unreadTabs = { ...state.unreadTabs };
-
-                delete unreadTabs[options.tab];
-
-                return { ...state, unreadTabs };
             });
         },
 

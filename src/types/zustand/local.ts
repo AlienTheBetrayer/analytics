@@ -112,13 +112,7 @@ export type LocalStore = {
      * explicitly clears all notifications that have been sent
      * @param id which tabs should be cleared
      */
-    clearNotifications: (options: { id: string[] }) => void;
-
-    /**
-     * clears the unread status on a given tab
-     * @param tab tab on which you might have the unread status
-     */
-    clearUnread: (options: { tab: NotificationTab }) => void;
+    clearData: (options: { type: "notifications" | "unread" | "filters", id?: string[], tab?: NotificationTab }) => void;
 
     /**
      * updates the preferences (don't provide a value if you want it unchanged)

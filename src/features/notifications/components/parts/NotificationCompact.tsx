@@ -23,11 +23,12 @@ export const NotificationColors = {
     Information: "var(--blue-1)",
 };
 
-export const NotificationCompact = ({ notification, buttonClassName }: Props) => {
+export const NotificationCompact = ({
+    notification,
+    buttonClassName,
+}: Props) => {
     // zustand
-    const clearNotifications = useLocalStore(
-        (state) => state.clearNotifications
-    );
+    const clearData = useLocalStore((state) => state.clearData);
 
     return (
         <div className="grid gap-1">
@@ -61,7 +62,10 @@ export const NotificationCompact = ({ notification, buttonClassName }: Props) =>
                 >
                     <Button
                         onClick={() => {
-                            clearNotifications({ id: [notification.id] });
+                            clearData({
+                                id: [notification.id],
+                                type: "notifications",
+                            });
                         }}
                     >
                         <Image
