@@ -29,7 +29,7 @@ export const NotificationCompact = ({ notification }: Props) => {
     );
 
     return (
-        <div className="flex flex-col gap-1">
+        <div className="grid gap-1">
             <div
                 className={`box w-full max-w-400 justify-between! mx-auto p-0! gap-1! flex-row! transition-all duration-500 min-h-10 h-10 items-center`}
             >
@@ -54,29 +54,27 @@ export const NotificationCompact = ({ notification }: Props) => {
                     <span>{notification.status}</span>
                 </div>
 
-                <div className="flex gap-1 items-center">
-                    <Tooltip
-                        text="Delete this notification"
-                        direction="top"
+                <Tooltip
+                    text="Delete this notification"
+                    direction="top"
+                >
+                    <Button
+                        onClick={() => {
+                            clearNotifications({ id: [notification.id] });
+                        }}
                     >
-                        <Button
-                            onClick={() => {
-                                clearNotifications({ id: [notification.id] });
-                            }}
-                        >
-                            <Image
-                                width={16}
-                                height={16}
-                                alt="delete"
-                                src="/delete.svg"
-                            />
-                        </Button>
-                    </Tooltip>
-                </div>
+                        <Image
+                            width={16}
+                            height={16}
+                            alt="delete"
+                            src="/delete.svg"
+                        />
+                    </Button>
+                </Tooltip>
             </div>
 
             <LinkButton
-                className="box rounded-4xl! sm:grid! grid-cols-[30%_auto_70%] gap-4! h-full"
+                className="box rounded-4xl! grid! md:grid-cols-[30%_auto_1fr] gap-4! h-full"
                 href={`/notification/${notification.id}`}
             >
                 <div className="h-full grid place-items-center gap-1">
@@ -101,7 +99,7 @@ export const NotificationCompact = ({ notification }: Props) => {
                     </small>
                 </div>
 
-                <hr className="w-3/4! sm:w-px! sm:h-3/4" />
+                <hr className="w-3/4! mx-auto md:w-px! md:h-3/4" />
 
                 <div className="flex flex-col items-center">
                     <span className="flex gap-1 items-center">
