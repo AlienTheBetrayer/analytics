@@ -82,7 +82,7 @@ export const requestSend = async (request: NextRequest, from_id: string, to_id?:
             { error: "you cannot send a friend request to yourself." },
             400
         );
-    }
+    }   
 
     tokenVerify(request, [from_id]);
 
@@ -90,7 +90,7 @@ export const requestSend = async (request: NextRequest, from_id: string, to_id?:
         .from("friends")
         .select()
         .or(
-            `user1_id.eq.${from_id},user2_id.eq.${to_id},user1_id.eq.${to_id},user2_id.eq.${from_id}`
+            `and(user1_id.eq.${from_id},user2_id.eq.${to_id}),and(user1_id.eq.${to_id},user2_id.eq.${from_id})`
         )
         .limit(1);
 

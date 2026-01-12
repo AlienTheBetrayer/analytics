@@ -15,6 +15,7 @@ export const selectUser = async (
     username?: string[] | null | undefined
 ) => {
     let ret: { data: unknown; error: PostgrestError | null };
+    
     if (id?.length) {
         ret = await supabaseServer
             .from("users")

@@ -14,7 +14,9 @@ type Props = {
 export const Topline = ({ data }: Props) => {
     // zustand
     const status = useAppStore((state) => state.status);
+    const friendRequests = useAppStore((state) => state.friendRequests);
 
+    // url
     const { tab } = useParams<{ tab?: string }>();
 
     return (
@@ -195,6 +197,9 @@ export const Topline = ({ data }: Props) => {
                     <span className="hidden sm:block">Friends</span>
                     {tab === "friends" && (
                         <div className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500 tab-selection" />
+                    )}
+                    {!!friendRequests[data.user.id]?.incoming?.size && (
+                        <div className="absolute left-1 top-1 rounded-full w-1 h-1 transition-all duration-500 bg-orange-1" />
                     )}
                 </LinkButton>
             </Tooltip>

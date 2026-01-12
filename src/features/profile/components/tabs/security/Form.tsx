@@ -23,12 +23,10 @@ export const Form = ({ data }: Props) => {
     const [password, setPassword] = useState<string>("");
 
     // currently authenticated sessions + messageboxes
-    const { currentSessions, deleteMessageBox, terminateMessageBox } =
-        useSecurity(data);
+    const { currentSessions, terminateMessageBox } = useSecurity(data);
 
     return (
-        <div className="flex flex-col gap-2 h-full w-full grow">
-            {deleteMessageBox.render()}
+        <div className="flex flex-col gap-2">
             {terminateMessageBox.render()}
 
             <form
@@ -135,7 +133,7 @@ export const Form = ({ data }: Props) => {
                 currentSessions={currentSessions}
             />
 
-            <hr className="mt-auto" />
+            <hr className="mt-auto!" />
             <Tooltip
                 text="Keep only this session logged in"
                 direction="bottom"
@@ -156,29 +154,6 @@ export const Form = ({ data }: Props) => {
                         alt=""
                     />
                     Terminate other sessions
-                </Button>
-            </Tooltip>
-
-            <Tooltip
-                text="Wipe your account data"
-                direction="bottom"
-                className="w-full"
-                disabledPointer
-            >
-                <Button
-                    className="w-full"
-                    onClick={() => {
-                        deleteMessageBox.show();
-                    }}
-                >
-                    {promises.delete === "pending" && <Spinner />}
-                    <Image
-                        src="/delete.svg"
-                        width={16}
-                        height={16}
-                        alt=""
-                    />
-                    Delete account
                 </Button>
             </Tooltip>
         </div>

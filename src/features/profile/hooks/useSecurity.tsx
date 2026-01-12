@@ -1,18 +1,13 @@
 import { MessageBox } from "@/features/messagebox/components/MessageBox";
 import { usePopup } from "@/features/popup/hooks/usePopup";
 import { Profile, User } from "@/types/tables/account";
-import { useLocalStore } from "@/zustand/localStore";
 import { useAppStore } from "@/zustand/store";
-import { redirect } from "next/navigation";
 import { useMemo } from "react";
 
 export const useSecurity = (data: { user: User; profile: Profile }) => {
     // zustand
     const status = useAppStore((state) => state.status);
     const sessions = useAppStore((state) => state.sessions);
-    const setVisibleProfile = useLocalStore((state) => state.setVisibleProfile);
-    const logout = useAppStore((state) => state.logout);
-    const deleteUser = useAppStore((state) => state.deleteUser);
     const terminateSessions = useAppStore((state) => state.terminateSessions);
 
     const currentSessions = useMemo(() => {
@@ -52,23 +47,5 @@ export const useSecurity = (data: { user: User; profile: Profile }) => {
         />
     ));
 
-    // message boxes
-    const deleteMessageBox = usePopup(({ hide }) => (
-        <MessageBox
-            description="You are about to delete your account data forever!"
-            onInteract={(res) => {
-                hide();
-                if (res === "yes") {
-                    deleteUser(data.user.id);
-                    if (data.user.id === status?.id) {
-                        logout();
-                        setVisibleProfile(undefined);
-                        redirect("/home");
-                    }
-                }
-            }}
-        />
-    ));
-
-    return { deleteMessageBox, terminateMessageBox, currentSessions };
+    return { terminateMessageBox, currentSessions };
 };

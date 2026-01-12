@@ -9,6 +9,10 @@ import { useLocalStore } from "@/zustand/localStore";
 import { ProfileImage } from "../../ProfileImage";
 import { Form } from "./Form";
 import { Role } from "../../parts/Role";
+import { Spinner } from "@/features/spinner/components/Spinner";
+import { MessageBox } from "@/features/messagebox/components/MessageBox";
+import { usePopup } from "@/features/popup/hooks/usePopup";
+import { redirect } from "next/navigation";
 
 type Props = {
     data: { profile: Profile; user: User };
@@ -17,9 +21,11 @@ type Props = {
 export const Security = ({ data }: Props) => {
     // zustand states
     const promises = useAppStore((state) => state.promises);
+    const status = useAppStore((state) => state.status);
 
     // zustand functions
     const logout = useAppStore((state) => state.logout);
+    const deleteUser = useAppStore((state) => state.deleteUser);
     const getSessions = useAppStore((state) => state.getSessions);
     const setVisibleProfile = useLocalStore((state) => state.setVisibleProfile);
 
@@ -28,8 +34,29 @@ export const Security = ({ data }: Props) => {
         getSessions({ user_id: data.user.id });
     }, [getSessions, data.user]);
 
+    // messageboxes
+    // message boxes
+    const deleteMessageBox = usePopup(({ hide }) => (
+        <MessageBox
+            description="You are about to delete your account data forever!"
+            onInteract={(res) => {
+                hide();
+                if (res === "yes") {
+                    deleteUser(data.user.id);
+                    if (data.user.id === status?.id) {
+                        logout();
+                        setVisibleProfile(undefined);
+                        redirect("/home");
+                    }
+                }
+            }}
+        />
+    ));
+
     return (
         <div className="flex flex-col gap-4 p-8 w-full">
+            {deleteMessageBox.render()}
+
             <div className="flex flex-col gap-2 items-center">
                 <span className="text-foreground-2! text-5!">
                     <mark>{data.user.username}</mark>
@@ -39,8 +66,8 @@ export const Security = ({ data }: Props) => {
             </div>
 
             <hr />
-            <div className="flex flex-col md:flex-row gap-4 grow w-full">
-                <div className="flex flex-col items-center gap-2 w-full md:max-w-96">
+            <div className="grid lg:grid-cols-[30%_auto_1fr] gap-4">
+                <div className="flex flex-col items-center gap-2">
                     <span>{data.profile.name}</span>
                     <ProfileImage
                         profile={data.profile}
@@ -67,9 +94,33 @@ export const Security = ({ data }: Props) => {
                             Log out
                         </Button>
                     </Tooltip>
+
+                    <hr />
+                    <Tooltip
+                        text="Wipe your account data"
+                        direction="bottom"
+                        className="w-full"
+                        disabledPointer
+                    >
+                        <Button
+                            className="w-full"
+                            onClick={() => {
+                                deleteMessageBox.show();
+                            }}
+                        >
+                            {promises.delete === "pending" && <Spinner />}
+                            <Image
+                                src="/delete.svg"
+                                width={16}
+                                height={16}
+                                alt=""
+                            />
+                            Delete account
+                        </Button>
+                    </Tooltip>
                 </div>
 
-                <hr className="sm:w-px! sm:h-full" />
+                <hr className="lg:w-px! lg:h-full"/>
 
                 <Form data={data} />
             </div>

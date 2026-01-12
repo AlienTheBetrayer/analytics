@@ -21,7 +21,7 @@ export const Role = ({ data }: Props) => {
                 </div>
             }
         >
-            <div className="flex gap-1 items-center box p-1.5! flex-row! border-0!">
+            <div className="flex gap-1! items-center box p-1! flex-row! border-0!">
                 <Image
                     width={20}
                     height={20}

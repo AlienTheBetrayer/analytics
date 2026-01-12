@@ -42,8 +42,8 @@ export const AuthenticationForm = ({
             initial={{ opacity: 0, y: 5 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 5 }}
-            className={`flex flex-col max-w-400 w-full z-2
-                sm:hover:scale-105 duration-300 ease-out box
+            className={`flex flex-col max-w-3xl w-full z-2
+                 duration-300 ease-out box
                  ${className ?? ""}`}
         >
             <div className="w-full flex justify-center items-center">
@@ -54,16 +54,25 @@ export const AuthenticationForm = ({
                     src={`${type === "login" ? "/security.svg" : "/pencil.svg"}`}
                 />
             </div>
-            {/* topline */}
 
+            {/* topline */}
             <div className="relative gap-2 flex flex-wrap items-center w-full border-b border-b-background-5 p-2">
+                <Image
+                    alt=""
+                    width={20}
+                    height={20}
+                    src="/privacy.svg"
+                />
+
                 <Tooltip
                     text="Easter egg 🌀"
                     direction="top"
                 >
                     <div className="rounded-full bg-blue-1 w-1.5 h-1.5" />
                 </Tooltip>
+
                 <span className="text-foreground-5!">{title}</span>
+
                 <Tooltip
                     text="Come back home"
                     className="ml-auto"
@@ -74,7 +83,13 @@ export const AuthenticationForm = ({
                         className="ml-auto"
                         href="/home"
                     >
-                        ✕ Back
+                        <Image
+                            alt=""
+                            width={14}
+                            height={14}
+                            src="/back.svg"
+                        />
+                        Back
                     </LinkButton>
                 </Tooltip>
             </div>

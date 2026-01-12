@@ -35,15 +35,15 @@ export const Friends = ({ data }: Props) => {
 
             <hr />
 
-            <div className="flex flex-col md:flex-row gap-4 grow w-full">
-                <div className="flex flex-col items-center gap-2 w-full md:max-w-96">
+            <div className="grid lg:grid-cols-[30%_auto_1fr] gap-4">
+                <div className="flex flex-col items-center gap-2">
                     <span>{data.profile.name}</span>
                     <ProfileImage
                         profile={data.profile}
                         width={256}
                         height={256}
                     />
-                    <Role data={data}/>
+                    <Role data={data} />
                 </div>
 
                 <hr className="sm:w-px! sm:h-full" />

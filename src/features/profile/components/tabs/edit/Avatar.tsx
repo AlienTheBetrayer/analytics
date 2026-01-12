@@ -53,7 +53,7 @@ export const Avatar = ({
     ));
 
     return (
-        <div className="flex flex-col items-center gap-2 w-full md:max-w-96">
+        <div className="flex flex-col items-center gap-2">
             {deleteAvatarMessageBox.render()}
 
             <span>{data.profile.name}</span>
@@ -169,7 +169,7 @@ export const Avatar = ({
             </div>
 
             <ColorSwatches data={data} />
-            
+
             <hr className="mt-auto" />
             <Tooltip
                 direction="top"

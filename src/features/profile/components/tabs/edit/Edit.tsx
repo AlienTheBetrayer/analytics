@@ -29,7 +29,7 @@ export const Edit = ({ data }: Props) => {
 
             <hr />
 
-            <div className="flex flex-col md:flex-row gap-4 grow w-full">
+            <div className="grid lg:grid-cols-[30%_auto_1fr] gap-4">
                 <Avatar
                     data={data}
                     avatar={[avatar, setAvatar]}
