@@ -8,21 +8,22 @@ import Image from "next/image";
 
 type Props = {
     notification: DashboardNotification;
+    buttonClassName?: string;
 };
 
-const NotificationImages = {
+export const NotificationImages = {
     Error: "/prohibited.svg",
     Warning: "/warning.svg",
     Information: "/information.svg",
 };
 
-const NotificationColors = {
+export const NotificationColors = {
     Error: "var(--red-1)",
     Warning: "var(--orange-1)",
     Information: "var(--blue-1)",
 };
 
-export const NotificationCompact = ({ notification }: Props) => {
+export const NotificationCompact = ({ notification, buttonClassName }: Props) => {
     // zustand
     const clearNotifications = useLocalStore(
         (state) => state.clearNotifications
@@ -74,7 +75,7 @@ export const NotificationCompact = ({ notification }: Props) => {
             </div>
 
             <LinkButton
-                className="box rounded-4xl! grid! md:grid-cols-[30%_auto_1fr] gap-4! h-full"
+                className={`box rounded-4xl! grid! md:grid-cols-[30%_auto_1fr] gap-4! h-full text-center ${buttonClassName ?? ""}`}
                 href={`/notification/${notification.id}`}
             >
                 <div className="h-full grid place-items-center gap-1">

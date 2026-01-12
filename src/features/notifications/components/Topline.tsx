@@ -125,7 +125,7 @@ export const Topline = ({ type }: Props) => {
                         <div className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500 tab-selection" />
                     )}
                     {unreadTabs.dashboard && (
-                        <div className="absolute right-1 top-1 z-1 rounded-full w-1 h-1 transition-all duration-500 tab-unread" />
+                        <div className="absolute right-1 top-1 z-1 rounded-full w-1 h-1 transition-all duration-500 bg-orange-1" />
                     )}
                 </LinkButton>
             </Tooltip>
@@ -146,7 +146,7 @@ export const Topline = ({ type }: Props) => {
                         <div className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500 tab-selection" />
                     )}
                     {unreadTabs.account && (
-                        <div className="absolute right-1 top-1 z-1 rounded-full w-1 h-1 transition-all duration-500 tab-unread" />
+                        <div className="absolute right-1 top-1 z-1 rounded-full w-1 h-1 transition-all duration-500 bg-orange-1" />
                     )}
                 </LinkButton>
             </Tooltip>

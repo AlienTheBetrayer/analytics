@@ -138,44 +138,65 @@ export const DataSlice: SliceFunction<DataStore> = (set, get) => {
         },
 
         sync: async (options) => {
-            const { setPromise, projects } = get();
+            const { setPromise, projects, runListeners } = get();
 
             if ((options?.caching ?? true) && Object.values(projects).length) {
                 return;
             }
 
             return await setPromise(options?.promiseKey ?? "sync", async () => {
-                const res = await refreshedRequest(
-                    "/api/analytics/sync",
-                    "GET"
-                );
+                try {
+                    const res = await refreshedRequest(
+                        "/api/analytics/sync",
+                        "GET"
+                    );
 
-                const data = res.data as ResponseSync;
+                    runListeners({
+                        notification: {
+                            status: "Information",
+                            title: "Analytics data synced!",
+                            description:
+                                "Full analytics data has just been synced and is ready for use.",
+                            type: "Dashboard",
+                        },
+                    });
 
-                set((state) => {
-                    const projects = { ...state.projects };
-                    const events = { ...state.events };
-                    const aggregates = { ...state.aggregates };
+                    const data = res.data as ResponseSync;
 
-                    for (const entry of Object.values(data)) {
-                        projects[entry.id] = {
-                            id: entry.id,
-                            name: entry.name,
-                            created_at: entry.created_at,
-                            last_event_at: entry.last_event_at,
-                        };
+                    set((state) => {
+                        const projects = { ...state.projects };
+                        const events = { ...state.events };
+                        const aggregates = { ...state.aggregates };
 
-                        if (entry.events) {
-                            events[entry.id] = entry.events;
+                        for (const entry of Object.values(data)) {
+                            projects[entry.id] = {
+                                id: entry.id,
+                                name: entry.name,
+                                created_at: entry.created_at,
+                                last_event_at: entry.last_event_at,
+                            };
+
+                            if (entry.events) {
+                                events[entry.id] = entry.events;
+                            }
+
+                            if (entry.aggregates?.length) {
+                                aggregates[entry.id] = entry.aggregates[0];
+                            }
                         }
 
-                        if (entry.aggregates?.length) {
-                            aggregates[entry.id] = entry.aggregates[0];
-                        }
-                    }
-
-                    return { ...state, projects, events, aggregates };
-                });
+                        return { ...state, projects, events, aggregates };
+                    });
+                } catch (e) {
+                    runListeners({
+                        notification: {
+                            status: "Error",
+                            title: "Failed syncing analytics.",
+                            description: JSON.stringify(e),
+                            type: "Dashboard",
+                        },
+                    });
+                }
             });
         },
 

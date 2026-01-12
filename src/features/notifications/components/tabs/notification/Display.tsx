@@ -13,7 +13,7 @@ export const Display = ({ data }: Props) => {
 
     return (
         <div className="flex flex-col gap-2">
-            <NotificationCompact notification={data} />
+            <NotificationCompact notification={data} buttonClassName="p-20!"/>
             <hr className="my-4" />
         </div>
     );

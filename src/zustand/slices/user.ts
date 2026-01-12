@@ -238,7 +238,7 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
         },
 
         updateUser: async (options) => {
-            const { setPromise } = get();
+            const { setPromise, runListeners, users } = get();
 
             await setPromise(options.promiseKey ?? "updateUser", async () => {
                 set((state) => {
@@ -281,10 +281,36 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
                     return { ...state, profiles, colors };
                 });
 
-                return await refreshedRequest("/api/user-update", "POST", {
-                    user_id: options.id,
-                    ...options.data,
-                });
+                try {
+                    const res = await refreshedRequest(
+                        "/api/user-update",
+                        "POST",
+                        {
+                            user_id: options.id,
+                            ...options.data,
+                        }
+                    );
+
+                    runListeners({
+                        notification: {
+                            status: "Information",
+                            title: `Updated ${users[options.id].username}!`,
+                            description: "Any data may have been changed regarding this user.",
+                            type: "Account",
+                        },
+                    });
+
+                    return res;
+                } catch (e) {
+                    runListeners({
+                        notification: {
+                            status: "Error",
+                            title: `Failed updating ${users[options.id].username}.`,
+                            description: JSON.stringify(e),
+                            type: "Account",
+                        },
+                    });
+                }
             });
         },
 

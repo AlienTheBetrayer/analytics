@@ -6,6 +6,7 @@ import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import { RoleEditing } from "../modals/RoleEditing";
 import { useParams } from "next/navigation";
+import { useLocalStore } from "@/zustand/localStore";
 
 type Props = {
     data: { user: User; profile: Profile };
@@ -15,6 +16,7 @@ export const Topline = ({ data }: Props) => {
     // zustand
     const status = useAppStore((state) => state.status);
     const friendRequests = useAppStore((state) => state.friendRequests);
+    const unreadTabs = useLocalStore((state) => state.unreadTabs);
 
     // url
     const { tab } = useParams<{ tab?: string }>();
@@ -61,6 +63,9 @@ export const Topline = ({ data }: Props) => {
                         src="/notification.svg"
                     />
                     <span className="hidden md:block">Notifications</span>
+                    {Object.values(unreadTabs).some(Boolean) && (
+                        <div className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500 bg-orange-1" />
+                    )}
                 </LinkButton>
             </Tooltip>
 

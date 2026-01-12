@@ -1,8 +1,11 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAppStore } from "./store";
 import { useLocalStore } from "./localStore";
 import { DashboardNotificationPartial } from "@/types/zustand/local";
+import { createPortal } from "react-dom";
+import { AnimatePresence } from "motion/react";
+import { NotificationPopup } from "@/features/notifications/components/popup/NotificationPopup";
 
 export const LocalStoreWatcher = () => {
     //  store
@@ -12,10 +15,21 @@ export const LocalStoreWatcher = () => {
     // localstore
     const pushNotification = useLocalStore((state) => state.pushNotification);
 
+    // popup states
+    const [mounted, setMounted] = useState<boolean>(false);
+    const [notification, setNotification] = useState<
+        DashboardNotificationPartial | undefined
+    >(undefined);
+
     // attaching listeners
     useEffect(() => {
+        requestAnimationFrame(() => {
+            setMounted(true);
+        });
+
         const handle = (notification: DashboardNotificationPartial) => {
             pushNotification({ ...notification });
+            setNotification(notification);
         };
 
         addListener({ callback: handle });
@@ -25,5 +39,26 @@ export const LocalStoreWatcher = () => {
         };
     }, [addListener, removeListener, pushNotification]);
 
-    return null;
+    useEffect(() => {
+        if (!notification) {
+            return;
+        }
+
+        setTimeout(() => setNotification(undefined), 10000);
+    }, [notification]);
+
+    return (
+        mounted &&
+        createPortal(
+            <AnimatePresence>
+                {notification && (
+                    <NotificationPopup
+                        notification={notification}
+                        onInteract={() => setNotification(undefined)}
+                    />
+                )}
+            </AnimatePresence>,
+            document.body
+        )
+    );
 };

@@ -1,7 +1,53 @@
-export const NotificationPopup = () => {
+import { Tooltip } from "@/features/tooltip/components/Tooltip";
+import { DashboardNotificationPartial } from "@/types/zustand/local";
+import Image from "next/image";
+import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
+import { Topline } from "./Topline";
+import { motion } from "motion/react";
+
+type Props = {
+    notification: DashboardNotificationPartial;
+    onInteract?: () => void;
+};
+
+export const NotificationPopup = ({ notification, onInteract }: Props) => {
     return (
-        <div className='box fixed right-4 top-4'>
-            
-        </div>
-    )
-}
+        <motion.div
+            className="flex flex-col gap-1 fixed! right-4 top-4 w-screen max-w-92 min-h-24 z-10 p-2! backdrop-blur-sm rounded-2xl"
+            initial={{ opacity: 0, y: -100 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -100 }}
+            transition={{
+                type: "spring",
+                stiffness: 200,
+                damping: 30,
+            }}
+        >
+            <Topline
+                notification={notification}
+                onInteract={onInteract}
+            />
+
+            <div className="box p-0! gap-0!">
+                <div className="text-center grid justify-items-stretch *:w-full gap-2 p-3!">
+                    <span className="text-foreground-5!">
+                        {notification.title}
+                    </span>
+                    <span>{notification.description}</span>
+                    <hr />
+                    <Tooltip text="Notification centre">
+                        <LinkButton href="/notifications">
+                            <Image
+                                alt=""
+                                width={16}
+                                height={16}
+                                src="/notification.svg"
+                            />
+                            <span>Notification centre</span>
+                        </LinkButton>
+                    </Tooltip>
+                </div>
+            </div>
+        </motion.div>
+    );
+};
