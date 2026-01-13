@@ -11,6 +11,7 @@ export const LocalStoreWatcher = () => {
     //  store
     const addListener = useAppStore((state) => state.addListener);
     const removeListener = useAppStore((state) => state.removeListener);
+    const status = useAppStore((state) => state.status);
 
     // localstore
     const pushNotification = useLocalStore((state) => state.pushNotification);
@@ -29,20 +30,22 @@ export const LocalStoreWatcher = () => {
             setMounted(true);
         });
 
-        const handle = (notification: NotificationPartial) => {
-            pushNotification({ ...notification });
+        if (status) {
+            const handle = (notification: NotificationPartial) => {
+                pushNotification({ ...notification });
 
-            if (preferences.visibility) {
-                setNotification(notification);
-            }
-        };
+                if (preferences.visibility) {
+                    setNotification(notification);
+                }
+            };
 
-        addListener({ callback: handle });
+            addListener({ callback: handle });
 
-        return () => {
-            removeListener({ callback: handle });
-        };
-    }, [addListener, removeListener, pushNotification, preferences]);
+            return () => {
+                removeListener({ callback: handle });
+            };
+        }
+    }, [addListener, removeListener, pushNotification, preferences, status]);
 
     useEffect(() => {
         if (!notification) {
@@ -62,6 +65,7 @@ export const LocalStoreWatcher = () => {
 
     return (
         mounted &&
+        status &&
         createPortal(
             <AnimatePresence>
                 {notification && (
