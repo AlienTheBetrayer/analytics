@@ -13,7 +13,7 @@ type Props = {
     currentSessions: ResponseSession[] | undefined;
 };
 
-export const Sessions = ({ data, currentSessions }: Props) => {
+export const SessionList = ({ data, currentSessions }: Props) => {
     // zustand
     const promises = useAppStore((state) => state.promises);
     const terminateSessions = useAppStore((state) => state.terminateSessions);
@@ -29,7 +29,7 @@ export const Sessions = ({ data, currentSessions }: Props) => {
                 currentSessions.map((token) => (
                     <React.Fragment key={token.id}>
                         <li
-                            className={`flex gap-2 items-center rounded-full p-2! px-4! ${token.isCurrent ? "border border-blue-2" : ""}`}
+                            className={`flex gap-2 items-center rounded-full min-h-12 px-4! ${token.isCurrent ? "border border-blue-2" : ""}`}
                         >
                             {token.isCurrent ? (
                                 <>
@@ -76,7 +76,6 @@ export const Sessions = ({ data, currentSessions }: Props) => {
                                 </Button>
                             </Tooltip>
                         </li>
-                        <hr/>
                     </React.Fragment>
                 ))
             ) : (

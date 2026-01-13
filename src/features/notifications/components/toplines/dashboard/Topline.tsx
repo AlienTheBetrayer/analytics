@@ -8,6 +8,7 @@ import { Search } from "./Search";
 import { useTopline } from "@/features/notifications/hooks/useTopline";
 import { dotColors } from "@/utils/other/dotColors";
 import { useMemo } from "react";
+import { TabSelection } from "@/utils/other/TabSelection";
 
 export const Topline = () => {
     // zustand
@@ -59,13 +60,9 @@ export const Topline = () => {
                         height={24}
                     />
 
-                    <div
-                        className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500"
-                        style={{
-                            background: !collapsedTabs.dashboard
-                                ? "var(--orange-1)"
-                                : "transparent",
-                        }}
+                    <TabSelection
+                        condition={!collapsedTabs.dashboard}
+                        color="var(--orange-1)"
                     />
                 </Button>
             </Tooltip>
@@ -88,11 +85,9 @@ export const Topline = () => {
                             height={16}
                         />
 
-                        <div
-                            className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500"
-                            style={{
-                                background: filterColor,
-                            }}
+                        <TabSelection
+                            condition={true}
+                            color={filterColor}
                         />
                     </Button>
                 </Tooltip>
@@ -124,13 +119,9 @@ export const Topline = () => {
                             }}
                         />
 
-                        <div
-                            className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500"
-                            style={{
-                                background: dashboardFilter.sorting
-                                    ? "var(--blue-1)"
-                                    : "transparent",
-                            }}
+                        <TabSelection
+                            condition={!!dashboardFilter.sorting}
+                            color="var(--blue-1)"
                         />
                     </Button>
                 </Tooltip>

@@ -8,6 +8,7 @@ import { Wipe } from "./Wipe";
 import { Deselect } from "./Deselect";
 import { Manipulation } from "./Manipulation";
 import { Emulate } from "./Emulate";
+import { TabSelection } from "@/utils/other/TabSelection";
 
 export const ProjectTopline = () => {
     // zustand-state
@@ -54,13 +55,9 @@ export const ProjectTopline = () => {
                             }}
                         />
 
-                        <div
-                            className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500"
-                            style={{
-                                background: projectFilters?.projectSorting
-                                    ? "var(--blue-1)"
-                                    : "transparent",
-                            }}
+                        <TabSelection
+                            condition={!!projectFilters?.projectSorting}
+                            color="var(--blue-1)"
                         />
                     </Button>
                 </Tooltip>

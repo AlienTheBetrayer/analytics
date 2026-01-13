@@ -8,6 +8,7 @@ import { Search } from "./Search";
 import { Wipe } from "./Wipe";
 import { useMemo } from "react";
 import { dotColors } from "@/utils/other/dotColors";
+import { TabSelection } from "@/utils/other/TabSelection";
 
 export const EventTopline = () => {
     // zustand-state
@@ -53,11 +54,9 @@ export const EventTopline = () => {
                             height={16}
                         />
 
-                        <div
-                            className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500"
-                            style={{
-                                background: filterColor,
-                            }}
+                        <TabSelection
+                            condition={true}
+                            color={filterColor}
                         />
                     </Button>
                 </Tooltip>
@@ -90,15 +89,12 @@ export const EventTopline = () => {
                             }}
                         />
 
-                        <div
-                            className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500"
-                            style={{
-                                background: eventFilters[
-                                    selectedProjectId ?? ""
-                                ]?.eventsSorting
-                                    ? "var(--blue-1)"
-                                    : "transparent",
-                            }}
+                        <TabSelection
+                            condition={
+                                !!eventFilters[selectedProjectId ?? ""]
+                                    ?.eventsSorting
+                            }
+                            color="var(--blue-1)"
                         />
                     </Button>
                 </Tooltip>

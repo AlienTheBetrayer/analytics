@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import { NotificationRoute } from "../types/notifications";
 import { useLocalStore } from "@/zustand/localStore";
+import { TabSelection } from "@/utils/other/TabSelection";
 
 type Props = {
     type: NotificationRoute;
@@ -102,9 +103,10 @@ export const Topline = ({ type }: Props) => {
                         src="/cubes.svg"
                     />
                     <span className="hidden sm:block">All</span>
-                    {(tab === "all" || (!tab && !id)) && (
-                        <div className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500 tab-selection" />
-                    )}
+                    <TabSelection
+                        condition={tab === "all" || (!tab && !id)}
+                        color="var(--blue-1)"
+                    />
                 </LinkButton>
             </Tooltip>
 
@@ -121,12 +123,15 @@ export const Topline = ({ type }: Props) => {
                         src="/dashboard.svg"
                     />
                     <span className="hidden sm:block">Dashboard</span>
-                    {tab === "dashboard" && (
-                        <div className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500 tab-selection" />
-                    )}
-                    {unreadTabs.dashboard && (
-                        <div className="absolute right-1 top-1 z-1 rounded-full w-1 h-1 transition-all duration-500 bg-orange-1" />
-                    )}
+
+                    <TabSelection
+                        condition={tab === "dashboard"}
+                        color="var(--blue-1)"
+                    />
+                    <TabSelection
+                        condition={unreadTabs.dashboard}
+                        color="var(--orange-1)"
+                    />
                 </LinkButton>
             </Tooltip>
 
@@ -142,12 +147,15 @@ export const Topline = ({ type }: Props) => {
                         src="/account.svg"
                     />
                     <span className="hidden sm:block">Account</span>
-                    {tab === "account" && (
-                        <div className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500 tab-selection" />
-                    )}
-                    {unreadTabs.account && (
-                        <div className="absolute right-1 top-1 z-1 rounded-full w-1 h-1 transition-all duration-500 bg-orange-1" />
-                    )}
+
+                    <TabSelection
+                        condition={tab === "account"}
+                        color="var(--blue-1)"
+                    />
+                    <TabSelection
+                        condition={unreadTabs.account}
+                        color="var(--orange-1)"
+                    />
                 </LinkButton>
             </Tooltip>
 
@@ -163,9 +171,11 @@ export const Topline = ({ type }: Props) => {
                         alt="emulate"
                         src="/emulate.svg"
                     />
-                    {tab === "emulate" && (
-                        <div className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500 tab-selection" />
-                    )}
+
+                    <TabSelection
+                        condition={tab === "emulate"}
+                        color="var(--blue-1)"
+                    />
                 </LinkButton>
             </Tooltip>
 
@@ -180,9 +190,11 @@ export const Topline = ({ type }: Props) => {
                         alt="preferences"
                         src="/settings.svg"
                     />
-                    {tab === "preferences" && (
-                        <div className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500 tab-selection" />
-                    )}
+                    
+                    <TabSelection
+                        condition={tab === "preferences"}
+                        color="var(--blue-1)"
+                    />
                 </LinkButton>
             </Tooltip>
         </div>

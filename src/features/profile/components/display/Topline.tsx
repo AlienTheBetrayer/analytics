@@ -7,6 +7,7 @@ import Image from "next/image";
 import { RoleEditing } from "../modals/RoleEditing";
 import { useParams } from "next/navigation";
 import { useLocalStore } from "@/zustand/localStore";
+import { TabSelection } from "@/utils/other/TabSelection";
 
 type Props = {
     data: { user: User; profile: Profile };
@@ -23,7 +24,7 @@ export const Topline = ({ data }: Props) => {
 
     return (
         <div
-            className={`box p-0! gap-2! my-2 flex-row! max-w-400 w-full m-auto transition-all duration-500 h-10 items-center`}
+            className={`box p-0! gap-1! my-2 flex-row! max-w-400 w-full m-auto transition-all duration-500 h-10 items-center`}
         >
             <span className="flex gap-1 items-center absolute left-1/2 -translate-1/2 top-1/2">
                 <div className="rounded-full w-1 h-1 bg-blue-1" />
@@ -63,9 +64,10 @@ export const Topline = ({ data }: Props) => {
                         src="/notification.svg"
                     />
                     <span className="hidden md:block">Notifications</span>
-                    {Object.values(unreadTabs).some(Boolean) && (
-                        <div className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500 bg-orange-1" />
-                    )}
+                    <TabSelection
+                        condition={Object.values(unreadTabs).some(Boolean)}
+                        color="var(--orange-1)"
+                    />
                 </LinkButton>
             </Tooltip>
 
@@ -137,9 +139,10 @@ export const Topline = ({ data }: Props) => {
                         src="/launch.svg"
                     />
                     <span className="hidden sm:block">Overview</span>
-                    {(!tab || tab === "overview") && (
-                        <div className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500 tab-selection" />
-                    )}
+                    <TabSelection
+                        condition={!tab || tab === "overview"}
+                        color="var(--blue-1)"
+                    />
                 </LinkButton>
             </Tooltip>
 
@@ -158,9 +161,10 @@ export const Topline = ({ data }: Props) => {
                         src="/pencil.svg"
                     />
                     <span className="hidden sm:block">Edit</span>
-                    {tab === "edit" && (
-                        <div className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500 tab-selection" />
-                    )}
+                    <TabSelection
+                        condition={tab === "edit"}
+                        color="var(--blue-1)"
+                    />
                 </LinkButton>
             </Tooltip>
 
@@ -179,9 +183,10 @@ export const Topline = ({ data }: Props) => {
                         src="/security.svg"
                     />
                     <span className="hidden sm:block">Security</span>
-                    {tab === "security" && (
-                        <div className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500 tab-selection" />
-                    )}
+                    <TabSelection
+                        condition={tab === "security"}
+                        color="var(--blue-1)"
+                    />
                 </LinkButton>
             </Tooltip>
 
@@ -200,12 +205,16 @@ export const Topline = ({ data }: Props) => {
                         src="/friends.svg"
                     />
                     <span className="hidden sm:block">Friends</span>
-                    {tab === "friends" && (
-                        <div className="absolute right-1 top-1 rounded-full w-1 h-1 transition-all duration-500 tab-selection" />
-                    )}
-                    {!!friendRequests[data.user.id]?.incoming?.size && (
-                        <div className="absolute left-1 top-1 rounded-full w-1 h-1 transition-all duration-500 bg-orange-1" />
-                    )}
+                    <TabSelection
+                        condition={tab === "friends"}
+                        color="var(--blue-1)"
+                    />
+                    <TabSelection
+                        condition={
+                            !!friendRequests[data.user.id]?.incoming?.size
+                        }
+                        color="var(--orange-1)"
+                    />
                 </LinkButton>
             </Tooltip>
         </div>

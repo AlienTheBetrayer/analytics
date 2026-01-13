@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { promiseStatus } from "@/utils/other/status";
@@ -7,12 +7,13 @@ import { useAppStore } from "@/zustand/store";
 import { Profile, User } from "@/types/tables/account";
 import { useLocalStore } from "@/zustand/localStore";
 import { ProfileImage } from "../../ProfileImage";
-import { Form } from "./Form";
 import { Role } from "../../parts/Role";
 import { Spinner } from "@/features/spinner/components/Spinner";
 import { MessageBox } from "@/features/messagebox/components/MessageBox";
 import { usePopup } from "@/features/popup/hooks/usePopup";
 import { redirect } from "next/navigation";
+import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
+import { Select } from "./Select";
 
 type Props = {
     data: { profile: Profile; user: User };
@@ -35,7 +36,6 @@ export const Security = ({ data }: Props) => {
     }, [getSessions, data.user]);
 
     // messageboxes
-    // message boxes
     const deleteMessageBox = usePopup(({ hide }) => (
         <MessageBox
             description="You are about to delete your account data forever!"
@@ -53,6 +53,9 @@ export const Security = ({ data }: Props) => {
         />
     ));
 
+    // react states
+    const [isDeletionEnabled, setIsDeletionEnabled] = useState<boolean>(false);
+
     return (
         <div className="flex flex-col gap-4 p-8 w-full">
             {deleteMessageBox.render()}
@@ -66,7 +69,7 @@ export const Security = ({ data }: Props) => {
             </div>
 
             <hr />
-            <div className="grid lg:grid-cols-[30%_auto_1fr] gap-4">
+            <div className="grid lg:grid-cols-[30%_1fr] gap-12 lg:gap-4">
                 <div className="flex flex-col items-center gap-2">
                     <span>{data.profile.name}</span>
                     <ProfileImage
@@ -96,33 +99,47 @@ export const Security = ({ data }: Props) => {
                     </Tooltip>
 
                     <hr />
-                    <Tooltip
-                        text="Wipe your account data"
-                        direction="bottom"
-                        className="w-full"
-                        disabledPointer
-                    >
-                        <Button
-                            className="w-full"
-                            onClick={() => {
-                                deleteMessageBox.show();
-                            }}
+                    <div className="grid grid-cols-[auto_auto_1fr] items-center gap-2 w-full">
+                        <Tooltip
+                            direction="top"
+                            text="Confirm deletion"
                         >
-                            {promises.delete === "pending" && <Spinner />}
-                            <Image
-                                src="/delete.svg"
-                                width={16}
-                                height={16}
-                                alt=""
+                            <Checkbox
+                                className="rounded-full! w-8! justify-center!"
+                                onToggle={(e) => setIsDeletionEnabled(e)}
+                                value={isDeletionEnabled}
                             />
-                            Delete account
-                        </Button>
-                    </Tooltip>
+                        </Tooltip>
+                        <hr className="w-px! h-1/2" />
+
+                        <Tooltip
+                            text="Wipe your account data"
+                            direction="top"
+                            className="w-full"
+                            disabledPointer
+                            isEnabled={isDeletionEnabled}
+                        >
+                            <Button
+                                isEnabled={isDeletionEnabled}
+                                className="w-full"
+                                onClick={() => {
+                                    deleteMessageBox.show();
+                                }}
+                            >
+                                {promises.delete === "pending" && <Spinner />}
+                                <Image
+                                    src="/delete.svg"
+                                    width={16}
+                                    height={16}
+                                    alt=""
+                                />
+                                Delete account
+                            </Button>
+                        </Tooltip>
+                    </div>
                 </div>
 
-                <hr className="lg:w-px! lg:h-full"/>
-
-                <Form data={data} />
+                <Select data={data} />
             </div>
         </div>
     );
