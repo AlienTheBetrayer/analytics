@@ -9,5 +9,5 @@
 }
 
 .tooltip:hover {
-    filter: brightness(150%);
+    background-color: var(--background-4);
 }

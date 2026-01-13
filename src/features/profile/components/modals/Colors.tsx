@@ -32,7 +32,7 @@ export const Colors = ({ data }: Props) => {
 
     return (
         <div
-            className="box min-w-0! p-6! rounded-4xl!"
+            className="box min-w-0!"
             tabIndex={-1}
         >
             <div className="flex w-full items-center justify-between">
@@ -50,7 +50,7 @@ export const Colors = ({ data }: Props) => {
                 </span>
             </div>
 
-            <div className="flex flex-col h-full gap-4 md:flex-row">
+            <div className="grid md:grid-flow-col gap-4">
                 {!colors[data.user.id] ? (
                     <div className="flex w-screen max-w-64">
                         <Spinner
@@ -60,7 +60,7 @@ export const Colors = ({ data }: Props) => {
                     </div>
                 ) : (
                     <ul
-                        className="grid gap-2 w-screen max-w-64 self-center"
+                        className="grid gap-1 w-screen max-w-64 self-center"
                         style={{
                             gridTemplateColumns: `repeat(${COLORS_GRID_SIZE}, minmax(0, 1fr))`,
                         }}
@@ -88,7 +88,7 @@ export const Colors = ({ data }: Props) => {
 
                 <hr className="md:w-px! md:h-full! border-background-5!" />
 
-                <ul className="flex flex-col gap-2 w-screen max-w-64 min-w-0">
+                <ul className="flex flex-col gap-1 w-screen max-w-64 min-w-0">
                     <li className="flex flex-col w-fit gap-1">
                         <span>
                             <b>Actions</b>

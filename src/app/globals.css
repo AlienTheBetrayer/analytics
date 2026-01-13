@@ -27,6 +27,7 @@
     --background-a-9: hsla(0, 0%, 22%, 0.25);
     --background-a-10: hsla(0, 0%, 25%, 0.25);
     --background-a-11: hsla(0, 0%, 28%, 0.25);
+    --background-a-12: hsla(0, 0%, 40%, 0.25);
 
     --foreground-0: hsl(0, 0%, 100%);
     --foreground-1: hsl(0, 0%, 95%);
@@ -59,6 +60,56 @@
     --font-5: 1rem;
     --font-6: 0.8rem;
     --font-7: 0.5rem;
+
+    --brightness-b: 1.5;
+    --invert-img: 0.5;
+}
+
+/* light theme */
+:root[data-theme="light"] {
+    /* Backgrounds (dim, warm-light feel) */
+    --background-0: hsl(0, 0%, 96%);
+    --background-1: hsl(0, 0%, 94%);
+    --background-2: hsl(0, 0%, 92%);
+    --background-3: hsl(0, 0%, 90%);
+    --background-4: hsl(0, 0%, 88%);
+    --background-5: hsl(0, 0%, 86%);
+    --background-6: hsl(0, 0%, 84%);
+    --background-7: hsl(0, 0%, 80%);
+    --background-8: hsl(0, 0%, 76%);
+    --background-9: hsl(0, 0%, 72%);
+    --background-10: hsl(0, 0%, 68%);
+    --background-11: hsl(0, 0%, 64%);
+
+    /* Alpha backgrounds (subtle overlays, no glare) */
+    --background-a-0: hsla(0, 0%, 96%, 0.55);
+    --background-a-1: hsla(0, 0%, 94%, 0.55);
+    --background-a-2: hsla(0, 0%, 92%, 0.55);
+    --background-a-3: hsla(0, 0%, 90%, 0.55);
+    --background-a-4: hsla(0, 0%, 88%, 0.55);
+    --background-a-5: hsla(0, 0%, 86%, 0.55);
+    --background-a-6: hsla(0, 0%, 84%, 0.55);
+    --background-a-7: hsla(0, 0%, 80%, 0.55);
+    --background-a-8: hsla(0, 0%, 76%, 0.55);
+    --background-a-9: hsla(0, 0%, 72%, 0.55);
+    --background-a-10: hsla(0, 0%, 68%, 0.55);
+    --background-a-11: hsla(0, 0%, 64%, 0.55);
+    --background-a-12: hsla(0, 0%, 60%, 0.55);
+
+    /* Foregrounds (soft contrast, not pitch-black) */
+    --foreground-0: hsl(0, 0%, 12%);
+    --foreground-1: hsl(0, 0%, 16%);
+    --foreground-2: hsl(0, 0%, 22%);
+    --foreground-3: hsl(0, 0%, 30%);
+    --foreground-4: hsl(0, 0%, 38%);
+    --foreground-5: hsl(0, 0%, 46%);
+    --foreground-6: hsl(0, 0%, 52%);
+    --foreground-7: hsl(0, 0%, 58%);
+    --foreground-8: hsl(0, 0%, 64%);
+    --foreground-9: hsl(0, 0%, 70%);
+
+    --brightness-b: 0.5;
+    --invert-img: 0.2;
 }
 
 /* tailwind-specific variables */
@@ -88,6 +139,7 @@
     --color-background-a-9: var(--background-a-9);
     --color-background-a-10: var(--background-a-10);
     --color-background-a-11: var(--background-a-11);
+    --color-background-a-12: var(--background-a-12);
 
     --color-blue-1: var(--blue-1);
     --color-blue-2: var(--blue-2);
@@ -170,7 +222,7 @@ mark {
 }
 
 b {
-    filter: brightness(1.5);
+    filter: brightness(var(--brightness-b));
 }
 
 i {
@@ -191,7 +243,7 @@ mark {
 }
 
 small {
-    opacity: 0.3;
+    opacity: 0.4;
     font-size: inherit;
 }
 
@@ -235,7 +287,7 @@ li {
 }
 
 img {
-    filter: invert(0.4);
+    filter: invert(var(--invert-img));
     transition: 0.1s;
 }
 
@@ -243,7 +295,7 @@ img {
 .dotted {
     background-image: radial-gradient(
         circle,
-        var(--background-4) 1px,
+        var(--background-a-12) 1px,
         transparent 1px
     );
     background-size: 1rem 1rem;
@@ -264,12 +316,8 @@ img {
     position: relative;
     gap: 0.5rem;
     padding: 2rem;
-    background: linear-gradient(
-        137deg,
-        var(--background-a-8),
-        hsla(0, 0%, 0%, 0.9)
-    );
-    backdrop-filter: blur(0.5rem);
+    background: var(--background-a-3);
+    backdrop-filter: blur(0.4rem);
     border-radius: 2rem;
     border: 1px solid var(--background-a-5);
 }

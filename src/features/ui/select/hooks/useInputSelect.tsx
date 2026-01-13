@@ -100,9 +100,9 @@ export const useInputSelect = (
                             <li key={item}>
                                 <button
                                     type="button"
-                                    className={`flex items-center  w-full
-            bg-background-a-2 backdrop-blur-xl p-2 focus:border-blue-1 
-             hover:bg-background-a-9 active:bg-background-a-11 active:text-foreground-1! transition-colors duration-300 ease-out cursor-pointer ${item === inputValue ? "brightness-200" : ""}`}
+                                    className={`flex items-center  w-full 
+            bg-background-a-2 backdrop-blur-xl p-2 outline-0 focus-visible:bg-background-a-11
+             hover:bg-background-a-9 active:bg-background-a-11 active:text-foreground-1! transition-colors duration-300 ease-out cursor-pointer`}
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         if (value) {

@@ -15,6 +15,7 @@ export const LocalStoreWatcher = () => {
     // localstore
     const pushNotification = useLocalStore((state) => state.pushNotification);
     const preferences = useLocalStore((state) => state.preferences);
+    const theme = useLocalStore((state) => state.theme);
 
     // popup states
     const [mounted, setMounted] = useState<boolean>(false);
@@ -50,6 +51,14 @@ export const LocalStoreWatcher = () => {
 
         setTimeout(() => setNotification(undefined), 7500);
     }, [notification]);
+
+    useEffect(() => {
+        if (!mounted) {
+            return;
+        }
+
+        document.documentElement.setAttribute("data-theme", theme);
+    }, [mounted, theme]);
 
     return (
         mounted &&

@@ -1,3 +1,4 @@
+import "./HeaderMenu.css";
 import { motion } from "motion/react";
 import Image from "next/image";
 import { Button } from "@/features/ui/button/components/Button";
@@ -5,6 +6,7 @@ import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { ProfileImage } from "@/features/profile/components/ProfileImage";
 import { useLocalStore } from "@/zustand/localStore";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
+import { Theme } from "@/features/toolbox/components/Theme";
 
 type Props = {
     onInteract: () => void;
@@ -23,7 +25,7 @@ export const HeaderMenu = ({ onInteract }: Props) => {
             className="fixed z-100 inset-0 bg-background-a-1 backdrop-blur-md md:hidden w-full h-full overflow-hidden"
             onClick={onInteract}
         >
-            <ul className="w-full h-full flex flex-col justify-between p-8!">
+            <ul className="w-full h-full flex flex-col justify-between p-8! header-ul">
                 <div className="flex flex-col gap-4">
                     <li>
                         <LinkButton
@@ -37,7 +39,7 @@ export const HeaderMenu = ({ onInteract }: Props) => {
                                 alt=""
                                 className="w-5 aspect-square"
                             />
-                            Home
+                            <span>Home</span>
                         </LinkButton>
                     </li>
                     <li>
@@ -52,12 +54,15 @@ export const HeaderMenu = ({ onInteract }: Props) => {
                                 alt=""
                                 className="w-5 aspect-square"
                             />
-                            Dashboard
+                            <span>Dashboard</span>
                         </LinkButton>
                     </li>
                 </div>
 
                 <div className="flex flex-col gap-4">
+                    <Theme className="p-4! gap-1!">
+                        <span>Theme</span>
+                    </Theme>
                     {visibleProfile ? (
                         <li>
                             <LinkButton
@@ -68,9 +73,11 @@ export const HeaderMenu = ({ onInteract }: Props) => {
                                     profile={visibleProfile}
                                     width={16}
                                     height={16}
-                                    className="w-5 aspect-square"
+                                    className="w-6 aspect-square"
                                 />
-                                {visibleProfile.username ?? "Account"}
+                                <span>
+                                    {visibleProfile.username ?? "Account"}
+                                </span>
                             </LinkButton>
                         </li>
                     ) : (
@@ -91,7 +98,7 @@ export const HeaderMenu = ({ onInteract }: Props) => {
                                             src="/pencil.svg"
                                             className="w-5 aspect-square"
                                         />
-                                        Sign up
+                                        <span>Sign up</span>
                                     </LinkButton>
                                 </Tooltip>
                             </li>
@@ -112,7 +119,7 @@ export const HeaderMenu = ({ onInteract }: Props) => {
                                             src="/security.svg"
                                             className="w-5 aspect-square"
                                         />
-                                        Log in
+                                        <span>Log in</span>
                                     </LinkButton>
                                 </Tooltip>
                             </li>
@@ -130,7 +137,7 @@ export const HeaderMenu = ({ onInteract }: Props) => {
                                 alt=""
                                 className="w-5 aspect-square"
                             />
-                            Hide
+                            <span>Hide</span>
                         </Button>
                     </li>
                 </div>

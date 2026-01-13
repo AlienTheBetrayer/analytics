@@ -2,7 +2,7 @@ import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import Image from "next/image";
 
-export const ToolboxElements = () => {
+export const AuthElements = () => {
     return (
         <div className="box h-full min-w-64">
             <div className="flex flex-col gap-4 h-full">

@@ -22,9 +22,9 @@ export const Select = ({ items, value, onChange, ...rest }: Props) => {
         <button
             ref={inputRef}
             type="button"
-            className={`flex w-full items-center min-h-8 bg-linear-to-bl 
-            from-background-2 to-background-1 outline-2 outline-background-5 p-2 rounded-xl focus:outline-blue-1 
-             hover:brightness-125 transition-all duration-300 ease-out cursor-pointer`}
+            className={`flex w-full items-center min-h-8 
+            bg-background-a-3 outline-2 outline-background-5 p-2 rounded-xl focus:outline-blue-1 
+             hover:bg-background-a-7 transition-all duration-300 ease-out cursor-pointer`}
             onClick={expandToggle}
             onKeyDown={keyDown}
             {...rest}

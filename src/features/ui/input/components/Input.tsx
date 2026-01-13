@@ -35,9 +35,9 @@ export const Input = ({
                 disabled={!isEnabled}
                 type="text"
                 required={required}
-                className={`w-full h-full min-h-8 bg-linear-to-bl 
-            from-background-2 to-background-1 outline-2 outline-background-5 p-2 rounded-xl focus:outline-blue-1 
-             hover:brightness-125 transition-all duration-300 ease-out focus-visible:brightness-125
+                className={`w-full h-full min-h-8  
+            outline-2 outline-background-5 p-2 rounded-xl focus:outline-blue-1 bg-background-a-3
+             hover:bg-background-a-7 transition-all duration-300 ease-out focus-visible:bg-background-a-7
             ${required === true || minLength || maxLength ? "invalid:outline-red-1! valid:outline-blue-1!" : ""} 
                  ${isEnabled !== true ? "pointer-events-none opacity-30" : ""} 
             ${className ?? ""}`}

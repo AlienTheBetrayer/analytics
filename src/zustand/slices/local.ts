@@ -21,6 +21,14 @@ export const LocalSlice: SliceFunction<LocalStore, LocalStore> = (set) => {
             all: true,
             dashboard: true,
         },
+        theme: "dark",
+
+        toggleTheme: () => {
+            set((state) => ({
+                ...state,
+                theme: state.theme === "dark" ? "light" : "dark",
+            }));
+        },
 
         setProfilesMenuType: (type: ProfileMenuType) => {
             set((state) => ({ ...state, profilesMenuType: type }));
@@ -275,8 +283,6 @@ export const LocalSlice: SliceFunction<LocalStore, LocalStore> = (set) => {
                         if (!(typeof options.flag === "boolean")) {
                             throw "options/flag are not defined.";
                         }
-
-                        
 
                         break;
                     }

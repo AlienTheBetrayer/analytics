@@ -28,9 +28,9 @@ export const DashboardEvent = ({ event }: Props) => {
             direction="top"
         >
             <li
-                className="sm:h-16 dashboard-event relative gap-3 bg-linear-to-r from-background-1 to-background-2 rounded-3xl
+                className="sm:h-16 dashboard-event relative gap-3 rounded-3xl
             border-2 border-background-4 
-            px-4! py-2! hover:brightness-200 duration-300 ease-out transition-all"
+            px-4! py-2! hover:bg-background-4 transition-all"
             >
                 <div className="absolute inset-0 grid place-items-center pointer-events-none select-none">
                     <span

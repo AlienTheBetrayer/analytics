@@ -4,15 +4,17 @@ import Image from "next/image";
 import { Button } from "../../ui/button/components/Button";
 import { LinkButton } from "../../ui/linkbutton/components/LinkButton";
 import { HeaderMenu } from "./HeaderMenu";
-import { AuthenticationToolbox } from "@/features/authentication/components/AuthenticationToolbox";
 import { useAppStore } from "@/zustand/store";
 import { createPortal } from "react-dom";
 import { useHeader } from "../hooks/useHeader";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
+import { Toolbox } from "../../toolbox/components/Toolbox";
+import { useLocalStore } from "@/zustand/localStore";
 
 export const Header = () => {
     // zustand states
     const status = useAppStore((state) => state.status);
+    const theme = useLocalStore((state) => state.theme);
 
     // controller
     const { mounted, headerRef, isMenuOpen, showMenu, hideMenu } = useHeader();
@@ -37,7 +39,7 @@ export const Header = () => {
                                     width={18}
                                     height={18}
                                     alt=""
-                                    className="group-hover:invert-100!"
+                                    className={`group-hover:${theme === "dark" ? "invert-100!" : "invert-0!"}`}
                                 />
                                 Home
                             </LinkButton>
@@ -61,7 +63,7 @@ export const Header = () => {
                                     height={18}
                                     src="/launch.svg"
                                     alt=""
-                                    className="group-hover:invert-100!"
+                                    className={`group-hover:${theme === "dark" ? "invert-100!" : "invert-0!"}`}
                                 />
                                 Dashboard
                             </LinkButton>
@@ -95,7 +97,7 @@ export const Header = () => {
                     document.body
                 )}
 
-            <AuthenticationToolbox />
+            <Toolbox />
         </header>
     );
 };

@@ -11,7 +11,10 @@ export type VisibleProfile = {
 // notifications
 export type NotificationStatus = "Information" | "Error" | "Warning";
 export type NotificationTab = "Account" | "Dashboard";
-export type NotificationType = "ANALYTICS_SYNCED" | "PROFILE_EDITED" | "EMULATED";
+export type NotificationType =
+    | "ANALYTICS_SYNCED"
+    | "PROFILE_EDITED"
+    | "EMULATED";
 
 export type DashboardNotification = {
     id: string;
@@ -87,6 +90,14 @@ export type LocalStore = {
     profilesMenuType: ProfileMenuType;
     visibleProfile?: VisibleProfile;
 
+    // theme
+    theme: "dark" | "light";
+
+    /**
+     * toggles the theme (goes from dark to light to dark)
+     */
+    toggleTheme: () => void;
+
     /**
      * sets the profile menu's type
      * @param type the new type for the profile menu
@@ -112,7 +123,11 @@ export type LocalStore = {
      * explicitly clears all notifications that have been sent
      * @param id which tabs should be cleared
      */
-    clearData: (options: { type: "notifications" | "unread" | "filters", id?: string[], tab?: NotificationTab }) => void;
+    clearData: (options: {
+        type: "notifications" | "unread" | "filters";
+        id?: string[];
+        tab?: NotificationTab;
+    }) => void;
 
     /**
      * updates the preferences (don't provide a value if you want it unchanged)

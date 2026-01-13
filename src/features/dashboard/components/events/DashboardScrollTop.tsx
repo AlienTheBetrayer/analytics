@@ -16,8 +16,7 @@ export const DashboardScrollTop = ({ isVisible, scrollRef }: Props) => {
 					initial={{ opacity: 0, y: -10 }}
 					animate={{ opacity: 1, y: 0 }}
 					exit={{ opacity: 0, y: -10 }}
-					className="flex flex-col items-center justify-between p-3 rounded-xl bg-linear-to-bl 
-                from-background-2 to-background-1 outline-1 outline-background-5 hover:scale-110 hover:brightness-150 duration-300 ease-out
+					className="flex flex-col items-center justify-between p-3 rounded-xl outline-1 bg-background-a-3 backdrop-blur-xl outline-background-5 hover:scale-110 hover:bg-background-a-4 duration-300 ease-out
                 absolute -bottom-12 left-1/2! -translate-x-1/2 z-999"
 				>
 					<Button
