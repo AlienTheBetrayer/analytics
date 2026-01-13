@@ -1,4 +1,5 @@
 "use client";
+import "./Header.css";
 import { AnimatePresence } from "motion/react";
 import Image from "next/image";
 import { Button } from "../../ui/button/components/Button";
@@ -9,12 +10,10 @@ import { createPortal } from "react-dom";
 import { useHeader } from "../hooks/useHeader";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Toolbox } from "../../toolbox/components/Toolbox";
-import { useLocalStore } from "@/zustand/localStore";
 
 export const Header = () => {
     // zustand states
     const status = useAppStore((state) => state.status);
-    const theme = useLocalStore((state) => state.theme);
 
     // controller
     const { mounted, headerRef, isMenuOpen, showMenu, hideMenu } = useHeader();
@@ -33,13 +32,14 @@ export const Header = () => {
                             <LinkButton
                                 href="/home"
                                 styles="link"
+                                className="button-img"
                             >
                                 <Image
                                     src="/cube.svg"
                                     width={18}
                                     height={18}
                                     alt=""
-                                    className={`group-hover:${theme === "dark" ? "invert-100!" : "invert-0!"}`}
+                                    className={`group-hover:bg-invert-10`}
                                 />
                                 Home
                             </LinkButton>
@@ -57,13 +57,13 @@ export const Header = () => {
                             <LinkButton
                                 href="/dashboard"
                                 styles="link"
+                                className="button-img"
                             >
                                 <Image
                                     width={18}
                                     height={18}
                                     src="/launch.svg"
                                     alt=""
-                                    className={`group-hover:${theme === "dark" ? "invert-100!" : "invert-0!"}`}
                                 />
                                 Dashboard
                             </LinkButton>
@@ -73,7 +73,7 @@ export const Header = () => {
                     <li className="flex sm:hidden">
                         <Button
                             styles="link"
-                            className={`${!status ? "border-awaiting" : ""}`}
+                            className={`button-img ${!status ? "border-awaiting" : ""}`}
                             onClick={showMenu}
                         >
                             <Image
@@ -81,7 +81,6 @@ export const Header = () => {
                                 height={18}
                                 src="/menu.svg"
                                 alt=""
-                                className="group-hover:invert-100!"
                             />
                             Menu
                         </Button>

@@ -4,6 +4,7 @@ import { Role } from "../../parts/Role";
 import { Select } from "./Select";
 import { useEffect } from "react";
 import { useAppStore } from "@/zustand/store";
+import Image from "next/image";
 
 type Props = {
     data: { profile: Profile; user: User };
@@ -36,10 +37,19 @@ export const Friends = ({ data }: Props) => {
     return (
         <div className="flex flex-col gap-4 p-8 w-full grow">
             <div className="flex flex-col gap-2 items-center">
-                <span className="text-center text-foreground-2! text-5!">
-                    <mark>{data.user.username}</mark>
-                    &apos;s profile
-                </span>
+                <div className="flex gap-1 items-center">
+                    <Image
+                        width={16}
+                        height={16}
+                        alt=""
+                        src="/friends.svg"
+                        style={{ filter: `invert(var(--invert-8))` }}
+                    />
+                    <span className="text-foreground-2! text-5! flex">
+                        <mark>{data.user.username}</mark>
+                        &apos;s profile
+                    </span>
+                </div>
                 <span>Friends & Friend requests</span>
             </div>
 

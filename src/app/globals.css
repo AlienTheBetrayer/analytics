@@ -62,7 +62,17 @@
     --font-7: 0.5rem;
 
     --brightness-b: 1.5;
-    --invert-img: 0.5;
+
+    --invert-1: 0.1;
+    --invert-2: 0.2;
+    --invert-3: 0.3;
+    --invert-4: 0.4;
+    --invert-5: 0.5;
+    --invert-6: 0.6;
+    --invert-7: 0.7;
+    --invert-8: 0.8;
+    --invert-9: 0.9;
+    --invert-10: 1;
 }
 
 /* light theme */
@@ -109,7 +119,17 @@
     --foreground-9: hsl(0, 0%, 70%);
 
     --brightness-b: 0.5;
-    --invert-img: 0.2;
+
+    --invert-1: 0.9;
+    --invert-2: 0.8;
+    --invert-3: 0.7;
+    --invert-4: 0.6;
+    --invert-5: 0.5;
+    --invert-6: 0.4;
+    --invert-7: 0.3;
+    --invert-8: 0.2;
+    --invert-9: 0.1;
+    --invert-10: 0;
 }
 
 /* tailwind-specific variables */
@@ -287,7 +307,7 @@ li {
 }
 
 img {
-    filter: invert(var(--invert-img));
+    filter: invert(var(--invert-5));
     transition: 0.1s;
 }
 

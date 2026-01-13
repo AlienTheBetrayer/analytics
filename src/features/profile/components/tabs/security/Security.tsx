@@ -61,10 +61,19 @@ export const Security = ({ data }: Props) => {
             {deleteMessageBox.render()}
 
             <div className="flex flex-col gap-2 items-center">
-                <span className="text-foreground-2! text-5!">
-                    <mark>{data.user.username}</mark>
-                    &apos;s profile
-                </span>
+                <div className="flex gap-1 items-center">
+                    <Image
+                        width={16}
+                        height={16}
+                        alt=""
+                        src="/security.svg"
+                        style={{ filter: `invert(var(--invert-8))` }}
+                    />
+                    <span className="text-foreground-2! text-5! flex">
+                        <mark>{data.user.username}</mark>
+                        &apos;s profile
+                    </span>
+                </div>
                 <span>Security & Authentication</span>
             </div>
 
@@ -98,7 +107,7 @@ export const Security = ({ data }: Props) => {
                         </Button>
                     </Tooltip>
 
-                    <hr className='mt-auto'/>
+                    <hr className="mt-auto" />
                     <div className="grid grid-cols-[auto_auto_1fr] items-center gap-2 w-full">
                         <Tooltip
                             direction="top"

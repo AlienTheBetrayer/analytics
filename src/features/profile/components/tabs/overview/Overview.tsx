@@ -28,9 +28,9 @@ export const Overview = ({ data }: Props) => {
                             height={16}
                             alt=""
                             src="/book.svg"
-                            className="invert-60!"
+                            style={{ filter: `invert(var(--invert-8))`}}
                         />
-                        <span className="text-foreground-4! text-5! text-center w-full whitespace-nowrap">
+                        <span className="text-foreground-2! text-5! text-center w-full whitespace-nowrap">
                             <mark>{data.user.username}</mark>
                             &apos;s profile
                         </span>
