@@ -9,7 +9,7 @@ export const GET = async (request: NextRequest) => {
 
         const { data, error } = await supabaseServer
             .from("projects")
-            .select("*, events:events(*), aggregates:aggregates(*)");
+            .select("*, events:events(*)");
 
         if (error) {
             console.error(error);

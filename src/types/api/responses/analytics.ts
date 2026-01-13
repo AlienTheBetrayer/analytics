@@ -1,14 +1,11 @@
-import { Aggregate, Event, Project } from "@/types/tables/project";
+import { Event, Project } from "@/types/tables/project";
 
 /**
- * projects, events, aggregates
+ * projects, events
  */
-export type ResponseSync = (Project & { events: Event[] } & {
-    aggregates: Aggregate[];
-})[];
+export type ResponseSync = (Project & { events: Event[] })[];
 
 export type ResponseSent = {
     event: Event;
     project: Project;
-    aggregate: Aggregate;
 };

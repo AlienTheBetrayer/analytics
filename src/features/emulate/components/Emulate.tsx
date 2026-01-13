@@ -127,8 +127,7 @@ export const Emulate = () => {
                             Project selection
                         </span>
                         <span className="text-center">
-                            Select a project first to emulate events /
-                            aggregates
+                            Select a project first to emulate events
                         </span>
                     </>
                 )}

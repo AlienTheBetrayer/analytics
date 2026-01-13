@@ -6,7 +6,6 @@ import { refreshedRequest } from "@/utils/auth/refreshedRequest";
 export const DataSlice: SliceFunction<DataStore> = (set, get) => {
     return {
         promises: {},
-        aggregates: {},
         events: {},
         projects: {},
         notificationListeners: new Set(),
@@ -105,19 +104,16 @@ export const DataSlice: SliceFunction<DataStore> = (set, get) => {
                             case "project": {
                                 const projects = { ...state.projects };
                                 const events = { ...state.events };
-                                const aggregates = { ...state.aggregates };
 
                                 for (const id of options.id) {
                                     delete projects[id];
                                     delete events[id];
-                                    delete aggregates[id];
                                 }
 
                                 return {
                                     ...state,
                                     projects,
                                     events,
-                                    aggregates,
                                     selectedProjectId: undefined,
                                 };
                             }
@@ -132,7 +128,6 @@ export const DataSlice: SliceFunction<DataStore> = (set, get) => {
                 ...state,
                 projects: {},
                 events: {},
-                aggregates: {},
                 selectedProjectId: undefined,
             }));
         },
@@ -167,7 +162,6 @@ export const DataSlice: SliceFunction<DataStore> = (set, get) => {
                     set((state) => {
                         const projects = { ...state.projects };
                         const events = { ...state.events };
-                        const aggregates = { ...state.aggregates };
 
                         for (const entry of Object.values(data)) {
                             projects[entry.id] = {
@@ -180,13 +174,9 @@ export const DataSlice: SliceFunction<DataStore> = (set, get) => {
                             if (entry.events) {
                                 events[entry.id] = entry.events;
                             }
-
-                            if (entry.aggregates?.length) {
-                                aggregates[entry.id] = entry.aggregates[0];
-                            }
                         }
 
-                        return { ...state, projects, events, aggregates };
+                        return { ...state, projects, events };
                     });
                 } catch (e) {
                     runListeners({
@@ -222,16 +212,14 @@ export const DataSlice: SliceFunction<DataStore> = (set, get) => {
                     set((state) => {
                         const projects = { ...state.projects };
                         const events = { ...state.events };
-                        const aggregates = { ...state.aggregates };
 
                         projects[data.project.id] = data.project;
-                        aggregates[data.project.id] = data.aggregate;
                         events[data.project.id] = [
                             ...(events?.[data.project.id] ?? []),
                             data.event,
                         ];
 
-                        return { ...state, projects, events, aggregates };
+                        return { ...state, projects, events };
                     });
                 }
             );

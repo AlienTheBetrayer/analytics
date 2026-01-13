@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { PromiseStatuses } from "@/hooks/usePromiseStatus";
-import { Aggregate, Event, Project } from "../tables/project";
+import { Event, Project } from "../tables/project";
 import { NotificationPartial } from "./local";
 
 export type DataStore = {
@@ -12,7 +12,7 @@ export type DataStore = {
     // dashboard-related
     projects: Record<string, Project>;
     events: Record<string, Event[]>;
-    aggregates: Record<string, Aggregate>;
+
     /**
      * attaches function to the memory (will be called upon notification push)
      * @param callback the function that will be called upon new notification

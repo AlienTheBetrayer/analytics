@@ -15,7 +15,7 @@ export const Wipe = () => {
     // messageboxes
     const deleteProjectBox = usePopup(({ hide }) => (
         <MessageBox
-            description="You will delete every single data entry about this project, including events, aggregates!"
+            description="You will delete every single data entry about this project, including events!"
             onInteract={(res) => {
                 hide();
                 if (!selectedProjectId) {

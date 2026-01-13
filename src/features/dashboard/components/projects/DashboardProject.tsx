@@ -5,6 +5,7 @@ import { Button } from "@/features/ui/button/components/Button";
 import { relativeTime } from "@/utils/other/relativeTime";
 import { useAppStore } from "@/zustand/store";
 import { promiseStatus } from "@/utils/other/status";
+import { useMemo } from "react";
 
 type Props = {
     id: string;
@@ -16,7 +17,6 @@ export const DashboardProject = ({ id }: Props) => {
     const promises = useAppStore((state) => state.promises);
     const projects = useAppStore((state) => state.projects);
     const events = useAppStore((state) => state.events);
-    const aggregates = useAppStore((state) => state.aggregates);
 
     // zustand functions
     const selectProject = useAppStore((state) => state.selectProject);
@@ -25,8 +25,14 @@ export const DashboardProject = ({ id }: Props) => {
     const data = {
         project: projects[id],
         events: events[id],
-        aggregates: aggregates[id],
     };
+
+    const pageViewEvents = useMemo(() => {
+        return events.selectedProjectId?.reduce(
+            (acc, val) => (val.type === "page_view" ? acc + 1 : acc),
+            0
+        ) ?? 0;
+    }, [events.selectedProjectId]);
 
     if (!data.project) {
         return <span>No project data loaded yet.</span>;
@@ -52,9 +58,9 @@ export const DashboardProject = ({ id }: Props) => {
                             alt=""
                             width={16}
                             height={16}
-                            className='invert-60!'
+                            className="invert-60!"
                         />
-                        <span className='text-6! text-foreground-4!'>
+                        <span className="text-6! text-foreground-4!">
                             {data.project.name}
                         </span>
                     </div>
@@ -87,7 +93,7 @@ export const DashboardProject = ({ id }: Props) => {
                             <small className="text-6!">events</small>
                         </span>
                         <span className="text-3!">
-                            <small>{data.aggregates?.visits ?? 0}</small>
+                            <small>{pageViewEvents}</small>
                             <small className="text-6!">visits</small>
                         </span>
                     </div>

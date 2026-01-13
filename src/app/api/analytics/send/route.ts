@@ -2,7 +2,7 @@ import type { PostgrestError } from "@supabase/supabase-js";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { supabaseServer } from "@/server/private/supabase";
-import { Aggregate, Event, Project } from "@/types/tables/project";
+import { Event, Project } from "@/types/tables/project";
 import { nextResponse } from "@/utils/api/response";
 
 export const POST = async (request: NextRequest) => {
@@ -48,49 +48,12 @@ export const POST = async (request: NextRequest) => {
             return nextResponse({ eventsError }, 400);
         }
 
-        // 3. inserting / updating a project aggregate
-        const { data: projectAggregatesData, error: projectAggregatesError } =
-            (await supabaseServer
-                .from("aggregates")
-                .select()
-                .eq("project_id", projectData?.[0]?.id)) as {
-                data: Aggregate[];
-                error: PostgrestError | null;
-            };
-
-        if (projectAggregatesError) {
-            console.error(projectAggregatesError);
-            return nextResponse({ projectAggregatesError }, 400);
-        }
-
-        const { data: aggregatesData, error: aggregatesError } =
-            await supabaseServer
-                .from("aggregates")
-                .upsert(
-                    {
-                        project_id: projectData[0].id,
-
-                        visits:
-                            event_type === "page_view"
-                                ? (projectAggregatesData?.[0]?.visits ?? 0) + 1
-                                : (projectAggregatesData?.[0]?.visits ?? 0),
-                    },
-                    { onConflict: "project_id" }
-                )
-                .select();
-
-        if (aggregatesError) {
-            console.error(aggregatesError);
-            return nextResponse({ aggregatesError }, 400);
-        }
-
         return nextResponse(
             {
                 message: "Successfully created an event!",
                 sent: {
                     project: projectData?.[0],
                     event: eventsData?.[0],
-                    aggregate: aggregatesData?.[0],
                 },
             },
             200

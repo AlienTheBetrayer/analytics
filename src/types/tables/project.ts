@@ -10,16 +10,6 @@ export type Event = {
 };
 
 /**
- * project_aggregates
- */
-export type Aggregate = {
-    id: string;
-    project_id: string;
-    visits: number;
-    last_updated_at?: string;
-};
-
-/**
  * projects
  */
 export type Project = {
