@@ -1,6 +1,8 @@
+import { AuthenticationRole } from "../auth/authentication";
+
 /**
  * profiles
-*/
+ */
 export type ProfileGender = "male" | "female" | "other" | "unspecified";
 
 export type Profile = {
@@ -50,7 +52,7 @@ export type User = {
     id: string;
     username: string;
     password?: string;
-    role: string;
+    role: AuthenticationRole;
     created_at?: string;
     last_seen_at?: string;
 };

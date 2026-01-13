@@ -6,9 +6,9 @@ import { FriendButton } from "./FriendButton";
 import { StatusBio } from "./StatusBio";
 import { LastSeen } from "./LastSeen";
 import { Title } from "./Title";
-import { Role } from "../../parts/Role";
 import { ColorSwatches } from "../../parts/ColorSwatches";
 import { Gender } from "../../parts/Gender";
+import { Role } from "../../parts/Role";
 
 type Props = {
     data: { user: User; profile: Profile };
@@ -21,33 +21,28 @@ export const Overview = ({ data }: Props) => {
     return (
         <div className="flex flex-col gap-4 p-8 w-full grow relative">
             <div className="flex flex-col gap-2 items-center">
-                <div className="flex w-full justify-between items-center relative flex-wrap">
-                    <div className="absolute left-1/2 top-1/2 -translate-1/2 flex gap-2 items-center">
-                        <Image
-                            width={16}
-                            height={16}
-                            alt=""
-                            src="/book.svg"
-                            style={{ filter: `invert(var(--invert-8))`}}
-                        />
-                        <span className="text-foreground-2! text-5! text-center w-full whitespace-nowrap">
-                            <mark>{data.user.username}</mark>
-                            &apos;s profile
-                        </span>
-                    </div>
+                <div className="flex gap-1 items-center">
+                    <Image
+                        width={16}
+                        height={16}
+                        alt=""
+                        src="/book.svg"
+                        style={{ filter: `invert(var(--invert-8))` }}
+                    />
+                    <span className="text-foreground-2! text-5! flex">
+                        <mark>{data.user.username}</mark>
+                        &apos;s profile
+                    </span>
                 </div>
                 <span>Profile overview</span>
-
-                {data.profile.color && <ColorSwatches data={data} />}
-                {data.profile.gender && <Gender data={data} />}
             </div>
 
             <hr className="w-2/3! mx-auto" />
 
             <div className="flex flex-col gap-2 grow items-center justify-center">
-                {data.user.id !== status?.id && <LastSeen data={data} />}
+                <LastSeen data={data} />
 
-                <span className="text-3! text-foreground-3!">
+                <span className="text-4! text-foreground-3!">
                     {data.profile.name}
                 </span>
 
@@ -55,6 +50,7 @@ export const Overview = ({ data }: Props) => {
 
                 {data.profile.title && <Title data={data} />}
 
+                {data.profile.color && <ColorSwatches data={data} />}
                 <ProfileImage
                     profile={data.profile}
                     width={256}
@@ -65,7 +61,10 @@ export const Overview = ({ data }: Props) => {
                     }}
                 />
 
-                <Role data={data} />
+                <div className="flex items-center gap-2">
+                    {data.profile.gender && <Gender data={data} />}
+                    <Role data={data} />
+                </div>
 
                 <hr className="w-2/5!" />
 

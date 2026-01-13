@@ -1,85 +1,106 @@
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Profile, User } from "@/types/tables/account";
 import Image from "next/image";
+import React, { useMemo } from "react";
 
 type Props = {
     data: { user: User; profile: Profile };
 };
 
 export const Gender = ({ data }: Props) => {
-    const genderStyle = () => {
+    const genderStyle = useMemo((): {
+        element: React.ReactNode;
+        tooltip: string;
+    } => {
         switch (data.profile.gender) {
             case "female": {
-                return (
-                    <div className="box p-1! px-2! items-center! outline-1 outline-[#e0afbb]">
-                        <div className="flex gap-1">
-                            <Image
-                                width={16}
-                                height={16}
-                                alt=""
-                                src="/female.svg"
-                            />
-                            <span className="text-foreground-5!">Female</span>
+                return {
+                    element: (
+                        <div className="box p-1! px-2! items-center! outline-1 outline-[#e0afbb]">
+                            <div className="flex gap-1">
+                                <Image
+                                    width={16}
+                                    height={16}
+                                    alt=""
+                                    src="/female.svg"
+                                />
+                                <span className="text-foreground-5!">
+                                    Female
+                                </span>
+                            </div>
                         </div>
-                    </div>
-                );
+                    ),
+                    tooltip: `${data.user.username} is a girl.`,
+                };
             }
             case "male": {
-                return (
-                    <div className="box p-1! px-2! items-center! outline-1 outline-[#82aece]">
-                        <div className="flex gap-1">
-                            <Image
-                                width={16}
-                                height={16}
-                                alt=""
-                                src="/male.svg"
-                            />
-                            <span className="text-foreground-5!">Male</span>
+                return {
+                    element: (
+                        <div className="box p-1! px-2! items-center! outline-1 outline-[#82aece]">
+                            <div className="flex gap-1">
+                                <Image
+                                    width={16}
+                                    height={16}
+                                    alt=""
+                                    src="/male.svg"
+                                />
+                                <span className="text-foreground-5!">Male</span>
+                            </div>
                         </div>
-                    </div>
-                );
+                    ),
+                    tooltip: `${data.user.username} is a man.`,
+                };
             }
             case "other": {
-                return (
-                    <div className="box p-1! px-2! items-center! outline-1 outline-[#9d95c7]">
-                        <div className="flex gap-1">
-                            <Image
-                                width={16}
-                                height={16}
-                                alt=""
-                                src="/cube.svg"
-                            />
-                            <span className="text-foreground-5!">Other</span>
+                return {
+                    element: (
+                        <div className="box p-1! px-2! items-center! outline-1 outline-[#9d95c7]">
+                            <div className="flex gap-1">
+                                <Image
+                                    width={16}
+                                    height={16}
+                                    alt=""
+                                    src="/cube.svg"
+                                />
+                                <span className="text-foreground-5!">
+                                    Other
+                                </span>
+                            </div>
                         </div>
-                    </div>
-                );
+                    ),
+                    tooltip: `${data.user.username} has a different gender.`,
+                };
             }
+            default:
             case "unspecified": {
-                return (
-                    <div className="box p-1! px-2! items-center!">
-                        <div className="flex gap-1">
-                            <Image
-                                width={16}
-                                height={16}
-                                alt=""
-                                src="/menu.svg"
-                            />
-                            <span className="text-foreground-5!">
-                                Unspecified
-                            </span>
+                return {
+                    element: (
+                        <div className="box p-1! px-2! items-center!">
+                            <div className="flex gap-1">
+                                <Image
+                                    width={16}
+                                    height={16}
+                                    alt=""
+                                    src="/menu.svg"
+                                />
+                                <span className="text-foreground-5!">
+                                    Unspecified
+                                </span>
+                            </div>
                         </div>
-                    </div>
-                );
+                    ),
+                    tooltip: `${data.user.username} hasn't specified a gender.`,
+                };
             }
         }
-    };
+    }, [data]);
 
     return (
         <Tooltip
-            direction="top"
-            text={`${data.user.username}'s gender`}
+            direction="bottom"
+            text={genderStyle.tooltip}
         >
-            {genderStyle()}
+            {genderStyle.element}
         </Tooltip>
     );
 };
