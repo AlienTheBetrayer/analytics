@@ -22,8 +22,11 @@ export const useInputSelect = (
     const expandRef = useRef<HTMLUListElement | null>(null);
 
     // position calculating
-    // biome-ignore lint/correctness/useExhaustiveDependencies: <recalculate on expand open>
     useEffect(() => {
+        if (!isExpanded) {
+            return;
+        }
+
         const handle = () => {
             if (!(inputRef.current && expandRef.current)) {
                 return;

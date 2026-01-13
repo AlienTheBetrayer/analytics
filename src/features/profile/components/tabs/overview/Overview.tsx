@@ -8,6 +8,7 @@ import { LastSeen } from "./LastSeen";
 import { Title } from "./Title";
 import { Role } from "../../parts/Role";
 import { ColorSwatches } from "../../parts/ColorSwatches";
+import { Gender } from "../../parts/Gender";
 
 type Props = {
     data: { user: User; profile: Profile };
@@ -36,7 +37,9 @@ export const Overview = ({ data }: Props) => {
                     </div>
                 </div>
                 <span>Profile overview</span>
-                <ColorSwatches data={data} />
+
+                {data.profile.color && <ColorSwatches data={data} />}
+                {data.profile.gender && <Gender data={data} />}
             </div>
 
             <hr className="w-2/3! mx-auto" />
@@ -50,7 +53,7 @@ export const Overview = ({ data }: Props) => {
 
                 <hr className="w-1/5!" />
 
-                <Title data={data} />
+                {data.profile.title && <Title data={data} />}
 
                 <ProfileImage
                     profile={data.profile}
@@ -66,7 +69,9 @@ export const Overview = ({ data }: Props) => {
 
                 <hr className="w-2/5!" />
 
-                <StatusBio data={data} />
+                {(data.profile.bio || data.profile.status) && (
+                    <StatusBio data={data} />
+                )}
 
                 <hr className="w-1/5!" />
                 <FriendButton data={data} />

@@ -250,10 +250,17 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
                         return state;
                     }
 
+                    // users
+                    if ("role" in options.data) {
+                        users[options.id].role = options.data.role ?? "user";
+                    }
+
+                    // colors
                     if (options.data.colors) {
                         colors[options.id] = options.data.colors;
                     }
 
+                    // profiles
                     if ("color" in options.data) {
                         profiles[options.id].color = options.data.color;
                     }
@@ -274,11 +281,12 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
                         profiles[options.id].title = options.data.title ?? "";
                     }
 
-                    if ("role" in options.data) {
-                        users[options.id].role = options.data.role ?? "user";
+                    if ("gender" in options.data) {
+                        profiles[options.id].gender =
+                            options.data.gender ?? "unspecified";
                     }
 
-                    return { ...state, profiles, colors };
+                    return { ...state, profiles, colors, users };
                 });
 
                 try {

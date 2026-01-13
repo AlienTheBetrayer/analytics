@@ -1,12 +1,15 @@
 /**
  * profiles
- */
+*/
+export type ProfileGender = "male" | "female" | "other" | "unspecified";
+
 export type Profile = {
     id: string;
     user_id: string;
     name?: string;
     title?: string;
     status?: string;
+    gender?: ProfileGender;
     bio?: string;
     color?: string;
     avatar_url?: string;

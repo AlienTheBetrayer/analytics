@@ -7,6 +7,9 @@ import { EditAvatarProps } from "./Avatar";
 import { useAppStore } from "@/zustand/store";
 import { useState } from "react";
 import Image from "next/image";
+import { Select } from "@/features/ui/select/components/Select";
+import { ProfileGender } from "@/types/tables/account";
+import { capitalize } from "@/utils/other/capitalize";
 
 export const Form = ({ avatar, avatarFile, data }: EditAvatarProps) => {
     // zustand
@@ -21,10 +24,13 @@ export const Form = ({ avatar, avatarFile, data }: EditAvatarProps) => {
     const [name, setName] = useState<string>(data.profile.name ?? "");
     const [bio, setBio] = useState<string>(data.profile.bio ?? "");
     const [title, setTitle] = useState<string>(data.profile.title ?? "");
+    const [gender, setGender] = useState<ProfileGender>(
+        data.profile.gender ?? "unspecified"
+    );
 
     return (
         <form
-            className="flex flex-col gap-2"
+            className="flex flex-col gap-4"
             onSubmit={async (e) => {
                 e.preventDefault();
 
@@ -40,6 +46,7 @@ export const Form = ({ avatar, avatarFile, data }: EditAvatarProps) => {
                         bio,
                         title,
                         name,
+                        gender,
                         avatar_url: dataAvatar,
                         avatar_name: avatarFile?.[0]?.name,
                         avatar_type: avatarFile?.[0]?.type,
@@ -47,104 +54,145 @@ export const Form = ({ avatar, avatarFile, data }: EditAvatarProps) => {
                 });
             }}
         >
-            <label
-                htmlFor="name"
-                className="flex items-center gap-1"
-            >
-                <Image
-                    alt=""
-                    width={16}
-                    height={16}
-                    src="/account.svg"
-                />
-                <b>Name</b>
-                <small className="ml-auto text-ellipsis-left">
-                    {" "}
-                    (your name, can be fictional)
-                </small>
-            </label>
-            <Input
-                id="name"
-                value={name}
-                onChange={(e) => setName(e)}
-                placeholder="24 characters max"
-                maxLength={24}
-            />
+            <div className="grid sm:grid-cols-[1fr_auto_1fr] gap-4">
+                <div className="flex flex-col gap-2">
+                    <label
+                        htmlFor="name"
+                        className="flex items-center gap-1"
+                    >
+                        <Image
+                            alt=""
+                            width={16}
+                            height={16}
+                            src="/pencil.svg"
+                        />
+                        <b>Name</b>
+                        <small className="ml-auto text-ellipsis-left">
+                            {" "}
+                            (your name, can be fictional)
+                        </small>
+                    </label>
+                    <Input
+                        id="name"
+                        value={name}
+                        onChange={(e) => setName(e)}
+                        placeholder="24 characters max"
+                        maxLength={24}
+                    />
+                </div>
 
-            <hr className='mb-4'/>
-            <label
-                htmlFor="title"
-                className="flex items-center gap-1"
-            >
-                <Image
-                    alt=""
-                    width={16}
-                    height={16}
-                    src="/type.svg"
-                />
-                <b>Title</b>
-                <small className="ml-auto text-ellipsis-left">
-                    (a short phrase that feels yours)
-                </small>
-            </label>
-            <Input
-                id="title"
-                value={title}
-                onChange={(e) => setTitle(e)}
-                placeholder="24 characters max"
-                maxLength={24}
-            />
+                <hr className="sm:w-px! sm:h-full!" />
 
-            <hr className='mb-4'/>
-            <label
-                htmlFor="status"
-                className="flex items-center gap-1"
-            >
-                <Image
-                    alt=""
-                    width={16}
-                    height={16}
-                    src="/pencil.svg"
-                />
-                <b>Status</b>
-                <small className="ml-auto text-ellipsis-left">
-                    (a short text capturing your mood)
-                </small>
-            </label>
-            <Input
-                id="status"
-                value={status}
-                onChange={(e) => setStatus(e)}
-                maxLength={48}
-                placeholder="48 characters max"
-            />
+                <div className="flex flex-col gap-2">
+                    <label
+                        htmlFor="title"
+                        className="flex items-center gap-1"
+                    >
+                        <Image
+                            alt=""
+                            width={16}
+                            height={16}
+                            src="/type.svg"
+                        />
+                        <b>Title</b>
+                        <small className="ml-auto text-ellipsis-left">
+                            (a short phrase that feels yours)
+                        </small>
+                    </label>
 
-            <hr className='mb-4'/>
-            <label
-                htmlFor="bio"
-                className="flex items-center gap-1"
-            >
-                <Image
-                    alt=""
-                    width={16}
-                    height={16}
-                    src="/menu.svg"
+                    <Input
+                        id="title"
+                        value={title}
+                        onChange={(e) => setTitle(e)}
+                        placeholder="24 characters max"
+                        maxLength={24}
+                    />
+                </div>
+            </div>
+
+            <hr />
+
+            <div className="flex flex-col gap-2">
+                <label
+                    htmlFor="status"
+                    className="flex items-center gap-1"
+                >
+                    <Image
+                        alt=""
+                        width={16}
+                        height={16}
+                        src="/menu.svg"
+                    />
+                    <b>Status</b>
+                    <small className="ml-auto text-ellipsis-left">
+                        (a short text capturing your mood)
+                    </small>
+                </label>
+                <Input
+                    id="status"
+                    value={status}
+                    onChange={(e) => setStatus(e)}
+                    maxLength={48}
+                    placeholder="48 characters max"
                 />
-                <b>Bio</b>
-                <small className="ml-auto text-ellipsis-left">
-                    {" "}
-                    (a long piece of text, describe yourself)
-                </small>
-            </label>
-            <Input
-                value={bio}
-                onChange={(e) => setBio(e)}
-                placeholder="128 characters max"
-                maxLength={128}
-            />
+            </div>
+
+            <hr />
+
+            <div className="flex flex-col gap-2">
+                <label
+                    htmlFor="bio"
+                    className="flex items-center gap-1"
+                >
+                    <Image
+                        alt=""
+                        width={16}
+                        height={16}
+                        src="/book.svg"
+                    />
+                    <b>Bio</b>
+                    <small className="ml-auto text-ellipsis-left">
+                        (a long piece of text, describe yourself)
+                    </small>
+                </label>
+                <Input
+                    id="bio"
+                    value={bio}
+                    onChange={(e) => setBio(e)}
+                    placeholder="128 characters max"
+                    maxLength={128}
+                />
+            </div>
+
+            <hr />
+            <div className="flex flex-col gap-2">
+                <label
+                    htmlFor="gender"
+                    className="flex items-center gap-1"
+                >
+                    <Image
+                        alt=""
+                        width={16}
+                        height={16}
+                        src="/account.svg"
+                    />
+                    <b>Gender</b>
+                    <small className="ml-auto text-ellipsis-left">
+                        {" "}
+                        (the way you identify yourself)
+                    </small>
+                </label>
+                <Select
+                    id="gender"
+                    items={["Male", "Female", "Other", "Unspecified"]}
+                    value={capitalize(gender)}
+                    onChange={(e) => {
+                        setGender(e.toLowerCase() as ProfileGender);
+                    }}
+                />
+            </div>
 
             <hr className="mt-auto" />
-
             <Tooltip
                 text="Save all of your changes"
                 className="w-full"

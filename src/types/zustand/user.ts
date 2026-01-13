@@ -1,5 +1,5 @@
 import { CachedUser } from "../api/responses/users";
-import { Profile, User } from "../tables/account";
+import { Profile, ProfileGender, User } from "../tables/account";
 
 export type UserStore = {
     users: Record<string, User>;
@@ -49,6 +49,7 @@ export type UserStore = {
             bio?: string;
             colors?: { slot: number; color: string }[];
             color?: string;
+            gender?: ProfileGender;
             avatar_url?: string | null;
             avatar_name?: string;
             avatar_type?: string;

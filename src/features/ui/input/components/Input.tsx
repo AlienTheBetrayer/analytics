@@ -30,12 +30,12 @@ export const Input = ({
     const { inputRef } = controller;
 
     return (
-        <div className="relative ">
+        <div className="relative">
             <input
                 disabled={!isEnabled}
                 type="text"
                 required={required}
-                className={`w-full h-full min-h-8  
+                className={`w-full h-full min-h-8 
             outline-2 outline-background-5 p-2 rounded-xl focus:outline-blue-1 bg-background-a-3
              hover:bg-background-a-7 transition-all duration-300 ease-out focus-visible:bg-background-a-7
             ${required === true || minLength || maxLength ? "invalid:outline-red-1! valid:outline-blue-1!" : ""} 
