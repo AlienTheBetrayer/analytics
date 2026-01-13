@@ -2,11 +2,13 @@ import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { TabSelection } from "@/utils/other/TabSelection";
 import Image from "next/image";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Data } from "./tabs/Data";
 import { Profile, User } from "@/types/tables/account";
 import { Sessions } from "./tabs/Sessions";
-import { useSecurity } from "@/features/profile/hooks/useSecurity";
+import { MessageBox } from "@/features/messagebox/components/MessageBox";
+import { usePopup } from "@/features/popup/hooks/usePopup";
+import { useAppStore } from "@/zustand/store";
 
 export type SecurityTab = "Data" | "Sessions";
 
@@ -15,9 +17,50 @@ type Props = {
 };
 
 export const Select = ({ data }: Props) => {
+    // zustand
+    const status = useAppStore((state) => state.status);
+    const sessions = useAppStore((state) => state.sessions);
+    const terminateSessions = useAppStore((state) => state.terminateSessions);
+
+    // react states
     const [selected, setSelected] = useState<SecurityTab>("Data");
 
-    const { currentSessions, terminateMessageBox } = useSecurity(data);
+    const currentSessions = useMemo(() => {
+        if (!sessions[data.user.id]?.length || !status) {
+            return undefined;
+        }
+
+        return [...sessions[data.user.id].sort((a) => (a.isCurrent ? -1 : 1))];
+    }, [sessions, data, status]);
+
+    const terminateMessageBox = usePopup(({ hide }) => (
+        <MessageBox
+            description="All your other sessions will be terminated."
+            onInteract={(res) => {
+                hide();
+                if (res === "yes") {
+                    // no sessions (ensuring safety + types)
+                    if (!currentSessions?.length) {
+                        return;
+                    }
+
+                    const notCurrent = currentSessions
+                        ?.filter((s) => !s.isCurrent)
+                        .map((s) => s.id);
+
+                    // if by some accident there's no current sessions
+                    if (notCurrent.length === currentSessions.length) {
+                        return;
+                    }
+
+                    terminateSessions({
+                        user_id: data.user.id,
+                        ids: notCurrent,
+                    });
+                }
+            }}
+        />
+    ));
 
     const element = () => {
         switch (selected) {
@@ -47,7 +90,7 @@ export const Select = ({ data }: Props) => {
                 className={`box p-0! gap-1! my-2 flex-row! w-full m-auto transition-all duration-500 h-10 items-center`}
             >
                 <Tooltip
-                    text="Go back home"
+                    text="Valuable authentication data"
                     direction="top"
                 >
                     <Button
@@ -71,7 +114,7 @@ export const Select = ({ data }: Props) => {
                 </Tooltip>
 
                 <Tooltip
-                    text="Go back home"
+                    text="Logged in sessions"
                     direction="top"
                 >
                     <Button
@@ -94,7 +137,9 @@ export const Select = ({ data }: Props) => {
                     </Button>
                 </Tooltip>
             </div>
-
+            
+            <hr/>
+            
             {element()}
         </div>
     );

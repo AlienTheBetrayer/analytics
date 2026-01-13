@@ -88,27 +88,26 @@ export const Data = ({ data, terminateMessageBox }: Props) => {
                 />
             </div>
 
-            <div className="flex flex-col gap-2 mt-auto">
-                <hr />
-                <Tooltip
+            <hr className="mt-auto -mb-2" />
+
+            <Tooltip
+                className="w-full"
+                text="Change your password"
+            >
+                <Button
+                    type="submit"
                     className="w-full"
-                    text="Change your password"
                 >
-                    <Button
-                        type="submit"
-                        className="w-full"
-                    >
-                        {promiseStatus(promises.updateUser)}
-                        <Image
-                            src="/send.svg"
-                            width={16}
-                            height={16}
-                            alt=""
-                        />
-                        Apply changes
-                    </Button>
-                </Tooltip>
-            </div>
+                    {promiseStatus(promises.updateUser)}
+                    <Image
+                        src="/send.svg"
+                        width={16}
+                        height={16}
+                        alt=""
+                    />
+                    Apply changes
+                </Button>
+            </Tooltip>
         </form>
     );
 };

@@ -18,7 +18,7 @@ export const Edit = ({ data }: Props) => {
     );
 
     return (
-        <div className="flex flex-col gap-4 p-8 w-full">
+        <div className="flex flex-col gap-4 p-8 w-full grow">
             <div className="flex flex-col gap-2 items-center">
                 <span className="text-foreground-2! text-5!">
                     <mark>{data.user.username}</mark>
@@ -29,7 +29,7 @@ export const Edit = ({ data }: Props) => {
 
             <hr />
 
-            <div className="grid lg:grid-cols-[30%_auto_1fr] gap-4">
+            <div className="grid lg:grid-cols-[30%_auto_1fr] gap-4 grow">
                 <Avatar
                     data={data}
                     avatar={[avatar, setAvatar]}

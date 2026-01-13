@@ -57,7 +57,7 @@ export const Security = ({ data }: Props) => {
     const [isDeletionEnabled, setIsDeletionEnabled] = useState<boolean>(false);
 
     return (
-        <div className="flex flex-col gap-4 p-8 w-full">
+        <div className="flex flex-col gap-4 p-8 w-full grow">
             {deleteMessageBox.render()}
 
             <div className="flex flex-col gap-2 items-center">
@@ -69,7 +69,7 @@ export const Security = ({ data }: Props) => {
             </div>
 
             <hr />
-            <div className="grid lg:grid-cols-[30%_1fr] gap-12 lg:gap-4">
+            <div className="grid lg:grid-cols-[30%_auto_1fr] gap-12 lg:gap-4 grow">
                 <div className="flex flex-col items-center gap-2">
                     <span>{data.profile.name}</span>
                     <ProfileImage
@@ -98,7 +98,7 @@ export const Security = ({ data }: Props) => {
                         </Button>
                     </Tooltip>
 
-                    <hr />
+                    <hr className='mt-auto'/>
                     <div className="grid grid-cols-[auto_auto_1fr] items-center gap-2 w-full">
                         <Tooltip
                             direction="top"
@@ -138,6 +138,8 @@ export const Security = ({ data }: Props) => {
                         </Tooltip>
                     </div>
                 </div>
+
+                <hr className="sm:w-px! sm:h-full" />
 
                 <Select data={data} />
             </div>

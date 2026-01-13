@@ -1,14 +1,9 @@
-import Image from "next/image";
-import { Button } from "@/features/ui/button/components/Button";
 import { Profile, User } from "@/types/tables/account";
-import { promiseStatus } from "@/utils/other/status";
-import { useAppStore } from "@/zustand/store";
 import { ProfileImage } from "../../ProfileImage";
-import { FriendList } from "./FriendList";
-import { IncomingList } from "./IncomingList";
-import { OutcomingList } from "./OutcomingList";
-import { useFriends } from "@/features/profile/hooks/useFriends";
 import { Role } from "../../parts/Role";
+import { Select } from "./Select";
+import { useEffect } from "react";
+import { useAppStore } from "@/zustand/store";
 
 type Props = {
     data: { profile: Profile; user: User };
@@ -16,15 +11,30 @@ type Props = {
 
 export const Friends = ({ data }: Props) => {
     // zustand
-    const promises = useAppStore((state) => state.promises);
+    const friends = useAppStore((state) => state.friends);
+    const friendRequests = useAppStore((state) => state.friendRequests);
+    const getUsers = useAppStore((state) => state.getUsers);
 
-    // friends + their profiles fetching + message box
-    const { unfriendMessageBox } = useFriends(data);
+    useEffect(() => {
+        getUsers({
+            select: ["friends", "friend_requests"],
+            id: [data.user.id],
+        });
+    }, [getUsers, data]);
+
+    useEffect(() => {
+        getUsers({
+            select: ["profile"],
+            id: [
+                ...(friends[data.user.id] ?? []),
+                ...(friendRequests?.[data.user.id]?.incoming ?? []),
+                ...(friendRequests?.[data.user.id]?.outcoming ?? []),
+            ],
+        });
+    }, [friends, friendRequests, data, getUsers]);
 
     return (
-        <div className="flex flex-col gap-4 p-8 w-full">
-            {unfriendMessageBox.render()}
-
+        <div className="flex flex-col gap-4 p-8 w-full grow">
             <div className="flex flex-col gap-2 items-center">
                 <span className="text-center text-foreground-2! text-5!">
                     <mark>{data.user.username}</mark>
@@ -35,7 +45,7 @@ export const Friends = ({ data }: Props) => {
 
             <hr />
 
-            <div className="grid lg:grid-cols-[30%_auto_1fr] gap-4">
+            <div className="grid lg:grid-cols-[30%_auto_1fr] gap-4 grow">
                 <div className="flex flex-col items-center gap-2">
                     <span>{data.profile.name}</span>
                     <ProfileImage
@@ -48,29 +58,7 @@ export const Friends = ({ data }: Props) => {
 
                 <hr className="sm:w-px! sm:h-full" />
 
-                <div className="flex flex-col gap-2 w-full">
-                    <ul className="flex flex-col gap-2 w-full">
-                        <FriendList data={data} />
-                        <IncomingList data={data} />
-                        <OutcomingList data={data} />
-                    </ul>
-
-                    <hr className="mt-auto" />
-                    <Button
-                        onClick={() => {
-                            unfriendMessageBox.show();
-                        }}
-                    >
-                        {promiseStatus(promises.unfriendAll)}
-                        <Image
-                            width={16}
-                            height={16}
-                            alt=""
-                            src="/delete.svg"
-                        />
-                        Unfriend everyone
-                    </Button>
-                </div>
+                <Select data={data} />
             </div>
         </div>
     );

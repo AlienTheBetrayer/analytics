@@ -192,23 +192,23 @@ export const Form = ({ avatar, avatarFile, data }: EditAvatarProps) => {
                 />
             </div>
 
-            <hr className="mt-auto" />
+            <hr className='mt-auto -mb-2'/>
             <Tooltip
                 text="Save all of your changes"
                 className="w-full"
                 direction="top"
-            >
+                >
                 <Button
                     type="submit"
                     className="w-full"
-                >
+                    >
                     {promiseStatus(promises.updateUser)}
                     <Image
                         src="/send.svg"
                         width={20}
                         height={20}
                         alt=""
-                    />
+                        />
                     Apply changes
                 </Button>
             </Tooltip>

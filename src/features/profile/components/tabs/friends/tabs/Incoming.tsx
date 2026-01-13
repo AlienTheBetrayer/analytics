@@ -1,20 +1,23 @@
 import { Spinner } from "@/features/spinner/components/Spinner";
-import { ProfileDisplay } from "../../ProfileDisplay";
 import { useAppStore } from "@/zustand/store";
 import { useMemo } from "react";
 import { Profile, User } from "@/types/tables/account";
 import Image from "next/image";
+import { ProfileDisplay } from "../../../ProfileDisplay";
+import { Tooltip } from "@/features/tooltip/components/Tooltip";
+import { Button } from "@/features/ui/button/components/Button";
 
 type Props = {
     data: { profile: Profile; user: User };
 };
 
-export const IncomingList = ({ data }: Props) => {
+export const Incoming = ({ data }: Props) => {
     // zustand
     const promises = useAppStore((state) => state.promises);
     const profiles = useAppStore((state) => state.profiles);
     const users = useAppStore((state) => state.users);
     const friendRequests = useAppStore((state) => state.friendRequests);
+    const getUsers = useAppStore((state) => state.getUsers);
 
     // ui
     const incomingRequests = useMemo(() => {
@@ -26,20 +29,43 @@ export const IncomingList = ({ data }: Props) => {
     }, [friendRequests, data]);
 
     return (
-        <li className="flex flex-col gap-1 min-h-24">
+        <div className="flex flex-col gap-2 grow">
             {/* incoming requests topline */}
             <span className="flex gap-2 items-center whitespace-nowrap">
-                <Image
-                    alt=""
-                    width={16}
-                    height={16}
-                    src="/plus.svg"
-                />
+                <Tooltip
+                    text="Re-load friend requests"
+                    direction="top"
+                >
+                    <Button
+                        className="p-0!"
+                        onClick={() => {
+                            getUsers({
+                                select: ["friend_requests"],
+                                id: [data.user.id],
+                                promiseKey: "friendsReload",
+                                caching: false,
+                            });
+                        }}
+                    >
+                        {promises.friendsReload === "pending" ? (
+                            <Spinner />
+                        ) : (
+                            <Image
+                                src="/reload.svg"
+                                width={14}
+                                height={14}
+                                alt="refresh"
+                            />
+                        )}
+                    </Button>
+                </Tooltip>
+
+                <hr className='w-px! h-1/2 bg-background-a-10'/>
 
                 <b>Incoming requests</b>
 
                 <small className="ml-auto text-ellipsis-left">
-                    (your incoming requests)
+                    (you received these)
                 </small>
             </span>
 
@@ -71,7 +97,8 @@ export const IncomingList = ({ data }: Props) => {
                     ))}
                 </ul>
             )}
-            <hr className="mt-auto!" />
-        </li>
+
+            <hr className="mt-auto" />
+        </div>
     );
 };

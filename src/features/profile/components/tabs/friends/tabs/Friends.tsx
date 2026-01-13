@@ -1,23 +1,27 @@
 import { Spinner } from "@/features/spinner/components/Spinner";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
-import { ProfileDisplay } from "../../ProfileDisplay";
+import { ProfileDisplay } from "../../../ProfileDisplay";
 import Image from "next/image";
 import { useMemo } from "react";
 import { useAppStore } from "@/zustand/store";
 import { Profile, User } from "@/types/tables/account";
+import { MessageBox } from "@/features/messagebox/components/MessageBox";
+import { usePopup } from "@/features/popup/hooks/usePopup";
+import { promiseStatus } from "@/utils/other/status";
 
 type Props = {
     data: { profile: Profile; user: User };
 };
 
-export const FriendList = ({ data }: Props) => {
+export const Friends = ({ data }: Props) => {
     // zustand
     const friends = useAppStore((state) => state.friends);
-    const promises = useAppStore((state) => state.promises);
     const profiles = useAppStore((state) => state.profiles);
     const users = useAppStore((state) => state.users);
+    const promises = useAppStore((state) => state.promises);
     const getUsers = useAppStore((state) => state.getUsers);
+    const modifyFriendship = useAppStore((state) => state.modifyFriendship);
 
     // ui states
     const availableFriends = useMemo(() => {
@@ -28,19 +32,26 @@ export const FriendList = ({ data }: Props) => {
         return [...friends[data.user.id]];
     }, [friends, data]);
 
+    const unfriendMessageBox = usePopup(({ hide }) => (
+        <MessageBox
+            description="You are about to unfriend everyone!"
+            onInteract={(res) => {
+                hide();
+                if (res === "yes") {
+                    modifyFriendship({
+                        from_id: data.user.id,
+                        type: "unfriend-all",
+                        promiseKey: "unfriendAll",
+                    });
+                }
+            }}
+        />
+    ));
+
     return (
-        <li className="flex flex-col gap-1 min-h-24">
+        <div className="flex flex-col gap-2 grow">
             {/* friends topline */}
             <span className="flex  gap-2 items-center whitespace-nowrap">
-                <Image
-                    alt=""
-                    width={16}
-                    height={16}
-                    src="/friends.svg"
-                />
-
-                <b>Friend list</b>
-
                 <Tooltip
                     text="Re-load friends"
                     direction="top"
@@ -49,7 +60,7 @@ export const FriendList = ({ data }: Props) => {
                         className="p-0!"
                         onClick={() => {
                             getUsers({
-                                select: ["friends", "friend_requests"],
+                                select: ["friends"],
                                 id: [data.user.id],
                                 promiseKey: "friendsReload",
                                 caching: false,
@@ -61,13 +72,18 @@ export const FriendList = ({ data }: Props) => {
                         ) : (
                             <Image
                                 src="/reload.svg"
-                                width={12}
-                                height={12}
+                                width={14}
+                                height={14}
                                 alt="refresh"
                             />
                         )}
                     </Button>
                 </Tooltip>
+
+                <hr className="w-px! h-1/2 bg-background-a-10" />
+
+                <b>Your friends</b>
+
                 <small className="ml-auto text-ellipsis-left">
                     (all your friends are here)
                 </small>
@@ -85,7 +101,7 @@ export const FriendList = ({ data }: Props) => {
                     className="flex flex-col gap-2 overflow-y-auto max-h-128 scheme-dark"
                     style={{ scrollbarWidth: "thin" }}
                 >
-                    {availableFriends.map((id) => (
+                    {[...availableFriends].map((id) => (
                         <li key={id}>
                             {!profiles?.[id] ? (
                                 <Spinner />
@@ -101,7 +117,22 @@ export const FriendList = ({ data }: Props) => {
                     ))}
                 </ul>
             )}
-            <hr/>
-        </li>
+
+            <hr className="mt-auto" />
+            <Button
+                onClick={() => {
+                    unfriendMessageBox.show();
+                }}
+            >
+                {promiseStatus(promises.unfriendAll)}
+                <Image
+                    width={16}
+                    height={16}
+                    alt=""
+                    src="/delete.svg"
+                />
+                Unfriend everyone
+            </Button>
+        </div>
     );
 };

@@ -69,31 +69,30 @@ export const Sessions = ({
                 currentSessions={currentSessions}
             />
 
-            <div className="flex flex-col gap-2 mt-auto">
-                <hr />
-                <Tooltip
-                    text="Keep only this session logged in"
-                    direction="bottom"
+            <hr className="mt-auto -mb-2" />
+
+            <Tooltip
+                text="Keep only this session logged in"
+                direction="bottom"
+                className="w-full"
+                disabledPointer
+            >
+                <Button
                     className="w-full"
-                    disabledPointer
+                    onClick={() => {
+                        terminateMessageBox.show();
+                    }}
                 >
-                    <Button
-                        className="w-full"
-                        onClick={() => {
-                            terminateMessageBox.show();
-                        }}
-                    >
-                        {promiseStatus(promises.terminateSessions)}
-                        <Image
-                            src="/auth.svg"
-                            width={16}
-                            height={16}
-                            alt=""
-                        />
-                        Terminate other sessions
-                    </Button>
-                </Tooltip>
-            </div>
+                    {promiseStatus(promises.terminateSessions)}
+                    <Image
+                        src="/auth.svg"
+                        width={16}
+                        height={16}
+                        alt=""
+                    />
+                    Terminate other sessions
+                </Button>
+            </Tooltip>
         </div>
     );
 };
