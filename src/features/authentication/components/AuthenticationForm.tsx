@@ -71,7 +71,7 @@ export const AuthenticationForm = ({
                     <div className="rounded-full bg-blue-1 w-1.5 h-1.5" />
                 </Tooltip>
 
-                <span className="text-foreground-5!">{title}</span>
+                <span>{title}</span>
 
                 <Tooltip
                     text="Come back home"

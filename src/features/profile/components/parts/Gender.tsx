@@ -24,9 +24,7 @@ export const Gender = ({ data }: Props) => {
                                     alt=""
                                     src="/female.svg"
                                 />
-                                <span className="text-foreground-5!">
-                                    Female
-                                </span>
+                                <span>Female</span>
                             </div>
                         </div>
                     ),
@@ -44,7 +42,7 @@ export const Gender = ({ data }: Props) => {
                                     alt=""
                                     src="/male.svg"
                                 />
-                                <span className="text-foreground-5!">Male</span>
+                                <span>Male</span>
                             </div>
                         </div>
                     ),
@@ -62,9 +60,7 @@ export const Gender = ({ data }: Props) => {
                                     alt=""
                                     src="/cube.svg"
                                 />
-                                <span className="text-foreground-5!">
-                                    Other
-                                </span>
+                                <span>Other</span>
                             </div>
                         </div>
                     ),
@@ -83,9 +79,7 @@ export const Gender = ({ data }: Props) => {
                                     alt=""
                                     src="/menu.svg"
                                 />
-                                <span className="text-foreground-5!">
-                                    Unspecified
-                                </span>
+                                <span>Unspecified</span>
                             </div>
                         </div>
                     ),

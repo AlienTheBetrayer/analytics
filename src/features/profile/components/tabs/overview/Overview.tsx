@@ -55,9 +55,7 @@ export const Overview = ({ data }: Props) => {
                 <hr className="w-1/12!" />
 
                 <div className="flex flex-col gap-2 items-center">
-                    <span className="text-foreground-5!">
-                        {data.profile.title}
-                    </span>
+                    <span>{data.profile.title}</span>
 
                     <ProfileImage
                         profile={data.profile}

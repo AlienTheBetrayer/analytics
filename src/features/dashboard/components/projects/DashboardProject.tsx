@@ -28,10 +28,12 @@ export const DashboardProject = ({ id }: Props) => {
     };
 
     const pageViewEvents = useMemo(() => {
-        return events.selectedProjectId?.reduce(
-            (acc, val) => (val.type === "page_view" ? acc + 1 : acc),
-            0
-        ) ?? 0;
+        return (
+            events.selectedProjectId?.reduce(
+                (acc, val) => (val.type === "page_view" ? acc + 1 : acc),
+                0
+            ) ?? 0
+        );
     }, [events.selectedProjectId]);
 
     if (!data.project) {
@@ -46,7 +48,8 @@ export const DashboardProject = ({ id }: Props) => {
                 direction="top"
             >
                 <Button
-                    className={`relative w-full px-4! py-2! sm:h-16! project-button justify-between! items-center duration-300! ${data.project.id === selectedProjectId ? "border-blue-1!" : ""}`}
+                    className={`relative rounded-4xl! w-full px-4! py-2! sm:h-16! project-button justify-between! items-center duration-300! 
+                        ${data.project.id === selectedProjectId ? "border-blue-1!" : ""}`}
                     onClick={() => {
                         selectProject(data.project?.id ?? undefined);
                     }}
@@ -58,14 +61,13 @@ export const DashboardProject = ({ id }: Props) => {
                             alt=""
                             width={16}
                             height={16}
-                            className="invert-60!"
                         />
                         <span className="text-6! text-foreground-4!">
                             {data.project.name}
                         </span>
                     </div>
 
-                    <div className="flex gap-1 items-center">
+                    <div className="grid grid-flow-col place-items-center gap-2">
                         <span className="flex gap-1 items-center ">
                             <Image
                                 src="/plus.svg"
@@ -75,6 +77,8 @@ export const DashboardProject = ({ id }: Props) => {
                             />
                             {relativeTime(data.project.created_at)}
                         </span>
+
+                        <hr className="w-px! h-4/5!" />
 
                         <span className="flex gap-1 items-center">
                             <Image

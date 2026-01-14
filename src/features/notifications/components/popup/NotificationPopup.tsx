@@ -27,7 +27,7 @@ export const NotificationPopup = ({ notification, onInteract }: Props) => {
 
             <div className="box p-0! gap-0!">
                 <div className="text-center grid justify-items-stretch *:w-full gap-2 p-3!">
-                    <span className="text-foreground-5!">
+                    <span className='text-5!'>
                         {notification.title}
                     </span>
                     <span>{notification.description}</span>

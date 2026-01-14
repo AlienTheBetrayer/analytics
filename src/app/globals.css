@@ -62,6 +62,7 @@
     --font-7: 0.5rem;
 
     --brightness-b: 1.5;
+    --dotted: var(--background-5);
 
     --invert-1: 0.1;
     --invert-2: 0.2;
@@ -119,6 +120,7 @@
     --foreground-9: hsl(0, 0%, 70%);
 
     --brightness-b: 0.5;
+    --dotted: var(--background-10);
 
     --invert-1: 0.9;
     --invert-2: 0.8;
@@ -269,7 +271,7 @@ small {
 
 hr {
     border-width: 1px;
-    border-color: var(--background-a-7);
+    border-color: var(--background-a-9);
     width: 100%;
 }
 
@@ -296,7 +298,7 @@ button,
 a,
 label {
     font-size: var(--font-6);
-    color: var(--foreground-7);
+    color: var(--foreground-3);
 }
 
 ul,
@@ -307,7 +309,7 @@ li {
 }
 
 img {
-    filter: invert(var(--invert-5));
+    filter: invert(var(--invert-7));
     transition: 0.1s;
 }
 
@@ -315,7 +317,7 @@ img {
 .dotted {
     background-image: radial-gradient(
         circle,
-        var(--background-a-12) 1px,
+        var(--dotted) 1px,
         transparent 1px
     );
     background-size: 1rem 1rem;
@@ -354,7 +356,7 @@ img {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    border: 2px solid var(--background-a-4);
+    border: 2px solid var(--background-a-8);
     min-width: 2rem;
     min-height: 2rem;
     padding: 0.4rem;

@@ -1,10 +1,7 @@
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { NotificationPartial } from "@/types/zustand/local";
-import {
-    NotificationImages,
-    NotificationColors,
-} from "../parts/NotificationCompact";
+import { NotificationColors } from "../parts/NotificationCompact";
 import Image from "next/image";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 
@@ -17,15 +14,6 @@ export const Topline = ({ notification, onInteract }: Props) => {
     return (
         <div className="box p-0! relative flex flex-row! items-center justify-between border-b border-b-background-a-11">
             <div className="flex items-center gap-1 absolute left-1/2 top-1/2 -translate-1/2">
-                <small>
-                    <Image
-                        alt=""
-                        width={16}
-                        height={16}
-                        src={`${NotificationImages[notification.status]}`}
-                    />
-                </small>
-
                 <div
                     className="w-1 h-1 rounded-full"
                     style={{
