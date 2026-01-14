@@ -8,13 +8,13 @@ export const Toolbox = () => {
 
     return (
         <div
-            className={`hidden sm:flex items-center justify-center gap-2 min-h-8 min-w-8
-                        ml-auto z-2
+            className={`hidden md:flex items-center justify-center gap-2 min-h-8 min-w-8
+                        absolute right-0 z-2
                         bg-background-a-5 backdrop-blur-3xl rounded-full px-2
                         ${!visibleProfile ? "border-awaiting" : ""}`}
         >
-            <Authentication/>
-            <Theme/>
+            <Authentication />
+            <Theme />
         </div>
     );
 };

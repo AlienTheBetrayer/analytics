@@ -10,6 +10,7 @@ import { usePopup } from "@/features/popup/hooks/usePopup";
 import Image from "next/image";
 import { Role } from "../../parts/Role";
 import { ColorSwatches } from "../../parts/ColorSwatches";
+import { useAppStore } from "@/zustand/store";
 
 export type EditAvatarProps = {
     data: { profile: Profile; user: User };
@@ -33,6 +34,9 @@ export const Avatar = ({
     avatarFile,
     avatar,
 }: EditAvatarProps) => {
+    // zustand
+    const colors = useAppStore((state) => state.colors);
+
     // derived states
     const avatarImage = avatarFile[0]
         ? URL.createObjectURL(avatarFile[0])
@@ -168,25 +172,35 @@ export const Avatar = ({
                 )}
             </div>
 
-            <ColorSwatches data={data} />
-
             <hr className="mt-auto" />
             <Tooltip
-                direction="top"
-                element={<Colors data={data} />}
+                text="Modify your color palette"
                 className="w-full"
-                type="modal"
-                disabledPointer={false}
+                direction="top"
             >
-                <Button className="w-full!">
-                    <Image
-                        width={16}
-                        height={16}
-                        alt=""
-                        src="/cube.svg"
-                    />
-                    Color panel
-                </Button>
+                <Tooltip
+                    direction="top"
+                    element={<Colors data={data} />}
+                    className="w-full"
+                    type="modal"
+                    disabledPointer={false}
+                >
+                    <Button className="w-full! min-h-9!">
+                        {colors[data.user.id] ? (
+                            <ColorSwatches data={data} />
+                        ) : (
+                            <div className="flex gap-1 items-center">
+                                <Image
+                                    src="/cube.svg"
+                                    width={16}
+                                    height={16}
+                                    alt=""
+                                />
+                                Color panel
+                            </div>
+                        )}
+                    </Button>
+                </Tooltip>
             </Tooltip>
         </div>
     );

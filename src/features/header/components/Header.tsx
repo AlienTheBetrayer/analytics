@@ -21,11 +21,11 @@ export const Header = () => {
     return (
         <header
             ref={headerRef}
-            className="sticky mt-16 sm:mt-8 mb-16 rounded-full backdrop-blur-md 
-        p-1 flex w-full max-w-400 mx-auto items-center! z-3
-        duration-500 ease-in-out transition-all *:bg-background-a-2 *:border-2 *:border-background-3"
+            className="sticky mt-16 md:mt-8 mb-16 rounded-full backdrop-blur-md
+        p-1 flex w-full max-w-400 mx-auto items-center justify-center  z-3
+        duration-500 ease-in-out transition-all *:bg-background-a-2"
         >
-            <nav className="flex absolute left-1/2 -translate-1/2 top-1/2 items-center w-full sm:w-fit mx-auto  backdrop-blur-2xl rounded-full p-2">
+            <nav className="flex items-center w-full md:w-fit mx-auto! rounded-full p-2">
                 <ul className="flex justify-between gap-4 w-full h-full! *:flex *:items-center items-center px-4!">
                     <li>
                         <Tooltip text="Front page">
@@ -52,7 +52,7 @@ export const Header = () => {
                         </Tooltip>
                     </li>
 
-                    <li className="hidden! sm:block!">
+                    <li className="hidden! md:block!">
                         <Tooltip text="Analytics dashboard">
                             <LinkButton
                                 href="/dashboard"
@@ -70,7 +70,7 @@ export const Header = () => {
                         </Tooltip>
                     </li>
 
-                    <li className="flex sm:hidden">
+                    <li className="flex md:hidden">
                         <Button
                             styles="link"
                             className={`button-img ${!status ? "border-awaiting" : ""}`}

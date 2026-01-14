@@ -15,7 +15,7 @@ export const ColorSwatches = ({ data }: Props) => {
     }
 
     return (
-        <ul className="flex gap-0.75">
+        <ul className="flex">
             {colors[data.user.id].map((c) => (
                 <Tooltip
                     key={`${c.slot}${c.color}`}
@@ -29,10 +29,12 @@ export const ColorSwatches = ({ data }: Props) => {
                         </div>
                     }
                 >
-                    <li
-                        className="w-2 h-2 rounded-full transition-all duration-300 hover:scale-150"
-                        style={{ background: c.color }}
-                    />
+                    <li className="px-px!">
+                        <div
+                            className="w-2.25 h-2.25 rounded-full transition-all duration-300 hover:scale-150"
+                            style={{ background: c.color }}
+                        />
+                    </li>
                 </Tooltip>
             ))}
         </ul>

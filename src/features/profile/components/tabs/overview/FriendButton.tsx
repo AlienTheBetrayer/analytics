@@ -51,12 +51,15 @@ export const FriendButton = ({ data }: Props) => {
     ));
 
     return (
-        <div className="flex justify-center items-center w-full min-h-8">
-            {unfriendMessageBox.render()}
+        status &&
+        status.id !== data.user.id &&
+        (friends[data.user.id]?.has(status.id) ||
+            hasIncomingRequest ||
+            hasOutcomingRequest) && (
+            <div className="flex justify-center items-center w-full min-h-8">
+                {unfriendMessageBox.render()}
 
-            {status &&
-                status.id !== data.user.id &&
-                (friends[data.user.id]?.has(status.id) ? (
+                {friends[data.user.id]?.has(status.id) ? (
                     <Tooltip
                         direction="top"
                         text="Unfriend this user"
@@ -195,7 +198,8 @@ export const FriendButton = ({ data }: Props) => {
                             Send
                         </Button>
                     </Tooltip>
-                ))}
-        </div>
+                )}
+            </div>
+        )
     );
 };
