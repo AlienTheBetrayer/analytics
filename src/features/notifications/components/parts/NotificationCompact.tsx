@@ -79,11 +79,11 @@ export const NotificationCompact = ({
             </div>
 
             <LinkButton
-                className={`box rounded-4xl! backdrop-blur-none! grid! md:grid-cols-[30%_auto_1fr] gap-4! h-full text-center ${buttonClassName ?? ""}`}
+                className={`box rounded-4xl! backdrop-blur-none! grid! md:grid-cols-[30%_auto_1fr] gap-4! min-h-20! text-center ${buttonClassName ?? ""}`}
                 href={`/notification/${notification.id}`}
             >
                 <div className="h-full grid place-items-center gap-1">
-                    <span className="flex items-center gap-1 text-6! text-foreground-5!">
+                    <span className="flex items-center gap-1 text-6! text-foreground-5! truncate whitespace-nowrap">
                         <div
                             className="w-1 h-1 rounded-full"
                             style={{
@@ -107,7 +107,7 @@ export const NotificationCompact = ({
                 <hr className="w-3/4! mx-auto md:w-px! md:h-3/4" />
 
                 <div className="flex flex-col items-center">
-                    <span className="flex gap-1 items-center">
+                    <span className="flex gap-1 items-center truncate">
                         <Image
                             alt=""
                             width={16}

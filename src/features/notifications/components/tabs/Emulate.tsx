@@ -6,15 +6,15 @@ import Image from "next/image";
 import { useState } from "react";
 import { Topline } from "../toplines/emulate/Topline";
 import { useLocalStore } from "@/zustand/localStore";
-import { DashboardNotificationType } from "@/types/zustand/local";
+import { NotificationStatus, NotificationTab } from "@/types/zustand/local";
 
 export const Emulate = () => {
     // zustand
     const pushNotification = useLocalStore((state) => state.pushNotification);
 
     // react states
-    const [status, setStatus] = useState<string>("Information");
-    const [type, setType] = useState<string>("Account");
+    const [status, setStatus] = useState<NotificationStatus>("Information");
+    const [tab, setTab] = useState<NotificationTab>("Account");
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
 
@@ -27,8 +27,8 @@ export const Emulate = () => {
                 onSubmit={(e) => {
                     e.preventDefault();
                     pushNotification({
-                        status: status as DashboardNotificationType,
-                        type: type as "Account" | "Dashboard",
+                        status,
+                        tab,
                         description,
                         title,
                     });
@@ -39,16 +39,16 @@ export const Emulate = () => {
                     id="status"
                     items={["Information", "Warning", "Error"]}
                     value={status}
-                    onChange={(e) => setStatus(e)}
+                    onChange={(e) => setStatus(e as NotificationStatus)}
                 />
                 <hr className="mb-2" />
 
-                <label htmlFor="type">Type</label>
+                <label htmlFor="tab">Tab</label>
                 <Select
-                    id="type"
+                    id="tab"
                     items={["Account", "Dashboard"]}
-                    value={type}
-                    onChange={(e) => setType(e)}
+                    value={tab}
+                    onChange={(e) => setTab(e as NotificationTab)}
                 />
                 <hr className="mb-2" />
 

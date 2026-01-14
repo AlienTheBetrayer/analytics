@@ -24,7 +24,7 @@ export const Notifications = ({ type }: Props) => {
     return (
         <>
             <Topline type={type} />
-            <div className="box w-full max-w-400 mx-auto min-h-128">
+            <div className="box w-full max-w-400 mx-auto min-h-128 backdrop-blur-none! bg-background-1!">
                 <Select type={type} />
             </div>
         </>
