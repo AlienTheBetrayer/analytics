@@ -1,22 +1,26 @@
-import { AbsentNotifications } from "../../errors/AbsentNotifications";
-import { useLocalStore } from "@/zustand/localStore";
-import { NotificationCompact } from "../../parts/NotificationCompact";
 import { useState } from "react";
 import { Button } from "@/features/ui/button/components/Button";
 import Image from "next/image";
-import { useAccountList } from "@/features/notifications/hooks/useAccountList";
+import { useNotificationList } from "@/features/notifications/hooks/useNotificationList";
+import { useAppStore } from "@/zustand/store";
+import { AbsentNotifications } from "../errors/AbsentNotifications";
+import { NotificationCompact } from "../parts/NotificationCompact";
+import { NotificationTab } from "@/types/other/notifications";
 
-export const Display = () => {
+type Props = {
+    tab: NotificationTab;
+};
+
+export const TabDisplay = ({ tab }: Props) => {
     // zustand
-    const notifications = useLocalStore((state) => state.notifications);
-    const collapsedTabs = useLocalStore((state) => state.collapsedTabs);
+    const notifications = useAppStore((state) => state.notifications)[tab];
+    const expandedTab = useAppStore((state) => state.expandedTabs)[tab];
 
     // notification data
-    const data = notifications.account;
-    const { filtered } = useAccountList();
+    const { filtered } = useNotificationList(tab);
     const [pagination, setPagination] = useState<number>(0);
 
-    if (!Object.keys(data).length) {
+    if (!Object.keys(notifications).length) {
         return <AbsentNotifications />;
     }
 
@@ -26,7 +30,7 @@ export const Display = () => {
         <ul
             className="flex flex-col gap-2 transition-all duration-500 overflow-hidden"
             style={{
-                height: collapsedTabs.dashboard ? "auto" : "0px",
+                height: expandedTab ? "auto" : "0px",
                 interpolateSize: "allow-keywords",
             }}
         >

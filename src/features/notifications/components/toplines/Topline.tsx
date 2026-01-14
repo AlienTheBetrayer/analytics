@@ -1,31 +1,57 @@
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
-import { useLocalStore } from "@/zustand/localStore";
 import Image from "next/image";
 import { Filter } from "./Filter";
 import { Sort } from "./Sort";
 import { Search } from "./Search";
-import { useTopline } from "@/features/notifications/hooks/useTopline";
 import { dotColors } from "@/utils/other/dotColors";
 import { useMemo } from "react";
 import { TabSelection } from "@/utils/other/TabSelection";
+import { MessageBox } from "@/features/messagebox/components/MessageBox";
+import { usePopup } from "@/features/popup/hooks/usePopup";
+import { NotificationTab } from "@/types/other/notifications";
+import { useAppStore } from "@/zustand/store";
 
-export const Topline = () => {
+type Props = {
+    tab: NotificationTab;
+};
+
+export const Topline = ({ tab }: Props) => {
     // zustand
-    const dashboardFilter = useLocalStore((state) => state.dashboardFilter);
-    const collapsedTabs = useLocalStore((state) => state.collapsedTabs);
-    const notifications = useLocalStore((state) => state.notifications);
+    const filter = useAppStore((state) => state.filter)[tab];
+    const notifications = useAppStore((state) => state.notifications)[tab];
+    const isExpanded = useAppStore((state) => state.expandedTabs)[tab];
 
-    // zustand functions
-    const toggleCollapsed = useLocalStore((state) => state.toggleCollapsed);
+    // zusatnd functions
+    const toggleCollapsed = useAppStore((state) => state.toggleCollapsed);
+    const clearData = useAppStore((state) => state.clearData);
 
-    const hasNotification = !!Object.keys(notifications.dashboard).length;
+    // ui states
+    const hasNotification = !!Object.keys(notifications).length;
 
-    const { messageBox } = useTopline("Dashboard");
+    const messageBox = usePopup(({ hide }) => (
+        <MessageBox
+            description="Deleting will clear all the notifications that you had on this specific tab"
+            onInteract={(res) => {
+                hide();
+
+                if (res === "no") {
+                    return;
+                }
+
+                clearData({
+                    id: Object.values(notifications).map((n) => n.id),
+                    type: "notifications",
+                    tab,
+                });
+                clearData({ type: "filters", tab });
+            }}
+        />
+    ));
 
     const filterColor = useMemo(() => {
-        return dotColors(dashboardFilter.filtering);
-    }, [dashboardFilter]);
+        return dotColors(filter.filtering);
+    }, [filter]);
 
     return (
         <div
@@ -44,13 +70,13 @@ export const Topline = () => {
             </div>
 
             <Tooltip
-                text={`${!collapsedTabs.dashboard ? "Expand" : "Collapse"}`}
+                text={`${!isExpanded ? "Expand" : "Collapse"}`}
                 direction="top"
             >
                 <Button
                     className="aspect-square p-0!"
                     onClick={() => {
-                        toggleCollapsed({ tab: "Dashboard" });
+                        toggleCollapsed({ tab });
                     }}
                 >
                     <Image
@@ -61,7 +87,7 @@ export const Topline = () => {
                     />
 
                     <TabSelection
-                        condition={!collapsedTabs.dashboard}
+                        condition={!isExpanded}
                         color="var(--orange-1)"
                     />
                 </Button>
@@ -71,10 +97,10 @@ export const Topline = () => {
                 disabledPointer={false}
                 type="modal"
                 direction="bottom-right"
-                element={<Filter />}
+                element={<Filter tab={tab} />}
             >
                 <Tooltip
-                    text="Filter dashboard notifications"
+                    text="Filter notifications"
                     direction="top"
                 >
                     <Button className="aspect-square">
@@ -97,10 +123,10 @@ export const Topline = () => {
                 disabledPointer={false}
                 type="modal"
                 direction="bottom-right"
-                element={<Sort />}
+                element={<Sort tab={tab} />}
             >
                 <Tooltip
-                    text="Sort dashboard notifications"
+                    text="Sort notifications"
                     direction="top"
                 >
                     <Button className="aspect-square">
@@ -112,15 +138,14 @@ export const Topline = () => {
                             className="duration-500! ease-out!"
                             style={{
                                 transform:
-                                    dashboardFilter?.sorting?.direction ===
-                                    "ascendant"
+                                    filter.sorting.direction === "ascendant"
                                         ? `rotate(180deg)`
                                         : `rotate(0deg)`,
                             }}
                         />
 
                         <TabSelection
-                            condition={!!dashboardFilter.sorting}
+                            condition={!!filter.sorting}
                             color="var(--blue-1)"
                         />
                     </Button>
@@ -128,7 +153,7 @@ export const Topline = () => {
             </Tooltip>
 
             <hr className="w-px! h-1/2! bg-background-a-11" />
-            <Search />
+            <Search tab={tab} />
 
             <Tooltip
                 className="ml-auto"

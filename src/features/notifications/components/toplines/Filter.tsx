@@ -1,17 +1,30 @@
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
-import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
-import { useLocalStore } from "@/zustand/localStore";
 import Image from "next/image";
 import { useState } from "react";
-import { FilterSelector } from "../../FilterSelector";
+import { FilterSelector } from "./FilterSelector";
+import { TabSelection } from "@/utils/other/TabSelection";
+import { NotificationTab } from "@/types/other/notifications";
+import { useAppStore } from "@/zustand/store";
 
 export type FilterTabType = "Status" | "Type" | "Title";
 
-export const Filter = () => {
+const FilterImage = {
+    Status: "/auth.svg",
+    Type: "/cubes.svg",
+    Title: "/cube.svg",
+};
+
+type Props = {
+    tab: NotificationTab;
+};
+
+export const Filter = ({ tab }: Props) => {
     // zustand
-    const accountFilter = useLocalStore((state) => state.accountFilter);
-    const setFilter = useLocalStore((state) => state.setFilter);
+    const filter = useAppStore((state) => state.filter)[tab];
+    const setNotificationFilter = useAppStore(
+        (state) => state.setNotificationFilter
+    );
 
     // react states
     const [filterTab, setFilterTab] = useState<FilterTabType>("Status");
@@ -28,47 +41,55 @@ export const Filter = () => {
                 Filtering
             </span>
 
-            <div className="flex gap-1 items-center">
+            <div className="grid grid-flow-col gap-1">
                 {["Status", "Type", "Title"].map((type) => (
-                    <Checkbox
+                    <Button
                         key={type}
-                        onToggle={() => {
+                        onClick={() => {
                             setFilterTab(type as "Status" | "Type" | "Title");
                         }}
-                        value={filterTab === type}
                     >
+                        <Image
+                            alt="filter"
+                            src={FilterImage[type as keyof typeof FilterImage]}
+                            width={16}
+                            height={16}
+                        />
                         <span>{type}</span>
-                    </Checkbox>
+                        <TabSelection
+                            condition={type === filterTab}
+                            color="var(--blue-1)"
+                        />
+                    </Button>
                 ))}
             </div>
 
             <hr />
             <FilterSelector
                 tab={filterTab}
-                notificationTab="Account"
+                notificationTab={tab}
             />
 
             <hr />
             <div className="grid grid-cols-2 gap-1">
                 <Tooltip
-                    text="Show all events"
+                    text="Show all notifications"
                     className="w-full"
                 >
                     <Button
                         className="w-full"
                         onClick={() => {
-                            const keys =
-                                accountFilter.filtering &&
-                                Object.keys(accountFilter.filtering);
+                            const keys = Object.keys(filter.filtering ?? {});
 
-                            if (!keys) {
+                            if (!keys.length) {
                                 return;
                             }
 
-                            setFilter({
+                            setNotificationFilter({
                                 column: keys,
                                 flag: true,
-                                type: "account-filter",
+                                tab,
+                                type: "filter",
                             });
                         }}
                     >
@@ -85,24 +106,23 @@ export const Filter = () => {
                 </Tooltip>
 
                 <Tooltip
-                    text="Hide all events"
+                    text="Hide all notifications"
                     className="w-full"
                 >
                     <Button
                         className="w-full"
                         onClick={() => {
-                            const keys =
-                                accountFilter.filtering &&
-                                Object.keys(accountFilter.filtering);
+                            const keys = Object.keys(filter.filtering ?? {});
 
-                            if (!keys) {
+                            if (!keys.length) {
                                 return;
                             }
 
-                            setFilter({
+                            setNotificationFilter({
                                 column: keys,
                                 flag: false,
-                                type: "account-filter",
+                                tab,
+                                type: "filter",
                             });
                         }}
                     >

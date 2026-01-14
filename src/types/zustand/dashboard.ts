@@ -1,19 +1,8 @@
 import { Event } from "../tables/project";
 
-export type ProjectColumns =
-    | "Name"
-    | "Created Date"
-    | "Updated Date"
-    | (string & {});
-export type EventColumns =
-    | "Type"
-    | "Description"
-    | "Created Date"
-    | (string & {});
-
 export type ProjectFilter = {
     projectSorting?: {
-        column?: ProjectColumns;
+        column?: string;
         direction?: "ascendant" | "descendant";
     };
     projectSearch?: string;
@@ -23,7 +12,7 @@ export type EventFilter = Record<
     string,
     {
         eventsSorting?: {
-            column?: EventColumns;
+            column?: string;
             direction?: "ascendant" | "descendant";
         };
         eventsSearch?: string;
@@ -42,7 +31,7 @@ export type DashboardStore = {
      * @param events names of events to change visibility
      * @param flag a visibility flag
      */
-    setFilter: (options: {
+    setDashboardFilter: (options: {
         project_id: string;
         type:
             | "project-sort"
@@ -51,7 +40,7 @@ export type DashboardStore = {
             | "event-search"
             | "event-filter";
         search?: string;
-        column?: (EventColumns | ProjectColumns)[];
+        column?: string[];
         direction?: "ascendant" | "descendant";
         events?: Event[];
         flag?: boolean;

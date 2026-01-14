@@ -1,8 +1,4 @@
-import type {
-    DashboardStore,
-    EventColumns,
-    ProjectColumns,
-} from "@/types/zustand/dashboard";
+import type { DashboardStore } from "@/types/zustand/dashboard";
 import type { SliceFunction } from "@/types/zustand/utils/sliceFunction";
 
 export const DashboardSlice: SliceFunction<DashboardStore> = (set, get) => {
@@ -10,7 +6,7 @@ export const DashboardSlice: SliceFunction<DashboardStore> = (set, get) => {
         eventFilters: {},
         projectFilters: {},
 
-        setFilter: ({ project_id, ...options }) => {
+        setDashboardFilter: ({ project_id, ...options }) => {
             set((state) => {
                 const eventFilters = { ...state.eventFilters };
                 let projectFilters = { ...state.projectFilters };
@@ -39,7 +35,7 @@ export const DashboardSlice: SliceFunction<DashboardStore> = (set, get) => {
                                 eventsSorting: {
                                     ...(eventFilters[project_id]
                                         ?.eventsSorting ?? {}),
-                                    column: options.column[0] as EventColumns,
+                                    column: options.column[0],
                                 },
                             };
                         }
@@ -101,7 +97,7 @@ export const DashboardSlice: SliceFunction<DashboardStore> = (set, get) => {
                                 ...(projectFilters ?? {}),
                                 projectSorting: {
                                     ...(projectFilters?.projectSorting ?? {}),
-                                    column: options.column[0] as ProjectColumns,
+                                    column: options.column[0],
                                 },
                             };
                         }

@@ -1,4 +1,5 @@
 import { ResponseUsers } from "@/types/api/responses/users";
+import { AuthenticationRole } from "@/types/auth/authentication";
 import { APIResponseType } from "@/types/response";
 import type { UserStore } from "@/types/zustand/user";
 import type { SliceFunction } from "@/types/zustand/utils/sliceFunction";
@@ -252,7 +253,8 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
 
                     // users
                     if ("role" in options.data) {
-                        users[options.id].role = options.data.role ?? "user";
+                        users[options.id].role = (options.data.role ??
+                            "user") as AuthenticationRole;
                     }
 
                     // colors

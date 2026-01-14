@@ -7,7 +7,7 @@ import { Account } from "./tabs/account/Account";
 import { All } from "./tabs/All";
 import { Emulate } from "./tabs/Emulate";
 import { Preferences } from "./tabs/Preferences";
-import { useLocalStore } from "@/zustand/localStore";
+import { useAppStore } from "@/zustand/store";
 
 type Props = {
     type: NotificationRoute;
@@ -15,7 +15,7 @@ type Props = {
 
 export const Select = ({ type }: Props) => {
     // zustand
-    const clearData = useLocalStore((state) => state.clearData);
+    const clearData = useAppStore((state) => state.clearData);
 
     // url
     const { tab } = useParams<{ id?: string; tab?: string }>();

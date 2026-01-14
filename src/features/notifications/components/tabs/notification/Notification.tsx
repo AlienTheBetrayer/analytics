@@ -1,18 +1,18 @@
-import { useLocalStore } from "@/zustand/localStore";
 import { Topline } from "../../toplines/notification/Topline";
 import { Display } from "./Display";
 import { useParams } from "next/navigation";
+import { useAppStore } from "@/zustand/store";
 
 export const Notification = () => {
     // url
     const { id } = useParams<{ id?: string }>();
 
     // zustand
-    const notifications = useLocalStore((state) => state.notifications);
+    const notifications = useAppStore((state) => state.notifications);
 
     // fallback
     const data = id
-        ? notifications.account[id] || notifications.dashboard[id]
+        ? notifications.Account[id] || notifications.Dashboard[id]
         : undefined;
 
     return (

@@ -1,8 +1,8 @@
 import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
-import { NotificationTab } from "@/types/zustand/local";
-import { useLocalStore } from "@/zustand/localStore";
-import { FilterTabType } from "./toplines/account/Filter";
-import { useFilterSelector } from "../hooks/useFilterSelector";
+import { FilterTabType } from "./Filter";
+import { useFilterSelector } from "../../hooks/useFilterSelector";
+import { NotificationTab } from "@/types/other/notifications";
+import { useAppStore } from "@/zustand/store";
 
 type Props = {
     tab: FilterTabType;
@@ -11,12 +11,10 @@ type Props = {
 
 export const FilterSelector = ({ tab, notificationTab }: Props) => {
     // zustand
-    const setFilter = useLocalStore((state) => state.setFilter);
-    const filter = useLocalStore((state) =>
-        notificationTab === "Account"
-            ? state.accountFilter
-            : state.dashboardFilter
+    const setNotificationFilter = useAppStore(
+        (state) => state.setNotificationFilter
     );
+    const filter = useAppStore((state) => state.filter)[notificationTab];
 
     const { notificationCount, items } = useFilterSelector(
         tab,
@@ -34,11 +32,9 @@ export const FilterSelector = ({ tab, notificationTab }: Props) => {
                 <Checkbox
                     key={type}
                     onToggle={(flag) => {
-                        setFilter({
-                            type:
-                                notificationTab === "Account"
-                                    ? "account-filter"
-                                    : "dashboard-filter",
+                        setNotificationFilter({
+                            type: "filter",
+                            tab: notificationTab,
                             column: [type],
                             flag,
                         });

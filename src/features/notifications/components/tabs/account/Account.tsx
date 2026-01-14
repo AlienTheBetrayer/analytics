@@ -1,11 +1,11 @@
-import { Display } from "./Display";
-import { Topline } from "../../toplines/account/Topline";
+import { Topline } from "../../toplines/Topline";
 import Image from "next/image";
-import { useLocalStore } from "@/zustand/localStore";
+import { useAppStore } from "@/zustand/store";
+import { TabDisplay } from "../TabDisplay";
 
 export const Account = () => {
     // zustand
-    const notifications = useLocalStore((state) => state.notifications);
+    const notifications = useAppStore((state) => state.notifications).Account;
 
     return (
         <div className="flex flex-col gap-2">
@@ -18,17 +18,15 @@ export const Account = () => {
                 />
                 <span>Account</span>
                 <span className="absolute right-0 top-1/2 -translate-y-1/2">
-                    <small>
-                        ({Object.keys(notifications.account)?.length ?? 0})
-                    </small>
+                    <small>({Object.keys(notifications)?.length ?? 0})</small>
                 </span>
             </div>
 
             <hr />
-            <Topline />
+            <Topline tab="Account" />
 
             <hr />
-            <Display />
+            <TabDisplay tab="Account" />
         </div>
     );
 };

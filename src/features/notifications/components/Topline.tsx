@@ -3,8 +3,8 @@ import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { NotificationRoute } from "../types/notifications";
-import { useLocalStore } from "@/zustand/localStore";
 import { TabSelection } from "@/utils/other/TabSelection";
+import { useAppStore } from "@/zustand/store";
 
 type Props = {
     type: NotificationRoute;
@@ -12,10 +12,8 @@ type Props = {
 
 export const Topline = ({ type }: Props) => {
     // zustand
-    const unreadTabs = useLocalStore((state) => state.unreadTabs);
-    const lastNotificationId = useLocalStore(
-        (state) => state.lastNotificationId
-    );
+    const unreadTabs = useAppStore((state) => state.unreadTabs);
+    const lastNotificationId = useAppStore((state) => state.lastNotificationId);
 
     // url
     const { id, tab } = useParams<{ id?: string; tab?: string }>();
@@ -129,7 +127,7 @@ export const Topline = ({ type }: Props) => {
                         color="var(--blue-1)"
                     />
                     <TabSelection
-                        condition={unreadTabs.dashboard}
+                        condition={unreadTabs.Dashboard}
                         color="var(--orange-1)"
                     />
                 </LinkButton>
@@ -153,7 +151,7 @@ export const Topline = ({ type }: Props) => {
                         color="var(--blue-1)"
                     />
                     <TabSelection
-                        condition={unreadTabs.account}
+                        condition={unreadTabs.Account}
                         color="var(--orange-1)"
                     />
                 </LinkButton>
@@ -190,7 +188,7 @@ export const Topline = ({ type }: Props) => {
                         alt="preferences"
                         src="/settings.svg"
                     />
-                    
+
                     <TabSelection
                         condition={tab === "preferences"}
                         color="var(--blue-1)"

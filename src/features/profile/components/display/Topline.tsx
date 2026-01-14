@@ -6,7 +6,6 @@ import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import { RoleEditing } from "../modals/RoleEditing";
 import { useParams } from "next/navigation";
-import { useLocalStore } from "@/zustand/localStore";
 import { TabSelection } from "@/utils/other/TabSelection";
 
 type Props = {
@@ -17,7 +16,7 @@ export const Topline = ({ data }: Props) => {
     // zustand
     const status = useAppStore((state) => state.status);
     const friendRequests = useAppStore((state) => state.friendRequests);
-    const unreadTabs = useLocalStore((state) => state.unreadTabs);
+    const unreadTabs = useAppStore((state) => state.unreadTabs);
 
     // url
     const { tab } = useParams<{ tab?: string }>();

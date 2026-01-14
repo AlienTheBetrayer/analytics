@@ -1,13 +1,16 @@
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
-import { NotificationStatus, NotificationTab } from "@/types/zustand/local";
-import { useLocalStore } from "@/zustand/localStore";
+import {
+    NotificationStatus,
+    NotificationTab,
+} from "@/types/other/notifications";
+import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import { lorem } from "txtgen";
 
 export const Topline = () => {
     // zustand
-    const pushNotification = useLocalStore((state) => state.pushNotification);
+    const pushNotification = useAppStore((state) => state.pushNotification);
 
     return (
         <div className="box p-0! gap-1! flex-row! transition-all duration-300 h-10 min-h-10 items-center">
@@ -40,7 +43,7 @@ export const Topline = () => {
                             ] as NotificationTab,
                             description: lorem(3, 5),
                             title: lorem(1, 1),
-                            type: "EMULATED",
+                            type: "Emulated",
                         });
                     }}
                 >

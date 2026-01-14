@@ -1,6 +1,6 @@
+import { NotificationPartial } from "@/types/other/notifications";
 import { Topline } from "./Topline";
 import { motion } from "motion/react";
-import { NotificationPartial } from "@/types/zustand/local";
 
 type Props = {
     notification: NotificationPartial;
@@ -27,9 +27,7 @@ export const NotificationPopup = ({ notification, onInteract }: Props) => {
 
             <div className="box p-0! gap-0!">
                 <div className="text-center grid justify-items-stretch *:w-full gap-2 p-3!">
-                    <span className='text-5!'>
-                        {notification.title}
-                    </span>
+                    <span className="text-5!">{notification.title}</span>
                     <span>{notification.description}</span>
                 </div>
             </div>

@@ -1,8 +1,8 @@
-import { DashboardNotification } from "@/types/zustand/local";
+import { Notification } from "@/types/other/notifications";
 import Image from "next/image";
 
 type Props = {
-    data: DashboardNotification | undefined;
+    data: Notification | undefined;
 };
 
 export const Topline = ({ data }: Props) => {

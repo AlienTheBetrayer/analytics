@@ -1,30 +1,27 @@
-import { DashboardNotification } from "@/types/zustand/local";
-import { useLocalStore } from "@/zustand/localStore";
+import { Notification, NotificationTab } from "@/types/other/notifications";
+import { useAppStore } from "@/zustand/store";
 import { useMemo } from "react";
 
 /**
- * returns all the account notifications with filtering, searching and sorting
+ * returns all the dashboard notifications with filtering, searching and sorting
  */
-export const useAccountList = () => {
+export const useNotificationList = (tab: NotificationTab) => {
     // zustand state
-    const notifications = useLocalStore((state) => state.notifications);
-    const accountFilter = useLocalStore((state) => state.accountFilter);
-
-    // all events
-    const allNotifications = Object.values(notifications.account);
+    const notifications = useAppStore((state) => state.notifications)[tab];
+    const filter = useAppStore((state) => state.filter)[tab];
 
     // filter events
-    const search = accountFilter.search;
-    const filtering = accountFilter.filtering;
-    const sorting = accountFilter.sorting;
+    const search = filter.search;
+    const filtering = filter.filtering;
+    const sorting = filter.sorting;
 
     // filtering & memoization
     const filtered = useMemo(() => {
-        if (!allNotifications.length) {
+        let filtered: Notification[] = Object.values(notifications);
+
+        if(!filtered.length) {
             return;
         }
-
-        let filtered: DashboardNotification[] = allNotifications;
 
         // search filtering
         if (search) {
@@ -43,7 +40,6 @@ export const useAccountList = () => {
                     (e.type && filtering[e.type])
             );
         }
-
         // sorting
         const column = sorting?.column ?? "Sent Date";
         const direction = !sorting
@@ -91,7 +87,7 @@ export const useAccountList = () => {
         }
 
         return filtered;
-    }, [search, allNotifications, filtering, sorting]);
+    }, [search, filtering, notifications, sorting]);
 
     return {
         filtered,

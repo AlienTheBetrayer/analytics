@@ -1,13 +1,14 @@
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
-import { DashboardNotification } from "@/types/zustand/local";
+import { Notification } from "@/types/other/notifications";
 import { relativeTime } from "@/utils/other/relativeTime";
-import { useLocalStore } from "@/zustand/localStore";
+import { TabSelection } from "@/utils/other/TabSelection";
+import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 
 type Props = {
-    notification: DashboardNotification;
+    notification: Notification;
     buttonClassName?: string;
 };
 
@@ -28,12 +29,13 @@ export const NotificationCompact = ({
     buttonClassName,
 }: Props) => {
     // zustand
-    const clearData = useLocalStore((state) => state.clearData);
+    const clearData = useAppStore((state) => state.clearData);
 
     return (
         <div className="grid gap-1">
             <div
-                className={`box backdrop-blur-none! w-full max-w-400 justify-between! mx-auto p-0! gap-1! flex-row! transition-all duration-500 min-h-10 h-10 items-center`}
+                className={`box backdrop-blur-none! w-full max-w-400 justify-between! mx-auto p-0! gap-1! flex-row! transition-all duration-500
+                     min-h-10 h-10 items-center`}
             >
                 <div className="flex gap-1 items-center min-h-8 min-w-8 justify-center">
                     <small>
@@ -65,6 +67,7 @@ export const NotificationCompact = ({
                             clearData({
                                 id: [notification.id],
                                 type: "notifications",
+                                tab: notification.tab,
                             });
                         }}
                     >
@@ -83,13 +86,11 @@ export const NotificationCompact = ({
                 href={`/notification/${notification.id}`}
             >
                 <div className="h-full grid place-items-center gap-1">
-                    <span className="flex items-center gap-1 text-6! text-foreground-5! truncate whitespace-nowrap">
-                        <div
-                            className="w-1 h-1 rounded-full"
-                            style={{
-                                background:
-                                    NotificationColors[notification.status],
-                            }}
+                    <span className="flex items-center gap-1 text-6!">
+                        <TabSelection
+                            condition={true}
+                            color={NotificationColors[notification.status]}
+                            className="static!"
                         />
                         {notification.title}
                     </span>
@@ -97,8 +98,8 @@ export const NotificationCompact = ({
                     <small>
                         <Image
                             alt=""
-                            width={42}
-                            height={42}
+                            width={36}
+                            height={36}
                             src={`${NotificationImages[notification.status]}`}
                         />
                     </small>
@@ -107,7 +108,7 @@ export const NotificationCompact = ({
                 <hr className="w-3/4! mx-auto md:w-px! md:h-3/4" />
 
                 <div className="flex flex-col items-center">
-                    <span className="flex gap-1 items-center truncate">
+                    <span className="flex gap-1 items-center">
                         <Image
                             alt=""
                             width={16}

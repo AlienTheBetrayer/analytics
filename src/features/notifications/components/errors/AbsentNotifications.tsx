@@ -12,7 +12,7 @@ export const AbsentNotifications = () => {
                             width={20}
                             height={20}
                             alt=""
-                            src="/send.svg"
+                            src="/notification.svg"
                         />
                     </div>
 

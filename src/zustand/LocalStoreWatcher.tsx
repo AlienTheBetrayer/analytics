@@ -2,10 +2,10 @@
 import { useEffect, useState } from "react";
 import { useAppStore } from "./store";
 import { useLocalStore } from "./localStore";
-import { NotificationPartial } from "@/types/zustand/local";
 import { createPortal } from "react-dom";
 import { AnimatePresence } from "motion/react";
 import { NotificationPopup } from "@/features/notifications/components/popup/NotificationPopup";
+import { NotificationPartial } from "@/types/other/notifications";
 
 export const LocalStoreWatcher = () => {
     //  store
@@ -14,7 +14,7 @@ export const LocalStoreWatcher = () => {
     const status = useAppStore((state) => state.status);
 
     // localstore
-    const pushNotification = useLocalStore((state) => state.pushNotification);
+    const pushNotification = useAppStore((state) => state.pushNotification);
     const preferences = useLocalStore((state) => state.preferences);
     const theme = useLocalStore((state) => state.theme);
 

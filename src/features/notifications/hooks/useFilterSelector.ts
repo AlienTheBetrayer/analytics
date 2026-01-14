@@ -1,18 +1,15 @@
-import { NotificationTab, NotificationType } from "@/types/zustand/local";
-import { useLocalStore } from "@/zustand/localStore";
 import { useMemo } from "react";
-import { FilterTabType } from "../components/toplines/account/Filter";
+import { FilterTabType } from "../components/toplines/Filter";
+import { NotificationTab, NotificationType } from "@/types/other/notifications";
+import { useAppStore } from "@/zustand/store";
 
 export const useFilterSelector = (
     tab: FilterTabType,
     notificationTab: NotificationTab
 ) => {
-    const zustandNotifications = useLocalStore((state) => state.notifications);
-
-    const notifications =
-        notificationTab === "Account"
-            ? zustandNotifications.account
-            : zustandNotifications.dashboard;
+    const notifications = useAppStore((state) => state.notifications)[
+        notificationTab
+    ];
 
     // ui states
     const uniqueTypes = useMemo(() => {

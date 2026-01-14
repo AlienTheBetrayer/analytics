@@ -5,12 +5,15 @@ import { Select } from "@/features/ui/select/components/Select";
 import Image from "next/image";
 import { useState } from "react";
 import { Topline } from "../toplines/emulate/Topline";
-import { useLocalStore } from "@/zustand/localStore";
-import { NotificationStatus, NotificationTab } from "@/types/zustand/local";
+import { useAppStore } from "@/zustand/store";
+import {
+    NotificationStatus,
+    NotificationTab,
+} from "@/types/other/notifications";
 
 export const Emulate = () => {
     // zustand
-    const pushNotification = useLocalStore((state) => state.pushNotification);
+    const pushNotification = useAppStore((state) => state.pushNotification);
 
     // react states
     const [status, setStatus] = useState<NotificationStatus>("Information");

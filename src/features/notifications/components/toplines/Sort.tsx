@@ -1,14 +1,19 @@
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { Select } from "@/features/ui/select/components/Select";
-import { FilterColumn } from "@/types/zustand/local";
-import { useLocalStore } from "@/zustand/localStore";
+import { NotificationTab } from "@/types/other/notifications";
+import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 
-export const Sort = () => {
-    // zustand-state
-    const dashboardFilter = useLocalStore((state) => state.dashboardFilter);
-    const setFilter = useLocalStore((state) => state.setFilter);
+type Props = {
+    tab: NotificationTab;
+};
+
+export const Sort = ({ tab }: Props) => {
+    const filter = useAppStore((state) => state.filter)[tab];
+    const setNotificationFilter = useAppStore(
+        (state) => state.setNotificationFilter
+    );
 
     return (
         <div className="box p-3! min-w-81">
@@ -31,11 +36,12 @@ export const Sort = () => {
                 >
                     <Select
                         items={["Title", "Description", "Status", "Sent Date"]}
-                        value={dashboardFilter.sorting?.column ?? "Status"}
+                        value={filter.sorting?.column ?? "Status"}
                         onChange={(item) => {
-                            setFilter({
-                                type: "dashboard-sort",
-                                column: [item as FilterColumn],
+                            setNotificationFilter({
+                                type: "sort",
+                                tab,
+                                column: [item],
                             });
                         }}
                     />
@@ -44,7 +50,7 @@ export const Sort = () => {
                 <Tooltip
                     direction="top"
                     text={
-                        dashboardFilter?.sorting?.direction === "ascendant"
+                        filter?.sorting?.direction === "ascendant"
                             ? "Ascendant"
                             : "Descendant"
                     }
@@ -52,11 +58,11 @@ export const Sort = () => {
                     <Button
                         className="aspect-square p-0!"
                         onClick={() => {
-                            setFilter({
-                                type: "dashboard-sort",
+                            setNotificationFilter({
+                                type: "sort",
+                                tab,
                                 direction:
-                                    dashboardFilter?.sorting?.direction ===
-                                    "ascendant"
+                                    filter?.sorting?.direction === "ascendant"
                                         ? "descendant"
                                         : "ascendant",
                             });
@@ -70,8 +76,7 @@ export const Sort = () => {
                             className="duration-500! ease-out!"
                             style={{
                                 transform:
-                                    dashboardFilter?.sorting?.direction ===
-                                    "ascendant"
+                                    filter?.sorting?.direction === "ascendant"
                                         ? `rotate(180deg)`
                                         : `rotate(0deg)`,
                             }}
@@ -89,8 +94,9 @@ export const Sort = () => {
                     <Button
                         className="w-full"
                         onClick={() => {
-                            setFilter({
-                                type: "dashboard-sort",
+                            setNotificationFilter({
+                                type: "sort",
+                                tab,
                                 column: ["Sent Date"],
                                 direction: "descendant",
                             });
