@@ -3,17 +3,34 @@ import "./BentoGrid.css";
 
 export const BentoGrid = () => {
     return (
-        <div className="bento-grid">
-            <ThreeContainer style={{ gridArea: "a" }}>Caching</ThreeContainer>
-            <ThreeContainer style={{ gridArea: "b" }}>Zustand</ThreeContainer>
-            <ThreeContainer style={{ gridArea: "c" }}>Fetching</ThreeContainer>
-            <ThreeContainer style={{ gridArea: "d" }}>API</ThreeContainer>
-            <ThreeContainer style={{ gridArea: "e" }}>Database</ThreeContainer>
-            <ThreeContainer style={{ gridArea: "f" }}>Permissions</ThreeContainer>
-            <ThreeContainer style={{ gridArea: "k" }}>Authentication</ThreeContainer>
-            <ThreeContainer style={{ gridArea: "l" }}>SDK (npm)</ThreeContainer>
-            <ThreeContainer style={{ gridArea: "o" }}>Analytics</ThreeContainer>
-
+        <div className="bento-grid **:text-white!">
+            <ThreeContainer style={{ gridArea: "a" }}>
+                <span>Caching</span>
+            </ThreeContainer>
+            <ThreeContainer style={{ gridArea: "b" }}>
+                <span>Zustand</span>
+            </ThreeContainer>
+            <ThreeContainer style={{ gridArea: "c" }}>
+                <span>Fetching</span>
+            </ThreeContainer>
+            <ThreeContainer style={{ gridArea: "d" }}>
+                <span>API</span>
+            </ThreeContainer>
+            <ThreeContainer style={{ gridArea: "e" }}>
+                <span>Database</span>
+            </ThreeContainer>
+            <ThreeContainer style={{ gridArea: "f" }}>
+                <span>Permissions</span>
+            </ThreeContainer>
+            <ThreeContainer style={{ gridArea: "k" }}>
+                <span>Authentication</span>
+            </ThreeContainer>
+            <ThreeContainer style={{ gridArea: "l" }}>
+                <span>SDK (npm)</span>
+            </ThreeContainer>
+            <ThreeContainer style={{ gridArea: "o" }}>
+                <span>Analytics</span>
+            </ThreeContainer>
         </div>
     );
 };
