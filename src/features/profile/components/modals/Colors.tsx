@@ -135,13 +135,28 @@ export const Colors = ({ data }: Props) => {
                         </Tooltip>
                     </li>
 
-                    <hr />
+                    <li className="w-full *:w-full">
+                        <Tooltip text="Clear the palette">
+                            <Button
+                                onClick={controller.clear}
+                                className="w-full"
+                            >
+                                <Image
+                                    width={16}
+                                    height={16}
+                                    src="/cross.svg"
+                                    alt=""
+                                />
+                                <u>Clear</u>
+                            </Button>
+                        </Tooltip>
+                    </li>
 
-                    <Tooltip
-                        className="w-full"
-                        text="Smoothness of colors"
-                    >
-                        <li className="flex flex-col gap-1">
+                    <li className="fw-full">
+                        <Tooltip
+                            className="w-full flex flex-col gap-1 "
+                            text="Smoothness of colors"
+                        >
                             <label
                                 htmlFor="hue-rotation"
                                 className="self-start"
@@ -162,8 +177,8 @@ export const Colors = ({ data }: Props) => {
                                     );
                                 }}
                             />
-                        </li>
-                    </Tooltip>
+                        </Tooltip>
+                    </li>
 
                     <hr />
 
@@ -202,23 +217,6 @@ export const Colors = ({ data }: Props) => {
                                 <b>
                                     <mark>Apply changes</mark>
                                 </b>
-                            </Button>
-                        </Tooltip>
-                    </li>
-
-                    <li className="w-full *:w-full">
-                        <Tooltip text="Clear the palette">
-                            <Button
-                                onClick={controller.clear}
-                                className="w-full"
-                            >
-                                <Image
-                                    width={16}
-                                    height={16}
-                                    src="/cross.svg"
-                                    alt=""
-                                />
-                                <u>Clear</u>
                             </Button>
                         </Tooltip>
                     </li>

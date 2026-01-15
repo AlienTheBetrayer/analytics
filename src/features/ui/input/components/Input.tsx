@@ -1,12 +1,14 @@
 import { AnimatePresence } from "motion/react";
-import { type ComponentPropsWithoutRef, useState } from "react";
+import { type ComponentPropsWithoutRef, useRef, useState } from "react";
 import { Button } from "../../button/components/Button";
 import { useInput } from "../hooks/useInput";
+import Image from "next/image";
 
 type Props = {
     onDelete?: () => void;
     onChange?: (value: string) => void;
     isEnabled?: boolean;
+    container: ComponentPropsWithoutRef<"div">;
 } & Omit<ComponentPropsWithoutRef<"input">, "onChange">;
 
 export const Input = ({
@@ -18,29 +20,32 @@ export const Input = ({
     required,
     minLength,
     maxLength,
+    container,
     ...rest
 }: Props) => {
     // value state logic
     const [data, setData] = useState<string>("");
     const inputValue = (value as string | undefined) ?? data;
 
-    // controller
-    const controller = useInput();
-
-    const { inputRef } = controller;
+    const { inputRef } = useInput();
+    const containerRef = useRef<HTMLDivElement | null>(null);
 
     return (
-        <div className="relative">
+        <div
+            ref={containerRef}
+            className={`relative w-full flex items-center justify-center`}
+            {...container}
+        >
             <input
                 disabled={!isEnabled}
                 type="text"
                 required={required}
-                className={`w-full h-full min-h-8 
-            outline-2 outline-background-5 p-2 rounded-xl focus:outline-blue-1 bg-background-a-3
-             hover:bg-background-a-7 transition-all duration-300 ease-out focus-visible:bg-background-a-7
-            ${required === true || minLength || maxLength ? "invalid:outline-red-1! valid:outline-blue-1!" : ""} 
-                 ${isEnabled !== true ? "pointer-events-none opacity-30" : ""} 
-            ${className ?? ""}`}
+                className={`placeholder:text-background-9 w-full h-full min-h-8 
+                    outline-1 outline-background-a-10 p-2.5 rounded-full focus:outline-blue-1 bg-background-a-3
+                    hover:bg-background-a-6 transition-all duration-500 focus-visible:bg-background-a-6
+                    ${required === true || minLength || maxLength ? "invalid:outline-red-1! valid:outline-blue-1!" : ""} 
+                    ${isEnabled !== true ? "pointer-events-none opacity-30" : ""} 
+                    ${className ?? ""}`}
                 value={inputValue}
                 ref={inputRef}
                 onChange={(e) => {
@@ -57,11 +62,12 @@ export const Input = ({
             <AnimatePresence>
                 {inputValue !== "" && (
                     <Button
-                        className="absolute right-2 top-1/2 -translate-y-1/2 min-w-6! min-h-6! w-6 h-6"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 min-w-6! min-h-6! w-6 h-6 p-0!"
                         initial={{ opacity: 0, y: 5 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: 5 }}
                         onClick={() => {
+                            inputRef.current?.focus();
                             if (!value) {
                                 setData("");
                             }
@@ -69,7 +75,12 @@ export const Input = ({
                             onChange?.("");
                         }}
                     >
-                        ✕
+                        <Image
+                            alt=""
+                            width={14}
+                            height={14}
+                            src="/delete.svg"
+                        />
                     </Button>
                 )}
             </AnimatePresence>

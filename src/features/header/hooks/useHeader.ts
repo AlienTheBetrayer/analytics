@@ -32,7 +32,7 @@ export const useHeader = () => {
                     headerRef.current.style.opacity = "0";
                     headerRef.current.style.transform = `scale(0.85)`;
                 } else if (diff < -8) {
-                    headerRef.current.style.top = "2rem";
+                    headerRef.current.style.top = "1rem";
                     headerRef.current.style.opacity = "1";
                     headerRef.current.style.transform = `scale(1)`;
                 }
@@ -61,15 +61,6 @@ export const useHeader = () => {
         return () => window.removeEventListener("keydown", handle);
     }, []);
 
-    // next.js fix
-    const [mounted, setMounted] = useState<boolean>(false);
-
-    useEffect(() => {
-        requestAnimationFrame(() => {
-            setMounted(true);
-        });
-    }, []);
-
     // user functions
     const showMenu = useCallback(() => {
         setIsMenuOpen(true);
@@ -84,6 +75,5 @@ export const useHeader = () => {
         hideMenu,
         isMenuOpen,
         headerRef,
-        mounted,
     };
 };

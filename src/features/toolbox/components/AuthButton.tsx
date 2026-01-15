@@ -8,7 +8,7 @@ import { useLocalStore } from "@/zustand/localStore";
 import { AuthElements } from "./AuthElements";
 import { LoadingToolbox } from "@/features/loading/components/LoadingToolbox";
 
-export const Authentication = () => {
+export const AuthButton = () => {
     // zustand's localstore
     const visibleProfile = useLocalStore((state) => state.visibleProfile);
 

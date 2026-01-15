@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { PromiseStatuses } from "@/hooks/usePromiseStatus";
 import { Event, Project } from "../tables/project";
-import { NotificationPartial } from "./local";
+import { NotificationPartial } from "../other/notifications";
 
 export type DataStore = {
     // cache / promises / other

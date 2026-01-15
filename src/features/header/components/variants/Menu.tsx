@@ -1,4 +1,4 @@
-import "./HeaderMenu.css";
+import "./Menu.css";
 import { motion } from "motion/react";
 import Image from "next/image";
 import { Button } from "@/features/ui/button/components/Button";
@@ -9,10 +9,10 @@ import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Theme } from "@/features/toolbox/components/Theme";
 
 type Props = {
-    onInteract: () => void;
+    hideMenu: () => void;
 };
 
-export const HeaderMenu = ({ onInteract }: Props) => {
+export const Menu = ({ hideMenu }: Props) => {
     // ui states
     const visibleProfile = useLocalStore((state) => state.visibleProfile);
 
@@ -23,7 +23,7 @@ export const HeaderMenu = ({ onInteract }: Props) => {
             exit={{ opacity: 0, pointerEvents: "none" }}
             transition={{ duration: 0.5 }}
             className="fixed z-100 inset-0 bg-background-a-1 backdrop-blur-md md:hidden w-full h-full overflow-hidden"
-            onClick={onInteract}
+            onClick={hideMenu}
         >
             <ul className="w-full h-full flex flex-col justify-between p-8! header-ul">
                 <div className="flex flex-col gap-4">
