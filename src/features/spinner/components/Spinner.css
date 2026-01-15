@@ -1,4 +1,4 @@
-@keyframes loading {
+@keyframes loadingSpinner {
 	0% {
 		transform: rotate(0deg);
 	}
@@ -8,6 +8,6 @@
 }
 
 .loading-spinner {
-	animation: 0.4s loading infinite linear;
+	animation: 0.4s loadingSpinner infinite linear;
 	filter: invert(0.5) grayscale(1);
 }

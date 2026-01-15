@@ -10,7 +10,7 @@ export const Filtering = () => {
     const selectedProjectId = useAppStore((state) => state.selectedProjectId);
     const events = useAppStore((state) => state.events);
     const eventFilters = useAppStore((state) => state.eventFilters);
-    const setFilter = useAppStore((state) => state.setFilter);
+    const setFilter = useAppStore((state) => state.setDashboardFilter);
 
     const eventsCount = useMemo(() => {
         if (!selectedProjectId) {

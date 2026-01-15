@@ -3,10 +3,10 @@
 import { ProfileImage } from "@/features/profile/components/ProfileImage";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
-import { Spinner } from "../../spinner/components/Spinner";
 import { Button } from "@/features/ui/button/components/Button";
 import { useLocalStore } from "@/zustand/localStore";
 import { AuthElements } from "./AuthElements";
+import { LoadingToolbox } from "@/features/loading/components/LoadingToolbox";
 
 export const Authentication = () => {
     // zustand's localstore
@@ -28,26 +28,28 @@ export const Authentication = () => {
                                   }
                                 : {}
                         }
-                        className="gap-2! p-0.5!"
+                        className="gap-2! p-0!"
                     >
                         <ProfileImage
                             profile={visibleProfile}
                             width={16}
                             height={16}
-                            className="w-8 aspect-square"
+                            className="w-9 aspect-square"
                         />
                     </LinkButton>
                 </Tooltip>
             ) : (
-                <Tooltip
-                    type="modal"
-                    direction="left"
-                    disabledPointer={false}
-                    element={<AuthElements />}
-                >
-                    <Button className="p-0!">
-                        <Spinner />
-                    </Button>
+                <Tooltip text="Sign up / Log in">
+                    <Tooltip
+                        type="modal"
+                        direction="left"
+                        disabledPointer={false}
+                        element={<AuthElements />}
+                    >
+                        <Button className="p-0!">
+                            <LoadingToolbox />
+                        </Button>
+                    </Tooltip>
                 </Tooltip>
             )}
         </nav>

@@ -1,7 +1,6 @@
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { Select } from "@/features/ui/select/components/Select";
-import { ProjectColumns } from "@/types/zustand/dashboard";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 
@@ -9,7 +8,7 @@ export const Sorting = () => {
     // zustand-state
     const selectedProjectId = useAppStore((state) => state.selectedProjectId);
     const projectFilters = useAppStore((state) => state.projectFilters);
-    const setFilter = useAppStore((state) => state.setFilter);
+    const setFilter = useAppStore((state) => state.setDashboardFilter);
 
     if (!selectedProjectId) {
         return null;
@@ -44,7 +43,7 @@ export const Sorting = () => {
                             setFilter({
                                 project_id: selectedProjectId,
                                 type: "project-sort",
-                                column: [item as ProjectColumns],
+                                column: [item],
                             });
                         }}
                     />

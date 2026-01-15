@@ -8,7 +8,7 @@ export const Search = () => {
     // zustand
     const projectFilters = useAppStore((state) => state.projectFilters);
     const selectedProjectId = useAppStore((state) => state.selectedProjectId);
-    const setFilter = useAppStore((state) => state.setFilter);
+    const setFilter = useAppStore((state) => state.setDashboardFilter);
 
     // input debouncing
     const [searchValue, setSearchValue] = useState<string>(

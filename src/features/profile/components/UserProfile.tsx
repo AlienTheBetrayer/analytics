@@ -8,6 +8,7 @@ import { Overview } from "./tabs/overview/Overview";
 import { WrongUser } from "./WrongUser";
 import { Content } from "./display/Content";
 import { Topline } from "./display/Topline";
+import { LoadingProfile } from "@/features/loading/components/LoadingProfile";
 
 export const UserProfile = () => {
     // url
@@ -19,13 +20,13 @@ export const UserProfile = () => {
     const status = useAppStore((state) => state.status);
     const users = useAppStore((state) => state.users);
     const profiles = useAppStore((state) => state.profiles);
+    const promises = useAppStore((state) => state.promises);
 
     // zustand functions
     const getUsers = useAppStore((state) => state.getUsers);
 
-    // user id to fetch data from
+    // user data
     const retrievedUsername = name ?? status?.username;
-
     const [error, setError] = useState<"no_user" | "no_profile" | undefined>();
 
     // fetch if haven't cached
@@ -45,6 +46,30 @@ export const UserProfile = () => {
         });
     }, [retrievedUsername, getUsers]);
 
+    const user = Object.values(users).find(
+        (u) => u.username === retrievedUsername
+    );
+
+    if (error === "no_user" || error === "no_profile") {
+        return (
+            <div
+                className={`box max-w-400 mt-2 w-full m-auto p-0! min-h-120 rounded-3xl! overflow-hidden`}
+            >
+                <WrongUser />
+            </div>
+        );
+    }
+
+    if (!user || promises.getUsers === "pending") {
+        return (
+            <div
+                className={`box max-w-400 mt-2 w-full m-auto p-0! min-h-120 rounded-3xl! overflow-hidden`}
+            >
+                <LoadingProfile />
+            </div>
+        );
+    }
+
     // viewing current profile but not logged in
     if (!retrievedUsername) {
         return (
@@ -52,25 +77,6 @@ export const UserProfile = () => {
                 className={`box max-w-400 mt-2 w-full m-auto p-0! min-h-120 rounded-3xl! overflow-hidden`}
             >
                 <AuthRequired />
-            </div>
-        );
-    }
-
-    const user = Object.values(users).find(
-        (u) => u.username === retrievedUsername
-    );
-
-    if (
-        !user ||
-        !profiles[user.id] ||
-        error === "no_user" ||
-        error === "no_profile"
-    ) {
-        return (
-            <div
-                className={`box max-w-400 mt-2 w-full m-auto p-0! min-h-120 rounded-3xl! overflow-hidden`}
-            >
-                <WrongUser />
             </div>
         );
     }

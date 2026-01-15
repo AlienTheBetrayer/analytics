@@ -1,3 +1,4 @@
+import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { useLocalStore } from "@/zustand/localStore";
 import Image from "next/image";
@@ -13,19 +14,24 @@ export const Theme = ({ className, children }: Props) => {
     const toggleTheme = useLocalStore((state) => state.toggleTheme);
 
     return (
-        <Button
-            onClick={toggleTheme}
-            className={`${className ?? ""}`}
+        <Tooltip
+            text="Toggle theme"
+            className="w-full"
         >
-            <Image
-                alt="theme"
-                src="/moon.svg"
-                width={16}
-                height={16}
-                className="transition-all duration-1000!"
-                style={{ rotate: theme === "dark" ? "0deg" : "180deg" }}
-            />
-            {children}
-        </Button>
+            <Button
+                onClick={toggleTheme}
+                className={`p-0! w-full ${className ?? ""}`}
+            >
+                <Image
+                    alt="theme"
+                    src="/moon.svg"
+                    width={18}
+                    height={18}
+                    className="transition-all duration-1000!"
+                    style={{ rotate: theme === "dark" ? "0deg" : "180deg" }}
+                />
+                {children}
+            </Button>
+        </Tooltip>
     );
 };
