@@ -17,25 +17,27 @@ export const ColorSwatches = ({ data }: Props) => {
     return (
         <ul className="flex">
             {colors[data.user.id].map((c) => (
-                <Tooltip
+                <li
+                    className="px-px!"
                     key={`${c.slot}${c.color}`}
-                    direction="top"
-                    element={
-                        <div className="box p-4!">
-                            <div
-                                style={{ background: c.color }}
-                                className="w-8 h-8 rounded-xl"
-                            />
-                        </div>
-                    }
                 >
-                    <li className="px-px!">
+                    <Tooltip
+                        direction="top"
+                        element={
+                            <div className="box p-4!">
+                                <div
+                                    style={{ background: c.color }}
+                                    className="w-8 h-8 rounded-xl"
+                                />
+                            </div>
+                        }
+                    >
                         <div
                             className="w-2.25 h-2.25 rounded-full transition-all duration-300 hover:scale-150"
                             style={{ background: c.color }}
                         />
-                    </li>
-                </Tooltip>
+                    </Tooltip>
+                </li>
             ))}
         </ul>
     );

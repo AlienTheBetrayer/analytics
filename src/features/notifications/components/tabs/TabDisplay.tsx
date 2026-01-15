@@ -44,22 +44,24 @@ export const TabDisplay = ({ tab }: Props) => {
                     )
             )}
 
-            {(filtered?.length ?? 0) > 4 * (pagination + 1) && (
-                <Button
-                    className="p-4!"
-                    onClick={() => {
-                        setPagination((prev) => prev + 1);
-                    }}
-                >
-                    <Image
-                        alt=""
-                        width={16}
-                        height={16}
-                        src="/reload.svg"
-                    />
-                    Load more
-                </Button>
-            )}
+            <li className="w-full">
+                {(filtered?.length ?? 0) > 4 * (pagination + 1) && (
+                    <Button
+                        className="p-4! w-full"
+                        onClick={() => {
+                            setPagination((prev) => prev + 1);
+                        }}
+                    >
+                        <Image
+                            alt=""
+                            width={16}
+                            height={16}
+                            src="/reload.svg"
+                        />
+                        Load more
+                    </Button>
+                )}
+            </li>
         </ul>
     );
 };

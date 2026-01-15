@@ -7,6 +7,7 @@ import { ProfileImage } from "@/features/profile/components/ProfileImage";
 import { useLocalStore } from "@/zustand/localStore";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Theme } from "@/features/toolbox/components/Theme";
+import { Socials } from "../parts/Socials";
 
 type Props = {
     hideMenu: () => void;
@@ -26,12 +27,13 @@ export const Menu = ({ hideMenu }: Props) => {
             onClick={hideMenu}
         >
             <ul className="w-full h-full flex flex-col justify-between p-8! header-ul">
-                <div className="flex flex-col gap-4">
+                <ul className="flex flex-col gap-2">
                     <li>
                         <LinkButton
                             href="/home"
                             className="p-4! text-5!"
                         >
+                            <div className="w-1 aspect-square bg-blue-1 rounded-full group-hover:bg-red-1 duration-700 transition-all" />
                             <Image
                                 src="/cube.svg"
                                 width={16}
@@ -42,6 +44,7 @@ export const Menu = ({ hideMenu }: Props) => {
                             <span>Home</span>
                         </LinkButton>
                     </li>
+
                     <li>
                         <LinkButton
                             href="/dashboard"
@@ -57,12 +60,45 @@ export const Menu = ({ hideMenu }: Props) => {
                             <span>Dashboard</span>
                         </LinkButton>
                     </li>
-                </div>
 
-                <div className="flex flex-col gap-4">
-                    <Theme className="p-4! gap-1!">
-                        <span>Theme</span>
-                    </Theme>
+                    <li>
+                        <LinkButton
+                            href="/notifications"
+                            className="p-4! text-5!"
+                        >
+                            <Image
+                                src="/notification.svg"
+                                width={16}
+                                height={16}
+                                alt=""
+                                className="w-5 aspect-square"
+                            />
+                            <span>Notifications</span>
+                        </LinkButton>
+                    </li>
+
+                    <li>
+                        <LinkButton
+                            href="/contact"
+                            className="p-4! text-5!"
+                        >
+                            <Image
+                                src="/phone.svg"
+                                width={16}
+                                height={16}
+                                alt=""
+                                className="w-5 aspect-square"
+                            />
+                            <span>Contact</span>
+                        </LinkButton>
+                    </li>
+
+                    <li>
+                        <Socials className="flex-row! max-w-full! *:w-full p-0! bg-transparent! border-0! outline-0!" />
+                    </li>
+                </ul>
+
+                <ul className="flex flex-col gap-2">
                     {visibleProfile ? (
                         <li>
                             <LinkButton
@@ -125,9 +161,13 @@ export const Menu = ({ hideMenu }: Props) => {
                             </li>
                         </>
                     )}
-                </div>
 
-                <div className="flex flex-col gap-4">
+                    <li>
+                        <Theme className="p-4! gap-1!">
+                            <span>Theme</span>
+                        </Theme>
+                    </li>
+
                     <li>
                         <Button className="p-4! text-5! w-full">
                             <Image
@@ -140,7 +180,7 @@ export const Menu = ({ hideMenu }: Props) => {
                             <span>Hide</span>
                         </Button>
                     </li>
-                </div>
+                </ul>
             </ul>
         </motion.nav>
     );

@@ -104,12 +104,13 @@ export const ProjectManipulation = () => {
             <hr />
 
             <ul className="flex flex-col gap-2">
-                <div className="flex flex-col gap-2 items-center">
+                <li className="flex flex-col gap-2 items-center">
                     <span>
                         <u>Data wiping</u>
                     </span>
-                </div>
-                <div className="flex flex-col sm:flex-row *:w-full ">
+                </li>
+                
+                <ul className="flex flex-col sm:flex-row *:w-full ">
                     <li>
                         <Tooltip
                             text="Wipe all of this project's data"
@@ -138,6 +139,7 @@ export const ProjectManipulation = () => {
                             </Button>
                         </Tooltip>
                     </li>
+
                     <li>
                         <Tooltip
                             text="Wipe this project's events"
@@ -166,7 +168,7 @@ export const ProjectManipulation = () => {
                             </Button>
                         </Tooltip>
                     </li>
-                </div>
+                </ul>
             </ul>
         </div>
     );

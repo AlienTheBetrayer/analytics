@@ -79,7 +79,7 @@ export const SessionList = ({ data, currentSessions }: Props) => {
                     </React.Fragment>
                 ))
             ) : (
-                <div className="flex flex-col gap-1 m-auto items-center">
+                <li className="flex flex-col gap-1 m-auto! items-center">
                     {promises.getSessions === "pending" ||
                     promises.sessionsReload === "pending" ? (
                         <Spinner
@@ -89,7 +89,7 @@ export const SessionList = ({ data, currentSessions }: Props) => {
                     ) : (
                         <span>No sessions</span>
                     )}
-                </div>
+                </li>
             )}
         </ul>
     );

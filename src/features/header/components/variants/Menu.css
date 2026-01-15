@@ -1,5 +1,6 @@
 .header-ul button, .header-ul a {
-    min-height: 5rem;
+    min-height: 4rem;
+    height: 4rem;
 }
 
 .header-ul button img, .header-ul a img {

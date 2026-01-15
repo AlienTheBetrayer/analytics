@@ -58,7 +58,7 @@ export const Desktop = ({ className }: Props) => {
 
                     <li>
                         <LinkButton
-                            href="/dashboard"
+                            href="/notifications"
                             styles="link"
                             className="button-img p-2"
                         >
@@ -73,7 +73,7 @@ export const Desktop = ({ className }: Props) => {
 
                     <li>
                         <LinkButton
-                            href="/dashboard"
+                            href="/contact"
                             styles="link"
                             className="button-img p-2"
                         >
