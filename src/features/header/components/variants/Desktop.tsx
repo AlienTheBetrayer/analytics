@@ -5,6 +5,9 @@ import { useLocalStore } from "@/zustand/localStore";
 import Image from "next/image";
 import { ComponentPropsWithoutRef } from "react";
 import { SearchButton } from "../parts/SearchButton";
+import { Button } from "@/features/ui/button/components/Button";
+import { Tooltip } from "@/features/tooltip/components/Tooltip";
+import { Socials } from "../parts/Socials";
 
 type Props = {} & ComponentPropsWithoutRef<"div">;
 
@@ -81,6 +84,26 @@ export const Desktop = ({ className }: Props) => {
                                 alt="contact"
                             />
                         </LinkButton>
+                    </li>
+
+                    <li>
+                        <Tooltip
+                            type="modal"
+                            disabledPointer={false}
+                            element={<Socials />}
+                        >
+                            <Button
+                                styles="link"
+                                className="button-img p-2"
+                            >
+                                <Image
+                                    width={18}
+                                    height={18}
+                                    src="/social.svg"
+                                    alt="contact"
+                                />
+                            </Button>
+                        </Tooltip>
                     </li>
                 </ul>
             </li>

@@ -90,6 +90,7 @@ export const useInputSelect = (
                         data-tooltip
                         className="absolute flex flex-col z-1001 overflow-hidden rounded-xl border-2 border-background-5"
                         ref={expandRef}
+                                    tabIndex={-1}
                         initial={{ height: "0px" }}
                         animate={{ height: "auto" }}
                         exit={{ height: "0px" }}

@@ -125,6 +125,27 @@ export const Tooltip = React.memo(function TooltipFunction({
         return () => window.removeEventListener("keydown", handle);
     }, []);
 
+    // focusing
+    useEffect(() => {
+        if (!isShown || type !== "modal" || !tooltipRef.current) {
+            return;
+        }
+
+        const firstFocusable = tooltipRef.current.querySelector<HTMLElement>(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+
+        requestAnimationFrame(() => {
+            if (!(firstFocusable && tooltipRef)) {
+                return;
+            }
+
+            (firstFocusable ?? tooltipRef.current).focus({
+                preventScroll: true,
+            });
+        });
+    }, [isShown, type]);
+
     if (!mounted) {
         return null;
     }
@@ -148,23 +169,6 @@ export const Tooltip = React.memo(function TooltipFunction({
                         setIsShown(true);
                     }
                 }}
-                onKeyDown={(e) => {
-                    if (
-                        !disabledPointer &&
-                        e.key === "Escape" &&
-                        type === "tooltip"
-                    ) {
-                        setIsShown(false);
-                    }
-
-                    if (
-                        !disabledPointer &&
-                        e.key === "Enter" &&
-                        type === "modal"
-                    ) {
-                        setIsShown(true);
-                    }
-                }}
                 onClick={() => {
                     if (type === "modal") {
                         setIsShown((prev) => !prev);
@@ -179,7 +183,8 @@ export const Tooltip = React.memo(function TooltipFunction({
                 <AnimatePresence>
                     {isShown && (
                         <motion.div
-                            className="absolute hidden z-1000 p-1"
+                            className="absolute hidden z-1000 p-1 border-0 outline-0"
+                            tabIndex={type === "modal" ? -1 : undefined}
                             ref={tooltipRef}
                             initial={{
                                 pointerEvents: !disabledPointer

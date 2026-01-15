@@ -8,25 +8,38 @@ type Props = {
     className?: string;
     isEnabled?: boolean;
     styles?: string;
+    newTab?: boolean;
     style?: CSSProperties;
 };
 
-export const LinkButton = forwardRef<HTMLAnchorElement, Props>(function LinkButton(
-    { className, children, href, isEnabled, style, styles }: Props,
-    ref,
-) {
-    return (
-        <Link
-            ref={ref}
-            href={href}
-            style={style}
-            className={`group 
+export const LinkButton = forwardRef<HTMLAnchorElement, Props>(
+    function LinkButton(
+        {
+            className,
+            children,
+            href,
+            isEnabled,
+            style,
+            styles,
+            newTab = false,
+        }: Props,
+        ref
+    ) {
+        return (
+            <Link
+                ref={ref}
+                href={href}
+                style={style}
+                target={`${newTab ? "_blank" : "_self"}`}
+                rel="noopener noreferrer"
+                className={`group 
                     ${styles ?? "button"}
                     ${(isEnabled ?? true) !== true ? "pointer-events-none opacity-30" : ""} 
                     ${className ?? ""} 
                 `}
-        >
-            {children}
-        </Link>
-    );
-});
+            >
+                {children}
+            </Link>
+        );
+    }
+);
