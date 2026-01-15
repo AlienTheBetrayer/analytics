@@ -7,6 +7,7 @@ import { Profile, User } from "@/types/tables/account";
 import { promiseStatus } from "@/utils/other/status";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
+import { redirect } from "next/navigation";
 import { useState } from "react";
 
 type Props = {
@@ -26,20 +27,21 @@ export const Data = ({ data, terminateMessageBox }: Props) => {
     }>({ password: false, username: false });
 
     const [password, setPassword] = useState<string>("");
-    const [username, setUsername] = useState<string>("");
+    const [username, setUsername] = useState<string>(data.user.username);
 
     return (
         <form
             className="flex flex-col gap-4 grow"
-            onSubmit={(e) => {
+            onSubmit={async (e) => {
                 e.preventDefault();
-                updateUser({
+                await updateUser({
                     id: data.user.id,
                     data: {
                         ...(fieldsEnabled.password && { password }),
                         ...(fieldsEnabled.username && { username }),
                     },
                 });
+                redirect("/profile");
             }}
         >
             {terminateMessageBox.render()}

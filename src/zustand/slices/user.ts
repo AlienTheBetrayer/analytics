@@ -246,15 +246,12 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
                     const profiles = { ...state.profiles };
                     const colors = { ...state.colors };
                     const users = { ...state.users };
+                    const status = state.status
+                        ? { ...state.status }
+                        : undefined;
 
                     if (!profiles[options.id]) {
                         return state;
-                    }
-
-                    // users
-                    if ("role" in options.data) {
-                        users[options.id].role = (options.data.role ??
-                            "user") as AuthenticationRole;
                     }
 
                     // colors
@@ -288,11 +285,31 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
                             options.data.gender ?? "unspecified";
                     }
 
-                    // if ("username" in options.data && options.data.username) {
-                    //     users[options.id].username = options.data.username;
-                    // }
+                    // users
+                    if (options.data.username) {
+                        users[options.id].username = options.data.username;
 
-                    return { ...state, profiles, colors, users };
+                        if (status?.id === options.id) {
+                            status.username = options.data.username;
+                        }
+                    }
+
+                    if (options.data.role) {
+                        users[options.id].role = (options.data.role ??
+                            "user") as AuthenticationRole;
+
+                        if (status?.id === options.id) {
+                            status.role = options.data.role;
+                        }
+                    }
+
+                    return {
+                        ...state,
+                        profiles,
+                        colors,
+                        users,
+                        status,
+                    };
                 });
 
                 try {

@@ -10,6 +10,7 @@ export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (
     get
 ) => {
     return {
+        status: undefined,
         sessions: {},
 
         setStatus: (status) => {
@@ -48,28 +49,37 @@ export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (
                         }
                     );
 
-                    if (options.user_id) {
-                        const data = res.data.sessions as ResponseSession[];
-                        const id = options.user_id;
+                    switch (options.type) {
+                        
+                        case "all": {
+                            if(!options.user_id) {
+                                throw new Error("[id] has to be present.");
+                            }
 
-                        set((state) => ({
-                            ...state,
-                            sessions: {
-                                ...state.sessions,
-                                [id]: data,
-                            },
-                        }));
+                            const data = res.data.sessions as ResponseSession[];
+                            const id = options.user_id;
 
-                        return data;
-                    } else {
-                        const session = res.data.session as AuthenticationToken;
+                            set((state) => ({
+                                ...state,
+                                sessions: {
+                                    ...state.sessions,
+                                    [id]: data,
+                                },
+                            }));
 
-                        set((state) => ({
-                            ...state,
-                            status: session,
-                        }));
+                            return data;
+                        }
+                        case "current": {
+                            const session = res.data
+                                .session as AuthenticationToken;
 
-                        return session;
+                            set((state) => ({
+                                ...state,
+                                status: session,
+                            }));
+
+                            return session;
+                        }
                     }
                 }
             );

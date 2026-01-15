@@ -1,4 +1,5 @@
 import { CachedUser } from "../api/responses/users";
+import { AuthenticationRole } from "../auth/authentication";
 import { Profile, ProfileGender, User } from "../tables/account";
 
 export type UserStore = {
@@ -53,7 +54,7 @@ export type UserStore = {
             avatar_url?: string | null;
             avatar_name?: string;
             avatar_type?: string;
-            role?: string;
+            role?: AuthenticationRole;
             password?: string;
             username?: string;
         };

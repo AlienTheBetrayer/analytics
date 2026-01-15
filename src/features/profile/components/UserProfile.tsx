@@ -26,7 +26,7 @@ export const UserProfile = () => {
     const getUsers = useAppStore((state) => state.getUsers);
 
     // user data
-    const retrievedUsername = name ?? (status && users[status?.id])?.username;
+    const retrievedUsername = name ?? status?.username;
     const [error, setError] = useState<"no_user" | "no_profile" | undefined>();
 
     // fetch if haven't cached
@@ -45,7 +45,6 @@ export const UserProfile = () => {
             }
         });
     }, [retrievedUsername, getUsers]);
-
 
     const user = Object.values(users).find(
         (u) => u.username === retrievedUsername

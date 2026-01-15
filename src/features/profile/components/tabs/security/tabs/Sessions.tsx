@@ -38,6 +38,7 @@ export const Sessions = ({
                         className="p-0!"
                         onClick={() => {
                             getSessions({
+                                type: "all",
                                 user_id: data.user.id,
                                 caching: false,
                                 promiseKey: "sessionsReload",

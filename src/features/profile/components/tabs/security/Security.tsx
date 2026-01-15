@@ -32,7 +32,7 @@ export const Security = ({ data }: Props) => {
 
     // fetching sessions
     useEffect(() => {
-        getSessions({ user_id: data.user.id });
+        getSessions({ type: "all", user_id: data.user.id });
     }, [getSessions, data.user]);
 
     // messageboxes

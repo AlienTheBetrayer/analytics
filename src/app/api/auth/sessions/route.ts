@@ -4,6 +4,8 @@ import { supabaseServer } from "@/server/private/supabase";
 import { nextResponse } from "@/utils/api/response";
 import { tokenPayload } from "@/utils/auth/tokenPayload";
 import { Token } from "@/types/tables/auth";
+import { AuthenticationToken } from "@/types/auth/authentication";
+import { User } from "@/types/tables/account";
 
 export const GET = async (request: NextRequest) => {
     try {
@@ -56,19 +58,31 @@ export const GET = async (request: NextRequest) => {
                 }
 
                 // updating the last seen timestamp
-                const { error: lastSeenError } = await supabaseServer
-                    .from("users")
-                    .update({
-                        last_seen_at: new Date().toISOString(),
-                    })
-                    .eq("id", payload.refreshToken.id);
+                const { data: userData, error: userError } =
+                    (await supabaseServer
+                        .from("users")
+                        .update({
+                            last_seen_at: new Date().toISOString(),
+                        })
+                        .eq("id", payload.refreshToken.id)
+                        .select()) as {
+                        data: User[];
+                        error: PostgrestError | null;
+                    };
 
-                if (lastSeenError) {
-                    console.error(lastSeenError);
-                    return nextResponse(lastSeenError, 400);
+                if (userError) {
+                    console.error(userError);
+                    return nextResponse(userError, 400);
                 }
 
-                return nextResponse({ session: payload.refreshToken }, 200);
+                const data: AuthenticationToken = {
+                    id: userData[0].id,
+                    role: userData[0].role,
+                    username: userData[0].username,
+                    session_id: payload.refreshToken.session_id,
+                };
+
+                return nextResponse({ session: data }, 200);
             }
         }
     } catch (error) {

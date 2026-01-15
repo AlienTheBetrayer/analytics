@@ -1,9 +1,11 @@
 import { ResponseLogin, ResponseSession } from "../api/responses/auth";
 import { AuthenticationToken } from "../auth/authentication";
 
+export type Status = AuthenticationToken & {};
+
 export type AuthenticationStore = {
     // login status
-    status?: AuthenticationToken;
+    status: Status | undefined;
     sessions: Record<string, ResponseSession[]>;
 
     /**
@@ -20,7 +22,7 @@ export type AuthenticationStore = {
      */
     getSessions: (options: {
         user_id?: string;
-        type?: "current" | "all";
+        type: "current" | "all";
         caching?: boolean;
         promiseKey?: string;
     }) => Promise<ResponseSession[] | AuthenticationToken | undefined>;
