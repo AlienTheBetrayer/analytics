@@ -288,6 +288,10 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
                             options.data.gender ?? "unspecified";
                     }
 
+                    // if ("username" in options.data && options.data.username) {
+                    //     users[options.id].username = options.data.username;
+                    // }
+
                     return { ...state, profiles, colors, users };
                 });
 
@@ -308,7 +312,7 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
                             description:
                                 "Any data may have been changed regarding this user.",
                             tab: "Account",
-                            type: "PROFILE_EDITED",
+                            type: "Profile Edit",
                         },
                     });
 
@@ -320,7 +324,7 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
                             title: `Failed updating ${users[options.id].username}.`,
                             description: JSON.stringify(e),
                             tab: "Account",
-                            type: "PROFILE_EDITED",
+                            type: "Profile Edit",
                         },
                     });
                 }

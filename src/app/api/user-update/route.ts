@@ -5,8 +5,8 @@ import {
     uploadAvatar,
     updateProfile,
     updateColors,
-    updatePassword,
     updateUser,
+    updateUserData,
 } from "@/utils/api/profile";
 import { nextResponse } from "@/utils/api/response";
 
@@ -61,9 +61,10 @@ export const POST = async (request: NextRequest) => {
             delete rest.role;
         }
 
-        if (rest.password) {
-            await updatePassword(user_id, rest);
+        if (rest.password || rest.username) {
+            await updateUserData(user_id, rest);
             delete rest.password;
+            delete rest.username;
         }
 
         await updateProfile(user_id, rest);

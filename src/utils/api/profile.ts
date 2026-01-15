@@ -5,7 +5,6 @@ import { PostgrestError } from "@supabase/supabase-js";
 import { nextResponse } from "./response";
 import bcrypt from "bcrypt";
 import { AuthenticationRole } from "@/types/auth/authentication";
-import { tokenVerify } from "../auth/tokenVerify";
 
 /**
  * deletes the user's profile image from the storage
@@ -189,16 +188,18 @@ export const updateUser = async (
  * @param rest json data
  * @returns a promise containing the message
  */
-export const updatePassword = async (
+export const updateUserData = async (
     user_id: string,
     rest: Record<string, unknown>
 ) => {
-    const { password } = rest as { password?: string };
+    const { password, username } = rest as {
+        password?: string;
+        username?: string;
+    };
 
-    if (!password) {
+    if (!(password || username)) {
         return;
     }
-
 
     const { data: userData, error: userError } = await supabaseServer
         .from("users")
@@ -215,7 +216,7 @@ export const updatePassword = async (
         return nextResponse({ error: "User hasn't been created yet." }, 400);
     }
 
-    if (password.trim().length < 5) {
+    if (password && password.trim().length < 5) {
         console.error("username and password length has to be longer than 5.");
         return nextResponse(
             {
@@ -225,11 +226,14 @@ export const updatePassword = async (
         );
     }
 
-    const hashedPassword = await bcrypt.hash(password.trim(), 10);
+    const data = {
+        ...(password && { password: await bcrypt.hash(password.trim(), 10) }),
+        ...(username && { username }),
+    };
 
     const { error: changeError } = await supabaseServer
         .from("users")
-        .update({ password: hashedPassword })
+        .update(data)
         .eq("id", user_id);
 
     if (changeError) {

@@ -55,6 +55,7 @@ export type UserStore = {
             avatar_type?: string;
             role?: string;
             password?: string;
+            username?: string;
         };
         promiseKey?: string;
     }) => Promise<void>;

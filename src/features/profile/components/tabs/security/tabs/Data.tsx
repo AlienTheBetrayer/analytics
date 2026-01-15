@@ -1,6 +1,7 @@
 import { usePopup } from "@/features/popup/hooks/usePopup";
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
+import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
 import { Input } from "@/features/ui/input/components/Input";
 import { Profile, User } from "@/types/tables/account";
 import { promiseStatus } from "@/utils/other/status";
@@ -19,7 +20,13 @@ export const Data = ({ data, terminateMessageBox }: Props) => {
     const promises = useAppStore((state) => state.promises);
 
     // internal states
+    const [fieldsEnabled, setFieldsEnabled] = useState<{
+        password: boolean;
+        username: boolean;
+    }>({ password: false, username: false });
+
     const [password, setPassword] = useState<string>("");
+    const [username, setUsername] = useState<string>("");
 
     return (
         <form
@@ -28,7 +35,10 @@ export const Data = ({ data, terminateMessageBox }: Props) => {
                 e.preventDefault();
                 updateUser({
                     id: data.user.id,
-                    data: { password },
+                    data: {
+                        ...(fieldsEnabled.password && { password }),
+                        ...(fieldsEnabled.username && { username }),
+                    },
                 });
             }}
         >
@@ -50,21 +60,38 @@ export const Data = ({ data, terminateMessageBox }: Props) => {
                         (a new username)
                     </small>
                 </label>
-                <Input
-                    type="username"
-                    value={password}
-                    onChange={(e) => setPassword(e)}
-                    placeholder="at least 6 characters"
-                    minLength={6}
-                    required
-                />
+
+                <div className="flex items-center gap-2">
+                    <Checkbox
+                        className="rounded-full! w-8! justify-center!"
+                        onToggle={(e) =>
+                            setFieldsEnabled((prev) => ({
+                                ...prev,
+                                username: e,
+                            }))
+                        }
+                        value={fieldsEnabled.username}
+                    />
+                    <hr className="w-px! h-1/2 bg-background-a-10" />
+
+                    <Input
+                        id="username"
+                        type="username"
+                        isEnabled={fieldsEnabled.username}
+                        value={username}
+                        onChange={(e) => setUsername(e)}
+                        placeholder="at least 6 characters"
+                        minLength={6}
+                        required
+                    />
+                </div>
             </div>
 
             <hr />
 
             <div className="flex flex-col gap-2">
                 <label
-                    htmlFor="bio"
+                    htmlFor="password"
                     className="flex items-center gap-1"
                 >
                     <Image
@@ -78,14 +105,31 @@ export const Data = ({ data, terminateMessageBox }: Props) => {
                         (a new strong password)
                     </small>
                 </label>
-                <Input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e)}
-                    placeholder="at least 6 characters"
-                    minLength={6}
-                    required
-                />
+
+                <div className="flex gap-2 items-center">
+                    <Checkbox
+                        className="rounded-full! w-8! justify-center!"
+                        onToggle={(e) =>
+                            setFieldsEnabled((prev) => ({
+                                ...prev,
+                                password: e,
+                            }))
+                        }
+                        value={fieldsEnabled.password}
+                    />
+                    <hr className="w-px! h-1/2 bg-background-a-10" />
+
+                    <Input
+                        id="password"
+                        isEnabled={fieldsEnabled.password}
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e)}
+                        placeholder="at least 6 characters"
+                        minLength={6}
+                        required
+                    />
+                </div>
             </div>
 
             <hr className="mt-auto -mb-2" />
@@ -93,10 +137,12 @@ export const Data = ({ data, terminateMessageBox }: Props) => {
             <Tooltip
                 className="w-full"
                 text="Change your password"
+                isEnabled={Object.values(fieldsEnabled).some(Boolean)}
             >
                 <Button
                     type="submit"
                     className="w-full"
+                    isEnabled={Object.values(fieldsEnabled).some(Boolean)}
                 >
                     {promiseStatus(promises.updateUser)}
                     <Image

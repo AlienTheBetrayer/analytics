@@ -153,7 +153,7 @@ export const DataSlice: SliceFunction<DataStore> = (set, get) => {
                             description:
                                 "Full analytics data has just been synced and is ready for use.",
                             tab: "Dashboard",
-                            type: "ANALYTICS_SYNCED",
+                            type: "Analytics Sync",
                         },
                     });
 
@@ -185,7 +185,7 @@ export const DataSlice: SliceFunction<DataStore> = (set, get) => {
                             title: "Failed syncing analytics.",
                             description: JSON.stringify(e),
                             tab: "Dashboard",
-                            type: "ANALYTICS_SYNCED",
+                            type: "Analytics Sync",
                         },
                     });
                 }
