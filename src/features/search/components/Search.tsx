@@ -34,17 +34,23 @@ export const Search = () => {
         return (
             <>
                 <Topline />
-                <div className="box w-full max-w-400">hi</div>
+
+                <div className="box w-full max-w-400">
+                    <span>EMPTY QUERY</span>
+                </div>
             </>
         );
     }
 
     // fetching
-    if(!results) {
+    if (!results) {
         return (
             <>
                 <Topline />
-                <LoadingSearch />
+
+                <div className="box w-full max-w-400 mx-auto">
+                    <LoadingSearch />
+                </div>
             </>
         );
     }
@@ -54,7 +60,10 @@ export const Search = () => {
         return (
             <>
                 <Topline />
-                <NoResults />
+
+                <div className="box w-full max-w-400 mx-auto">
+                    <NoResults />
+                </div>
             </>
         );
     }
@@ -63,7 +72,10 @@ export const Search = () => {
     return (
         <>
             <Topline />
-            {results && <Results data={results} />}
+
+            <div className="box w-full max-w-400 mx-auto">
+                {results && <Results data={results} />}
+            </div>
         </>
     );
 };

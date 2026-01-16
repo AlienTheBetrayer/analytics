@@ -6,14 +6,10 @@ type Props = {
 
 export const Results = ({ data }: Props) => {
     return (
-        <div className='box w-full max-w-400 mx-auto'>
-            <ul>
-                {data.map(({ user, profile }) => (
-                    <li key={user.id}>
-                        {user.username}
-                    </li>
-                ))}
-            </ul>
-        </div>
-    )
+        <ul>
+            {data.map(({ user, profile }) => (
+                <li key={user.id}>{user.username}</li>
+            ))}
+        </ul>
+    );
 };
