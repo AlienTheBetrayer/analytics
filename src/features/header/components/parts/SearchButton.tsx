@@ -1,13 +1,16 @@
 import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
 import Image from "next/image";
-import { redirect } from "next/navigation";
+import { redirect, useParams } from "next/navigation";
 import { useCallback, useState } from "react";
 
 export const SearchButton = () => {
+    // url states
+    const { query } = useParams<{ query?: string }>();
+
     // react states
     const [isFocused, setIsFocused] = useState<boolean>(false);
-    const [search, setSearch] = useState<string>("");
+    const [search, setSearch] = useState<string>(query ?? "");
 
     const querySearch = useCallback(() => {
         if (!search.trim().length) {
