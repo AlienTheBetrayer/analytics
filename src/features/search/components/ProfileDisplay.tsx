@@ -11,7 +11,7 @@ type Props = {
 export const ProfileDisplay = ({ data }: Props) => {
     return (
         <LinkButton
-            className="box w-full gap-4! p-4! rounded-[10vw]!"
+            className="box w-full gap-2! h-48 rounded-[10vw]!"
             href={`/profile/${data.user.username}/`}
         >
             <ul className="flex flex-col w-full items-center gap-2!">
@@ -24,7 +24,7 @@ export const ProfileDisplay = ({ data }: Props) => {
                             profile={data.profile}
                             width={256}
                             height={256}
-                            className="w-full max-w-36"
+                            className="w-full max-w-24"
                         />
                     </div>
                 </li>

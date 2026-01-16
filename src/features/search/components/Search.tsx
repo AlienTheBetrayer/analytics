@@ -43,7 +43,7 @@ export const Search = () => {
         );
     }
 
-    // fetching
+    // while fetching 
     if (!results) {
         return (
             <>

@@ -1,24 +1,29 @@
 export const LoadingSearch = () => {
     return (
-        <div className="w-full grid gap-16 lg:grid-cols-[30%_1fr] p-6! min-h-128">
-            <div className="flex flex-col gap-4 items-center">
-                <div className="loading w-full max-w-81 aspect-square rounded-full!" />
-                <div className="loading w-full h-8 mt-auto" />
-            </div>
+        <div className="flex flex-col gap-4">
+            {Array.from({ length: 4 }, (v, k) => (
+                <div
+                    className="flex flex-col w-full h-48 loading rounded-[10vw]!"
+                    key={k}
+                >
+                    <ul className="flex flex-col grow p-4! gap-2 w-full items-center">
+                        <li className="flex flex-col items-center w-full">
+                            <div className="loading w-full max-w-24 h-6 loading" />
+                        </li>
 
-            <div className="flex flex-col gap-8">
-                <div className="grid grid-cols-2 gap-4">
-                    <div className="loading w-full h-8" />
-                    <div className="loading w-full h-8" />
+                        <li className="flex flex-col w-full max-w-36">
+                            <div className="loading w-full aspect-square rounded-full!" />
+                        </li>
+
+                        <li className="flex flex-col w-full">
+                            <ul className="flex gap-4 w-full justify-center">
+                                <li className="loading w-full max-w-20 h-6 loading" />
+                                <li className="loading w-full max-w-20 h-6 loading" />
+                            </ul>
+                        </li>
+                    </ul>
                 </div>
-
-                <div className="loading w-full h-8" />
-                <div className="loading w-full h-8" />
-                <div className="loading w-full h-8" />
-                <div className="loading w-full h-8" />
-
-                <div className="loading w-full h-8 mt-auto" />
-            </div>
+            ))}
         </div>
     );
 };

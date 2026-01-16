@@ -10,7 +10,7 @@ export const Results = ({ data }: Props) => {
         <ul>
             {data.map(({ user, profile }) => (
                 <li key={user.id}>
-                    <ProfileDisplay data={{ user, profile }}/>
+                    <ProfileDisplay data={{ user, profile }} />
                 </li>
             ))}
         </ul>
