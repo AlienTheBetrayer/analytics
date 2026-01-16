@@ -1,6 +1,3 @@
-// /profiles/ url
-export type ProfileMenuType = "desktop" | "mobile" | "compact";
-
 // authentication optimization
 export type VisibleProfile = {
     username: string;
@@ -15,7 +12,6 @@ export type LocalStore = {
     };
 
     // profiles
-    profilesMenuType: ProfileMenuType;
     visibleProfile?: VisibleProfile;
 
     // theme
@@ -25,12 +21,6 @@ export type LocalStore = {
      * toggles the theme (goes from dark to light to dark)
      */
     toggleTheme: () => void;
-
-    /**
-     * sets the profile menu's type
-     * @param type the new type for the profile menu
-     */
-    setProfilesMenuType: (type: ProfileMenuType) => void;
 
     /**
      * sets the visible profile (no authentication flicker)

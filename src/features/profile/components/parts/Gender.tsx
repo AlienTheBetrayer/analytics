@@ -4,10 +4,11 @@ import Image from "next/image";
 import React, { useMemo } from "react";
 
 type Props = {
+    className?: string;
     data: { user: User; profile: Profile };
 };
 
-export const Gender = ({ data }: Props) => {
+export const Gender = ({ className, data }: Props) => {
     const genderStyle = useMemo((): {
         element: React.ReactNode;
         tooltip: string;
@@ -16,7 +17,9 @@ export const Gender = ({ data }: Props) => {
             case "female": {
                 return {
                     element: (
-                        <div className="box p-1! px-2! items-center! outline-1 outline-[#e0afbb]">
+                        <div
+                            className={`box p-1! px-2! items-center! outline-1 outline-[#e0afbb] ${className ?? ""}`}
+                        >
                             <div className="flex gap-1">
                                 <Image
                                     width={16}
@@ -34,7 +37,9 @@ export const Gender = ({ data }: Props) => {
             case "male": {
                 return {
                     element: (
-                        <div className="box p-1! px-2! items-center! outline-1 outline-[#82aece]">
+                        <div
+                            className={`box p-1! px-2! items-center! outline-1 outline-[#82aece] ${className ?? ""}`}
+                        >
                             <div className="flex gap-1">
                                 <Image
                                     width={16}
@@ -52,7 +57,9 @@ export const Gender = ({ data }: Props) => {
             case "other": {
                 return {
                     element: (
-                        <div className="box p-1! px-2! items-center! outline-1 outline-[#9d95c7]">
+                        <div
+                            className={`box p-1! px-2! items-center! outline-1 outline-[#9d95c7] ${className ?? ""}`}
+                        >
                             <div className="flex gap-1">
                                 <Image
                                     width={16}
@@ -71,7 +78,9 @@ export const Gender = ({ data }: Props) => {
             case "unspecified": {
                 return {
                     element: (
-                        <div className="box p-1! px-2! items-center!">
+                        <div
+                            className={`box p-1! px-2! items-center! ${className ?? ""}`}
+                        >
                             <div className="flex gap-1">
                                 <Image
                                     width={16}
@@ -87,10 +96,11 @@ export const Gender = ({ data }: Props) => {
                 };
             }
         }
-    }, [data]);
+    }, [data, className]);
 
     return (
         <Tooltip
+            className="w-full"
             direction="bottom"
             text={genderStyle.tooltip}
         >

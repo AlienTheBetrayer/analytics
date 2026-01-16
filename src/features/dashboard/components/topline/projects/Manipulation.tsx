@@ -16,7 +16,7 @@ export const Manipulation = () => {
                 <Button className="text-6! p-0!">
                     <Image
                         alt="manipulation"
-                        src="/cube.svg"
+                        src="/settings.svg"
                         width={16}
                         height={16}
                     />

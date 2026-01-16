@@ -132,7 +132,7 @@ export const Avatar = ({
                 )}
             </AnimatePresence>
 
-            <Role data={data} />
+            <Role data={data} className="w-fit! mx-auto!"/>
 
             <div className="flex gap-1">
                 {avatarFile[0] ? (

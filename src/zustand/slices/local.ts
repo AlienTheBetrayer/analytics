@@ -1,13 +1,8 @@
-import {
-    LocalStore,
-    ProfileMenuType,
-    VisibleProfile,
-} from "@/types/zustand/local";
+import { LocalStore, VisibleProfile } from "@/types/zustand/local";
 import { SliceFunction } from "@/types/zustand/utils/sliceFunction";
 
 export const LocalSlice: SliceFunction<LocalStore, LocalStore> = (set) => {
     return {
-        profilesMenuType: "desktop",
         preferences: {
             visibility: true,
         },
@@ -18,10 +13,6 @@ export const LocalSlice: SliceFunction<LocalStore, LocalStore> = (set) => {
                 ...state,
                 theme: state.theme === "dark" ? "light" : "dark",
             }));
-        },
-
-        setProfilesMenuType: (type: ProfileMenuType) => {
-            set((state) => ({ ...state, profilesMenuType: type }));
         },
 
         setVisibleProfile: (visibleProfile?: VisibleProfile) => {

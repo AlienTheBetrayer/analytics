@@ -1,3 +1,4 @@
+import { ProfileDisplay } from "@/features/search/components/ProfileDisplay";
 import { Profile, User } from "@/types/tables/account";
 
 type Props = {
@@ -8,7 +9,9 @@ export const Results = ({ data }: Props) => {
     return (
         <ul>
             {data.map(({ user, profile }) => (
-                <li key={user.id}>{user.username}</li>
+                <li key={user.id}>
+                    <ProfileDisplay data={{ user, profile }}/>
+                </li>
             ))}
         </ul>
     );
