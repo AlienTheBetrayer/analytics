@@ -1,6 +1,7 @@
 import { ResponseUsers } from "@/types/api/responses/users";
 import { AuthenticationRole } from "@/types/auth/authentication";
 import { APIResponseType } from "@/types/response";
+import { Profile, User } from "@/types/tables/account";
 import type { UserStore } from "@/types/zustand/user";
 import type { SliceFunction } from "@/types/zustand/utils/sliceFunction";
 import { refreshedRequest } from "@/utils/auth/refreshedRequest";
@@ -508,6 +509,53 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
                     } catch (e) {
                         throw e;
                     }
+                }
+            );
+        },
+
+        search: async (options) => {
+            const { setPromise } = get();
+
+            if (!options.query.length) {
+                throw new Error(
+                    "[query] has to be longer than just 1 character"
+                );
+            }
+
+            return await setPromise(
+                options.promiseKey ?? "search",
+                async () => {
+                    const res = await refreshedRequest(
+                        "/api/search",
+                        "GET",
+                        undefined,
+                        {
+                            params: {
+                                query: options.query,
+                            },
+                        }
+                    );
+
+                    const data = res.data.users as (User & {
+                        profile: Profile;
+                    })[];
+
+                    set((state) => {
+                        const users = { ...state.users };
+                        const profiles = { ...state.profiles };
+
+                        for (const { profile, ...user } of data) {
+                            users[user.id] = user;
+                            profiles[user.id] = profile;
+                        }
+
+                        return { ...state, users, profiles };
+                    });
+
+                    return data.map(({ profile, ...user }) => ({
+                        profile,
+                        user,
+                    }));
                 }
             );
         },

@@ -79,4 +79,15 @@ export type UserStore = {
             | "unfriend-all";
         promiseKey?: string;
     }) => Promise<void>;
+
+    /**
+     * searches all the users with a specific query
+     * @param query the query (can be partial)
+     * @param promiseKey a unique key for the promise status
+     * @returns list of users and their profiles
+     */
+    search: (options: {
+        query: string;
+        promiseKey?: string;
+    }) => Promise<{ user: User; profile: Profile }[]>;
 };
