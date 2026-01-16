@@ -18,7 +18,7 @@ export const GET = async (request: NextRequest) => {
         const { data, error } = (await supabaseServer
             .from("users")
             .select("*, profile:profiles(*)")
-            .ilike("username", `%${query}%`)) as {
+            .ilike("username", query === "*" ? "%" : `%${query}%`)) as {
             data: (User & { profile: Profile })[];
             error: PostgrestError | null;
         };

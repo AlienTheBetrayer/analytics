@@ -7,7 +7,7 @@ type Props = {
 
 export const Results = ({ data }: Props) => {
     return (
-        <ul>
+        <ul className="flex flex-col gap-4">
             {data.map(({ user, profile }) => (
                 <li key={user.id}>
                     <ProfileDisplay data={{ user, profile }} />
