@@ -44,7 +44,7 @@ export const Input = ({
                 required={required && isEnabled}
                 className={`placeholder:text-background-9 w-full h-full min-h-8 
                     outline-0!
-                    border border-background-a-8 p-2.5 rounded-full focus:border-blue-1 bg-background-a-3
+                    border-2 border-background-a-8 p-2.5 rounded-full focus:border-blue-1 bg-background-a-3
                     hover:bg-background-a-6 transition-all duration-500 focus-visible:bg-background-a-6
                     ${isEnabled && (required || minLength || maxLength) ? "invalid:border-red-1! valid:border-blue-1!" : ""} 
                     ${className ?? ""}`}
