@@ -60,7 +60,7 @@ export const Outcoming = ({ data }: Props) => {
                     </Button>
                 </Tooltip>
 
-                <hr className='w-px! h-1/2 bg-background-a-10'/>
+                <hr className='w-px! h-1/3 bg-background-a-10'/>
 
                 <b>Outcoming requests</b>
 

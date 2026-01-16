@@ -46,6 +46,10 @@ export const Menu = ({ hideMenu }: Props) => {
                     </li>
 
                     <li>
+                        <hr />
+                    </li>
+
+                    <li>
                         <LinkButton
                             href="/dashboard"
                             className="p-4! text-5!"
@@ -91,6 +95,10 @@ export const Menu = ({ hideMenu }: Props) => {
                             />
                             <span>Contact</span>
                         </LinkButton>
+                    </li>
+
+                    <li>
+                        <hr />
                     </li>
 
                     <li>
@@ -166,6 +174,10 @@ export const Menu = ({ hideMenu }: Props) => {
                         <Theme className="p-4! gap-1!">
                             <span>Theme</span>
                         </Theme>
+                    </li>
+
+                    <li>
+                        <hr />
                     </li>
 
                     <li>

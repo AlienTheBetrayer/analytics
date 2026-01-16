@@ -16,8 +16,8 @@ export const Deselect = () => {
                 }}
             >
                 <Image
-                    alt="back"
-                    src="/back.svg"
+                    alt="deselect"
+                    src="/select.svg"
                     width={14}
                     height={14}
                 />

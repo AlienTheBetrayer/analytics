@@ -174,6 +174,7 @@ export const Tooltip = React.memo(function TooltipFunction({
                         setIsShown((prev) => !prev);
                     }
                 }}
+                inert={!isEnabled}
                 className={`w-fit h-fit ${className} ${isEnabled !== true ? "pointer-events-none" : ""}`}
             >
                 {children}

@@ -119,7 +119,7 @@ export const Security = ({ data }: Props) => {
                                 value={isDeletionEnabled}
                             />
                         </Tooltip>
-                        <hr className="w-px! h-1/2" />
+                        <hr className="w-px! h-1/3" />
 
                         <Tooltip
                             text="Wipe your account data"

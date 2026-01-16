@@ -93,7 +93,7 @@ export const Topline = ({ tab }: Props) => {
             </li>
 
             <li className="self-stretch flex items-center">
-                <hr className="w-px! h-1/2! bg-background-6" />
+                <hr className="w-px! h-1/3! bg-background-6" />
             </li>
 
             <li>
@@ -154,7 +154,7 @@ export const Topline = ({ tab }: Props) => {
             </li>
 
             <li className="self-stretch flex items-center">
-                <hr className="w-px! h-1/2! bg-background-6" />
+                <hr className="w-px! h-1/3! bg-background-6" />
             </li>
 
             <li>

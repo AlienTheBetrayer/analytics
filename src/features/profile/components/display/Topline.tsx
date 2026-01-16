@@ -23,7 +23,7 @@ export const Topline = ({ data }: Props) => {
 
     return (
         <ul
-            className={`box p-0! gap-1! my-2 flex-row! max-w-400 w-full m-auto transition-all duration-500 h-10 items-center`}
+            className={`box p-0! gap-1! my-2! mx-auto! flex-row! max-w-400 w-full transition-all duration-500 h-10 items-center`}
         >
             <li className="absolute left-1/2 -translate-1/2 top-1/2">
                 <span className="flex gap-1 items-center">
@@ -39,9 +39,7 @@ export const Topline = ({ data }: Props) => {
 
             <li>
                 <Tooltip text="Go back home">
-                    <LinkButton
-                        href="/home/"
-                    >
+                    <LinkButton href="/home/">
                         <Image
                             width={16}
                             height={16}
@@ -53,14 +51,12 @@ export const Topline = ({ data }: Props) => {
             </li>
 
             <li className="self-stretch flex items-center">
-                <hr className="w-px! h-1/2! bg-background-6" />
+                <hr className="w-px! h-1/3! bg-background-6" />
             </li>
 
             <li>
                 <Tooltip text="Notification centre">
-                    <LinkButton
-                        href="/notifications/"
-                    >
+                    <LinkButton href="/notifications/">
                         <Image
                             width={16}
                             height={16}
@@ -75,9 +71,15 @@ export const Topline = ({ data }: Props) => {
                 </Tooltip>
             </li>
 
+            {((status && status.role === "op") ||
+                (status && status.id !== data.user.id)) && (
+                <li className="self-stretch flex items-center">
+                    <hr className="w-px! h-1/3! bg-background-6" />
+                </li>
+            )}
+
             {status && status.role === "op" && (
                 <li>
-                    <hr className="w-px! h-1/2 bg-background-a-8" />
                     <Tooltip text="Administrator panel">
                         <Tooltip
                             type="modal"
@@ -100,8 +102,6 @@ export const Topline = ({ data }: Props) => {
 
             {status && status.id !== data.user.id && (
                 <li>
-                    <hr className="w-px! h-1/2 bg-background-a-8" />
-
                     <Tooltip text="Go back to friends tab">
                         <LinkButton
                             href={`/profile/${status.username}/friends`}
@@ -139,9 +139,7 @@ export const Topline = ({ data }: Props) => {
 
             <li>
                 <Tooltip text="Edit the profile">
-                    <LinkButton
-                        href={`/profile/${data.user.username}/edit`}
-                    >
+                    <LinkButton href={`/profile/${data.user.username}/edit`}>
                         <Image
                             width={16}
                             height={16}
@@ -179,9 +177,7 @@ export const Topline = ({ data }: Props) => {
 
             <li>
                 <Tooltip text="Friends and Friend requests">
-                    <LinkButton
-                        href={`/profile/${data.user.username}/friends`}
-                    >
+                    <LinkButton href={`/profile/${data.user.username}/friends`}>
                         <Image
                             width={16}
                             height={16}

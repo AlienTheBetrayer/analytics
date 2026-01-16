@@ -74,7 +74,7 @@ export const Data = ({ data, terminateMessageBox }: Props) => {
                         }
                         value={fieldsEnabled.username}
                     />
-                    <hr className="w-px! h-1/2 bg-background-a-10" />
+                    <hr className="w-px! h-1/3 bg-background-a-10" />
 
                     <Input
                         id="username"
@@ -119,7 +119,7 @@ export const Data = ({ data, terminateMessageBox }: Props) => {
                         }
                         value={fieldsEnabled.password}
                     />
-                    <hr className="w-px! h-1/2 bg-background-a-10" />
+                    <hr className="w-px! h-1/3 bg-background-a-10" />
 
                     <Input
                         id="password"
