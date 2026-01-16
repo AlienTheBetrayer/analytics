@@ -7,11 +7,11 @@ type Props = {
 
 export const Topline = ({ data }: Props) => {
     return (
-        <div
+        <ul
             className={`box p-0! gap-1! flex-row! transition-all duration-300 h-10 min-h-10 items-center ${!data ? "opacity-30" : ""}`}
             inert={!data}
         >
-            <div
+            <li
                 className="absolute flex gap-1 items-center left-1/2 top-1/2 -translate-1/2 transition-all duration-500"
                 style={{ opacity: !data ? 0 : 1 }}
             >
@@ -22,16 +22,16 @@ export const Topline = ({ data }: Props) => {
                     src="/notification.svg"
                 />
                 <span>Notification</span>
-            </div>
+            </li>
 
-            <div
+            <li
                 className="select-none pointer-events-none transition-all duration-300 absolute inset-0 grid place-items-center z-1"
                 style={{ opacity: data ? 0 : 1 }}
             >
                 <span>
                     <mark>Select</mark> an existing notification to access
                 </span>
-            </div>
-        </div>
+            </li>
+        </ul>
     );
 };

@@ -38,9 +38,7 @@ export const Wipe = () => {
         <>
             {deleteEventsBox.render()}
             <Tooltip
-                className="ml-auto"
                 text="Wipe all events"
-                direction="top"
             >
                 <Button
                     className="text-6! p-0!"

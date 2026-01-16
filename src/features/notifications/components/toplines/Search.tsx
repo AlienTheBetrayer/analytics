@@ -15,16 +15,17 @@ export const Search = ({ tab }: Props) => {
     );
 
     return (
-        <Tooltip
-            direction="top"
-            text="Filters every field"
-        >
+        <Tooltip text="Filters every field">
             <Input
                 className="rounded-full!"
                 placeholder="Filter..."
                 value={filter.search}
                 onChange={(value) => {
-                    setNotificationFilter({ type: "search", tab, search: value });
+                    setNotificationFilter({
+                        type: "search",
+                        tab,
+                        search: value,
+                    });
                 }}
             />
         </Tooltip>

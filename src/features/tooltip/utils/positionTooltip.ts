@@ -92,8 +92,8 @@ export const positionTooltip = (
     let dx = 0;
     if (left < scrollX) {
         dx = scrollX - left + 2;
-    } else if (left + tooltipBounds.width > scrollX + window.innerWidth) {
-        dx = scrollX + window.innerWidth - left - tooltipBounds.width - 4;
+    } else if (left + tooltipBounds.width > scrollX + document.documentElement.clientWidth) {
+        dx = scrollX + document.documentElement.clientWidth - left - tooltipBounds.width - 4;
     }
 
     let dy = 0;

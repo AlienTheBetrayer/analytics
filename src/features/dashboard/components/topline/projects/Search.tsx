@@ -30,10 +30,7 @@ export const Search = () => {
     }, [debounced, selectedProjectId, setFilter]);
 
     return (
-        <Tooltip
-            direction="top"
-            text="Filters every field"
-        >
+        <Tooltip text="Filters every field">
             <Input
                 className="rounded-full!"
                 placeholder="Filter..."

@@ -36,10 +36,7 @@ export const Wipe = () => {
     return (
         <>
             {deleteProjectBox.render()}
-            <Tooltip
-                text="Wipe this project"
-                direction="top"
-            >
+            <Tooltip text="Wipe this project">
                 <Button
                     className="text-6! p-0!"
                     onClick={() => {

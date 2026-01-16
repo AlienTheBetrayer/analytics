@@ -54,124 +54,128 @@ export const Topline = ({ tab }: Props) => {
     }, [filter]);
 
     return (
-        <div
+        <ul
             className={`box p-0! gap-1! flex-row! transition-all duration-300 h-10 min-h-10 items-center ${!hasNotification ? "opacity-30" : ""}`}
             inert={!hasNotification}
         >
             {messageBox.render()}
 
-            <div
+            <li
                 className="select-none pointer-events-none transition-all duration-300 absolute inset-0 grid place-items-center z-1"
                 style={{ opacity: hasNotification ? 0 : 1 }}
             >
                 <span>
                     <mark>Fetch</mark> notifications to access
                 </span>
-            </div>
+            </li>
 
-            <Tooltip
-                text={`${!isExpanded ? "Expand" : "Collapse"}`}
-                direction="top"
-            >
-                <Button
-                    className="aspect-square p-0!"
-                    onClick={() => {
-                        toggleCollapsed({ tab });
-                    }}
-                >
-                    <Image
-                        alt="expand"
-                        src="/collapse.svg"
-                        width={24}
-                        height={24}
-                    />
-
-                    <TabSelection
-                        condition={!isExpanded}
-                        color="var(--orange-1)"
-                    />
-                </Button>
-            </Tooltip>
-
-            <Tooltip
-                disabledPointer={false}
-                type="modal"
-                direction="bottom-right"
-                element={<Filter tab={tab} />}
-            >
-                <Tooltip
-                    text="Filter notifications"
-                    direction="top"
-                >
-                    <Button className="aspect-square">
+            <li>
+                <Tooltip text={`${!isExpanded ? "Expand" : "Collapse"}`}>
+                    <Button
+                        className="aspect-square p-0!"
+                        onClick={() => {
+                            toggleCollapsed({ tab });
+                        }}
+                    >
                         <Image
-                            alt="filter"
-                            src="/filter.svg"
-                            width={16}
-                            height={16}
+                            alt="expand"
+                            src="/collapse.svg"
+                            width={24}
+                            height={24}
                         />
 
                         <TabSelection
-                            condition={true}
-                            color={filterColor}
+                            condition={!isExpanded}
+                            color="var(--orange-1)"
                         />
                     </Button>
                 </Tooltip>
-            </Tooltip>
+            </li>
 
-            <Tooltip
-                disabledPointer={false}
-                type="modal"
-                direction="bottom-right"
-                element={<Sort tab={tab} />}
-            >
+            <li className="self-stretch flex items-center">
+                <hr className="w-px! h-1/2! bg-background-6" />
+            </li>
+
+            <li>
                 <Tooltip
-                    text="Sort notifications"
-                    direction="top"
+                    disabledPointer={false}
+                    type="modal"
+                    direction="bottom-right"
+                    element={<Filter tab={tab} />}
                 >
-                    <Button className="aspect-square">
+                    <Tooltip text="Filter notifications">
+                        <Button className="aspect-square">
+                            <Image
+                                alt="filter"
+                                src="/filter.svg"
+                                width={16}
+                                height={16}
+                            />
+
+                            <TabSelection
+                                condition={true}
+                                color={filterColor}
+                            />
+                        </Button>
+                    </Tooltip>
+                </Tooltip>
+            </li>
+
+            <li>
+                <Tooltip
+                    disabledPointer={false}
+                    type="modal"
+                    direction="bottom-right"
+                    element={<Sort tab={tab} />}
+                >
+                    <Tooltip text="Sort notifications">
+                        <Button className="aspect-square">
+                            <Image
+                                alt="sort"
+                                src="/sort.svg"
+                                width={16}
+                                height={16}
+                                className="duration-500! ease-out!"
+                                style={{
+                                    transform:
+                                        filter.sorting.direction === "ascendant"
+                                            ? `rotate(180deg)`
+                                            : `rotate(0deg)`,
+                                }}
+                            />
+
+                            <TabSelection
+                                condition={!!filter.sorting}
+                                color="var(--blue-1)"
+                            />
+                        </Button>
+                    </Tooltip>
+                </Tooltip>
+            </li>
+
+            <li className="self-stretch flex items-center">
+                <hr className="w-px! h-1/2! bg-background-6" />
+            </li>
+
+            <li>
+                <Search tab={tab} />
+            </li>
+
+            <li className="ml-auto!">
+                <Tooltip text="Wipe all notifications on this tab">
+                    <Button
+                        className="p-0!"
+                        onClick={messageBox.show}
+                    >
                         <Image
-                            alt="sort"
-                            src="/sort.svg"
+                            alt=""
                             width={16}
                             height={16}
-                            className="duration-500! ease-out!"
-                            style={{
-                                transform:
-                                    filter.sorting.direction === "ascendant"
-                                        ? `rotate(180deg)`
-                                        : `rotate(0deg)`,
-                            }}
-                        />
-
-                        <TabSelection
-                            condition={!!filter.sorting}
-                            color="var(--blue-1)"
+                            src="/delete.svg"
                         />
                     </Button>
                 </Tooltip>
-            </Tooltip>
-
-            <hr className="w-px! h-1/2! bg-background-a-11" />
-            <Search tab={tab} />
-
-            <Tooltip
-                className="ml-auto"
-                direction="top"
-                text="Wipe all notifications on this tab"
-            >
-                <Button
-                    className="p-0!"
-                    onClick={messageBox.show}
-                >
-                    <Image
-                        alt=""
-                        width={16}
-                        height={16}
-                        src="/delete.svg"
-                    />
-                </Button>
-            </Tooltip>
-        </div>
+            </li>
+        </ul>
     );
 };

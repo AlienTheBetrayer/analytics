@@ -33,11 +33,11 @@ export const NotificationCompact = ({
 
     return (
         <div className="grid gap-1">
-            <div
+            <ul
                 className={`box backdrop-blur-none! w-full max-w-400 justify-between! mx-auto p-0! gap-1! flex-row! transition-all duration-500
                      min-h-10 h-10 items-center`}
             >
-                <div className="flex gap-1 items-center min-h-8 min-w-8 justify-center">
+                <li className="flex gap-1 items-center min-h-8 min-w-8 justify-center">
                     <small>
                         <Image
                             alt=""
@@ -46,9 +46,9 @@ export const NotificationCompact = ({
                             src={`${NotificationImages[notification.status]}`}
                         />
                     </small>
-                </div>
+                </li>
 
-                <div className="flex gap-1 items-center absolute left-1/2 top-1/2 -translate-1/2">
+                <li className="flex gap-1 items-center absolute left-1/2 top-1/2 -translate-1/2">
                     <div
                         className="w-1 h-1 rounded-full"
                         style={{
@@ -56,30 +56,29 @@ export const NotificationCompact = ({
                         }}
                     />
                     <span>{notification.status}</span>
-                </div>
+                </li>
 
-                <Tooltip
-                    text="Delete this notification"
-                    direction="top"
-                >
-                    <Button
-                        onClick={() => {
-                            clearData({
-                                id: [notification.id],
-                                type: "notifications",
-                                tab: notification.tab,
-                            });
-                        }}
-                    >
-                        <Image
-                            width={16}
-                            height={16}
-                            alt="delete"
-                            src="/delete.svg"
-                        />
-                    </Button>
-                </Tooltip>
-            </div>
+                <li>
+                    <Tooltip text="Delete this notification">
+                        <Button
+                            onClick={() => {
+                                clearData({
+                                    id: [notification.id],
+                                    type: "notifications",
+                                    tab: notification.tab,
+                                });
+                            }}
+                        >
+                            <Image
+                                width={16}
+                                height={16}
+                                alt="delete"
+                                src="/delete.svg"
+                            />
+                        </Button>
+                    </Tooltip>
+                </li>
+            </ul>
 
             <LinkButton
                 className={`box rounded-4xl! backdrop-blur-none! grid! md:grid-cols-[30%_auto_1fr] gap-4! min-h-20! text-center ${buttonClassName ?? ""}`}

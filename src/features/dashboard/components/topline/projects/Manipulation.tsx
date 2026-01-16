@@ -5,10 +5,7 @@ import { ProjectManipulation } from "../../projects/ProjectManipulation";
 
 export const Manipulation = () => {
     return (
-        <Tooltip
-            text="Advanced editing"
-            direction="top"
-        >
+        <Tooltip text="Advanced editing">
             <Tooltip
                 text="De-select the project"
                 direction="bottom-left"

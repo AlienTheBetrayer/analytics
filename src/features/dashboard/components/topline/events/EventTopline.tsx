@@ -23,87 +23,96 @@ export const EventTopline = () => {
     }, [eventFilters, selectedProjectId]);
 
     return (
-        <div
+        <ul
             className={`box p-0! gap-1! flex-row! transition-all duration-300 h-10 min-h-10 items-center ${!selectedProjectId ? "opacity-30" : ""}`}
             inert={!selectedProjectId}
         >
-            <div
+            <li
                 className="select-none pointer-events-none transition-all duration-300 absolute inset-0 grid place-items-center z-1"
                 style={{ opacity: selectedProjectId ? 0 : 1 }}
             >
                 <span>
                     <mark>Select</mark> a project to access
                 </span>
-            </div>
+            </li>
 
-            <Tooltip
-                disabledPointer={false}
-                type="modal"
-                direction="bottom-right"
-                element={<Filtering />}
-            >
+            <li>
                 <Tooltip
-                    text="Filter events"
-                    direction="top"
+                    disabledPointer={false}
+                    type="modal"
+                    direction="bottom-right"
+                    element={<Filtering />}
                 >
-                    <Button className="aspect-square">
-                        <Image
-                            alt="filter"
-                            src="/filter.svg"
-                            width={16}
-                            height={16}
-                        />
+                    <Tooltip
+                        text="Filter events"
+                    >
+                        <Button className="aspect-square">
+                            <Image
+                                alt="filter"
+                                src="/filter.svg"
+                                width={16}
+                                height={16}
+                            />
 
-                        <TabSelection
-                            condition={true}
-                            color={filterColor}
-                        />
-                    </Button>
+                            <TabSelection
+                                condition={true}
+                                color={filterColor}
+                            />
+                        </Button>
+                    </Tooltip>
                 </Tooltip>
-            </Tooltip>
+            </li>
 
-            <Tooltip
-                disabledPointer={false}
-                type="modal"
-                direction="bottom-right"
-                element={<Sorting />}
-            >
+            <li>
                 <Tooltip
-                    text="Sort events"
-                    direction="top"
+                    disabledPointer={false}
+                    type="modal"
+                    direction="bottom-right"
+                    element={<Sorting />}
                 >
-                    <Button className="aspect-square">
-                        <Image
-                            alt="sort"
-                            src="/sort.svg"
-                            width={16}
-                            height={16}
-                            className="duration-500! ease-out!"
-                            style={{
-                                transform:
-                                    eventFilters[selectedProjectId ?? ""]
-                                        ?.eventsSorting?.direction ===
-                                    "ascendant"
-                                        ? `rotate(180deg)`
-                                        : `rotate(0deg)`,
-                            }}
-                        />
+                    <Tooltip
+                        text="Sort events"
+                    >
+                        <Button className="aspect-square">
+                            <Image
+                                alt="sort"
+                                src="/sort.svg"
+                                width={16}
+                                height={16}
+                                className="duration-500! ease-out!"
+                                style={{
+                                    transform:
+                                        eventFilters[selectedProjectId ?? ""]
+                                            ?.eventsSorting?.direction ===
+                                        "ascendant"
+                                            ? `rotate(180deg)`
+                                            : `rotate(0deg)`,
+                                }}
+                            />
 
-                        <TabSelection
-                            condition={
-                                !!eventFilters[selectedProjectId ?? ""]
-                                    ?.eventsSorting
-                            }
-                            color="var(--blue-1)"
-                        />
-                    </Button>
+                            <TabSelection
+                                condition={
+                                    !!eventFilters[selectedProjectId ?? ""]
+                                        ?.eventsSorting
+                                }
+                                color="var(--blue-1)"
+                            />
+                        </Button>
+                    </Tooltip>
                 </Tooltip>
-            </Tooltip>
-            <hr className="w-px! h-1/2 bg-background-a-9" />
+            </li>
 
-            <Search key={selectedProjectId} />
+            <li className='self-stretch flex items-center'>
+                <hr className="w-px! h-1/2 bg-background-6" />
+            </li>
 
-            <Wipe />
-        </div>
+            <li>
+                <Search key={selectedProjectId} />
+            </li>
+
+            <li className="ml-auto!">
+                <Wipe />
+            </li>
+        </ul>
     );
 };

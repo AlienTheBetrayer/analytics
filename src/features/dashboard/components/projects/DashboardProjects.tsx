@@ -12,7 +12,7 @@ export const DashboardProjects = () => {
             <hr />
 
             <ul
-                className="flex flex-col gap-2 h-full overflow-y-auto overflow-x-hidden scheme-dark"
+                className="flex flex-col gap-2 h-full overflow-y-auto overflow-x-hidden scheme-dark p-1!"
                 style={{
                     scrollbarWidth: "thin",
                 }}

@@ -33,7 +33,6 @@ export const Search = () => {
 
     return (
         <Tooltip
-            direction="top"
             text="Filters every field"
         >
             <Input

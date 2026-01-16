@@ -19,182 +19,178 @@ export const Topline = ({ type }: Props) => {
     const { id, tab } = useParams<{ id?: string; tab?: string }>();
 
     return (
-        <div
+        <ul
             className={`box w-full max-w-400 mx-auto p-0! my-2 gap-1! flex-row! transition-all duration-500 h-10 items-center`}
         >
-            <span className="flex gap-1 items-center absolute left-1/2 -translate-1/2 top-1/2">
-                <div className="rounded-full w-1 h-1 bg-blue-1" />
-                Notifications
-            </span>
-
-            <Tooltip
-                text="Go back home"
-                direction="top"
-            >
-                <LinkButton
-                    href="/home/"
-                    className={`p-0! md:px-2!`}
-                >
+            <li className="absolute left-1/2 -translate-1/2 top-1/2">
+                <span className="flex gap-1 items-center">
+                    <div className="rounded-full w-1 h-1 bg-blue-1" />
                     <Image
                         width={16}
                         height={16}
-                        alt="home"
-                        src="/cube.svg"
+                        alt="Notifications"
+                        src="/notification.svg"
                     />
-                    <span className="hidden md:block">Home</span>
-                </LinkButton>
-            </Tooltip>
+                </span>
+            </li>
 
-            {type === "specific" && (
-                <Tooltip
-                    text="Go back to the notification centre"
-                    direction="top"
-                >
-                    <LinkButton
-                        href="/notifications/"
-                        className={`p-0! md:px-2!`}
-                    >
+            <li>
+                <Tooltip text="Go back home">
+                    <LinkButton href="/home/">
                         <Image
                             width={16}
                             height={16}
                             alt="home"
-                            src="/back.svg"
+                            src="/cube.svg"
                         />
-                        <span className="hidden md:block">Notifications</span>
                     </LinkButton>
                 </Tooltip>
-            )}
+            </li>
 
-            {lastNotificationId && !id && (
-                <Tooltip
-                    text="View the most recent notification"
-                    direction="top"
-                >
-                    <LinkButton
-                        href={`/notification/${lastNotificationId}`}
-                        className={`p-0! md:px-2!`}
-                    >
+            <li className="self-stretch flex items-center">
+                <hr className="w-px! h-1/2! bg-background-6" />
+            </li>
+
+            <li>
+                <Tooltip text="Push synthetic notifications">
+                    <LinkButton href={`/notifications/emulate`}>
                         <Image
                             width={16}
                             height={16}
-                            alt="latest"
-                            src="/calendar.svg"
+                            alt="emulate"
+                            src="/emulate.svg"
                         />
-                        <span className="hidden md:block">Latest</span>
+
+                        <TabSelection
+                            condition={tab === "emulate"}
+                            color="var(--blue-1)"
+                        />
                     </LinkButton>
                 </Tooltip>
+            </li>
+
+            <li>
+                <Tooltip text="Notifications preferences">
+                    <LinkButton href="/notifications/preferences">
+                        <Image
+                            width={16}
+                            height={16}
+                            alt="preferences"
+                            src="/settings.svg"
+                        />
+
+                        <TabSelection
+                            condition={tab === "preferences"}
+                            color="var(--blue-1)"
+                        />
+                    </LinkButton>
+                </Tooltip>
+            </li>
+
+            {((lastNotificationId && !id) || type === "specific") && (
+                <li className="self-stretch flex items-center">
+                    <hr className="w-px! h-1/2! bg-background-6" />
+                </li>
             )}
 
-            <Tooltip
-                text="All notifications"
-                direction="top"
-                className="ml-auto"
-            >
-                <LinkButton
-                    href={`/notifications/all`}
-                    className={`p-0! sm:px-2!`}
-                >
-                    <Image
-                        width={16}
-                        height={16}
-                        alt="all"
-                        src="/cubes.svg"
-                    />
-                    <span className="hidden sm:block">All</span>
-                    <TabSelection
-                        condition={tab === "all" || (!tab && !id)}
-                        color="var(--blue-1)"
-                    />
-                </LinkButton>
-            </Tooltip>
+            {type === "specific" && (
+                <li>
+                    <Tooltip text="Go back to the notification centre">
+                        <LinkButton href="/notifications/">
+                            <Image
+                                width={16}
+                                height={16}
+                                alt="home"
+                                src="/back.svg"
+                            />
+                        </LinkButton>
+                    </Tooltip>
+                </li>
+            )}
 
-            <hr className="w-px! h-1/2 bg-background-a-8" />
-            <Tooltip
-                text="Dashboard-only notifications"
-                direction="top"
-            >
-                <LinkButton href={`/notifications/dashboard`}>
-                    <Image
-                        width={16}
-                        height={16}
-                        alt="home"
-                        src="/dashboard.svg"
-                    />
-                    <span className="hidden sm:block">Dashboard</span>
+            {lastNotificationId && !id && (
+                <li>
+                    <Tooltip
+                        text="View the most recent notification"
+                        direction="top"
+                    >
+                        <LinkButton
+                            href={`/notification/${lastNotificationId}`}
+                        >
+                            <Image
+                                width={16}
+                                height={16}
+                                alt="latest"
+                                src="/calendar.svg"
+                            />
+                        </LinkButton>
+                    </Tooltip>
+                </li>
+            )}
 
-                    <TabSelection
-                        condition={tab === "dashboard"}
-                        color="var(--blue-1)"
-                    />
-                    <TabSelection
-                        condition={unreadTabs.Dashboard}
-                        color="var(--orange-1)"
-                    />
-                </LinkButton>
-            </Tooltip>
+            <li className="ml-auto!">
+                <Tooltip text="All notifications">
+                    <LinkButton href={`/notifications/all`}>
+                        <Image
+                            width={16}
+                            height={16}
+                            alt="all"
+                            src="/cubes.svg"
+                        />
+                        <span className="hidden sm:block">All</span>
+                        <TabSelection
+                            condition={tab === "all" || (!tab && !id)}
+                            color="var(--blue-1)"
+                        />
+                    </LinkButton>
+                </Tooltip>
+            </li>
 
-            <Tooltip
-                text="Account-only notifications"
-                direction="top"
-            >
-                <LinkButton href={`/notifications/account`}>
-                    <Image
-                        width={16}
-                        height={16}
-                        alt="home"
-                        src="/account.svg"
-                    />
-                    <span className="hidden sm:block">Account</span>
+            <li>
+                <Tooltip text="Dashboard-only notifications">
+                    <LinkButton href={`/notifications/dashboard`}>
+                        <Image
+                            width={16}
+                            height={16}
+                            alt="home"
+                            src="/dashboard.svg"
+                        />
+                        <span className="hidden sm:block">Dashboard</span>
 
-                    <TabSelection
-                        condition={tab === "account"}
-                        color="var(--blue-1)"
-                    />
-                    <TabSelection
-                        condition={unreadTabs.Account}
-                        color="var(--orange-1)"
-                    />
-                </LinkButton>
-            </Tooltip>
+                        <TabSelection
+                            condition={tab === "dashboard"}
+                            color="var(--blue-1)"
+                        />
+                        <TabSelection
+                            condition={unreadTabs.Dashboard}
+                            color="var(--orange-1)"
+                        />
+                    </LinkButton>
+                </Tooltip>
+            </li>
 
-            <hr className="w-px! h-1/2 bg-background-a-8" />
-            <Tooltip
-                text="Push synthetic notifications"
-                direction="top"
-            >
-                <LinkButton href={`/notifications/emulate`}>
-                    <Image
-                        width={16}
-                        height={16}
-                        alt="emulate"
-                        src="/emulate.svg"
-                    />
+            <li>
+                <Tooltip text="Account-only notifications">
+                    <LinkButton href={`/notifications/account`}>
+                        <Image
+                            width={16}
+                            height={16}
+                            alt="home"
+                            src="/account.svg"
+                        />
+                        <span className="hidden sm:block">Account</span>
 
-                    <TabSelection
-                        condition={tab === "emulate"}
-                        color="var(--blue-1)"
-                    />
-                </LinkButton>
-            </Tooltip>
-
-            <Tooltip
-                text="Notifications preferences"
-                direction="top"
-            >
-                <LinkButton href="/notifications/preferences">
-                    <Image
-                        width={16}
-                        height={16}
-                        alt="preferences"
-                        src="/settings.svg"
-                    />
-
-                    <TabSelection
-                        condition={tab === "preferences"}
-                        color="var(--blue-1)"
-                    />
-                </LinkButton>
-            </Tooltip>
-        </div>
+                        <TabSelection
+                            condition={tab === "account"}
+                            color="var(--blue-1)"
+                        />
+                        <TabSelection
+                            condition={unreadTabs.Account}
+                            color="var(--orange-1)"
+                        />
+                    </LinkButton>
+                </Tooltip>
+            </li>
+        </ul>
     );
 };

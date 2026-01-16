@@ -19,7 +19,7 @@ export const DashboardEventList = ({ scrollRef }: Props) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             ref={scrollRef}
-            className="flex flex-col gap-2 h-full overflow-y-auto overflow-x-hidden scheme-dark"
+            className="flex flex-col gap-2 h-full overflow-y-auto overflow-x-hidden scheme-dark p-1!"
             style={{
                 scrollbarWidth: "thin",
             }}

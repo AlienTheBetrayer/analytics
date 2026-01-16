@@ -13,14 +13,23 @@ export const Topline = () => {
     const sync = useAppStore((state) => state.sync);
 
     return (
-        <div
+        <ul
             className={`box w-full max-w-400 mx-auto my-2 p-0! flex-row! gap-1! flex-wrap transition-all duration-500 items-center h-10!`}
         >
-            <div className="flex gap-1 items-center">
-                <Tooltip
-                    text="Go back home"
-                    direction="top"
-                >
+            <li className="absolute left-1/2 -translate-1/2 top-1/2">
+                <span className="flex gap-1 items-center">
+                    <div className="rounded-full w-1 h-1 bg-blue-1" />
+                    <Image
+                        width={16}
+                        height={16}
+                        alt="Dashboard"
+                        src="/dashboard.svg"
+                    />
+                </span>
+            </li>
+
+            <li>
+                <Tooltip text="Go back home">
                     <LinkButton
                         href="/home/"
                         className="p-0! md:px-2!"
@@ -31,14 +40,16 @@ export const Topline = () => {
                             alt="home"
                             src="/cube.svg"
                         />
-                        <span className="hidden md:block">Home</span>
                     </LinkButton>
                 </Tooltip>
+            </li>
 
-                <Tooltip
-                    text="Emulate fake events"
-                    direction="top"
-                >
+            <li className="self-stretch flex items-center">
+                <hr className="w-px! h-1/2! bg-background-6" />
+            </li>
+
+            <li>
+                <Tooltip text="Emulate fake events">
                     <LinkButton
                         href="/emulate/"
                         className="p-0! md:px-2!"
@@ -49,14 +60,12 @@ export const Topline = () => {
                             alt="emulation"
                             src="/emulate.svg"
                         />
-                        <span className="hidden md:block">Emulation</span>
                     </LinkButton>
                 </Tooltip>
+            </li>
 
-                <Tooltip
-                    text="Notification centre"
-                    direction="top"
-                >
+            <li>
+                <Tooltip text="Notification centre">
                     <LinkButton
                         href="/notifications/"
                         className="p-0! md:px-2!"
@@ -67,38 +76,33 @@ export const Topline = () => {
                             alt="notifications"
                             src="/notification.svg"
                         />
-                        <span className="hidden md:block">Notifications</span>
                     </LinkButton>
                 </Tooltip>
-            </div>
+            </li>
 
-            <span className="flex gap-1 items-center absolute left-1/2 -translate-1/2 top-1/2">
-                <div className="rounded-full w-1 h-1 bg-blue-1" />
-                Dashboard
-            </span>
-
-            <div className="flex gap-1 ml-auto items-center">
-                <Tooltip
-                    text="Re-sync all data"
-                    direction="top"
-                    disabledPointer
-                >
-                    <Button
-                        onClick={() => {
-                            sync({ caching: false });
-                        }}
+            <li className="ml-auto!">
+                <div className="flex gap-1 items-center">
+                    <Tooltip
+                        text="Re-sync all data"
+                        disabledPointer
                     >
-                        {promiseStatus(promises.sync)}
-                        <Image
-                            src="/download.svg"
-                            alt=""
-                            width={16}
-                            height={16}
-                        />
-                        <mark>Sync</mark>
-                    </Button>
-                </Tooltip>
-            </div>
-        </div>
+                        <Button
+                            onClick={() => {
+                                sync({ caching: false });
+                            }}
+                        >
+                            {promiseStatus(promises.sync)}
+                            <Image
+                                src="/server.svg"
+                                alt=""
+                                width={16}
+                                height={16}
+                            />
+                            Fetch
+                        </Button>
+                    </Tooltip>
+                </div>
+            </li>
+        </ul>
     );
 };

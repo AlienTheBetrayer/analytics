@@ -5,14 +5,14 @@ import Image from "next/image";
 
 export const Emulate = () => {
     // zustand
-    const selectedProjectId = useAppStore(state => state.selectedProjectId);
+    const selectedProjectId = useAppStore((state) => state.selectedProjectId);
 
     return (
-        <Tooltip
-            text="Emulate events for this project"
-            direction="top"
-        >
-            <LinkButton className="text-6! p-0!" href={`/emulate/${selectedProjectId}`}>
+        <Tooltip text="Emulate events for this project">
+            <LinkButton
+                className="text-6! p-0!"
+                href={`/emulate/${selectedProjectId}`}
+            >
                 <Image
                     alt="manipulation"
                     src="/emulate.svg"

@@ -35,7 +35,7 @@ export const SearchButton = () => {
                 style: {
                     height: "100%",
                     transition: `300ms ease-out`,
-                    width: isFocused ? "100%" : "50%",
+                    width: isFocused ? "100%" : "75%",
                 },
                 onFocus: () => {
                     setIsFocused(true);
