@@ -1,6 +1,7 @@
 "use client";
 import { LoadingSearch } from "@/features/loading/components/LoadingSearch";
-import { NoResults } from "@/features/search/components/NoResults";
+import { EmptyQuery } from "@/features/search/components/errors/EmptyQuery";
+import { NoResults } from "@/features/search/components/errors/NoResults";
 import { Results } from "@/features/search/components/Results";
 import { Topline } from "@/features/search/components/Topline";
 import { useAppStore } from "@/zustand/store";
@@ -35,8 +36,8 @@ export const Search = () => {
             <>
                 <Topline />
 
-                <div className="box w-full max-w-400">
-                    <span>EMPTY QUERY</span>
+                <div className="box w-full max-w-400 mx-auto min-h-128">
+                    <EmptyQuery />
                 </div>
             </>
         );
@@ -48,32 +49,32 @@ export const Search = () => {
             <>
                 <Topline />
 
-                <div className="box w-full max-w-400 mx-auto">
+                <div className="box w-full max-w-400 mx-auto min-h-128">
                     <LoadingSearch />
                 </div>
             </>
         );
     }
 
-    // empty results
+    // empty results (no users found)
     if (results && !results.length) {
         return (
             <>
                 <Topline />
 
-                <div className="box w-full max-w-400 mx-auto">
+                <div className="box w-full max-w-400 mx-auto min-h-128">
                     <NoResults />
                 </div>
             </>
         );
     }
 
-    // main jsx
+    // users found
     return (
         <>
             <Topline />
 
-            <div className="box w-full max-w-400 mx-auto">
+            <div className="box w-full max-w-400 mx-auto min-h-128">
                 {results && <Results data={results} />}
             </div>
         </>
