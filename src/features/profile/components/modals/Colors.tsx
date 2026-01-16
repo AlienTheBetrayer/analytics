@@ -115,44 +115,46 @@ export const Colors = ({ data }: Props) => {
                         </Tooltip>
                     </li>
 
-                    <ul className="grid grid-cols-2 gap-2">
-                        <li className="flex flex-col w-full *:w-full gap-1">
-                            <Tooltip
-                                className="w-full"
-                                text="Select a random color"
-                            >
-                                <Button
-                                    onClick={controller.randomSelect}
+                    <li>
+                        <ul className="grid grid-cols-2 gap-2">
+                            <li className="flex flex-col w-full *:w-full gap-1">
+                                <Tooltip
                                     className="w-full"
+                                    text="Select a random color"
                                 >
-                                    <Image
-                                        width={16}
-                                        height={16}
-                                        src="/random.svg"
-                                        alt=""
-                                    />
-                                    Select
-                                </Button>
-                            </Tooltip>
-                        </li>
+                                    <Button
+                                        onClick={controller.randomSelect}
+                                        className="w-full"
+                                    >
+                                        <Image
+                                            width={16}
+                                            height={16}
+                                            src="/random.svg"
+                                            alt=""
+                                        />
+                                        Select
+                                    </Button>
+                                </Tooltip>
+                            </li>
 
-                        <li className="w-full *:w-full">
-                            <Tooltip text="Clear the palette">
-                                <Button
-                                    onClick={controller.clear}
-                                    className="w-full"
-                                >
-                                    <Image
-                                        width={16}
-                                        height={16}
-                                        src="/cross.svg"
-                                        alt=""
-                                    />
-                                    <u>Clear</u>
-                                </Button>
-                            </Tooltip>
-                        </li>
-                    </ul>
+                            <li className="w-full *:w-full">
+                                <Tooltip text="Clear the palette">
+                                    <Button
+                                        onClick={controller.clear}
+                                        className="w-full"
+                                    >
+                                        <Image
+                                            width={16}
+                                            height={16}
+                                            src="/cross.svg"
+                                            alt=""
+                                        />
+                                        <u>Clear</u>
+                                    </Button>
+                                </Tooltip>
+                            </li>
+                        </ul>
+                    </li>
 
                     <li className="w-full">
                         <Tooltip

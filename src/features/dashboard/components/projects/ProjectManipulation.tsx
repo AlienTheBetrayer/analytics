@@ -109,66 +109,68 @@ export const ProjectManipulation = () => {
                         <u>Data wiping</u>
                     </span>
                 </li>
-                
-                <ul className="flex flex-col sm:flex-row *:w-full ">
-                    <li>
-                        <Tooltip
-                            text="Wipe all of this project's data"
-                            className="w-full"
-                            isEnabled={status?.role !== "user"}
-                        >
-                            <Button
-                                className="w-full"
-                                onClick={() => {
-                                    deleteProjectBox.show();
-                                }}
-                                isEnabled={status?.role !== "user"}
-                            >
-                                {promiseStatus(
-                                    promises[
-                                        `projectDelete_${selectedProjectId}`
-                                    ]
-                                )}
-                                <Image
-                                    src="/delete.svg"
-                                    width={16}
-                                    height={16}
-                                    alt=""
-                                />
-                                Delete project
-                            </Button>
-                        </Tooltip>
-                    </li>
 
-                    <li>
-                        <Tooltip
-                            text="Wipe this project's events"
-                            className="w-full"
-                            isEnabled={status?.role !== "user"}
-                        >
-                            <Button
+                <li>
+                    <ul className="flex flex-col sm:flex-row *:w-full gap-4">
+                        <li>
+                            <Tooltip
+                                text="Wipe all of this project's data"
                                 className="w-full"
-                                onClick={() => {
-                                    deleteEventsBox.show();
-                                }}
                                 isEnabled={status?.role !== "user"}
                             >
-                                {promiseStatus(
-                                    promises[
-                                        `eventsDelete_${selectedProjectId}`
-                                    ]
-                                )}
-                                <Image
-                                    src="/type.svg"
-                                    width={16}
-                                    height={16}
-                                    alt=""
-                                />
-                                Delete all events
-                            </Button>
-                        </Tooltip>
-                    </li>
-                </ul>
+                                <Button
+                                    className="w-full"
+                                    onClick={() => {
+                                        deleteProjectBox.show();
+                                    }}
+                                    isEnabled={status?.role !== "user"}
+                                >
+                                    {promiseStatus(
+                                        promises[
+                                            `projectDelete_${selectedProjectId}`
+                                        ]
+                                    )}
+                                    <Image
+                                        src="/delete.svg"
+                                        width={16}
+                                        height={16}
+                                        alt=""
+                                    />
+                                    Delete project
+                                </Button>
+                            </Tooltip>
+                        </li>
+
+                        <li>
+                            <Tooltip
+                                text="Wipe this project's events"
+                                className="w-full"
+                                isEnabled={status?.role !== "user"}
+                            >
+                                <Button
+                                    className="w-full"
+                                    onClick={() => {
+                                        deleteEventsBox.show();
+                                    }}
+                                    isEnabled={status?.role !== "user"}
+                                >
+                                    {promiseStatus(
+                                        promises[
+                                            `eventsDelete_${selectedProjectId}`
+                                        ]
+                                    )}
+                                    <Image
+                                        src="/type.svg"
+                                        width={16}
+                                        height={16}
+                                        alt=""
+                                    />
+                                    Delete all events
+                                </Button>
+                            </Tooltip>
+                        </li>
+                    </ul>
+                </li>
             </ul>
         </div>
     );

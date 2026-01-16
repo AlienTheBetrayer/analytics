@@ -70,27 +70,29 @@ export const ProjectTopline = () => {
                 <Search key={selectedProjectId} />
             </li>
 
-            <ul className="flex items-center gap-1 ml-auto! h-full">
-                <li>
-                    <Deselect />
-                </li>
+            <li className="ml-auto!">
+                <ul className="flex items-center gap-1 h-full">
+                    <li>
+                        <Deselect />
+                    </li>
 
-                <li className="self-stretch flex items-center">
-                    <hr className="w-px! h-1/3 bg-background-6" />
-                </li>
+                    <li className="self-stretch flex items-center">
+                        <hr className="w-px! h-1/3 bg-background-6" />
+                    </li>
 
-                <li>
-                    <Emulate />
-                </li>
+                    <li>
+                        <Emulate />
+                    </li>
 
-                <li>
-                    <Manipulation />
-                </li>
+                    <li>
+                        <Manipulation />
+                    </li>
 
-                <li>
-                    <Wipe />
-                </li>
-            </ul>
+                    <li>
+                        <Wipe />
+                    </li>
+                </ul>
+            </li>
         </ul>
     );
 };

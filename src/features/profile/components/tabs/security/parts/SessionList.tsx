@@ -6,7 +6,6 @@ import { Profile, User } from "@/types/tables/account";
 import { promiseStatus } from "@/utils/other/status";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
-import React from "react";
 
 type Props = {
     data: { user: User; profile: Profile };
@@ -27,56 +26,53 @@ export const SessionList = ({ data, currentSessions }: Props) => {
         >
             {currentSessions ? (
                 currentSessions.map((token) => (
-                    <React.Fragment key={token.id}>
-                        <li
-                            className={`flex gap-2 items-center rounded-full min-h-12 px-4! ${token.isCurrent ? "border border-blue-2" : ""}`}
-                        >
-                            {token.isCurrent ? (
-                                <>
-                                    <Image
-                                        alt=""
-                                        width={20}
-                                        height={20}
-                                        src="/privacy.svg"
-                                    />
-                                    <span>Ongoing</span>
-                                </>
-                            ) : (
-                                <span className="truncate">{token.id}</span>
-                            )}
+                    <li
+                        key={token.id}
+                        className={`flex gap-2 items-center rounded-full min-h-12 px-4! ${token.isCurrent ? "border border-blue-2" : ""}`}
+                    >
+                        {token.isCurrent ? (
+                            <>
+                                <Image
+                                    alt=""
+                                    width={20}
+                                    height={20}
+                                    src="/privacy.svg"
+                                />
+                                <span>Ongoing</span>
+                            </>
+                        ) : (
+                            <span className="truncate">{token.id}</span>
+                        )}
 
-                            <Tooltip
-                                className="ml-auto"
-                                direction="top"
-                                text="Log out & delete this session"
+                        <Tooltip
+                            className="ml-auto"
+                            direction="top"
+                            text="Log out & delete this session"
+                            isEnabled={!token.isCurrent}
+                        >
+                            <Button
                                 isEnabled={!token.isCurrent}
+                                onClick={async () => {
+                                    terminateSessions({
+                                        ids: [token.id],
+                                        user_id: data.user.id,
+                                        promiseKey: `terminateSessions_${token.id}`,
+                                    });
+                                }}
                             >
-                                <Button
-                                    isEnabled={!token.isCurrent}
-                                    onClick={async () => {
-                                        terminateSessions({
-                                            ids: [token.id],
-                                            user_id: data.user.id,
-                                            promiseKey: `terminateSessions_${token.id}`,
-                                        });
-                                    }}
-                                >
-                                    {promiseStatus(
-                                        promises[
-                                            `terminateSessions_${token.id}`
-                                        ]
-                                    )}
-                                    <Image
-                                        src="/cross.svg"
-                                        width={16}
-                                        height={16}
-                                        alt=""
-                                    />
-                                    Terminate
-                                </Button>
-                            </Tooltip>
-                        </li>
-                    </React.Fragment>
+                                {promiseStatus(
+                                    promises[`terminateSessions_${token.id}`]
+                                )}
+                                <Image
+                                    src="/cross.svg"
+                                    width={16}
+                                    height={16}
+                                    alt=""
+                                />
+                                Terminate
+                            </Button>
+                        </Tooltip>
+                    </li>
                 ))
             ) : (
                 <li className="flex flex-col gap-1 m-auto! items-center">
