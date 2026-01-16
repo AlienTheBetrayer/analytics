@@ -21,6 +21,7 @@ export const Input = ({
     minLength,
     maxLength,
     container,
+    children,
     ...rest
 }: Props) => {
     // value state logic
@@ -42,9 +43,10 @@ export const Input = ({
                 type="text"
                 required={required && isEnabled}
                 className={`placeholder:text-background-9 w-full h-full min-h-8 
-                    outline-1 outline-background-a-10 p-2.5 rounded-full focus:outline-blue-1 bg-background-a-3
+                    outline-0!
+                    border border-background-a-8 p-2.5 rounded-full focus:border-blue-1 bg-background-a-3
                     hover:bg-background-a-6 transition-all duration-500 focus-visible:bg-background-a-6
-                    ${isEnabled && (required || minLength || maxLength) ? "invalid:outline-red-1! valid:outline-blue-1!" : ""} 
+                    ${isEnabled && (required || minLength || maxLength) ? "invalid:border-red-1! valid:border-blue-1!" : ""} 
                     ${className ?? ""}`}
                 value={inputValue}
                 ref={inputRef}
@@ -58,7 +60,7 @@ export const Input = ({
                 minLength={minLength}
                 {...rest}
             />
-
+            {children}
             <AnimatePresence>
                 {inputValue !== "" && (
                     <Button
