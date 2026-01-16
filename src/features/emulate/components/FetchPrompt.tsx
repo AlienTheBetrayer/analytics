@@ -43,7 +43,7 @@ export const FetchPrompt = () => {
                         width={16}
                         height={16}
                         alt=""
-                        src="/download.svg"
+                        src="/server.svg"
                     />
                     Fetch
                 </Button>

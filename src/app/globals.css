@@ -61,7 +61,7 @@
     --font-6: 0.8rem;
     --font-7: 0.5rem;
 
-    --brightness-b: 1.5;
+    --brightness-b: 1.3;
     --dotted: var(--background-5);
     --loading: var(--background-4);
 
@@ -120,7 +120,7 @@
     --foreground-8: hsl(0, 0%, 64%);
     --foreground-9: hsl(0, 0%, 70%);
 
-    --brightness-b: 0.5;
+    --brightness-b: 0.3;
     --dotted: var(--background-10);
     --loading: var(--background-7);
 
@@ -300,6 +300,10 @@ a,
 label {
     font-size: var(--font-6);
     color: var(--foreground-3);
+}
+
+p {
+    color: var(--foreground-4);
 }
 
 ul,

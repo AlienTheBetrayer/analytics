@@ -25,7 +25,7 @@ export const AbsentData = () => {
                         />
                     </div>
 
-                    <span className="text-5! text-foreground-5!">
+                    <span className="text-5!">
                         <u>Absent</u> data
                     </span>
 
@@ -53,7 +53,7 @@ export const AbsentData = () => {
                                 width={16}
                                 height={16}
                                 alt=""
-                                src="/download.svg"
+                                src="/server.svg"
                             />
                             Fetch attempt
                         </Button>

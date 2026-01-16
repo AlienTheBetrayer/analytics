@@ -6,7 +6,7 @@ import { Results } from "@/features/search/components/Results";
 import { Topline } from "@/features/search/components/Topline";
 import { useAppStore } from "@/zustand/store";
 import { useParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export const Search = () => {
     // url
@@ -20,14 +20,25 @@ export const Search = () => {
         ReturnType<typeof search>
     > | null>(null);
 
+    /**
+     * safely fetches with the current query in the url
+     */
+    const fetchSearch = useCallback(() => {
+        if (!query) {
+            return;
+        }
+
+        search({ query }).then((data) => setResults(data));
+    }, [search, query]);
+
     useEffect(() => {
         if (hasFetched.current || !query) {
             return;
         }
 
         hasFetched.current = true;
-        search({ query }).then((data) => setResults(data));
-    }, [query, search]);
+        fetchSearch();
+    }, [query, fetchSearch]);
 
     // fallback handling
     // empty query
@@ -43,7 +54,7 @@ export const Search = () => {
         );
     }
 
-    // while fetching 
+    // while fetching
     if (!results) {
         return (
             <>
@@ -63,7 +74,7 @@ export const Search = () => {
                 <Topline />
 
                 <div className="box w-full max-w-400 mx-auto min-h-128">
-                    <NoResults />
+                    <NoResults onSearch={fetchSearch} />
                 </div>
             </>
         );

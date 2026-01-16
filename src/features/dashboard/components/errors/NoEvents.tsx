@@ -22,7 +22,7 @@ export const NoEvents = () => {
                         />
                     </div>
 
-                    <span className="text-5! text-foreground-5!">
+                    <span className="text-5!">
                         <u>Absent</u> events
                     </span>
 
@@ -54,7 +54,7 @@ export const NoEvents = () => {
                                 width={16}
                                 height={16}
                                 alt=""
-                                src="/download.svg"
+                                src="/server.svg"
                             />
                             Re-fetch
                         </Button>

@@ -21,7 +21,7 @@ export const NoProjectSelected = () => {
                         />
                     </div>
 
-                    <span className="text-5! text-foreground-5!">
+                    <span className="text-5!">
                         <u>No project</u> is selected
                     </span>
 
