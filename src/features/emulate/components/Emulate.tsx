@@ -1,11 +1,11 @@
 "use client";
 import { useParams } from "next/navigation";
-import { AuthRequired } from "@/features/authentication/components/AuthRequired";
 import { useAppStore } from "@/zustand/store";
 import { Controller } from "./Controller";
 import { FetchPrompt } from "./FetchPrompt";
 import { ProjectList } from "./ProjectList";
 import { Topline } from "./Topline";
+import { LoadingEmulate } from "@/features/loading/components/LoadingEmulate";
 
 export const Emulate = () => {
     // url
@@ -19,8 +19,8 @@ export const Emulate = () => {
     // authentcation's missing
     if (!status || status?.role === "user") {
         return (
-            <div className="flex flex-col w-full mt-16 max-w-400 p-6! rounded-4xl! gap-4! m-auto box">
-                <AuthRequired />
+            <div className="flex flex-col w-full max-w-400 p-6! rounded-4xl! gap-4! m-auto box">
+                <LoadingEmulate />
             </div>
         );
     }

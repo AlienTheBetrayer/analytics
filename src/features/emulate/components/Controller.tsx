@@ -80,6 +80,7 @@ export const Controller = () => {
                                 placeholder="at least 8 characters"
                                 required
                                 minLength={8}
+                                maxLength={40}
                                 value={name}
                                 onChange={(e) => setName(e)}
                             />
@@ -99,6 +100,7 @@ export const Controller = () => {
                         id="event-type"
                         placeholder="at least 5 characters"
                         required
+                        maxLength={40}
                         minLength={5}
                         value={eventType}
                         onChange={(e) => setEventType(e)}

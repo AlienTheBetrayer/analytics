@@ -32,10 +32,11 @@ export const NotificationCompact = ({
     const clearData = useAppStore((state) => state.clearData);
 
     return (
-        <div className="grid gap-1">
+        <div className="flex flex-col">
             <ul
-                className={`box backdrop-blur-none! w-full max-w-400 justify-between! mx-auto p-0! gap-1! flex-row! transition-all duration-500
-                     min-h-10 h-10 items-center`}
+                className={`box backdrop-blur-none! w-full max-w-400 justify-between!
+                     mx-auto p-0! gap-1! flex-row! transition-all duration-500 min-h-10 h-10 items-center
+                     rounded-b-none! `}
             >
                 <li className="flex gap-1 items-center min-h-8 min-w-8 justify-center">
                     <small>
@@ -81,7 +82,7 @@ export const NotificationCompact = ({
             </ul>
 
             <LinkButton
-                className={`box rounded-4xl! backdrop-blur-none! grid! md:grid-cols-[30%_auto_1fr] gap-4! min-h-20! text-center ${buttonClassName ?? ""}`}
+                className={`box rounded-4xl! rounded-t-none! backdrop-blur-none! grid! md:grid-cols-[30%_auto_1fr] gap-4! min-h-20! text-center ${buttonClassName ?? ""}`}
                 href={`/notification/${notification.id}`}
             >
                 <div className="h-full grid place-items-center gap-1">

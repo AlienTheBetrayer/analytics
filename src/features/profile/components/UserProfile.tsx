@@ -2,7 +2,6 @@
 
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { AuthRequired } from "@/features/authentication/components/AuthRequired";
 import { useAppStore } from "@/zustand/store";
 import { Overview } from "./tabs/overview/Overview";
 import { WrongUser } from "./WrongUser";
@@ -60,23 +59,12 @@ export const UserProfile = () => {
         );
     }
 
-    if (!user || promises.getUsers === "pending") {
+    if (!retrievedUsername || !user || promises.getUsers === "pending") {
         return (
             <div
                 className={`box max-w-400 mt-2 w-full m-auto p-0! min-h-120 rounded-4xl! overflow-hidden`}
             >
                 <LoadingProfile />
-            </div>
-        );
-    }
-
-    // viewing current profile but not logged in
-    if (!retrievedUsername) {
-        return (
-            <div
-                className={`box max-w-400 mt-2 w-full m-auto p-0! min-h-120 rounded-4xl! overflow-hidden`}
-            >
-                <AuthRequired />
             </div>
         );
     }

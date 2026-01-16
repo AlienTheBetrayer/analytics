@@ -3,9 +3,8 @@ import { useAppStore } from "@/zustand/store";
 import { DashboardEvents } from "./events/DashboardEvents";
 import { DashboardProjects } from "./projects/DashboardProjects";
 import { Topline } from "./Topline";
-import { AbsentData } from "./errors/AbsentData";
-import { AuthRequired } from "@/features/authentication/components/AuthRequired";
 import { useEffect, useRef } from "react";
+import { LoadingDashboard } from "@/features/loading/components/LoadingDashboard";
 
 export const Dashboard = () => {
     // zustand states
@@ -34,18 +33,10 @@ export const Dashboard = () => {
         }
     }, [status, deleteState, selectProject, sync]);
 
-    if (!status) {
+    if (!status || !Object.values(projects)?.length) {
         return (
-            <div className="w-full max-w-400 m-auto min-h-200 mt-8 sm:mt-0 box">
-                <AuthRequired />
-            </div>
-        );
-    }
-
-    if (!Object.values(projects)?.length) {
-        return (
-            <div className="w-full max-w-400 m-auto min-h-200 mt-8 sm:mt-0 box">
-                <AbsentData />
+            <div className="w-full max-w-400 m-auto min-h-200 box">
+                <LoadingDashboard />
             </div>
         );
     }
