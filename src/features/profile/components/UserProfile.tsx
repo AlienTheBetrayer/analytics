@@ -48,7 +48,7 @@ export const UserProfile = () => {
                 <AbsentTopline title="Incorrect username" />
 
                 <div
-                    className={`box max-w-400 mt-2 w-full m-auto p-0! min-h-128 rounded-4xl! overflow-hidden`}
+                    className={`box max-w-400 mt-2 w-full m-auto min-h-128 rounded-4xl! overflow-hidden`}
                 >
                     <LoadingProfile />
                 </div>
@@ -63,7 +63,7 @@ export const UserProfile = () => {
                 <AbsentTopline title="User does not exist" />
 
                 <div
-                    className={`box max-w-400 mt-2 w-full m-auto p-0! min-h-128 rounded-4xl! overflow-hidden`}
+                    className={`box max-w-400 mt-2 w-full m-auto min-h-128 rounded-4xl! overflow-hidden`}
                 >
                     <LoadingProfile />
                 </div>
@@ -78,7 +78,7 @@ export const UserProfile = () => {
             <Topline data={retrievedData} />
 
             <div
-                className={`box max-w-400 w-full m-auto p-0! rounded-4xl! min-h-128 overflow-hidden`}
+                className={`box max-w-400 w-full m-auto rounded-4xl! min-h-128 overflow-hidden`}
             >
                 <Content data={retrievedData} />
             </div>

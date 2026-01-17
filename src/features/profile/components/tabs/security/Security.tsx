@@ -56,7 +56,7 @@ export const Security = ({ data }: Props) => {
     const [isDeletionEnabled, setIsDeletionEnabled] = useState<boolean>(false);
 
     return (
-        <div className="flex flex-col gap-4 p-8 w-full grow">
+        <div className="flex flex-col gap-4 w-full grow">
             {deleteMessageBox.render()}
 
             <div className="flex flex-col gap-2 items-center">

@@ -19,7 +19,7 @@ export const Edit = ({ data }: Props) => {
     );
 
     return (
-        <div className="flex flex-col gap-4 p-8 w-full grow">
+        <div className="flex flex-col gap-4 w-full grow">
             <div className="flex flex-col gap-2 items-center">
                 <div className="flex gap-1 items-center">
                     <Image

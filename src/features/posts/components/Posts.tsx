@@ -5,7 +5,7 @@ import { Select } from "@/features/posts/components/Select";
 import { Topline } from "@/features/posts/components/Topline";
 import { useAppStore } from "@/zustand/store";
 import { useParams } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 export const Posts = () => {
     // url
@@ -16,21 +16,20 @@ export const Posts = () => {
     const profiles = useAppStore((state) => state.profiles);
     const users = useAppStore((state) => state.users);
     const postIds = useAppStore((state) => state.postIds);
-    const getUsers = useAppStore((state) => state.getUsers);
+    const getPosts = useAppStore((state) => state.getPosts);
 
     // fetching
     const retrievedUsername = username ?? status?.username;
 
+    const hasFetched = useRef<boolean>(false);
     useEffect(() => {
-        if (!retrievedUsername) {
+        if (!retrievedUsername || hasFetched.current) {
             return;
         }
 
-        getUsers({
-            username: [retrievedUsername],
-            select: ["profile"], // + "posts"
-        });
-    }, [retrievedUsername, getUsers]);
+        getPosts({ type: "all", username: retrievedUsername });
+        hasFetched.current = true;
+    }, [retrievedUsername, getPosts]);
 
     const user = Object.values(users).find(
         (u) => u.username === retrievedUsername,
@@ -43,7 +42,7 @@ export const Posts = () => {
                 <AbsentTopline title="User does not exist" />
 
                 <div
-                    className={`box max-w-400 w-full mx-auto p-0! min-h-128 rounded-4xl! overflow-hidden`}
+                    className={`box max-w-400 w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}
                 >
                     <LoadingProfile />
                 </div>
@@ -58,7 +57,7 @@ export const Posts = () => {
                 <AbsentTopline title="Incorrect username" />
 
                 <div
-                    className={`box max-w-400 w-full mx-auto p-0! min-h-128 rounded-4xl! overflow-hidden`}
+                    className={`box max-w-400 w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}
                 >
                     <LoadingProfile />
                 </div>
@@ -73,7 +72,7 @@ export const Posts = () => {
                 <AbsentTopline title="User hasn't created a post yet" />
 
                 <div
-                    className={`box max-w-400 w-full mx-auto p-0! min-h-128 rounded-4xl! overflow-hidden`}
+                    className={`box max-w-400 w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}
                 >
                     <LoadingProfile />
                 </div>

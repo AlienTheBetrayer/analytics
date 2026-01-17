@@ -5,7 +5,7 @@ import { Select } from "@/features/posts/components/Select";
 import { Topline } from "@/features/posts/components/Topline";
 import { useAppStore } from "@/zustand/store";
 import { useParams } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 export const Post = () => {
     // url
@@ -13,9 +13,18 @@ export const Post = () => {
 
     // zustand
     const posts = useAppStore((state) => state.posts);
+    const getPosts = useAppStore((state) => state.getPosts);
 
     // fetching
-    useEffect(() => {}, [id]);
+    const hasFetched = useRef<boolean>(false);
+    useEffect(() => {
+        if (!id || hasFetched.current) {
+            return;
+        }
+
+        getPosts({ type: "single", id });
+        hasFetched.current = true;
+    }, [id, getPosts]);
 
     // fallbacks
     // no tab
@@ -25,7 +34,7 @@ export const Post = () => {
                 <AbsentTopline title="Incorrect tab" />
 
                 <div
-                    className={`box max-w-400 w-full mx-auto p-0! min-h-128 rounded-4xl! overflow-hidden`}
+                    className={`box max-w-400 w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}
                 >
                     <LoadingEmulate />
                 </div>
@@ -40,7 +49,7 @@ export const Post = () => {
                 <AbsentTopline title="User not found" />
 
                 <div
-                    className={`box max-w-400 w-full mx-auto p-0! min-h-128 rounded-4xl! overflow-hidden`}
+                    className={`box max-w-400 w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}
                 >
                     <LoadingEmulate />
                 </div>
@@ -57,7 +66,7 @@ export const Post = () => {
                 <AbsentTopline title="Post does not exist" />
 
                 <div
-                    className={`box max-w-400 w-full mx-auto p-0! min-h-128 rounded-4xl! overflow-hidden`}
+                    className={`box max-w-400 w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}
                 >
                     <LoadingEmulate />
                 </div>
@@ -74,7 +83,7 @@ export const Post = () => {
             />
 
             <div
-                className={`box max-w-400 w-full mx-auto p-0! min-h-128 rounded-4xl! overflow-hidden`}
+                className={`box max-w-400 w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}
             >
                 <Select
                     type="post"
