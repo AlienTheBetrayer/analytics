@@ -3,7 +3,6 @@
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAppStore } from "@/zustand/store";
-import { Overview } from "./tabs/overview/Overview";
 import { WrongUser } from "./WrongUser";
 import { Content } from "./display/Content";
 import { Topline } from "./display/Topline";
@@ -46,7 +45,7 @@ export const UserProfile = () => {
     }, [retrievedUsername, getUsers]);
 
     const user = Object.values(users).find(
-        (u) => u.username === retrievedUsername
+        (u) => u.username === retrievedUsername,
     );
 
     if (error === "no_user" || error === "no_profile") {
@@ -71,24 +70,14 @@ export const UserProfile = () => {
 
     const retrievedData = { user, profile: profiles[user.id] };
 
-    if (retrievedData.user.id === status?.id || status?.role === "op") {
-        return (
-            <>
-                <Topline data={retrievedData} />
-                <div
-                    className={`box max-w-400 w-full m-auto p-0! rounded-4xl! min-h-150 overflow-hidden`}
-                >
-                    <Content data={retrievedData} />
-                </div>
-            </>
-        );
-    }
-
     return (
-        <div
-            className={`box max-w-400 w-full m-auto p-0! rounded-4xl! overflow-hidden`}
-        >
-            <Overview data={retrievedData} />
-        </div>
+        <>
+            <Topline data={retrievedData} />
+            <div
+                className={`box max-w-400 w-full m-auto p-0! rounded-4xl! overflow-hidden`}
+            >
+                <Content data={retrievedData} />
+            </div>
+        </>
     );
 };

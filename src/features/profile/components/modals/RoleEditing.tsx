@@ -1,6 +1,7 @@
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { Select } from "@/features/ui/select/components/Select";
+import { AuthenticationRole } from "@/types/auth/authentication";
 import { Profile, User } from "@/types/tables/account";
 import { promiseStatus } from "@/utils/other/status";
 import { useAppStore } from "@/zustand/store";
@@ -19,7 +20,9 @@ export const RoleEditing = ({ data }: Props) => {
     const updateUser = useAppStore((state) => state.updateUser);
 
     // react states
-    const [role, setRole] = useState<string>(data.user.role ?? "user");
+    const [role, setRole] = useState<AuthenticationRole>(
+        data.user.role ?? "user",
+    );
 
     return (
         <div className="box h-full min-h-80">
@@ -62,7 +65,7 @@ export const RoleEditing = ({ data }: Props) => {
                         id="role-select"
                         items={["user", "admin", "op"]}
                         value={role}
-                        onChange={(e) => setRole(e)}
+                        onChange={(e) => setRole(e as AuthenticationRole)}
                     />
                 </div>
 

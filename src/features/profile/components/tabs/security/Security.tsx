@@ -87,7 +87,10 @@ export const Security = ({ data }: Props) => {
                         height={256}
                     />
 
-                    <Role data={data} />
+                    <Role
+                        data={data}
+                        className="w-fit! mx-auto!"
+                    />
 
                     <Tooltip text="Log yourself out">
                         <Button

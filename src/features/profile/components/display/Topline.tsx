@@ -88,6 +88,7 @@ export const Topline = ({ data }: Props) => {
                             element={<RoleEditing data={data} />}
                         >
                             <Button>
+                                <div className="w-1 h-1 rounded-full bg-red-1" />
                                 <Image
                                     width={16}
                                     height={16}
@@ -138,66 +139,96 @@ export const Topline = ({ data }: Props) => {
             </li>
 
             <li>
-                <Tooltip text="Edit the profile">
-                    <LinkButton href={`/profile/${data.user.username}/edit`}>
+                <Tooltip text="User's posts">
+                    <LinkButton href={`/posts/${data.user.username}`}>
                         <Image
                             width={16}
                             height={16}
-                            alt="home"
-                            src="/pencil.svg"
+                            alt=""
+                            src="/select.svg"
                         />
-                        <span className="hidden sm:block">Edit</span>
+                        <span className="hidden sm:block">Posts</span>
                         <TabSelection
-                            condition={tab === "edit"}
+                            condition={tab === "posts"}
                             color="var(--blue-1)"
                         />
                     </LinkButton>
                 </Tooltip>
             </li>
 
-            <li>
-                <Tooltip text="Security measures">
-                    <LinkButton
-                        href={`/profile/${data.user.username}/security`}
-                    >
-                        <Image
-                            width={16}
-                            height={16}
-                            alt="home"
-                            src="/security.svg"
-                        />
-                        <span className="hidden sm:block">Security</span>
-                        <TabSelection
-                            condition={tab === "security"}
-                            color="var(--blue-1)"
-                        />
-                    </LinkButton>
-                </Tooltip>
-            </li>
+            {((status && status.id === data.user.id) ||
+                status?.role === "op") && (
+                <>
+                    <li>
+                        <Tooltip text="Edit the profile">
+                            <LinkButton
+                                href={`/profile/${data.user.username}/edit`}
+                            >
+                                <Image
+                                    width={16}
+                                    height={16}
+                                    alt="home"
+                                    src="/pencil.svg"
+                                />
+                                <span className="hidden sm:block">Edit</span>
+                                <TabSelection
+                                    condition={tab === "edit"}
+                                    color="var(--blue-1)"
+                                />
+                            </LinkButton>
+                        </Tooltip>
+                    </li>
 
-            <li>
-                <Tooltip text="Friends and Friend requests">
-                    <LinkButton href={`/profile/${data.user.username}/friends`}>
-                        <Image
-                            width={16}
-                            height={16}
-                            alt="home"
-                            src="/friends.svg"
-                        />
-                        <span className="hidden sm:block">Friends</span>
-                        <TabSelection
-                            condition={tab === "friends"}
-                            color="var(--blue-1)"
-                        />
-                        <TabSelection
-                            condition={
-                                !!friendRequests[data.user.id]?.incoming?.size
-                            }
-                            color="var(--orange-1)"
-                        />
-                    </LinkButton>
-                </Tooltip>
-            </li>
+                    <li>
+                        <Tooltip text="Security measures">
+                            <LinkButton
+                                href={`/profile/${data.user.username}/security`}
+                            >
+                                <Image
+                                    width={16}
+                                    height={16}
+                                    alt="home"
+                                    src="/security.svg"
+                                />
+                                <span className="hidden sm:block">
+                                    Security
+                                </span>
+                                <TabSelection
+                                    condition={tab === "security"}
+                                    color="var(--blue-1)"
+                                />
+                            </LinkButton>
+                        </Tooltip>
+                    </li>
+
+                    <li>
+                        <Tooltip text="Friends and Friend requests">
+                            <LinkButton
+                                href={`/profile/${data.user.username}/friends`}
+                            >
+                                <Image
+                                    width={16}
+                                    height={16}
+                                    alt="home"
+                                    src="/friends.svg"
+                                />
+                                <span className="hidden sm:block">Friends</span>
+                                <TabSelection
+                                    condition={tab === "friends"}
+                                    color="var(--blue-1)"
+                                />
+                                <TabSelection
+                                    condition={
+                                        !!friendRequests[data.user.id]?.incoming
+                                            ?.size
+                                    }
+                                    color="var(--orange-1)"
+                                />
+                            </LinkButton>
+                        </Tooltip>
+                    </li>
+                </>
+            )}
         </ul>
     );
 };

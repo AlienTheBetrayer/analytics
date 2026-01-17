@@ -63,7 +63,10 @@ export const Friends = ({ data }: Props) => {
                         width={256}
                         height={256}
                     />
-                    <Role data={data} />
+                    <Role
+                        data={data}
+                        className="w-fit! mx-auto!"
+                    />
                 </div>
 
                 <hr className="sm:w-px! sm:h-full" />

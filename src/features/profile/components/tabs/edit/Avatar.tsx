@@ -100,7 +100,7 @@ export const Avatar = ({
                                             <mark>
                                                 <b>0.5 MB!</b>
                                             </mark>
-                                        </>
+                                        </>,
                                     );
                                     setTimeout(() => {
                                         fileError[1](undefined);
@@ -132,7 +132,10 @@ export const Avatar = ({
                 )}
             </AnimatePresence>
 
-            <Role data={data} className="w-fit! mx-auto!"/>
+            <Role
+                data={data}
+                className="w-fit! mx-auto!"
+            />
 
             <div className="flex gap-1">
                 {avatarFile[0] ? (
