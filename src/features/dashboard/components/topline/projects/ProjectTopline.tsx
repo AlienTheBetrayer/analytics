@@ -12,6 +12,7 @@ import { TabSelection } from "@/utils/other/TabSelection";
 
 export const ProjectTopline = () => {
     // zustand-state
+    const status = useAppStore((state) => state.status);
     const selectedProjectId = useAppStore((state) => state.selectedProjectId);
     const projectFilters = useAppStore((state) => state.projectFilters);
 
@@ -80,15 +81,24 @@ export const ProjectTopline = () => {
                         <hr className="w-px! h-1/3 bg-background-6" />
                     </li>
 
-                    <li>
+                    <li
+                        inert={status?.role === "user"}
+                        className={`${status?.role === "user" ? "opacity-30" : ""}`}
+                    >
                         <Emulate />
                     </li>
 
-                    <li>
+                    <li
+                        inert={status?.role === "user"}
+                        className={`${status?.role === "user" ? "opacity-30" : ""}`}
+                    >
                         <Manipulation />
                     </li>
 
-                    <li>
+                    <li
+                        inert={status?.role === "user"}
+                        className={`${status?.role === "user" ? "opacity-30" : ""}`}
+                    >
                         <Wipe />
                     </li>
                 </ul>

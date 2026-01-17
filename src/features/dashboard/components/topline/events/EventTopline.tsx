@@ -12,6 +12,7 @@ import { TabSelection } from "@/utils/other/TabSelection";
 
 export const EventTopline = () => {
     // zustand-state
+    const status = useAppStore((state) => state.status);
     const selectedProjectId = useAppStore((state) => state.selectedProjectId);
     const eventFilters = useAppStore((state) => state.eventFilters);
 
@@ -43,9 +44,7 @@ export const EventTopline = () => {
                     direction="bottom-right"
                     element={<Filtering />}
                 >
-                    <Tooltip
-                        text="Filter events"
-                    >
+                    <Tooltip text="Filter events">
                         <Button className="aspect-square">
                             <Image
                                 alt="filter"
@@ -70,9 +69,7 @@ export const EventTopline = () => {
                     direction="bottom-right"
                     element={<Sorting />}
                 >
-                    <Tooltip
-                        text="Sort events"
-                    >
+                    <Tooltip text="Sort events">
                         <Button className="aspect-square">
                             <Image
                                 alt="sort"
@@ -102,7 +99,7 @@ export const EventTopline = () => {
                 </Tooltip>
             </li>
 
-            <li className='self-stretch flex items-center'>
+            <li className="self-stretch flex items-center">
                 <hr className="w-px! h-1/3 bg-background-6" />
             </li>
 
@@ -110,7 +107,10 @@ export const EventTopline = () => {
                 <Search key={selectedProjectId} />
             </li>
 
-            <li className="ml-auto!">
+            <li
+                inert={status?.role === "user"}
+                className={`ml-auto! ${status?.role === "user" ? "opacity-30" : ""}`}
+            >
                 <Wipe />
             </li>
         </ul>
