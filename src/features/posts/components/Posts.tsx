@@ -1,6 +1,7 @@
 "use client";
 import { AbsentTopline } from "@/features/loading/components/AbsentTopline";
 import { LoadingProfile } from "@/features/loading/components/LoadingProfile";
+import { Select } from "@/features/posts/components/Select";
 import { Topline } from "@/features/posts/components/Topline";
 import { useAppStore } from "@/zustand/store";
 import { useParams } from "next/navigation";
@@ -8,13 +9,13 @@ import { useEffect } from "react";
 
 export const Posts = () => {
     // url
-    const { username, id } = useParams<{ id?: string; username?: string }>();
+    const { username } = useParams<{ id?: string; username?: string }>();
 
     // zustand
     const status = useAppStore((state) => state.status);
     const profiles = useAppStore((state) => state.profiles);
     const users = useAppStore((state) => state.users);
-    const posts = useAppStore((state) => state.posts);
+    const postIds = useAppStore((state) => state.postIds);
     const getUsers = useAppStore((state) => state.getUsers);
 
     // fetching
@@ -66,12 +67,7 @@ export const Posts = () => {
     }
 
     // post does not exist and we're not the user
-    if (
-        status?.role !== "op" &&
-        status?.id !== user?.id &&
-        user &&
-        !posts[user?.id]?.length
-    ) {
+    if (status?.id !== user?.id && user && !postIds[user?.id]?.length) {
         return (
             <>
                 <AbsentTopline title="User hasn't created a post yet" />
@@ -85,14 +81,22 @@ export const Posts = () => {
         );
     }
 
-    const retrievedData = { user, profile: profiles[user.id] };
+    const data = { user, profile: profiles[user.id] };
 
     // main jsx
     return (
         <>
-            <Topline data={retrievedData} />
+            <Topline
+                type="posts"
+                data={data}
+            />
 
-            <div className="box max-w-400 w-full mx-auto min-h-128 rounded-4xl!"></div>
+            <div className="box max-w-400 w-full mx-auto min-h-128 rounded-4xl!">
+                <Select
+                    type="posts"
+                    data={data}
+                />
+            </div>
         </>
     );
 };

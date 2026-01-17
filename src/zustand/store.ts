@@ -10,12 +10,15 @@ import { DataSlice } from "./slices/data";
 import { UserSlice } from "./slices/user";
 import { NotificationStore } from "@/types/zustand/notification";
 import { NotificationSlice } from "./slices/notification";
+import { PostStore } from "@/types/zustand/posts";
+import { PostSlice } from "@/zustand/slices/posts";
 
 export type StoreType = AuthenticationStore &
     DashboardStore &
     DataStore &
     UserStore &
-    NotificationStore;
+    NotificationStore &
+    PostStore;
 
 export const useAppStore = create<StoreType>((set, get) => ({
     ...AuthenticationSlice(set, get),
@@ -23,4 +26,5 @@ export const useAppStore = create<StoreType>((set, get) => ({
     ...DataSlice(set, get),
     ...UserSlice(set, get),
     ...NotificationSlice(set, get),
+    ...PostSlice(set, get),
 }));

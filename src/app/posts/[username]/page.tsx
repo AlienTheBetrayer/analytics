@@ -1,3 +1,7 @@
-import PostsPage from "@/app/posts/[username]/[id]/page";
+import { Posts } from "@/features/posts/components/Posts";
+
+const PostsPage = () => {
+    return <Posts />;
+};
 
 export default PostsPage;

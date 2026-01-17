@@ -1,6 +1,6 @@
 import { CachedUser } from "../api/responses/users";
 import { AuthenticationRole } from "../auth/authentication";
-import { Post, Profile, ProfileGender, User } from "../tables/account";
+import { Profile, ProfileGender, User } from "../tables/account";
 
 export type UserStore = {
     users: Record<string, User>;
@@ -11,7 +11,7 @@ export type UserStore = {
         { incoming: Set<string>; outcoming: Set<string> }
     >;
     colors: Record<string, { slot: number; color: string }[]>;
-    posts: Record<string, Post[]>;
+    postIds: Record<string, string[]>;
 
     /**
      * gets all the users and their data with filtering options

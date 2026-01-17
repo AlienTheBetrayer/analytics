@@ -1,13 +1,19 @@
 import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
-import { Profile, User } from "@/types/tables/account";
+import { Post, Profile, User } from "@/types/tables/account";
 import Image from "next/image";
 
-type Props = {
-    data: { user: User; profile: Profile };
-};
+type Props =
+    | {
+          type: "posts";
+          data: { user: User; profile: Profile };
+      }
+    | {
+          type: "post";
+          data: Post;
+      };
 
-export const Topline = ({ data }: Props) => {
+export const Topline = ({ type, data }: Props) => {
     return (
         <ul
             className={`box p-0! gap-1! my-2! mx-auto! flex-row! max-w-400 w-full transition-all duration-500 h-10 items-center`}
