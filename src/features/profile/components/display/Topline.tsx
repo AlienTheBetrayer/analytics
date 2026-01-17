@@ -16,7 +16,6 @@ export const Topline = ({ data }: Props) => {
     // zustand
     const status = useAppStore((state) => state.status);
     const friendRequests = useAppStore((state) => state.friendRequests);
-    const unreadTabs = useAppStore((state) => state.unreadTabs);
 
     // url
     const { tab } = useParams<{ tab?: string }>();
@@ -38,7 +37,7 @@ export const Topline = ({ data }: Props) => {
             </li>
 
             <li>
-                <Tooltip text="Go back home">
+                <Tooltip text="Back home">
                     <LinkButton href="/home/">
                         <Image
                             width={16}
@@ -53,30 +52,6 @@ export const Topline = ({ data }: Props) => {
             <li className="self-stretch flex items-center">
                 <hr className="w-px! h-1/3! bg-background-6" />
             </li>
-
-            <li>
-                <Tooltip text="Notification centre">
-                    <LinkButton href="/notifications/">
-                        <Image
-                            width={16}
-                            height={16}
-                            alt="notifications"
-                            src="/notification.svg"
-                        />
-                        <TabSelection
-                            condition={Object.values(unreadTabs).some(Boolean)}
-                            color="var(--orange-1)"
-                        />
-                    </LinkButton>
-                </Tooltip>
-            </li>
-
-            {((status && status.role === "op") ||
-                (status && status.id !== data.user.id)) && (
-                <li className="self-stretch flex items-center">
-                    <hr className="w-px! h-1/3! bg-background-6" />
-                </li>
-            )}
 
             {status && status.role === "op" && (
                 <li>

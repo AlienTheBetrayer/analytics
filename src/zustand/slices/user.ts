@@ -13,6 +13,7 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
         friends: {},
         profiles: {},
         users: {},
+        posts: {},
 
         getUsers: async (options) => {
             const {
@@ -25,10 +26,10 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
             } = get();
 
             const ids = new Set<string>(
-                (options.caching ?? true) ? [] : options.id
+                (options.caching ?? true) ? [] : options.id,
             );
             const usernames = new Set<string>(
-                (options.caching ?? true) ? [] : options.username
+                (options.caching ?? true) ? [] : options.username,
             );
 
             // caching
@@ -38,7 +39,7 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
                     Object.values(users).map(({ id, username }) => [
                         username,
                         id,
-                    ])
+                    ]),
                 );
 
                 const cacheFilter = (type: "id" | "name") => {
@@ -144,7 +145,7 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
                                     (options.select ?? ["user"])?.join(",") ||
                                     undefined,
                             },
-                        }
+                        },
                     );
 
                     const data = res.data.users as ResponseUsers[];
@@ -233,9 +234,9 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
                             friends: new Set([...(friends ?? [])]),
                             incoming: new Set([...(incoming ?? [])]),
                             outcoming: new Set([...(outcoming ?? [])]),
-                        })
+                        }),
                     );
-                }
+                },
             );
         },
 
@@ -320,7 +321,7 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
                         {
                             user_id: options.id,
                             ...options.data,
-                        }
+                        },
                     );
 
                     runListeners({
@@ -363,7 +364,7 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
                                 from_id: options.from_id,
                                 to_id: options.to_id,
                                 type: options.type ?? "request-send",
-                            }
+                            },
                         );
 
                         switch (res.data.type as APIResponseType) {
@@ -481,13 +482,13 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
 
                                     const friends = { ...state.friends };
                                     const fromFriends = new Set(
-                                        friends[options.from_id]
+                                        friends[options.from_id],
                                     );
                                     fromFriends.delete(options.to_id);
                                     friends[options.from_id] = fromFriends;
 
                                     const toFriends = new Set(
-                                        friends[options.to_id]
+                                        friends[options.to_id],
                                     );
                                     toFriends.delete(options.from_id);
                                     friends[options.to_id] = toFriends;
@@ -509,7 +510,7 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
                     } catch (e) {
                         throw e;
                     }
-                }
+                },
             );
         },
 
@@ -518,7 +519,7 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
 
             if (!options.query.length) {
                 throw new Error(
-                    "[query] has to be longer than just 1 character"
+                    "[query] has to be longer than just 1 character",
                 );
             }
 
@@ -533,7 +534,7 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
                             params: {
                                 query: options.query,
                             },
-                        }
+                        },
                     );
 
                     const data = res.data.users as (User & {
@@ -556,7 +557,7 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
                         profile,
                         user,
                     }));
-                }
+                },
             );
         },
     };

@@ -1,4 +1,11 @@
-import { Color, Friend, FriendRequest, Profile, User } from "@/types/tables/account";
+import {
+    Color,
+    Friend,
+    FriendRequest,
+    Post,
+    Profile,
+    User,
+} from "@/types/tables/account";
 
 /**
  * response type for /api/users/
@@ -10,7 +17,8 @@ export type ResponseUsersAPI = User & {
     outcoming?: FriendRequest[];
     profile?: Profile;
     colors?: Color[];
-}
+    posts?: Post[];
+};
 
 export type ResponseUsers = User & {
     friends?: string[];
@@ -18,7 +26,8 @@ export type ResponseUsers = User & {
     outcoming?: string[];
     profile?: Profile;
     colors?: Color[];
-}
+    posts?: Post[];
+};
 
 export type CachedUser = User & {
     friends?: Set<string>;
@@ -26,4 +35,5 @@ export type CachedUser = User & {
     outcoming?: Set<string>;
     profile?: Profile;
     colors?: Color[];
-}
+    posts?: Post[];
+};

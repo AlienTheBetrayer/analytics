@@ -1,7 +1,7 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useAppStore } from "@/zustand/store";
 import { Content } from "./display/Content";
 import { Topline } from "./display/Topline";
@@ -18,14 +18,12 @@ export const UserProfile = () => {
     const status = useAppStore((state) => state.status);
     const users = useAppStore((state) => state.users);
     const profiles = useAppStore((state) => state.profiles);
-    const promises = useAppStore((state) => state.promises);
 
     // zustand functions
     const getUsers = useAppStore((state) => state.getUsers);
 
     // user data
     const retrievedUsername = name ?? status?.username;
-    const [error, setError] = useState<"no_user" | "no_profile" | undefined>();
 
     // fetch if haven't cached
     useEffect(() => {
@@ -36,11 +34,6 @@ export const UserProfile = () => {
         getUsers({
             username: [retrievedUsername],
             select: ["profile", "friend_requests", "friends", "colors"],
-        }).then((data) => {
-            if (data && !data?.length) {
-                setError("no_user");
-                return;
-            }
         });
     }, [retrievedUsername, getUsers]);
 
@@ -48,20 +41,7 @@ export const UserProfile = () => {
         (u) => u.username === retrievedUsername,
     );
 
-    if (error === "no_user" || error === "no_profile") {
-        return (
-            <>
-                <AbsentTopline title="User does not exist" />
-
-                <div
-                    className={`box max-w-400 mt-2 w-full m-auto p-0! min-h-128 rounded-4xl! overflow-hidden`}
-                >
-                    <LoadingProfile />
-                </div>
-            </>
-        );
-    }
-
+    // wrong username
     if (!retrievedUsername) {
         return (
             <>
@@ -76,10 +56,11 @@ export const UserProfile = () => {
         );
     }
 
-    if (!user || promises.getUsers === "pending") {
+    // no user found in db
+    if (!user) {
         return (
             <>
-                <AbsentTopline title="Data is absent" />
+                <AbsentTopline title="User does not exist" />
 
                 <div
                     className={`box max-w-400 mt-2 w-full m-auto p-0! min-h-128 rounded-4xl! overflow-hidden`}
