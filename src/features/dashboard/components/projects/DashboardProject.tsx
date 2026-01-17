@@ -22,36 +22,27 @@ export const DashboardProject = ({ id }: Props) => {
     const selectProject = useAppStore((state) => state.selectProject);
 
     // state-derived ui states
-    const data = {
-        project: projects[id],
-        events: events[id],
-    };
-
     const pageViewEvents = useMemo(() => {
         return (
-            events.selectedProjectId?.reduce(
+            events[id]?.reduce(
                 (acc, val) => (val.type === "page_view" ? acc + 1 : acc),
-                0
+                0,
             ) ?? 0
         );
-    }, [events.selectedProjectId]);
-
-    if (!data.project) {
-        return <span>No project data loaded yet.</span>;
-    }
+    }, [events, id]);
 
     return (
         <li className="w-full">
             <Tooltip
                 className="w-full"
-                text={data.project.name}
+                text={projects[id].name}
                 direction="top"
             >
                 <Button
                     className={`relative rounded-4xl! w-full px-4! py-2! sm:h-16! project-button justify-between! items-center duration-300! 
-                        ${data.project.id === selectedProjectId ? "border-blue-1!" : ""}`}
+                        ${id === selectedProjectId ? "border-blue-1!" : ""}`}
                     onClick={() => {
-                        selectProject(data.project?.id ?? undefined);
+                        selectProject(id ?? undefined);
                     }}
                 >
                     <div className="flex items-center gap-1">
@@ -63,7 +54,7 @@ export const DashboardProject = ({ id }: Props) => {
                             height={16}
                         />
                         <span className="text-6! text-foreground-4!">
-                            {data.project.name}
+                            {projects[id]?.name}
                         </span>
                     </div>
 
@@ -75,7 +66,7 @@ export const DashboardProject = ({ id }: Props) => {
                                 width={16}
                                 height={16}
                             />
-                            {relativeTime(data.project.created_at)}
+                            {relativeTime(projects[id]?.created_at)}
                         </span>
 
                         <hr className="w-px! h-4/5!" />
@@ -87,16 +78,17 @@ export const DashboardProject = ({ id }: Props) => {
                                 width={16}
                                 height={16}
                             />
-                            {relativeTime(data.project.last_event_at)}
+                            {relativeTime(projects[id]?.last_event_at)}
                         </span>
                     </div>
 
-                    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex gap-8">
-                        <span className="text-3!">
-                            <small>{data.events?.length}</small>
+                    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex gap-4">
+                        <span className="flex gap-1 items-center text-4!">
+                            <small>{events[id]?.length}</small>
                             <small className="text-6!">events</small>
                         </span>
-                        <span className="text-3!">
+
+                        <span className="flex gap-1 items-center text-4!">
                             <small>{pageViewEvents}</small>
                             <small className="text-6!">visits</small>
                         </span>
