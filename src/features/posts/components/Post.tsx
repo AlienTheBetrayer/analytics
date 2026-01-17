@@ -28,25 +28,10 @@ export const Post = () => {
 
     // fallbacks
     // no tab
-    if (!tab) {
+    if (!tab || !id) {
         return (
             <>
-                <AbsentTopline title="Incorrect tab" />
-
-                <div
-                    className={`box max-w-400 w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}
-                >
-                    <LoadingEmulate />
-                </div>
-            </>
-        );
-    }
-
-    // no id
-    if (!id) {
-        return (
-            <>
-                <AbsentTopline title="User not found" />
+                <AbsentTopline title="Incorrect URL" />
 
                 <div
                     className={`box max-w-400 w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}
