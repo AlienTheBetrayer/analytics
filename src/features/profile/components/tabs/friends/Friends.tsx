@@ -1,6 +1,5 @@
 import { Profile, User } from "@/types/tables/account";
 import { ProfileImage } from "../../ProfileImage";
-import { Role } from "../../parts/Role";
 import { Select } from "./Select";
 import { useEffect } from "react";
 import { useAppStore } from "@/zustand/store";
@@ -62,10 +61,6 @@ export const Friends = ({ data }: Props) => {
                         profile={data.profile}
                         width={256}
                         height={256}
-                    />
-                    <Role
-                        data={data}
-                        className="w-fit! mx-auto!"
                     />
                 </div>
 

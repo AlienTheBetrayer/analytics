@@ -3,10 +3,10 @@
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAppStore } from "@/zustand/store";
-import { WrongUser } from "./WrongUser";
 import { Content } from "./display/Content";
 import { Topline } from "./display/Topline";
 import { LoadingProfile } from "@/features/loading/components/LoadingProfile";
+import { AbsentTopline } from "@/features/loading/components/AbsentTopline";
 
 export const UserProfile = () => {
     // url
@@ -50,21 +50,43 @@ export const UserProfile = () => {
 
     if (error === "no_user" || error === "no_profile") {
         return (
-            <div
-                className={`box max-w-400 mt-2 w-full m-auto p-0! min-h-120 rounded-4xl! overflow-hidden`}
-            >
-                <WrongUser />
-            </div>
+            <>
+                <AbsentTopline title="User does not exist" />
+
+                <div
+                    className={`box max-w-400 mt-2 w-full m-auto p-0! min-h-128 rounded-4xl! overflow-hidden`}
+                >
+                    <LoadingProfile />
+                </div>
+            </>
         );
     }
 
-    if (!retrievedUsername || !user || promises.getUsers === "pending") {
+    if (!retrievedUsername) {
         return (
-            <div
-                className={`box max-w-400 mt-2 w-full m-auto p-0! min-h-120 rounded-4xl! overflow-hidden`}
-            >
-                <LoadingProfile />
-            </div>
+            <>
+                <AbsentTopline title="Incorrect username" />
+
+                <div
+                    className={`box max-w-400 mt-2 w-full m-auto p-0! min-h-128 rounded-4xl! overflow-hidden`}
+                >
+                    <LoadingProfile />
+                </div>
+            </>
+        );
+    }
+
+    if (!user || promises.getUsers === "pending") {
+        return (
+            <>
+                <AbsentTopline title="Data is absent" />
+
+                <div
+                    className={`box max-w-400 mt-2 w-full m-auto p-0! min-h-128 rounded-4xl! overflow-hidden`}
+                >
+                    <LoadingProfile />
+                </div>
+            </>
         );
     }
 
@@ -73,8 +95,9 @@ export const UserProfile = () => {
     return (
         <>
             <Topline data={retrievedData} />
+
             <div
-                className={`box max-w-400 w-full m-auto p-0! rounded-4xl! overflow-hidden`}
+                className={`box max-w-400 w-full m-auto p-0! rounded-4xl! min-h-128 overflow-hidden`}
             >
                 <Content data={retrievedData} />
             </div>

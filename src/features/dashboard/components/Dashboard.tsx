@@ -5,6 +5,7 @@ import { DashboardProjects } from "./projects/DashboardProjects";
 import { Topline } from "./Topline";
 import { useEffect, useRef } from "react";
 import { LoadingDashboard } from "@/features/loading/components/LoadingDashboard";
+import { AbsentTopline } from "@/features/loading/components/AbsentTopline";
 
 export const Dashboard = () => {
     // zustand states
@@ -33,11 +34,27 @@ export const Dashboard = () => {
         }
     }, [status, deleteState, selectProject, sync]);
 
-    if (!status || !Object.values(projects)?.length) {
+    if (!status) {
         return (
-            <div className="w-full max-w-400 m-auto min-h-200 box">
-                <LoadingDashboard />
-            </div>
+            <>
+                <AbsentTopline title="Not authenticated" />
+
+                <div className="w-full max-w-400 m-auto min-h-200 box">
+                    <LoadingDashboard />
+                </div>
+            </>
+        );
+    }
+
+    if (!Object.values(projects)?.length) {
+        return (
+            <>
+                <AbsentTopline title="Data is absent" />
+
+                <div className="w-full max-w-400 m-auto min-h-200 box">
+                    <LoadingDashboard />
+                </div>
+            </>
         );
     }
 

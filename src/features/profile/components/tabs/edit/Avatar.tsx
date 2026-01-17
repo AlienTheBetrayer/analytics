@@ -8,7 +8,6 @@ import React, { JSX } from "react";
 import { MessageBox } from "@/features/messagebox/components/MessageBox";
 import { usePopup } from "@/features/popup/hooks/usePopup";
 import Image from "next/image";
-import { Role } from "../../parts/Role";
 import { ColorSwatches } from "../../parts/ColorSwatches";
 import { useAppStore } from "@/zustand/store";
 
@@ -131,11 +130,6 @@ export const Avatar = ({
                     </motion.div>
                 )}
             </AnimatePresence>
-
-            <Role
-                data={data}
-                className="w-fit! mx-auto!"
-            />
 
             <div className="flex gap-1">
                 {avatarFile[0] ? (

@@ -6,6 +6,7 @@ import { FetchPrompt } from "./FetchPrompt";
 import { ProjectList } from "./ProjectList";
 import { Topline } from "./Topline";
 import { LoadingEmulate } from "@/features/loading/components/LoadingEmulate";
+import { AbsentTopline } from "@/features/loading/components/AbsentTopline";
 
 export const Emulate = () => {
     // url
@@ -19,35 +20,48 @@ export const Emulate = () => {
     // authentcation's missing
     if (!status || status?.role === "user") {
         return (
-            <div className="flex flex-col w-full max-w-400 p-6! rounded-4xl! gap-4! m-auto box">
-                <LoadingEmulate />
-            </div>
+            <>
+                <AbsentTopline title="Not authenticated / lacking permissions" />
+
+                <div className="flex flex-col w-full max-w-400 p-6! rounded-4xl! gap-4! m-auto box">
+                    <LoadingEmulate />
+                </div>
+            </>
         );
     }
 
     // no data fetched
     if (!projects) {
         return (
-            <div className="flex flex-col w-full mt-16 max-w-400 p-6! rounded-4xl! gap-4! m-auto box">
-                <FetchPrompt />
-            </div>
+            <>
+                <AbsentTopline title="Data is absent" />
+
+                <div className="flex flex-col w-full mt-16 max-w-400 p-6! rounded-4xl! gap-4! m-auto box">
+                    <FetchPrompt />
+                </div>
+            </>
         );
     }
 
     // data is fetched and project at the id is not fetched
     if (id && !projects[id]) {
         return (
-            <div className="flex flex-col w-full max-w-400 m-auto box p-6! rounded-4xl!">
-                <FetchPrompt />
-                <hr />
-                <ProjectList />
-            </div>
+            <>
+                <AbsentTopline title="Project does not exist" />
+
+                <div className="flex flex-col w-full max-w-400 m-auto box p-6! rounded-4xl!">
+                    <FetchPrompt />
+                    <hr />
+                    <ProjectList />
+                </div>
+            </>
         );
     }
 
     return (
         <>
             <Topline />
+
             <div className="flex flex-col w-full max-w-400 p-6! rounded-4xl! gap-4! box m-auto">
                 <div className="flex flex-col gap-2">
                     {!Object.values(projects).length ? (

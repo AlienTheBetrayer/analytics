@@ -7,7 +7,6 @@ import { useAppStore } from "@/zustand/store";
 import { Profile, User } from "@/types/tables/account";
 import { useLocalStore } from "@/zustand/localStore";
 import { ProfileImage } from "../../ProfileImage";
-import { Role } from "../../parts/Role";
 import { Spinner } from "@/features/spinner/components/Spinner";
 import { MessageBox } from "@/features/messagebox/components/MessageBox";
 import { usePopup } from "@/features/popup/hooks/usePopup";
@@ -85,11 +84,6 @@ export const Security = ({ data }: Props) => {
                         profile={data.profile}
                         width={256}
                         height={256}
-                    />
-
-                    <Role
-                        data={data}
-                        className="w-fit! mx-auto!"
                     />
 
                     <Tooltip text="Log yourself out">

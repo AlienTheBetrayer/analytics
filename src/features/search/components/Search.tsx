@@ -1,4 +1,5 @@
 "use client";
+import { AbsentTopline } from "@/features/loading/components/AbsentTopline";
 import { LoadingSearch } from "@/features/loading/components/LoadingSearch";
 import { EmptyQuery } from "@/features/search/components/errors/EmptyQuery";
 import { NoResults } from "@/features/search/components/errors/NoResults";
@@ -45,7 +46,7 @@ export const Search = () => {
     if (!query) {
         return (
             <>
-                <Topline />
+                <AbsentTopline title="Query is empty" />
 
                 <div className="box w-full max-w-400 mx-auto min-h-128">
                     <EmptyQuery />
@@ -58,7 +59,7 @@ export const Search = () => {
     if (!results) {
         return (
             <>
-                <Topline />
+                <AbsentTopline title="Data is absent" />
 
                 <div className="box w-full max-w-400 mx-auto min-h-128">
                     <LoadingSearch />
