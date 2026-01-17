@@ -119,6 +119,24 @@ export const Topline = ({ data }: Props) => {
             )}
 
             <li className="ml-auto!">
+                <Tooltip text="User's posts">
+                    <LinkButton href={`/posts/${data.user.username}`}>
+                        <Image
+                            width={14}
+                            height={14}
+                            alt=""
+                            src="/select.svg"
+                        />
+                        <span className="hidden sm:block">Posts</span>
+                        <TabSelection
+                            condition={tab === "posts"}
+                            color="var(--blue-1)"
+                        />
+                    </LinkButton>
+                </Tooltip>
+            </li>
+
+            <li>
                 <Tooltip text="Profile overview">
                     <LinkButton
                         href={`/profile/${data.user.username}/overview`}
@@ -132,24 +150,6 @@ export const Topline = ({ data }: Props) => {
                         <span className="hidden sm:block">Overview</span>
                         <TabSelection
                             condition={!tab || tab === "overview"}
-                            color="var(--blue-1)"
-                        />
-                    </LinkButton>
-                </Tooltip>
-            </li>
-
-            <li>
-                <Tooltip text="User's posts">
-                    <LinkButton href={`/posts/${data.user.username}`}>
-                        <Image
-                            width={16}
-                            height={16}
-                            alt=""
-                            src="/select.svg"
-                        />
-                        <span className="hidden sm:block">Posts</span>
-                        <TabSelection
-                            condition={tab === "posts"}
                             color="var(--blue-1)"
                         />
                     </LinkButton>
