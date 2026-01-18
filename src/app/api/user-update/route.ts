@@ -2,13 +2,13 @@ import type { NextRequest } from "next/server";
 import { tokenVerify } from "@/utils/auth/tokenVerify";
 import {
     deleteAvatar,
-    uploadAvatar,
     updateProfile,
     updateColors,
     updateUser,
     updateUserData,
 } from "@/utils/api/profile";
 import { nextResponse } from "@/utils/api/response";
+import { uploadImage } from "@/utils/api/upload";
 
 export const POST = async (request: NextRequest) => {
     try {
@@ -34,12 +34,12 @@ export const POST = async (request: NextRequest) => {
                 // update
                 await deleteAvatar(user_id);
 
-                const url = await uploadAvatar(
-                    rest.avatar_url,
-                    rest.avatar_name,
-                    rest.avatar_type,
-                    user_id
-                );
+                const url = await uploadImage({
+                    base64: rest.avatar_url,
+                    name: rest.avatar_name,
+                    type: rest.avatar_type,
+                    user_id,
+                });
                 delete rest.avatar_name;
                 delete rest.avatar_type;
 
@@ -71,7 +71,7 @@ export const POST = async (request: NextRequest) => {
 
         return nextResponse(
             { message: "Successfully updated the profile data!" },
-            200
+            200,
         );
     } catch (error) {
         console.error(error);

@@ -1,5 +1,11 @@
 import { Post } from "@/types/tables/account";
 
+export type PostData = {
+    title?: string;
+    content?: string;
+    image?: string | null;
+};
+
 export type PostStore = {
     posts: Record<string, Post>;
 
@@ -15,5 +21,12 @@ export type PostStore = {
             | { type: "single"; id: string }
             | { type: "all"; username: string }
         ) & { promiseKey?: string; caching?: boolean },
+    ) => Promise<void>;
+
+    updatePost: (
+        options: (
+            | { type: "edit"; id: string; data: PostData }
+            | { type: "create"; data: PostData }
+        ) & { user_id: string; promiseKey?: string },
     ) => Promise<void>;
 };

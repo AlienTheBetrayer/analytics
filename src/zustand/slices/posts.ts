@@ -44,5 +44,25 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                 },
             );
         },
+
+        updatePost: async (options) => {
+            const { setPromise } = get();
+
+            return await setPromise(
+                options.promiseKey ?? "updatePost",
+                async () => {
+                    const res = await refreshedRequest(
+                        "/api/post-update/",
+                        "POST",
+                        { user_id: options.user_id, ...options.data },
+                    );
+
+                    const data = res.data;
+                    console.log(data);
+
+                    return data;
+                },
+            );
+        },
     };
 };

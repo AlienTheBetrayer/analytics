@@ -127,7 +127,7 @@ export const Tooltip = React.memo(function TooltipFunction({
 
     // focusing
     useEffect(() => {
-        if (!isShown || type !== "modal" || !tooltipRef.current) {
+        if (!isShown || !tooltipRef.current) {
             return;
         }
 

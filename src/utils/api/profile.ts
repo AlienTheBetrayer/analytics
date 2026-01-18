@@ -5,6 +5,7 @@ import { PostgrestError } from "@supabase/supabase-js";
 import { nextResponse } from "./response";
 import bcrypt from "bcrypt";
 import { AuthenticationRole } from "@/types/auth/authentication";
+import { deleteImage } from "@/utils/api/upload";
 
 /**
  * deletes the user's profile image from the storage
@@ -21,56 +22,15 @@ export const deleteAvatar = async (user_id: string) => {
         };
 
     if (existingProfileError) {
+        console.error(existingProfileError);
         throw nextResponse(existingProfileError, 400);
     }
 
     if (profileData[0].avatar_url) {
-        const { error } = await supabaseServer.storage
-            .from("avatars")
-            .remove([
-                `${user_id}/${profileData[0].avatar_url.substring(
-                    profileData[0].avatar_url.lastIndexOf("/") + 1
-                )}`,
-            ]);
-        if (error) {
-            throw nextResponse({ error: "Avatar deleting failed." }, 400);
-        }
+        await deleteImage({ user_id, url: profileData[0].avatar_url });
     }
 
     return nextResponse({ message: "Successfully deleted the avatar." }, 200);
-};
-
-/**
- * uploads the image in the storage
- * @param avatar base-64 version of the avatar url
- * @param avatar_name .name on File
- * @param avatar_type .type on File
- * @param user_id id of the user
- * @returns a promise containing the uploaded image's url
- */
-export const uploadAvatar = async (
-    avatar: string,
-    avatar_name: string,
-    avatar_type: string,
-    user_id: string
-) => {
-    const base64Data = avatar.split(",")[1];
-    const buffer = Buffer.from(base64Data, "base64");
-    const ext = avatar_name.split(".").pop();
-    const path = `${user_id}/${crypto.randomUUID()}.${ext}`;
-
-    const { error } = await supabaseServer.storage
-        .from("avatars")
-        .upload(path, buffer, {
-            contentType: avatar_type,
-            upsert: true,
-        });
-
-    if (error) throw nextResponse({ error: "Uploading failed." }, 400);
-
-    const { data } = supabaseServer.storage.from("avatars").getPublicUrl(path);
-
-    return data.publicUrl;
 };
 
 /**
@@ -81,7 +41,7 @@ export const uploadAvatar = async (
  */
 export const updateProfile = async (
     user_id: string,
-    rest: Record<string, unknown>
+    rest: Record<string, unknown>,
 ) => {
     const { error: profileError } = await supabaseServer
         .from("profiles")
@@ -90,7 +50,7 @@ export const updateProfile = async (
                 user_id,
                 ...rest,
             },
-            { onConflict: "user_id" }
+            { onConflict: "user_id" },
         );
 
     if (profileError) {
@@ -100,7 +60,7 @@ export const updateProfile = async (
 
     return nextResponse(
         { message: "Successfully updated the profile data!" },
-        200
+        200,
     );
 };
 
@@ -112,11 +72,12 @@ export const updateProfile = async (
  */
 export const updateColors = async (
     user_id: string,
-    rest: Record<string, unknown>
+    rest: Record<string, unknown>,
 ) => {
     const colors = rest.colors as { slot: string; color: string }[];
 
     if (!colors) {
+        console.error("colors is missing.");
         return nextResponse({ message: "colors is missing." }, 400);
     }
 
@@ -146,7 +107,7 @@ export const updateColors = async (
  */
 export const updateUser = async (
     user_id: string,
-    rest: Record<string, unknown>
+    rest: Record<string, unknown>,
 ) => {
     const { role } = rest as { role: AuthenticationRole };
 
@@ -190,7 +151,7 @@ export const updateUser = async (
  */
 export const updateUserData = async (
     user_id: string,
-    rest: Record<string, unknown>
+    rest: Record<string, unknown>,
 ) => {
     const { password, username } = rest as {
         password?: string;
@@ -198,7 +159,7 @@ export const updateUserData = async (
     };
 
     if (!(password || username)) {
-        return;
+        return nextResponse({ error: "password / username are missing" }, 400);
     }
 
     const { data: userData, error: userError } = await supabaseServer
@@ -222,7 +183,7 @@ export const updateUserData = async (
             {
                 error: "username and password length has to be longer than 5.",
             },
-            400
+            400,
         );
     }
 

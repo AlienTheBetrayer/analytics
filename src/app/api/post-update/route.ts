@@ -5,18 +5,20 @@ import { NextRequest } from "next/server";
 
 export const POST = async (request: NextRequest) => {
     try {
-        const { user_id, id, ...rest } = await request.json();
+        const { user_id, id, image, ...rest } = await request.json();
+
+        console.log(user_id, id, image, rest);
 
         tokenVerify(request, [user_id]);
 
-        const { error } = await supabaseServer
-            .from("posts")
-            .upsert({ id, ...rest }, { onConflict: "id" });
+        // const { error } = await supabaseServer
+        //     .from("posts")
+        //     .upsert({ id, user_id, ...rest }, { onConflict: "id" });
 
-        if (error) {
-            console.error(error);
-            return nextResponse(error, 400);
-        }
+        // if (error) {
+        //     console.error(error);
+        //     return nextResponse(error, 400);
+        // }
 
         return nextResponse({ message: "Successfully updated the post!" }, 200);
     } catch (error) {
