@@ -62,7 +62,9 @@ export const Outcoming = ({ data }: Props) => {
 
                 <hr className='w-px! h-1/3 bg-background-a-10'/>
 
-                <b>Outcoming requests</b>
+                <span>
+                    Outcoming requests
+                </span>
 
                 <small className="ml-auto text-ellipsis-left">
                     (you sent these)

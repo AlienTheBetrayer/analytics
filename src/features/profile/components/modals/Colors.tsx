@@ -43,7 +43,7 @@ export const Colors = ({ data }: Props) => {
                         alt=""
                         src="/cube.svg"
                     />
-                    <b>Color panel</b>
+                    Color panel
                 </span>
                 <span>
                     <small>(save your colors here)</small>
@@ -88,10 +88,10 @@ export const Colors = ({ data }: Props) => {
 
                 <hr className="md:w-px! md:h-full! border-background-5!" />
 
-                <ul className="flex flex-col gap-1 w-screen max-w-64 min-w-0">
+                <ul className="flex flex-col gap-4 w-screen max-w-64 min-w-0">
                     <li className="flex flex-col w-fit gap-1">
                         <span>
-                            <b>Actions</b>
+                            Actions
                         </span>
                     </li>
 
@@ -113,9 +113,7 @@ export const Colors = ({ data }: Props) => {
                                 Generate a palette
                             </Button>
                         </Tooltip>
-                    </li>
 
-                    <li>
                         <ul className="grid grid-cols-2 gap-2">
                             <li className="flex flex-col w-full *:w-full gap-1">
                                 <Tooltip
@@ -165,7 +163,7 @@ export const Colors = ({ data }: Props) => {
                                 htmlFor="hue-rotation"
                                 className="self-start"
                             >
-                                <b>Hue Rotation</b>
+                                Hue Rotation
                             </label>
 
                             <input
@@ -220,9 +218,7 @@ export const Colors = ({ data }: Props) => {
                                     src="/cube.svg"
                                     alt=""
                                 />
-                                <b>
-                                    <mark>Apply changes</mark>
-                                </b>
+                                <mark>Apply changes</mark>
                             </Button>
                         </Tooltip>
                     </li>

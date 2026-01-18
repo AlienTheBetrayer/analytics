@@ -19,7 +19,19 @@ export const Create = () => {
     const updatePost = useAppStore((state) => state.updatePost);
 
     return (
-        <div className="flex flex-col gap-2 grow w-full max-w-4xl mx-auto">
+        <div className="flex flex-col gap-4 grow w-full max-w-4xl mx-auto">
+            <div className="flex gap-1 items-center justify-center">
+                <Image
+                    alt=""
+                    width={16}
+                    height={16}
+                    src="/cubeadd.svg"
+                />
+                <span>Post publishing</span>
+            </div>
+
+            <hr />
+
             <form
                 className="flex flex-col grow"
                 onSubmit={async (e) => {
@@ -69,15 +81,29 @@ export const Create = () => {
                     </li>
 
                     <li>
-                        <hr />
+                        <hr className="mt-4" />
                     </li>
 
-                    <li className="flex flex-col">
+                    <li className="flex flex-col gap-2">
+                        <label
+                            htmlFor="image"
+                            className="flex gap-1 items-center justify-center"
+                        >
+                            <Image
+                                alt=""
+                                width={16}
+                                height={16}
+                                src="/moon.svg"
+                            />
+                            Image
+                        </label>
+
                         <ImageSelect
+                            className="p-4!"
+                            id="image"
                             sizeLimit={1}
                             value={image}
                             onSelect={(file) => {
-                                console.log("HERE!", file);
                                 setImage(file);
                             }}
                         >
@@ -101,7 +127,7 @@ export const Create = () => {
                     </li>
 
                     <li>
-                        <hr />
+                        <hr className="mt-4" />
                     </li>
 
                     <li className="flex flex-col gap-2">
@@ -136,7 +162,7 @@ export const Create = () => {
                     </li>
 
                     <li>
-                        <hr />
+                        <hr className="mt-4" />
                     </li>
 
                     <li className="flex flex-col">

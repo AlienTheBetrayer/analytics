@@ -8,58 +8,52 @@ import type { TooltipDirection } from "../types/tooltip";
 export const positionTooltip = (
     tooltipRef: React.RefObject<HTMLDivElement | null>,
     elementRef: React.RefObject<HTMLDivElement | null>,
-    direction: TooltipDirection = "bottom"
+    direction: TooltipDirection = "bottom",
 ) => {
     // safety flag
     if (!tooltipRef.current || !elementRef.current) {
         return;
     }
 
+    tooltipRef.current.style.display = "flex";
+
     // getting the bounds of the element
     const elementBounds = elementRef.current.getBoundingClientRect();
+    const tooltipBounds = tooltipRef.current.getBoundingClientRect();
 
     // calculating and setting the direction
     let left = 0;
     let top = 0;
-
-    tooltipRef.current.style.display = "flex";
-    const tooltipBounds = tooltipRef.current.getBoundingClientRect();
+    let translateX = 0;
+    let translateY = 0;
 
     switch (direction) {
         case "bottom": {
             left =
-                elementBounds.left +
-                elementBounds.width / 2 +
-                window.scrollX -
-                tooltipBounds.width / 2;
+                elementBounds.left + elementBounds.width / 2 + window.scrollX;
             top = elementBounds.bottom + window.scrollY;
+            translateX = -50;
             break;
         }
         case "top": {
             left =
-                elementBounds.left +
-                elementBounds.width / 2 +
-                window.scrollX -
-                tooltipBounds.width / 2;
-            top = elementBounds.top + window.scrollY - tooltipBounds.height;
+                elementBounds.left + elementBounds.width / 2 + window.scrollX;
+            top = elementBounds.top + window.scrollY;
+            translateX = -50;
+            translateY = -100;
             break;
         }
         case "left": {
-            left = elementBounds.left + window.scrollX - tooltipBounds.width;
-            top =
-                elementBounds.top +
-                elementBounds.height / 2 +
-                window.scrollY -
-                tooltipBounds.height / 2;
+            left = elementBounds.left + window.scrollX;
+            top = elementBounds.top + elementBounds.height / 2 + window.scrollY;
+            translateY = -50;
+            translateX = -100;
             break;
         }
         case "right": {
             left = elementBounds.right + window.scrollX;
-            top =
-                elementBounds.top +
-                elementBounds.height / 2 +
-                window.scrollY -
-                tooltipBounds.height / 2;
+            top = elementBounds.top + elementBounds.height / 2 + window.scrollY;
+            translateY = -50;
             break;
         }
         case "bottom-right": {
@@ -68,18 +62,22 @@ export const positionTooltip = (
             break;
         }
         case "bottom-left": {
-            left = elementBounds.left + window.scrollX - tooltipBounds.width;
+            left = elementBounds.left + window.scrollX;
             top = elementBounds.top + window.scrollY - 4;
+            translateX = -100;
             break;
         }
         case "top-right": {
             left = elementBounds.right + window.scrollX;
-            top = elementBounds.top + window.scrollY + 4 - tooltipBounds.height + elementBounds.height;
+            top = elementBounds.top + window.scrollY + 4 - elementBounds.height;
+            translateY = -100;
             break;
         }
         case "top-left": {
             left = elementBounds.left + window.scrollX - tooltipBounds.width;
-            top = elementBounds.top + window.scrollY + 4 - tooltipBounds.height + elementBounds.height;
+            top = elementBounds.top + window.scrollY + 4 - elementBounds.height;
+            translateX = -100;
+            translateY = -100;
             break;
         }
     }
@@ -87,23 +85,35 @@ export const positionTooltip = (
     // setting the initial positions
     tooltipRef.current.style.left = `${left}px`;
     tooltipRef.current.style.top = `${top}px`;
+    tooltipRef.current.style.translate = `${translateX}% ${translateY}%`;
 
     // // window boundary overflow check
-    let dx = 0;
-    if (left < scrollX) {
-        dx = scrollX - left + 2;
-    } else if (left + tooltipBounds.width > scrollX + document.documentElement.clientWidth) {
-        dx = scrollX + document.documentElement.clientWidth - left - tooltipBounds.width - 4;
-    }
+    requestAnimationFrame(() => {
+        if (!tooltipRef.current) {
+            return;
+        }
 
-    let dy = 0;
-    if (top < scrollY) {
-        dy = scrollY - top + 2;
-    } else if (top + tooltipBounds.height > scrollY + window.innerHeight) {
-        dy = scrollY + window.innerHeight - top - tooltipBounds.height - 2;
-    }
+        const tooltipBounds = tooltipRef.current.getBoundingClientRect();
+        let dx = 0;
+        let dy = 0;
 
-    // setting the updated safe positions
-    tooltipRef.current.style.left = `${left + dx}px`;
-    tooltipRef.current.style.top = `${top + dy}px`;
+        if (tooltipBounds.left < 0) {
+            dx = -tooltipBounds.left + 4;
+        } else if (tooltipBounds.right > document.documentElement.clientWidth) {
+            dx = document.documentElement.clientWidth - tooltipBounds.right - 4;
+        }
+
+        if (tooltipBounds.top < 0) {
+            dy = -tooltipBounds.top + 4;
+        } else if (
+            tooltipBounds.bottom > document.documentElement.clientHeight
+        ) {
+            dy = document.documentElement.clientHeight - tooltipBounds.top - 4;
+        }
+
+        // setting the updated safe positions
+        tooltipRef.current.style.left = `${left + dx}px`;
+        tooltipRef.current.style.top = `${top + dy}px`;
+        tooltipRef.current.style.translate = `${translateX}% ${translateY}%`;
+    });
 };

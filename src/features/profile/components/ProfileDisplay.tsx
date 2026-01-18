@@ -39,7 +39,7 @@ export const ProfileDisplay = ({ data }: Props) => {
                         />
                         Username
                     </small>
-                    <b>{data.user.username}</b>
+                    {data.user.username}
                 </span>
 
                 {data.profile.title && (

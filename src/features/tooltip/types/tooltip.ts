@@ -7,3 +7,5 @@ export type TooltipDirection =
     | "bottom-left"
     | "top-right"
     | "top-left";
+
+export type TooltipType = "tooltip" | "modal";

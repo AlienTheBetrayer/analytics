@@ -12,7 +12,7 @@ export const Edit = ({ file, onDelete, onEdit }: Props) => {
     const image = file && URL.createObjectURL(file);
 
     return (
-        <ul className="box py-0! px-2! w-screen max-w-64 overflow-hidden aspect-video hover:scale-110 group duration-500!">
+        <ul className="box py-0! px-2! w-screen max-w-81 overflow-hidden aspect-video hover:scale-110 group duration-500!">
             {image && (
                 <li>
                     <Image

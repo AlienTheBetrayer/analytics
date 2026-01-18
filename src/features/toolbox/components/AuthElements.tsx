@@ -1,4 +1,3 @@
-import { Tooltip } from "@/features/tooltip/components/Tooltip";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import Image from "next/image";
 
@@ -14,9 +13,7 @@ export const AuthElements = () => {
                             alt=""
                             src="/server.svg"
                         />
-                        <span>
-                            <b>Authentication</b>
-                        </span>
+                        <span>Authentication</span>
                     </div>
                     <p>Choose your path!</p>
                 </div>
@@ -24,37 +21,31 @@ export const AuthElements = () => {
                 <hr />
 
                 <div className="flex flex-col gap-1">
-                    <Tooltip
-                        direction="left"
-                        text="Create your account!"
+                    <LinkButton
+                        href="/signup"
                         className="w-full"
                     >
-                        <LinkButton href="/signup" className="w-full">
-                            <Image
-                                alt=""
-                                width={16}
-                                height={16}
-                                src="/pencil.svg"
-                            />
-                            Sign up
-                        </LinkButton>
-                    </Tooltip>
+                        <Image
+                            alt=""
+                            width={16}
+                            height={16}
+                            src="/pencil.svg"
+                        />
+                        Sign up
+                    </LinkButton>
 
-                    <Tooltip
-                        direction="left"
-                        text="Log in an existing account!"
+                    <LinkButton
+                        href="/login"
                         className="w-full"
                     >
-                        <LinkButton href="/login" className="w-full">
-                            <Image
-                                alt=""
-                                width={16}
-                                height={16}
-                                src="/security.svg"
-                            />
-                            Log in
-                        </LinkButton>
-                    </Tooltip>
+                        <Image
+                            alt=""
+                            width={16}
+                            height={16}
+                            src="/security.svg"
+                        />
+                        Log in
+                    </LinkButton>
                 </div>
             </div>
         </div>

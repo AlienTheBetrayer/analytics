@@ -46,14 +46,27 @@ export const AuthenticationForm = ({
                  duration-300 ease-out box
                  ${className ?? ""}`}
         >
-            <div className="w-full flex justify-center items-center">
+            <div className="w-full flex flex-col items-center gap-1">
                 <Image
                     alt=""
                     width={20}
                     height={20}
                     src={`${type === "login" ? "/security.svg" : "/pencil.svg"}`}
                 />
+
+                <span className="flex justify-center items-center gap-1">
+                    <Tooltip
+                        text="Easter egg 🌀"
+                        direction="top"
+                    >
+                        <div className="rounded-full bg-blue-1 w-1 h-1" />
+                    </Tooltip>
+
+                    <span>{title}</span>
+                </span>
             </div>
+
+            <hr />
 
             {/* topline */}
             <div className="relative gap-2 flex flex-wrap items-center w-full border-b border-b-background-5 p-2">
@@ -63,15 +76,6 @@ export const AuthenticationForm = ({
                     height={20}
                     src="/privacy.svg"
                 />
-
-                <Tooltip
-                    text="Easter egg 🌀"
-                    direction="top"
-                >
-                    <div className="rounded-full bg-blue-1 w-1.5 h-1.5" />
-                </Tooltip>
-
-                <span>{title}</span>
 
                 <Tooltip
                     text="Come back home"

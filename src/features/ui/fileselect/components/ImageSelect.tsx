@@ -16,6 +16,7 @@ export const ImageSelect = ({
     onSelect,
     onError,
     children,
+    className,
     sizeLimit = 0.5,
 }: Props) => {
     // states
@@ -31,8 +32,7 @@ export const ImageSelect = ({
         <Tooltip
             className="w-full"
             direction="top"
-            disabledPointer={!!!fileValue}
-            text="Browse for an image"
+            disabledPointer={false}
             element={
                 fileValue ? (
                     <Edit
@@ -54,7 +54,7 @@ export const ImageSelect = ({
             <label
                 htmlFor="image"
                 className={`button outline-1! hover:outline-blue-1! focus:outline-blue-1! focus-within:outline-blue-1! 
-            transition-colors duration-200! ${fileValue ? "outline-blue-3!" : ""}`}
+            transition-colors duration-200! ${fileValue ? "outline-blue-1!" : ""} ${className ?? ""}`}
             >
                 {children}
                 <input

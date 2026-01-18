@@ -1,11 +1,11 @@
-.tooltip { 
+.tooltip {
     flex-direction: column;
     padding: 0.25rem 0.75rem 0.25rem 0.75rem;
     background-color: var(--background-2);
     outline: 2px solid var(--background-5);
     border: 0;
     border-radius: 1000;
-    transition: 0.2s filter ease-out;
+    transition: 0.2s background ease-out;
 }
 
 .tooltip:hover {

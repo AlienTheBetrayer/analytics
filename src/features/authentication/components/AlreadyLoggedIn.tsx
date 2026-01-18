@@ -28,9 +28,9 @@ export const AlreadyLoggedIn = () => {
             </div>
 
             <div className="box max-w-400">
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-8">
                     <div className="flex flex-col gap-2">
-                        <span className="text-center text-foreground-2! text-5! whitespace-nowrap">
+                        <span className="text-center  text-5! whitespace-nowrap">
                             Authentication is <mark>done</mark>
                         </span>
                         <span className="text-center">
@@ -69,9 +69,8 @@ export const AlreadyLoggedIn = () => {
                         </Tooltip>
                     </div>
 
-                    <hr />
                     <div className="flex flex-col gap-2">
-                        <span className="text-center text-foreground-2! whitespace-nowrap">
+                        <span className="text-center whitespace-nowrap">
                             <u>Logging</u> out
                         </span>
                         <span className="text-center">

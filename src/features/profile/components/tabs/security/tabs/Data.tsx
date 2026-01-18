@@ -57,7 +57,7 @@ export const Data = ({ data, terminateMessageBox }: Props) => {
                         height={16}
                         src="/pencil.svg"
                     />
-                    <b>Username</b>
+                    <span>Username</span>
                     <small className="ml-auto text-ellipsis-left">
                         (a new username)
                     </small>
@@ -102,7 +102,7 @@ export const Data = ({ data, terminateMessageBox }: Props) => {
                         height={16}
                         src="/security.svg"
                     />
-                    <b>Password</b>
+                    <span>Password</span>
                     <small className="ml-auto text-ellipsis-left">
                         (a new strong password)
                     </small>

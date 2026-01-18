@@ -25,7 +25,7 @@ export const Form = ({ avatar, avatarFile, data }: EditAvatarProps) => {
     const [bio, setBio] = useState<string>(data.profile.bio ?? "");
     const [title, setTitle] = useState<string>(data.profile.title ?? "");
     const [gender, setGender] = useState<ProfileGender>(
-        data.profile.gender ?? "unspecified"
+        data.profile.gender ?? "unspecified",
     );
 
     return (
@@ -66,7 +66,7 @@ export const Form = ({ avatar, avatarFile, data }: EditAvatarProps) => {
                             height={16}
                             src="/pencil.svg"
                         />
-                        <b>Name</b>
+                        Name
                         <small className="ml-auto text-ellipsis-left">
                             {" "}
                             (your name, can be fictional)
@@ -94,7 +94,7 @@ export const Form = ({ avatar, avatarFile, data }: EditAvatarProps) => {
                             height={16}
                             src="/type.svg"
                         />
-                        <b>Title</b>
+                        Title
                         <small className="ml-auto text-ellipsis-left">
                             (a short phrase that feels yours)
                         </small>
@@ -123,7 +123,7 @@ export const Form = ({ avatar, avatarFile, data }: EditAvatarProps) => {
                         height={16}
                         src="/menu.svg"
                     />
-                    <b>Status</b>
+                    Status
                     <small className="ml-auto text-ellipsis-left">
                         (a short text capturing your mood)
                     </small>
@@ -150,7 +150,7 @@ export const Form = ({ avatar, avatarFile, data }: EditAvatarProps) => {
                         height={16}
                         src="/book.svg"
                     />
-                    <b>Bio</b>
+                    Bio
                     <small className="ml-auto text-ellipsis-left">
                         (a long piece of text, describe yourself)
                     </small>
@@ -176,9 +176,8 @@ export const Form = ({ avatar, avatarFile, data }: EditAvatarProps) => {
                         height={16}
                         src="/account.svg"
                     />
-                    <b>Gender</b>
+                    Gender
                     <small className="ml-auto text-ellipsis-left">
-                        {" "}
                         (the way you identify yourself)
                     </small>
                 </label>
@@ -193,6 +192,7 @@ export const Form = ({ avatar, avatarFile, data }: EditAvatarProps) => {
             </div>
 
             <hr className="mt-auto -mb-2" />
+            
             <Tooltip
                 text="Save all of your changes"
                 className="w-full"

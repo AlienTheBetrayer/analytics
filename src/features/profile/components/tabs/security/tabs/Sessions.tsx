@@ -58,7 +58,9 @@ export const Sessions = ({
                     </Button>
                 </Tooltip>
 
-                <b>Sessions</b>
+                <span>
+                    Sessions
+                </span>
 
                 <small className="ml-auto text-ellipsis-left">
                     (all your logged in accounts)

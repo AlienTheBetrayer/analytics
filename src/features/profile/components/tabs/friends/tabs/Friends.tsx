@@ -82,7 +82,7 @@ export const Friends = ({ data }: Props) => {
 
                 <hr className="w-px! h-1/3 bg-background-a-10" />
 
-                <b>Your friends</b>
+                <span>Your friends</span>
 
                 <small className="ml-auto text-ellipsis-left">
                     (all your friends are here)
