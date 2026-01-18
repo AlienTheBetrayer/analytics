@@ -13,6 +13,7 @@ export const Post = () => {
 
     // zustand
     const posts = useAppStore((state) => state.posts);
+    const status = useAppStore((state) => state.status);
     const getPosts = useAppStore((state) => state.getPosts);
 
     // fetching
@@ -27,8 +28,23 @@ export const Post = () => {
     }, [id, getPosts]);
 
     // fallbacks
+    // not logged in and tab is create
+    if (!status && tab === "create") {
+        return (
+            <>
+                <AbsentTopline title="Not authenticated" />
+
+                <div
+                    className={`box max-w-400 w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}
+                >
+                    <LoadingEmulate />
+                </div>
+            </>
+        );
+    }
+
     // no tab
-    if (!tab || !id) {
+    if (!tab || (tab !== "create" && !id)) {
         return (
             <>
                 <AbsentTopline title="Incorrect URL" />
@@ -42,10 +58,10 @@ export const Post = () => {
         );
     }
 
-    const post = posts[id];
+    const post = id ? posts[id] : undefined;
 
     // no post
-    if (!post) {
+    if (tab !== "create" && !post) {
         return (
             <>
                 <AbsentTopline title="Post does not exist" />

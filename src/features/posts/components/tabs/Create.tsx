@@ -1,9 +1,3 @@
-import { Post } from "@/types/tables/account";
-
-type Props = {
-    post: Post;
-};
-
-export const Create = ({ post }: Props) => {
+export const Create = () => {
     return <div>create</div>;
 };

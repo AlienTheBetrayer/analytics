@@ -14,6 +14,6 @@ export type PostStore = {
         options: (
             | { type: "single"; id: string }
             | { type: "all"; username: string }
-        ) & { promiseKey?: string },
+        ) & { promiseKey?: string; caching?: boolean },
     ) => Promise<void>;
 };

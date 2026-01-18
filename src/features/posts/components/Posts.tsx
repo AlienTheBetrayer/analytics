@@ -15,7 +15,6 @@ export const Posts = () => {
     const status = useAppStore((state) => state.status);
     const profiles = useAppStore((state) => state.profiles);
     const users = useAppStore((state) => state.users);
-    const postIds = useAppStore((state) => state.postIds);
     const getPosts = useAppStore((state) => state.getPosts);
 
     // fetching
@@ -55,21 +54,6 @@ export const Posts = () => {
         return (
             <>
                 <AbsentTopline title="Incorrect username" />
-
-                <div
-                    className={`box max-w-400 w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}
-                >
-                    <LoadingProfile />
-                </div>
-            </>
-        );
-    }
-
-    // post does not exist and we're not the user
-    if (status?.id !== user?.id && user && !postIds[user?.id]?.length) {
-        return (
-            <>
-                <AbsentTopline title="User hasn't created a post yet" />
 
                 <div
                     className={`box max-w-400 w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}

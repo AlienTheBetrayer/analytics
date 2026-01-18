@@ -7,7 +7,15 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
         posts: {},
 
         getPosts: async (options) => {
-            const { setPromise } = get();
+            const { setPromise, postIds } = get();
+
+            if (
+                options.type === "all" &&
+                options.caching &&
+                postIds[options.username]
+            ) {
+                return;
+            }
 
             return await setPromise(
                 options.promiseKey ?? "getPosts",

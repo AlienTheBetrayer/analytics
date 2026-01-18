@@ -8,11 +8,11 @@ import { useParams } from "next/navigation";
 type Props =
     | {
           type: "posts";
-          data: { user: User; profile: Profile };
+          data?: { user: User; profile: Profile };
       }
     | {
           type: "post";
-          data: Post;
+          data?: Post;
       };
 
 export const Select = ({ type, data }: Props) => {
@@ -22,18 +22,18 @@ export const Select = ({ type, data }: Props) => {
         case "post": {
             switch (tab) {
                 case "create": {
-                    return <Create post={data} />;
+                    return <Create />;
                 }
                 case "edit": {
-                    return <Edit post={data} />;
+                    return data && <Edit post={data} />;
                 }
                 default: {
-                    return <View post={data} />;
+                    return data && <View post={data} />;
                 }
             }
         }
         case "posts": {
-            return <List data={data} />;
+            return data && <List data={data} />;
         }
     }
 };
