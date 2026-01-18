@@ -12,7 +12,7 @@ export const FetchPrompt = () => {
     const sync = useAppStore((state) => state.sync);
 
     return (
-        <div className="flex flex-col gap-4 p-6! rounded-4xl!">
+        <div className="flex flex-col gap-4 rounded-4xl!">
             <div className="flex flex-col gap-2 items-center">
                 <Image
                     alt=""

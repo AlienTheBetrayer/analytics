@@ -27,9 +27,10 @@ export const NoPosts = () => {
                     </span>
 
                     <p className="max-w-100 text-center">
-                        This user currently has yet to <mark>embark</mark> on a
-                        post creation journey, you can message this user, tell
-                        them what they are missing out on
+                        This user has yet to <mark>embark</mark> on a post
+                        creation journey, you can message this user, tell them
+                        what they are missing out on, and you will see their
+                        posts <mark>here</mark> once they publish any
                     </p>
                 </div>
 

@@ -37,7 +37,9 @@ export const Emulate = () => {
                 <AbsentTopline title="Data is absent" />
 
                 <div className="flex flex-col w-full mt-16 max-w-400 p-6! rounded-4xl! gap-4! m-auto box">
-                    <FetchPrompt />
+                    <div className="flex flex-col gap-2 w-full max-w-4xl mx-auto">
+                        <FetchPrompt />
+                    </div>
                 </div>
             </>
         );
@@ -50,9 +52,11 @@ export const Emulate = () => {
                 <AbsentTopline title="Project does not exist" />
 
                 <div className="flex flex-col w-full max-w-400 m-auto box p-6! rounded-4xl!">
-                    <FetchPrompt />
-                    <hr />
-                    <ProjectList />
+                    <div className="flex flex-col gap-8 w-full max-w-4xl mx-auto">
+                        <FetchPrompt />
+                        <hr />
+                        <ProjectList />
+                    </div>
                 </div>
             </>
         );
@@ -63,38 +67,40 @@ export const Emulate = () => {
             <Topline />
 
             <div className="flex flex-col w-full max-w-400 p-6! rounded-4xl! gap-4! box m-auto">
-                <div className="flex flex-col gap-2">
-                    {!Object.values(projects).length ? (
+                <div className="flex flex-col gap-4 w-full max-w-4xl mx-auto">
+                    <div className="flex flex-col gap-2">
+                        {!Object.values(projects).length ? (
+                            <>
+                                <span className="text-center text-foreground-2! text-5! whitespace-nowrap">
+                                    <u>No project data</u>
+                                </span>
+                                <span className="text-center">
+                                    Try re-fetching. If that does not help -
+                                    database is empty.
+                                </span>
+                            </>
+                        ) : (
+                            <>
+                                <span className="text-center text-foreground-2! text-5! whitespace-nowrap">
+                                    Project selection
+                                </span>
+                                <span className="text-center">
+                                    Select a project first to emulate events
+                                </span>
+                            </>
+                        )}
+                    </div>
+
+                    {!!Object.values(projects).length && (
                         <>
-                            <span className="text-center text-foreground-2! text-5! whitespace-nowrap">
-                                <u>No project data</u>
-                            </span>
-                            <span className="text-center">
-                                Try re-fetching. If that does not help -
-                                database is empty.
-                            </span>
-                        </>
-                    ) : (
-                        <>
-                            <span className="text-center text-foreground-2! text-5! whitespace-nowrap">
-                                Project selection
-                            </span>
-                            <span className="text-center">
-                                Select a project first to emulate events
-                            </span>
+                            <hr />
+                            <ProjectList />
                         </>
                     )}
+
+                    <hr />
+                    <Controller />
                 </div>
-
-                {!!Object.values(projects).length && (
-                    <>
-                        <hr />
-                        <ProjectList />
-                    </>
-                )}
-
-                <hr />
-                <Controller />
             </div>
         </>
     );

@@ -1,7 +1,6 @@
 import { AnimatePresence } from "motion/react";
 import { type ComponentPropsWithoutRef, useRef, useState } from "react";
 import { Button } from "../../button/components/Button";
-import { useInput } from "../hooks/useInput";
 import Image from "next/image";
 
 type Props = {
@@ -9,7 +8,11 @@ type Props = {
     onChange?: (value: string) => void;
     isEnabled?: boolean;
     container?: ComponentPropsWithoutRef<"div">;
-} & Omit<ComponentPropsWithoutRef<"input">, "onChange">;
+    as?: "input" | "textarea";
+} & (
+    | Omit<ComponentPropsWithoutRef<"input">, "onChange">
+    | Omit<ComponentPropsWithoutRef<"textarea">, "onChange">
+);
 
 export const Input = ({
     className,
@@ -22,14 +25,17 @@ export const Input = ({
     maxLength,
     container,
     children,
+    as = "input",
     ...rest
 }: Props) => {
     // value state logic
     const [data, setData] = useState<string>("");
     const inputValue = (value as string | undefined) ?? data;
 
-    const { inputRef } = useInput();
+    // refs
     const containerRef = useRef<HTMLDivElement | null>(null);
+
+    const Element = as === "input" ? "input" : "textarea";
 
     return (
         <div
@@ -39,17 +45,16 @@ export const Input = ({
             inert={!isEnabled}
             {...container}
         >
-            <input
-                type="text"
+            <Element
+                {...(as === "input" && { type: "text" })}
                 required={required && isEnabled}
                 className={`placeholder:text-background-9 w-full h-full min-h-8 
                     outline-0!
                     border-2 border-background-a-8 p-2.5 rounded-full focus:border-blue-1 bg-background-a-3
-                    hover:bg-background-a-6 transition-all duration-500 focus-visible:bg-background-a-6
+                    hover:bg-background-a-6 transition-colors duration-500 focus-visible:bg-background-a-6 resize-y
                     ${isEnabled && (required || minLength || maxLength) ? "invalid:border-red-1! valid:border-blue-1!" : ""} 
                     ${className ?? ""}`}
                 value={inputValue}
-                ref={inputRef}
                 onChange={(e) => {
                     if (!value) {
                         setData(e.target.value);
@@ -58,7 +63,8 @@ export const Input = ({
                 }}
                 maxLength={maxLength}
                 minLength={minLength}
-                {...rest}
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                {...(rest as any)}
             />
             {children}
             <AnimatePresence>
@@ -70,7 +76,6 @@ export const Input = ({
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: 5 }}
                         onClick={() => {
-                            inputRef.current?.focus();
                             if (!value) {
                                 setData("");
                             }

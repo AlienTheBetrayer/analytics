@@ -52,8 +52,8 @@ export const Topline = ({ type, data }: Props) => {
                 <span className="flex gap-1 items-center">
                     <div className="rounded-full w-1 h-1 bg-blue-1" />
                     <Image
-                        width={14}
-                        height={14}
+                        width={16}
+                        height={16}
                         alt={title.alt}
                         src={title.src}
                     />
