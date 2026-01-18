@@ -1,4 +1,4 @@
-import { Post } from "@/types/tables/account";
+import { Post } from "@/types/tables/posts";
 
 export type PostData = {
     title?: string;

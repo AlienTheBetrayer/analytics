@@ -56,16 +56,3 @@ export type User = {
     created_at?: string;
     last_seen_at?: string;
 };
-
-/**
- * posts
- */
-export type Post = {
-    id: string;
-    user_id: string;
-    title?: string;
-    content?: string;
-    image_url?: string;
-    edited_at?: string;
-    created_at?: string;
-}
