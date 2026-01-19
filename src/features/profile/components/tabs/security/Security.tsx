@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { Tooltip } from "@/features/tooltip/components/Tooltip";
+import { Tooltip } from "@/features/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { promiseStatus } from "@/utils/other/status";
 import { useAppStore } from "@/zustand/store";

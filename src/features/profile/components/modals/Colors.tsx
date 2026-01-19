@@ -6,7 +6,7 @@ import { Button } from "@/features/ui/button/components/Button";
 import { promiseStatus } from "@/utils/other/status";
 import { useAppStore } from "@/zustand/store";
 import { useColorModal } from "../../hooks/useColorModal";
-import { Tooltip } from "@/features/tooltip/components/Tooltip";
+import { Tooltip } from "@/features/popovers/components/tooltip/Tooltip";
 import { Profile, User } from "@/types/tables/account";
 import { useEffect } from "react";
 
@@ -90,9 +90,7 @@ export const Colors = ({ data }: Props) => {
 
                 <ul className="flex flex-col gap-4 w-screen max-w-64 min-w-0">
                     <li className="flex flex-col w-fit gap-1">
-                        <span>
-                            Actions
-                        </span>
+                        <span>Actions</span>
                     </li>
 
                     <li className="flex flex-col w-full *:w-full gap-1">
@@ -175,7 +173,7 @@ export const Colors = ({ data }: Props) => {
                                 step={0.01}
                                 onChange={(e) => {
                                     controller.setHueRotation(
-                                        Number(e.target.value)
+                                        Number(e.target.value),
                                     );
                                 }}
                             />

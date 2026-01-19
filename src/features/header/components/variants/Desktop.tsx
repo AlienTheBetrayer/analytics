@@ -6,7 +6,7 @@ import Image from "next/image";
 import { ComponentPropsWithoutRef } from "react";
 import { SearchButton } from "../parts/SearchButton";
 import { Button } from "@/features/ui/button/components/Button";
-import { Tooltip } from "@/features/tooltip/components/Tooltip";
+import { Tooltip } from "@/features/popovers/components/tooltip/Tooltip";
 import { Socials } from "../parts/Socials";
 
 type Props = {} & ComponentPropsWithoutRef<"div">;
@@ -23,6 +23,7 @@ export const Desktop = ({ className }: Props) => {
                 <ul className="flex items-center">
                     <li className="flex group items-center">
                         <div className="w-1 aspect-square bg-blue-1 rounded-full group-hover:bg-red-1 duration-700 transition-all" />
+
                         <LinkButton
                             href="/home"
                             styles="link"
@@ -87,11 +88,7 @@ export const Desktop = ({ className }: Props) => {
                     </li>
 
                     <li>
-                        <Tooltip
-                            type="modal"
-                            disabledPointer={false}
-                            element={<Socials />}
-                        >
+                        <Tooltip element={<Socials />}>
                             <Button
                                 styles="link"
                                 className="button-img p-2"

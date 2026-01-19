@@ -1,4 +1,4 @@
-import { Tooltip } from "@/features/tooltip/components/Tooltip";
+import { Tooltip } from "@/features/popovers/components/tooltip/Tooltip";
 import { Edit } from "@/features/ui/fileselect/components/Edit";
 import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";

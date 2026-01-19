@@ -1,4 +1,4 @@
-import { Tooltip } from "@/features/tooltip/components/Tooltip";
+import { Tooltip } from "@/features/popovers/components/tooltip/Tooltip";
 import { Input } from "@/features/ui/input/components/Input";
 import { NotificationTab } from "@/types/other/notifications";
 import { useAppStore } from "@/zustand/store";
@@ -11,7 +11,7 @@ export const Search = ({ tab }: Props) => {
     // zustand-state
     const filter = useAppStore((state) => state.filter)[tab];
     const setNotificationFilter = useAppStore(
-        (state) => state.setNotificationFilter
+        (state) => state.setNotificationFilter,
     );
 
     return (

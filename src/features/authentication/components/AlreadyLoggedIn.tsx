@@ -3,7 +3,7 @@ import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { promiseStatus } from "@/utils/other/status";
 import { useAppStore } from "@/zustand/store";
-import { Tooltip } from "@/features/tooltip/components/Tooltip";
+import { Tooltip } from "@/features/popovers/components/tooltip/Tooltip";
 import { useLocalStore } from "@/zustand/localStore";
 
 export const AlreadyLoggedIn = () => {

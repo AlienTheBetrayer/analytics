@@ -1,4 +1,4 @@
-import { Tooltip } from "@/features/tooltip/components/Tooltip";
+import { Tooltip } from "@/features/popovers/components/tooltip/Tooltip";
 import { Input } from "@/features/ui/input/components/Input";
 import { useDebounced } from "@/hooks/useDebounced";
 import { useAppStore } from "@/zustand/store";
@@ -12,7 +12,7 @@ export const Search = () => {
 
     // input debouncing
     const [searchValue, setSearchValue] = useState<string>(
-        selectedProjectId ? (projectFilters?.projectSearch ?? "") : ""
+        selectedProjectId ? (projectFilters?.projectSearch ?? "") : "",
     );
 
     const debounced = useDebounced(searchValue, 75);

@@ -5,7 +5,7 @@ import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { ProfileImage } from "@/features/profile/components/ProfileImage";
 import { useLocalStore } from "@/zustand/localStore";
-import { Tooltip } from "@/features/tooltip/components/Tooltip";
+import { Tooltip } from "@/features/popovers/components/tooltip/Tooltip";
 import { Theme } from "@/features/toolbox/components/Theme";
 import { Socials } from "../parts/Socials";
 

@@ -1,6 +1,6 @@
 import { MessageBox } from "@/features/messagebox/components/MessageBox";
 import { usePopup } from "@/features/popup/hooks/usePopup";
-import { Tooltip } from "@/features/tooltip/components/Tooltip";
+import { Tooltip } from "@/features/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import Image from "next/image";
 
@@ -32,9 +32,7 @@ export const Topline = () => {
             </li>
 
             <li className="ml-auto!">
-                <Tooltip
-                    text="Factory-reset settings"
-                >
+                <Tooltip text="Factory-reset settings">
                     <Button
                         className="p-0!"
                         onClick={resetBox.show}

@@ -1,5 +1,5 @@
 import { Spinner } from "@/features/spinner/components/Spinner";
-import { Tooltip } from "@/features/tooltip/components/Tooltip";
+import { Tooltip } from "@/features/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { ResponseSession } from "@/types/api/responses/auth";
 import { Profile, User } from "@/types/tables/account";
@@ -61,7 +61,7 @@ export const SessionList = ({ data, currentSessions }: Props) => {
                                 }}
                             >
                                 {promiseStatus(
-                                    promises[`terminateSessions_${token.id}`]
+                                    promises[`terminateSessions_${token.id}`],
                                 )}
                                 <Image
                                     src="/cross.svg"

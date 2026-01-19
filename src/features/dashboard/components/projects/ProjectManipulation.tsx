@@ -1,6 +1,6 @@
 import { MessageBox } from "@/features/messagebox/components/MessageBox";
 import { usePopup } from "@/features/popup/hooks/usePopup";
-import { Tooltip } from "@/features/tooltip/components/Tooltip";
+import { Tooltip } from "@/features/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { promiseStatus } from "@/utils/other/status";
@@ -128,7 +128,7 @@ export const ProjectManipulation = () => {
                                     {promiseStatus(
                                         promises[
                                             `projectDelete_${selectedProjectId}`
-                                        ]
+                                        ],
                                     )}
                                     <Image
                                         src="/delete.svg"
@@ -157,7 +157,7 @@ export const ProjectManipulation = () => {
                                     {promiseStatus(
                                         promises[
                                             `eventsDelete_${selectedProjectId}`
-                                        ]
+                                        ],
                                     )}
                                     <Image
                                         src="/type.svg"

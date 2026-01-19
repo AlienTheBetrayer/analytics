@@ -1,5 +1,5 @@
 import { fileToBase64 } from "@/features/profile/utils/fileToBase64";
-import { Tooltip } from "@/features/tooltip/components/Tooltip";
+import { Tooltip } from "@/features/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
 import { promiseStatus } from "@/utils/other/status";
@@ -192,7 +192,7 @@ export const Form = ({ avatar, avatarFile, data }: EditAvatarProps) => {
             </div>
 
             <hr className="mt-auto -mb-2" />
-            
+
             <Tooltip
                 text="Save all of your changes"
                 className="w-full"

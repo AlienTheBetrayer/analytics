@@ -1,3 +1,4 @@
+import { useDisabledScroll } from "@/hooks/useDisabledScroll";
 import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -6,67 +7,71 @@ import { createPortal } from "react-dom";
 export const useInputSelect = (
     items: string[],
     value: string | undefined,
-    onChange?: (item: string) => void
+    onChange?: (item: string) => void,
 ) => {
     // states
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
     const [selectedItem, setSelectedItem] = useState<string>(
-        items.length > 0 ? items[0] : ""
+        items.length > 0 ? items[0] : "",
     );
+
+    const { setIsDisabled } = useDisabledScroll();
 
     // derived from state
     const inputValue = (value as string | undefined) ?? selectedItem;
 
     // refs
     const inputRef = useRef<HTMLButtonElement | null>(null);
-    const expandRef = useRef<HTMLUListElement | null>(null);
+    const dialogRef = useRef<HTMLDialogElement | null>(null);
 
     // position calculating
     useEffect(() => {
         if (!isExpanded) {
+            dialogRef.current?.close();
+            setIsDisabled(false);
             return;
         }
 
         const handle = () => {
-            if (!(inputRef.current && expandRef.current)) {
+            if (!(inputRef.current && dialogRef.current)) {
                 return;
             }
 
+            dialogRef.current.showModal();
+            setIsDisabled(true);
+
             const inputBounds = inputRef.current.getBoundingClientRect();
 
-            expandRef.current.style.left = `${inputBounds.left}px`;
-            expandRef.current.style.width = `${inputBounds.width}px`;
-            expandRef.current.style.top = `${inputBounds.top + inputBounds.height + window.scrollY}px`;
+            dialogRef.current.style.left = `${inputBounds.left}px`;
+            dialogRef.current.style.width = `${inputBounds.width}px`;
+            dialogRef.current.style.top = `${inputBounds.top + inputBounds.height}px`;
         };
         handle();
 
         window.addEventListener("resize", handle);
         return () => window.removeEventListener("resize", handle);
-    }, [isExpanded]);
-
-    // hotkeys
-    useEffect(() => {
-        const handle = (e: KeyboardEvent) => {
-            switch (e.code) {
-                case "Escape":
-                    inputRef.current?.blur();
-                    setIsExpanded(false);
-                    break;
-            }
-        };
-
-        window.addEventListener("keydown", handle);
-        return () => window.removeEventListener("keydown", handle);
-    }, []);
+    }, [isExpanded, setIsDisabled]);
 
     // click away
     useEffect(() => {
-        const handle = (e: PointerEvent | FocusEvent) => {
-            const target = e.target as Node;
+        if (!isExpanded) {
+            return;
+        }
+
+        const handle = (e: PointerEvent) => {
+            if (!dialogRef.current) {
+                return;
+            }
+
+            const { x, y } = { x: e.clientX, y: e.clientY };
+
+            const bounds = dialogRef.current.getBoundingClientRect();
 
             if (
-                inputRef.current?.contains(target) ||
-                expandRef.current?.contains(target)
+                x > bounds.left &&
+                x < bounds.right &&
+                y > bounds.top &&
+                y < bounds.bottom
             ) {
                 return;
             }
@@ -75,67 +80,75 @@ export const useInputSelect = (
         };
 
         window.addEventListener("pointerdown", handle);
-        window.addEventListener("focusin", handle);
+
         return () => {
             window.removeEventListener("pointerdown", handle);
-            window.removeEventListener("focusin", handle);
         };
-    }, []);
+    }, [isExpanded]);
 
     const render = useCallback(() => {
         return createPortal(
             <AnimatePresence>
                 {isExpanded && (
-                    <motion.ul
-                        data-tooltip
-                        className="absolute flex flex-col z-1001 overflow-hidden rounded-xl border-2 border-background-5"
-                        ref={expandRef}
-                        initial={{ height: "0px" }}
-                        animate={{ height: "auto" }}
-                        exit={{ height: "0px" }}
-                        transition={{
-                            type: "spring",
-                            stiffness: 200,
-                            damping: 30,
+                    <dialog
+                        ref={dialogRef}
+                        onCancel={(e) => {
+                            e.stopPropagation();
+                            setIsExpanded(false);
                         }}
+                        onClick={(e) => e.stopPropagation()}
+                        tabIndex={-1}
                     >
-                        {items.map((item) => (
-                            <li key={item}>
-                                <button
-                                    type="button"
-                                    className={`flex items-center  w-full 
+                        <motion.ul
+                            data-tooltip
+                            className="flex flex-col overflow-hidden rounded-xl border-2 border-background-5"
+                            initial={{ height: "0px" }}
+                            animate={{ height: "auto" }}
+                            exit={{ height: "0px" }}
+                            transition={{
+                                type: "spring",
+                                stiffness: 200,
+                                damping: 30,
+                            }}
+                        >
+                            {items.map((item) => (
+                                <li key={item}>
+                                    <button
+                                        type="button"
+                                        className={`flex items-center  w-full 
             bg-background-a-2 backdrop-blur-xl p-2 outline-0 focus-visible:bg-background-a-11
              hover:bg-background-a-9 active:bg-background-a-11 active:text-foreground-1! transition-colors duration-300 ease-out cursor-pointer`}
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        if (value) {
-                                            onChange?.(item);
-                                        } else {
-                                            setSelectedItem(item);
-                                        }
-                                        setIsExpanded(false);
-                                    }}
-                                >
-                                    <span className="whitespace-nowrap text-ellipsis">
-                                        {item}
-                                    </span>
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            if (value) {
+                                                onChange?.(item);
+                                            } else {
+                                                setSelectedItem(item);
+                                            }
+                                            setIsExpanded(false);
+                                        }}
+                                    >
+                                        <span className="whitespace-nowrap text-ellipsis">
+                                            {item}
+                                        </span>
 
-                                    {item === inputValue && (
-                                        <Image
-                                            src="/checkmark.svg"
-                                            width={10}
-                                            height={10}
-                                            alt="selected"
-                                            className="ml-auto"
-                                        />
-                                    )}
-                                </button>
-                            </li>
-                        ))}
-                    </motion.ul>
+                                        {item === inputValue && (
+                                            <Image
+                                                src="/checkmark.svg"
+                                                width={10}
+                                                height={10}
+                                                alt="selected"
+                                                className="ml-auto"
+                                            />
+                                        )}
+                                    </button>
+                                </li>
+                            ))}
+                        </motion.ul>
+                    </dialog>
                 )}
             </AnimatePresence>,
-            document.body
+            document.body,
         );
     }, [items, isExpanded, onChange, value, inputValue]);
 
@@ -170,7 +183,7 @@ export const useInputSelect = (
                 }
             }
         },
-        [items, inputValue, value, onChange]
+        [items, inputValue, value, onChange],
     );
 
     return {

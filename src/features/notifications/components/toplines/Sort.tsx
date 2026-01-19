@@ -1,4 +1,4 @@
-import { Tooltip } from "@/features/tooltip/components/Tooltip";
+import { Tooltip } from "@/features/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { Select } from "@/features/ui/select/components/Select";
 import { NotificationTab } from "@/types/other/notifications";
@@ -12,7 +12,7 @@ type Props = {
 export const Sort = ({ tab }: Props) => {
     const filter = useAppStore((state) => state.filter)[tab];
     const setNotificationFilter = useAppStore(
-        (state) => state.setNotificationFilter
+        (state) => state.setNotificationFilter,
     );
 
     return (

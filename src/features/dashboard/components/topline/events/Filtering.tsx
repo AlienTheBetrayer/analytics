@@ -1,4 +1,4 @@
-import { Tooltip } from "@/features/tooltip/components/Tooltip";
+import { Tooltip } from "@/features/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
 import { useAppStore } from "@/zustand/store";
@@ -35,8 +35,8 @@ export const Filtering = () => {
         new Set<string>(
             events[selectedProjectId]
                 .map((e) => e.type)
-                .filter(Boolean) as string[]
-        )
+                .filter(Boolean) as string[],
+        ),
     );
 
     return (

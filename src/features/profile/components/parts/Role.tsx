@@ -1,4 +1,4 @@
-import { Tooltip } from "@/features/tooltip/components/Tooltip";
+import { Tooltip } from "@/features/popovers/components/tooltip/Tooltip";
 import { Profile, User } from "@/types/tables/account";
 import Image from "next/image";
 import React, { useMemo } from "react";

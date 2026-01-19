@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
 import Image from "next/image";
 import { useState } from "react";
-import { Tooltip } from "../../tooltip/components/Tooltip";
+import { Tooltip } from "../../popovers/components/tooltip/Tooltip";
 import { Button } from "../../ui/button/components/Button";
 import { Input } from "../../ui/input/components/Input";
 import { LinkButton } from "../../ui/linkbutton/components/LinkButton";

@@ -1,4 +1,4 @@
-export type TooltipDirection =
+export type PopoverDirection =
     | "top"
     | "bottom"
     | "left"
@@ -7,5 +7,3 @@ export type TooltipDirection =
     | "bottom-left"
     | "top-right"
     | "top-left";
-
-export type TooltipType = "tooltip" | "modal";

@@ -1,4 +1,4 @@
-import { Tooltip } from "@/features/tooltip/components/Tooltip";
+import { Tooltip } from "@/features/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { TabSelection } from "@/utils/other/TabSelection";
 import Image from "next/image";
@@ -119,7 +119,7 @@ export const Select = ({ data }: Props) => {
                 </Tooltip>
             </div>
 
-            <hr/>
+            <hr />
 
             {element()}
         </div>

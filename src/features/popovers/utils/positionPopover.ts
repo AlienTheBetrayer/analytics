@@ -1,14 +1,14 @@
-import type { TooltipDirection } from "../types/tooltip";
+import type { PopoverDirection } from "../types/popover";
 
 /**
  * positions a tooltip with all directions
  * @param tooltipRef the ref of the tooltip that will get positioned
  * @param elementRef the hovered element
  */
-export const positionTooltip = (
-    tooltipRef: React.RefObject<HTMLDivElement | null>,
+export const positionPopover = (
+    tooltipRef: React.RefObject<HTMLDialogElement | HTMLDivElement | null>,
     elementRef: React.RefObject<HTMLDivElement | null>,
-    direction: TooltipDirection = "bottom",
+    direction: PopoverDirection = "bottom",
 ) => {
     // safety flag
     if (!tooltipRef.current || !elementRef.current) {
@@ -29,53 +29,51 @@ export const positionTooltip = (
 
     switch (direction) {
         case "bottom": {
-            left =
-                elementBounds.left + elementBounds.width / 2 + window.scrollX;
-            top = elementBounds.bottom + window.scrollY;
+            left = elementBounds.left + elementBounds.width / 2;
+            top = elementBounds.bottom;
             translateX = -50;
             break;
         }
         case "top": {
-            left =
-                elementBounds.left + elementBounds.width / 2 + window.scrollX;
-            top = elementBounds.top + window.scrollY;
+            left = elementBounds.left + elementBounds.width / 2;
+            top = elementBounds.top;
             translateX = -50;
             translateY = -100;
             break;
         }
         case "left": {
-            left = elementBounds.left + window.scrollX;
-            top = elementBounds.top + elementBounds.height / 2 + window.scrollY;
+            left = elementBounds.left;
+            top = elementBounds.top + elementBounds.height / 2;
             translateY = -50;
             translateX = -100;
             break;
         }
         case "right": {
-            left = elementBounds.right + window.scrollX;
-            top = elementBounds.top + elementBounds.height / 2 + window.scrollY;
+            left = elementBounds.right;
+            top = elementBounds.top + elementBounds.height / 2;
             translateY = -50;
             break;
         }
         case "bottom-right": {
-            left = elementBounds.right + window.scrollX;
-            top = elementBounds.top + window.scrollY - 4;
+            left = elementBounds.right;
+            top = elementBounds.top - 4;
             break;
         }
         case "bottom-left": {
-            left = elementBounds.left + window.scrollX;
-            top = elementBounds.top + window.scrollY - 4;
+            left = elementBounds.left;
+            top = elementBounds.top - 4;
             translateX = -100;
             break;
         }
         case "top-right": {
-            left = elementBounds.right + window.scrollX;
-            top = elementBounds.top + window.scrollY + 4 - elementBounds.height;
+            left = elementBounds.right;
+            top = elementBounds.top + 4 - elementBounds.height;
             translateY = -100;
             break;
         }
         case "top-left": {
-            left = elementBounds.left + window.scrollX - tooltipBounds.width;
-            top = elementBounds.top + window.scrollY + 4 - elementBounds.height;
+            left = elementBounds.left - tooltipBounds.width;
+            top = elementBounds.top + 4 - elementBounds.height;
             translateX = -100;
             translateY = -100;
             break;
@@ -108,7 +106,7 @@ export const positionTooltip = (
         } else if (
             tooltipBounds.bottom > document.documentElement.clientHeight
         ) {
-            dy = document.documentElement.clientHeight - tooltipBounds.top - 4;
+            dy = - tooltipBounds.height - elementBounds.height - 4;
         }
 
         // setting the updated safe positions

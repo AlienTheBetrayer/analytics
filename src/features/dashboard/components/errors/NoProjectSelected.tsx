@@ -1,4 +1,4 @@
-import { Tooltip } from "@/features/tooltip/components/Tooltip";
+import { Tooltip } from "@/features/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
@@ -48,7 +48,7 @@ export const NoProjectSelected = () => {
                                 }
 
                                 selectProject(
-                                    ids[Math.floor(Math.random() * ids.length)]
+                                    ids[Math.floor(Math.random() * ids.length)],
                                 );
                             }}
                         >

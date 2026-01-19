@@ -1,4 +1,4 @@
-import { Tooltip } from "@/features/tooltip/components/Tooltip";
+import { Tooltip } from "@/features/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { Select } from "@/features/ui/select/components/Select";
 import { useAppStore } from "@/zustand/store";
@@ -36,8 +36,8 @@ export const Sorting = () => {
                     <Select
                         items={["Type", "Description", "Created Date"]}
                         value={
-                            eventFilters[selectedProjectId]?.eventsSorting?.column ??
-                            "Created Date"
+                            eventFilters[selectedProjectId]?.eventsSorting
+                                ?.column ?? "Created Date"
                         }
                         onChange={(item) => {
                             setFilter({
@@ -52,8 +52,8 @@ export const Sorting = () => {
                 <Tooltip
                     direction="top"
                     text={
-                        eventFilters[selectedProjectId]?.eventsSorting?.direction ===
-                        "ascendant"
+                        eventFilters[selectedProjectId]?.eventsSorting
+                            ?.direction === "ascendant"
                             ? "Ascendant"
                             : "Descendant"
                     }
@@ -65,8 +65,9 @@ export const Sorting = () => {
                                 project_id: selectedProjectId,
                                 type: "event-sort",
                                 direction:
-                                    eventFilters[selectedProjectId]?.eventsSorting
-                                        ?.direction === "ascendant"
+                                    eventFilters[selectedProjectId]
+                                        ?.eventsSorting?.direction ===
+                                    "ascendant"
                                         ? "descendant"
                                         : "ascendant",
                             });
@@ -80,8 +81,9 @@ export const Sorting = () => {
                             className="duration-500! ease-out!"
                             style={{
                                 transform:
-                                    eventFilters[selectedProjectId]?.eventsSorting
-                                        ?.direction === "ascendant"
+                                    eventFilters[selectedProjectId]
+                                        ?.eventsSorting?.direction ===
+                                    "ascendant"
                                         ? `rotate(180deg)`
                                         : `rotate(0deg)`,
                             }}

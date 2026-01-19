@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { Profile, User } from "@/types/tables/account";
 import Image from "next/image";
 import { ProfileDisplay } from "../../../ProfileDisplay";
-import { Tooltip } from "@/features/tooltip/components/Tooltip";
+import { Tooltip } from "@/features/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 
 type Props = {
@@ -60,11 +60,9 @@ export const Incoming = ({ data }: Props) => {
                     </Button>
                 </Tooltip>
 
-                <hr className='w-px! h-1/3 bg-background-a-10'/>
+                <hr className="w-px! h-1/3 bg-background-a-10" />
 
-                <span>
-                    Incoming requests
-                </span>
+                <span>Incoming requests</span>
 
                 <small className="ml-auto text-ellipsis-left">
                     (you received these)

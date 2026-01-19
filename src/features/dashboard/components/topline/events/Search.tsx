@@ -1,4 +1,4 @@
-import { Tooltip } from "@/features/tooltip/components/Tooltip";
+import { Tooltip } from "@/features/popovers/components/tooltip/Tooltip";
 import { Input } from "@/features/ui/input/components/Input";
 import { useDebounced } from "@/hooks/useDebounced";
 import { useAppStore } from "@/zustand/store";
@@ -14,7 +14,7 @@ export const Search = () => {
     const [searchValue, setSearchValue] = useState<string>(
         selectedProjectId
             ? (eventFilters[selectedProjectId]?.eventsSearch ?? "")
-            : ""
+            : "",
     );
 
     const debounced = useDebounced(searchValue, 75);
@@ -32,9 +32,7 @@ export const Search = () => {
     }, [debounced, selectedProjectId, setFilter]);
 
     return (
-        <Tooltip
-            text="Filters every field"
-        >
+        <Tooltip text="Filters every field">
             <Input
                 className="rounded-full!"
                 placeholder="Filter..."

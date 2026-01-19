@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useAppStore } from "@/zustand/store";
 import { promiseStatus } from "@/utils/other/status";
 import { useRef, useState } from "react";
-import { Tooltip } from "@/features/tooltip/components/Tooltip";
+import { Tooltip } from "@/features/popovers/components/tooltip/Tooltip";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 
 export const Controller = () => {
