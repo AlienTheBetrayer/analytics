@@ -2,7 +2,8 @@ import { Create } from "@/features/posts/components/tabs/Create";
 import { Edit } from "@/features/posts/components/tabs/Edit";
 import { List } from "@/features/posts/components/tabs/List";
 import { View } from "@/features/posts/components/tabs/View";
-import { Post, Profile, User } from "@/types/tables/account";
+import { Profile, User } from "@/types/tables/account";
+import { Post } from "@/types/tables/posts";
 import { useParams } from "next/navigation";
 
 type Props =

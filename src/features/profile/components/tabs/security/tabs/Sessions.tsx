@@ -1,4 +1,4 @@
-import { usePopup } from "@/features/ui/popup/hooks/usePopup";
+import { usePopup } from "@/hooks/usePopup";
 import { Spinner } from "@/features/spinner/components/Spinner";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";

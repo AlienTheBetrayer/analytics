@@ -6,7 +6,7 @@ import { ProfileImage } from "../../ProfileImage";
 import { Profile, User } from "@/types/tables/account";
 import React, { JSX } from "react";
 import { MessageBox } from "@/features/ui/messagebox/components/MessageBox";
-import { usePopup } from "@/features/ui/popup/hooks/usePopup";
+import { usePopup } from "@/hooks/usePopup";
 import Image from "next/image";
 import { ColorSwatches } from "../../parts/ColorSwatches";
 import { useAppStore } from "@/zustand/store";

@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { useEffect, type ComponentPropsWithoutRef } from "react";
+import { type ComponentPropsWithoutRef } from "react";
 import { useInputSelect } from "../hooks/useInputSelect";
 
 type Props = {
@@ -11,12 +11,6 @@ export const Select = ({ items, value, onChange, ...rest }: Props) => {
     // controller
     const { inputRef, inputValue, expandToggle, keyDown, render } =
         useInputSelect(items, value as string | undefined, onChange);
-
-    useEffect(() => {
-        requestAnimationFrame(() => {
-            inputRef.current?.focus({ preventScroll: true });
-        });
-    }, [inputRef]);
 
     return (
         <button

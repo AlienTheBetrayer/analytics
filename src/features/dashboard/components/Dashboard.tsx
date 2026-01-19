@@ -64,9 +64,9 @@ export const Dashboard = () => {
             <div className="w-full max-w-400 m-auto min-h-200 box gap-3!">
                 <hr />
 
-                <div className="flex flex-col md:flex-row gap-8 md:gap-4 grow *:w-full">
+                <div className="flex flex-col lg:flex-row gap-8 lg:gap-4 grow *:w-full">
                     <DashboardProjects />
-                    <hr className="md:hidden" />
+                    <hr className="lg:hidden" />
                     <DashboardEvents />
                 </div>
             </div>

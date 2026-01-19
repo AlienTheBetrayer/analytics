@@ -1,6 +1,5 @@
 import { MessageBox } from "@/features/ui/messagebox/components/MessageBox";
-import { usePopup } from "@/features/ui/popup/hooks/usePopup";
-import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
+import { usePopup } from "@/hooks/usePopup";
 import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { useAppStore } from "@/zustand/store";
@@ -9,7 +8,6 @@ import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseSta
 
 export const ProjectManipulation = () => {
     // zustand states
-    const status = useAppStore((state) => state.status);
     const promises = useAppStore((state) => state.promises);
     const events = useAppStore((state) => state.events);
     const selectedProjectId = useAppStore((state) => state.selectedProjectId);
@@ -80,26 +78,18 @@ export const ProjectManipulation = () => {
             </div>
             <hr />
 
-            <Tooltip
-                text="Go to emulate page"
-                direction="top"
+            <LinkButton
                 className="w-full"
-                isEnabled={status?.role !== "user"}
+                href={`/emulate/${selectedProjectId}`}
             >
-                <LinkButton
-                    className="w-full"
-                    href={`/emulate/${selectedProjectId}`}
-                    isEnabled={status?.role !== "user"}
-                >
-                    <Image
-                        src="/emulate.svg"
-                        width={16}
-                        height={16}
-                        alt=""
-                    />
-                    Emulate events
-                </LinkButton>
-            </Tooltip>
+                <Image
+                    src="/emulate.svg"
+                    width={16}
+                    height={16}
+                    alt=""
+                />
+                Emulate events
+            </LinkButton>
 
             <hr />
 
@@ -113,65 +103,51 @@ export const ProjectManipulation = () => {
                 <li>
                     <ul className="flex flex-col sm:flex-row *:w-full gap-4">
                         <li>
-                            <Tooltip
-                                text="Wipe all of this project's data"
+                            <Button
                                 className="w-full"
-                                isEnabled={status?.role !== "user"}
+                                onClick={() => {
+                                    deleteProjectBox.show();
+                                }}
                             >
-                                <Button
-                                    className="w-full"
-                                    onClick={() => {
-                                        deleteProjectBox.show();
-                                    }}
-                                    isEnabled={status?.role !== "user"}
-                                >
-                                    <PromiseStatus
-                                        status={
-                                            promises[
-                                                `projectDelete_${selectedProjectId}`
-                                            ]
-                                        }
-                                    />
-                                    <Image
-                                        src="/delete.svg"
-                                        width={16}
-                                        height={16}
-                                        alt=""
-                                    />
-                                    Delete project
-                                </Button>
-                            </Tooltip>
+                                <PromiseStatus
+                                    status={
+                                        promises[
+                                            `projectDelete_${selectedProjectId}`
+                                        ]
+                                    }
+                                />
+                                <Image
+                                    src="/delete.svg"
+                                    width={16}
+                                    height={16}
+                                    alt=""
+                                />
+                                Delete project
+                            </Button>
                         </li>
 
                         <li>
-                            <Tooltip
-                                text="Wipe this project's events"
+                            <Button
                                 className="w-full"
-                                isEnabled={status?.role !== "user"}
+                                onClick={() => {
+                                    deleteEventsBox.show();
+                                }}
                             >
-                                <Button
-                                    className="w-full"
-                                    onClick={() => {
-                                        deleteEventsBox.show();
-                                    }}
-                                    isEnabled={status?.role !== "user"}
-                                >
-                                    <PromiseStatus
-                                        status={
-                                            promises[
-                                                `eventsDelete_${selectedProjectId}`
-                                            ]
-                                        }
-                                    />
-                                    <Image
-                                        src="/type.svg"
-                                        width={16}
-                                        height={16}
-                                        alt=""
-                                    />
-                                    Delete all events
-                                </Button>
-                            </Tooltip>
+                                <PromiseStatus
+                                    status={
+                                        promises[
+                                            `eventsDelete_${selectedProjectId}`
+                                        ]
+                                    }
+                                />
+                                <Image
+                                    src="/type.svg"
+                                    width={16}
+                                    height={16}
+                                    alt=""
+                                />
+                                Delete all events
+                            </Button>
                         </li>
                     </ul>
                 </li>

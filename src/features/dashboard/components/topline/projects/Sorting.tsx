@@ -110,7 +110,7 @@ export const Sorting = () => {
                         <small>
                             <Image
                                 alt=""
-                                src="/cross.svg"
+                                src="/delete.svg"
                                 width={16}
                                 height={16}
                             />

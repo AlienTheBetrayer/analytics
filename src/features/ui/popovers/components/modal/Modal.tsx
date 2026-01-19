@@ -143,6 +143,9 @@ export const Modal = React.memo(function ModalFunction({
                                     e.preventDefault();
                                     setIsShown(false);
                                 }}
+                                onFocus={(e) => {
+                                    e.stopPropagation();
+                                }}
                                 ref={modalRef}
                                 onClick={(e) => e.stopPropagation()}
                                 className="bg-transparent overflow-hidden p-1"

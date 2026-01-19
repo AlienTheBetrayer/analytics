@@ -19,7 +19,7 @@ export const Create = () => {
     const updatePost = useAppStore((state) => state.updatePost);
 
     return (
-        <div className="flex flex-col gap-4 grow w-full max-w-4xl mx-auto">
+        <div className="flex flex-col gap-4 grow w-full mx-auto">
             <div className="flex gap-1 items-center justify-center">
                 <Image
                     alt=""

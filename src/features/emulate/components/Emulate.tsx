@@ -7,6 +7,9 @@ import { ProjectList } from "./ProjectList";
 import { Topline } from "./Topline";
 import { LoadingEmulate } from "@/features/loading/components/LoadingEmulate";
 import { AbsentTopline } from "@/features/loading/components/AbsentTopline";
+import { Button } from "@/features/ui/button/components/Button";
+import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
+import Image from "next/image";
 
 export const Emulate = () => {
     // url
@@ -15,6 +18,8 @@ export const Emulate = () => {
     // zustand states
     const projects = useAppStore((state) => state.projects);
     const status = useAppStore((state) => state.status);
+    const promises = useAppStore((state) => state.promises);
+    const sync = useAppStore((state) => state.sync);
 
     // error handling:
     // authentcation's missing
@@ -66,41 +71,55 @@ export const Emulate = () => {
         <>
             <Topline />
 
-            <div className="flex flex-col w-full max-w-400 p-6! rounded-4xl! gap-4! box m-auto">
-                <div className="flex flex-col gap-4 w-full max-w-4xl mx-auto">
-                    <div className="flex flex-col gap-2">
-                        {!Object.values(projects).length ? (
-                            <>
-                                <span className="text-center text-foreground-2! text-5! whitespace-nowrap">
-                                    <u>No project data</u>
-                                </span>
-                                <span className="text-center">
-                                    Try re-fetching. If that does not help -
-                                    database is empty.
-                                </span>
-                            </>
-                        ) : (
-                            <>
-                                <span className="text-center text-foreground-2! text-5! whitespace-nowrap">
-                                    Project selection
-                                </span>
-                                <span className="text-center">
-                                    Select a project first to emulate events
-                                </span>
-                            </>
-                        )}
-                    </div>
-
-                    {!!Object.values(projects).length && (
+            <div className="flex flex-col w-full max-w-6xl p-6! rounded-4xl! gap-8! box m-auto">
+                <div className="flex flex-col gap-2">
+                    {!Object.values(projects).length ? (
                         <>
-                            <hr />
-                            <ProjectList />
+                            <span className="text-center text-foreground-2! text-5! whitespace-nowrap">
+                                <u>No project data</u>
+                            </span>
+                            <span className="text-center">
+                                Try re-fetching. If that does not help -
+                                database is empty.
+                            </span>
+
+                            <Button
+                                className="w-full max-w-64 self-center"
+                                onClick={() => {
+                                    sync();
+                                }}
+                            >
+                                <PromiseStatus status={promises.sync} />
+                                <Image
+                                    width={16}
+                                    height={16}
+                                    alt=""
+                                    src="/server.svg"
+                                />
+                                Fetch
+                            </Button>
+                        </>
+                    ) : (
+                        <>
+                            <span className="text-center text-foreground-2! text-5! whitespace-nowrap">
+                                Project selection
+                            </span>
+                            <span className="text-center">
+                                Select a project first to emulate events
+                            </span>
                         </>
                     )}
-
-                    <hr />
-                    <Controller />
                 </div>
+
+                {!!Object.values(projects).length && (
+                    <>
+                        <hr />
+                        <ProjectList />
+                    </>
+                )}
+
+                <hr />
+                <Controller />
             </div>
         </>
     );

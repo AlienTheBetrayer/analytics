@@ -1,4 +1,3 @@
-import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
 import { useAppStore } from "@/zustand/store";
@@ -75,59 +74,49 @@ export const Filtering = () => {
             ))}
             <hr />
             <div className="grid grid-cols-2 gap-1">
-                <Tooltip
-                    text="Show all events"
+                <Button
                     className="w-full"
+                    onClick={() => {
+                        setFilter({
+                            project_id: selectedProjectId,
+                            column: uniqueEventTypes,
+                            flag: true,
+                            type: "event-filter",
+                        });
+                    }}
                 >
-                    <Button
-                        className="w-full"
-                        onClick={() => {
-                            setFilter({
-                                project_id: selectedProjectId,
-                                column: uniqueEventTypes,
-                                flag: true,
-                                type: "event-filter",
-                            });
-                        }}
-                    >
-                        <small>
-                            <Image
-                                alt=""
-                                src="/eye.svg"
-                                width={16}
-                                height={16}
-                            />
-                        </small>
-                        Show all
-                    </Button>
-                </Tooltip>
+                    <small>
+                        <Image
+                            alt=""
+                            src="/eye.svg"
+                            width={16}
+                            height={16}
+                        />
+                    </small>
+                    Show all
+                </Button>
 
-                <Tooltip
-                    text="Hide all events"
+                <Button
                     className="w-full"
+                    onClick={() => {
+                        setFilter({
+                            project_id: selectedProjectId,
+                            column: uniqueEventTypes,
+                            flag: false,
+                            type: "event-filter",
+                        });
+                    }}
                 >
-                    <Button
-                        className="w-full"
-                        onClick={() => {
-                            setFilter({
-                                project_id: selectedProjectId,
-                                column: uniqueEventTypes,
-                                flag: false,
-                                type: "event-filter",
-                            });
-                        }}
-                    >
-                        <small>
-                            <Image
-                                alt=""
-                                src="/prohibited.svg"
-                                width={14}
-                                height={14}
-                            />
-                        </small>
-                        Hide all
-                    </Button>
-                </Tooltip>
+                    <small>
+                        <Image
+                            alt=""
+                            src="/delete.svg"
+                            width={16}
+                            height={16}
+                        />
+                    </small>
+                    Hide all
+                </Button>
             </div>
         </div>
     );

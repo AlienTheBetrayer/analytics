@@ -8,7 +8,7 @@ import { useLocalStore } from "@/zustand/localStore";
 import { ProfileImage } from "../../ProfileImage";
 import { Spinner } from "@/features/spinner/components/Spinner";
 import { MessageBox } from "@/features/ui/messagebox/components/MessageBox";
-import { usePopup } from "@/features/ui/popup/hooks/usePopup";
+import { usePopup } from "@/hooks/usePopup";
 import { redirect } from "next/navigation";
 import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
 import { Select } from "./Select";

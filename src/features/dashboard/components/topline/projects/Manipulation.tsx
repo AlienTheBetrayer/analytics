@@ -8,7 +8,7 @@ export const Manipulation = () => {
     return (
         <Tooltip text="Advanced editing">
             <Modal
-                direction="bottom-left"
+                direction="bottom"
                 element={() => <ProjectManipulation />}
             >
                 <Button className="text-6! p-0!">

@@ -28,7 +28,7 @@ export const DashboardEvent = ({ event }: Props) => {
             direction="top"
         >
             <li
-                className="sm:h-16 dashboard-event relative gap-3 rounded-3xl
+                className="sm:h-16 dashboard-event relative gap-3 rounded-full
             border-2 border-background-4 
             px-4! py-2! hover:bg-background-4 transition-all"
             >

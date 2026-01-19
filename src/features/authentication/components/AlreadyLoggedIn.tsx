@@ -4,89 +4,225 @@ import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { useAppStore } from "@/zustand/store";
 import { useLocalStore } from "@/zustand/localStore";
 import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
+import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
+import { useState } from "react";
 
 export const AlreadyLoggedIn = () => {
     // zustand state
     const promises = useAppStore((state) => state.promises);
-
-    // zustand functions
+    const status = useAppStore((state) => state.status);
     const logout = useAppStore((state) => state.logout);
     const setVisibleProfile = useLocalStore((state) => state.setVisibleProfile);
 
+    // react states
+    const [isLogoutEnabled, setIsLogoutEnabled] = useState<boolean>(false);
+
+    // safe fallback
+    if (!status) {
+        return null;
+    }
+
     return (
         <>
-            <div className="flex flex-col gap-1 text-center max-w-150">
+            <div className="box w-full max-w-6xl flex flex-col items-center gap-2 justify-center text-center">
                 <h1>
                     Already <mark>authenticated!</mark>
                 </h1>
                 <p>
-                    You&apos;re already authenticated. Your account is secure
-                    and ready, and you can continue to your dashboard or any
-                    active work.
+                    You are already authenticated and signed in successfully.
+                    Your account is fully secured and ready for use, giving you
+                    uninterrupted access to your dashboard, posts, messages,
+                    profile, and friends. You may continue where you left off,
+                    manage your account, or explore any active conversations and
+                    content at your convenience.
                 </p>
             </div>
 
-            <div className="box max-w-400">
-                <div className="flex flex-col gap-8">
-                    <div className="flex flex-col gap-2">
-                        <span className="text-center  text-5! whitespace-nowrap">
-                            Authentication is <mark>done</mark>
-                        </span>
-                        <span className="text-center">
-                            You can now proceed to your dashboard / profile and
-                            all its features with your current access
-                        </span>
+            <ul className="box w-full max-w-6xl grid! lg:grid-cols-3 gap-16! lg:gap-8!">
+                <li className="flex flex-col gap-2">
+                    <aside className="flex items-center gap-1 justify-center text-center">
+                        <div className="w-1 h-1 rounded-full bg-blue-3" />
+                        <span>Miscellaneous</span>
+                    </aside>
 
-                        <LinkButton href="/profile">
-                            <Image
-                                alt=""
-                                src="/account.svg"
-                                width={16}
-                                height={16}
+                    <hr className="my-2" />
+
+                    <ul className="flex flex-col gap-2">
+                        <li>
+                            <LinkButton href="/home">
+                                <Image
+                                    alt=""
+                                    src="/cube.svg"
+                                    width={16}
+                                    height={16}
+                                />
+                                Home
+                            </LinkButton>
+                        </li>
+
+                        <li>
+                            <LinkButton href="/contact">
+                                <Image
+                                    alt=""
+                                    src="/phone.svg"
+                                    width={16}
+                                    height={16}
+                                />
+                                Contact
+                            </LinkButton>
+                        </li>
+
+                        <li>
+                            <LinkButton href="/notifications">
+                                <Image
+                                    alt=""
+                                    src="/notification.svg"
+                                    width={16}
+                                    height={16}
+                                />
+                                Notifications
+                            </LinkButton>
+                        </li>
+                    </ul>
+                </li>
+
+                <li className="flex flex-col gap-2">
+                    <aside className="flex items-center gap-1 justify-center text-center">
+                        <div className="w-1 h-1 rounded-full bg-blue-1" />
+                        <span>Account</span>
+                    </aside>
+
+                    <hr className="my-2" />
+
+                    <ul className="flex flex-col gap-2">
+                        <li>
+                            <LinkButton href="/profile">
+                                <Image
+                                    alt=""
+                                    src="/account.svg"
+                                    width={16}
+                                    height={16}
+                                />
+                                Profile
+                            </LinkButton>
+                        </li>
+
+                        <li className="grid grid-cols-[1fr_auto_1fr] gap-1">
+                            <LinkButton href="/posts">
+                                <Image
+                                    alt=""
+                                    src="/book.svg"
+                                    width={16}
+                                    height={16}
+                                />
+                                View posts
+                            </LinkButton>
+
+                            <hr className="w-px! h-1/2! self-center" />
+
+                            <LinkButton href="/post/create">
+                                <Image
+                                    alt=""
+                                    src="/cubeadd.svg"
+                                    width={16}
+                                    height={16}
+                                />
+                                Create a post
+                            </LinkButton>
+                        </li>
+
+                        <li>
+                            <LinkButton
+                                href={`/profile/${status.username}/friends`}
+                            >
+                                <Image
+                                    alt=""
+                                    src="/notification.svg"
+                                    width={16}
+                                    height={16}
+                                />
+                                Friends
+                            </LinkButton>
+                        </li>
+
+                        <li>
+                            <LinkButton href="/notifications">
+                                <Image
+                                    alt=""
+                                    src="/notification.svg"
+                                    width={16}
+                                    height={16}
+                                />
+                                Messages
+                            </LinkButton>
+                        </li>
+
+                        <li className="flex gap-1">
+                            <Checkbox
+                                aria-label="enable logout"
+                                className="w-fit! rounded-full! aspect-square"
+                                value={isLogoutEnabled}
+                                onToggle={(flag) => setIsLogoutEnabled(flag)}
                             />
-                            Go to profile
-                        </LinkButton>
 
-                        <LinkButton href="/dashboard">
-                            <Image
-                                alt=""
-                                src="/dashboard.svg"
-                                width={16}
-                                height={16}
-                            />
-                            Go to dashboard
-                        </LinkButton>
-                    </div>
+                            <hr className="w-px! h-1/2! self-center" />
 
-                    <div className="flex flex-col gap-2">
-                        <span className="text-center whitespace-nowrap">
-                            <u>Logging</u> out
-                        </span>
-                        <span className="text-center">
-                            However, if your goal was to log yourself out, you
-                            can also do it here, afterwards you&apos;ll see the
-                            authentication form again
-                        </span>
+                            <Button
+                                isEnabled={isLogoutEnabled}
+                                className="w-full"
+                                onClick={() => {
+                                    logout();
+                                    setVisibleProfile(undefined);
+                                }}
+                            >
+                                <PromiseStatus status={promises.logout} />
+                                <Image
+                                    alt=""
+                                    src="/auth.svg"
+                                    width={16}
+                                    height={16}
+                                />
+                                Log me out
+                            </Button>
+                        </li>
+                    </ul>
+                </li>
 
-                        <Button
-                            className="w-full"
-                            onClick={() => {
-                                logout();
-                                setVisibleProfile(undefined);
-                            }}
-                        >
-                            <PromiseStatus status={promises.logout} />
-                            <Image
-                                alt=""
-                                src="/auth.svg"
-                                width={16}
-                                height={16}
-                            />
-                            Log me out
-                        </Button>
-                    </div>
-                </div>
-            </div>
+                <li className="flex flex-col gap-2">
+                    <aside className="flex items-center gap-1 justify-center text-center">
+                        <div className="w-1 h-1 rounded-full bg-blue-2" />
+                        <span>Dashboard</span>
+                    </aside>
+
+                    <hr className="my-2" />
+
+                    <ul className="flex flex-col gap-2">
+                        <li>
+                            <LinkButton href="/dashboard">
+                                <Image
+                                    alt=""
+                                    src="/dashboard.svg"
+                                    width={16}
+                                    height={16}
+                                />
+                                Dashboard
+                            </LinkButton>
+                        </li>
+
+                        <li>
+                            <LinkButton href="/emulate">
+                                <Image
+                                    alt=""
+                                    src="/emulate.svg"
+                                    width={16}
+                                    height={16}
+                                />
+                                Emulate events
+                            </LinkButton>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
         </>
     );
 };

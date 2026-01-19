@@ -1,10 +1,11 @@
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
-import { Post, Profile, User } from "@/types/tables/account";
+import { Profile, User } from "@/types/tables/account";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import { useParams } from "next/navigation";
+import { Post } from "@/types/tables/posts";
 
 type Props =
     | {
@@ -46,7 +47,7 @@ export const Topline = ({ type, data }: Props) => {
 
     return (
         <ul
-            className={`box p-0! gap-1! my-2! mx-auto! flex-row! max-w-400 w-full transition-all duration-500 h-10 items-center`}
+            className={`box p-0! gap-1! my-2! mx-auto! flex-row! max-w-6xl w-full transition-all duration-500 h-10 items-center`}
         >
             <li className="absolute left-1/2 -translate-1/2 top-1/2">
                 <span className="flex gap-1 items-center">

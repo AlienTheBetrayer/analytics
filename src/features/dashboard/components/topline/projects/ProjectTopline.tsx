@@ -33,7 +33,7 @@ export const ProjectTopline = () => {
 
             <li>
                 <Modal
-                    direction="bottom-right"
+                    direction="bottom-left"
                     element={() => <Sorting />}
                 >
                     <Tooltip text="Sort projects">

@@ -14,7 +14,7 @@ const LoginPage = () => {
     const setVisibleProfile = useLocalStore((state) => state.setVisibleProfile);
 
     return (
-        <main className="w-full h-screen flex flex-col items-center dotted gap-16">
+        <main className="w-full flex flex-col items-center gap-8">
             {status ? (
                 <AlreadyLoggedIn />
             ) : (

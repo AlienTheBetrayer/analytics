@@ -62,7 +62,7 @@ export const Topline = ({ data }: Props) => {
                             element={() => <RoleEditing data={data} />}
                         >
                             <Button>
-                                <div className="w-1 h-1 rounded-full bg-red-1" />
+                                <div className="w-1 h-1 rounded-full bg-blue-1" />
                                 <Image
                                     width={16}
                                     height={16}

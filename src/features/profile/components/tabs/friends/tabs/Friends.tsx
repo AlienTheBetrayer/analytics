@@ -7,7 +7,7 @@ import { useMemo } from "react";
 import { useAppStore } from "@/zustand/store";
 import { Profile, User } from "@/types/tables/account";
 import { MessageBox } from "@/features/ui/messagebox/components/MessageBox";
-import { usePopup } from "@/features/ui/popup/hooks/usePopup";
+import { usePopup } from "@/hooks/usePopup";
 import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
 
 type Props = {

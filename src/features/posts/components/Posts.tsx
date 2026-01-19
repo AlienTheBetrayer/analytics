@@ -38,10 +38,13 @@ export const Posts = () => {
     if (!user) {
         return (
             <>
-                <AbsentTopline title="User does not exist" />
+                <AbsentTopline
+                    title="User does not exist"
+                    className="max-w-6xl!"
+                />
 
                 <div
-                    className={`box max-w-400 w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}
+                    className={`box max-w-6xl w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}
                 >
                     <LoadingProfile />
                 </div>
@@ -53,10 +56,13 @@ export const Posts = () => {
     if (!retrievedUsername) {
         return (
             <>
-                <AbsentTopline title="Incorrect username" />
+                <AbsentTopline
+                    title="Incorrect username"
+                    className="max-w-6xl!"
+                />
 
                 <div
-                    className={`box max-w-400 w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}
+                    className={`box max-w-6xl w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}
                 >
                     <LoadingProfile />
                 </div>
@@ -74,7 +80,7 @@ export const Posts = () => {
                 data={data}
             />
 
-            <div className="box max-w-400 w-full mx-auto min-h-128 rounded-4xl!">
+            <div className="box max-w-6xl w-full mx-auto min-h-128 rounded-4xl!">
                 <Select
                     type="posts"
                     data={data}

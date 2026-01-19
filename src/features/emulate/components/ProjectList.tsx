@@ -14,7 +14,7 @@ export const ProjectList = () => {
 
     return (
         <ul
-            className="flex flex-col gap-2 max-h-64 overflow-y-auto scheme-dark"
+            className="flex flex-col gap-2 max-h-64 p-1! overflow-y-auto scheme-dark"
             style={{
                 scrollbarWidth: "thin",
             }}

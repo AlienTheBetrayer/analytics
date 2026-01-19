@@ -15,10 +15,10 @@ export const MessageBox = ({ description, onInteract }: Props) => {
 
     return (
         <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="flex flex-col justify-between items-center z-1005 fixed
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            className="flex flex-col justify-between items-center fixed
              left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 rounded-4xl
               outline-2 outline-background-a-5 bg-background-a-0 backdrop-blur-2xl p-4 gap-4 w-full max-w-80"
         >

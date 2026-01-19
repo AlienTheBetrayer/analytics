@@ -8,7 +8,7 @@ import { dotColors } from "@/utils/other/dotColors";
 import { useMemo } from "react";
 import { TabSelection } from "@/utils/other/TabSelection";
 import { MessageBox } from "@/features/ui/messagebox/components/MessageBox";
-import { usePopup } from "@/features/ui/popup/hooks/usePopup";
+import { usePopup } from "@/hooks/usePopup";
 import { NotificationTab } from "@/types/other/notifications";
 import { useAppStore } from "@/zustand/store";
 import { Modal } from "@/features/ui/popovers/components/modal/Modal";

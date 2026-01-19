@@ -32,10 +32,13 @@ export const Post = () => {
     if (!status && tab === "create") {
         return (
             <>
-                <AbsentTopline title="Not authenticated" />
+                <AbsentTopline
+                    title="Not authenticated"
+                    className="max-w-6xl!"
+                />
 
                 <div
-                    className={`box max-w-400 w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}
+                    className={`box max-w-6xl w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}
                 >
                     <LoadingEmulate />
                 </div>
@@ -47,10 +50,13 @@ export const Post = () => {
     if (!tab || (tab !== "create" && !id)) {
         return (
             <>
-                <AbsentTopline title="Incorrect URL" />
+                <AbsentTopline
+                    title="Incorrect URL"
+                    className="max-w-6xl!"
+                />
 
                 <div
-                    className={`box max-w-400 w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}
+                    className={`box max-w-6xl w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}
                 >
                     <LoadingEmulate />
                 </div>
@@ -64,10 +70,13 @@ export const Post = () => {
     if (tab !== "create" && !post) {
         return (
             <>
-                <AbsentTopline title="Post does not exist" />
+                <AbsentTopline
+                    title="Post does not exist"
+                    className="max-w-6xl!"
+                />
 
                 <div
-                    className={`box max-w-400 w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}
+                    className={`box max-w-6xl w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}
                 >
                     <LoadingEmulate />
                 </div>
@@ -84,7 +93,7 @@ export const Post = () => {
             />
 
             <div
-                className={`box max-w-400 w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}
+                className={`box max-w-6xl w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}
             >
                 <Select
                     type="post"

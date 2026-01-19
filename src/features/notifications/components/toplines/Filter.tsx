@@ -1,4 +1,3 @@
-import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import Image from "next/image";
 import { useState } from "react";
@@ -72,71 +71,61 @@ export const Filter = ({ tab }: Props) => {
 
             <hr />
             <div className="grid grid-cols-2 gap-1">
-                <Tooltip
-                    text="Show all notifications"
+                <Button
                     className="w-full"
+                    onClick={() => {
+                        const keys = Object.keys(filter.filtering ?? {});
+
+                        if (!keys.length) {
+                            return;
+                        }
+
+                        setNotificationFilter({
+                            column: keys,
+                            flag: true,
+                            tab,
+                            type: "filter",
+                        });
+                    }}
                 >
-                    <Button
-                        className="w-full"
-                        onClick={() => {
-                            const keys = Object.keys(filter.filtering ?? {});
+                    <small>
+                        <Image
+                            alt=""
+                            src="/eye.svg"
+                            width={16}
+                            height={16}
+                        />
+                    </small>
+                    Show all
+                </Button>
 
-                            if (!keys.length) {
-                                return;
-                            }
-
-                            setNotificationFilter({
-                                column: keys,
-                                flag: true,
-                                tab,
-                                type: "filter",
-                            });
-                        }}
-                    >
-                        <small>
-                            <Image
-                                alt=""
-                                src="/eye.svg"
-                                width={16}
-                                height={16}
-                            />
-                        </small>
-                        Show all
-                    </Button>
-                </Tooltip>
-
-                <Tooltip
-                    text="Hide all notifications"
+                <Button
                     className="w-full"
+                    onClick={() => {
+                        const keys = Object.keys(filter.filtering ?? {});
+
+                        if (!keys.length) {
+                            return;
+                        }
+
+                        setNotificationFilter({
+                            column: keys,
+                            flag: false,
+                            tab,
+                            type: "filter",
+                        });
+                    }}
                 >
-                    <Button
-                        className="w-full"
-                        onClick={() => {
-                            const keys = Object.keys(filter.filtering ?? {});
-
-                            if (!keys.length) {
-                                return;
-                            }
-
-                            setNotificationFilter({
-                                column: keys,
-                                flag: false,
-                                tab,
-                                type: "filter",
-                            });
-                        }}
-                    >
-                        <small>
-                            <Image
-                                alt=""
-                                src="/prohibited.svg"
-                                width={14}
-                                height={14}
-                            />
-                        </small>
-                        Hide all
-                    </Button>
-                </Tooltip>
+                    <small>
+                        <Image
+                            alt=""
+                            src="/delete.svg"
+                            width={14}
+                            height={14}
+                        />
+                    </small>
+                    Hide all
+                </Button>
             </div>
         </div>
     );

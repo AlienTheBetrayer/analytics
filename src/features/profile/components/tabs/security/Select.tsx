@@ -7,7 +7,7 @@ import { Data } from "./tabs/Data";
 import { Profile, User } from "@/types/tables/account";
 import { Sessions } from "./tabs/Sessions";
 import { MessageBox } from "@/features/ui/messagebox/components/MessageBox";
-import { usePopup } from "@/features/ui/popup/hooks/usePopup";
+import { usePopup } from "@/hooks/usePopup";
 import { useAppStore } from "@/zustand/store";
 
 export type SecurityTab = "Data" | "Sessions";

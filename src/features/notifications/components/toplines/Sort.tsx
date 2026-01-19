@@ -105,7 +105,7 @@ export const Sort = ({ tab }: Props) => {
                         <small>
                             <Image
                                 alt=""
-                                src="/cross.svg"
+                                src="/delete.svg"
                                 width={16}
                                 height={16}
                             />

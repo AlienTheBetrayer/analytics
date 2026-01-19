@@ -55,9 +55,8 @@ export const positionPopover = (
         }
         case "bottom-right": {
             left = elementBounds.right;
-            top = elementBounds.top - 4;
+            top = elementBounds.bottom + 4;
             translateX = -100;
-            translateY = -100;
             break;
         }
         case "bottom-left": {

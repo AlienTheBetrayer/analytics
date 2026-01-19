@@ -83,7 +83,6 @@ export const Tooltip = React.memo(function TooltipFunction({
                     onPointerLeave={() => setIsShown(false)}
                     onFocus={() => setIsShown(true)}
                     onBlur={() => setIsShown(false)}
-                    onClick={() => setIsShown((prev) => !prev)}
                     inert={!isEnabled}
                     className={`w-fit h-fit ${!isEnabled ? "opacity-30" : ""} ${className ?? ""}`}
                 >

@@ -6,12 +6,13 @@ import Image from "next/image";
 type Props = {
     title: string;
     color?: string;
+    className?: string;
 };
 
-export const AbsentTopline = ({ title, color }: Props) => {
+export const AbsentTopline = ({ title, color, className }: Props) => {
     return (
         <ul
-            className={`box loading p-0! rounded-full! px-1! gap-1! my-2! mx-auto! flex-row! max-w-400 w-full transition-all duration-500 h-10 items-center`}
+            className={`box loading p-0! rounded-full! px-1! gap-1! my-2! mx-auto! flex-row! max-w-400 w-full transition-all duration-500 h-10 items-center ${className ?? ""}`}
         >
             <li>
                 <motion.ul
