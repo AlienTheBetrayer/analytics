@@ -8,7 +8,6 @@ import { useLocalStore } from "@/zustand/localStore";
 import { ProfileImage } from "../../ProfileImage";
 import { Spinner } from "@/features/spinner/components/Spinner";
 import { MessageBox } from "@/features/ui/messagebox/components/MessageBox";
-import { usePopup } from "@/hooks/usePopup";
 import { redirect } from "next/navigation";
 import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
 import { Select } from "./Select";
@@ -29,35 +28,38 @@ export const Security = ({ data }: Props) => {
     const getSessions = useAppStore((state) => state.getSessions);
     const setVisibleProfile = useLocalStore((state) => state.setVisibleProfile);
 
-    // fetching sessions
+    // react states
+    const [isDeletionEnabled, setIsDeletionEnabled] = useState<boolean>(false);
+
+    // fetching
     useEffect(() => {
         getSessions({ type: "all", user_id: data.user.id });
     }, [getSessions, data.user]);
 
-    // messageboxes
-    const deleteMessageBox = usePopup(({ hide }) => (
-        <MessageBox
-            description="You are about to delete your account data forever!"
-            onInteract={(res) => {
-                hide();
-                if (res === "yes") {
-                    deleteUser(data.user.id);
-                    if (data.user.id === status?.id) {
-                        logout();
-                        setVisibleProfile(undefined);
-                        redirect("/home");
-                    }
-                }
-            }}
-        />
-    ));
-
-    // react states
-    const [isDeletionEnabled, setIsDeletionEnabled] = useState<boolean>(false);
+    // message boxes
+    const [boxVisibility, setBoxVisibility] = useState<{
+        delete: boolean;
+    }>({ delete: false });
 
     return (
         <div className="flex flex-col gap-4 w-full grow">
-            {deleteMessageBox.render()}
+            <MessageBox
+                visibility={boxVisibility.delete}
+                onSelect={(res) => {
+                    setBoxVisibility((prev) => ({ ...prev, delete: false }));
+
+                    if (res === "yes") {
+                        deleteUser(data.user.id);
+                        if (data.user.id === status?.id) {
+                            logout();
+                            setVisibleProfile(undefined);
+                            redirect("/home");
+                        }
+                    }
+                }}
+            >
+                You are about to delete your account data forever! Think twice!
+            </MessageBox>
 
             <div className="flex flex-col gap-2 items-center">
                 <div className="flex gap-1 items-center">
@@ -128,7 +130,10 @@ export const Security = ({ data }: Props) => {
                                 isEnabled={isDeletionEnabled}
                                 className="w-full"
                                 onClick={() => {
-                                    deleteMessageBox.show();
+                                    setBoxVisibility((prev) => ({
+                                        ...prev,
+                                        delete: true,
+                                    }));
                                 }}
                             >
                                 {promises.delete === "pending" && <Spinner />}

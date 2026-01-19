@@ -3,11 +3,10 @@ import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { ProfileDisplay } from "../../../ProfileDisplay";
 import Image from "next/image";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useAppStore } from "@/zustand/store";
 import { Profile, User } from "@/types/tables/account";
 import { MessageBox } from "@/features/ui/messagebox/components/MessageBox";
-import { usePopup } from "@/hooks/usePopup";
 import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
 
 type Props = {
@@ -32,24 +31,33 @@ export const Friends = ({ data }: Props) => {
         return [...friends[data.user.id]];
     }, [friends, data]);
 
-    const unfriendMessageBox = usePopup(({ hide }) => (
-        <MessageBox
-            description="You are about to unfriend everyone!"
-            onInteract={(res) => {
-                hide();
-                if (res === "yes") {
-                    modifyFriendship({
-                        from_id: data.user.id,
-                        type: "unfriend-all",
-                        promiseKey: "unfriendAll",
-                    });
-                }
-            }}
-        />
-    ));
+    // messageboxes
+    const [boxVisibility, setBoxVisibility] = useState<{
+        unfriendAll: boolean;
+    }>({ unfriendAll: false });
 
     return (
         <div className="flex flex-col gap-2 grow">
+            <MessageBox
+                visibility={boxVisibility.unfriendAll}
+                onSelect={(res) => {
+                    setBoxVisibility((prev) => ({
+                        ...prev,
+                        unfriendAll: false,
+                    }));
+                    
+                    if (res === "yes") {
+                        modifyFriendship({
+                            from_id: data.user.id,
+                            type: "unfriend-all",
+                            promiseKey: "unfriendAll",
+                        });
+                    }
+                }}
+            >
+                You are about to unfriend everyone and this is irreversible!
+            </MessageBox>
+
             {/* friends topline */}
             <span className="flex  gap-2 items-center whitespace-nowrap">
                 <Tooltip
@@ -121,7 +129,10 @@ export const Friends = ({ data }: Props) => {
             <hr className="mt-auto" />
             <Button
                 onClick={() => {
-                    unfriendMessageBox.show();
+                    setBoxVisibility((prev) => ({
+                        ...prev,
+                        unfriendAll: true,
+                    }));
                 }}
             >
                 <PromiseStatus status={promises.unfriendAll} />

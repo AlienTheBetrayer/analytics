@@ -2,13 +2,10 @@ import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { TabSelection } from "@/utils/other/TabSelection";
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { Data } from "./tabs/Data";
 import { Profile, User } from "@/types/tables/account";
 import { Sessions } from "./tabs/Sessions";
-import { MessageBox } from "@/features/ui/messagebox/components/MessageBox";
-import { usePopup } from "@/hooks/usePopup";
-import { useAppStore } from "@/zustand/store";
 
 export type SecurityTab = "Data" | "Sessions";
 
@@ -17,69 +14,16 @@ type Props = {
 };
 
 export const Select = ({ data }: Props) => {
-    // zustand
-    const status = useAppStore((state) => state.status);
-    const sessions = useAppStore((state) => state.sessions);
-    const terminateSessions = useAppStore((state) => state.terminateSessions);
-
     // react states
     const [selected, setSelected] = useState<SecurityTab>("Data");
-
-    const currentSessions = useMemo(() => {
-        if (!sessions[data.user.id]?.length || !status) {
-            return undefined;
-        }
-
-        return [...sessions[data.user.id].sort((a) => (a.isCurrent ? -1 : 1))];
-    }, [sessions, data, status]);
-
-    const terminateMessageBox = usePopup(({ hide }) => (
-        <MessageBox
-            description="All your other sessions will be terminated."
-            onInteract={(res) => {
-                hide();
-                if (res === "yes") {
-                    // no sessions (ensuring safety + types)
-                    if (!currentSessions?.length) {
-                        return;
-                    }
-
-                    const notCurrent = currentSessions
-                        ?.filter((s) => !s.isCurrent)
-                        .map((s) => s.id);
-
-                    // if by some accident there's no current sessions
-                    if (notCurrent.length === currentSessions.length) {
-                        return;
-                    }
-
-                    terminateSessions({
-                        user_id: data.user.id,
-                        ids: notCurrent,
-                    });
-                }
-            }}
-        />
-    ));
 
     const element = () => {
         switch (selected) {
             case "Data": {
-                return (
-                    <Data
-                        data={data}
-                        terminateMessageBox={terminateMessageBox}
-                    />
-                );
+                return <Data data={data} />;
             }
             case "Sessions": {
-                return (
-                    <Sessions
-                        data={data}
-                        currentSessions={currentSessions}
-                        terminateMessageBox={terminateMessageBox}
-                    />
-                );
+                return <Sessions data={data} />;
             }
         }
     };

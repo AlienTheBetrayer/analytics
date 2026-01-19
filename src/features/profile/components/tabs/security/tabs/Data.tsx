@@ -1,4 +1,3 @@
-import { usePopup } from "@/hooks/usePopup";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
@@ -12,10 +11,9 @@ import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseSta
 
 type Props = {
     data: { user: User; profile: Profile };
-    terminateMessageBox: ReturnType<typeof usePopup>;
 };
 
-export const Data = ({ data, terminateMessageBox }: Props) => {
+export const Data = ({ data }: Props) => {
     // zusatnd
     const updateUser = useAppStore((state) => state.updateUser);
     const promises = useAppStore((state) => state.promises);
@@ -44,8 +42,6 @@ export const Data = ({ data, terminateMessageBox }: Props) => {
                 redirect("/profile");
             }}
         >
-            {terminateMessageBox.render()}
-
             <div className="flex flex-col gap-2">
                 <label
                     htmlFor="username"

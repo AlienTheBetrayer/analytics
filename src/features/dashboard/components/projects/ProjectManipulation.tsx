@@ -1,10 +1,10 @@
 import { MessageBox } from "@/features/ui/messagebox/components/MessageBox";
-import { usePopup } from "@/hooks/usePopup";
 import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
+import { useState } from "react";
 
 export const ProjectManipulation = () => {
     // zustand states
@@ -16,50 +16,55 @@ export const ProjectManipulation = () => {
     const deleteData = useAppStore((state) => state.deleteData);
 
     // messageboxes
-    const deleteProjectBox = usePopup(({ hide }) => (
-        <MessageBox
-            description="You will delete every single data entry about this project, including events!"
-            onInteract={(res) => {
-                hide();
-                if (!selectedProjectId) {
-                    return;
-                }
-
-                if (res === "yes") {
-                    deleteData({
-                        id: [selectedProjectId],
-                        type: "project",
-                        promiseKey: `projectDelete_${selectedProjectId}`,
-                    });
-                }
-            }}
-        />
-    ));
-
-    const deleteEventsBox = usePopup(({ hide }) => (
-        <MessageBox
-            description="You will delete every single event in this project!"
-            onInteract={(res) => {
-                hide();
-                if (!selectedProjectId || !events[selectedProjectId]) {
-                    return;
-                }
-
-                if (res === "yes") {
-                    deleteData({
-                        id: events[selectedProjectId].map((e) => e.id),
-                        type: "event",
-                        promiseKey: `eventsDelete_${selectedProjectId}`,
-                    });
-                }
-            }}
-        />
-    ));
+    const [boxVisibility, setBoxVisibility] = useState<{
+        events: boolean;
+        projects: boolean;
+    }>({ events: false, projects: false });
 
     return (
         <div className="flex flex-col box w-screen! max-w-md! gap-4!">
-            {deleteProjectBox.render()}
-            {deleteEventsBox.render()}
+            <MessageBox
+                visibility={boxVisibility.projects}
+                onSelect={(res) => {
+                    setBoxVisibility((prev) => ({ ...prev, projects: false }));
+
+                    if (!selectedProjectId) {
+                        return;
+                    }
+
+                    if (res === "yes") {
+                        deleteData({
+                            id: [selectedProjectId],
+                            type: "project",
+                            promiseKey: `projectDelete_${selectedProjectId}`,
+                        });
+                    }
+                }}
+            >
+                You will delete every single data entry about this project,
+                including events!
+            </MessageBox>
+
+            <MessageBox
+                visibility={boxVisibility.events}
+                onSelect={(res) => {
+                    setBoxVisibility((prev) => ({ ...prev, events: false }));
+
+                    if (!selectedProjectId || !events[selectedProjectId]) {
+                        return;
+                    }
+
+                    if (res === "yes") {
+                        deleteData({
+                            id: events[selectedProjectId].map((e) => e.id),
+                            type: "event",
+                            promiseKey: `eventsDelete_${selectedProjectId}`,
+                        });
+                    }
+                }}
+            >
+                You will delete every single event in this project!
+            </MessageBox>
 
             <div className="flex flex-col gap-1 items-center">
                 <Image
@@ -106,7 +111,10 @@ export const ProjectManipulation = () => {
                             <Button
                                 className="w-full"
                                 onClick={() => {
-                                    deleteProjectBox.show();
+                                    setBoxVisibility((prev) => ({
+                                        ...prev,
+                                        projects: true,
+                                    }));
                                 }}
                             >
                                 <PromiseStatus
@@ -130,7 +138,10 @@ export const ProjectManipulation = () => {
                             <Button
                                 className="w-full"
                                 onClick={() => {
-                                    deleteEventsBox.show();
+                                    setBoxVisibility((prev) => ({
+                                        ...prev,
+                                        events: true,
+                                    }));
                                 }}
                             >
                                 <PromiseStatus

@@ -4,9 +4,8 @@ import { AnimatePresence, motion } from "motion/react";
 import { Colors } from "../../modals/Colors";
 import { ProfileImage } from "../../ProfileImage";
 import { Profile, User } from "@/types/tables/account";
-import React, { JSX } from "react";
+import React, { JSX, useState } from "react";
 import { MessageBox } from "@/features/ui/messagebox/components/MessageBox";
-import { usePopup } from "@/hooks/usePopup";
 import Image from "next/image";
 import { ColorSwatches } from "../../parts/ColorSwatches";
 import { useAppStore } from "@/zustand/store";
@@ -43,22 +42,25 @@ export const Avatar = ({
         : avatar[0];
 
     // messageboxes
-    const deleteAvatarMessageBox = usePopup(({ hide }) => (
-        <MessageBox
-            description="After you click Apply Changes your account will no longer have a profile picture until you set it again"
-            onInteract={(res) => {
-                hide();
-                if (res === "yes") {
-                    avatarFile[1](undefined);
-                    avatar[1](null);
-                }
-            }}
-        />
-    ));
+    const [boxVisibility, setBoxVisibility] = useState<{
+        avatar: boolean;
+    }>({ avatar: false });
 
     return (
         <div className="flex flex-col items-center gap-2">
-            {deleteAvatarMessageBox.render()}
+            <MessageBox
+                visibility={boxVisibility.avatar}
+                onSelect={(res) => {
+                    setBoxVisibility((prev) => ({ ...prev, avatar: false }));
+                    
+                    if (res === "yes") {
+                        avatarFile[1](undefined);
+                        avatar[1](null);
+                    }
+                }}
+            >
+                Your account will lose its profile picture until you set it again
+            </MessageBox>
 
             <span>{data.profile.name}</span>
 
@@ -154,7 +156,10 @@ export const Avatar = ({
                         <Tooltip text="Wipe profile image">
                             <Button
                                 onClick={() => {
-                                    deleteAvatarMessageBox.show();
+                                    setBoxVisibility((prev) => ({
+                                        ...prev,
+                                        avatar: true,
+                                    }));
                                 }}
                             >
                                 <Image

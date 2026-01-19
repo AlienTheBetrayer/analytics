@@ -1,10 +1,10 @@
 import { MessageBox } from "@/features/ui/messagebox/components/MessageBox";
-import { usePopup } from "@/hooks/usePopup";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
+import { useState } from "react";
 
 export const Wipe = () => {
     // zustand
@@ -13,34 +13,41 @@ export const Wipe = () => {
     const selectedProjectId = useAppStore((state) => state.selectedProjectId);
 
     // messageboxes
-    const deleteProjectBox = usePopup(({ hide }) => (
-        <MessageBox
-            description="You will delete every single data entry about this project, including events!"
-            onInteract={(res) => {
-                hide();
-                if (!selectedProjectId) {
-                    return;
-                }
-
-                if (res === "yes") {
-                    deleteData({
-                        id: [selectedProjectId],
-                        type: "project",
-                        promiseKey: `projectsDeleteTopline`,
-                    });
-                }
-            }}
-        />
-    ));
+    const [boxVisibility, setBoxVisibility] = useState<{
+        projects: boolean;
+    }>({ projects: false });
 
     return (
         <>
-            {deleteProjectBox.render()}
+            <MessageBox
+                visibility={boxVisibility.projects}
+                onSelect={(res) => {
+                    setBoxVisibility((prev) => ({ ...prev, projects: false }));
+                    
+                    if (!selectedProjectId) {
+                        return;
+                    }
+
+                    if (res === "yes") {
+                        deleteData({
+                            id: [selectedProjectId],
+                            type: "project",
+                            promiseKey: `projectsDeleteTopline`,
+                        });
+                    }
+                }}
+            >
+                ou will delete every single data entry about this project,
+                including events!
+            </MessageBox>
             <Tooltip text="Wipe this project">
                 <Button
                     className="text-6! p-0!"
                     onClick={() => {
-                        deleteProjectBox.show();
+                        setBoxVisibility((prev) => ({
+                            ...prev,
+                            projects: true,
+                        }));
                     }}
                 >
                     <PromiseStatus status={promises.projectsDeleteTopline} />

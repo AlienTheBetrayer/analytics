@@ -1,11 +1,10 @@
 import { MessageBox } from "@/features/ui/messagebox/components/MessageBox";
-import { usePopup } from "@/hooks/usePopup";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { Profile, User } from "@/types/tables/account";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
 
 type Props = {
@@ -20,35 +19,20 @@ export const FriendButton = ({ data }: Props) => {
     const status = useAppStore((state) => state.status);
     const modifyFriendship = useAppStore((state) => state.modifyFriendship);
 
-    // states
     // ui states
     const hasOutcomingRequest = useMemo(() => {
         return (
             status && friendRequests[status.id]?.outcoming?.has(data.user.id)
         );
     }, [friendRequests, status, data]);
-
     const hasIncomingRequest = useMemo(() => {
         return status && friendRequests[status.id]?.incoming?.has(data.user.id);
     }, [friendRequests, status, data]);
 
     // message boxes
-    const unfriendMessageBox = usePopup(({ hide }) => (
-        <MessageBox
-            description="You are about to delete this user from your friends!"
-            onInteract={(res) => {
-                hide();
-                if (res === "yes" && status) {
-                    modifyFriendship({
-                        from_id: status.id,
-                        to_id: data.user.id,
-                        type: "unfriend",
-                        promiseKey: "unfriend",
-                    });
-                }
-            }}
-        />
-    ));
+    const [boxVisibility, setBoxVisibility] = useState<{
+        unfriend: boolean;
+    }>({ unfriend: false });
 
     return (
         status &&
@@ -57,7 +41,26 @@ export const FriendButton = ({ data }: Props) => {
             hasIncomingRequest ||
             hasOutcomingRequest) && (
             <div className="flex justify-center items-center w-full min-h-8">
-                {unfriendMessageBox.render()}
+                <MessageBox
+                    visibility={boxVisibility.unfriend}
+                    onSelect={(res) => {
+                        setBoxVisibility((prev) => ({
+                            ...prev,
+                            unfriend: false,
+                        }));
+
+                        if (res === "yes" && status) {
+                            modifyFriendship({
+                                from_id: status.id,
+                                to_id: data.user.id,
+                                type: "unfriend",
+                                promiseKey: "unfriend",
+                            });
+                        }
+                    }}
+                >
+                    You are about to delete this user from your friends!
+                </MessageBox>
 
                 {friends[data.user.id]?.has(status.id) ? (
                     <Tooltip
@@ -66,7 +69,10 @@ export const FriendButton = ({ data }: Props) => {
                     >
                         <Button
                             onClick={() => {
-                                unfriendMessageBox.show();
+                                setBoxVisibility((prev) => ({
+                                    ...prev,
+                                    unfriend: true,
+                                }));
                             }}
                         >
                             <PromiseStatus status={promises.unfriend} />

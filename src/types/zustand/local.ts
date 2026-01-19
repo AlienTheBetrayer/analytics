@@ -5,11 +5,17 @@ export type VisibleProfile = {
     color?: string;
 };
 
+export type Preferences = {
+    visibility: boolean;
+}
+
+export const PreferencesDefaults: Preferences = {
+    visibility: true,
+}
+
 export type LocalStore = {
     // settings
-    preferences: {
-        visibility: boolean;
-    };
+    preferences: Preferences;
 
     // profiles
     visibleProfile?: VisibleProfile;
@@ -30,7 +36,18 @@ export type LocalStore = {
 
     /**
      * updates the preferences (don't provide a value if you want it unchanged)
-     * @param visibility whether to show the notifications' popups
+     * @param preferences a partial preferences object
      */
-    updatePreferences: (options: { visibility?: boolean }) => void;
+    updatePreferences: (preferences: Partial<Preferences>) => void;
+
+    /**
+     * explicitly updates the preferences object
+     * @param preferences a full references object
+     */
+    setPreferences: (preferences: Preferences) => void;
+
+    /**
+     * resets the preferences object
+     */
+    resetPreferences: () => void;
 };

@@ -43,15 +43,19 @@
     --blue-1: hsl(237, 100%, 61%);
     --blue-2: hsl(237, 75%, 61%);
     --blue-3: hsl(237, 50%, 61%);
+    --blue-4: hsl(237, 35%, 61%);
     --red-1: hsl(0, 100%, 61%);
     --red-2: hsl(0, 75%, 61%);
     --red-3: hsl(0, 50%, 61%);
+    --red-4: hsl(0, 35%, 61%);
     --orange-1: hsl(30, 100%, 61%);
     --orange-2: hsl(30, 75%, 61%);
     --orange-3: hsl(30, 50%, 61%);
+    --orange-4: hsl(30, 35%, 61%);
     --green-1: hsl(160, 60%, 61%);
     --green-2: hsl(160, 45%, 61%);
     --green-3: hsl(160, 30%, 61%);
+    --green-4: hsl(160, 20%, 61%);
 
     --font-1: 3rem;
     --font-2: 2.5rem;
@@ -168,15 +172,19 @@
     --color-blue-1: var(--blue-1);
     --color-blue-2: var(--blue-2);
     --color-blue-3: var(--blue-3);
+    --color-blue-4: var(--blue-4);
     --color-red-1: var(--red-1);
     --color-red-2: var(--red-2);
     --color-red-3: var(--red-3);
+    --color-red-4: var(--red-4);
     --color-orange-1: var(--orange-1);
     --color-orange-2: var(--orange-2);
     --color-orange-3: var(--orange-3);
+    --color-orange-4: var(--orange-4);
     --color-green-1: var(--green-1);
     --color-green-2: var(--green-2);
     --color-green-3: var(--green-3);
+    --color-green-4: var(--green-4);
 
     --color-foreground-0: var(--foreground-0);
     --color-foreground-1: var(--foreground-1);
@@ -307,10 +315,11 @@ label {
 
 dialog {
     margin: 0;
-    padding: 0;
+    padding: 0.25rem;
     border: 0;
     outline: 0;
     background: transparent;
+    overflow: hidden;
 }
 
 p {

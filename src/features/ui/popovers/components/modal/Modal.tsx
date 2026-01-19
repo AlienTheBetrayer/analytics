@@ -148,7 +148,6 @@ export const Modal = React.memo(function ModalFunction({
                                 }}
                                 ref={modalRef}
                                 onClick={(e) => e.stopPropagation()}
-                                className="bg-transparent overflow-hidden p-1"
                             >
                                 <motion.div
                                     initial={{
