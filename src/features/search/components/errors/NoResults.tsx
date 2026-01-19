@@ -1,9 +1,9 @@
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
-import { promiseStatus } from "@/utils/other/status";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
+import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
 
 type Props = {
     onSearch?: () => void;
@@ -50,7 +50,7 @@ export const NoResults = ({ onSearch }: Props) => {
                             className="w-full"
                             onClick={onSearch}
                         >
-                            {promiseStatus(promises.search)}
+                            <PromiseStatus status={promises.search} />
                             <Image
                                 width={16}
                                 height={16}

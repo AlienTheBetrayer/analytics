@@ -5,8 +5,8 @@ import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { relativeTime } from "@/utils/other/relativeTime";
 import { useAppStore } from "@/zustand/store";
-import { promiseStatus } from "@/utils/other/status";
 import { Event } from "@/types/tables/project";
+import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
 
 type Props = {
     event: Event;
@@ -76,7 +76,9 @@ export const DashboardEvent = ({ event }: Props) => {
                             });
                         }}
                     >
-                        {promiseStatus(promises[`eventDelete_${event.id}`])}
+                        <PromiseStatus
+                            status={promises[`eventDelete_${event.id}`]}
+                        />
                         <Image
                             width={16}
                             height={16}

@@ -3,10 +3,10 @@ import { usePopup } from "@/features/ui/popup/hooks/usePopup";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { Profile, User } from "@/types/tables/account";
-import { promiseStatus } from "@/utils/other/status";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import { useMemo } from "react";
+import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
 
 type Props = {
     data: { user: User; profile: Profile };
@@ -69,7 +69,7 @@ export const FriendButton = ({ data }: Props) => {
                                 unfriendMessageBox.show();
                             }}
                         >
-                            {promiseStatus(promises.unfriend)}
+                            <PromiseStatus status={promises.unfriend} />
                             <Image
                                 src="/unfriend.svg"
                                 width={16}
@@ -95,7 +95,9 @@ export const FriendButton = ({ data }: Props) => {
                                     });
                                 }}
                             >
-                                {promiseStatus(promises.requestAccept)}
+                                <PromiseStatus
+                                    status={promises.requestAccept}
+                                />
                                 <Image
                                     src="/checkmark.svg"
                                     width={12}
@@ -120,7 +122,9 @@ export const FriendButton = ({ data }: Props) => {
                                     });
                                 }}
                             >
-                                {promiseStatus(promises.requestReject)}
+                                <PromiseStatus
+                                    status={promises.requestReject}
+                                />
                                 <Image
                                     src="/cross.svg"
                                     width={16}
@@ -162,7 +166,9 @@ export const FriendButton = ({ data }: Props) => {
                                     });
                                 }}
                             >
-                                {promiseStatus(promises.requestUnsend)}
+                                <PromiseStatus
+                                    status={promises.requestUnsend}
+                                />
                                 <Image
                                     src="/auth.svg"
                                     width={16}
@@ -188,7 +194,7 @@ export const FriendButton = ({ data }: Props) => {
                                 });
                             }}
                         >
-                            {promiseStatus(promises.requestSend)}
+                            <PromiseStatus status={promises.requestSend} />
                             <Image
                                 src="/plus.svg"
                                 width={16}

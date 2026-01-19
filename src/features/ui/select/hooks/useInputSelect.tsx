@@ -24,11 +24,23 @@ export const useInputSelect = (
     const inputRef = useRef<HTMLButtonElement | null>(null);
     const dialogRef = useRef<HTMLDialogElement | null>(null);
 
+    useEffect(() => {
+        if (!dialogRef.current) {
+            return;
+        }
+
+        if (isExpanded) {
+            dialogRef.current.showModal();
+            setIsDisabled(true);
+        } else {
+            dialogRef.current.close();
+            setIsDisabled(false);
+        }
+    }, [isExpanded, setIsDisabled]);
+
     // position calculating
     useEffect(() => {
         if (!isExpanded) {
-            dialogRef.current?.close();
-            setIsDisabled(false);
             return;
         }
 
@@ -36,9 +48,6 @@ export const useInputSelect = (
             if (!(inputRef.current && dialogRef.current)) {
                 return;
             }
-
-            dialogRef.current.showModal();
-            setIsDisabled(true);
 
             const inputBounds = inputRef.current.getBoundingClientRect();
 
@@ -90,18 +99,17 @@ export const useInputSelect = (
         return createPortal(
             <AnimatePresence>
                 {isExpanded && (
-                    <dialog
+                    <motion.dialog
                         ref={dialogRef}
                         onCancel={(e) => {
                             e.stopPropagation();
+                            e.preventDefault();
                             setIsExpanded(false);
                         }}
                         onClick={(e) => e.stopPropagation()}
-                        tabIndex={-1}
+                        className="bg-transparent overflow-hidden whitespace-nowrap"
                     >
                         <motion.ul
-                            data-tooltip
-                            className="flex flex-col overflow-hidden rounded-xl border-2 border-background-5"
                             initial={{ height: "0px" }}
                             animate={{ height: "auto" }}
                             exit={{ height: "0px" }}
@@ -110,6 +118,8 @@ export const useInputSelect = (
                                 stiffness: 200,
                                 damping: 30,
                             }}
+                            data-tooltip
+                            className="flex flex-col overflow-hidden rounded-xl border-2 border-background-5"
                         >
                             {items.map((item) => (
                                 <li key={item}>
@@ -133,19 +143,20 @@ export const useInputSelect = (
                                         </span>
 
                                         {item === inputValue && (
-                                            <Image
-                                                src="/checkmark.svg"
-                                                width={10}
-                                                height={10}
-                                                alt="selected"
-                                                className="ml-auto"
-                                            />
+                                            <div className="ml-auto aspect-square rounded-full outline-2 p-1 outline-blue-1">
+                                                <Image
+                                                    src="/checkmark.svg"
+                                                    width={10}
+                                                    height={10}
+                                                    alt="selected"
+                                                />
+                                            </div>
                                         )}
                                     </button>
                                 </li>
                             ))}
                         </motion.ul>
-                    </dialog>
+                    </motion.dialog>
                 )}
             </AnimatePresence>,
             document.body,
@@ -158,6 +169,10 @@ export const useInputSelect = (
 
     const keyDown = useCallback(
         (e: React.KeyboardEvent<HTMLButtonElement>) => {
+            if (isExpanded) {
+                return;
+            }
+
             const id = items.indexOf(inputValue);
 
             switch (e.code) {
@@ -183,7 +198,7 @@ export const useInputSelect = (
                 }
             }
         },
-        [items, inputValue, value, onChange],
+        [items, isExpanded, inputValue, value, onChange],
     );
 
     return {

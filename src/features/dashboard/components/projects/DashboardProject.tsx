@@ -4,8 +4,8 @@ import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { relativeTime } from "@/utils/other/relativeTime";
 import { useAppStore } from "@/zustand/store";
-import { promiseStatus } from "@/utils/other/status";
 import { useMemo } from "react";
+import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
 
 type Props = {
     id: string;
@@ -46,7 +46,7 @@ export const DashboardProject = ({ id }: Props) => {
                     }}
                 >
                     <div className="flex items-center gap-1">
-                        {promiseStatus(promises.project)}
+                        <PromiseStatus status={promises.project} />
                         <Image
                             src="/cube.svg"
                             alt=""

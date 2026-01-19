@@ -2,7 +2,6 @@ import { fileToBase64 } from "@/features/profile/utils/fileToBase64";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
-import { promiseStatus } from "@/utils/other/status";
 import { EditAvatarProps } from "./Avatar";
 import { useAppStore } from "@/zustand/store";
 import { useState } from "react";
@@ -10,6 +9,7 @@ import Image from "next/image";
 import { Select } from "@/features/ui/select/components/Select";
 import { ProfileGender } from "@/types/tables/account";
 import { capitalize } from "@/utils/other/capitalize";
+import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
 
 export const Form = ({ avatar, avatarFile, data }: EditAvatarProps) => {
     // zustand
@@ -68,7 +68,6 @@ export const Form = ({ avatar, avatarFile, data }: EditAvatarProps) => {
                         />
                         Name
                         <small className="ml-auto text-ellipsis-left">
-                            {" "}
                             (your name, can be fictional)
                         </small>
                     </label>
@@ -202,7 +201,7 @@ export const Form = ({ avatar, avatarFile, data }: EditAvatarProps) => {
                     type="submit"
                     className="w-full"
                 >
-                    {promiseStatus(promises.updateUser)}
+                    <PromiseStatus status={promises.updateUser} />
                     <Image
                         src="/send.svg"
                         width={16}

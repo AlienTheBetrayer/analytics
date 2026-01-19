@@ -1,6 +1,6 @@
 import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
-import { promiseStatus } from "@/utils/other/status";
+import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 
@@ -38,7 +38,7 @@ export const FetchPrompt = () => {
                         sync();
                     }}
                 >
-                    {promiseStatus(promises.sync)}
+                    <PromiseStatus status={promises.sync} />
                     <Image
                         width={16}
                         height={16}

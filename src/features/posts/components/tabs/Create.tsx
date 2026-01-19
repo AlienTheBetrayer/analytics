@@ -2,7 +2,7 @@ import { fileToBase64 } from "@/features/profile/utils/fileToBase64";
 import { Button } from "@/features/ui/button/components/Button";
 import { ImageSelect } from "@/features/ui/fileselect/components/ImageSelect";
 import { Input } from "@/features/ui/input/components/Input";
-import { promiseStatus } from "@/utils/other/status";
+import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import { useState } from "react";
@@ -149,7 +149,7 @@ export const Create = () => {
 
                     <li className="flex flex-col">
                         <Button type="submit">
-                            {promiseStatus(promises.updatePost)}
+                            <PromiseStatus status={promises.updatePost} />
                             <Image
                                 alt=""
                                 width={16}

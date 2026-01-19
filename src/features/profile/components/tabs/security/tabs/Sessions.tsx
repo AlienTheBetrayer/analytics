@@ -4,10 +4,10 @@ import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { ResponseSession } from "@/types/api/responses/auth";
 import { Profile, User } from "@/types/tables/account";
-import { promiseStatus } from "@/utils/other/status";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import { SessionList } from "../parts/SessionList";
+import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
 
 type Props = {
     data: { user: User; profile: Profile };
@@ -82,7 +82,7 @@ export const Sessions = ({
                         terminateMessageBox.show();
                     }}
                 >
-                    {promiseStatus(promises.terminateSessions)}
+                    <PromiseStatus status={promises.terminateSessions} />
                     <Image
                         src="/auth.svg"
                         width={16}

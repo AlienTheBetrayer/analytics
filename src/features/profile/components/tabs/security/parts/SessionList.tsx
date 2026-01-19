@@ -3,9 +3,9 @@ import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { ResponseSession } from "@/types/api/responses/auth";
 import { Profile, User } from "@/types/tables/account";
-import { promiseStatus } from "@/utils/other/status";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
+import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
 
 type Props = {
     data: { user: User; profile: Profile };
@@ -60,9 +60,13 @@ export const SessionList = ({ data, currentSessions }: Props) => {
                                     });
                                 }}
                             >
-                                {promiseStatus(
-                                    promises[`terminateSessions_${token.id}`],
-                                )}
+                                <PromiseStatus
+                                    status={
+                                        promises[
+                                            `terminateSessions_${token.id}`
+                                        ]
+                                    }
+                                />
                                 <Image
                                     src="/cross.svg"
                                     width={16}

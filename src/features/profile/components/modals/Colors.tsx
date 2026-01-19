@@ -3,12 +3,12 @@ import "./Colors.css";
 import Image from "next/image";
 import { Spinner } from "@/features/spinner/components/Spinner";
 import { Button } from "@/features/ui/button/components/Button";
-import { promiseStatus } from "@/utils/other/status";
 import { useAppStore } from "@/zustand/store";
 import { useColorModal } from "../../hooks/useColorModal";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Profile, User } from "@/types/tables/account";
 import { useEffect } from "react";
+import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
 
 export const COLORS_GRID_SIZE = 4;
 
@@ -32,10 +32,9 @@ export const Colors = ({ data }: Props) => {
 
     return (
         <div
-            className="box min-w-0!"
-            tabIndex={-1}
+            className="box"
         >
-            <div className="flex w-full items-center justify-between">
+            <div className="flex w-full items-center justify-between whitespace-nowrap">
                 <span className="flex items-center w-full gap-1">
                     <Image
                         width={16}
@@ -209,7 +208,7 @@ export const Colors = ({ data }: Props) => {
                                 onClick={controller.apply}
                                 className="w-full"
                             >
-                                {promiseStatus(promises.colorsUpdate)}
+                                <PromiseStatus status={promises.colorsUpdate} />
                                 <Image
                                     width={16}
                                     height={16}

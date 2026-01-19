@@ -8,7 +8,7 @@ import { useAppStore } from "@/zustand/store";
 import { Profile, User } from "@/types/tables/account";
 import { MessageBox } from "@/features/ui/messagebox/components/MessageBox";
 import { usePopup } from "@/features/ui/popup/hooks/usePopup";
-import { promiseStatus } from "@/utils/other/status";
+import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
 
 type Props = {
     data: { profile: Profile; user: User };
@@ -124,7 +124,7 @@ export const Friends = ({ data }: Props) => {
                     unfriendMessageBox.show();
                 }}
             >
-                {promiseStatus(promises.unfriendAll)}
+                <PromiseStatus status={promises.unfriendAll} />
                 <Image
                     width={16}
                     height={16}

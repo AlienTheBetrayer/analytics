@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { PromiseStatuses } from "@/hooks/usePromiseStatus";
+import type { PromiseStatusType } from "@/hooks/usePromiseStatus";
 import { Event, Project } from "../tables/project";
 import { NotificationPartial } from "../other/notifications";
 
 export type DataStore = {
     // cache / promises / other
-    promises: PromiseStatuses;
+    promises: Record<string, PromiseStatusType>;
     cached?: Record<string, boolean>;
     notificationListeners: Set<(event: NotificationPartial) => void>;
 

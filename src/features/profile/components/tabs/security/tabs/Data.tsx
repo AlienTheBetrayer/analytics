@@ -4,11 +4,11 @@ import { Button } from "@/features/ui/button/components/Button";
 import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
 import { Input } from "@/features/ui/input/components/Input";
 import { Profile, User } from "@/types/tables/account";
-import { promiseStatus } from "@/utils/other/status";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 import { useState } from "react";
+import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
 
 type Props = {
     data: { user: User; profile: Profile };
@@ -146,7 +146,7 @@ export const Data = ({ data, terminateMessageBox }: Props) => {
                     className="w-full"
                     isEnabled={Object.values(fieldsEnabled).some(Boolean)}
                 >
-                    {promiseStatus(promises.updateUser)}
+                    <PromiseStatus status={promises.updateUser} />
                     <Image
                         src="/send.svg"
                         width={16}

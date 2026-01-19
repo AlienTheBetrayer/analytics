@@ -1,9 +1,9 @@
 import Image from "next/image";
 import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
-import { promiseStatus } from "@/utils/other/status";
 import { useAppStore } from "@/zustand/store";
 import { useLocalStore } from "@/zustand/localStore";
+import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
 
 export const AlreadyLoggedIn = () => {
     // zustand state
@@ -75,7 +75,7 @@ export const AlreadyLoggedIn = () => {
                                 setVisibleProfile(undefined);
                             }}
                         >
-                            {promiseStatus(promises.logout)}
+                            <PromiseStatus status={promises.logout} />
                             <Image
                                 alt=""
                                 src="/auth.svg"

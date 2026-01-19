@@ -2,9 +2,9 @@ import { MessageBox } from "@/features/ui/messagebox/components/MessageBox";
 import { usePopup } from "@/features/ui/popup/hooks/usePopup";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
-import { promiseStatus } from "@/utils/other/status";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
+import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
 
 export const Wipe = () => {
     // zustand
@@ -39,12 +39,12 @@ export const Wipe = () => {
             {deleteEventsBox.render()}
             <Tooltip text="Wipe all events">
                 <Button
-                    className="text-6! p-0!"
+                    className="text-6!"
                     onClick={() => {
                         deleteEventsBox.show();
                     }}
                 >
-                    {promiseStatus(promises.eventsDeleteTopline)}
+                    <PromiseStatus status={promises.eventsDeleteTopline} />
                     <Image
                         alt="delete"
                         src="/delete.svg"

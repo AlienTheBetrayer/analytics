@@ -3,7 +3,7 @@ import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { useAppStore } from "@/zustand/store";
 import { Button } from "../../ui/button/components/Button";
-import { promiseStatus } from "@/utils/other/status";
+import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
 
 export const Topline = () => {
     // zustand states
@@ -30,9 +30,7 @@ export const Topline = () => {
 
             <li>
                 <Tooltip text="Home">
-                    <LinkButton
-                        href="/home/"
-                    >
+                    <LinkButton href="/home/">
                         <Image
                             width={16}
                             height={16}
@@ -81,15 +79,13 @@ export const Topline = () => {
 
             <li className="ml-auto!">
                 <div className="flex gap-1 items-center">
-                    <Tooltip
-                        text="Re-sync all data"
-                    >
+                    <Tooltip text="Re-sync all data">
                         <Button
                             onClick={() => {
                                 sync({ caching: false });
                             }}
                         >
-                            {promiseStatus(promises.sync)}
+                            <PromiseStatus status={promises.sync} />
                             <Image
                                 src="/server.svg"
                                 alt=""

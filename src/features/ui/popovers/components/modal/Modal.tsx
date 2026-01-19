@@ -137,16 +137,7 @@ export const Modal = React.memo(function ModalFunction({
                 {createPortal(
                     <AnimatePresence>
                         {isShown && (
-                            <motion.dialog
-                                initial={{
-                                    opacity: 0,
-                                    scale: 0.7,
-                                }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                exit={{
-                                    opacity: 0,
-                                    scale: 0.7,
-                                }}
+                            <dialog
                                 onCancel={(e) => {
                                     e.stopPropagation();
                                     e.preventDefault();
@@ -154,10 +145,22 @@ export const Modal = React.memo(function ModalFunction({
                                 }}
                                 ref={modalRef}
                                 onClick={(e) => e.stopPropagation()}
-                                className="bg-transparent overflow-hidden whitespace-nowrap p-1"
+                                className="bg-transparent overflow-hidden p-1"
                             >
-                                {element?.(hide)}
-                            </motion.dialog>
+                                <motion.div
+                                    initial={{
+                                        opacity: 0,
+                                        scale: 0.9,
+                                    }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    exit={{
+                                        opacity: 0,
+                                        scale: 0.9,
+                                    }}
+                                >
+                                    {element?.(hide)}
+                                </motion.div>
+                            </dialog>
                         )}
                     </AnimatePresence>,
                     document.body,

@@ -1,8 +1,8 @@
 import { useCallback, useState } from "react";
 
-export type PromiseStatus = "idle" | "pending" | "resolved" | "rejected";
+export type PromiseStatusType = "idle" | "pending" | "resolved" | "rejected";
 
-export type PromiseStatuses = Record<string, PromiseStatus>;
+export type PromiseStatuses = Record<string, PromiseStatusType>;
 
 export const usePromiseStatus = () => {
 	const [statuses, setStatuses] = useState<PromiseStatuses>({});

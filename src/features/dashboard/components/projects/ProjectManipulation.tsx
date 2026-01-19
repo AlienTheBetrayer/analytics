@@ -3,9 +3,9 @@ import { usePopup } from "@/features/ui/popup/hooks/usePopup";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
-import { promiseStatus } from "@/utils/other/status";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
+import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
 
 export const ProjectManipulation = () => {
     // zustand states
@@ -125,11 +125,13 @@ export const ProjectManipulation = () => {
                                     }}
                                     isEnabled={status?.role !== "user"}
                                 >
-                                    {promiseStatus(
-                                        promises[
-                                            `projectDelete_${selectedProjectId}`
-                                        ],
-                                    )}
+                                    <PromiseStatus
+                                        status={
+                                            promises[
+                                                `projectDelete_${selectedProjectId}`
+                                            ]
+                                        }
+                                    />
                                     <Image
                                         src="/delete.svg"
                                         width={16}
@@ -154,11 +156,13 @@ export const ProjectManipulation = () => {
                                     }}
                                     isEnabled={status?.role !== "user"}
                                 >
-                                    {promiseStatus(
-                                        promises[
-                                            `eventsDelete_${selectedProjectId}`
-                                        ],
-                                    )}
+                                    <PromiseStatus
+                                        status={
+                                            promises[
+                                                `eventsDelete_${selectedProjectId}`
+                                            ]
+                                        }
+                                    />
                                     <Image
                                         src="/type.svg"
                                         width={16}

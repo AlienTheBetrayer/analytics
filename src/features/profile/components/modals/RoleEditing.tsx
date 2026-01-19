@@ -3,10 +3,10 @@ import { Button } from "@/features/ui/button/components/Button";
 import { Select } from "@/features/ui/select/components/Select";
 import { AuthenticationRole } from "@/types/auth/authentication";
 import { Profile, User } from "@/types/tables/account";
-import { promiseStatus } from "@/utils/other/status";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import { useState } from "react";
+import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
 
 type Props = {
     data: { profile: Profile; user: User };
@@ -25,52 +25,54 @@ export const RoleEditing = ({ data }: Props) => {
     );
 
     return (
-        <div className="box h-full min-h-80">
-            <div className="flex flex-col gap-4 h-full">
-                <div className="flex flex-col gap-1 items-center">
-                    <div className="relative flex gap-1">
-                        <Image
-                            width={16}
-                            height={16}
-                            alt=""
-                            src="/cube.svg"
-                        />
-                        <span>{data.user.username}</span>
-                    </div>
-
-                    <span className="text-5! text-foreground-5!">
-                        Role editing
-                    </span>
-
-                    <p>
-                        Since you have full permissions, you can <u>edit</u>{" "}
-                        this user&apos;s roles!
-                    </p>
-                </div>
-
-                <hr />
-
-                <div className="flex flex-col gap-2">
-                    <label
-                        htmlFor="role-select"
-                        className="flex flex-wrap"
-                    >
-                        <span>Role</span>
-                        <small className="ml-auto">
-                            (different roles have different permissions)
-                        </small>
-                    </label>
-
-                    <Select
-                        id="role-select"
-                        items={["user", "admin", "op"]}
-                        value={role}
-                        onChange={(e) => setRole(e as AuthenticationRole)}
+        <ul className="box h-full gap-4! min-h-80">
+            <li className="flex flex-col gap-1 items-center text-center">
+                <div className="relative flex gap-1">
+                    <Image
+                        width={16}
+                        height={16}
+                        alt=""
+                        src="/cube.svg"
                     />
+                    <span>{data.user.username}</span>
                 </div>
 
-                <hr className="mt-auto" />
+                <span className="text-5!">Role editing</span>
 
+                <p>
+                    Since you have full permissions, you can <u>edit</u> this
+                    user&apos;s roles!
+                </p>
+            </li>
+
+            <li>
+                <hr />
+            </li>
+
+            <li className="flex flex-col gap-2">
+                <label
+                    className="flex items-center gap-1"
+                    htmlFor="role-select"
+                >
+                    <span>Role</span>
+                    <small className="ml-auto text-ellipsis-left">
+                        (different roles have different permissions)
+                    </small>
+                </label>
+
+                <Select
+                    id="role-select"
+                    items={["user", "admin", "op"]}
+                    value={role}
+                    onChange={(e) => setRole(e as AuthenticationRole)}
+                />
+            </li>
+
+            <li className="mt-auto!">
+                <hr />
+            </li>
+
+            <li>
                 <Tooltip
                     text="Change this user's role"
                     className="w-full"
@@ -81,7 +83,7 @@ export const RoleEditing = ({ data }: Props) => {
                             updateUser({ id: data.user.id, data: { role } });
                         }}
                     >
-                        {promiseStatus(promises.updateUser)}
+                        <PromiseStatus status={promises.updateUser} />
                         <Image
                             width={20}
                             height={20}
@@ -91,7 +93,7 @@ export const RoleEditing = ({ data }: Props) => {
                         Apply changes
                     </Button>
                 </Tooltip>
-            </div>
-        </div>
+            </li>
+        </ul>
     );
 };

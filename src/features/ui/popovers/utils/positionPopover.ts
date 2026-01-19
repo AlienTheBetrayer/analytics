@@ -19,7 +19,6 @@ export const positionPopover = (
 
     // getting the bounds of the element
     const elementBounds = elementRef.current.getBoundingClientRect();
-    const tooltipBounds = tooltipRef.current.getBoundingClientRect();
 
     // calculating and setting the direction
     let left = 0;
@@ -57,24 +56,25 @@ export const positionPopover = (
         case "bottom-right": {
             left = elementBounds.right;
             top = elementBounds.top - 4;
+            translateX = -100;
+            translateY = -100;
             break;
         }
         case "bottom-left": {
             left = elementBounds.left;
-            top = elementBounds.top - 4;
-            translateX = -100;
+            top = elementBounds.bottom + 4;
             break;
         }
         case "top-right": {
             left = elementBounds.right;
-            top = elementBounds.top + 4 - elementBounds.height;
+            top = elementBounds.top - 4;
+            translateX = -100;
             translateY = -100;
             break;
         }
         case "top-left": {
-            left = elementBounds.left - tooltipBounds.width;
-            top = elementBounds.top + 4 - elementBounds.height;
-            translateX = -100;
+            left = elementBounds.left;
+            top = elementBounds.top - 4;
             translateY = -100;
             break;
         }
@@ -106,7 +106,7 @@ export const positionPopover = (
         } else if (
             tooltipBounds.bottom > document.documentElement.clientHeight
         ) {
-            dy = - tooltipBounds.height - elementBounds.height - 4;
+            dy = -tooltipBounds.height - elementBounds.height - 4;
         }
 
         // setting the updated safe positions

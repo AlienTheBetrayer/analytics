@@ -3,10 +3,10 @@ import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
 import Image from "next/image";
 import { useAppStore } from "@/zustand/store";
-import { promiseStatus } from "@/utils/other/status";
 import { useRef, useState } from "react";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
+import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
 
 export const Controller = () => {
     // zustand state
@@ -135,7 +135,7 @@ export const Controller = () => {
                             className="w-full"
                             isEnabled={isValid}
                         >
-                            {promiseStatus(promises.emulateEvent)}
+                            <PromiseStatus status={promises.emulateEvent} />
                             <Image
                                 width={16}
                                 height={16}

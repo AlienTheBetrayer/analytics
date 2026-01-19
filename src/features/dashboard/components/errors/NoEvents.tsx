@@ -1,8 +1,8 @@
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
-import { promiseStatus } from "@/utils/other/status";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
+import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
 
 export const NoEvents = () => {
     // zustand
@@ -49,7 +49,7 @@ export const NoEvents = () => {
                                 });
                             }}
                         >
-                            {promiseStatus(promises.noEventsRefetch)}
+                            <PromiseStatus status={promises.noEventsRefetch} />
                             <Image
                                 width={16}
                                 height={16}

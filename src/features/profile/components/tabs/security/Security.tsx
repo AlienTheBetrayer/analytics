@@ -2,7 +2,6 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
-import { promiseStatus } from "@/utils/other/status";
 import { useAppStore } from "@/zustand/store";
 import { Profile, User } from "@/types/tables/account";
 import { useLocalStore } from "@/zustand/localStore";
@@ -13,6 +12,7 @@ import { usePopup } from "@/features/ui/popup/hooks/usePopup";
 import { redirect } from "next/navigation";
 import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
 import { Select } from "./Select";
+import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
 
 type Props = {
     data: { profile: Profile; user: User };
@@ -93,7 +93,7 @@ export const Security = ({ data }: Props) => {
                                 setVisibleProfile(undefined);
                             }}
                         >
-                            {promiseStatus(promises.logout)}
+                            <PromiseStatus status={promises.logout} />
                             <Image
                                 width={16}
                                 height={16}

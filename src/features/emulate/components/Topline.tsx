@@ -1,10 +1,10 @@
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
-import { promiseStatus } from "@/utils/other/status";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import { useParams } from "next/navigation";
+import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
 
 export const Topline = () => {
     // url
@@ -71,7 +71,7 @@ export const Topline = () => {
                             sync({ caching: false });
                         }}
                     >
-                        {promiseStatus(promises.sync)}
+                        <PromiseStatus status={promises.sync} />
                         <Image
                             width={16}
                             height={16}

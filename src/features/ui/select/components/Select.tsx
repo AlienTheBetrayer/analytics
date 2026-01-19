@@ -40,7 +40,7 @@ export const Select = ({ items, value, onChange, ...rest }: Props) => {
             <span className="ml-auto">
                 <small>{items.indexOf(inputValue) + 1}</small>
             </span>
-            
+
             {render()}
         </button>
     );

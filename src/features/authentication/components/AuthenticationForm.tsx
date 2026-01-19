@@ -7,7 +7,7 @@ import { Input } from "../../ui/input/components/Input";
 import { LinkButton } from "../../ui/linkbutton/components/LinkButton";
 import { ResponseLogin } from "@/types/api/responses/auth";
 import { useAppStore } from "@/zustand/store";
-import { promiseStatus } from "@/utils/other/status";
+import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
 
 type Props = {
     title: string;
@@ -155,8 +155,8 @@ export const AuthenticationForm = ({
                         className="w-full"
                         type="submit"
                     >
-                        {promises.login && promiseStatus(promises.login)}
-                        {promises.register && promiseStatus(promises.register)}
+                        <PromiseStatus status={promises.login} />
+                        <PromiseStatus status={promises.register} />
 
                         <Image
                             alt=""
