@@ -1,15 +1,16 @@
-import { Tooltip } from "@/features/popovers/components/tooltip/Tooltip";
+import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { AnimatePresence, motion } from "motion/react";
 import { Colors } from "../../modals/Colors";
 import { ProfileImage } from "../../ProfileImage";
 import { Profile, User } from "@/types/tables/account";
 import React, { JSX } from "react";
-import { MessageBox } from "@/features/messagebox/components/MessageBox";
-import { usePopup } from "@/features/popup/hooks/usePopup";
+import { MessageBox } from "@/features/ui/messagebox/components/MessageBox";
+import { usePopup } from "@/features/ui/popup/hooks/usePopup";
 import Image from "next/image";
 import { ColorSwatches } from "../../parts/ColorSwatches";
 import { useAppStore } from "@/zustand/store";
+import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 
 export type EditAvatarProps = {
     data: { profile: Profile; user: User };
@@ -175,12 +176,10 @@ export const Avatar = ({
                 className="w-full"
                 direction="top"
             >
-                <Tooltip
+                <Modal
                     direction="top"
-                    element={<Colors data={data} />}
+                    element={() => <Colors data={data} />}
                     className="w-full"
-                    type="modal"
-                    disabledPointer={false}
                 >
                     <Button className="w-full! min-h-9!">
                         {colors[data.user.id] ? (
@@ -197,7 +196,7 @@ export const Avatar = ({
                             </div>
                         )}
                     </Button>
-                </Tooltip>
+                </Modal>
             </Tooltip>
         </div>
     );

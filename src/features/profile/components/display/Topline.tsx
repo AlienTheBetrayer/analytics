@@ -1,4 +1,4 @@
-import { Tooltip } from "@/features/popovers/components/tooltip/Tooltip";
+import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { Profile, User } from "@/types/tables/account";
@@ -7,6 +7,7 @@ import Image from "next/image";
 import { RoleEditing } from "../modals/RoleEditing";
 import { useParams } from "next/navigation";
 import { TabSelection } from "@/utils/other/TabSelection";
+import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 
 type Props = {
     data: { user: User; profile: Profile };
@@ -56,11 +57,9 @@ export const Topline = ({ data }: Props) => {
             {status && status.role === "op" && (
                 <li>
                     <Tooltip text="Administrator panel">
-                        <Tooltip
-                            type="modal"
+                        <Modal
                             direction="right"
-                            disabledPointer={false}
-                            element={<RoleEditing data={data} />}
+                            element={() => <RoleEditing data={data} />}
                         >
                             <Button>
                                 <div className="w-1 h-1 rounded-full bg-red-1" />
@@ -71,7 +70,7 @@ export const Topline = ({ data }: Props) => {
                                     src="/settings.svg"
                                 />
                             </Button>
-                        </Tooltip>
+                        </Modal>
                     </Tooltip>
                 </li>
             )}

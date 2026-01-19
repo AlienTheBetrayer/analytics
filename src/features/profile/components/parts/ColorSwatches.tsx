@@ -1,4 +1,4 @@
-import { Tooltip } from "@/features/popovers/components/tooltip/Tooltip";
+import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Profile, User } from "@/types/tables/account";
 import { useAppStore } from "@/zustand/store";
 

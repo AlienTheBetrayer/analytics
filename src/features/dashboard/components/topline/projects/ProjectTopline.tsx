@@ -1,4 +1,4 @@
-import { Tooltip } from "@/features/popovers/components/tooltip/Tooltip";
+import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
@@ -9,6 +9,7 @@ import { Deselect } from "./Deselect";
 import { Manipulation } from "./Manipulation";
 import { Emulate } from "./Emulate";
 import { TabSelection } from "@/utils/other/TabSelection";
+import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 
 export const ProjectTopline = () => {
     // zustand-state
@@ -31,11 +32,9 @@ export const ProjectTopline = () => {
             </li>
 
             <li>
-                <Tooltip
-                    disabledPointer={false}
-                    type="modal"
+                <Modal
                     direction="bottom-right"
-                    element={<Sorting />}
+                    element={() => <Sorting />}
                 >
                     <Tooltip text="Sort projects">
                         <Button className="aspect-square">
@@ -60,7 +59,7 @@ export const ProjectTopline = () => {
                             />
                         </Button>
                     </Tooltip>
-                </Tooltip>
+                </Modal>
             </li>
 
             <li className="self-stretch flex items-center">

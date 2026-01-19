@@ -1,12 +1,13 @@
 "use client";
 
 import { ProfileImage } from "@/features/profile/components/ProfileImage";
-import { Tooltip } from "@/features/popovers/components/tooltip/Tooltip";
+import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { Button } from "@/features/ui/button/components/Button";
 import { useLocalStore } from "@/zustand/localStore";
 import { AuthElements } from "./AuthElements";
 import { LoadingToolbox } from "@/features/loading/components/LoadingToolbox";
+import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 
 export const AuthButton = () => {
     // zustand's localstore
@@ -40,16 +41,14 @@ export const AuthButton = () => {
                 </Tooltip>
             ) : (
                 <Tooltip text="Sign up / Log in">
-                    <Tooltip
-                        type="modal"
+                    <Modal
                         direction="left"
-                        disabledPointer={false}
-                        element={<AuthElements />}
+                        element={() => <AuthElements />}
                     >
                         <Button className="p-0!">
                             <LoadingToolbox />
                         </Button>
-                    </Tooltip>
+                    </Modal>
                 </Tooltip>
             )}
         </nav>

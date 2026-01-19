@@ -1,7 +1,7 @@
 import "./DashboardEvent.css";
 
 import Image from "next/image";
-import { Tooltip } from "@/features/popovers/components/tooltip/Tooltip";
+import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { relativeTime } from "@/utils/other/relativeTime";
 import { useAppStore } from "@/zustand/store";
@@ -65,6 +65,7 @@ export const DashboardEvent = ({ event }: Props) => {
                     isEnabled={status?.role !== "user"}
                 >
                     <Button
+                        aria-label="delete event"
                         isEnabled={status?.role !== "user"}
                         className="w-full"
                         onClick={() => {

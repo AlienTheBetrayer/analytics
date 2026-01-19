@@ -1,5 +1,5 @@
 import { fileToBase64 } from "@/features/profile/utils/fileToBase64";
-import { Tooltip } from "@/features/popovers/components/tooltip/Tooltip";
+import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
 import { promiseStatus } from "@/utils/other/status";

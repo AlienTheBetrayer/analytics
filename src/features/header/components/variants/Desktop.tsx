@@ -6,8 +6,8 @@ import Image from "next/image";
 import { ComponentPropsWithoutRef } from "react";
 import { SearchButton } from "../parts/SearchButton";
 import { Button } from "@/features/ui/button/components/Button";
-import { Tooltip } from "@/features/popovers/components/tooltip/Tooltip";
 import { Socials } from "../parts/Socials";
+import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 
 type Props = {} & ComponentPropsWithoutRef<"div">;
 
@@ -88,7 +88,7 @@ export const Desktop = ({ className }: Props) => {
                     </li>
 
                     <li>
-                        <Tooltip element={<Socials />}>
+                        <Modal element={() => <Socials />}>
                             <Button
                                 styles="link"
                                 className="button-img p-2"
@@ -100,7 +100,7 @@ export const Desktop = ({ className }: Props) => {
                                     alt="contact"
                                 />
                             </Button>
-                        </Tooltip>
+                        </Modal>
                     </li>
                 </ul>
             </li>

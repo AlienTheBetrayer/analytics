@@ -1,6 +1,6 @@
-import { usePopup } from "@/features/popup/hooks/usePopup";
+import { usePopup } from "@/features/ui/popup/hooks/usePopup";
 import { Spinner } from "@/features/spinner/components/Spinner";
-import { Tooltip } from "@/features/popovers/components/tooltip/Tooltip";
+import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { ResponseSession } from "@/types/api/responses/auth";
 import { Profile, User } from "@/types/tables/account";
@@ -32,7 +32,6 @@ export const Sessions = ({
                 <Tooltip
                     text="Re-load visible sessions"
                     direction="top"
-                    disabledPointer
                 >
                     <Button
                         className="p-0!"
@@ -76,7 +75,6 @@ export const Sessions = ({
                 text="Keep only this session logged in"
                 direction="bottom"
                 className="w-full"
-                disabledPointer
             >
                 <Button
                     className="w-full"

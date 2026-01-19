@@ -1,6 +1,6 @@
-import { MessageBox } from "@/features/messagebox/components/MessageBox";
-import { usePopup } from "@/features/popup/hooks/usePopup";
-import { Tooltip } from "@/features/popovers/components/tooltip/Tooltip";
+import { MessageBox } from "@/features/ui/messagebox/components/MessageBox";
+import { usePopup } from "@/features/ui/popup/hooks/usePopup";
+import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { promiseStatus } from "@/utils/other/status";
 import { useAppStore } from "@/zustand/store";

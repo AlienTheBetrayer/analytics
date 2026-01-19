@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { Profile, User } from "@/types/tables/account";
 import Image from "next/image";
 import { ProfileDisplay } from "../../../ProfileDisplay";
-import { Tooltip } from "@/features/popovers/components/tooltip/Tooltip";
+import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 
 type Props = {

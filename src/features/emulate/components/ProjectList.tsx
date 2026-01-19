@@ -2,7 +2,7 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { relativeTime } from "@/utils/other/relativeTime";
-import { Tooltip } from "@/features/popovers/components/tooltip/Tooltip";
+import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { useAppStore } from "@/zustand/store";
 
 export const ProjectList = () => {

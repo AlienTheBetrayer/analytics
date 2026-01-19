@@ -99,31 +99,13 @@ export const Create = () => {
                         </label>
 
                         <ImageSelect
-                            className="p-4!"
                             id="image"
                             sizeLimit={1}
                             value={image}
                             onSelect={(file) => {
                                 setImage(file);
                             }}
-                        >
-                            <Image
-                                alt=""
-                                width={16}
-                                height={16}
-                                src="/launch.svg"
-                            />
-                            Add an image
-                            {image && (
-                                <Image
-                                    className="absolute right-3.5 top-1/2 -translate-y-1/2"
-                                    alt=""
-                                    width={12}
-                                    height={12}
-                                    src="/checkmark.svg"
-                                />
-                            )}
-                        </ImageSelect>
+                        />
                     </li>
 
                     <li>

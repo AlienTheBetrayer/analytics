@@ -1,13 +1,13 @@
 import { Spinner } from "@/features/spinner/components/Spinner";
-import { Tooltip } from "@/features/popovers/components/tooltip/Tooltip";
+import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { ProfileDisplay } from "../../../ProfileDisplay";
 import Image from "next/image";
 import { useMemo } from "react";
 import { useAppStore } from "@/zustand/store";
 import { Profile, User } from "@/types/tables/account";
-import { MessageBox } from "@/features/messagebox/components/MessageBox";
-import { usePopup } from "@/features/popup/hooks/usePopup";
+import { MessageBox } from "@/features/ui/messagebox/components/MessageBox";
+import { usePopup } from "@/features/ui/popup/hooks/usePopup";
 import { promiseStatus } from "@/utils/other/status";
 
 type Props = {

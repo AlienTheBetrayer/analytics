@@ -1,4 +1,4 @@
-import { Tooltip } from "@/features/popovers/components/tooltip/Tooltip";
+import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import Image from "next/image";
 
@@ -12,14 +12,14 @@ export const Edit = ({ file, onDelete, onEdit }: Props) => {
     const image = file && URL.createObjectURL(file);
 
     return (
-        <ul className="box py-0! px-2! w-screen max-w-81 overflow-hidden aspect-video hover:scale-110 group duration-500!">
+        <ul className="box py-0! px-2! w-screen max-w-81 overflow-hidden border-0! aspect-video group duration-500!">
             {image && (
                 <li>
                     <Image
                         alt=""
                         src={image}
                         fill
-                        className="invert-0! group-hover:scale-130 duration-1000!"
+                        className="invert-0! group-hover:scale-130 group-focus-within:scale-130 duration-1000!"
                     />
                 </li>
             )}

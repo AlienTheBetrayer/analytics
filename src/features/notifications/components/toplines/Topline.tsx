@@ -1,4 +1,4 @@
-import { Tooltip } from "@/features/popovers/components/tooltip/Tooltip";
+import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import Image from "next/image";
 import { Filter } from "./Filter";
@@ -7,10 +7,11 @@ import { Search } from "./Search";
 import { dotColors } from "@/utils/other/dotColors";
 import { useMemo } from "react";
 import { TabSelection } from "@/utils/other/TabSelection";
-import { MessageBox } from "@/features/messagebox/components/MessageBox";
-import { usePopup } from "@/features/popup/hooks/usePopup";
+import { MessageBox } from "@/features/ui/messagebox/components/MessageBox";
+import { usePopup } from "@/features/ui/popup/hooks/usePopup";
 import { NotificationTab } from "@/types/other/notifications";
 import { useAppStore } from "@/zustand/store";
+import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 
 type Props = {
     tab: NotificationTab;
@@ -97,11 +98,9 @@ export const Topline = ({ tab }: Props) => {
             </li>
 
             <li>
-                <Tooltip
-                    disabledPointer={false}
-                    type="modal"
+                <Modal
                     direction="bottom-right"
-                    element={<Filter tab={tab} />}
+                    element={() => <Filter tab={tab} />}
                 >
                     <Tooltip text="Filter notifications">
                         <Button className="aspect-square">
@@ -118,15 +117,13 @@ export const Topline = ({ tab }: Props) => {
                             />
                         </Button>
                     </Tooltip>
-                </Tooltip>
+                </Modal>
             </li>
 
             <li>
-                <Tooltip
-                    disabledPointer={false}
-                    type="modal"
+                <Modal
                     direction="bottom-right"
-                    element={<Sort tab={tab} />}
+                    element={() => <Sort tab={tab} />}
                 >
                     <Tooltip text="Sort notifications">
                         <Button className="aspect-square">
@@ -150,7 +147,7 @@ export const Topline = ({ tab }: Props) => {
                             />
                         </Button>
                     </Tooltip>
-                </Tooltip>
+                </Modal>
             </li>
 
             <li className="self-stretch flex items-center">

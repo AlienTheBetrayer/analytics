@@ -6,7 +6,7 @@ import { Button } from "@/features/ui/button/components/Button";
 import { promiseStatus } from "@/utils/other/status";
 import { useAppStore } from "@/zustand/store";
 import { useColorModal } from "../../hooks/useColorModal";
-import { Tooltip } from "@/features/popovers/components/tooltip/Tooltip";
+import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Profile, User } from "@/types/tables/account";
 import { useEffect } from "react";
 

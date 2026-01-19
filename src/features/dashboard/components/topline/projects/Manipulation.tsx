@@ -1,17 +1,15 @@
-import { Tooltip } from "@/features/popovers/components/tooltip/Tooltip";
+import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import Image from "next/image";
 import { ProjectManipulation } from "../../projects/ProjectManipulation";
+import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 
 export const Manipulation = () => {
     return (
         <Tooltip text="Advanced editing">
-            <Tooltip
-                text="De-select the project"
+            <Modal
                 direction="bottom-left"
-                element={<ProjectManipulation />}
-                disabledPointer={false}
-                type="modal"
+                element={() => <ProjectManipulation />}
             >
                 <Button className="text-6! p-0!">
                     <Image
@@ -21,7 +19,7 @@ export const Manipulation = () => {
                         height={16}
                     />
                 </Button>
-            </Tooltip>
+            </Modal>
         </Tooltip>
     );
 };

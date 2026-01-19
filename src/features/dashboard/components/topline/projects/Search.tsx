@@ -1,4 +1,4 @@
-import { Tooltip } from "@/features/popovers/components/tooltip/Tooltip";
+import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Input } from "@/features/ui/input/components/Input";
 import { useDebounced } from "@/hooks/useDebounced";
 import { useAppStore } from "@/zustand/store";

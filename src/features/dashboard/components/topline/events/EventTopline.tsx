@@ -1,4 +1,4 @@
-import { Tooltip } from "@/features/popovers/components/tooltip/Tooltip";
+import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
@@ -9,6 +9,7 @@ import { Wipe } from "./Wipe";
 import { useMemo } from "react";
 import { dotColors } from "@/utils/other/dotColors";
 import { TabSelection } from "@/utils/other/TabSelection";
+import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 
 export const EventTopline = () => {
     // zustand-state
@@ -38,11 +39,9 @@ export const EventTopline = () => {
             </li>
 
             <li>
-                <Tooltip
-                    disabledPointer={false}
-                    type="modal"
+                <Modal
                     direction="bottom-right"
-                    element={<Filtering />}
+                    element={() => <Filtering />}
                 >
                     <Tooltip text="Filter events">
                         <Button className="aspect-square">
@@ -59,15 +58,13 @@ export const EventTopline = () => {
                             />
                         </Button>
                     </Tooltip>
-                </Tooltip>
+                </Modal>
             </li>
 
             <li>
-                <Tooltip
-                    disabledPointer={false}
-                    type="modal"
+                <Modal
                     direction="bottom-right"
-                    element={<Sorting />}
+                    element={() => <Sorting />}
                 >
                     <Tooltip text="Sort events">
                         <Button className="aspect-square">
@@ -96,7 +93,7 @@ export const EventTopline = () => {
                             />
                         </Button>
                     </Tooltip>
-                </Tooltip>
+                </Modal>
             </li>
 
             <li className="self-stretch flex items-center">

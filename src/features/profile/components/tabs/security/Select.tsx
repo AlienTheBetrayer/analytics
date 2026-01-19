@@ -1,4 +1,4 @@
-import { Tooltip } from "@/features/popovers/components/tooltip/Tooltip";
+import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { TabSelection } from "@/utils/other/TabSelection";
 import Image from "next/image";
@@ -6,8 +6,8 @@ import { useMemo, useState } from "react";
 import { Data } from "./tabs/Data";
 import { Profile, User } from "@/types/tables/account";
 import { Sessions } from "./tabs/Sessions";
-import { MessageBox } from "@/features/messagebox/components/MessageBox";
-import { usePopup } from "@/features/popup/hooks/usePopup";
+import { MessageBox } from "@/features/ui/messagebox/components/MessageBox";
+import { usePopup } from "@/features/ui/popup/hooks/usePopup";
 import { useAppStore } from "@/zustand/store";
 
 export type SecurityTab = "Data" | "Sessions";

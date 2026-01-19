@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { Tooltip } from "@/features/popovers/components/tooltip/Tooltip";
+import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { promiseStatus } from "@/utils/other/status";
 import { useAppStore } from "@/zustand/store";
@@ -8,8 +8,8 @@ import { Profile, User } from "@/types/tables/account";
 import { useLocalStore } from "@/zustand/localStore";
 import { ProfileImage } from "../../ProfileImage";
 import { Spinner } from "@/features/spinner/components/Spinner";
-import { MessageBox } from "@/features/messagebox/components/MessageBox";
-import { usePopup } from "@/features/popup/hooks/usePopup";
+import { MessageBox } from "@/features/ui/messagebox/components/MessageBox";
+import { usePopup } from "@/features/ui/popup/hooks/usePopup";
 import { redirect } from "next/navigation";
 import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
 import { Select } from "./Select";
@@ -122,7 +122,6 @@ export const Security = ({ data }: Props) => {
                             text="Wipe your account data"
                             direction="top"
                             className="w-full"
-                            disabledPointer
                             isEnabled={isDeletionEnabled}
                         >
                             <Button

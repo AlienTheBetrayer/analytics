@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
 import Image from "next/image";
 import { useState } from "react";
-import { Tooltip } from "../../popovers/components/tooltip/Tooltip";
+import { Tooltip } from "../../ui/popovers/components/tooltip/Tooltip";
 import { Button } from "../../ui/button/components/Button";
 import { Input } from "../../ui/input/components/Input";
 import { LinkButton } from "../../ui/linkbutton/components/LinkButton";
@@ -78,15 +78,11 @@ export const AuthenticationForm = ({
                 />
 
                 <Tooltip
-                    text="Come back home"
+                    text="Home"
                     className="ml-auto"
                     direction="top"
-                    disabledPointer
                 >
-                    <LinkButton
-                        className="ml-auto"
-                        href="/home"
-                    >
+                    <LinkButton href="/home">
                         <Image
                             alt=""
                             width={14}
@@ -154,7 +150,6 @@ export const AuthenticationForm = ({
                     text={button.tooltip}
                     direction={"bottom"}
                     className="w-full"
-                    disabledPointer
                 >
                     <Button
                         className="w-full"
@@ -180,7 +175,6 @@ export const AuthenticationForm = ({
                     <Tooltip
                         text="Proceed the authentication"
                         direction="bottom"
-                        disabledPointer
                         className="w-full"
                     >
                         <LinkButton

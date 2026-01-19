@@ -3,7 +3,6 @@ import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { promiseStatus } from "@/utils/other/status";
 import { useAppStore } from "@/zustand/store";
-import { Tooltip } from "@/features/popovers/components/tooltip/Tooltip";
 import { useLocalStore } from "@/zustand/localStore";
 
 export const AlreadyLoggedIn = () => {
@@ -37,36 +36,26 @@ export const AlreadyLoggedIn = () => {
                             You can now proceed to your dashboard / profile and
                             all its features with your current access
                         </span>
-                        <Tooltip
-                            className="w-full"
-                            text="Your profile"
-                            direction="top"
-                        >
-                            <LinkButton href="/profile">
-                                <Image
-                                    alt=""
-                                    src="/account.svg"
-                                    width={16}
-                                    height={16}
-                                />
-                                Go to profile
-                            </LinkButton>
-                        </Tooltip>
 
-                        <Tooltip
-                            className="w-full"
-                            text="Analytics dashboard"
-                        >
-                            <LinkButton href="/dashboard">
-                                <Image
-                                    alt=""
-                                    src="/dashboard.svg"
-                                    width={16}
-                                    height={16}
-                                />
-                                Go to dashboard
-                            </LinkButton>
-                        </Tooltip>
+                        <LinkButton href="/profile">
+                            <Image
+                                alt=""
+                                src="/account.svg"
+                                width={16}
+                                height={16}
+                            />
+                            Go to profile
+                        </LinkButton>
+
+                        <LinkButton href="/dashboard">
+                            <Image
+                                alt=""
+                                src="/dashboard.svg"
+                                width={16}
+                                height={16}
+                            />
+                            Go to dashboard
+                        </LinkButton>
                     </div>
 
                     <div className="flex flex-col gap-2">
@@ -79,27 +68,22 @@ export const AlreadyLoggedIn = () => {
                             authentication form again
                         </span>
 
-                        <Tooltip
+                        <Button
                             className="w-full"
-                            text="Exit"
+                            onClick={() => {
+                                logout();
+                                setVisibleProfile(undefined);
+                            }}
                         >
-                            <Button
-                                className="w-full"
-                                onClick={() => {
-                                    logout();
-                                    setVisibleProfile(undefined);
-                                }}
-                            >
-                                {promiseStatus(promises.logout)}
-                                <Image
-                                    alt=""
-                                    src="/auth.svg"
-                                    width={16}
-                                    height={16}
-                                />
-                                Log me out
-                            </Button>
-                        </Tooltip>
+                            {promiseStatus(promises.logout)}
+                            <Image
+                                alt=""
+                                src="/auth.svg"
+                                width={16}
+                                height={16}
+                            />
+                            Log me out
+                        </Button>
                     </div>
                 </div>
             </div>

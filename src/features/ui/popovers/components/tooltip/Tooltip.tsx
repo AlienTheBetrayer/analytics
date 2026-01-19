@@ -2,8 +2,8 @@
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "motion/react";
 import React, { useEffect, useRef, useState } from "react";
-import { PopoverDirection } from "@/features/popovers/types/popover";
-import { positionPopover } from "@/features/popovers/utils/positionPopover";
+import { PopoverDirection } from "@/features/ui/popovers/types/popover";
+import { positionPopover } from "@/features/ui/popovers/utils/positionPopover";
 
 type Props = {
     title?: string;
@@ -19,7 +19,6 @@ type Props = {
 export const Tooltip = React.memo(function TooltipFunction({
     title,
     text,
-    element,
     direction = "bottom",
     className = "",
     pointerEvents = false,
@@ -59,6 +58,7 @@ export const Tooltip = React.memo(function TooltipFunction({
         positionPopover(tooltipRef, elementRef, direction);
     }, [isShown, direction]);
 
+    // positioning
     useEffect(() => {
         const handle = () => {
             positionPopover(tooltipRef, elementRef, direction);
@@ -73,41 +73,6 @@ export const Tooltip = React.memo(function TooltipFunction({
         };
     }, [isShown, direction]);
 
-    // for modal only
-
-    // useEffect(() => {
-    //     if (!isShown) {
-    //         return;
-    //     }
-
-    //     const handle = (e: PointerEvent) => {
-    //         if (!dialogRef.current) {
-    //             return;
-    //         }
-
-    //         const { x, y } = { x: e.clientX, y: e.clientY };
-
-    //         const bounds = dialogRef.current.getBoundingClientRect();
-
-    //         if (
-    //             x > bounds.left &&
-    //             x < bounds.right &&
-    //             y > bounds.top &&
-    //             y < bounds.bottom
-    //         ) {
-    //             return;
-    //         }
-
-    //         setIsShown(false);
-    //     };
-
-    //     window.addEventListener("pointerdown", handle);
-
-    //     return () => {
-    //         window.removeEventListener("pointerdown", handle);
-    //     };
-    // }, [isShown]);
-
     return (
         mounted && (
             <>
@@ -116,6 +81,8 @@ export const Tooltip = React.memo(function TooltipFunction({
                     ref={elementRef}
                     onPointerEnter={() => setIsShown(true)}
                     onPointerLeave={() => setIsShown(false)}
+                    onFocus={() => setIsShown(true)}
+                    onBlur={() => setIsShown(false)}
                     onClick={() => setIsShown((prev) => !prev)}
                     inert={!isEnabled}
                     className={`w-fit h-fit ${!isEnabled ? "opacity-30" : ""} ${className ?? ""}`}
@@ -161,12 +128,10 @@ export const Tooltip = React.memo(function TooltipFunction({
                                     }}
                                     className="box py-1.5! px-3! rounded-full!"
                                 >
-                                    {element ?? (
-                                        <small className="flex flex-col items-center">
-                                            {title && <b>{title}</b>}
-                                            {text && <span>{text}</span>}
-                                        </small>
-                                    )}
+                                    <small className="flex flex-col items-center">
+                                        {title && <b>{title}</b>}
+                                        {text && <span>{text}</span>}
+                                    </small>
                                 </motion.div>
                             </div>
                         )}

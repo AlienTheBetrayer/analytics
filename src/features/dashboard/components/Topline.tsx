@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Tooltip } from "@/features/popovers/components/tooltip/Tooltip";
+import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { useAppStore } from "@/zustand/store";
 import { Button } from "../../ui/button/components/Button";
@@ -29,10 +29,9 @@ export const Topline = () => {
             </li>
 
             <li>
-                <Tooltip text="Go back home">
+                <Tooltip text="Home">
                     <LinkButton
                         href="/home/"
-                        className="p-0! md:px-2!"
                     >
                         <Image
                             width={16}
@@ -84,7 +83,6 @@ export const Topline = () => {
                 <div className="flex gap-1 items-center">
                     <Tooltip
                         text="Re-sync all data"
-                        disabledPointer
                     >
                         <Button
                             onClick={() => {

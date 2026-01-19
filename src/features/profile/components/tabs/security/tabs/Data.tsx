@@ -1,5 +1,5 @@
-import { usePopup } from "@/features/popup/hooks/usePopup";
-import { Tooltip } from "@/features/popovers/components/tooltip/Tooltip";
+import { usePopup } from "@/features/ui/popup/hooks/usePopup";
+import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
 import { Input } from "@/features/ui/input/components/Input";
