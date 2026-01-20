@@ -9,14 +9,16 @@ import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Profile, User } from "@/types/tables/account";
 import { useEffect } from "react";
 import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
+import { CloseButton } from "@/features/ui/closebutton/components/CloseButton";
 
 export const COLORS_GRID_SIZE = 4;
 
 type Props = {
     data: { profile: Profile; user: User };
+    hide: () => void;
 };
 
-export const Colors = ({ data }: Props) => {
+export const Colors = ({ data, hide }: Props) => {
     // zustand states
     const colors = useAppStore((state) => state.colors);
     const promises = useAppStore((state) => state.promises);
@@ -31,9 +33,9 @@ export const Colors = ({ data }: Props) => {
     }, [data, getUsers]);
 
     return (
-        <div
-            className="box"
-        >
+        <div className="relative box">
+            <CloseButton hide={hide} />
+
             <div className="flex w-full items-center justify-between whitespace-nowrap">
                 <span className="flex items-center w-full gap-1">
                     <Image

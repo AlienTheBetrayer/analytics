@@ -59,7 +59,7 @@ export const Topline = ({ data }: Props) => {
                     <Tooltip text="Administrator panel">
                         <Modal
                             direction="bottom-left"
-                            element={() => <RoleEditing data={data} />}
+                            element={(hide) => <RoleEditing data={data} hide={hide}/>}
                         >
                             <Button>
                                 <div className="w-1 h-1 rounded-full bg-blue-1" />

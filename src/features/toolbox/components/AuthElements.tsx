@@ -1,9 +1,16 @@
+import { CloseButton } from "@/features/ui/closebutton/components/CloseButton";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import Image from "next/image";
 
-export const AuthElements = () => {
+type Props = {
+    hide: () => void;
+};
+
+export const AuthElements = ({ hide }: Props) => {
     return (
-        <div className="box h-full min-w-64">
+        <div className="relative box h-full min-w-64">
+            <CloseButton hide={hide} />
+
             <div className="flex flex-col gap-4 h-full">
                 <div className="flex flex-col gap-1 items-center">
                     <div className="relative flex gap-1">

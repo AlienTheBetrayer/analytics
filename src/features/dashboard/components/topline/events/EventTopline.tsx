@@ -41,7 +41,7 @@ export const EventTopline = () => {
             <li>
                 <Modal
                     direction="bottom-right"
-                    element={() => <Filtering />}
+                    element={(hide) => <Filtering hide={hide}/>}
                 >
                     <Tooltip text="Filter events">
                         <Button className="aspect-square">
@@ -64,7 +64,7 @@ export const EventTopline = () => {
             <li>
                 <Modal
                     direction="bottom-right"
-                    element={() => <Sorting />}
+                    element={(hide) => <Sorting hide={hide}/>}
                 >
                     <Tooltip text="Sort events">
                         <Button className="aspect-square">

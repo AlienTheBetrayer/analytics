@@ -43,7 +43,7 @@ export const AuthButton = () => {
                 <Tooltip text="Sign up / Log in">
                     <Modal
                         direction="left"
-                        element={() => <AuthElements />}
+                        element={(hide) => <AuthElements hide={hide}/>}
                     >
                         <Button className="p-0!">
                             <LoadingToolbox />

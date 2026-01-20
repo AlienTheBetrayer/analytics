@@ -3,8 +3,13 @@ import { Button } from "@/features/ui/button/components/Button";
 import { Select } from "@/features/ui/select/components/Select";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
+import { CloseButton } from "@/features/ui/closebutton/components/CloseButton";
 
-export const Sorting = () => {
+type Props = {
+    hide: () => void;
+};
+
+export const Sorting = ({ hide }: Props) => {
     // zustand-state
     const selectedProjectId = useAppStore((state) => state.selectedProjectId);
     const projectFilters = useAppStore((state) => state.projectFilters);
@@ -15,7 +20,9 @@ export const Sorting = () => {
     }
 
     return (
-        <div className="box p-3! min-w-81">
+        <div className="relative box p-3! min-w-81">
+            <CloseButton hide={hide} />
+
             <span className="flex flex-col items-center">
                 <Image
                     alt="filter"

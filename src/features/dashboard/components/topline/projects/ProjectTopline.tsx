@@ -34,7 +34,7 @@ export const ProjectTopline = () => {
             <li>
                 <Modal
                     direction="bottom-left"
-                    element={() => <Sorting />}
+                    element={(hide) => <Sorting hide={hide}/>}
                 >
                     <Tooltip text="Sort projects">
                         <Button className="aspect-square">

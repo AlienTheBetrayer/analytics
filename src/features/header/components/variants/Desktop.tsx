@@ -96,7 +96,7 @@ export const Desktop = ({ className }: Props) => {
                     )}
 
                     <li>
-                        <Modal element={() => <Socials />}>
+                        <Modal element={(hide) => <Socials hide={hide}/>}>
                             <Button
                                 styles="link"
                                 className="button-img p-2"

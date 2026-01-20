@@ -47,6 +47,7 @@ export const ImageSelect = ({
                 direction="top"
                 element={(hide) => (
                     <Edit
+                        hide={hide}
                         file={fileValue}
                         onEdit={() => {
                             inputRef.current?.click();

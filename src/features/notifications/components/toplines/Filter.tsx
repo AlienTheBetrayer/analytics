@@ -5,6 +5,7 @@ import { FilterSelector } from "./FilterSelector";
 import { TabSelection } from "@/utils/other/TabSelection";
 import { NotificationTab } from "@/types/other/notifications";
 import { useAppStore } from "@/zustand/store";
+import { CloseButton } from "@/features/ui/closebutton/components/CloseButton";
 
 export type FilterTabType = "Status" | "Type" | "Title";
 
@@ -16,9 +17,10 @@ const FilterImage = {
 
 type Props = {
     tab: NotificationTab;
+    hide: () => void;
 };
 
-export const Filter = ({ tab }: Props) => {
+export const Filter = ({ tab, hide }: Props) => {
     // zustand
     const filter = useAppStore((state) => state.filter)[tab];
     const setNotificationFilter = useAppStore(
@@ -29,7 +31,9 @@ export const Filter = ({ tab }: Props) => {
     const [filterTab, setFilterTab] = useState<FilterTabType>("Status");
 
     return (
-        <div className="box p-3! min-w-81">
+        <div className="relative box p-3! min-w-81">
+            <CloseButton hide={hide} />
+
             <span className="flex flex-col items-center">
                 <Image
                     alt="filter"

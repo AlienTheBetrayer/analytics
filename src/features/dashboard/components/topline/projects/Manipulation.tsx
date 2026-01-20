@@ -9,7 +9,7 @@ export const Manipulation = () => {
         <Tooltip text="Advanced editing">
             <Modal
                 direction="bottom"
-                element={() => <ProjectManipulation />}
+                element={(hide) => <ProjectManipulation hide={hide}/>}
             >
                 <Button className="text-6! p-0!">
                     <Image

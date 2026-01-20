@@ -1,10 +1,15 @@
 import { Button } from "@/features/ui/button/components/Button";
 import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
+import { CloseButton } from "@/features/ui/closebutton/components/CloseButton";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import { useMemo } from "react";
 
-export const Filtering = () => {
+type Props = {
+    hide: () => void;
+};
+
+export const Filtering = ({ hide }: Props) => {
     // zustand-state
     const selectedProjectId = useAppStore((state) => state.selectedProjectId);
     const events = useAppStore((state) => state.events);
@@ -39,7 +44,9 @@ export const Filtering = () => {
     );
 
     return (
-        <div className="box p-3! min-w-81">
+        <div className="relative box p-3! min-w-81">
+            <CloseButton hide={hide}/>
+
             <span className="flex flex-col items-center">
                 <Image
                     alt="filter"

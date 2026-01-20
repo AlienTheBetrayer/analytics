@@ -94,7 +94,7 @@ export const Topline = ({ tab }: Props) => {
             <li>
                 <Modal
                     direction="bottom-right"
-                    element={() => <Filter tab={tab} />}
+                    element={(hide) => <Filter tab={tab} hide={hide}/>}
                 >
                     <Tooltip text="Filter notifications">
                         <Button className="aspect-square">
@@ -117,7 +117,7 @@ export const Topline = ({ tab }: Props) => {
             <li>
                 <Modal
                     direction="bottom-right"
-                    element={() => <Sort tab={tab} />}
+                    element={(hide) => <Sort tab={tab} hide={hide}/>}
                 >
                     <Tooltip text="Sort notifications">
                         <Button className="aspect-square">

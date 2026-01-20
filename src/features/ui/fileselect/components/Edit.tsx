@@ -1,18 +1,22 @@
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import Image from "next/image";
+import { CloseButton } from "@/features/ui/closebutton/components/CloseButton";
 
 type Props = {
     file?: File | null;
     onDelete: () => void;
     onEdit: () => void;
+    hide: () => void;
 };
 
-export const Edit = ({ file, onDelete, onEdit }: Props) => {
+export const Edit = ({ file, onDelete, onEdit, hide }: Props) => {
     const image = file && URL.createObjectURL(file);
 
     return (
-        <ul className="box py-0! px-2! w-screen max-w-81 overflow-hidden border-0! aspect-video group duration-500!">
+        <ul className="relative box py-0! px-2! w-screen max-w-81 overflow-hidden border-0! aspect-video group duration-500!">
+            <CloseButton hide={hide} />
+
             {image && (
                 <li>
                     <Image

@@ -1,12 +1,17 @@
+import { CloseButton } from "@/features/ui/closebutton/components/CloseButton";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import Image from "next/image";
 import { ComponentPropsWithoutRef } from "react";
 
-type Props = {} & ComponentPropsWithoutRef<"div">;
+type Props = {
+    hide: () => void;
+} & ComponentPropsWithoutRef<"div">;
 
-export const Socials = ({ className }: Props) => {
+export const Socials = ({ hide, className }: Props) => {
     return (
-        <ul className={`box w-screen max-w-81 ${className ?? ""}`}>
+        <ul className={`relative box w-screen max-w-81 ${className ?? ""}`}>
+            <CloseButton hide={hide} />
+
             <li>
                 <LinkButton
                     href="https://github.com/AlienTheBetrayer"

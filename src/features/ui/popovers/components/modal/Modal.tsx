@@ -7,7 +7,7 @@ import { positionPopover } from "@/features/ui/popovers/utils/positionPopover";
 import { useDisabledScroll } from "@/hooks/useDisabledScroll";
 
 type Props = {
-    element?: (hide?: () => void) => React.ReactNode;
+    element?: (hide: () => void) => React.ReactNode;
     direction?: PopoverDirection;
     className?: string;
     isEnabled?: boolean;

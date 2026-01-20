@@ -3,6 +3,7 @@ import { Button } from "@/features/ui/button/components/Button";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { useDisabledScroll } from "@/hooks/useDisabledScroll";
+import { CloseButton } from "@/features/ui/closebutton/components/CloseButton";
 
 type Props = {
     visibility: boolean;
@@ -116,8 +117,10 @@ export const MessageBox = ({ visibility, children, onSelect }: Props) => {
                                 scale: 1,
                             }}
                             exit={{ opacity: 0, scale: 0.85 }}
-                            className="box justify-between w-screen max-w-86 aspect-video backdrop-blur-xl!"
+                            className="relative box justify-between w-screen max-w-86 aspect-video backdrop-blur-xl!"
                         >
+                            <CloseButton hide={() => onSelect?.("no")} />
+
                             <div className="flex flex-col gap-1 items-center">
                                 <Image
                                     alt=""

@@ -4,19 +4,23 @@ import { Select } from "@/features/ui/select/components/Select";
 import { NotificationTab } from "@/types/other/notifications";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
+import { CloseButton } from "@/features/ui/closebutton/components/CloseButton";
 
 type Props = {
     tab: NotificationTab;
+    hide: () => void;
 };
 
-export const Sort = ({ tab }: Props) => {
+export const Sort = ({ tab, hide }: Props) => {
     const filter = useAppStore((state) => state.filter)[tab];
     const setNotificationFilter = useAppStore(
         (state) => state.setNotificationFilter,
     );
 
     return (
-        <div className="box p-3! min-w-81">
+        <div className="relative box p-3! min-w-81">
+            <CloseButton hide={hide} />
+
             <span className="flex flex-col items-center">
                 <Image
                     alt="filter"

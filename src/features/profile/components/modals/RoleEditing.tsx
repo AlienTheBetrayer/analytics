@@ -7,12 +7,14 @@ import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import { useState } from "react";
 import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
+import { CloseButton } from "@/features/ui/closebutton/components/CloseButton";
 
 type Props = {
     data: { profile: Profile; user: User };
+    hide: () => void;
 };
 
-export const RoleEditing = ({ data }: Props) => {
+export const RoleEditing = ({ data, hide }: Props) => {
     // zustand states
     const promises = useAppStore((state) => state.promises);
 
@@ -25,7 +27,9 @@ export const RoleEditing = ({ data }: Props) => {
     );
 
     return (
-        <ul className="box h-full gap-4! min-h-80">
+        <ul className="relative box h-full gap-4! min-h-80">
+            <CloseButton hide={hide} />
+
             <li className="flex flex-col gap-1 items-center text-center">
                 <div className="relative flex gap-1">
                     <Image

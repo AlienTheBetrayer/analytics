@@ -4,8 +4,13 @@ import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
 import { useMessageBox } from "@/features/ui/messagebox/hooks/useMessageBox";
+import { CloseButton } from "@/features/ui/closebutton/components/CloseButton";
 
-export const ProjectManipulation = () => {
+type Props = {
+    hide: () => void;
+};
+
+export const ProjectManipulation = ({ hide }: Props) => {
     // zustand states
     const promises = useAppStore((state) => state.promises);
     const events = useAppStore((state) => state.events);
@@ -19,7 +24,9 @@ export const ProjectManipulation = () => {
     const deleteEventsBox = useMessageBox();
 
     return (
-        <div className="flex flex-col box w-screen! max-w-md! gap-4!">
+        <div className="relative flex flex-col box w-screen! max-w-md! gap-4!">
+            <CloseButton hide={hide} />
+
             {deleteProjectsBox.render({
                 children:
                     "You will delete every single data entry about this project, including events!",
