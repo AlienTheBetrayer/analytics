@@ -52,12 +52,12 @@ export const Overview = ({ data }: Props) => {
                     </span>
                 </li>
 
-                <li>
-                    <hr className="w-1/12!" />
+                <li className="w-1/12!">
+                    <hr />
                 </li>
 
                 <li className="flex flex-col gap-2 items-center">
-                    <span>{data.profile.title}</span>
+                    {data.profile.title && <span>{data.profile.title}</span>}
 
                     <ProfileImage
                         profile={data.profile}
@@ -89,41 +89,37 @@ export const Overview = ({ data }: Props) => {
                     <hr />
                 </li>
 
-                <li>
-                    <ul className="grid md:grid-cols-2 gap-4">
-                        {data.profile.bio && (
-                            <li className="flex flex-col items-center gap-1">
-                                <small className="flex gap-1">
-                                    <Image
-                                        alt=""
-                                        width={16}
-                                        height={16}
-                                        src="/menu.svg"
-                                    />
-                                    <span>Bio</span>
-                                </small>
+                {data.profile.bio && (
+                    <li className="flex flex-col items-center gap-1">
+                        <small className="flex gap-1">
+                            <Image
+                                alt=""
+                                width={16}
+                                height={16}
+                                src="/menu.svg"
+                            />
+                            <span>Bio</span>
+                        </small>
 
-                                <span>{data.profile.bio}</span>
-                            </li>
-                        )}
+                        <span>{data.profile.bio}</span>
+                    </li>
+                )}
 
-                        {data.profile.status && (
-                            <li className="flex flex-col items-center gap-1">
-                                <small className="flex gap-1">
-                                    <Image
-                                        alt=""
-                                        width={16}
-                                        height={16}
-                                        src="/menu.svg"
-                                    />
-                                    <span>Status</span>
-                                </small>
+                {data.profile.status && (
+                    <li className="flex flex-col items-center gap-1">
+                        <small className="flex gap-1">
+                            <Image
+                                alt=""
+                                width={16}
+                                height={16}
+                                src="/menu.svg"
+                            />
+                            <span>Status</span>
+                        </small>
 
-                                <span>{data.profile.status}</span>
-                            </li>
-                        )}
-                    </ul>
-                </li>
+                        <span>{data.profile.status}</span>
+                    </li>
+                )}
 
                 <li>
                     <FriendButton data={data} />

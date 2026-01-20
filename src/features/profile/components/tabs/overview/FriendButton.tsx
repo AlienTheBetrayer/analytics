@@ -142,7 +142,7 @@ export const FriendButton = ({ data }: Props) => {
                                 height={16}
                                 alt="reject"
                             />
-                            Unsend
+                            Cancel
                         </Button>
                     </Tooltip>
                 </li>
@@ -199,14 +199,20 @@ export const FriendButton = ({ data }: Props) => {
                             height={16}
                             alt="send"
                         />
-                        Send
+                        <Image
+                            src="/friends.svg"
+                            width={16}
+                            height={16}
+                            alt="request"
+                        />
+                        <span className="ml-1">Send</span>
                     </Button>
                 </Tooltip>
             </li>
         );
     }
 
-    if(!component) {
+    if (!component) {
         return null;
     }
 

@@ -322,6 +322,10 @@ dialog {
     overflow: hidden;
 }
 
+input[list]::-webkit-calendar-picker-indicator {
+  display: none !important;
+}
+
 p {
     color: var(--foreground-4);
 }

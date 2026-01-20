@@ -24,7 +24,7 @@ export const ProfileDisplay = ({ data }: Props) => {
                             profile={data.profile}
                             width={256}
                             height={256}
-                            className="w-full max-w-24"
+                            className="w-full max-w-24! h-full max-h-24!"
                         />
                     </div>
                 </li>
@@ -32,11 +32,11 @@ export const ProfileDisplay = ({ data }: Props) => {
                 <li>
                     <ul className="flex gap-2">
                         <li>
-                            <Role data={data} />
+                            <Gender data={data} />
                         </li>
 
                         <li>
-                            <Gender data={data} />
+                            <Role data={data} />
                         </li>
                     </ul>
                 </li>

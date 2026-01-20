@@ -1,5 +1,6 @@
 import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
+import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import Image from "next/image";
 import { redirect, useParams } from "next/navigation";
 import { useCallback, useState } from "react";
@@ -26,7 +27,8 @@ export const SearchButton = () => {
             value={search}
             onChange={(value) => setSearch(value)}
             placeholder="Search..."
-            onKeyDown={(e) => {
+            autocomplete={["*", "warlock"]}
+            onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
                 switch (e.code) {
                     case "Enter": {
                         querySearch();
@@ -48,17 +50,22 @@ export const SearchButton = () => {
                 },
             }}
         >
-            <Button
-                className="absolute rounded-l-none! left-full border-l-0! h-full aspect-square p-0!"
-                onClick={querySearch}
+            <Tooltip
+                text="Search available users"
+                className="absolute left-full h-full grid place-items-center"
             >
-                <Image
-                    alt="search"
-                    width={16}
-                    height={16}
-                    src="/pencil.svg"
-                />
-            </Button>
+                <Button
+                    className="rounded-l-none! border-l-0! h-full aspect-square p-0!"
+                    onClick={querySearch}
+                >
+                    <Image
+                        alt="search"
+                        width={16}
+                        height={16}
+                        src="/pencil.svg"
+                    />
+                </Button>
+            </Tooltip>
         </Input>
     );
 };

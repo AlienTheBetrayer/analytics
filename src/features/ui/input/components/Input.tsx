@@ -9,6 +9,7 @@ type Props = {
     isEnabled?: boolean;
     container?: ComponentPropsWithoutRef<"div">;
     as?: "input" | "textarea";
+    autocomplete?: string[];
 } & (
     | Omit<ComponentPropsWithoutRef<"input">, "onChange">
     | Omit<ComponentPropsWithoutRef<"textarea">, "onChange">
@@ -19,6 +20,7 @@ export const Input = ({
     value,
     onChange,
     onDelete,
+    autocomplete,
     isEnabled = true,
     required,
     minLength,
@@ -48,7 +50,7 @@ export const Input = ({
             <Element
                 {...(as === "input" && { type: "text" })}
                 required={required && isEnabled}
-                className={`placeholder:text-background-9 w-full h-full min-h-8 
+                className={`input placeholder:text-background-9 w-full h-full min-h-8 
                     outline-0!
                     border-2 border-background-a-8 p-2.5 rounded-full focus:border-blue-1 bg-background-a-3
                     hover:bg-background-a-6 transition-colors duration-500 focus-visible:bg-background-a-6 resize-y
@@ -63,10 +65,24 @@ export const Input = ({
                 }}
                 maxLength={maxLength}
                 minLength={minLength}
+                list="autocomplete"
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 {...(rest as any)}
             />
+
             {children}
+
+            {autocomplete && (
+                <datalist id="autocomplete">
+                    {autocomplete.map((item) => (
+                        <option
+                            value={item}
+                            key={item}
+                        />
+                    ))}
+                </datalist>
+            )}
+
             <AnimatePresence>
                 {inputValue !== "" && (
                     <Button

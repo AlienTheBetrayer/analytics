@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export const EmptyQuery = () => {
     return (
-        <div className="flex flex-col items-center justify-center mt-32">
+        <div className="flex flex-col items-center justify-center mt-16">
             <div className="flex flex-col gap-4 items-center">
                 <div className="flex flex-col gap-2 items-center">
                     <div className="relative flex gap-1">
