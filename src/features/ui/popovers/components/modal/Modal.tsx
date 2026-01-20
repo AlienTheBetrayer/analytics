@@ -146,6 +146,7 @@ export const Modal = React.memo(function ModalFunction({
                                         opacity: 0,
                                         scale: 0.9,
                                     }}
+                                    transition={{ delay: 0.1 }}
                                 >
                                     {element?.(hide)}
                                 </motion.div>

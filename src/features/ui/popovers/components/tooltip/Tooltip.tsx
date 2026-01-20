@@ -122,6 +122,7 @@ export const Tooltip = React.memo(function TooltipFunction({
                                         opacity: 0,
                                         scale: 0.7,
                                     }}
+                                    transition={{ delay: 0.1 }}
                                     className={`${element ? "" : "box py-1.5! px-3! rounded-full!"}`}
                                 >
                                     {element ?? (

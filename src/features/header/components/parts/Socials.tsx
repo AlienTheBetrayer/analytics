@@ -4,7 +4,7 @@ import Image from "next/image";
 import { ComponentPropsWithoutRef } from "react";
 
 type Props = {
-    hide: () => void;
+    hide?: () => void;
 } & ComponentPropsWithoutRef<"div">;
 
 export const Socials = ({ hide, className }: Props) => {

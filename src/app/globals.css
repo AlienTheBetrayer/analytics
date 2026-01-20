@@ -432,7 +432,7 @@ img {
     z-index: -1;
 
     width: 100%;
-    background: var(--foreground-7);
+    background: var(--foreground-6);
     border-radius: 1000px;
     aspect-ratio: 1/1;
 
@@ -456,18 +456,18 @@ img {
         opacity: 0;
     }
     100% {
-        transform: translate(-50%, -50%) scale(2);
+        transform: translate(-50%, -50%) scale(2.5);
         opacity: 1;
     }
 }
 
 @keyframes rippleDisable {
     0% {
-        transform: translate(-50%, -50%) scale(2);
+        transform: translate(-50%, -50%) scale(2.5);
         opacity: 1;
     }
     100% {
-        transform: translate(-50%, -50%) scale(2);
+        transform: translate(-50%, -50%) scale(2.5);
         opacity: 0;
     }
 }
