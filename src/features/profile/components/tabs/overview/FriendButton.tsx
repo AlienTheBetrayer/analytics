@@ -3,7 +3,7 @@ import { Button } from "@/features/ui/button/components/Button";
 import { Profile, User } from "@/types/tables/account";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
 import { useMessageBox } from "@/features/ui/messagebox/hooks/useMessageBox";
 
@@ -32,175 +32,202 @@ export const FriendButton = ({ data }: Props) => {
     // message boxes
     const unfriendBox = useMessageBox();
 
-    return (
-        status &&
-        status.id !== data.user.id &&
-        (friends[data.user.id]?.has(status.id) ||
-            hasIncomingRequest ||
-            hasOutcomingRequest) && (
-            <div className="flex justify-center items-center w-full min-h-8">
-                {unfriendBox.render({
-                    children:
-                        "You are about to delete this user from your friends!",
-                    onSelect: (res) => {
-                        if (res === "yes" && status) {
-                            modifyFriendship({
-                                from_id: status.id,
-                                to_id: data.user.id,
-                                type: "unfriend",
-                                promiseKey: "unfriend",
-                            });
-                        }
-                    },
-                })}
+    // not logged in or viewing own profile
+    if (!status || status.id === data.user.id) {
+        return null;
+    }
 
-                {friends[data.user.id]?.has(status.id) ? (
+    let component: React.ReactNode = null;
+
+    // incoming request
+    if (hasIncomingRequest) {
+        component = (
+            <>
+                <li>
                     <Tooltip
                         direction="top"
-                        text="Unfriend this user"
-                    >
-                        <Button
-                            onClick={() => {
-                                unfriendBox.show();
-                            }}
-                        >
-                            <PromiseStatus status={promises.unfriend} />
-                            <Image
-                                src="/unfriend.svg"
-                                width={16}
-                                height={16}
-                                alt="unfriend"
-                            />
-                            Unfriend
-                        </Button>
-                    </Tooltip>
-                ) : hasIncomingRequest ? (
-                    <div className="flex gap-1 items-center">
-                        <Tooltip
-                            direction="top"
-                            text="Accept this friend request"
-                        >
-                            <Button
-                                onClick={() => {
-                                    modifyFriendship({
-                                        from_id: status.id,
-                                        to_id: data.user.id,
-                                        type: "request-accept",
-                                        promiseKey: "requestAccept",
-                                    });
-                                }}
-                            >
-                                <PromiseStatus
-                                    status={promises.requestAccept}
-                                />
-                                <Image
-                                    src="/checkmark.svg"
-                                    width={12}
-                                    height={12}
-                                    alt="accept"
-                                />
-                                Accept
-                            </Button>
-                        </Tooltip>
-
-                        <Tooltip
-                            direction="top"
-                            text="Reject this friend request"
-                        >
-                            <Button
-                                onClick={() => {
-                                    modifyFriendship({
-                                        from_id: status.id,
-                                        to_id: data.user.id,
-                                        type: "request-reject",
-                                        promiseKey: "requestReject",
-                                    });
-                                }}
-                            >
-                                <PromiseStatus
-                                    status={promises.requestReject}
-                                />
-                                <Image
-                                    src="/cross.svg"
-                                    width={16}
-                                    height={16}
-                                    alt="reject"
-                                />
-                                Reject
-                            </Button>
-                        </Tooltip>
-                    </div>
-                ) : hasOutcomingRequest ? (
-                    <div className="flex gap-1">
-                        <Tooltip
-                            direction="top"
-                            text={`Wait for ${data.user.username} to respond`}
-                        >
-                            <Button isEnabled={false}>
-                                <Image
-                                    src="/friends.svg"
-                                    width={16}
-                                    height={16}
-                                    alt="sent"
-                                />
-                                Sent
-                            </Button>
-                        </Tooltip>
-
-                        <Tooltip
-                            direction="top"
-                            text="Unsend this request"
-                        >
-                            <Button
-                                onClick={() => {
-                                    modifyFriendship({
-                                        from_id: status.id,
-                                        to_id: data.user.id,
-                                        type: "request-reject",
-                                        promiseKey: "requestUnsend",
-                                    });
-                                }}
-                            >
-                                <PromiseStatus
-                                    status={promises.requestUnsend}
-                                />
-                                <Image
-                                    src="/auth.svg"
-                                    width={16}
-                                    height={16}
-                                    alt="reject"
-                                />
-                                Cancel
-                            </Button>
-                        </Tooltip>
-                    </div>
-                ) : (
-                    <Tooltip
-                        direction="top"
-                        text="Send a friend request"
+                        text="Accept this friend request"
                     >
                         <Button
                             onClick={() => {
                                 modifyFriendship({
                                     from_id: status.id,
                                     to_id: data.user.id,
-                                    type: "request-send",
-                                    promiseKey: "requestSend",
+                                    type: "request-accept",
+                                    promiseKey: "requestAccept",
                                 });
                             }}
                         >
-                            <PromiseStatus status={promises.requestSend} />
+                            <PromiseStatus status={promises.requestAccept} />
                             <Image
-                                src="/plus.svg"
-                                width={16}
-                                height={16}
-                                alt="send"
+                                src="/checkmark.svg"
+                                width={12}
+                                height={12}
+                                alt="accept"
                             />
-                            Send
+                            Accept
                         </Button>
                     </Tooltip>
-                )}
-            </div>
-        )
+                </li>
+
+                <li>
+                    <Tooltip
+                        direction="top"
+                        text="Reject this friend request"
+                    >
+                        <Button
+                            onClick={() => {
+                                modifyFriendship({
+                                    from_id: status.id,
+                                    to_id: data.user.id,
+                                    type: "request-reject",
+                                    promiseKey: "requestReject",
+                                });
+                            }}
+                        >
+                            <PromiseStatus status={promises.requestReject} />
+                            <Image
+                                src="/cross.svg"
+                                width={16}
+                                height={16}
+                                alt="reject"
+                            />
+                            Reject
+                        </Button>
+                    </Tooltip>
+                </li>
+            </>
+        );
+
+        // outcoming request
+    } else if (hasOutcomingRequest) {
+        component = (
+            <>
+                <li>
+                    <Tooltip
+                        direction="top"
+                        text={`Wait for ${data.user.username} to respond`}
+                    >
+                        <Button isEnabled={false}>
+                            <Image
+                                src="/friends.svg"
+                                width={16}
+                                height={16}
+                                alt="sent"
+                            />
+                            Sent
+                        </Button>
+                    </Tooltip>
+                </li>
+
+                <li>
+                    <Tooltip
+                        direction="top"
+                        text="Unsend this request"
+                    >
+                        <Button
+                            onClick={() => {
+                                modifyFriendship({
+                                    from_id: status.id,
+                                    to_id: data.user.id,
+                                    type: "request-reject",
+                                    promiseKey: "requestUnsend",
+                                });
+                            }}
+                        >
+                            <PromiseStatus status={promises.requestUnsend} />
+                            <Image
+                                src="/auth.svg"
+                                width={16}
+                                height={16}
+                                alt="reject"
+                            />
+                            Unsend
+                        </Button>
+                    </Tooltip>
+                </li>
+            </>
+        );
+
+        // friends already
+    } else if (friends[data.user.id]?.has(status.id)) {
+        component = (
+            <li>
+                <Tooltip
+                    direction="top"
+                    text="Unfriend this user"
+                >
+                    <Button
+                        onClick={() => {
+                            unfriendBox.show();
+                        }}
+                    >
+                        <PromiseStatus status={promises.unfriend} />
+                        <Image
+                            src="/unfriend.svg"
+                            width={16}
+                            height={16}
+                            alt="unfriend"
+                        />
+                        Unfriend
+                    </Button>
+                </Tooltip>
+            </li>
+        );
+        // send
+    } else {
+        component = (
+            <li>
+                <Tooltip
+                    direction="top"
+                    text="Send a friend request"
+                >
+                    <Button
+                        onClick={() => {
+                            modifyFriendship({
+                                from_id: status.id,
+                                to_id: data.user.id,
+                                type: "request-send",
+                                promiseKey: "requestSend",
+                            });
+                        }}
+                    >
+                        <PromiseStatus status={promises.requestSend} />
+                        <Image
+                            src="/plus.svg"
+                            width={16}
+                            height={16}
+                            alt="send"
+                        />
+                        Send
+                    </Button>
+                </Tooltip>
+            </li>
+        );
+    }
+
+    if(!component) {
+        return null;
+    }
+
+    return (
+        <ul className="flex justify-center items-center w-full min-h-8">
+            {unfriendBox.render({
+                children:
+                    "You are about to delete this user from your friends!",
+                onSelect: (res) => {
+                    if (res === "yes" && status) {
+                        modifyFriendship({
+                            from_id: status.id,
+                            to_id: data.user.id,
+                            type: "unfriend",
+                            promiseKey: "unfriend",
+                        });
+                    }
+                },
+            })}
+
+            {component}
+        </ul>
     );
 };

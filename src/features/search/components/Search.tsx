@@ -1,7 +1,6 @@
 "use client";
 import { AbsentTopline } from "@/features/loading/components/AbsentTopline";
 import { LoadingSearch } from "@/features/loading/components/LoadingSearch";
-import { EmptyQuery } from "@/features/search/components/errors/EmptyQuery";
 import { NoResults } from "@/features/search/components/errors/NoResults";
 import { Results } from "@/features/search/components/Results";
 import { Topline } from "@/features/search/components/Topline";
@@ -42,24 +41,22 @@ export const Search = () => {
     }, [query, fetchSearch]);
 
     // fallback handling
+    let errorString = "";
+
     // empty query
     if (!query) {
-        return (
-            <>
-                <AbsentTopline title="Query is empty" />
-
-                <div className="box w-full max-w-400 mx-auto min-h-128">
-                    <EmptyQuery />
-                </div>
-            </>
-        );
+        errorString = "Query is empty";
     }
 
     // while fetching
     if (!results) {
+        errorString = "Data is absent";
+    }
+
+    if (errorString) {
         return (
             <>
-                <AbsentTopline title="Data is absent" />
+                <AbsentTopline title={errorString} />
 
                 <div className="box w-full max-w-400 mx-auto min-h-128">
                     <LoadingSearch />

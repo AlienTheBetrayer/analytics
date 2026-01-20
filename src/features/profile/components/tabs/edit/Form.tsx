@@ -30,7 +30,7 @@ export const Form = ({ avatar, avatarFile, data }: EditAvatarProps) => {
 
     return (
         <form
-            className="flex flex-col gap-4"
+            className="flex flex-col grow"
             onSubmit={async (e) => {
                 e.preventDefault();
 
@@ -54,163 +54,174 @@ export const Form = ({ avatar, avatarFile, data }: EditAvatarProps) => {
                 });
             }}
         >
-            <div className="grid sm:grid-cols-[1fr_auto_1fr] gap-4">
-                <div className="flex flex-col gap-2">
+            <ul className="flex flex-col gap-4 grow">
+                <li className="flex flex-col">
+                    <ul className="grid md:grid-cols-[1fr_auto_1fr] gap-2">
+                        <li className="flex flex-col gap-2">
+                            <label
+                                htmlFor="name"
+                                className="flex items-center gap-1"
+                            >
+                                <Image
+                                    alt=""
+                                    width={16}
+                                    height={16}
+                                    src="/pencil.svg"
+                                />
+                                Name
+                                <small className="ml-auto text-ellipsis-left">
+                                    (your name, can be fictional)
+                                </small>
+                            </label>
+                            <Input
+                                id="name"
+                                value={name}
+                                onChange={(e) => setName(e)}
+                                placeholder="24 characters max"
+                                maxLength={24}
+                            />
+                        </li>
+
+                        <li className="flex h-full items-center">
+                            <hr className="hidden md:block w-px! h-1/2!" />
+                        </li>
+
+                        <li className="flex flex-col gap-2">
+                            <label
+                                htmlFor="title"
+                                className="flex items-center gap-1"
+                            >
+                                <Image
+                                    alt=""
+                                    width={16}
+                                    height={16}
+                                    src="/type.svg"
+                                />
+                                Title
+                                <small className="ml-auto text-ellipsis-left">
+                                    (a short phrase that feels yours)
+                                </small>
+                            </label>
+
+                            <Input
+                                id="title"
+                                value={title}
+                                onChange={(e) => setTitle(e)}
+                                placeholder="24 characters max"
+                                maxLength={24}
+                            />
+                        </li>
+                    </ul>
+                </li>
+
+                <li className="flex flex-col gap-2">
                     <label
-                        htmlFor="name"
+                        htmlFor="status"
                         className="flex items-center gap-1"
                     >
                         <Image
                             alt=""
                             width={16}
                             height={16}
-                            src="/pencil.svg"
+                            src="/menu.svg"
                         />
-                        Name
+                        Status
                         <small className="ml-auto text-ellipsis-left">
-                            (your name, can be fictional)
+                            (a short text capturing your mood)
                         </small>
                     </label>
                     <Input
-                        id="name"
-                        value={name}
-                        onChange={(e) => setName(e)}
-                        placeholder="24 characters max"
-                        maxLength={24}
+                        id="status"
+                        value={status}
+                        onChange={(e) => setStatus(e)}
+                        maxLength={48}
+                        placeholder="48 characters max"
                     />
-                </div>
+                </li>
 
-                <hr className="sm:w-px! sm:h-full!" />
+                <li>
+                    <hr />
+                </li>
 
-                <div className="flex flex-col gap-2">
+                <li className="flex flex-col gap-2">
                     <label
-                        htmlFor="title"
+                        htmlFor="bio"
                         className="flex items-center gap-1"
                     >
                         <Image
                             alt=""
                             width={16}
                             height={16}
-                            src="/type.svg"
+                            src="/book.svg"
                         />
-                        Title
+                        Bio
                         <small className="ml-auto text-ellipsis-left">
-                            (a short phrase that feels yours)
+                            (a long piece of text, describe yourself)
                         </small>
                     </label>
-
                     <Input
-                        id="title"
-                        value={title}
-                        onChange={(e) => setTitle(e)}
-                        placeholder="24 characters max"
-                        maxLength={24}
+                        id="bio"
+                        value={bio}
+                        onChange={(e) => setBio(e)}
+                        placeholder="128 characters max"
+                        maxLength={128}
                     />
-                </div>
-            </div>
+                </li>
 
-            <hr />
+                <li>
+                    <hr />
+                </li>
 
-            <div className="flex flex-col gap-2">
-                <label
-                    htmlFor="status"
-                    className="flex items-center gap-1"
-                >
-                    <Image
-                        alt=""
-                        width={16}
-                        height={16}
-                        src="/menu.svg"
+                <li className="flex flex-col gap-2">
+                    <label
+                        htmlFor="gender"
+                        className="flex items-center gap-1"
+                    >
+                        <Image
+                            alt=""
+                            width={16}
+                            height={16}
+                            src="/account.svg"
+                        />
+                        Gender
+                        <small className="ml-auto text-ellipsis-left">
+                            (the way you identify yourself)
+                        </small>
+                    </label>
+                    <Select
+                        id="gender"
+                        items={["Male", "Female", "Other", "Unspecified"]}
+                        value={capitalize(gender)}
+                        onChange={(e) => {
+                            setGender(e.toLowerCase() as ProfileGender);
+                        }}
                     />
-                    Status
-                    <small className="ml-auto text-ellipsis-left">
-                        (a short text capturing your mood)
-                    </small>
-                </label>
-                <Input
-                    id="status"
-                    value={status}
-                    onChange={(e) => setStatus(e)}
-                    maxLength={48}
-                    placeholder="48 characters max"
-                />
-            </div>
+                </li>
 
-            <hr />
+                <li className="flex flex-col gap-2 mt-auto!">
+                    <hr />
 
-            <div className="flex flex-col gap-2">
-                <label
-                    htmlFor="bio"
-                    className="flex items-center gap-1"
-                >
-                    <Image
-                        alt=""
-                        width={16}
-                        height={16}
-                        src="/book.svg"
-                    />
-                    Bio
-                    <small className="ml-auto text-ellipsis-left">
-                        (a long piece of text, describe yourself)
-                    </small>
-                </label>
-                <Input
-                    id="bio"
-                    value={bio}
-                    onChange={(e) => setBio(e)}
-                    placeholder="128 characters max"
-                    maxLength={128}
-                />
-            </div>
-
-            <hr />
-            <div className="flex flex-col gap-2">
-                <label
-                    htmlFor="gender"
-                    className="flex items-center gap-1"
-                >
-                    <Image
-                        alt=""
-                        width={16}
-                        height={16}
-                        src="/account.svg"
-                    />
-                    Gender
-                    <small className="ml-auto text-ellipsis-left">
-                        (the way you identify yourself)
-                    </small>
-                </label>
-                <Select
-                    id="gender"
-                    items={["Male", "Female", "Other", "Unspecified"]}
-                    value={capitalize(gender)}
-                    onChange={(e) => {
-                        setGender(e.toLowerCase() as ProfileGender);
-                    }}
-                />
-            </div>
-
-            <hr className="mt-auto -mb-2" />
-
-            <Tooltip
-                text="Save all of your changes"
-                className="w-full"
-                direction="top"
-            >
-                <Button
-                    type="submit"
-                    className="w-full"
-                >
-                    <PromiseStatus status={promises.updateUser} />
-                    <Image
-                        src="/send.svg"
-                        width={16}
-                        height={16}
-                        alt=""
-                    />
-                    Apply changes
-                </Button>
-            </Tooltip>
+                    <Tooltip
+                        text="Save all of your changes"
+                        className="w-full"
+                        direction="top"
+                    >
+                        <Button
+                            type="submit"
+                            className="w-full"
+                        >
+                            <PromiseStatus status={promises.updateUser} />
+                            <Image
+                                src="/send.svg"
+                                width={16}
+                                height={16}
+                                alt=""
+                            />
+                            Apply changes
+                        </Button>
+                    </Tooltip>
+                </li>
+            </ul>
         </form>
     );
 };

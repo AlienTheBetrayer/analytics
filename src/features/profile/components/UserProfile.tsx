@@ -41,26 +41,23 @@ export const UserProfile = () => {
         (u) => u.username === retrievedUsername,
     );
 
+    // fallbacks
+    let errorString = "";
+
     // wrong username
     if (!retrievedUsername) {
-        return (
-            <>
-                <AbsentTopline title="Incorrect username" />
-
-                <div
-                    className={`box max-w-400 mt-2 w-full m-auto min-h-128 rounded-4xl! overflow-hidden`}
-                >
-                    <LoadingProfile />
-                </div>
-            </>
-        );
+        errorString = "Incorrect username";
     }
 
     // no user found in db
     if (!user) {
+        errorString = "User does not exist";
+    }
+
+    if (errorString || !user) {
         return (
             <>
-                <AbsentTopline title="User does not exist" />
+                <AbsentTopline title={errorString} />
 
                 <div
                     className={`box max-w-400 mt-2 w-full m-auto min-h-128 rounded-4xl! overflow-hidden`}

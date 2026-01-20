@@ -168,6 +168,7 @@ export const Avatar = ({
             </div>
 
             <hr className="mt-auto" />
+            
             <Tooltip
                 text="Modify your color palette"
                 className="w-full"

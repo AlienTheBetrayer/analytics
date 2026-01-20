@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Meteors } from "../features/aceternity/meteors/meteors";
 import { Header } from "../features/header/components/Header";
 import { StoreWatcher } from "@/zustand/StoreWatcher";
 import { LocalStoreWatcher } from "@/zustand/LocalStoreWatcher";
+import { Meteors } from "@/features/ui/aceternity/meteors/meteors";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",

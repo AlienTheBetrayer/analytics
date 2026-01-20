@@ -37,87 +37,105 @@ export const Select = ({ data }: Props) => {
 
     return (
         <div className="flex flex-col gap-2">
-            <div
-                className={`box p-0! gap-1! my-2 flex-row! w-full m-auto transition-all duration-500 h-10 items-center`}
+            <ul
+                className={`box p-0! gap-1! flex-row! w-full transition-all duration-500 min-h-10 h-10 items-center`}
             >
-                <Tooltip
-                    text="Your friends"
-                    direction="top"
-                >
-                    <Button
-                        className={`p-0! md:px-2!`}
-                        onClick={() => {
-                            setSelected("Friends");
-                        }}
+                <li>
+                    <Tooltip
+                        text="Your friends"
+                        direction="top"
                     >
-                        <Image
-                            width={16}
-                            height={16}
-                            alt="friends"
-                            src="/friends.svg"
-                        />
-                        <span className="hidden md:block">Friends</span>
-                        <TabSelection
-                            condition={selected === "Friends"}
-                            color="var(--blue-1)"
-                        />
-                    </Button>
-                </Tooltip>
+                        <Button
+                            className={`p-0! md:px-2!`}
+                            onClick={() => {
+                                setSelected("Friends");
+                            }}
+                        >
+                            <Image
+                                width={16}
+                                height={16}
+                                alt="friends"
+                                src="/friends.svg"
+                            />
+                            <span className="hidden md:block">Friends</span>
+                            <TabSelection
+                                condition={selected === "Friends"}
+                                color="var(--blue-1)"
+                            />
+                        </Button>
+                    </Tooltip>
+                </li>
 
-                <Tooltip
-                    text="Incoming friend requests"
-                    direction="top"
-                >
-                    <Button
-                        className={`p-0! md:px-2!`}
-                        onClick={() => {
-                            setSelected("Incoming");
-                        }}
-                    >
-                        <Image
-                            width={16}
-                            height={16}
-                            alt="incoming"
-                            src="/arrow.svg"
-                        />
-                        <span className="hidden md:block">Incoming</span>
-                        <TabSelection
-                            condition={selected === "Incoming"}
-                            color="var(--blue-1)"
-                        />
-                        <TabSelection
-                            condition={
-                                !!friendRequests[data.user.id]?.incoming?.size
-                            }
-                            color="var(--orange-1)"
-                        />
-                    </Button>
-                </Tooltip>
+                <li className="flex h-full">
+                    <hr className="self-center w-px! h-1/3!" />
+                </li>
 
-                <Tooltip
-                    text="Outcoming friend requests"
-                    direction="top"
-                >
-                    <Button
-                        className={`p-0! md:px-2!`}
-                        onClick={() => {
-                            setSelected("Outcoming");
-                        }}
+                <li>
+                    <Tooltip
+                        text="Incoming friend requests"
+                        direction="top"
                     >
-                        <Image
-                            width={16}
-                            height={16}
-                            alt="outcoming"
-                            src="/pencil.svg"
-                        />
-                        <span className="hidden md:block">Outcoming</span>
-                        <TabSelection
-                            condition={selected === "Outcoming"}
-                            color="var(--blue-1)"
-                        />
-                    </Button>
-                </Tooltip>
-            </div>
+                        <Button
+                            className={`p-0! md:px-2!`}
+                            onClick={() => {
+                                setSelected("Incoming");
+                            }}
+                        >
+                            <Image
+                                width={16}
+                                height={16}
+                                alt="incoming"
+                                src="/arrow.svg"
+                            />
+                            <span className="hidden md:block">Incoming</span>
+                            <TabSelection
+                                condition={selected === "Incoming"}
+                                color="var(--blue-1)"
+                            />
+                            <TabSelection
+                                condition={
+                                    !!friendRequests[data.user.id]?.incoming
+                                        ?.size
+                                }
+                                color="var(--orange-1)"
+                            />
+                        </Button>
+                    </Tooltip>
+                </li>
+
+                <li>
+                    <Tooltip
+                        text="Outcoming friend requests"
+                        direction="top"
+                    >
+                        <Button
+                            className={`p-0! md:px-2!`}
+                            onClick={() => {
+                                setSelected("Outcoming");
+                            }}
+                        >
+                            <Image
+                                width={16}
+                                height={16}
+                                alt="outcoming"
+                                src="/pencil.svg"
+                            />
+                            <span className="hidden md:block">Outcoming</span>
+                            <TabSelection
+                                condition={selected === "Outcoming"}
+                                color="var(--blue-1)"
+                            />
+                            <TabSelection
+                                condition={
+                                    !!friendRequests[data.user.id]?.outcoming
+                                        ?.size
+                                }
+                                color="var(--orange-1)"
+                            />
+                        </Button>
+                    </Tooltip>
+                </li>
+            </ul>
 
             <hr />
 

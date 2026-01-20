@@ -34,22 +34,21 @@ export const Dashboard = () => {
         }
     }, [status, deleteState, selectProject, sync]);
 
-    if (!status) {
-        return (
-            <>
-                <AbsentTopline title="Not authenticated" />
+    // fallback
+    let errorString = "";
 
-                <div className="w-full max-w-400 m-auto min-h-200 box">
-                    <LoadingDashboard />
-                </div>
-            </>
-        );
+    if (!status) {
+        errorString = "Not authenticated";
     }
 
     if (!Object.values(projects)?.length) {
+        errorString = "Data is absent";
+    }
+
+    if (errorString) {
         return (
             <>
-                <AbsentTopline title="Data is absent" />
+                <AbsentTopline title={errorString} />
 
                 <div className="w-full max-w-400 m-auto min-h-200 box">
                     <LoadingDashboard />

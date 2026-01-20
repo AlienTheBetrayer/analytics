@@ -68,7 +68,7 @@ export const SessionList = ({ data, currentSessions }: Props) => {
                                     }
                                 />
                                 <Image
-                                    src="/cross.svg"
+                                    src="/delete.svg"
                                     width={16}
                                     height={16}
                                     alt=""

@@ -12,61 +12,71 @@ export const ProfileDisplay = ({ data }: Props) => {
     return (
         <LinkButton
             href={`/profile/${data.user.username}`}
-            className="flex flex-col lg:flex-row justify-start! p-4! gap-2! h-full rounded-4xl!"
+            className="justify-start! p-4! h-full rounded-4xl!"
             style={
                 data.profile.color
                     ? { borderColor: `${data.profile.color}` }
                     : {}
             }
         >
-            <ProfileImage
-                className='mt-6 lg:mt-0 w-24 lg:w-auto'
-                profile={data.profile}
-                width={40}
-                height={40}
-            />
+            <ul className="flex flex-col w-full! lg:flex-row gap-2! items-center! justify-start! text-center">
+                <li>
+                    <ProfileImage
+                        className="mt-6 lg:mt-0 w-24 lg:w-auto"
+                        profile={data.profile}
+                        width={40}
+                        height={40}
+                    />
+                </li>
 
-            <hr className="lg:w-px! lg:h-full!" />
+                <li>
+                    <hr className="lg:w-px! lg:h-full!" />
+                </li>
 
-            <div className="flex gap-2 items-center">
-                <span className="flex flex-col gap-1">
-                    <small className="flex gap-1">
+                <li>
+                    <div className="flex gap-2 items-center">
+                        <span className="flex flex-col gap-1">
+                            <small className="flex gap-1">
+                                <Image
+                                    src="/type.svg"
+                                    width={16}
+                                    height={16}
+                                    alt=""
+                                />
+                                Username
+                            </small>
+                            {data.user.username}
+                        </span>
+
+                        {data.profile.title && (
+                            <span className="flex flex-col gap-1">
+                                <small className="flex gap-1">
+                                    <Image
+                                        src="/book.svg"
+                                        width={16}
+                                        height={16}
+                                        alt=""
+                                    />
+                                    One-liner
+                                </small>
+                                {data.profile.title}
+                            </span>
+                        )}
+                    </div>
+                </li>
+
+                <li className="lg:ml-auto! absolute lg:static">
+                    <span className="flex gap-1 items-center">
                         <Image
-                            src="/type.svg"
+                            src="/calendar.svg"
                             width={16}
                             height={16}
                             alt=""
                         />
-                        Username
-                    </small>
-                    {data.user.username}
-                </span>
-
-                {data.profile.title && (
-                    <span className="flex flex-col gap-1">
-                        <small className="flex gap-1">
-                            <Image
-                                src="/book.svg"
-                                width={16}
-                                height={16}
-                                alt=""
-                            />
-                            One-liner
-                        </small>
-                        {data.profile.title}
+                        seen {relativeTime(data.user.last_seen_at)}
                     </span>
-                )}
-            </div>
-
-            <span className="absolute lg:static flex gap-1 items-center ml-auto">
-                <Image
-                    src="/calendar.svg"
-                    width={16}
-                    height={16}
-                    alt=""
-                />
-                seen {relativeTime(data.user.last_seen_at)}
-            </span>
+                </li>
+            </ul>
         </LinkButton>
     );
 };

@@ -34,30 +34,24 @@ export const Posts = () => {
         (u) => u.username === retrievedUsername,
     );
 
+    // fallbacks
+    let errorString = "";
+
     // incorrect url
     if (!user) {
-        return (
-            <>
-                <AbsentTopline
-                    title="User does not exist"
-                    className="max-w-6xl!"
-                />
-
-                <div
-                    className={`box max-w-6xl w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}
-                >
-                    <LoadingProfile />
-                </div>
-            </>
-        );
+        errorString = "User does not exist";
     }
 
     // wrong username
     if (!retrievedUsername) {
+        errorString = "Incorrect username";
+    }
+
+    if (errorString || !user) {
         return (
             <>
                 <AbsentTopline
-                    title="Incorrect username"
+                    title={errorString}
                     className="max-w-6xl!"
                 />
 

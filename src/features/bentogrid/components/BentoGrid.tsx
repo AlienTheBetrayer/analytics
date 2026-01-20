@@ -3,34 +3,78 @@ import "./BentoGrid.css";
 
 export const BentoGrid = () => {
     return (
-        <div className="bento-grid **:text-white!">
-            <ThreeContainer style={{ gridArea: "a" }}>
-                <span>Caching</span>
-            </ThreeContainer>
-            <ThreeContainer style={{ gridArea: "b" }}>
-                <span>Zustand</span>
-            </ThreeContainer>
-            <ThreeContainer style={{ gridArea: "c" }}>
-                <span>Fetching</span>
-            </ThreeContainer>
-            <ThreeContainer style={{ gridArea: "d" }}>
-                <span>API</span>
-            </ThreeContainer>
-            <ThreeContainer style={{ gridArea: "e" }}>
-                <span>Database</span>
-            </ThreeContainer>
-            <ThreeContainer style={{ gridArea: "f" }}>
-                <span>Permissions</span>
-            </ThreeContainer>
-            <ThreeContainer style={{ gridArea: "k" }}>
-                <span>Authentication</span>
-            </ThreeContainer>
-            <ThreeContainer style={{ gridArea: "l" }}>
-                <span>SDK (npm)</span>
-            </ThreeContainer>
-            <ThreeContainer style={{ gridArea: "o" }}>
-                <span>Analytics</span>
-            </ThreeContainer>
-        </div>
+        <ul className="bento-grid **:text-white!">
+            <li style={{ gridArea: "a" }}>
+                <ThreeContainer>
+                    <div className="grid place-items-center h-full">
+                        <span>Caching</span>
+                    </div>
+                </ThreeContainer>
+            </li>
+
+            <li style={{ gridArea: "b" }}>
+                <ThreeContainer>
+                    <div className="grid place-items-center h-full">
+                        <span>Caching</span>
+                    </div>
+                </ThreeContainer>
+            </li>
+
+            <li style={{ gridArea: "c" }}>
+                <ThreeContainer>
+                    <div className="grid place-items-center h-full">
+                        <span>Caching</span>
+                    </div>
+                </ThreeContainer>
+            </li>
+
+            <li style={{ gridArea: "d" }}>
+                <ThreeContainer>
+                    <div className="grid place-items-center h-full">
+                        <span>Caching</span>
+                    </div>
+                </ThreeContainer>
+            </li>
+
+            <li style={{ gridArea: "e" }}>
+                <ThreeContainer>
+                    <div className="grid place-items-center h-full">
+                        <span>Caching</span>
+                    </div>
+                </ThreeContainer>
+            </li>
+
+            <li style={{ gridArea: "f" }}>
+                <ThreeContainer>
+                    <div className="grid place-items-center h-full">
+                        <span>Caching</span>
+                    </div>
+                </ThreeContainer>
+            </li>
+
+            <li style={{ gridArea: "k" }}>
+                <ThreeContainer>
+                    <div className="grid place-items-center h-full">
+                        <span>Caching</span>
+                    </div>
+                </ThreeContainer>
+            </li>
+
+            <li style={{ gridArea: "l" }}>
+                <ThreeContainer>
+                    <div className="grid place-items-center h-full">
+                        <span>Caching</span>
+                    </div>
+                </ThreeContainer>
+            </li>
+
+            <li style={{ gridArea: "o" }}>
+                <ThreeContainer>
+                    <div className="grid place-items-center h-full">
+                        <span>Caching</span>
+                    </div>
+                </ThreeContainer>
+            </li>
+        </ul>
     );
 };

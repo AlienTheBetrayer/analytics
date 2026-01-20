@@ -30,57 +30,61 @@ export const Select = ({ data }: Props) => {
 
     return (
         <div className="flex flex-col gap-2">
-            <div
-                className={`box p-0! gap-1! my-2 flex-row! w-full m-auto transition-all duration-500 h-10 items-center`}
+            <ul
+                className={`box p-0! gap-1! flex-row! w-full  transition-all duration-500 min-h-10 h-10 items-center`}
             >
-                <Tooltip
-                    text="Valuable authentication data"
-                    direction="top"
-                >
-                    <Button
-                        className={`p-0! md:px-2!`}
-                        onClick={() => {
-                            setSelected("Data");
-                        }}
+                <li>
+                    <Tooltip
+                        text="Valuable authentication data"
+                        direction="top"
                     >
-                        <Image
-                            width={16}
-                            height={16}
-                            alt="data"
-                            src="/cube.svg"
-                        />
-                        <span className="hidden md:block">Data</span>
-                        <TabSelection
-                            condition={selected === "Data"}
-                            color="var(--blue-1)"
-                        />
-                    </Button>
-                </Tooltip>
+                        <Button
+                            className={`p-0! md:px-2!`}
+                            onClick={() => {
+                                setSelected("Data");
+                            }}
+                        >
+                            <Image
+                                width={16}
+                                height={16}
+                                alt="data"
+                                src="/cube.svg"
+                            />
+                            <span className="hidden md:block">Data</span>
+                            <TabSelection
+                                condition={selected === "Data"}
+                                color="var(--blue-1)"
+                            />
+                        </Button>
+                    </Tooltip>
+                </li>
 
-                <Tooltip
-                    text="Logged in sessions"
-                    direction="top"
-                >
-                    <Button
-                        className={`p-0! md:px-2!`}
-                        onClick={() => {
-                            setSelected("Sessions");
-                        }}
+                <li>
+                    <Tooltip
+                        text="Logged in sessions"
+                        direction="top"
                     >
-                        <Image
-                            width={16}
-                            height={16}
-                            alt="sessions"
-                            src="/auth.svg"
-                        />
-                        <span className="hidden md:block">Sessions</span>
-                        <TabSelection
-                            condition={selected === "Sessions"}
-                            color="var(--blue-1)"
-                        />
-                    </Button>
-                </Tooltip>
-            </div>
+                        <Button
+                            className={`p-0! md:px-2!`}
+                            onClick={() => {
+                                setSelected("Sessions");
+                            }}
+                        >
+                            <Image
+                                width={16}
+                                height={16}
+                                alt="sessions"
+                                src="/auth.svg"
+                            />
+                            <span className="hidden md:block">Sessions</span>
+                            <TabSelection
+                                condition={selected === "Sessions"}
+                                color="var(--blue-1)"
+                            />
+                        </Button>
+                    </Tooltip>
+                </li>
+            </ul>
 
             <hr />
 

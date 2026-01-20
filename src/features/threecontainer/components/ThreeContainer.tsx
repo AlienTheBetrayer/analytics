@@ -8,10 +8,10 @@ export const ThreeContainer = ({
     ...rest
 }: Props) => {
     return (
-        <div className={`box overflow-hidden ${className}`} {...rest}>
+        <div className={`box p-0! overflow-hidden w-full h-full ${className}`} {...rest}>
             <ContainerCanvas />
 
-            <div className="z-2">{children}</div>
+            <div className="z-2 w-full h-full">{children}</div>
         </div>
     );
 };
