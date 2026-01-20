@@ -40,11 +40,12 @@ export const Modal = React.memo(function ModalFunction({
 
     // dialog closing
     useEffect(() => {
+        setIsDisabled(isShown);
+
         if (!modalRef.current) {
             return;
         }
 
-        setIsDisabled(!isShown);
         if (isShown) {
             modalRef.current.showModal();
             positionPopover(modalRef, elementRef, direction);
@@ -52,7 +53,6 @@ export const Modal = React.memo(function ModalFunction({
             modalRef.current.close();
         }
     }, [isShown, setIsDisabled, direction]);
-
 
     // positioning
     useEffect(() => {

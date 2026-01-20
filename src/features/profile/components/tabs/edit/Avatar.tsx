@@ -4,12 +4,12 @@ import { AnimatePresence, motion } from "motion/react";
 import { Colors } from "../../modals/Colors";
 import { ProfileImage } from "../../ProfileImage";
 import { Profile, User } from "@/types/tables/account";
-import React, { JSX, useState } from "react";
-import { MessageBox } from "@/features/ui/messagebox/components/MessageBox";
+import React, { JSX } from "react";
 import Image from "next/image";
 import { ColorSwatches } from "../../parts/ColorSwatches";
 import { useAppStore } from "@/zustand/store";
 import { Modal } from "@/features/ui/popovers/components/modal/Modal";
+import { useMessageBox } from "@/features/ui/messagebox/hooks/useMessageBox";
 
 export type EditAvatarProps = {
     data: { profile: Profile; user: User };
@@ -42,25 +42,20 @@ export const Avatar = ({
         : avatar[0];
 
     // messageboxes
-    const [boxVisibility, setBoxVisibility] = useState<{
-        avatar: boolean;
-    }>({ avatar: false });
+    const avatarBox = useMessageBox();
 
     return (
         <div className="flex flex-col items-center gap-2">
-            <MessageBox
-                visibility={boxVisibility.avatar}
-                onSelect={(res) => {
-                    setBoxVisibility((prev) => ({ ...prev, avatar: false }));
-                    
+            {avatarBox.render({
+                children:
+                    "Your account will lose its profile picture until you set it again",
+                onSelect: (res) => {
                     if (res === "yes") {
                         avatarFile[1](undefined);
                         avatar[1](null);
                     }
-                }}
-            >
-                Your account will lose its profile picture until you set it again
-            </MessageBox>
+                },
+            })}
 
             <span>{data.profile.name}</span>
 
@@ -156,10 +151,7 @@ export const Avatar = ({
                         <Tooltip text="Wipe profile image">
                             <Button
                                 onClick={() => {
-                                    setBoxVisibility((prev) => ({
-                                        ...prev,
-                                        avatar: true,
-                                    }));
+                                    avatarBox.show();
                                 }}
                             >
                                 <Image

@@ -1,10 +1,9 @@
-import { MessageBox } from "@/features/ui/messagebox/components/MessageBox";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
-import { useState } from "react";
+import { useMessageBox } from "@/features/ui/messagebox/hooks/useMessageBox";
 
 export const Wipe = () => {
     // zustand
@@ -13,17 +12,14 @@ export const Wipe = () => {
     const selectedProjectId = useAppStore((state) => state.selectedProjectId);
 
     // messageboxes
-    const [boxVisibility, setBoxVisibility] = useState<{
-        projects: boolean;
-    }>({ projects: false });
+    const deleteProjectsBox = useMessageBox();
 
     return (
         <>
-            <MessageBox
-                visibility={boxVisibility.projects}
-                onSelect={(res) => {
-                    setBoxVisibility((prev) => ({ ...prev, projects: false }));
-                    
+            {deleteProjectsBox.render({
+                children:
+                    "You will delete every single data entry about this project, including events!",
+                onSelect: (res) => {
                     if (!selectedProjectId) {
                         return;
                     }
@@ -35,19 +31,14 @@ export const Wipe = () => {
                             promiseKey: `projectsDeleteTopline`,
                         });
                     }
-                }}
-            >
-                ou will delete every single data entry about this project,
-                including events!
-            </MessageBox>
+                },
+            })}
+
             <Tooltip text="Wipe this project">
                 <Button
                     className="text-6! p-0!"
                     onClick={() => {
-                        setBoxVisibility((prev) => ({
-                            ...prev,
-                            projects: true,
-                        }));
+                        deleteProjectsBox.show();
                     }}
                 >
                     <PromiseStatus status={promises.projectsDeleteTopline} />

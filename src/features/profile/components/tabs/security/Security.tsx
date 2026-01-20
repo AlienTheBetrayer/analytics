@@ -7,11 +7,11 @@ import { Profile, User } from "@/types/tables/account";
 import { useLocalStore } from "@/zustand/localStore";
 import { ProfileImage } from "../../ProfileImage";
 import { Spinner } from "@/features/spinner/components/Spinner";
-import { MessageBox } from "@/features/ui/messagebox/components/MessageBox";
 import { redirect } from "next/navigation";
 import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
 import { Select } from "./Select";
 import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
+import { useMessageBox } from "@/features/ui/messagebox/hooks/useMessageBox";
 
 type Props = {
     data: { profile: Profile; user: User };
@@ -37,17 +37,14 @@ export const Security = ({ data }: Props) => {
     }, [getSessions, data.user]);
 
     // message boxes
-    const [boxVisibility, setBoxVisibility] = useState<{
-        delete: boolean;
-    }>({ delete: false });
+    const deleteBox = useMessageBox();
 
     return (
         <div className="flex flex-col gap-4 w-full grow">
-            <MessageBox
-                visibility={boxVisibility.delete}
-                onSelect={(res) => {
-                    setBoxVisibility((prev) => ({ ...prev, delete: false }));
-
+            {deleteBox.render({
+                children:
+                    "You are about to delete your account data forever! Think twice!",
+                onSelect: (res) => {
                     if (res === "yes") {
                         deleteUser(data.user.id);
                         if (data.user.id === status?.id) {
@@ -56,10 +53,8 @@ export const Security = ({ data }: Props) => {
                             redirect("/home");
                         }
                     }
-                }}
-            >
-                You are about to delete your account data forever! Think twice!
-            </MessageBox>
+                },
+            })}
 
             <div className="flex flex-col gap-2 items-center">
                 <div className="flex gap-1 items-center">
@@ -130,10 +125,7 @@ export const Security = ({ data }: Props) => {
                                 isEnabled={isDeletionEnabled}
                                 className="w-full"
                                 onClick={() => {
-                                    setBoxVisibility((prev) => ({
-                                        ...prev,
-                                        delete: true,
-                                    }));
+                                    deleteBox.show();
                                 }}
                             >
                                 {promises.delete === "pending" && <Spinner />}

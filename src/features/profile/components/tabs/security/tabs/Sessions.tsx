@@ -6,8 +6,8 @@ import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import { SessionList } from "../parts/SessionList";
 import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
-import { useMemo, useState } from "react";
-import { MessageBox } from "@/features/ui/messagebox/components/MessageBox";
+import { useMemo } from "react";
+import { useMessageBox } from "@/features/ui/messagebox/hooks/useMessageBox";
 
 type Props = {
     data: { user: User; profile: Profile };
@@ -31,20 +31,13 @@ export const Sessions = ({ data }: Props) => {
     }, [sessions, data, status]);
 
     // message boxes
-    const [boxVisibility, setBoxVisibility] = useState<{
-        delete: boolean;
-    }>({ delete: false });
+    const deleteBox = useMessageBox();
 
     return (
         <div className="flex flex-col gap-4 grow">
-            <MessageBox
-                visibility={boxVisibility.delete}
-                onSelect={(res) => {
-                    setBoxVisibility((prev) => ({
-                        ...prev,
-                        delete: false,
-                    }));
-                    
+            {deleteBox.render({
+                children: "All your other sessions will be terminated.",
+                onSelect: (res) => {
                     if (res === "yes") {
                         // no sessions (ensuring safety + types)
                         if (!currentSessions?.length) {
@@ -65,10 +58,8 @@ export const Sessions = ({ data }: Props) => {
                             ids: notCurrent,
                         });
                     }
-                }}
-            >
-                All your other sessions will be terminated.
-            </MessageBox>
+                },
+            })}
 
             <span className="flex items-center gap-2">
                 <Tooltip
@@ -121,7 +112,7 @@ export const Sessions = ({ data }: Props) => {
                 <Button
                     className="w-full"
                     onClick={() => {
-                        setBoxVisibility((prev) => ({ ...prev, delete: true }));
+                        deleteBox.show();
                     }}
                 >
                     <PromiseStatus status={promises.terminateSessions} />

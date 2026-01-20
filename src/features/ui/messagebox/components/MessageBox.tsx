@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { Button } from "@/features/ui/button/components/Button";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { useDisabledScroll } from "@/hooks/useDisabledScroll";
 
 type Props = {
     visibility: boolean;
@@ -12,6 +13,7 @@ type Props = {
 export const MessageBox = ({ visibility, children, onSelect }: Props) => {
     // states
     const [mounted, setMounted] = useState<boolean>(visibility);
+    const { setIsDisabled } = useDisabledScroll();
 
     // refs
     const dialogRef = useRef<HTMLDialogElement | null>(null);
@@ -19,12 +21,14 @@ export const MessageBox = ({ visibility, children, onSelect }: Props) => {
 
     // visibility handling
     useEffect(() => {
+        setIsDisabled(visibility);
+
         if (visibility) {
             requestAnimationFrame(() => {
                 setMounted(true);
             });
         }
-    }, [visibility]);
+    }, [visibility, setIsDisabled]);
 
     useEffect(() => {
         if (!yesRef.current || !dialogRef.current) {
@@ -33,7 +37,7 @@ export const MessageBox = ({ visibility, children, onSelect }: Props) => {
 
         if (mounted) {
             dialogRef.current.showModal();
-            yesRef.current.focus();
+            yesRef.current?.focus();
         } else {
             dialogRef.current.close();
         }

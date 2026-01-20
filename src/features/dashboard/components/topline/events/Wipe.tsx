@@ -1,10 +1,9 @@
-import { MessageBox } from "@/features/ui/messagebox/components/MessageBox";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
-import { useState } from "react";
+import { useMessageBox } from "@/features/ui/messagebox/hooks/useMessageBox";
 
 export const Wipe = () => {
     // zustand
@@ -14,17 +13,14 @@ export const Wipe = () => {
     const selectedProjectId = useAppStore((state) => state.selectedProjectId);
 
     // message boxes
-    const [boxVisibility, setBoxVisibility] = useState<{
-        events: boolean;
-    }>({ events: false });
+    const deleteEventsBox = useMessageBox();
 
     return (
         <>
-            <MessageBox
-                visibility={boxVisibility.events}
-                onSelect={(res) => {
-                    setBoxVisibility((prev) => ({ ...prev, events: false }));
-                    
+            {deleteEventsBox.render({
+                children:
+                    "You will delete every single event and their related data in this project!",
+                onSelect: (res) => {
                     if (!selectedProjectId) {
                         return;
                     }
@@ -36,20 +32,14 @@ export const Wipe = () => {
                             promiseKey: `eventsDeleteTopline`,
                         });
                     }
-                }}
-            >
-                You will delete every single event and their related data in
-                this project!
-            </MessageBox>
+                },
+            })}
 
             <Tooltip text="Wipe all events">
                 <Button
                     className="text-6!"
                     onClick={() => {
-                        setBoxVisibility((prev) => ({
-                            ...prev,
-                            events: true,
-                        }));
+                        deleteEventsBox.show();
                     }}
                 >
                     <PromiseStatus status={promises.eventsDeleteTopline} />

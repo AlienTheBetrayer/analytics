@@ -5,12 +5,12 @@ import { Filter } from "./Filter";
 import { Sort } from "./Sort";
 import { Search } from "./Search";
 import { dotColors } from "@/utils/other/dotColors";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { TabSelection } from "@/utils/other/TabSelection";
-import { MessageBox } from "@/features/ui/messagebox/components/MessageBox";
 import { NotificationTab } from "@/types/other/notifications";
 import { useAppStore } from "@/zustand/store";
 import { Modal } from "@/features/ui/popovers/components/modal/Modal";
+import { useMessageBox } from "@/features/ui/messagebox/hooks/useMessageBox";
 
 type Props = {
     tab: NotificationTab;
@@ -33,38 +33,27 @@ export const Topline = ({ tab }: Props) => {
     }, [filter]);
 
     // messageboxes
-    const [boxVisibility, setBoxVisibility] = useState<{
-        notifications: boolean;
-    }>({ notifications: false });
+    const notificationsBox = useMessageBox();
 
     return (
         <ul
             className={`box p-0! gap-1! flex-row! transition-all duration-300 h-10 min-h-10 items-center ${!hasNotification ? "opacity-30" : ""}`}
             inert={!hasNotification}
         >
-            <MessageBox
-                visibility={boxVisibility.notifications}
-                onSelect={(res) => {
-                    setBoxVisibility((prev) => ({
-                        ...prev,
-                        notifications: false,
-                    }));
-                    
-                    if (res === "no") {
-                        return;
+            {notificationsBox.render({
+                children:
+                    "Deleting will clear all the notifications that you had on this specific tab",
+                onSelect: (res) => {
+                    if (res === "yes") {
+                        clearData({
+                            id: Object.values(notifications).map((n) => n.id),
+                            type: "notifications",
+                            tab,
+                        });
+                        clearData({ type: "filters", tab });
                     }
-
-                    clearData({
-                        id: Object.values(notifications).map((n) => n.id),
-                        type: "notifications",
-                        tab,
-                    });
-                    clearData({ type: "filters", tab });
-                }}
-            >
-                Deleting will clear all the notifications that you had on this
-                specific tab
-            </MessageBox>
+                },
+            })}
 
             <li
                 className="select-none pointer-events-none transition-all duration-300 absolute inset-0 grid place-items-center z-1"
@@ -168,10 +157,7 @@ export const Topline = ({ tab }: Props) => {
                     <Button
                         className="p-0!"
                         onClick={() => {
-                            setBoxVisibility((prev) => ({
-                                ...prev,
-                                notifications: true,
-                            }));
+                            notificationsBox.show();
                         }}
                     >
                         <Image

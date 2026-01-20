@@ -1,10 +1,9 @@
-import { MessageBox } from "@/features/ui/messagebox/components/MessageBox";
 import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
-import { useState } from "react";
+import { useMessageBox } from "@/features/ui/messagebox/hooks/useMessageBox";
 
 export const ProjectManipulation = () => {
     // zustand states
@@ -16,18 +15,15 @@ export const ProjectManipulation = () => {
     const deleteData = useAppStore((state) => state.deleteData);
 
     // messageboxes
-    const [boxVisibility, setBoxVisibility] = useState<{
-        events: boolean;
-        projects: boolean;
-    }>({ events: false, projects: false });
+    const deleteProjectsBox = useMessageBox();
+    const deleteEventsBox = useMessageBox();
 
     return (
         <div className="flex flex-col box w-screen! max-w-md! gap-4!">
-            <MessageBox
-                visibility={boxVisibility.projects}
-                onSelect={(res) => {
-                    setBoxVisibility((prev) => ({ ...prev, projects: false }));
-
+            {deleteProjectsBox.render({
+                children:
+                    "You will delete every single data entry about this project, including events!",
+                onSelect: (res) => {
                     if (!selectedProjectId) {
                         return;
                     }
@@ -39,17 +35,12 @@ export const ProjectManipulation = () => {
                             promiseKey: `projectDelete_${selectedProjectId}`,
                         });
                     }
-                }}
-            >
-                You will delete every single data entry about this project,
-                including events!
-            </MessageBox>
+                },
+            })}
 
-            <MessageBox
-                visibility={boxVisibility.events}
-                onSelect={(res) => {
-                    setBoxVisibility((prev) => ({ ...prev, events: false }));
-
+            {deleteEventsBox.render({
+                children: "You will delete every single event in this project!",
+                onSelect: (res) => {
                     if (!selectedProjectId || !events[selectedProjectId]) {
                         return;
                     }
@@ -61,10 +52,8 @@ export const ProjectManipulation = () => {
                             promiseKey: `eventsDelete_${selectedProjectId}`,
                         });
                     }
-                }}
-            >
-                You will delete every single event in this project!
-            </MessageBox>
+                },
+            })}
 
             <div className="flex flex-col gap-1 items-center">
                 <Image
@@ -111,10 +100,7 @@ export const ProjectManipulation = () => {
                             <Button
                                 className="w-full"
                                 onClick={() => {
-                                    setBoxVisibility((prev) => ({
-                                        ...prev,
-                                        projects: true,
-                                    }));
+                                    deleteProjectsBox.show();
                                 }}
                             >
                                 <PromiseStatus
@@ -138,10 +124,7 @@ export const ProjectManipulation = () => {
                             <Button
                                 className="w-full"
                                 onClick={() => {
-                                    setBoxVisibility((prev) => ({
-                                        ...prev,
-                                        events: true,
-                                    }));
+                                    deleteEventsBox.show();
                                 }}
                             >
                                 <PromiseStatus
