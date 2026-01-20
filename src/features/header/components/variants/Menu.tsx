@@ -8,6 +8,7 @@ import { useLocalStore } from "@/zustand/localStore";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Theme } from "@/features/toolbox/components/Theme";
 import { Socials } from "../parts/Socials";
+import { useAppStore } from "@/zustand/store";
 
 type Props = {
     hideMenu: () => void;
@@ -16,6 +17,7 @@ type Props = {
 export const Menu = ({ hideMenu }: Props) => {
     // ui states
     const visibleProfile = useLocalStore((state) => state.visibleProfile);
+    const status = useAppStore((state) => state.status);
 
     return (
         <motion.nav
@@ -50,57 +52,64 @@ export const Menu = ({ hideMenu }: Props) => {
                             <hr />
                         </li>
 
-                        <li>
-                            <LinkButton
-                                href="/dashboard"
-                                className="p-4! text-5!"
-                            >
-                                <Image
-                                    src="/dashboard.svg"
-                                    width={16}
-                                    height={16}
-                                    alt=""
-                                    className="w-5 aspect-square"
-                                />
-                                <span>Dashboard</span>
-                            </LinkButton>
-                        </li>
+                        {status && (
+                            <li>
+                                <LinkButton
+                                    href="/dashboard"
+                                    className="p-4! text-5!"
+                                >
+                                    <Image
+                                        src="/dashboard.svg"
+                                        width={16}
+                                        height={16}
+                                        alt=""
+                                        className="w-5 aspect-square"
+                                    />
+                                    <span>Dashboard</span>
+                                </LinkButton>
+                            </li>
+                        )}
 
-                        <li>
-                            <LinkButton
-                                href="/notifications"
-                                className="p-4! text-5!"
-                            >
-                                <Image
-                                    src="/notification.svg"
-                                    width={16}
-                                    height={16}
-                                    alt=""
-                                    className="w-5 aspect-square"
-                                />
-                                <span>Notifications</span>
-                            </LinkButton>
-                        </li>
+                        {status && (
+                            <li>
+                                <LinkButton
+                                    href="/notifications"
+                                    className="p-4! text-5!"
+                                >
+                                    <Image
+                                        src="/notification.svg"
+                                        width={16}
+                                        height={16}
+                                        alt=""
+                                        className="w-5 aspect-square"
+                                    />
+                                    <span>Notifications</span>
+                                </LinkButton>
+                            </li>
+                        )}
+                        {status && (
+                            <li>
+                                <LinkButton
+                                    href="/contact"
+                                    className="p-4! text-5!"
+                                >
+                                    <Image
+                                        src="/phone.svg"
+                                        width={16}
+                                        height={16}
+                                        alt=""
+                                        className="w-5 aspect-square"
+                                    />
+                                    <span>Contact</span>
+                                </LinkButton>
+                            </li>
+                        )}
 
-                        <li>
-                            <LinkButton
-                                href="/contact"
-                                className="p-4! text-5!"
-                            >
-                                <Image
-                                    src="/phone.svg"
-                                    width={16}
-                                    height={16}
-                                    alt=""
-                                    className="w-5 aspect-square"
-                                />
-                                <span>Contact</span>
-                            </LinkButton>
-                        </li>
-
-                        <li>
-                            <hr />
-                        </li>
+                        {status && (
+                            <li>
+                                <hr />
+                            </li>
+                        )}
 
                         <li>
                             <Socials className="flex-row! max-w-full! *:w-full p-0! bg-transparent! border-0! outline-0!" />
