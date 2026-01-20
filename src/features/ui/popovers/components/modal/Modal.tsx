@@ -40,32 +40,19 @@ export const Modal = React.memo(function ModalFunction({
 
     // dialog closing
     useEffect(() => {
-        if (isShown || !modalRef.current) {
+        if (!modalRef.current) {
             return;
         }
 
-        modalRef.current.close();
-        setIsDisabled(false);
-    }, [isShown, setIsDisabled]);
-
-    // native show/hide
-    useEffect(() => {
-        if (!isShown) {
-            return;
+        setIsDisabled(!isShown);
+        if (isShown) {
+            modalRef.current.showModal();
+            positionPopover(modalRef, elementRef, direction);
+        } else {
+            modalRef.current.close();
         }
+    }, [isShown, setIsDisabled, direction]);
 
-        setIsDisabled(true);
-
-        const dialog = modalRef.current as HTMLDialogElement | null;
-
-        if (!dialog) {
-            return;
-        }
-
-        dialog.showModal();
-
-        positionPopover(modalRef, elementRef, direction);
-    }, [isShown, direction, setIsDisabled]);
 
     // positioning
     useEffect(() => {

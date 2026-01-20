@@ -41,21 +41,15 @@ export const Tooltip = React.memo(function TooltipFunction({
     const elementRef = useRef<HTMLDivElement | null>(null);
     const tooltipRef = useRef<HTMLDivElement | null>(null);
 
-    // native show/hide
+    // dialog closing
     useEffect(() => {
-        if (!isShown) {
+        if (!tooltipRef.current) {
             return;
         }
 
-        const dialog = tooltipRef.current as HTMLDialogElement | null;
-
-        if (!dialog) {
-            return;
+        if (isShown) {
+            positionPopover(tooltipRef, elementRef, direction);
         }
-
-        dialog.showPopover();
-
-        positionPopover(tooltipRef, elementRef, direction);
     }, [isShown, direction]);
 
     // positioning
@@ -63,6 +57,7 @@ export const Tooltip = React.memo(function TooltipFunction({
         const handle = () => {
             positionPopover(tooltipRef, elementRef, direction);
         };
+        handle();
 
         window.addEventListener("resize", handle);
         window.addEventListener("scroll", handle);
