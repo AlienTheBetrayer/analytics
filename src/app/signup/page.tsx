@@ -10,12 +10,12 @@ const RegisterPage = () => {
     const register = useAppStore((state) => state.register);
 
     return (
-        <main className="w-full h-screen flex flex-col items-center dotted gap-16">
+        <main className="w-full flex flex-col items-center gap-8">
             {status ? (
                 <AlreadyLoggedIn />
             ) : (
                 <>
-                    <div className="flex flex-col gap-1 text-center max-w-lg">
+                    <div className="box flex flex-col gap-1 text-center w-full max-w-6xl">
                         <h1>Signing up</h1>
                         <p>
                             Create an account to get started. Your information

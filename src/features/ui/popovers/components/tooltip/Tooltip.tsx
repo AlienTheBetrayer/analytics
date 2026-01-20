@@ -103,7 +103,7 @@ export const Tooltip = React.memo(function TooltipFunction({
                                     }
                                 }}
                                 ref={tooltipRef}
-                                className="bg-transparent overflow-hidden whitespace-nowrap p-1"
+                                className="bg-transparent overflow-hidden whitespace-nowrap p-1 z-1000"
                                 style={{
                                     pointerEvents: pointerEvents
                                         ? "all"

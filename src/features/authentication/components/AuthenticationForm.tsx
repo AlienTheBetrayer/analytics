@@ -1,4 +1,3 @@
-import { motion } from "motion/react";
 import Image from "next/image";
 import { useState } from "react";
 import { Tooltip } from "../../ui/popovers/components/tooltip/Tooltip";
@@ -24,7 +23,6 @@ export const AuthenticationForm = ({
     title,
     button,
     onSubmit,
-    className,
     type = "login",
 }: Props) => {
     // zustand states
@@ -38,169 +36,176 @@ export const AuthenticationForm = ({
     const [response, setResponse] = useState<ResponseLogin | undefined>();
 
     return (
-        <motion.div
-            initial={{ opacity: 0, y: 5 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 5 }}
-            className={`flex flex-col max-w-3xl w-full z-2
-                 duration-300 ease-out box
-                 ${className ?? ""}`}
-        >
-            <div className="w-full flex flex-col items-center gap-1">
-                <Image
-                    alt=""
-                    width={20}
-                    height={20}
-                    src={`${type === "login" ? "/security.svg" : "/pencil.svg"}`}
-                />
+        <div className="flex flex-col gap-2 w-full max-w-6xl">
+            <div className="box w-full box flex flex-row! p-0! min-h-10 h-10 items-center gap-1">
+                <Tooltip
+                    text="Home"
+                    direction="top"
+                >
+                    <LinkButton
+                        href="/home"
+                        ariaLabel="home page"
+                    >
+                        <Image
+                            alt=""
+                            width={16}
+                            height={16}
+                            src="/cube.svg"
+                        />
+                    </LinkButton>
+                </Tooltip>
 
-                <span className="flex justify-center items-center gap-1">
+                <span className="flex items-center gap-1 absolute left-1/2 top-1/2 -translate-1/2">
                     <Tooltip
                         text="Easter egg 🌀"
                         direction="top"
                     >
                         <div className="rounded-full bg-blue-1 w-1 h-1" />
                     </Tooltip>
-
-                    <span>{title}</span>
+                    <span>Secure</span>
                 </span>
             </div>
 
-            <hr />
-
-            {/* topline */}
-            <div className="relative gap-2 flex flex-wrap items-center w-full border-b border-b-background-5 p-2">
-                <Image
-                    alt=""
-                    width={20}
-                    height={20}
-                    src="/privacy.svg"
-                />
-
-                <Tooltip
-                    text="Home"
-                    className="ml-auto"
-                    direction="top"
-                >
-                    <LinkButton href="/home">
+            <div className="box w-full flex flex-col items-center gap-2">
+                <div className="flex flex-col gap-1 items-center">
+                    <div className="grid place-items-center rounded-full w-10 aspect-square outline-2 outline-blue-1">
                         <Image
                             alt=""
-                            width={14}
-                            height={14}
-                            src="/back.svg"
+                            width={24}
+                            height={24}
+                            src="/privacy.svg"
                         />
-                        Back
-                    </LinkButton>
-                </Tooltip>
-            </div>
-
-            {/* main form */}
-            <form
-                className="flex flex-col gap-3 p-2"
-                onSubmit={async (e) => {
-                    e.preventDefault();
-
-                    if (e.currentTarget.checkValidity()) {
-                        const res = await onSubmit(username, password);
-                        setResponse(res);
-                    }
-                }}
-            >
-                <label
-                    htmlFor="username"
-                    className="flex justify-between"
-                >
-                    Username
-                    {type === "register" && <small>(your unique name)</small>}
-                </label>
-                <Input
-                    id="username"
-                    value={username}
-                    placeholder={"at least 6 characters"}
-                    onChange={(value) => setUsername(value)}
-                    type="text"
-                    aria-label="Username"
-                    required
-                    minLength={6}
-                />
-                <hr />
-
-                <label
-                    htmlFor="password"
-                    className="flex justify-between"
-                >
-                    Password
-                    {type === "register" && (
-                        <small>(create a strong password)</small>
-                    )}
-                </label>
-                <Input
-                    id="password"
-                    value={password}
-                    placeholder={"at least 6 characters"}
-                    onChange={(value) => setPassword(value)}
-                    type="password"
-                    aria-label="Password"
-                    required
-                    minLength={6}
-                />
-                <hr />
-
-                <Tooltip
-                    text={button.tooltip}
-                    direction={"bottom"}
-                    className="w-full"
-                >
-                    <Button
-                        className="w-full"
-                        type="submit"
-                    >
-                        <PromiseStatus status={promises.login} />
-                        <PromiseStatus status={promises.register} />
-
-                        <Image
-                            alt=""
-                            width={20}
-                            height={20}
-                            src="/send.svg"
-                        />
-                        {button.text}
-                    </Button>
-                </Tooltip>
-            </form>
-
-            {response?.type === "user_registered" && (
-                <>
-                    <hr />
-                    <Tooltip
-                        text="Proceed the authentication"
-                        direction="bottom"
-                        className="w-full"
-                    >
-                        <LinkButton
-                            className="w-full"
-                            href="/login"
-                        >
-                            Redirect to log in
-                        </LinkButton>
-                    </Tooltip>
-                </>
-            )}
-
-            {/* status message */}
-            {response && (
-                <>
-                    <hr />
-                    <div className="flex gap-2 items-center mx-auto">
-                        <div
-                            className={`rounded-full w-2 h-2 ${response.type ? "bg-blue-1" : "bg-red-1"} shrink-0`}
-                        />
-                        <span>
-                            {response.response?.data.error || response.message}
-                        </span>
                     </div>
-                </>
-            )}
-        </motion.div>
+
+                    <span>{title}</span>
+                </div>
+                <hr />
+
+                {/* main form */}
+                <form
+                    className="flex flex-col w-full min-h-64"
+                    onSubmit={async (e) => {
+                        e.preventDefault();
+
+                        if (e.currentTarget.checkValidity()) {
+                            const res = await onSubmit(username, password);
+                            setResponse(res);
+                        }
+                    }}
+                >
+                    <ul className="flex flex-col gap-4 grow">
+                        <li className="flex flex-col gap-2">
+                            <label
+                                htmlFor="username"
+                                className="flex justify-between"
+                            >
+                                Username
+                                {type === "register" && (
+                                    <small>(your unique name)</small>
+                                )}
+                            </label>
+                            <Input
+                                id="username"
+                                value={username}
+                                placeholder={"at least 6 characters"}
+                                onChange={(value) => setUsername(value)}
+                                type="text"
+                                aria-label="Username"
+                                required
+                                minLength={6}
+                            />
+                        </li>
+
+                        <li>
+                            <hr />
+                        </li>
+
+                        <li className="flex flex-col gap-2">
+                            <label
+                                htmlFor="password"
+                                className="flex justify-between"
+                            >
+                                Password
+                                {type === "register" && (
+                                    <small>(create a strong password)</small>
+                                )}
+                            </label>
+                            <Input
+                                id="password"
+                                value={password}
+                                placeholder={"at least 6 characters"}
+                                onChange={(value) => setPassword(value)}
+                                type="password"
+                                aria-label="Password"
+                                required
+                                minLength={6}
+                            />
+                        </li>
+
+                        <li className="mt-auto!">
+                            <hr />
+                        </li>
+
+                        <li className="flex flex-col gap-2">
+                            <Tooltip
+                                text={button.tooltip}
+                                direction={"bottom"}
+                                className="w-full"
+                            >
+                                <Button
+                                    className="w-full"
+                                    type="submit"
+                                >
+                                    <PromiseStatus status={promises.login} />
+                                    <PromiseStatus status={promises.register} />
+
+                                    <Image
+                                        alt=""
+                                        width={20}
+                                        height={20}
+                                        src="/send.svg"
+                                    />
+                                    {button.text}
+                                </Button>
+                            </Tooltip>
+                        </li>
+                    </ul>
+                </form>
+
+                {response?.type === "user_registered" && (
+                    <>
+                        <hr />
+                        <Tooltip
+                            text="Proceed the authentication"
+                            direction="bottom"
+                            className="w-full"
+                        >
+                            <LinkButton
+                                className="w-full"
+                                href="/login"
+                            >
+                                Redirect to log in
+                            </LinkButton>
+                        </Tooltip>
+                    </>
+                )}
+
+                {/* status message */}
+                {response && (
+                    <>
+                        <hr />
+                        <div className="flex gap-2 items-center mx-auto">
+                            <div
+                                className={`rounded-full w-2 h-2 ${response.type ? "bg-blue-1" : "bg-red-1"} shrink-0`}
+                            />
+                            <span>
+                                {response.response?.data.error ||
+                                    response.message}
+                            </span>
+                        </div>
+                    </>
+                )}
+            </div>
+        </div>
     );
 };

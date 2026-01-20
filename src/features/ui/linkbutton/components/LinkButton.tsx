@@ -10,6 +10,7 @@ type Props = {
     styles?: string;
     newTab?: boolean;
     style?: CSSProperties;
+    ariaLabel?: string;
 };
 
 export const LinkButton = forwardRef<HTMLAnchorElement, Props>(
@@ -21,9 +22,10 @@ export const LinkButton = forwardRef<HTMLAnchorElement, Props>(
             isEnabled,
             style,
             styles,
+            ariaLabel,
             newTab = false,
         }: Props,
-        ref
+        ref,
     ) {
         return (
             <Link
@@ -37,9 +39,10 @@ export const LinkButton = forwardRef<HTMLAnchorElement, Props>(
                     ${(isEnabled ?? true) !== true ? "pointer-events-none opacity-30" : ""} 
                     ${className ?? ""} 
                 `}
+                aria-label={ariaLabel}
             >
                 {children}
             </Link>
         );
-    }
+    },
 );

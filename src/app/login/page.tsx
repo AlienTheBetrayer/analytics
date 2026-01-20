@@ -19,7 +19,7 @@ const LoginPage = () => {
                 <AlreadyLoggedIn />
             ) : (
                 <>
-                    <div className="flex flex-col gap-1 text-center max-w-lg">
+                    <div className="box flex flex-col gap-1 text-center w-full max-w-6xl">
                         <h1>Authentication</h1>
                         <p>
                             Sign in to your account to continue. If your account
@@ -29,7 +29,7 @@ const LoginPage = () => {
                         </p>
                     </div>
                     <AuthenticationForm
-                        title="Authentication"
+                        title="Logging in"
                         button={{
                             text: "Log in",
                             tooltip: "Log in an existing account",
