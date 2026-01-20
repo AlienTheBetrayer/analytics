@@ -1,3 +1,4 @@
+import { rippleEnable, rippleDisable } from "@/utils/other/ripple";
 import type { Url } from "next/dist/shared/lib/router/router";
 import Link from "next/link";
 import { type CSSProperties, forwardRef } from "react";
@@ -27,6 +28,7 @@ export const LinkButton = forwardRef<HTMLAnchorElement, Props>(
         }: Props,
         ref,
     ) {
+        // main jsx
         return (
             <Link
                 ref={ref}
@@ -34,12 +36,24 @@ export const LinkButton = forwardRef<HTMLAnchorElement, Props>(
                 style={style}
                 target={`${newTab ? "_blank" : "_self"}`}
                 rel="noopener noreferrer"
-                className={`group 
+                className={`group ripple
                     ${styles ?? "button"}
                     ${(isEnabled ?? true) !== true ? "pointer-events-none opacity-30" : ""} 
                     ${className ?? ""} 
                 `}
                 aria-label={ariaLabel}
+                onPointerDown={(e) => {
+                    rippleEnable(e);
+                }}
+                onPointerEnter={(e) => {
+                    rippleEnable(e, "enter");
+                }}
+                onPointerLeave={(e) => {
+                    rippleDisable(e);
+                }}
+                onPointerUp={(e) => {
+                    rippleDisable(e);
+                }}
             >
                 {children}
             </Link>

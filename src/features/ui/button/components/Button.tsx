@@ -1,30 +1,44 @@
+import { rippleDisable, rippleEnable } from "@/utils/other/ripple";
 import { type HTMLMotionProps, motion } from "motion/react";
 
 type Props = {
-	isEnabled?: boolean;
-	styles?: string;
+    isEnabled?: boolean;
+    styles?: string;
 } & HTMLMotionProps<"button">;
 
 export const Button = ({
-	children,
-	onClick,
-	isEnabled = true,
-	className,
-	styles = "button",
-	...rest
+    children,
+    onClick,
+    isEnabled = true,
+    className,
+    styles = "button",
+    ...rest
 }: Props) => {
-	return (
-		<motion.button
-			onClick={onClick}
-			type="button"
-			disabled={!isEnabled}
-			className={`group
+    // main jsx
+    return (
+        <motion.button
+            onClick={onClick}
+            type="button"
+            disabled={!isEnabled}
+            onPointerDown={(e) => {
+                rippleEnable(e);
+            }}
+            onPointerEnter={(e) => {
+                rippleEnable(e, "enter");
+            }}
+            onPointerLeave={(e) => {
+                rippleDisable(e);
+            }}
+            onPointerUp={(e) => {
+                rippleDisable(e);
+            }}
+            className={`group ripple
                 ${styles} 
                 ${isEnabled !== true ? "pointer-events-none opacity-30" : ""}
                 ${className ?? ""} `}
-			{...rest}
-		>
-			{children}
-		</motion.button>
-	);
+            {...rest}
+        >
+            {children}
+        </motion.button>
+    );
 };
