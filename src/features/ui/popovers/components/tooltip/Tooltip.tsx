@@ -21,6 +21,7 @@ export const Tooltip = React.memo(function TooltipFunction({
     text,
     direction = "bottom",
     className = "",
+    element,
     pointerEvents = false,
     isEnabled = true,
     children,
@@ -48,6 +49,7 @@ export const Tooltip = React.memo(function TooltipFunction({
         }
 
         if (isShown) {
+            tooltipRef.current.showPopover();
             positionPopover(tooltipRef, elementRef, direction);
         }
     }, [isShown, direction]);
@@ -103,7 +105,7 @@ export const Tooltip = React.memo(function TooltipFunction({
                                     }
                                 }}
                                 ref={tooltipRef}
-                                className="bg-transparent overflow-hidden whitespace-nowrap p-1 z-1000"
+                                className="bg-transparent overflow-hidden whitespace-nowrap p-1"
                                 style={{
                                     pointerEvents: pointerEvents
                                         ? "all"
@@ -120,12 +122,14 @@ export const Tooltip = React.memo(function TooltipFunction({
                                         opacity: 0,
                                         scale: 0.7,
                                     }}
-                                    className="box py-1.5! px-3! rounded-full!"
+                                    className={`${element ? "" : "box py-1.5! px-3! rounded-full!"}`}
                                 >
-                                    <small className="flex flex-col items-center">
-                                        {title && <b>{title}</b>}
-                                        {text && <span>{text}</span>}
-                                    </small>
+                                    {element ?? (
+                                        <small className="flex flex-col items-center">
+                                            {title && <b>{title}</b>}
+                                            {text && <span>{text}</span>}
+                                        </small>
+                                    )}
                                 </motion.div>
                             </div>
                         )}
