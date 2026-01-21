@@ -11,7 +11,7 @@ export const PostCompact = ({ data }: Props) => {
     // main jsx
     return (
         <li
-            className={`flex flex-col rounded-4xl! overflow-hidden h-36! relative 
+            className={`flex flex-col rounded-4xl! overflow-hidden h-36! relative
         ${data.image_url ? "" : "border border-background-a-5"}`}
         >
             {data.image_url && (
@@ -39,7 +39,8 @@ export const PostCompact = ({ data }: Props) => {
                 href={``}
             >
                 <div
-                    className="absolute left-1/2 top-1/2 -translate-1/2 group-hover:scale-125 duration-400 ease-in-out
+                    className="absolute left-1/2 top-1/2 -translate-1/2 
+                    group-hover:scale-150 group-hover:outline-blue-1 group-focus-within:scale-150 group-focus-within:outline-blue-1 duration-400 ease-in-out
                             rounded-full aspect-square p-2 outline-2 outline-blue-3 backdrop-blur-md"
                 >
                     <Image
