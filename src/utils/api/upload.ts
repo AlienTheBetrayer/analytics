@@ -10,9 +10,10 @@ import "server-only";
 export const deleteImage = async (options: {
     user_id: string;
     url: string;
+    folder: string;
 }) => {
     const { error } = await supabaseServer.storage
-        .from("avatars")
+        .from(options.folder)
         .remove([
             `${options.user_id}/${options.url.substring(options.url.lastIndexOf("/") + 1)}`,
         ]);
@@ -38,6 +39,7 @@ export const uploadImage = async (options: {
     base64: string;
     name: string;
     type: string;
+    folder: string;
 }) => {
     const base64Data = options.base64.split(",")[1];
     const buffer = Buffer.from(base64Data, "base64");
@@ -45,7 +47,7 @@ export const uploadImage = async (options: {
     const path = `${options.user_id}/${crypto.randomUUID()}.${ext}`;
 
     const { error } = await supabaseServer.storage
-        .from("avatars")
+        .from(options.folder)
         .upload(path, buffer, {
             contentType: options.type,
             upsert: true,
@@ -56,7 +58,7 @@ export const uploadImage = async (options: {
         throw nextResponse({ error: "Uploading failed." }, 400);
     }
 
-    const { data } = supabaseServer.storage.from("avatars").getPublicUrl(path);
+    const { data } = supabaseServer.storage.from(options.folder).getPublicUrl(path);
 
     return data.publicUrl;
 };

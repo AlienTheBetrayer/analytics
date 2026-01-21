@@ -13,7 +13,6 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
         friends: {},
         profiles: {},
         users: {},
-        postIds: {},
 
         getUsers: async (options) => {
             const {

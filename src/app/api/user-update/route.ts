@@ -39,6 +39,7 @@ export const POST = async (request: NextRequest) => {
                     name: rest.avatar_name,
                     type: rest.avatar_type,
                     user_id,
+                    folder: "avatars",
                 });
                 delete rest.avatar_name;
                 delete rest.avatar_type;

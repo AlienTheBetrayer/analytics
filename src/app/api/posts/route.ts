@@ -1,5 +1,6 @@
 import { supabaseServer } from "@/server/private/supabase";
-import { Post } from "@/types/tables/account";
+import { Profile, User } from "@/types/tables/account";
+import { Post } from "@/types/tables/posts";
 import { nextResponse } from "@/utils/api/response";
 import { PostgrestError } from "@supabase/supabase-js";
 import { NextRequest } from "next/server";
@@ -27,7 +28,7 @@ export const GET = async (request: NextRequest) => {
                     .select("*, profile:profiles(*), posts:posts(*)")
                     .eq("username", username)
                     .eq("posts.id", id)) as {
-                    data: Post[];
+                    data: (User & { profile: Profile; posts: Post[] })[];
                     error: PostgrestError | null;
                 };
 
@@ -36,7 +37,14 @@ export const GET = async (request: NextRequest) => {
                     return nextResponse(error, 400);
                 }
 
-                return nextResponse({ posts: data }, 200);
+                return nextResponse(
+                    {
+                        data: data.map(({ password, ...rest }) => ({
+                            ...rest,
+                        }))?.[0],
+                    },
+                    200,
+                );
             }
             case "all": {
                 if (!username) {
@@ -50,7 +58,7 @@ export const GET = async (request: NextRequest) => {
                     .from("users")
                     .select("*, profile:profiles(*), posts:posts(*)")
                     .eq("username", username)) as {
-                    data: Post[];
+                    data: (User & { profile: Profile; posts: Post[] })[];
                     error: PostgrestError | null;
                 };
 
@@ -59,7 +67,13 @@ export const GET = async (request: NextRequest) => {
                     return nextResponse(error, 400);
                 }
 
-                return nextResponse({ posts: data }, 200);
+                return nextResponse(
+                    data.map(({ password, ...rest }) => ({
+                        ...rest,
+                    }))?.[0],
+
+                    200,
+                );
             }
             default: {
                 console.error(

@@ -4,10 +4,20 @@ export type PostData = {
     title?: string;
     content?: string;
     image?: string | null;
+    image_name?: string;
+    image_type?: string;
 };
 
 export type PostStore = {
+    /**
+     * post_id : Post
+     */
     posts: Record<string, Post>;
+
+    /**
+     * username: post ids[]
+     */
+    postIds: Record<string, string[]>;
 
     /**
      * gets all the posts along with the user and profile data attached to it

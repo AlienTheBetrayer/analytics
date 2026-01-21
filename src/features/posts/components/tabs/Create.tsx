@@ -3,6 +3,7 @@ import { Button } from "@/features/ui/button/components/Button";
 import { ImageSelect } from "@/features/ui/fileselect/components/ImageSelect";
 import { Input } from "@/features/ui/input/components/Input";
 import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
+import { PostData } from "@/types/zustand/posts";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import { useState } from "react";
@@ -11,7 +12,7 @@ export const Create = () => {
     // react states
     const [title, setTitle] = useState<string>("");
     const [content, setContent] = useState<string>("");
-    const [image, setImage] = useState<File | null>(null);
+    const [image, setImage] = useState<File | undefined>(undefined);
 
     // zustand
     const status = useAppStore((state) => state.status);
@@ -41,17 +42,21 @@ export const Create = () => {
                         return;
                     }
 
+                    const data: PostData = {
+                        title,
+                        content,
+                    };
+
+                    if (image) {
+                        data.image = await fileToBase64(image);
+                        data.image_name = image.name;
+                        data.image_type = image.type;
+                    }
+
                     updatePost({
                         user_id: status.id,
                         type: "create",
-                        data: {
-                            title,
-                            content,
-                            image:
-                                image === null
-                                    ? null
-                                    : await fileToBase64(image),
-                        },
+                        data,
                     });
                 }}
             >
@@ -103,7 +108,7 @@ export const Create = () => {
                             sizeLimit={1}
                             value={image}
                             onSelect={(file) => {
-                                setImage(file);
+                                setImage(file ?? undefined);
                             }}
                         />
                     </li>

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { type CSSProperties, forwardRef } from "react";
 
 type Props = {
-    children: React.ReactNode;
+    children?: React.ReactNode;
     href: Url;
     className?: string;
     isEnabled?: boolean;

@@ -3,11 +3,16 @@ import { Button } from "@/features/ui/button/components/Button";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
+import { Profile, User } from "@/types/tables/account";
 
-export const NoPosts = () => {
+type Props = {
+    data: { user: User; profile: Profile };
+};
+
+export const NoPosts = ({ data }: Props) => {
     // zustand
     const promises = useAppStore((state) => state.promises);
-    const sync = useAppStore((state) => state.sync);
+    const getPosts = useAppStore((state) => state.getPosts);
 
     return (
         <div className="flex flex-col items-center justify-center mt-8">
@@ -43,7 +48,9 @@ export const NoPosts = () => {
                         <Button
                             className="w-full"
                             onClick={() => {
-                                sync({
+                                getPosts({
+                                    type: "all",
+                                    username: data.user.username,
                                     promiseKey: "getPostsRefetch",
                                     caching: false,
                                 });

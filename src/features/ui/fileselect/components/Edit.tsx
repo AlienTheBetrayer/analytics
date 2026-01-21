@@ -23,6 +23,7 @@ export const Edit = ({ file, onDelete, onEdit, hide }: Props) => {
                         alt=""
                         src={image}
                         fill
+                        style={{ objectFit: "cover" }}
                         className="invert-0! group-hover:scale-130 group-focus-within:scale-130 duration-1000!"
                     />
                 </li>

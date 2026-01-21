@@ -11,7 +11,6 @@ export type UserStore = {
         { incoming: Set<string>; outcoming: Set<string> }
     >;
     colors: Record<string, { slot: number; color: string }[]>;
-    postIds: Record<string, string[]>;
 
     /**
      * gets all the users and their data with filtering options

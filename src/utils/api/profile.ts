@@ -27,7 +27,11 @@ export const deleteAvatar = async (user_id: string) => {
     }
 
     if (profileData[0].avatar_url) {
-        await deleteImage({ user_id, url: profileData[0].avatar_url });
+        await deleteImage({
+            user_id,
+            url: profileData[0].avatar_url,
+            folder: "avatars",
+        });
     }
 
     return nextResponse({ message: "Successfully deleted the avatar." }, 200);
