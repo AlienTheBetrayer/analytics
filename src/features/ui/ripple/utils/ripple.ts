@@ -1,7 +1,7 @@
 /**
  * type of the pointer event
  */
-type RipplePointerType = "down" | "enter";
+type RipplePointerType = "down" | "enter" | "hover";
 
 /**
  * state for the ripple effect map
@@ -51,12 +51,16 @@ export const rippleEnable = <T extends HTMLElement>(
         return;
     }
 
-    if (!(type === "down" || (type === "enter" && e.buttons === 1))) {
+    if (type === "enter" && e.buttons !== 1) {
         return;
     }
 
     // ripple status
     const state = rippleStateDefault(el) satisfies RippleState;
+    const speed =
+        parseFloat(
+            getComputedStyle(el).getPropertyValue("--ripple-speed").trim(),
+        ) * 1000;
 
     // variable setting
     const rect = el.getBoundingClientRect();
@@ -75,7 +79,7 @@ export const rippleEnable = <T extends HTMLElement>(
             el.dataset.ripple = "off";
             state.scheduledDisable = false;
         }
-    }, 600);
+    }, speed * 0.8);
 };
 
 /**

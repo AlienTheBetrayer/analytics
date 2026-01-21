@@ -1,4 +1,4 @@
-import { rippleEnable, rippleDisable } from "@/utils/other/ripple";
+import { rippleEnable, rippleDisable } from "@/features/ui/ripple/utils/ripple";
 import type { Url } from "next/dist/shared/lib/router/router";
 import Link from "next/link";
 import { type CSSProperties, forwardRef } from "react";

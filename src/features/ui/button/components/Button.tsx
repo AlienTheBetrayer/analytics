@@ -1,4 +1,4 @@
-import { rippleDisable, rippleEnable } from "@/utils/other/ripple";
+import { rippleDisable, rippleEnable } from "@/features/ui/ripple/utils/ripple";
 import { type HTMLMotionProps, motion } from "motion/react";
 
 type Props = {
