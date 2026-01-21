@@ -57,7 +57,11 @@ export const GET = async (request: NextRequest) => {
                 const { data, error } = (await supabaseServer
                     .from("users")
                     .select("*, profile:profiles(*), posts:posts(*)")
-                    .eq("username", username)) as {
+                    .eq("username", username)
+                    .order("created_at", {
+                        referencedTable: "posts",
+                        ascending: false,
+                    })) as {
                     data: (User & { profile: Profile; posts: Post[] })[];
                     error: PostgrestError | null;
                 };
