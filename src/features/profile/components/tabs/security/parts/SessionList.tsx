@@ -1,15 +1,16 @@
 import { Spinner } from "@/features/spinner/components/Spinner";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
-import { ResponseSession } from "@/types/api/responses/auth";
 import { Profile, User } from "@/types/tables/account";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
+import { Token } from "@/types/tables/auth";
+import { relativeTime } from "@/utils/other/relativeTime";
 
 type Props = {
     data: { user: User; profile: Profile };
-    currentSessions: ResponseSession[] | undefined;
+    currentSessions: Token[] | undefined;
 };
 
 export const SessionList = ({ data, currentSessions }: Props) => {
@@ -19,7 +20,7 @@ export const SessionList = ({ data, currentSessions }: Props) => {
 
     return (
         <ul
-            className="flex flex-col overflow-y-auto h-full max-h-42 scheme-dark gap-px"
+            className="flex flex-col overflow-y-auto h-full max-h-128 scheme-dark gap-px"
             style={{
                 scrollbarWidth: "thin",
             }}
@@ -28,24 +29,29 @@ export const SessionList = ({ data, currentSessions }: Props) => {
                 currentSessions.map((token) => (
                     <li
                         key={token.id}
-                        className={`flex gap-2 items-center rounded-full min-h-12 px-4! ${token.isCurrent ? "border border-blue-2" : ""}`}
+                        className={`flex gap-2 items-center rounded-full min-h-14 px-4! ${token.isCurrent ? "border-2 border-blue-2" : ""}`}
                     >
                         {token.isCurrent ? (
-                            <>
-                                <Image
-                                    alt=""
-                                    width={20}
-                                    height={20}
-                                    src="/privacy.svg"
-                                />
+                            <div className="flex items-center gap-2">
+                                <div className="rounded-full outline-2 outline-blue-2 p-2">
+                                    <Image
+                                        alt=""
+                                        width={20}
+                                        height={20}
+                                        src="/privacy.svg"
+                                    />
+                                </div>
                                 <span>Ongoing</span>
-                            </>
+                            </div>
                         ) : (
                             <span className="truncate">{token.id}</span>
                         )}
 
+                        <span className="truncate ml-auto">
+                            {relativeTime(token.last_seen_at)}
+                        </span>
+
                         <Tooltip
-                            className="ml-auto"
                             direction="top"
                             text="Log out & delete this session"
                             isEnabled={!token.isCurrent}

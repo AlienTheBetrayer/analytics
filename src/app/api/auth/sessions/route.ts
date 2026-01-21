@@ -39,14 +39,16 @@ export const GET = async (request: NextRequest) => {
                     return nextResponse(error, 400);
                 }
 
-                const sessions = sessionData.map(({ id, session_id }) => ({
-                    id,
-                    session_id,
-                    isCurrent:
-                        session_id === refreshPayload?.refreshToken?.session_id,
-                }));
-
-                return nextResponse({ sessions }, 200);
+                return nextResponse(
+                    {
+                        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                        sessions: sessionData.map(({ token, ...rest }) => ({
+                            ...rest,
+                            isCurrent: rest.session_id === refreshPayload?.refreshToken?.session_id
+                        })),
+                    },
+                    200,
+                );
             }
             case "current": {
                 // getting session from the payload (hence the current one)
@@ -89,7 +91,7 @@ export const GET = async (request: NextRequest) => {
         console.error(error);
         return nextResponse(
             { error: "Failed getting the current sessions." },
-            400
+            400,
         );
     }
 };

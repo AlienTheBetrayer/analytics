@@ -3,11 +3,12 @@ import type { AuthenticationStore } from "@/types/zustand/authentication";
 import type { SliceFunction } from "@/types/zustand/utils/sliceFunction";
 import { refreshedRequest } from "@/utils/auth/refreshedRequest";
 import { AuthenticationToken } from "@/types/auth/authentication";
-import { ResponseLogin, ResponseSession } from "@/types/api/responses/auth";
+import { ResponseLogin } from "@/types/api/responses/auth";
+import { Token } from "@/types/tables/auth";
 
 export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (
     set,
-    get
+    get,
 ) => {
     return {
         status: undefined,
@@ -46,17 +47,16 @@ export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (
                                 user_id: options.user_id,
                                 type: options.type ?? "all",
                             },
-                        }
+                        },
                     );
 
                     switch (options.type) {
-                        
                         case "all": {
-                            if(!options.user_id) {
+                            if (!options.user_id) {
                                 throw new Error("[id] has to be present.");
                             }
 
-                            const data = res.data.sessions as ResponseSession[];
+                            const data = res.data.sessions as Token[];
                             const id = options.user_id;
 
                             set((state) => ({
@@ -81,7 +81,7 @@ export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (
                             return session;
                         }
                     }
-                }
+                },
             );
         },
 
@@ -105,7 +105,7 @@ export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (
 
                         return { ...state, sessions };
                     });
-                }
+                },
             );
         },
 
@@ -158,7 +158,7 @@ export const AuthenticationSlice: SliceFunction<AuthenticationStore> = (
                     await refreshedRequest("/api/auth/logout", "POST");
 
                     set((state) => ({ ...state, status: undefined }));
-                }
+                },
             );
         },
 

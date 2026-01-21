@@ -6,4 +6,6 @@ export type Token = {
     user_id: string;
     token: string;
     session_id: string;
+    last_seen_at: string;
+    isCurrent?: boolean;
 }

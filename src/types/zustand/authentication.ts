@@ -1,4 +1,5 @@
-import { ResponseLogin, ResponseSession } from "../api/responses/auth";
+import { Token } from "@/types/tables/auth";
+import { ResponseLogin } from "../api/responses/auth";
 import { AuthenticationToken } from "../auth/authentication";
 
 export type Status = AuthenticationToken & {};
@@ -6,7 +7,7 @@ export type Status = AuthenticationToken & {};
 export type AuthenticationStore = {
     // login status
     status: Status | undefined;
-    sessions: Record<string, ResponseSession[]>;
+    sessions: Record<string, Token[]>;
 
     /**
      * sets the current authentication status
@@ -25,7 +26,7 @@ export type AuthenticationStore = {
         type: "current" | "all";
         caching?: boolean;
         promiseKey?: string;
-    }) => Promise<ResponseSession[] | AuthenticationToken | undefined>;
+    }) => Promise<Token[] | AuthenticationToken | undefined>;
 
     /**
      * deletes sessions with those ids making the user with that session unable to login
