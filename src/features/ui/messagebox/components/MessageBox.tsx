@@ -39,8 +39,6 @@ export const MessageBox = ({ visibility, children, onSelect }: Props) => {
         if (mounted) {
             dialogRef.current.showModal();
             yesRef.current?.focus();
-        } else {
-            dialogRef.current.close();
         }
     }, [mounted]);
 
@@ -95,6 +93,7 @@ export const MessageBox = ({ visibility, children, onSelect }: Props) => {
             >
                 <AnimatePresence
                     onExitComplete={() => {
+                        dialogRef.current?.close();
                         setMounted(false);
                     }}
                 >

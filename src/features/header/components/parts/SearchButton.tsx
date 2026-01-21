@@ -52,10 +52,10 @@ export const SearchButton = () => {
         >
             <Tooltip
                 text="Search available users"
-                className="absolute left-full h-full grid place-items-center"
+                className="absolute left-full h-full"
             >
                 <Button
-                    className="rounded-l-none! border-l-0! h-full aspect-square p-0!"
+                    className="rounded-l-none! border-l-0! border-2! h-full! aspect-square p-0!"
                     onClick={querySearch}
                 >
                     <Image
