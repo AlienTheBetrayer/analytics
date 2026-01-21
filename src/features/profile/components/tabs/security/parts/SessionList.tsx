@@ -20,7 +20,7 @@ export const SessionList = ({ data, currentSessions }: Props) => {
 
     return (
         <ul
-            className="flex flex-col overflow-y-auto h-full max-h-128 scheme-dark gap-px"
+            className="flex flex-col overflow-y-auto h-full max-h-128 scheme-dark gap-2"
             style={{
                 scrollbarWidth: "thin",
             }}
@@ -29,7 +29,11 @@ export const SessionList = ({ data, currentSessions }: Props) => {
                 currentSessions.map((token) => (
                     <li
                         key={token.id}
-                        className={`flex gap-2 items-center rounded-full min-h-14 px-4! ${token.isCurrent ? "border-2 border-blue-2" : ""}`}
+                        className={`flex gap-2 hover:bg-background-4 focus-within:bg-background-4
+                            items-center rounded-full min-h-14 px-4! 
+                             transition-all duration-400 ease-out 
+                             border-2 border-background-4
+                            ${token.isCurrent ? "border-2 border-blue-2" : ""}`}
                     >
                         {token.isCurrent ? (
                             <div className="flex items-center gap-2">
