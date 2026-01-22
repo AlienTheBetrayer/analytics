@@ -1,4 +1,4 @@
-import { Topline } from "@/features/posts/components/parts/Topline";
+import { ToplineCompact } from "@/features/posts/components/parts/compact/ToplineCompact";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { Post } from "@/types/tables/posts";
 import Image from "next/image";
@@ -24,7 +24,7 @@ export const PostCompact = ({ data }: Props) => {
                 />
             )}
 
-            <Topline
+            <ToplineCompact
                 data={data}
                 className="rounded-none!"
             />

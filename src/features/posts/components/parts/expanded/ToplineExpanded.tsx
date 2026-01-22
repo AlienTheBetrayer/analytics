@@ -13,7 +13,7 @@ type Props = {
     className?: string;
 };
 
-export const Topline = ({ data, className }: Props) => {
+export const ToplineExpanded = ({ data, className }: Props) => {
     // zustand
     const profiles = useAppStore((state) => state.profiles);
     const status = useAppStore((state) => state.status);
@@ -35,6 +35,7 @@ export const Topline = ({ data, className }: Props) => {
                     }
                 },
             })}
+
             <li className="absolute left-4 top-1/2 -translate-y-1/2">
                 <Tooltip
                     pointerEvents
@@ -48,7 +49,7 @@ export const Topline = ({ data, className }: Props) => {
                 </Tooltip>
             </li>
 
-            <li className="flex items-center gap-1 absolute left-1/2 top-1/2 -translate-1/2">
+            <li className="flex items-center gap-1 absolute left-1/2 top-1/2 -translate-1/2 whitespace-nowrap">
                 <div className="w-1 h-1 rounded-full aspect-square bg-blue-1" />
                 <span>{data.title}</span>
             </li>
