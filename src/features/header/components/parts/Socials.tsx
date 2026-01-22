@@ -5,12 +5,13 @@ import { ComponentPropsWithoutRef } from "react";
 
 type Props = {
     hide?: () => void;
+    closeButton?: boolean;
 } & ComponentPropsWithoutRef<"div">;
 
-export const Socials = ({ hide, className }: Props) => {
+export const Socials = ({ hide, className, closeButton = true }: Props) => {
     return (
         <ul className={`relative box w-screen max-w-81 ${className ?? ""}`}>
-            <CloseButton hide={hide} />
+            {closeButton && <CloseButton hide={hide} />}
 
             <li>
                 <LinkButton

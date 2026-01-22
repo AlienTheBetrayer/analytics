@@ -15,7 +15,7 @@ export const Mobile = ({ className, showMenu }: Props) => {
 
     return (
         <ul
-            className={`grid grid-cols-[20%_1fr_20%] items-center w-full px-4! ${className ?? ""}`}
+            className={`grid grid-cols-[15%_1fr_15%] items-center w-full px-4! ${className ?? ""}`}
         >
             <li className='flex items-center group'>
                 <div className="w-1 aspect-square bg-blue-1 rounded-full group-hover:bg-red-1 duration-700 transition-all" />

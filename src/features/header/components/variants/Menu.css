@@ -1,13 +1,9 @@
 .header-ul button, .header-ul a {
-    min-height: 4rem;
-    height: 4rem;
+    min-height: 3.25rem;
+    height: 3.25rem;
 }
 
 .header-ul button img, .header-ul a img {
-    min-width: 1.15rem;
+    min-width: 1rem;
     aspect-ratio: 1/1;
-}
-
-.header-ul button span, .header-ul a span {
-    font-size: 1rem;
 }
