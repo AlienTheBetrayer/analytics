@@ -24,7 +24,7 @@ export const AlreadyLoggedIn = () => {
 
     return (
         <>
-            <div className="box w-full max-w-6xl flex flex-col items-center gap-2 justify-center text-center">
+            <div className="box w-full max-w-7xl flex flex-col items-center gap-2 justify-center text-center">
                 <h1>
                     Already <mark>authenticated!</mark>
                 </h1>
@@ -38,7 +38,7 @@ export const AlreadyLoggedIn = () => {
                 </p>
             </div>
 
-            <ul className="box w-full max-w-6xl grid! lg:grid-cols-3 gap-16! lg:gap-8!">
+            <ul className="box w-full max-w-7xl grid! lg:grid-cols-3 gap-16! lg:gap-8!">
                 <li className="flex flex-col gap-2">
                     <aside className="flex items-center gap-1 justify-center text-center">
                         <div className="w-1 h-1 rounded-full bg-blue-3" />

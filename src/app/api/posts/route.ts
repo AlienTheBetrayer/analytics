@@ -25,8 +25,7 @@ export const GET = async (request: NextRequest) => {
 
                 const { data, error } = (await supabaseServer
                     .from("users")
-                    .select("*, profile:profiles(*), posts:posts(*)")
-                    .eq("username", username)
+                    .select("*, profile:profiles(*), posts:posts!inner(*)")
                     .eq("posts.id", id)) as {
                     data: (User & { profile: Profile; posts: Post[] })[];
                     error: PostgrestError | null;
@@ -38,11 +37,10 @@ export const GET = async (request: NextRequest) => {
                 }
 
                 return nextResponse(
-                    {
-                        data: data.map(({ password, ...rest }) => ({
-                            ...rest,
-                        }))?.[0],
-                    },
+                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                    data.map(({ password, ...rest }) => ({
+                        ...rest,
+                    }))?.[0],
                     200,
                 );
             }
@@ -72,10 +70,10 @@ export const GET = async (request: NextRequest) => {
                 }
 
                 return nextResponse(
+                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
                     data.map(({ password, ...rest }) => ({
                         ...rest,
                     }))?.[0],
-
                     200,
                 );
             }
@@ -83,9 +81,12 @@ export const GET = async (request: NextRequest) => {
                 console.error(
                     "[type] is wrong. acceptable types: [all, single]",
                 );
-                return nextResponse({
-                    error: "[type] is wrong. acceptable types: [all, single]",
-                });
+                return nextResponse(
+                    {
+                        error: "[type] is wrong. acceptable types: [all, single]",
+                    },
+                    400,
+                );
             }
         }
     } catch (error) {

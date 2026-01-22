@@ -10,7 +10,7 @@ type Props = {
 export const PostCompact = ({ data }: Props) => {
     // main jsx
     return (
-        <li
+        <article
             className={`flex flex-col rounded-4xl! overflow-hidden h-36! relative
         ${data.image_url ? "" : "border border-background-a-5"}`}
         >
@@ -24,7 +24,10 @@ export const PostCompact = ({ data }: Props) => {
                 />
             )}
 
-            <Topline data={data} />
+            <Topline
+                data={data}
+                className="rounded-none!"
+            />
 
             <LinkButton
                 className={`box rounded-none! backdrop-blur-none! grow z-10! border-0! outline-0! group
@@ -36,7 +39,7 @@ export const PostCompact = ({ data }: Props) => {
                           } as React.CSSProperties)
                         : {}
                 }
-                href={``}
+                href={`/post/view/${data.id}`}
             >
                 <div
                     className="absolute left-1/2 top-1/2 -translate-1/2 
@@ -51,6 +54,6 @@ export const PostCompact = ({ data }: Props) => {
                     />
                 </div>
             </LinkButton>
-        </li>
+        </article>
     );
 };

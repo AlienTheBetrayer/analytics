@@ -15,6 +15,7 @@ export const Posts = () => {
     const status = useAppStore((state) => state.status);
     const profiles = useAppStore((state) => state.profiles);
     const users = useAppStore((state) => state.users);
+    const postIds = useAppStore((state) => state.postIds);
     const getPosts = useAppStore((state) => state.getPosts);
 
     // fetching
@@ -47,16 +48,20 @@ export const Posts = () => {
         errorString = "Incorrect username";
     }
 
+    if(retrievedUsername && !postIds[retrievedUsername]?.length) {
+        errorString = "User hasn't created a single post yet";
+    }
+
     if (errorString || !user) {
         return (
             <>
                 <AbsentTopline
                     title={errorString}
-                    className="max-w-6xl!"
+                    className="max-w-7xl!"
                 />
 
                 <div
-                    className={`box max-w-6xl w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}
+                    className={`box max-w-7xl w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}
                 >
                     <LoadingProfile />
                 </div>
@@ -74,7 +79,7 @@ export const Posts = () => {
                 data={data}
             />
 
-            <div className="box max-w-6xl w-full mx-auto min-h-128 rounded-4xl!">
+            <div className="box max-w-7xl w-full mx-auto min-h-128 rounded-4xl!">
                 <Select
                     type="posts"
                     data={data}

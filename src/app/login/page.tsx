@@ -19,7 +19,7 @@ const LoginPage = () => {
                 <AlreadyLoggedIn />
             ) : (
                 <>
-                    <div className="box flex flex-col gap-1 text-center w-full max-w-6xl">
+                    <div className="box flex flex-col gap-1 text-center w-full max-w-7xl">
                         <h1>Authentication</h1>
                         <p>
                             Sign in to your account to continue. If your account

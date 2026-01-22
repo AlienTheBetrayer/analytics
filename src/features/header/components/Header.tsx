@@ -15,7 +15,7 @@ export const Header = () => {
             <header
                 ref={headerRef}
                 className="sticky mb-8 mt-4 rounded-full backdrop-blur-sm
-        p-1 flex w-full max-w-6xl mx-auto justify-center z-3
+        p-1 flex w-full max-w-7xl mx-auto justify-center z-3
         duration-500 ease-in-out transition-all bg-background-a-3 min-h-16"
             >
                 <nav className="flex items-center w-full! rounded-full outline-background-a-6 outline-1">

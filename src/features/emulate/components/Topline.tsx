@@ -16,7 +16,7 @@ export const Topline = () => {
 
     return (
         <ul
-            className={`box w-full max-w-6xl mx-auto! my-2! p-0! flex-row! gap-1! flex-wrap transition-all duration-500 items-center h-10!`}
+            className={`box w-full max-w-7xl mx-auto! my-2! p-0! flex-row! gap-1! flex-wrap transition-all duration-500 items-center h-10!`}
         >
             <li className="absolute left-1/2 -translate-1/2 top-1/2">
                 <span className="flex gap-1 items-center">

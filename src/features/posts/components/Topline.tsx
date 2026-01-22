@@ -23,6 +23,7 @@ export const Topline = ({ type, data }: Props) => {
 
     // zustand
     const status = useAppStore((state) => state.status);
+    const users = useAppStore((state) => state.users);
 
     const title = ((): { alt: string; src: string } => {
         switch (type) {
@@ -45,9 +46,12 @@ export const Topline = ({ type, data }: Props) => {
         }
     })();
 
+    const username =
+        data && users[type === "post" ? data.user_id : data.user.id].username;
+
     return (
         <ul
-            className={`box p-0! gap-1! my-2! mx-auto! flex-row! max-w-6xl w-full transition-all duration-500 h-10 items-center`}
+            className={`box p-0! gap-1! my-2! mx-auto! flex-row! max-w-7xl w-full transition-all duration-500 h-10 items-center`}
         >
             <li className="absolute left-1/2 -translate-1/2 top-1/2">
                 <span className="flex gap-1 items-center">
@@ -74,20 +78,20 @@ export const Topline = ({ type, data }: Props) => {
                 </Tooltip>
             </li>
 
-            <li>
-                <Tooltip text="Back to profile">
-                    <LinkButton
-                        href={`/profile/${(data && "user" in data && data.user.username) || ""}`}
-                    >
-                        <Image
-                            width={16}
-                            height={16}
-                            alt=""
-                            src="/back.svg"
-                        />
-                    </LinkButton>
-                </Tooltip>
-            </li>
+            {username && (
+                <li>
+                    <Tooltip text="Back to profile">
+                        <LinkButton href={`/posts/${username}`}>
+                            <Image
+                                width={16}
+                                height={16}
+                                alt=""
+                                src="/back.svg"
+                            />
+                        </LinkButton>
+                    </Tooltip>
+                </li>
+            )}
 
             <li className="ml-auto!">
                 {type === "posts" && (
@@ -111,18 +115,20 @@ export const Topline = ({ type, data }: Props) => {
                 )}
 
                 {type === "post" && (
-                    <ul>
+                    <ul className="flex items-center gap-1">
                         {data && data.user_id === status?.id && (
                             <li>
                                 <Tooltip text="Edit this post">
-                                    <LinkButton href={`/post/edit/${data.id}`}>
+                                    <LinkButton
+                                        href={`/post/edit/${data.id}`}
+                                        ariaLabel="edit post"
+                                    >
                                         <Image
                                             width={16}
                                             height={16}
                                             alt=""
                                             src="/pencil.svg"
                                         />
-                                        <span>Edit</span>
                                     </LinkButton>
                                 </Tooltip>
                             </li>
@@ -131,14 +137,13 @@ export const Topline = ({ type, data }: Props) => {
                         {data && data.user_id === status?.id && (
                             <li>
                                 <Tooltip text="Delete this post">
-                                    <Button>
+                                    <Button aria-label="delete post">
                                         <Image
                                             width={16}
                                             height={16}
-                                            alt=""
+                                            alt="del"
                                             src="/delete.svg"
                                         />
-                                        <span>Delete</span>
                                     </Button>
                                 </Tooltip>
                             </li>

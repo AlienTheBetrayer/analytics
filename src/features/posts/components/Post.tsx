@@ -28,62 +28,41 @@ export const Post = () => {
     }, [id, getPosts]);
 
     // fallbacks
+    let errorString = "";
+
     // not logged in and tab is create
     if (!status && tab === "create") {
-        return (
-            <>
-                <AbsentTopline
-                    title="Not authenticated"
-                    className="max-w-6xl!"
-                />
-
-                <div
-                    className={`box max-w-6xl w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}
-                >
-                    <LoadingEmulate />
-                </div>
-            </>
-        );
+        errorString = "Not authenticated";
     }
 
     // no tab
     if (!tab || (tab !== "create" && !id)) {
-        return (
-            <>
-                <AbsentTopline
-                    title="Incorrect URL"
-                    className="max-w-6xl!"
-                />
-
-                <div
-                    className={`box max-w-6xl w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}
-                >
-                    <LoadingEmulate />
-                </div>
-            </>
-        );
+        errorString = "Incorrect URL";
     }
 
-    const post = id ? posts[id] : undefined;
-
     // no post
+    const post = id ? posts[id] : undefined;
+    
     if (tab !== "create" && !post) {
+        errorString = "Post does not exist";
+    }
+
+    if (errorString) {
         return (
             <>
                 <AbsentTopline
                     title="Post does not exist"
-                    className="max-w-6xl!"
+                    className="max-w-7xl!"
                 />
 
                 <div
-                    className={`box max-w-6xl w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}
+                    className={`box max-w-7xl w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}
                 >
                     <LoadingEmulate />
                 </div>
             </>
         );
     }
-
     // the url is correct and a post has been found
     return (
         <>
@@ -93,7 +72,7 @@ export const Post = () => {
             />
 
             <div
-                className={`box max-w-6xl w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}
+                className={`box max-w-7xl w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}
             >
                 <Select
                     type="post"

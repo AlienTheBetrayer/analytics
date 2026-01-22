@@ -71,7 +71,7 @@ export const Emulate = () => {
         <>
             <Topline />
 
-            <div className="flex flex-col w-full max-w-6xl p-6! rounded-4xl! gap-8! box m-auto">
+            <div className="flex flex-col w-full max-w-7xl p-6! rounded-4xl! gap-8! box m-auto">
                 <div className="flex flex-col gap-2">
                     {!Object.values(projects).length ? (
                         <>
