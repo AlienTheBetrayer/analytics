@@ -105,7 +105,13 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                     const res = await refreshedRequest(
                         "/api/post-update/",
                         "POST",
-                        { user_id: options.user_id, ...options.data },
+                        {
+                            user_id: options.user_id,
+                            ...options.data,
+                            ...(options.type === "edit"
+                                ? { id: options.id }
+                                : {}),
+                        },
                     );
 
                     const data = res.data;

@@ -335,7 +335,7 @@ dialog {
     border: 0;
     outline: 0;
     background: transparent;
-    overflow: hidden;
+    overflow: visible;
 }
 
 input[list]::-webkit-calendar-picker-indicator {

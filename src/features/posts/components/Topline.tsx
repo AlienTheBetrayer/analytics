@@ -20,7 +20,7 @@ type Props =
 export const Topline = ({ type, data }: Props) => {
     // url
     const { tab } = useParams<{ tab?: string }>();
-    const pathParts = usePathname().split("/").slice(1);
+    const path = usePathname();
 
     // zustand
     const status = useAppStore((state) => state.status);
@@ -49,6 +49,14 @@ export const Topline = ({ type, data }: Props) => {
 
     const username =
         data && users[type === "post" ? data.user_id : data.user.id].username;
+
+    // const backHref = (() => {
+    //     if(path.startsWith("/post/create")) {
+    //         return "/profile";
+    //     } else if(path.startsWith("/post/")) {
+    //         return `/posts/${username}`
+    //     }
+    // })();   
 
     return (
         <ul
@@ -79,13 +87,12 @@ export const Topline = ({ type, data }: Props) => {
                 </Tooltip>
             </li>
 
-            {username && (
                 <li>
                     <Tooltip
-                        text={`Back to ${pathParts[0] === "post" ? "posts" : "profile"}`}
+                        text={`Back to profile`}
                     >
                         <LinkButton
-                            href={`${pathParts[0] === "post" ? `/posts/${username}` : `/profile/${username}`}`}
+                            href={"/profile/"}
                         >
                             <Image
                                 width={16}
@@ -96,7 +103,6 @@ export const Topline = ({ type, data }: Props) => {
                         </LinkButton>
                     </Tooltip>
                 </li>
-            )}
 
             <li className="ml-auto!">
                 {type === "posts" && (

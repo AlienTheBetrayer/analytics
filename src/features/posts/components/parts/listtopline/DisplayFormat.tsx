@@ -14,7 +14,7 @@ export const DisplayFormat = ({ hide }: Props) => {
     const updateDisplay = useLocalStore((state) => state.updateDisplay);
 
     return (
-        <div className="box w-screen! max-w-96 p-3!">
+        <div className="box w-screen max-w-96 p-3!">
             <CloseButton hide={hide} />
 
             <div className="flex flex-col gap-1 items-center">
@@ -27,7 +27,7 @@ export const DisplayFormat = ({ hide }: Props) => {
                 <span>Columns per row</span>
             </div>
 
-            <ul className="grid grid-cols-4 gap-2">
+            <ul className="grid grid-cols-2 gap-2">
                 {Array.from({ length: 4 }, (_, k) => (
                     <li
                         key={k}

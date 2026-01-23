@@ -30,6 +30,7 @@ export const POST = async (request: NextRequest) => {
             }
 
             if (data.length > 0 && data[0].image_url) {
+                console.log("DELETING IMAGE");
                 await deleteImage({
                     user_id,
                     url: data[0].image_url,
@@ -49,6 +50,8 @@ export const POST = async (request: NextRequest) => {
                     error: "image_name and image_type are undefined",
                 });
             }
+
+            console.log("UPLOADING IMAGE");
             const url = await uploadImage({
                 user_id,
                 base64: image,
@@ -63,6 +66,7 @@ export const POST = async (request: NextRequest) => {
             rest.image_url = url;
         }
 
+        console.log("regular data upload", id);
         // uploading the post along with its image
         const { error } = await supabaseServer
             .from("posts")
