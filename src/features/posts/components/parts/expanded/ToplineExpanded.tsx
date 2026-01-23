@@ -4,9 +4,11 @@ import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { useMessageBox } from "@/features/ui/messagebox/hooks/useMessageBox";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
+import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
 import { Post } from "@/types/tables/posts";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
+import { redirect } from "next/navigation";
 
 type Props = {
     data: Post;
@@ -16,7 +18,9 @@ type Props = {
 export const ToplineExpanded = ({ data, className }: Props) => {
     // zustand
     const profiles = useAppStore((state) => state.profiles);
+    const promises = useAppStore((state) => state.promises);
     const status = useAppStore((state) => state.status);
+    const updatePost = useAppStore((state) => state.updatePost);
 
     // message boxes
     const deleteBox = useMessageBox();
@@ -32,6 +36,13 @@ export const ToplineExpanded = ({ data, className }: Props) => {
                     "You will permanently delete this post and no one will be able to see it again",
                 onSelect: (res) => {
                     if (res === "yes") {
+                        updatePost({
+                            type: "delete",
+                            user_id: data.user_id,
+                            id: data.id,
+                            promiseKey: "deletePost",
+                        });
+                        redirect("/posts");
                     }
                 },
             })}
@@ -78,6 +89,8 @@ export const ToplineExpanded = ({ data, className }: Props) => {
                                 aria-label="delete post"
                                 onClick={deleteBox.show}
                             >
+                                <PromiseStatus status={promises.deletePost} />
+
                                 <Image
                                     alt="edit"
                                     width={16}

@@ -48,6 +48,7 @@ export type PostStore = {
 
     updatePost: (
         options: (
+            | { type: "delete"; id: string }
             | { type: "edit"; id: string; data: PostData }
             | { type: "create"; data: PostData }
         ) & { user_id: string; promiseKey?: string },

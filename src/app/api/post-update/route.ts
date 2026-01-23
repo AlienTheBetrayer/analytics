@@ -9,14 +9,44 @@ import { NextRequest } from "next/server";
 export const POST = async (request: NextRequest) => {
     try {
         // arguments and permissions
-        const { user_id, id, image, image_name, image_type, ...rest } =
+        const { user_id, id, image, image_name, image_type, type, ...rest } =
             await request.json();
 
         tokenVerify(request, [user_id]);
 
+        // delete the post along with its image
+        if (type === "delete") {
+            const { data, error } = (await supabaseServer
+                .from("posts")
+                .delete()
+                .eq("id", id)
+                .select()) as { data: Post[]; error: PostgrestError | null };
+
+            if (error) {
+                console.error(error);
+                return nextResponse(error, 400);
+            }
+
+            if (data.length > 0 && data[0].image_url) {
+                await deleteImage({
+                    user_id,
+                    url: data[0].image_url,
+                    folder: "posts",
+                });
+            }
+
+            return nextResponse(
+                {
+                    message: "Successfully deleted the post with its images.",
+                    post: data[0],
+                },
+                200,
+            );
+        }
+
         // deleting the old image from the storage if we're editing the image
         if (id && (image || image === null)) {
-            const { data, error: existingError } = (await supabaseServer
+            const { data, error } = (await supabaseServer
                 .from("posts")
                 .select()
                 .eq("id", id)) as {
@@ -24,9 +54,9 @@ export const POST = async (request: NextRequest) => {
                 error: PostgrestError | null;
             };
 
-            if (existingError) {
-                console.error(existingError);
-                return nextResponse(existingError, 400);
+            if (error) {
+                console.error(error);
+                return nextResponse(error, 400);
             }
 
             if (data.length > 0 && data[0].image_url) {
@@ -64,7 +94,7 @@ export const POST = async (request: NextRequest) => {
             rest.image_url = url;
         }
 
-        // uploading the post along with its image
+        // uploading the post along with its image (final upload)
         const { data, error } = await supabaseServer
             .from("posts")
             .upsert({ id, user_id, ...rest }, { onConflict: "id" })

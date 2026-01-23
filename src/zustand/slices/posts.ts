@@ -107,19 +107,51 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                         "POST",
                         {
                             user_id: options.user_id,
-                            ...options.data,
-                            ...(options.type === "edit"
-                                ? { id: options.id }
-                                : {}),
+                            ...("data" in options ? options.data : {}),
+                            ...("id" in options ? { id: options.id } : {}),
+                            type: options.type,
                         },
                     );
 
                     const data = res.data.post as Post;
 
-                    set((state) => ({
-                        ...state,
-                        posts: { ...state.posts, [data.id]: data },
-                    }));
+                    set((state) => {
+                        const posts = { ...state.posts };
+                        const postIds = { ...state.postIds };
+
+                        switch (options.type) {
+                            case "delete": {
+                                delete posts[data.id];
+
+                                const username =
+                                    state.users[data.user_id]?.username;
+                                if (username && postIds[username]) {
+                                    postIds[username] = new Set(
+                                        [...postIds[username]].filter(
+                                            (id) => id !== data.id,
+                                        ),
+                                    );
+                                }
+
+                                break;
+                            }
+                            default: {
+                                posts[data.id] = data;
+
+                                const username =
+                                    state.users[data.user_id]?.username;
+                                if (username) {
+                                    postIds[username] = new Set([
+                                        ...(postIds[username] ?? []),
+                                        data.id,
+                                    ]);
+                                }
+                                break;
+                            }
+                        }
+
+                        return { ...state, posts, postIds };
+                    });
 
                     return data;
                 },

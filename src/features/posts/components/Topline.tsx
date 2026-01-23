@@ -6,6 +6,7 @@ import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import { useParams, usePathname } from "next/navigation";
 import { Post } from "@/types/tables/posts";
+import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
 
 type Props =
     | {
@@ -24,6 +25,7 @@ export const Topline = ({ type, data }: Props) => {
 
     // zustand
     const status = useAppStore((state) => state.status);
+    const promises = useAppStore((state) => state.promises);
     const users = useAppStore((state) => state.users);
 
     const title = ((): { alt: string; src: string } => {
@@ -73,7 +75,7 @@ export const Topline = ({ type, data }: Props) => {
         >
             <li className="absolute left-1/2 -translate-1/2 top-1/2">
                 <span className="flex gap-1 items-center">
-                    <div className="rounded-full w-1 h-1 bg-blue-1"/>
+                    <div className="rounded-full w-1 h-1 bg-blue-1" />
                     <Image
                         width={16}
                         height={16}
@@ -156,6 +158,9 @@ export const Topline = ({ type, data }: Props) => {
                             <li>
                                 <Tooltip text="Delete this post">
                                     <Button aria-label="delete post">
+                                        <PromiseStatus
+                                            status={promises.deletePost}
+                                        />
                                         <Image
                                             width={16}
                                             height={16}
