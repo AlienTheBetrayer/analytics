@@ -38,7 +38,7 @@ export const Checkbox = ({
                     width={12}
                     height={12}
                     alt=""
-                    className={`${controller.inputValue ? "opacity-100" : "opacity-0"} transition-all duration-1000`}
+                    className={`${controller.inputValue ? "opacity-100 scale-100" : "opacity-0 scale-10"} transition-all! duration-300! ease-in-out`}
                 />
             </div>
             {children && <span className="flex gap-1 w-full">{children}</span>}

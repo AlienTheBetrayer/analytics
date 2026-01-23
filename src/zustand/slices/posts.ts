@@ -114,7 +114,12 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                         },
                     );
 
-                    const data = res.data;
+                    const data = res.data.post as Post;
+
+                    set((state) => ({
+                        ...state,
+                        posts: { ...state.posts, [data.id]: data },
+                    }));
 
                     return data;
                 },

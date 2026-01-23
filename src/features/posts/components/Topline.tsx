@@ -20,7 +20,7 @@ type Props =
 export const Topline = ({ type, data }: Props) => {
     // url
     const { tab } = useParams<{ tab?: string }>();
-    const path = usePathname();
+    const path = usePathname().split("/").slice(1);
 
     // zustand
     const status = useAppStore((state) => state.status);
@@ -50,13 +50,22 @@ export const Topline = ({ type, data }: Props) => {
     const username =
         data && users[type === "post" ? data.user_id : data.user.id].username;
 
-    // const backHref = (() => {
-    //     if(path.startsWith("/post/create")) {
-    //         return "/profile";
-    //     } else if(path.startsWith("/post/")) {
-    //         return `/posts/${username}`
-    //     }
-    // })();   
+    const backButton = (() => {
+        switch (path[0]) {
+            case "posts": {
+                return {
+                    topline: "Back to profile",
+                    href: `/profile/${username ?? ""}`,
+                };
+            }
+            case "post": {
+                return {
+                    topline: "Back to posts",
+                    href: `/posts/${username ?? ""}`,
+                };
+            }
+        }
+    })();
 
     return (
         <ul
@@ -64,7 +73,7 @@ export const Topline = ({ type, data }: Props) => {
         >
             <li className="absolute left-1/2 -translate-1/2 top-1/2">
                 <span className="flex gap-1 items-center">
-                    <div className="rounded-full w-1 h-1 bg-blue-1" />
+                    <div className="rounded-full w-1 h-1 bg-blue-1"/>
                     <Image
                         width={16}
                         height={16}
@@ -87,13 +96,10 @@ export const Topline = ({ type, data }: Props) => {
                 </Tooltip>
             </li>
 
+            {backButton && (
                 <li>
-                    <Tooltip
-                        text={`Back to profile`}
-                    >
-                        <LinkButton
-                            href={"/profile/"}
-                        >
+                    <Tooltip text={backButton.topline}>
+                        <LinkButton href={backButton.href ?? "/"}>
                             <Image
                                 width={16}
                                 height={16}
@@ -103,6 +109,7 @@ export const Topline = ({ type, data }: Props) => {
                         </LinkButton>
                     </Tooltip>
                 </li>
+            )}
 
             <li className="ml-auto!">
                 {type === "posts" && (

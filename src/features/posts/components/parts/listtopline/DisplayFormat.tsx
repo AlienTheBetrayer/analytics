@@ -1,3 +1,4 @@
+import { Button } from "@/features/ui/button/components/Button";
 import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
 import { CloseButton } from "@/features/ui/closebutton/components/CloseButton";
 import { ViewPostColumns } from "@/types/zustand/local";
@@ -48,22 +49,38 @@ export const DisplayFormat = ({ hide }: Props) => {
                             <span>{k + 1}</span>
                         </Checkbox>
 
-                        <ul className="flex flex-col gap-1">
-                            {Array.from({ length: 3 }, (_, i) => (
-                                <li
-                                    key={`${k}${i}`}
-                                    className="w-full flex gap-1"
-                                >
-                                    {Array.from({ length: k + 1 }, (_, g) => (
-                                        <div
-                                            className="w-full h-6 rounded-md! box p-0! outline-1 outline-background-a-8 
+                        <Button
+                            className="rounded-md!"
+                            onClick={() => {
+                                updateDisplay({
+                                    view: {
+                                        postsColumns: String(
+                                            k + 1,
+                                        ) as ViewPostColumns,
+                                    },
+                                });
+                            }}
+                        >
+                            <ul className="flex flex-col gap-1 w-full">
+                                {Array.from({ length: 3 }, (_, i) => (
+                                    <li
+                                        key={`${k}${i}`}
+                                        className="w-full flex gap-1"
+                                    >
+                                        {Array.from(
+                                            { length: k + 1 },
+                                            (_, g) => (
+                                                <div
+                                                    className="w-full h-6 rounded-md! box p-0! outline-1 outline-background-a-8 
                                             hover:outline-blue-2 transition-all duration-400"
-                                            key={`${k}${g}${i}`}
-                                        />
-                                    ))}
-                                </li>
-                            ))}
-                        </ul>
+                                                    key={`${k}${g}${i}`}
+                                                />
+                                            ),
+                                        )}
+                                    </li>
+                                ))}
+                            </ul>
+                        </Button>
                     </li>
                 ))}
             </ul>

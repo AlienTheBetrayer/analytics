@@ -30,7 +30,6 @@ export const POST = async (request: NextRequest) => {
             }
 
             if (data.length > 0 && data[0].image_url) {
-                console.log("DELETING IMAGE");
                 await deleteImage({
                     user_id,
                     url: data[0].image_url,
@@ -51,7 +50,6 @@ export const POST = async (request: NextRequest) => {
                 });
             }
 
-            console.log("UPLOADING IMAGE");
             const url = await uploadImage({
                 user_id,
                 base64: image,
@@ -66,11 +64,11 @@ export const POST = async (request: NextRequest) => {
             rest.image_url = url;
         }
 
-        console.log("regular data upload", id);
         // uploading the post along with its image
-        const { error } = await supabaseServer
+        const { data, error } = await supabaseServer
             .from("posts")
-            .upsert({ id, user_id, ...rest }, { onConflict: "id" });
+            .upsert({ id, user_id, ...rest }, { onConflict: "id" })
+            .select();
 
         if (error) {
             console.error(error);
@@ -78,7 +76,10 @@ export const POST = async (request: NextRequest) => {
         }
 
         return nextResponse(
-            { message: "Successfully edited or created a post!" },
+            {
+                message: "Successfully edited or created a post!",
+                post: data[0],
+            },
             200,
         );
     } catch (error) {

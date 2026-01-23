@@ -11,7 +11,7 @@ export const PostCompact = ({ data }: Props) => {
     // main jsx
     return (
         <article
-            className={`flex flex-col rounded-4xl! overflow-hidden h-36! relative
+            className={`flex flex-col rounded-4xl! overflow-hidden h-48! relative
         ${data.image_url ? "" : "border border-background-a-5"}`}
         >
             {data.image_url && (

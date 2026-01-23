@@ -28,7 +28,7 @@ export const PostForm = ({ mode }: Props) => {
         mode === "create" ? "" : posts[id!].title,
     );
     const [content, setContent] = useState<string>(
-        mode === "create" ? "" : posts[id!].content,
+        mode === "create" ? "" : (posts[id!]?.content ?? ""),
     );
     const [image, setImage] = useState<File | undefined | null>(undefined);
 
@@ -144,11 +144,9 @@ export const PostForm = ({ mode }: Props) => {
                     </label>
 
                     <Input
-                        required
-                        minLength={32}
                         maxLength={512}
                         id="content"
-                        placeholder="at least 32 characters"
+                        placeholder="512 characters max"
                         style={{
                             minHeight: "15rem",
                             maxHeight: "40rem",

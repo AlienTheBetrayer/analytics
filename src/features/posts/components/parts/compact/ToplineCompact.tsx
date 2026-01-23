@@ -13,7 +13,10 @@ export const ToplineCompact = ({ data, className }: Props) => {
                 ${className ?? ""}`}
         >
             <li className="flex items-center gap-1 absolute left-1/2 top-1/2 -translate-1/2 whitespace-nowrap">
-                <div className="w-1 h-1 rounded-full aspect-square bg-blue-1" />
+                <div className="w-1 h-1 rounded-full aspect-square" 
+                style={{
+                    background: data.image_url ? "var(--blue-1)" : data.content ? "var(--orange-1)" : "var(--red-1)"
+                }}/>
                 <span>{data.title}</span>
             </li>
         </ul>
