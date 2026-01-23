@@ -4,7 +4,7 @@ import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { Profile, User } from "@/types/tables/account";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
-import { useParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import { Post } from "@/types/tables/posts";
 
 type Props =
@@ -20,6 +20,7 @@ type Props =
 export const Topline = ({ type, data }: Props) => {
     // url
     const { tab } = useParams<{ tab?: string }>();
+    const pathParts = usePathname().split("/").slice(1);
 
     // zustand
     const status = useAppStore((state) => state.status);
@@ -80,8 +81,12 @@ export const Topline = ({ type, data }: Props) => {
 
             {username && (
                 <li>
-                    <Tooltip text="Back to posts">
-                        <LinkButton href={`/posts/${username}`}>
+                    <Tooltip
+                        text={`Back to ${pathParts[0] === "post" ? "posts" : "profile"}`}
+                    >
+                        <LinkButton
+                            href={`${pathParts[0] === "post" ? `/posts/${username}` : `/profile/${username}`}`}
+                        >
                             <Image
                                 width={16}
                                 height={16}

@@ -3,6 +3,7 @@ import { Role } from "@/features/profile/components/parts/Role";
 import { ProfileImage } from "@/features/profile/components/ProfileImage";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { Profile, User } from "@/types/tables/account";
+import { relativeTime } from "@/utils/other/relativeTime";
 
 type Props = {
     data: { user: User; profile: Profile };
@@ -11,7 +12,7 @@ type Props = {
 export const ProfileDisplay = ({ data }: Props) => {
     return (
         <LinkButton
-            className="box w-full gap-2! h-44 rounded-[10vw]!"
+            className="box w-full gap-2! h-44 rounded-[3rem]!"
             href={`/profile/${data.user.username}/`}
         >
             <ul className="flex flex-col w-full items-center gap-2!">
@@ -39,6 +40,14 @@ export const ProfileDisplay = ({ data }: Props) => {
                             <Role data={data} />
                         </li>
                     </ul>
+                </li>
+
+                <li className="absolute right-4 top-4">
+                    <span>
+                        <small>
+                            seen {relativeTime(data.user.last_seen_at)}
+                        </small>
+                    </span>
                 </li>
             </ul>
         </LinkButton>

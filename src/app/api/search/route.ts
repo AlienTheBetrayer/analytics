@@ -18,7 +18,8 @@ export const GET = async (request: NextRequest) => {
         const { data, error } = (await supabaseServer
             .from("users")
             .select("*, profile:profiles(*)")
-            .ilike("username", query === "*" ? "%" : `%${query}%`)) as {
+            .ilike("username", query === "*" ? "%" : `%${query}%`)
+            .order("last_seen_at", { ascending: false })) as {
             data: (User & { profile: Profile })[];
             error: PostgrestError | null;
         };
@@ -31,7 +32,7 @@ export const GET = async (request: NextRequest) => {
         return nextResponse(
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             { users: data.map(({ password, ...rest }) => ({ ...rest })) },
-            200
+            200,
         );
     } catch (e) {
         console.error(e);
