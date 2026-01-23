@@ -97,7 +97,17 @@ export const POST = async (request: NextRequest) => {
         // uploading the post along with its image (final upload)
         const { data, error } = await supabaseServer
             .from("posts")
-            .upsert({ id, user_id, ...rest }, { onConflict: "id" })
+            .upsert(
+                {
+                    id,
+                    user_id,
+                    ...(type === "edit" && {
+                        edited_at: new Date().toISOString(),
+                    }),
+                    ...rest,
+                },
+                { onConflict: "id" },
+            )
             .select();
 
         if (error) {

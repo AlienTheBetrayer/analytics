@@ -1,5 +1,7 @@
 import { ToplineCompact } from "@/features/posts/components/parts/compact/ToplineCompact";
+import { CompactInfo } from "@/features/posts/components/parts/CompactInfo";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
+import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Post } from "@/types/tables/posts";
 import Image from "next/image";
 
@@ -29,31 +31,37 @@ export const PostCompact = ({ data }: Props) => {
                 className="rounded-none!"
             />
 
-            <LinkButton
-                className={`box rounded-none! backdrop-blur-none! grow z-10! border-0! outline-0! group
-                    ${data.image_url ? "not-[&:hover]:bg-transparent!" : ""}`}
-                style={
-                    data.image_url
-                        ? ({
-                              "--ripple-color": "#00000099",
-                          } as React.CSSProperties)
-                        : {}
-                }
-                href={`/post/view/${data.id}`}
+            <Tooltip
+                direction="middle"
+                className="w-full grow"
+                element={<CompactInfo post={data} />}
             >
-                <div
-                    className="absolute left-1/2 top-1/2 -translate-1/2 
+                <LinkButton
+                    className={`box rounded-none! backdrop-blur-none! grow z-10! h-full border-0! outline-0! group
+                    ${data.image_url ? "not-[&:hover]:bg-transparent!" : ""}`}
+                    style={
+                        data.image_url
+                            ? ({
+                                  "--ripple-color": "#00000099",
+                              } as React.CSSProperties)
+                            : {}
+                    }
+                    href={`/post/view/${data.id}`}
+                >
+                    <div
+                        className="absolute left-1/2 top-1/2 -translate-1/2 
                     group-hover:scale-150 group-hover:outline-blue-1 group-focus-within:scale-150 group-focus-within:outline-blue-1 duration-400 ease-in-out
                             rounded-full aspect-square p-2 outline-2 outline-blue-3 backdrop-blur-md"
-                >
-                    <Image
-                        alt="open post"
-                        width={24}
-                        height={24}
-                        src="/launch.svg"
-                    />
-                </div>
-            </LinkButton>
+                    >
+                        <Image
+                            alt="open post"
+                            width={24}
+                            height={24}
+                            src="/launch.svg"
+                        />
+                    </div>
+                </LinkButton>
+            </Tooltip>
         </article>
     );
 };

@@ -174,7 +174,7 @@ export const PostForm = ({ mode }: Props) => {
                             height={16}
                             src="/cubeadd.svg"
                         />
-                        Publish
+                        {mode === "create" ? "Publish" : "Edit"}
                     </Button>
                 </li>
             </ul>

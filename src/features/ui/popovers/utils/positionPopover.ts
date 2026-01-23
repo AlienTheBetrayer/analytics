@@ -77,6 +77,12 @@ export const positionPopover = (
             translateY = -100;
             break;
         }
+        case "middle": {
+            left = elementBounds.left + elementBounds.width / 2;
+            top = elementBounds.top + elementBounds.height / 2;
+            translateX = -50;
+            translateY = -50;
+        }
     }
 
     // setting the initial positions
