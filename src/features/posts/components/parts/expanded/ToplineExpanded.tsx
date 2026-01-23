@@ -50,7 +50,7 @@ export const ToplineExpanded = ({ data, className }: Props) => {
             <li className="absolute left-4 top-1/2 -translate-y-1/2">
                 <Tooltip
                     pointerEvents
-                    element={<AuthorView />}
+                    element={<AuthorView id={data.user_id}/>}
                     direction="right"
                 >
                     <ProfileImage
