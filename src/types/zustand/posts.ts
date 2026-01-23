@@ -8,7 +8,14 @@ export type PostData = {
     image_type?: string;
 };
 
+export type PostFiltering = {
+    filter: string;
+};
+
 export type PostStore = {
+    // misc: searching / filtering
+    postFiltering: PostFiltering;
+
     /**
      * post_id : Post
      */
@@ -18,6 +25,12 @@ export type PostStore = {
      * username: post ids[]
      */
     postIds: Record<string, string[]>;
+
+    /**
+     * updates the filtering metadata
+     * @param sorting a partial sorting object
+     */
+    updatePostFiltering: (sorting: Partial<PostFiltering>) => void;
 
     /**
      * gets all the posts along with the user and profile data attached to it

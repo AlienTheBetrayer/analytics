@@ -1,5 +1,6 @@
 import { PostCompact } from "@/features/posts/components/parts/compact/PostCompact";
 import { ListTopline } from "@/features/posts/components/parts/listtopline/ListTopline";
+import { usePostList } from "@/features/posts/hooks/usePostList";
 import { ProfileImage } from "@/features/profile/components/ProfileImage";
 import { Spinner } from "@/features/spinner/components/Spinner";
 import { Profile, User } from "@/types/tables/account";
@@ -14,14 +15,9 @@ type Props = {
 export const List = ({ data }: Props) => {
     // zustand
     const promises = useAppStore((state) => state.promises);
-    const postIds = useAppStore((state) => state.postIds);
-    const posts = useAppStore((state) => state.posts);
+    // processed posts
+    const { filtered } = usePostList(data.user);
 
-    const postsData = Object.values(postIds[data.user.username]).map(
-        (id) => posts[id],
-    );
-
-    // main jsx
     return (
         <ul className="flex flex-col gap-8">
             <li className="flex flex-col gap-1 items-center">
@@ -46,17 +42,17 @@ export const List = ({ data }: Props) => {
             </li>
 
             <li>
-                <ListTopline/>
+                <ListTopline />
             </li>
 
             <li>
                 <ul className="grid gap-12">
-                    {postsData.map((postData) => (
+                    {filtered.map((post) => (
                         <li
                             className="flex flex-col gap-4"
-                            key={postData.id}
+                            key={post.id}
                         >
-                            <PostCompact data={postData} />
+                            <PostCompact data={post} />
                             <hr />
                         </li>
                     ))}

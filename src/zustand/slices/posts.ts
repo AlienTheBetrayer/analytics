@@ -8,6 +8,16 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
     return {
         posts: {},
         postIds: {},
+        postFiltering: {
+            filter: "",
+        },
+
+        updatePostFiltering: (filtering) => {
+            set((state) => ({
+                ...state,
+                postFiltering: { ...state.postFiltering, ...filtering },
+            }));
+        },
 
         getPosts: async (options) => {
             const { setPromise, postIds } = get();

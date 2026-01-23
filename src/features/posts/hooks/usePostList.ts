@@ -1,0 +1,43 @@
+import { User } from "@/types/tables/account";
+import { useLocalStore } from "@/zustand/localStore";
+import { useAppStore } from "@/zustand/store";
+import { useMemo } from "react";
+
+export const usePostList = (user: User) => {
+    // zustand
+    const postFiltering = useAppStore((state) => state.postFiltering);
+    const sorting = useLocalStore((state) => state.sorting);
+    const posts = useAppStore((state) => state.posts);
+    const postIds = useAppStore((state) => state.postIds);
+
+    // sorted object
+    const filtered = useMemo(() => {
+        const postsData = Object.values(postIds[user.username]).map(
+            (id) => posts[id],
+        );
+        let allPosts = [...postsData];
+
+        // sorting
+        const direction = sorting.posts === "descendant" ? -1 : 1;
+        allPosts.sort(
+            (a, b) =>
+                (new Date(a.created_at).getTime() -
+                    new Date(b.created_at).getTime()) *
+                direction,
+        );
+
+        console.log(postFiltering.filter);
+        // filtering
+        if (postFiltering.filter.trim()) {
+            allPosts = allPosts.filter(
+                (post) =>
+                    post.title.toLowerCase().includes(postFiltering.filter.toLowerCase()) ||
+                    post.content.toLowerCase().includes(postFiltering.filter.toLowerCase()),
+            );
+        }
+
+        return allPosts;
+    }, [posts, postIds, postFiltering, sorting, user]);
+
+    return { filtered };
+};

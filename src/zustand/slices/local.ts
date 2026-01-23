@@ -1,7 +1,6 @@
 import {
     LocalStore,
-    PreferencesDefaults,
-    VisibleProfile,
+    PreferencesDefaults, VisibleProfile
 } from "@/types/zustand/local";
 import { SliceFunction } from "@/types/zustand/utils/sliceFunction";
 
@@ -10,7 +9,22 @@ export const LocalSlice: SliceFunction<LocalStore, LocalStore> = (set) => {
         preferences: {
             visibility: true,
         },
+        sorting: {
+            posts: "descendant",
+        },
         theme: "dark",
+
+        updateSorting: (sorting) => {
+            set((state) => ({
+                ...state,
+                sorting: { ...state.sorting, ...sorting },
+            }));
+        },
+
+        toggleSorting: (key) => {
+            set(state => ({ ...state, sorting: { ...state.sorting, [key]: state.sorting[key] === "ascendant" ? "descendant" : "ascendant"} }));
+        },
+        
 
         toggleTheme: () => {
             set((state) => ({

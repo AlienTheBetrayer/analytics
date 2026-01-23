@@ -80,7 +80,7 @@ export const Topline = ({ type, data }: Props) => {
 
             {username && (
                 <li>
-                    <Tooltip text="Back to profile">
+                    <Tooltip text="Back to posts">
                         <LinkButton href={`/posts/${username}`}>
                             <Image
                                 width={16}
