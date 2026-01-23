@@ -6,7 +6,7 @@ import { useMemo } from "react";
 export const usePostList = (user: User) => {
     // zustand
     const postFiltering = useAppStore((state) => state.postFiltering);
-    const sorting = useLocalStore((state) => state.sorting);
+    const display = useLocalStore((state) => state.display);
     const posts = useAppStore((state) => state.posts);
     const postIds = useAppStore((state) => state.postIds);
 
@@ -18,7 +18,7 @@ export const usePostList = (user: User) => {
         let allPosts = [...postsData];
 
         // sorting
-        const direction = sorting.posts === "descendant" ? -1 : 1;
+        const direction = display.sorting.posts === "descendant" ? -1 : 1;
         allPosts.sort(
             (a, b) =>
                 (new Date(a.created_at).getTime() -
@@ -31,13 +31,17 @@ export const usePostList = (user: User) => {
         if (postFiltering.filter.trim()) {
             allPosts = allPosts.filter(
                 (post) =>
-                    post.title.toLowerCase().includes(postFiltering.filter.toLowerCase()) ||
-                    post.content.toLowerCase().includes(postFiltering.filter.toLowerCase()),
+                    post.title
+                        .toLowerCase()
+                        .includes(postFiltering.filter.toLowerCase()) ||
+                    post.content
+                        .toLowerCase()
+                        .includes(postFiltering.filter.toLowerCase()),
             );
         }
 
         return allPosts;
-    }, [posts, postIds, postFiltering, sorting, user]);
+    }, [posts, postIds, postFiltering, display, user]);
 
     return { filtered };
 };

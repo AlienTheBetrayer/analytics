@@ -19,8 +19,8 @@ export const PostExpanded = ({ data }: Props) => {
             />
 
             <ul className="flex flex-col gap-4">
-                <li className="w-full relative min-h-72">
-                    {data.image_url && (
+                {data.image_url && (
+                    <li className="w-full relative min-h-72">
                         <Image
                             alt="post image"
                             fill
@@ -28,8 +28,8 @@ export const PostExpanded = ({ data }: Props) => {
                             style={{ objectFit: "cover" }}
                             className="invert-0!"
                         />
-                    )}
-                </li>
+                    </li>
+                )}
 
                 <li>
                     <hr />

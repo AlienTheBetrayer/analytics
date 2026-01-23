@@ -3,7 +3,7 @@ import Image from "next/image";
 import { ComponentPropsWithoutRef } from "react";
 
 type Props = {
-    hide?: () => void;
+    hide: () => void;
 } & ComponentPropsWithoutRef<"button">;
 
 export const CloseButton = ({ hide }: Props) => {
@@ -12,7 +12,7 @@ export const CloseButton = ({ hide }: Props) => {
             aria-label="close"
             className="absolute! right-4 top-2 min-w-6! min-h-6! w-6! h-6! p-0!"
             onClick={() => {
-                hide?.();
+                hide();
             }}
         >
             <Image

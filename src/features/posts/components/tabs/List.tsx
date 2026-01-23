@@ -4,6 +4,7 @@ import { usePostList } from "@/features/posts/hooks/usePostList";
 import { ProfileImage } from "@/features/profile/components/ProfileImage";
 import { Spinner } from "@/features/spinner/components/Spinner";
 import { Profile, User } from "@/types/tables/account";
+import { useLocalStore } from "@/zustand/localStore";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import React from "react";
@@ -15,6 +16,7 @@ type Props = {
 export const List = ({ data }: Props) => {
     // zustand
     const promises = useAppStore((state) => state.promises);
+    const display = useLocalStore((state) => state.display);
     // processed posts
     const { filtered } = usePostList(data.user);
 
@@ -46,7 +48,13 @@ export const List = ({ data }: Props) => {
             </li>
 
             <li>
-                <ul className="grid gap-12">
+                <ul
+                    className="grid"
+                    style={{
+                        gridTemplateColumns: `repeat(${display.view.postsColumns}, 1fr)`,
+                        gap: `${4.5 - Number(display.view.postsColumns)}rem`
+                    }}
+                >
                     {filtered.map((post) => (
                         <li
                             className="flex flex-col gap-4"

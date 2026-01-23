@@ -8,17 +8,25 @@ export type VisibleProfile = {
 // preferences
 export type Preferences = {
     visibility: boolean;
-}
+};
 export const PreferencesDefaults: Preferences = {
     visibility: true,
-}
+};
 
-// sorting
+// display
 export type SortingDirection = "ascendant" | "descendant";
 export type Sorting = {
     posts: SortingDirection;
-}
+};
+export type ViewPostColumns = "1" | "2" | "3" | "4";
+export type View = {
+    postsColumns: ViewPostColumns;
+};
 
+export type Display = {
+    sorting: Sorting;
+    view: View;
+};
 
 export type LocalStore = {
     // settings
@@ -29,7 +37,9 @@ export type LocalStore = {
 
     // theme
     theme: "dark" | "light";
-    sorting: Sorting;
+
+    // display
+    display: Display;
 
     /**
      * toggles the theme (goes from dark to light to dark)
@@ -44,13 +54,13 @@ export type LocalStore = {
 
     /**
      * updates the sorting metadata
-     * @param sorting a partial sorting object  
+     * @param sorting a partial sorting object
      */
-    updateSorting: (sorting: Partial<Sorting>) => void;
+    updateDisplay: (sorting: Partial<Display>) => void;
 
-        /**
+    /**
      * toggles the sorting metadata
-     * @param sorting a partial sorting object  
+     * @param sorting a partial sorting object
      */
     toggleSorting: (key: keyof Sorting) => void;
 

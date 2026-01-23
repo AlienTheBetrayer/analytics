@@ -26,8 +26,7 @@ export const Checkbox = ({
             aria-label={typeof children === "string" ? children : undefined}
             onClick={controller.toggle}
             onKeyDown={controller.keyDown}
-            className={`checkbox flex w-full gap-2 h-8 p-1.5 items-center bg-background-a-4
-                 rounded-xl hover:bg-background-a-7 duration-300 ease-out cursor-pointer outline-2 outline-transparent focus-within:outline-blue-1! ${className ?? ""}`}
+            className={`button flex w-full h-8 focus-within:outline-blue-1! ${className ?? ""}`}
             {...rest}
         >
             <div

@@ -57,11 +57,11 @@ export const Posts = () => {
             <>
                 <AbsentTopline
                     title={errorString}
-                    className="max-w-7xl!"
+                    className="max-w-400!"
                 />
 
                 <div
-                    className={`box max-w-7xl w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}
+                    className={`box max-w-400 w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}
                 >
                     <LoadingProfile />
                 </div>
@@ -79,7 +79,7 @@ export const Posts = () => {
                 data={data}
             />
 
-            <div className="box max-w-7xl w-full mx-auto min-h-128 rounded-4xl!">
+            <div className="box max-w-400 w-full mx-auto min-h-128 rounded-4xl!">
                 <Select
                     type="posts"
                     data={data}

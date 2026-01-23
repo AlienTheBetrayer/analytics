@@ -37,7 +37,7 @@ export const Modal = React.memo(function ModalFunction({
     // refs
     const elementRef = useRef<HTMLDivElement | null>(null);
     const modalRef = useRef<HTMLDialogElement | null>(null);
-
+    console.log(isShown);
     // dialog closing
     useEffect(() => {
         setIsDisabled(isShown);
@@ -57,6 +57,10 @@ export const Modal = React.memo(function ModalFunction({
     // positioning
     useEffect(() => {
         const handle = () => {
+            if (!isShown) {
+                return;
+            }
+
             positionPopover(modalRef, elementRef, direction);
         };
 
@@ -135,6 +139,7 @@ export const Modal = React.memo(function ModalFunction({
                                 }}
                                 ref={modalRef}
                                 onClick={(e) => e.stopPropagation()}
+                                className="fixed"
                             >
                                 <motion.div
                                     initial={{

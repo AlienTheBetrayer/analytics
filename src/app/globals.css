@@ -176,6 +176,14 @@
     --color-background-a-10: var(--background-a-10);
     --color-background-a-11: var(--background-a-11);
     --color-background-a-12: var(--background-a-12);
+    --color-background-a-13: var(--background-a-13);
+    --color-background-a-14: var(--background-a-14);
+    --color-background-a-15: var(--background-a-15);
+    --color-background-a-16: var(--background-a-16);
+    --color-background-a-17: var(--background-a-17);
+    --color-background-a-18: var(--background-a-18);
+    --color-background-a-19: var(--background-a-19);
+    --color-background-a-20: var(--background-a-20);
 
     --color-blue-1: var(--blue-1);
     --color-blue-2: var(--blue-2);
@@ -377,7 +385,7 @@ img {
     gap: 0.5rem;
     padding: 2rem;
     background: var(--background-a-3);
-    backdrop-filter: blur(0.4rem);
+    backdrop-filter: blur(1rem);
     border-radius: 2rem;
     border: 1px solid var(--background-a-5);
 }

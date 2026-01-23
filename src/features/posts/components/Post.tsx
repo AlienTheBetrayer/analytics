@@ -52,11 +52,11 @@ export const Post = () => {
             <>
                 <AbsentTopline
                     title="Post does not exist"
-                    className="max-w-7xl!"
+                    className="max-w-400!"
                 />
 
                 <div
-                    className={`box max-w-7xl w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}
+                    className={`box max-w-400 w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}
                 >
                     <LoadingEmulate />
                 </div>
@@ -72,7 +72,7 @@ export const Post = () => {
             />
 
             <div
-                className={`box max-w-7xl w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}
+                className={`box max-w-400 w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}
             >
                 <Select
                     type="post"

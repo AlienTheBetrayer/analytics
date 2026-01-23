@@ -1,5 +1,7 @@
+import { DisplayFormat } from "@/features/posts/components/parts/listtopline/DisplayFormat";
 import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
+import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { TabSelection } from "@/utils/other/TabSelection";
 import { useLocalStore } from "@/zustand/localStore";
@@ -12,7 +14,7 @@ export const ListTopline = () => {
     const updatePostFiltering = useAppStore(
         (state) => state.updatePostFiltering,
     );
-    const sorting = useLocalStore((state) => state.sorting);
+    const display = useLocalStore((state) => state.display);
     const toggleSorting = useLocalStore((state) => state.toggleSorting);
 
     return (
@@ -32,13 +34,13 @@ export const ListTopline = () => {
                             height={16}
                             className="duration-500! ease-out!"
                             style={{
-                                transform: `rotate(${sorting.posts === "descendant" ? "0" : "180"}deg)`,
+                                transform: `rotate(${display.sorting.posts === "descendant" ? "0" : "180"}deg)`,
                             }}
                         />
 
                         <TabSelection
                             condition={true}
-                            color={`var(${sorting.posts === "descendant" ? "--orange-1" : "--blue-1"}`}
+                            color={`var(${display.sorting.posts === "descendant" ? "--orange-1" : "--blue-1"}`}
                         />
                     </Button>
                 </Tooltip>
@@ -58,6 +60,24 @@ export const ListTopline = () => {
                             updatePostFiltering({ filter });
                         }}
                     />
+                </Tooltip>
+            </li>
+
+            <li className="ml-auto!">
+                <Tooltip text="Display format">
+                    <Modal
+                        element={(hide) => <DisplayFormat hide={hide}/>}
+                        direction="bottom-right"
+                    >
+                        <Button>
+                            <Image
+                                alt=""
+                                width={16}
+                                height={16}
+                                src="/cubes.svg"
+                            />
+                        </Button>
+                    </Modal>
                 </Tooltip>
             </li>
         </ul>
