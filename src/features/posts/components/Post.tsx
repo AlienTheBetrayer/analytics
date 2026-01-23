@@ -13,6 +13,7 @@ export const Post = () => {
 
     // zustand
     const posts = useAppStore((state) => state.posts);
+    const postIds = useAppStore((state) => state.postIds);
     const status = useAppStore((state) => state.status);
     const getPosts = useAppStore((state) => state.getPosts);
 
@@ -30,28 +31,32 @@ export const Post = () => {
     // fallbacks
     let errorString = "";
 
-    // not logged in and tab is create
-    if (!status && tab === "create") {
+    // no post
+    const post = id ? posts[id] : undefined;
+
+    if (tab !== "create" && !post) {
+        console.log(post);
+        errorString = "Post does not exist";
+    }
+
+    // trying to do anything other than view other posts (or not logged in)
+    if (
+        tab !== "view" &&
+        (!status || (id && !postIds[status.username]?.has(id)))
+    ) {
         errorString = "Not authenticated";
     }
 
-    // no tab
+    // no tab or create tab has no id
     if (!tab || (tab !== "create" && !id)) {
         errorString = "Incorrect URL";
-    }
-
-    // no post
-    const post = id ? posts[id] : undefined;
-    
-    if (tab !== "create" && !post) {
-        errorString = "Post does not exist";
     }
 
     if (errorString) {
         return (
             <>
                 <AbsentTopline
-                    title="Post does not exist"
+                    title={errorString}
                     className="max-w-400!"
                 />
 
@@ -63,7 +68,7 @@ export const Post = () => {
             </>
         );
     }
-    
+
     // the url is correct and a post has been found
     return (
         <>

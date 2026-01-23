@@ -1,13 +1,13 @@
 @keyframes loadingSpinner {
-	0% {
-		transform: rotate(0deg);
-	}
-	100% {
-		transform: rotate(360deg);
-	}
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 .loading-spinner {
-	animation: 0.4s loadingSpinner infinite linear;
-	filter: invert(0.5) grayscale(1);
+    animation: 0.75s loadingSpinner infinite linear;
+    filter: invert(0.5) grayscale(1);
 }

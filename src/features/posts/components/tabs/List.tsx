@@ -7,7 +7,6 @@ import { Profile, User } from "@/types/tables/account";
 import { useLocalStore } from "@/zustand/localStore";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
-import React from "react";
 
 type Props = {
     data: { user: User; profile: Profile };
@@ -52,33 +51,33 @@ export const List = ({ data }: Props) => {
                     className="grid"
                     style={{
                         gridTemplateColumns: `repeat(${display.view.postsColumns}, 1fr)`,
-                        gap: `${4.5 - Number(display.view.postsColumns)}rem`
+                        gap: `${4.5 - Number(display.view.postsColumns)}rem`,
                     }}
                 >
-                    {filtered.map((post) => (
-                        <li
-                            className="flex flex-col gap-4"
-                            key={post.id}
-                        >
-                            <PostCompact data={post} />
-                            <hr />
-                        </li>
-                    ))}
+                    {promises.getPosts === "pending"
+                        ? Array.from({ length: 8 }, (_, k) => (
+                              <li
+                                  className="flex flex-col gap-4"
+                                  key={k}
+                              >
+                                  <div className="w-full flex flex-col h-48 rounded-4xl! loading p-0!">
+                                      <div className="w-full h-10 loading" />
+                                      <Spinner className="m-auto" />
+                                  </div>
+                                  <hr />
+                              </li>
+                          ))
+                        : filtered.map((post) => (
+                              <li
+                                  className="flex flex-col gap-4"
+                                  key={post.id}
+                              >
+                                  <PostCompact data={post} />
+                                  <hr />
+                              </li>
+                          ))}
                 </ul>
             </li>
-
-            {promises.getPosts === "pending" &&
-                Array.from({ length: 2 }, (_, k) => (
-                    <React.Fragment key={k}>
-                        <li className="w-full grid place-items-center h-32 rounded-4xl! loading">
-                            <Spinner className="w-5" />
-                        </li>
-
-                        <li>
-                            <hr />
-                        </li>
-                    </React.Fragment>
-                ))}
         </ul>
     );
 };

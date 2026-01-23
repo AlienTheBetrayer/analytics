@@ -1,6 +1,7 @@
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Post } from "@/types/tables/posts";
+import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 
 type Props = {
@@ -9,6 +10,10 @@ type Props = {
 };
 
 export const ToplineCompact = ({ data, className }: Props) => {
+    // zustand
+    const postIds = useAppStore((state) => state.postIds);
+    const status = useAppStore((state) => state.status);
+
     return (
         <ul
             className={`box flex-row! gap-1! px-2! py-0! items-center! w-full h-10! bg-[#00000030]!
@@ -30,22 +35,6 @@ export const ToplineCompact = ({ data, className }: Props) => {
             </li>
 
             <li className="ml-auto!">
-                <Tooltip text="Edit this post">
-                    <LinkButton
-                        href={`/post/edit/${data.id}`}
-                        ariaLabel="edit post"
-                    >
-                        <Image
-                            alt=""
-                            width={16}
-                            height={16}
-                            src="/pencil.svg"
-                        />
-                    </LinkButton>
-                </Tooltip>
-            </li>
-
-            <li>
                 <Tooltip text="View this post">
                     <LinkButton
                         href={`/post/view/${data.id}`}
@@ -60,6 +49,24 @@ export const ToplineCompact = ({ data, className }: Props) => {
                     </LinkButton>
                 </Tooltip>
             </li>
+
+            {status && postIds[status.username]?.has(data.id) && (
+                <li>
+                    <Tooltip text="Edit this post">
+                        <LinkButton
+                            href={`/post/edit/${data.id}`}
+                            ariaLabel="edit post"
+                        >
+                            <Image
+                                alt=""
+                                width={16}
+                                height={16}
+                                src="/pencil.svg"
+                            />
+                        </LinkButton>
+                    </Tooltip>
+                </li>
+            )}
         </ul>
     );
 };
