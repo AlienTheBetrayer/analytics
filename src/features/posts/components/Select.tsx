@@ -26,7 +26,7 @@ export const Select = ({ type, data }: Props) => {
                     return <Create />;
                 }
                 case "edit": {
-                    return data && <Edit post={data} />;
+                    return data && <Edit />;
                 }
                 default: {
                     return data && <View post={data} />;

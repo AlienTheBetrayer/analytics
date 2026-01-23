@@ -7,14 +7,13 @@ import { useParams } from "next/navigation";
 import React, { useRef } from "react";
 
 type Props = {
-    image: [
-        File | undefined | null,
-        React.Dispatch<React.SetStateAction<File | undefined | null>>,
-    ];
+    image: File | undefined | null;
+    setImage: React.Dispatch<React.SetStateAction<File | undefined | null>>;
 };
 
 export const PostImage = React.memo(function PostImageComponent({
-    image: [image, setImage],
+    image,
+    setImage,
 }: Props) {
     // url
     const { id } = useParams<{ id?: string }>();

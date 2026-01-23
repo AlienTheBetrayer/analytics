@@ -19,6 +19,18 @@ export const ListTopline = () => {
 
     return (
         <ul className="box rounded-full! flex-row! gap-1! h-10! p-0! items-center!">
+            <li className="absolute left-1/2 -translate-1/2 top-1/2">
+                <span className="flex gap-1 items-center">
+                    <div className="rounded-full w-1 h-1 bg-blue-1" />
+                    <Image
+                        width={16}
+                        height={16}
+                        alt=""
+                        src="/book.svg"
+                    />
+                </span>
+            </li>
+
             <li>
                 <Tooltip text="Sorting direction">
                     <Button
@@ -66,7 +78,7 @@ export const ListTopline = () => {
             <li className="ml-auto!">
                 <Tooltip text="Display format">
                     <Modal
-                        element={(hide) => <DisplayFormat hide={hide}/>}
+                        element={(hide) => <DisplayFormat hide={hide} />}
                         direction="bottom-right"
                     >
                         <Button>

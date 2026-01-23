@@ -122,7 +122,10 @@ export const PostForm = ({ mode }: Props) => {
                         />
                         Image
                     </label>
-                    <PostImage image={[image, setImage]} />
+                    <PostImage
+                        image={image}
+                        setImage={setImage}
+                    />
                 </li>
 
                 <li>
