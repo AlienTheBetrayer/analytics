@@ -4,6 +4,8 @@ import { PostStore } from "@/types/zustand/posts";
 import { SliceFunction } from "@/types/zustand/utils/sliceFunction";
 import { refreshedRequest } from "@/utils/auth/refreshedRequest";
 
+const cache = new Set();
+
 export const PostSlice: SliceFunction<PostStore> = (set, get) => {
     return {
         posts: {},
@@ -20,12 +22,14 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
         },
 
         getPosts: async (options) => {
-            const { setPromise, postIds } = get();
+            const { setPromise } = get();
 
+            // cache
             if (
-                options.type === "all" &&
-                options.caching &&
-                postIds[options.username]
+                (options.caching ?? true) &&
+                cache.has(
+                    options.type === "all" ? options.username : options.id,
+                )
             ) {
                 return;
             }
@@ -50,6 +54,10 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                         },
                     );
 
+                    cache.add(
+                        options.type === "all" ? options.username : options.id,
+                    );
+
                     const data = res.data as User & {
                         profile: Profile;
                         posts: Post[];
@@ -61,11 +69,11 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                         const users = { ...state.users };
                         const postIds = { ...state.postIds };
 
-                        const ids: string[] = [];
+                        const ids = new Set(state.postIds[data.username]);
 
                         for (const post of data.posts) {
                             posts[post.id] = post;
-                            ids.push(post.id);
+                            ids.add(post.id);
                         }
 
                         postIds[data.username] = ids;

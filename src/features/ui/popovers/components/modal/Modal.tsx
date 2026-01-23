@@ -37,7 +37,7 @@ export const Modal = React.memo(function ModalFunction({
     // refs
     const elementRef = useRef<HTMLDivElement | null>(null);
     const modalRef = useRef<HTMLDialogElement | null>(null);
-    console.log(isShown);
+
     // dialog closing
     useEffect(() => {
         setIsDisabled(isShown);

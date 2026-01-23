@@ -24,7 +24,7 @@ export type PostStore = {
     /**
      * username: post ids[]
      */
-    postIds: Record<string, string[]>;
+    postIds: Record<string, Set<string>>;
 
     /**
      * updates the filtering metadata

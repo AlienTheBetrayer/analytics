@@ -12,7 +12,7 @@ export const usePostList = (user: User) => {
 
     // sorted object
     const filtered = useMemo(() => {
-        const postsData = Object.values(postIds[user.username]).map(
+        const postsData = Array.from(postIds[user.username]).map(
             (id) => posts[id],
         );
         let allPosts = [...postsData];
@@ -26,7 +26,6 @@ export const usePostList = (user: User) => {
                 direction,
         );
 
-        console.log(postFiltering.filter);
         // filtering
         if (postFiltering.filter.trim()) {
             allPosts = allPosts.filter(
