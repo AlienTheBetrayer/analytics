@@ -142,6 +142,7 @@ export const Modal = React.memo(function ModalFunction({
                                 className="fixed"
                             >
                                 <motion.div
+                                    className="backdrop-blur-lg rounded-4xl"
                                     initial={{
                                         opacity: 0,
                                         scale: 0.9,
@@ -151,7 +152,6 @@ export const Modal = React.memo(function ModalFunction({
                                         opacity: 0,
                                         scale: 0.9,
                                     }}
-                                    transition={{ delay: 0.1 }}
                                 >
                                     {element?.(hide)}
                                 </motion.div>
