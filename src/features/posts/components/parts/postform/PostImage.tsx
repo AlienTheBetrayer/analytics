@@ -7,6 +7,8 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import React, { useRef, useState } from "react";
 
+const FILE_LIMIT = 1;
+
 type Props = {
     image: File | undefined | null;
     setImage: React.Dispatch<React.SetStateAction<File | undefined | null>>;
@@ -26,12 +28,14 @@ export const PostImage = React.memo(function PostImageComponent({
     const selectRef = useRef<HTMLInputElement | null>(null);
 
     // ui states
+    const [dragging, setDragging] = useState<boolean>(false);
     const img =
         image !== null
             ? image
                 ? URL.createObjectURL(image)
                 : id && posts[id]?.image_url
             : undefined;
+
     const [error, setError] = useState<boolean>(false);
 
     // messageboxes
@@ -39,7 +43,35 @@ export const PostImage = React.memo(function PostImageComponent({
 
     // fallbacks / jsx
     return (
-        <div className="relative flex flex-col-reverse p-1 group items-center gap-2 w-full h-81 overflow-hidden">
+        <div
+            className="relative flex flex-col-reverse p-1 group items-center gap-2 w-full h-81 overflow-hidden"
+            onDragOver={(e) => {
+                e.preventDefault();
+                setDragging(true);
+            }}
+            onDragLeave={() => {
+                setDragging(false);
+            }}
+            onDrop={(e) => {
+                setDragging(false);
+                e.preventDefault();
+                const file = e.dataTransfer.files[0];
+
+                if (!file || !file.type.startsWith("image/")) {
+                    return;
+                }
+
+                if (file.size / 1024 / 1024 > FILE_LIMIT) {
+                    setError(true);
+                    setTimeout(() => {
+                        setError(false);
+                    }, 10000);
+                    return;
+                }
+
+                setImage(file);
+            }}
+        >
             {deleteBox.render({
                 children:
                     "After you apply changes the post's image is going to be gone",
@@ -60,14 +92,14 @@ export const PostImage = React.memo(function PostImageComponent({
                         setError(false);
                     }, 10000);
                 }}
-                sizeLimit={1}
+                sizeLimit={FILE_LIMIT}
                 ref={selectRef}
             />
 
             <AnimatePresence>
                 {error && (
                     <motion.div
-                        className="flex items-center gap-1 absolute left-1/2 -translate-1/2 top-6 z-1"
+                        className="flex items-center gap-1 absolute left-1/2 -translate-1/2 top-6 z-1 backdrop-blur-2xl p-2! rounded-full"
                         initial={{ opacity: 0, scale: 0.5, y: -50 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.5, y: -50 }}
@@ -96,7 +128,7 @@ export const PostImage = React.memo(function PostImageComponent({
             </AnimatePresence>
 
             <Button
-                className={`absolute! inset-0 rounded-4xl! w-full! ${img ? "border-2! border-blue-1!" : "border-0!"}`}
+                className={`absolute! inset-0 rounded-4xl! w-full! ${img || dragging ? "border-2! border-blue-1!" : "border-0!"}`}
                 onClick={() => {
                     selectRef.current?.click();
                 }}
@@ -111,22 +143,23 @@ export const PostImage = React.memo(function PostImageComponent({
                     />
                 )}
 
-                <Image
-                    alt="add an image"
-                    width={64}
-                    height={64}
-                    src="/imageadd.svg"
-                    className={`
+                <div className="flex flex-col gap-2 absolute left-1/2 top-1/2 -translate-1/2 items-center">
+                    <Image
+                        alt="add an image"
+                        width={64}
+                        height={64}
+                        src="/imageadd.svg"
+                        className={`
                             ${img ? "opacity-0" : ""}
-                            absolute left-1/2 top-1/2 -translate-1/2
                             invert-100!
-                            group-hover:scale-105 group-focus-within:scale-105 
+                            group-hover:scale-125 group-focus-within:scale-125 
                             group-hover:opacity-100 group-focus-within:opacity-100
-                            hover:scale-125
                             transition-all! duration-500! ease-in-out!
                             mix-blend-difference
                         `}
-                />
+                    />
+                    <span>Drag & Drop</span>
+                </div>
             </Button>
 
             <div className="flex justify-center w-full rounded-full z-1 backdrop-blur-xl">
