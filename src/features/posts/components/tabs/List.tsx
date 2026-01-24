@@ -28,13 +28,15 @@ export const List = ({ data }: Props) => {
                     height={16}
                     src="/book.svg"
                 />
-                <span>{data.user.username}&apos;s posts</span>
+                <span>
+                    <mark>{data.user.username}</mark>&apos;s posts
+                </span>
 
                 <ProfileImage
                     width={256}
                     height={256}
                     profile={data.profile}
-                    className="w-full max-w-64 aspect-square"
+                    className="w-full max-w-64 aspect-square mt-2!"
                 />
             </li>
 
@@ -44,6 +46,10 @@ export const List = ({ data }: Props) => {
 
             <li>
                 <ListTopline />
+            </li>
+
+            <li>
+                <hr />
             </li>
 
             <li>

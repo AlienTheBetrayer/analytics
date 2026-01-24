@@ -354,7 +354,7 @@ li {
 }
 
 img {
-    filter: invert(var(--invert-7));
+    filter: invert(var(--invert-7)) grayscale(1);
     transition: 0.1s;
     -webkit-user-drag: none;
 }

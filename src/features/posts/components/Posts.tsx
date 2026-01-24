@@ -1,6 +1,6 @@
 "use client";
 import { AbsentTopline } from "@/features/loading/components/AbsentTopline";
-import { LoadingProfile } from "@/features/loading/components/LoadingProfile";
+import { LoadingEmulate } from "@/features/loading/components/LoadingEmulate";
 import { Select } from "@/features/posts/components/Select";
 import { Topline } from "@/features/posts/components/Topline";
 import { useAppStore } from "@/zustand/store";
@@ -48,7 +48,7 @@ export const Posts = () => {
         errorString = "Incorrect username";
     }
 
-    if(retrievedUsername && !postIds[retrievedUsername]?.size) {
+    if (retrievedUsername && !postIds[retrievedUsername]?.size) {
         errorString = "User hasn't created a single post yet";
     }
 
@@ -63,7 +63,7 @@ export const Posts = () => {
                 <div
                     className={`box max-w-400 w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}
                 >
-                    <LoadingProfile />
+                    <LoadingEmulate />
                 </div>
             </>
         );

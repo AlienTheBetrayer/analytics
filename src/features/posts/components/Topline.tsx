@@ -126,7 +126,7 @@ export const Topline = ({ type, data }: Props) => {
                                             alt=""
                                             src="/cubeadd.svg"
                                         />
-                                        <span>Create</span>
+                                        <span>Publish</span>
                                     </LinkButton>
                                 </Tooltip>
                             </li>

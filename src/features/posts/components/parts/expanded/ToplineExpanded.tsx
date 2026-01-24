@@ -32,7 +32,7 @@ export const ToplineExpanded = ({ data, className }: Props) => {
 
     return (
         <ul
-            className={`box absolute! z-2 gap-1! flex flex-col p-2! w-full min-h-20 bg-[#00000030]!
+            className={`box absolute! z-2 gap-1! flex flex-col p-2! **:text-[#bebebe]! w-full min-h-20 bg-[#00000030]!
                 ${data.image_url ? "border-0!" : ""}
                 ${className ?? ""}`}
         >
@@ -68,7 +68,7 @@ export const ToplineExpanded = ({ data, className }: Props) => {
                     </li>
 
                     <li className="flex items-center gap-1">
-                        <span>{user.username}</span>
+                        <span><mark>{user.username}</mark></span>
                     </li>
 
                     <li className="flex ml-auto!">
