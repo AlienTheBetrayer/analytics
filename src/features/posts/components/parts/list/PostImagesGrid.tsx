@@ -45,7 +45,7 @@ export const PostImagesGrid = ({ data }: Props) => {
 
             <hr className="w-full max-w-64 self-center" />
 
-            <ul className="grid grid-cols-2 sm:grid-cols-4 gap-2 my-auto grow items-end">
+            <ul className="grid grid-cols-2 sm:grid-cols-4 gap-2 my-auto grow items-center">
                 {userPosts.map(
                     (post) =>
                         post.image_url && (
@@ -113,7 +113,7 @@ export const PostImagesGrid = ({ data }: Props) => {
 
             <Tooltip
                 text={`Go to a random post`}
-                className="w-full max-w-64 self-center"
+                className="w-full sm:max-w-64 self-center"
             >
                 <Button
                     className="w-full"

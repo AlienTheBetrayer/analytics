@@ -1,6 +1,7 @@
 import { Button } from "@/features/ui/button/components/Button";
 import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
 import { CloseButton } from "@/features/ui/closebutton/components/CloseButton";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { ViewPostColumns } from "@/types/zustand/local";
 import { useLocalStore } from "@/zustand/localStore";
 import Image from "next/image";
@@ -13,6 +14,9 @@ export const DisplayFormat = ({ hide }: Props) => {
     // zustand
     const display = useLocalStore((state) => state.display);
     const updateDisplay = useLocalStore((state) => state.updateDisplay);
+
+    // media
+    const isMobile = useMediaQuery("(max-width:640px)");
 
     return (
         <div className="box w-screen max-w-96 p-3!">
@@ -29,7 +33,7 @@ export const DisplayFormat = ({ hide }: Props) => {
             </div>
 
             <ul className="grid grid-cols-2 gap-2">
-                {Array.from({ length: 4 }, (_, k) => (
+                {Array.from({ length: isMobile ? 2 : 4 }, (_, k) => (
                     <li
                         key={k}
                         className="flex flex-col gap-4"

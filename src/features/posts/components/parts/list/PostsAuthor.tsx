@@ -36,7 +36,7 @@ export const PostsAuthor = ({ data }: Props) => {
 
             <Tooltip
                 text={`Go to ${data.user.username}'s profile`}
-                className="w-full max-w-64"
+                className="w-full sm:max-w-64"
             >
                 <LinkButton
                     href={`/profile/${data.user.username}`}

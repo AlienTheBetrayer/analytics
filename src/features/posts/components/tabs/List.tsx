@@ -4,9 +4,11 @@ import { PostsAuthor } from "@/features/posts/components/parts/list/PostsAuthor"
 import { ListTopline } from "@/features/posts/components/parts/listtopline/ListTopline";
 import { usePostList } from "@/features/posts/hooks/usePostList";
 import { Spinner } from "@/features/spinner/components/Spinner";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { Profile, User } from "@/types/tables/account";
 import { useLocalStore } from "@/zustand/localStore";
 import { useAppStore } from "@/zustand/store";
+import { useEffect } from "react";
 
 type Props = {
     data: { user: User; profile: Profile };
@@ -16,8 +18,20 @@ export const List = ({ data }: Props) => {
     // zustand
     const promises = useAppStore((state) => state.promises);
     const display = useLocalStore((state) => state.display);
+    const updateDisplay = useLocalStore((state) => state.updateDisplay);
     // processed posts
     const { filtered } = usePostList(data.user);
+
+    // media
+    const isMobile = useMediaQuery("(max-width:640px)");
+
+    useEffect(() => {
+        if (!isMobile) {
+            return;
+        }
+
+        updateDisplay({ view: { postsColumns: "1" } });
+    }, [isMobile, updateDisplay]);
 
     return (
         <ul className="flex flex-col gap-8">
@@ -41,10 +55,9 @@ export const List = ({ data }: Props) => {
 
             <li>
                 <ul
-                    className="grid"
+                    className="grid gap-1 sm:gap-2 md:gap-4"
                     style={{
-                        gridTemplateColumns: `repeat(${display.view.postsColumns}, 1fr)`,
-                        gap: `${4.5 - Number(display.view.postsColumns)}rem`,
+                        gridTemplateColumns: `repeat(${!isMobile ? display.view.postsColumns : Number(display.view.postsColumns) > 2 ? 1 : display.view.postsColumns}, 1fr)`,
                     }}
                 >
                     {promises.getPosts === "pending"
@@ -57,7 +70,7 @@ export const List = ({ data }: Props) => {
                                       <div className="w-full h-10 loading" />
                                       <Spinner className="m-auto" />
                                   </div>
-                                  <hr />
+                                  <hr className="my-4!" />
                               </li>
                           ))
                         : filtered.map((post) => (
@@ -66,7 +79,7 @@ export const List = ({ data }: Props) => {
                                   key={post.id}
                               >
                                   <PostCompact data={post} />
-                                  <hr />
+                                  <hr className="my-4!" />
                               </li>
                           ))}
                 </ul>
