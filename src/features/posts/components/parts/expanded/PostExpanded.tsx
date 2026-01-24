@@ -15,28 +15,40 @@ export const PostExpanded = ({ data }: Props) => {
         >
             <ToplineExpanded
                 data={data}
-                className="overflow-hidden! rounded-b-none!"
+                className="overflow-hidden!"
             />
 
             <ul className="flex flex-col gap-4">
                 {data.image_url && (
-                    <li className="w-full relative min-h-128">
-                        <Image
-                            alt="post image"
-                            fill
-                            src={data.image_url}
-                            style={{ objectFit: "cover" }}
-                            className="invert-0!"
-                        />
-                    </li>
+                    <>
+                        <li className="w-full relative h-128">
+                            <Image
+                                alt="post image"
+                                fill
+                                src={data.image_url}
+                                style={{ objectFit: "cover" }}
+                                className="invert-0!"
+                            />
+                        </li>
+
+                        <li>
+                            <hr />
+                        </li>
+                    </>
                 )}
 
-                <li>
-                    <hr />
+                <li
+                    className="box p-4! min-h-128"
+                    style={{
+                        marginTop: data.image_url ? "0rem" : "8rem",
+                    }}
+                >
+                    
+                    <p>{data.content}</p>
                 </li>
 
-                <li className="box p-4!">
-                    <p>{data.content}</p>
+                <li>
+                    <hr/>
                 </li>
             </ul>
         </article>

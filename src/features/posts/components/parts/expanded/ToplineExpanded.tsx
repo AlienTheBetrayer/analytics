@@ -32,7 +32,7 @@ export const ToplineExpanded = ({ data, className }: Props) => {
 
     return (
         <ul
-            className={`box absolute! z-2 gap-1! flex flex-col p-2! **:text-[#bebebe]! w-full min-h-20 bg-[#00000030]!
+            className={`box z-2 gap-1! flex flex-col p-2! w-full min-h-20 bg-[#00000030]! absolute!
                 ${data.image_url ? "border-0!" : ""}
                 ${className ?? ""}`}
         >
@@ -68,25 +68,37 @@ export const ToplineExpanded = ({ data, className }: Props) => {
                     </li>
 
                     <li className="flex items-center gap-1">
-                        <span><mark>{user.username}</mark></span>
+                        <span>
+                            <em>
+                                <mark>{user.username}</mark>
+                            </em>
+                        </span>
                     </li>
 
                     <li className="flex ml-auto!">
                         <ul className="flex gap-2 items-center">
                             <li className="ml-auto! flex items-center gap-1 whitespace-nowrap">
-                                <Image
-                                    alt=""
-                                    width={16}
-                                    height={16}
-                                    src="/plus.svg"
-                                />
-                                <Image
-                                    alt=""
-                                    width={16}
-                                    height={16}
-                                    src="/calendar.svg"
-                                />
-                                <span>{relativeTime(data.created_at)}</span>
+                                <em>
+                                    <Image
+                                        alt=""
+                                        width={16}
+                                        height={16}
+                                        src="/plus.svg"
+                                    />
+                                </em>
+
+                                <em>
+                                    <Image
+                                        alt=""
+                                        width={16}
+                                        height={16}
+                                        src="/calendar.svg"
+                                    />
+                                </em>
+
+                                <span>
+                                    <em>{relativeTime(data.created_at)}</em>
+                                </span>
                             </li>
 
                             {data.edited_at && (
@@ -96,20 +108,28 @@ export const ToplineExpanded = ({ data, className }: Props) => {
                                     </li>
 
                                     <li className="flex items-center gap-1 whitespace-nowrap">
-                                        <Image
-                                            alt=""
-                                            width={16}
-                                            height={16}
-                                            src="/pencil.svg"
-                                        />
-                                        <Image
-                                            alt=""
-                                            width={16}
-                                            height={16}
-                                            src="/calendar.svg"
-                                        />
+                                        <em>
+                                            <Image
+                                                alt=""
+                                                width={16}
+                                                height={16}
+                                                src="/pencil.svg"
+                                            />
+                                        </em>
+
+                                        <em>
+                                            <Image
+                                                alt=""
+                                                width={16}
+                                                height={16}
+                                                src="/calendar.svg"
+                                            />
+                                        </em>
+
                                         <span>
-                                            {relativeTime(data.edited_at)}
+                                            <em>
+                                                {relativeTime(data.edited_at)}
+                                            </em>
                                         </span>
                                     </li>
                                 </>
@@ -123,7 +143,9 @@ export const ToplineExpanded = ({ data, className }: Props) => {
                 <ul className="flex gap-1 w-full">
                     <li className="flex items-center gap-1 absolute left-1/2 top-1/2 -translate-1/2 whitespace-nowrap">
                         <div className="w-1 h-1 rounded-full aspect-square bg-blue-1" />
-                        <span>{data.title}</span>
+                        <span>
+                            <em>{data.title}</em>
+                        </span>
                     </li>
 
                     {status?.id === data.user_id && (

@@ -8,7 +8,7 @@ type Props = {
 
 export const CompactInfo = ({ post }: Props) => {
     return (
-        <ul className="box w-screen max-w-48 p-4! items-center!">
+        <ul className="box w-screen max-w-64 p-4! items-center!">
             <li className="grid grid-cols-[10%_10%_1fr] gap-1">
                 <Image
                     alt=""

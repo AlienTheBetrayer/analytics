@@ -57,7 +57,7 @@ export const PostImage = React.memo(function PostImageComponent({
             />
 
             <Button
-                className="absolute! inset-0 rounded-4xl! w-full! border-0!"
+                className={`absolute! inset-0 rounded-4xl! w-full! ${img ? "border-2! border-blue-1!" : "border-0!"}`}
                 onClick={() => {
                     selectRef.current?.click();
                 }}

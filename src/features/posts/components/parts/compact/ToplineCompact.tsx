@@ -16,7 +16,7 @@ export const ToplineCompact = ({ data, className }: Props) => {
 
     return (
         <ul
-            className={`box flex-row! gap-1! px-2! py-0! items-center! **:text-[#bebebe]! w-full h-10! bg-[#00000030]!
+            className={`box flex-row! gap-1! px-2! py-0! items-center! w-full h-10! bg-[#00000030]!
                 ${data.image_url ? "border-0!" : ""}
                 ${className ?? ""}`}
         >
@@ -31,7 +31,9 @@ export const ToplineCompact = ({ data, className }: Props) => {
                               : "var(--red-1)",
                     }}
                 />
-                <span>{data.title}</span>
+                <span>
+                    <em>{data.title}</em>
+                </span>
             </li>
 
             <li className="ml-auto!">

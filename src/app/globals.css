@@ -266,7 +266,8 @@ body {
 b,
 i,
 u,
-mark {
+mark,
+em {
     all: unset;
     pointer-events: none;
 }
@@ -290,6 +291,18 @@ mark {
     text-decoration-color: var(--blue-1);
     text-decoration-thickness: 2px;
     text-decoration-skip-ink: none;
+}
+
+em {
+    color: rgb(216, 216, 216);
+    display: inline-block;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5))
+        drop-shadow(0 0 4px rgba(0, 0, 0, 0.3))
+        drop-shadow(0 0 8px rgba(0, 0, 0, 0.3));
+}
+
+em img {
+    filter: invert(0.8);
 }
 
 small {
