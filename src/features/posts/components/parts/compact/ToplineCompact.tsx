@@ -1,7 +1,6 @@
 import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
-import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
 import { Post } from "@/types/tables/posts";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
@@ -16,13 +15,10 @@ export const ToplineCompact = ({ data, className }: Props) => {
     const postIds = useAppStore((state) => state.postIds);
     const likeIds = useAppStore((state) => state.likeIds);
     const status = useAppStore((state) => state.status);
-    const promises = useAppStore((state) => state.promises);
     const likePost = useAppStore((state) => state.likePost);
 
     const hasLiked =
         (status && likeIds[status.username]?.has(data.id)) ?? false;
-
-    console.log(likeIds);
 
     return (
         <ul
@@ -79,9 +75,6 @@ export const ToplineCompact = ({ data, className }: Props) => {
                         }}
                         className={`${hasLiked ? "invert-100!" : ""}`}
                     >
-                        <PromiseStatus
-                            status={promises[`likePost_${data.id}`]}
-                        />
                         {hasLiked ? (
                             <Image
                                 alt=""

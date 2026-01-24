@@ -7,7 +7,6 @@ export const POST = async (request: NextRequest) => {
     try {
         // arguments and permissions
         const { type, id, user_id } = await request.json();
-        console.log(type, id, user_id);
 
         if (!type || !id || !user_id) {
             console.error("type or id or user_id are missing");

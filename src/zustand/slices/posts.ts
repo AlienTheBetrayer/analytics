@@ -69,8 +69,6 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                         liked: string[];
                     };
 
-                    console.log(data);
-
                     set((state) => {
                         const profiles = { ...state.profiles };
                         const users = { ...state.users };
@@ -90,7 +88,9 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                         profiles[data.id] = data.profile;
 
                         // posts and post ids
-                        const newPostIds = new Set(state.postIds[data.username]);
+                        const newPostIds = new Set(
+                            state.postIds[data.username],
+                        );
                         for (const post of data.posts) {
                             posts[post.id] = post;
                             newPostIds.add(post.id);
@@ -98,14 +98,24 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                         postIds[data.username] = newPostIds;
 
                         // likes and like ids
-                        const newLikeIds = new Set(state.likeIds[data.username]);
+                        const newLikeIds = new Set(
+                            state.likeIds[data.username],
+                        );
                         for (const likeId of data.liked) {
                             // posts[post.id] = post;
                             newLikeIds.add(likeId);
                         }
                         likeIds[data.username] = newLikeIds;
 
-                        return { ...state, posts, postIds, profiles, users, likeIds, likes };
+                        return {
+                            ...state,
+                            posts,
+                            postIds,
+                            profiles,
+                            users,
+                            likeIds,
+                            likes,
+                        };
                     });
 
                     return data;
@@ -181,10 +191,44 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
             return await setPromise(
                 options.promiseKey ?? "likePost",
                 async () => {
-                    const res = await refreshedRequest("/api/like", "POST", {
+                    await refreshedRequest("/api/like", "POST", {
                         type: options.type,
                         id: options.id,
                         user_id: options.user_id,
+                    });
+
+                    set((state) => {
+                        const likeIds = { ...state.likeIds };
+
+                        switch (options.type) {
+                            case "like": {
+                                const username =
+                                    state.users[options.user_id]?.username;
+                                if (username) {
+                                    likeIds[username] = new Set([
+                                        ...(likeIds[username] ?? []),
+                                        options.id,
+                                    ]);
+                                }
+
+                                break;
+                            }
+                            case "unlike": {
+                                const username =
+                                    state.users[options.user_id]?.username;
+                                if (username && likeIds[username]) {
+                                    likeIds[username] = new Set(
+                                        [...likeIds[username]].filter(
+                                            (id) => id !== options.id,
+                                        ),
+                                    );
+                                }
+
+                                break;
+                            }
+                        }
+
+                        return { ...state, likeIds };
                     });
                 },
             );
