@@ -36,6 +36,19 @@ export const ToplineCompact = ({ data, className }: Props) => {
                 </span>
             </li>
 
+            {data.edited_at && (
+                <li className="p-1!">
+                    <Tooltip text="This post had been edited">
+                        <Image
+                            alt=""
+                            width={13}
+                            height={13}
+                            src="/pencil.svg"
+                        />
+                    </Tooltip>
+                </li>
+            )}
+
             <li className="ml-auto!">
                 <Tooltip text="View this post">
                     <LinkButton

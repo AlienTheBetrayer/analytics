@@ -1,12 +1,12 @@
 import { PostCompact } from "@/features/posts/components/parts/compact/PostCompact";
+import { PostImagesGrid } from "@/features/posts/components/parts/list/PostImagesGrid";
+import { PostsAuthor } from "@/features/posts/components/parts/list/PostsAuthor";
 import { ListTopline } from "@/features/posts/components/parts/listtopline/ListTopline";
 import { usePostList } from "@/features/posts/hooks/usePostList";
-import { ProfileImage } from "@/features/profile/components/ProfileImage";
 import { Spinner } from "@/features/spinner/components/Spinner";
 import { Profile, User } from "@/types/tables/account";
 import { useLocalStore } from "@/zustand/localStore";
 import { useAppStore } from "@/zustand/store";
-import Image from "next/image";
 
 type Props = {
     data: { user: User; profile: Profile };
@@ -21,23 +21,10 @@ export const List = ({ data }: Props) => {
 
     return (
         <ul className="flex flex-col gap-8">
-            <li className="flex flex-col gap-1 items-center">
-                <Image
-                    alt=""
-                    width={16}
-                    height={16}
-                    src="/book.svg"
-                />
-                <span>
-                    <mark>{data.user.username}</mark>&apos;s posts
-                </span>
-
-                <ProfileImage
-                    width={256}
-                    height={256}
-                    profile={data.profile}
-                    className="w-full max-w-64 aspect-square mt-2!"
-                />
+            <li className="grid lg:grid-cols-[30%_auto_1fr] gap-8 lg:gap-4">
+                <PostsAuthor data={data} />
+                <hr className="lg:w-px! lg:h-1/2! self-center" />
+                <PostImagesGrid data={data} />
             </li>
 
             <li>
