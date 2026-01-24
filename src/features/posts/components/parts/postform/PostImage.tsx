@@ -143,26 +143,26 @@ export const PostImage = React.memo(function PostImageComponent({
                     />
                 )}
 
-                <div className="flex flex-col gap-2 absolute left-1/2 top-1/2 -translate-1/2 items-center">
+                <div
+                    className={`flex flex-col gap-2 absolute left-1/2 top-1/2 -translate-1/2 items-center
+                        group-hover:scale-125 group-focus-within:scale-125 
+                        group-hover:opacity-100 group-focus-within:opacity-100
+                        transition-all! duration-500! ease-in-out!
+                        ${img ? "opacity-0" : ""}
+                    `}
+                >
                     <Image
                         alt="add an image"
                         width={64}
                         height={64}
                         src="/imageadd.svg"
-                        className={`
-                            ${img ? "opacity-0" : ""}
-                            invert-100!
-                            group-hover:scale-125 group-focus-within:scale-125 
-                            group-hover:opacity-100 group-focus-within:opacity-100
-                            transition-all! duration-500! ease-in-out!
-                            mix-blend-difference
-                        `}
+                        className="invert-100! mix-blend-difference"
                     />
-                    <span>Drag & Drop</span>
+                    <span className={``}>Drag & Drop</span>
                 </div>
             </Button>
 
-            <div className="flex justify-center w-full rounded-full z-1 backdrop-blur-xl">
+            <div className="flex justify-center w-full rounded-full z-2 backdrop-blur-xl">
                 <ul className="grid grid-cols-2 w-full max-w-96 gap-2 p-1!">
                     <li>
                         <Button
