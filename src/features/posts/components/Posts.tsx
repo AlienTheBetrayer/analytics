@@ -5,7 +5,7 @@ import { Select } from "@/features/posts/components/Select";
 import { Topline } from "@/features/posts/components/Topline";
 import { useAppStore } from "@/zustand/store";
 import { useParams } from "next/navigation";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 
 export const Posts = () => {
     // url
@@ -21,15 +21,17 @@ export const Posts = () => {
     // fetching
     const retrievedUsername = username ?? status?.username;
 
-    const hasFetched = useRef<boolean>(false);
     useEffect(() => {
-        if (!retrievedUsername || hasFetched.current) {
+        if (!retrievedUsername) {
             return;
         }
 
-        getPosts({ type: "all", username: retrievedUsername });
-        hasFetched.current = true;
-    }, [retrievedUsername, getPosts]);
+        getPosts({
+            type: "all",
+            username: retrievedUsername,
+            user_id: status?.id,
+        });
+    }, [retrievedUsername, getPosts, status]);
 
     const user = Object.values(users).find(
         (u) => u.username === retrievedUsername,

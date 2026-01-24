@@ -11,6 +11,7 @@ export const GET = async (request: NextRequest) => {
     const type = searchParams.get("type");
     const id = searchParams.get("id");
     const username = searchParams.get("username");
+    const user_id = searchParams.get("user_id");
 
     try {
         // selecting the route
@@ -36,10 +37,32 @@ export const GET = async (request: NextRequest) => {
                     return nextResponse(error, 400);
                 }
 
+                let liked: string[] = [];
+
+                if (user_id) {
+                    const { data: likesData, error: likesError } =
+                        (await supabaseServer
+                            .from("likes")
+                            .select()
+                            .eq("post_id", id)
+                            .eq("user_id", user_id)) as {
+                            data: Like[];
+                            error: PostgrestError | null;
+                        };
+
+                    if (likesError) {
+                        console.error(likesError);
+                        return nextResponse(likesError, 400);
+                    }
+
+                    liked = likesData.map((l) => l.post_id);
+                }
+
                 return nextResponse(
                     // eslint-disable-next-line @typescript-eslint/no-unused-vars
                     data.map(({ password, ...rest }) => ({
                         ...rest,
+                        liked,
                     }))?.[0],
                     200,
                 );
@@ -55,7 +78,7 @@ export const GET = async (request: NextRequest) => {
                 const { data: postData, error: postError } =
                     (await supabaseServer
                         .from("users")
-                        .select("*, profile:profiles(*), posts:posts(*)")
+                        .select(`*, profile:profiles(*), posts:posts(*)`)
                         .eq("username", username)
                         .order("edited_at", {
                             referencedTable: "posts",
@@ -75,28 +98,31 @@ export const GET = async (request: NextRequest) => {
                     return nextResponse(postError, 400);
                 }
 
-                const { data: likesData, error: likesError } =
-                    (await supabaseServer
-                        .from("likes")
-                        .select("*", { head: true, count: "exact" })
-                        .in(
-                            "post_id",
-                            postData[0].posts.map((p) => p.id),
-                        )) as {
-                        data: Like[];
-                        error: PostgrestError | null;
-                    };
+                let liked: string[] = [];
 
-                if (likesError) {
-                    console.error(likesError);
-                    return nextResponse(likesError, 400);
+                if (user_id) {
+                    const { data: likesData, error: likesError } =
+                        (await supabaseServer
+                            .from("posts")
+                            .select("*, likes:likes!left(id)")
+                            .eq("likes.user_id", user_id)) as {
+                            data: (Post & { likes: { id: string } | null })[];
+                            error: PostgrestError | null;
+                        };
+
+                    if (likesError) {
+                        console.error(likesError);
+                        return nextResponse(likesError, 400);
+                    }
+
+                    liked = likesData.flatMap((p) => (p.likes ? [p.id] : []));
                 }
 
                 return nextResponse(
                     // eslint-disable-next-line @typescript-eslint/no-unused-vars
                     postData.map(({ password, ...rest }) => ({
                         ...rest,
-                        likes: likesData,
+                        liked,
                     }))?.[0],
                     200,
                 );

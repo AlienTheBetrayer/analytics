@@ -30,7 +30,7 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
             if (
                 (options.caching ?? true) &&
                 cache.has(
-                    options.type === "all" ? options.username : options.id,
+                    `${"username" in options && options.username}${"id" in options && options.id}${options.user_id}`,
                 )
             ) {
                 return;
@@ -52,36 +52,34 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                                 ...(options.type === "all" && {
                                     username: options.username,
                                 }),
+                                ...(options.user_id && {
+                                    user_id: options.user_id,
+                                }),
                             },
                         },
                     );
 
                     cache.add(
-                        options.type === "all" ? options.username : options.id,
+                        `${"username" in options && options.username}${"id" in options && options.id}${options.user_id}`,
                     );
 
                     const data = res.data as User & {
                         profile: Profile;
                         posts: Post[];
+                        liked: string[];
                     };
 
                     console.log(data);
 
                     set((state) => {
-                        const posts = { ...state.posts };
                         const profiles = { ...state.profiles };
                         const users = { ...state.users };
+                        const posts = { ...state.posts };
                         const postIds = { ...state.postIds };
+                        const likes = { ...state.likes };
+                        const likeIds = { ...state.likeIds };
 
-                        const ids = new Set(state.postIds[data.username]);
-
-                        for (const post of data.posts) {
-                            posts[post.id] = post;
-                            ids.add(post.id);
-                        }
-
-                        postIds[data.username] = ids;
-
+                        // user data
                         users[data.id] = {
                             id: data.id,
                             username: data.username,
@@ -89,10 +87,25 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                             created_at: data.created_at,
                             last_seen_at: data.last_seen_at,
                         };
-
                         profiles[data.id] = data.profile;
 
-                        return { ...state, posts, postIds, profiles, users };
+                        // posts and post ids
+                        const newPostIds = new Set(state.postIds[data.username]);
+                        for (const post of data.posts) {
+                            posts[post.id] = post;
+                            newPostIds.add(post.id);
+                        }
+                        postIds[data.username] = newPostIds;
+
+                        // likes and like ids
+                        const newLikeIds = new Set(state.likeIds[data.username]);
+                        for (const likeId of data.liked) {
+                            // posts[post.id] = post;
+                            newLikeIds.add(likeId);
+                        }
+                        likeIds[data.username] = newLikeIds;
+
+                        return { ...state, posts, postIds, profiles, users, likeIds, likes };
                     });
 
                     return data;

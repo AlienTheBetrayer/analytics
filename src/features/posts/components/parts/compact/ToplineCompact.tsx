@@ -14,9 +14,15 @@ type Props = {
 export const ToplineCompact = ({ data, className }: Props) => {
     // zustand
     const postIds = useAppStore((state) => state.postIds);
+    const likeIds = useAppStore((state) => state.likeIds);
     const status = useAppStore((state) => state.status);
     const promises = useAppStore((state) => state.promises);
     const likePost = useAppStore((state) => state.likePost);
+
+    const hasLiked =
+        (status && likeIds[status.username]?.has(data.id)) ?? false;
+
+    console.log(likeIds);
 
     return (
         <ul
@@ -54,31 +60,43 @@ export const ToplineCompact = ({ data, className }: Props) => {
             )}
 
             <li className="ml-auto!">
-                <Tooltip text="Like this post">
+                <Tooltip
+                    text={`${hasLiked ? "Remove like" : "Like this post"}`}
+                >
                     <Button
-                        aria-label="like post"
+                        aria-label={`${hasLiked ? "unlike post" : "like post"}`}
                         onClick={() => {
                             if (!status) {
                                 return;
                             }
 
                             likePost({
-                                type: "like",
+                                type: hasLiked ? "unlike" : "like",
                                 id: data.id,
                                 user_id: status.id,
                                 promiseKey: `likePost_${data.id}`,
                             });
                         }}
+                        className={`${hasLiked ? "invert-100!" : ""}`}
                     >
                         <PromiseStatus
                             status={promises[`likePost_${data.id}`]}
                         />
-                        <Image
-                            alt=""
-                            width={12}
-                            height={12}
-                            src="/heart.svg"
-                        />
+                        {hasLiked ? (
+                            <Image
+                                alt=""
+                                width={15}
+                                height={15}
+                                src="/heartbroken.svg"
+                            />
+                        ) : (
+                            <Image
+                                alt=""
+                                width={14}
+                                height={14}
+                                src="/heart.svg"
+                            />
+                        )}
                     </Button>
                 </Tooltip>
             </li>

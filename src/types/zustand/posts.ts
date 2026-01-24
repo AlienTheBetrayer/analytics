@@ -40,12 +40,13 @@ export type PostStore = {
      * @param id an id of the post
      * @param username a username of the user
      * @param promiseKey a unique id for the promise status
+     * @param user_id user_id to fetch likes and comments (leave undefined if not logged in)
      */
     getPosts: (
         options: (
             | { type: "single"; id: string }
             | { type: "all"; username: string }
-        ) & { promiseKey?: string; caching?: boolean },
+        ) & { promiseKey?: string; caching?: boolean; user_id: string | undefined },
     ) => Promise<void>;
 
     /**

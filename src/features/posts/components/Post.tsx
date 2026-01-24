@@ -5,7 +5,7 @@ import { Select } from "@/features/posts/components/Select";
 import { Topline } from "@/features/posts/components/Topline";
 import { useAppStore } from "@/zustand/store";
 import { useParams } from "next/navigation";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 
 export const Post = () => {
     // url
@@ -18,15 +18,13 @@ export const Post = () => {
     const getPosts = useAppStore((state) => state.getPosts);
 
     // fetching
-    const hasFetched = useRef<boolean>(false);
     useEffect(() => {
-        if (!id || hasFetched.current) {
+        if (!id) {
             return;
         }
 
-        getPosts({ type: "single", id });
-        hasFetched.current = true;
-    }, [id, getPosts]);
+        getPosts({ type: "single", id, user_id: status?.id });
+    }, [id, getPosts, status]);
 
     // fallbacks
     let errorString = "";
