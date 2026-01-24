@@ -28,6 +28,7 @@ export const PostCompact = ({ data }: Props) => {
 
             <ToplineCompact
                 data={data}
+                type="compact"
                 className="rounded-none!"
             />
 

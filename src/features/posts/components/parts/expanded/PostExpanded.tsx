@@ -43,12 +43,11 @@ export const PostExpanded = ({ data }: Props) => {
                         marginTop: data.image_url ? "0rem" : "8rem",
                     }}
                 >
-                    
                     <p>{data.content}</p>
                 </li>
 
                 <li>
-                    <hr/>
+                    <hr />
                 </li>
             </ul>
         </article>

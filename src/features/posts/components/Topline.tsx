@@ -1,12 +1,10 @@
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
-import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { Profile, User } from "@/types/tables/account";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import { useParams, usePathname } from "next/navigation";
 import { Post } from "@/types/tables/posts";
-import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
 
 type Props =
     | {
@@ -25,7 +23,6 @@ export const Topline = ({ type, data }: Props) => {
 
     // zustand
     const status = useAppStore((state) => state.status);
-    const promises = useAppStore((state) => state.promises);
     const users = useAppStore((state) => state.users);
 
     const title = ((): { alt: string; src: string } => {
@@ -61,10 +58,20 @@ export const Topline = ({ type, data }: Props) => {
                 };
             }
             case "post": {
-                return {
-                    topline: "Back to posts",
-                    href: `/posts/${username ?? ""}`,
-                };
+                switch (path[1]) {
+                    case "edit": {
+                        return {
+                            topline: "Back to post",
+                            href: `${type === "post" && data ? `/post/view/${data.id}` : `/posts/${username}`}`,
+                        };
+                    }
+                    default: {
+                        return {
+                            topline: "Back to posts",
+                            href: `/posts/${username ?? ""}`,
+                        };
+                    }
+                }
             }
         }
     })();
@@ -128,46 +135,6 @@ export const Topline = ({ type, data }: Props) => {
                                         />
                                         <span>Publish</span>
                                     </LinkButton>
-                                </Tooltip>
-                            </li>
-                        )}
-                    </ul>
-                )}
-
-                {type === "post" && (
-                    <ul className="flex items-center gap-1">
-                        {data && data.user_id === status?.id && (
-                            <li>
-                                <Tooltip text="Edit this post">
-                                    <LinkButton
-                                        href={`/post/edit/${data.id}`}
-                                        ariaLabel="edit post"
-                                    >
-                                        <Image
-                                            width={16}
-                                            height={16}
-                                            alt=""
-                                            src="/pencil.svg"
-                                        />
-                                    </LinkButton>
-                                </Tooltip>
-                            </li>
-                        )}
-
-                        {data && data.user_id === status?.id && (
-                            <li>
-                                <Tooltip text="Delete this post">
-                                    <Button aria-label="delete post">
-                                        <PromiseStatus
-                                            status={promises.deletePost}
-                                        />
-                                        <Image
-                                            width={16}
-                                            height={16}
-                                            alt="del"
-                                            src="/delete.svg"
-                                        />
-                                    </Button>
                                 </Tooltip>
                             </li>
                         )}

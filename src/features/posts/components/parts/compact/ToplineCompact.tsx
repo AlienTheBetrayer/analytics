@@ -7,10 +7,12 @@ import Image from "next/image";
 
 type Props = {
     data: Post;
+    type: "compact" | "expanded";
     className?: string;
+    onDelete?: () => void;
 };
 
-export const ToplineCompact = ({ data, className }: Props) => {
+export const ToplineCompact = ({ data, className, type, onDelete }: Props) => {
     // zustand
     const postIds = useAppStore((state) => state.postIds);
     const likeIds = useAppStore((state) => state.likeIds);
@@ -45,12 +47,14 @@ export const ToplineCompact = ({ data, className }: Props) => {
             {data.edited_at && (
                 <li className="p-1!">
                     <Tooltip text="This post had been edited">
-                        <Image
-                            alt=""
-                            width={13}
-                            height={13}
-                            src="/pencil.svg"
-                        />
+                        <em>
+                            <Image
+                                alt=""
+                                width={13}
+                                height={13}
+                                src="/pencil.svg"
+                            />
+                        </em>
                     </Tooltip>
                 </li>
             )}
@@ -94,21 +98,43 @@ export const ToplineCompact = ({ data, className }: Props) => {
                 </Tooltip>
             </li>
 
-            <li>
-                <Tooltip text="View this post">
-                    <LinkButton
-                        href={`/post/view/${data.id}`}
-                        ariaLabel="view post"
-                    >
-                        <Image
-                            alt=""
-                            width={16}
-                            height={16}
-                            src="/launch.svg"
-                        />
-                    </LinkButton>
-                </Tooltip>
-            </li>
+            {type === "compact" ? (
+                <>
+                    <li>
+                        <Tooltip text="View this post">
+                            <LinkButton
+                                href={`/post/view/${data.id}`}
+                                ariaLabel="view post"
+                            >
+                                <Image
+                                    alt=""
+                                    width={16}
+                                    height={16}
+                                    src="/launch.svg"
+                                />
+                            </LinkButton>
+                        </Tooltip>
+                    </li>
+                </>
+            ) : (
+                <>
+                    <li>
+                        <Tooltip text="Delete this post">
+                            <Button
+                                onClick={onDelete}
+                                aria-label="delete post"
+                            >
+                                <Image
+                                    alt=""
+                                    width={16}
+                                    height={16}
+                                    src="/delete.svg"
+                                />
+                            </Button>
+                        </Tooltip>
+                    </li>
+                </>
+            )}
 
             {status && postIds[status.username]?.has(data.id) && (
                 <li>
