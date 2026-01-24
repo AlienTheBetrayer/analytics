@@ -1,5 +1,7 @@
+import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
+import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
 import { Post } from "@/types/tables/posts";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
@@ -13,6 +15,8 @@ export const ToplineCompact = ({ data, className }: Props) => {
     // zustand
     const postIds = useAppStore((state) => state.postIds);
     const status = useAppStore((state) => state.status);
+    const promises = useAppStore((state) => state.promises);
+    const likePost = useAppStore((state) => state.likePost);
 
     return (
         <ul
@@ -50,6 +54,36 @@ export const ToplineCompact = ({ data, className }: Props) => {
             )}
 
             <li className="ml-auto!">
+                <Tooltip text="Like this post">
+                    <Button
+                        aria-label="like post"
+                        onClick={() => {
+                            if (!status) {
+                                return;
+                            }
+
+                            likePost({
+                                type: "like",
+                                id: data.id,
+                                user_id: status.id,
+                                promiseKey: `likePost_${data.id}`,
+                            });
+                        }}
+                    >
+                        <PromiseStatus
+                            status={promises[`likePost_${data.id}`]}
+                        />
+                        <Image
+                            alt=""
+                            width={12}
+                            height={12}
+                            src="/heart.svg"
+                        />
+                    </Button>
+                </Tooltip>
+            </li>
+
+            <li>
                 <Tooltip text="View this post">
                     <LinkButton
                         href={`/post/view/${data.id}`}

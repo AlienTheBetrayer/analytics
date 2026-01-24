@@ -1,6 +1,6 @@
 "use client";
-import { AbsentTopline } from "@/features/loading/components/AbsentTopline";
-import { LoadingEmulate } from "@/features/loading/components/LoadingEmulate";
+import { AbsentTopline } from "@/features/ui/loading/components/AbsentTopline";
+import { LoadingEmulate } from "@/features/ui/loading/components/LoadingEmulate";
 import { Select } from "@/features/posts/components/Select";
 import { Topline } from "@/features/posts/components/Topline";
 import { useAppStore } from "@/zustand/store";

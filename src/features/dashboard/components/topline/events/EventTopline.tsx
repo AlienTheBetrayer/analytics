@@ -26,7 +26,7 @@ export const EventTopline = () => {
 
     return (
         <ul
-            className={`box p-0! gap-1! sticky! top-20 z-2 bg-background-3! flex-row! transition-all duration-300 h-10 min-h-10 items-center ${!selectedProjectId ? "opacity-30" : ""}`}
+            className={`box p-0! gap-1! sticky! top-16 z-2 bg-background-3! flex-row! transition-all duration-300 h-10 min-h-10 items-center ${!selectedProjectId ? "opacity-30" : ""}`}
             inert={!selectedProjectId}
         >
             <li
@@ -41,7 +41,7 @@ export const EventTopline = () => {
             <li>
                 <Modal
                     direction="bottom-right"
-                    element={(hide) => <Filtering hide={hide}/>}
+                    element={(hide) => <Filtering hide={hide} />}
                 >
                     <Tooltip text="Filter events">
                         <Button className="aspect-square">
@@ -64,7 +64,7 @@ export const EventTopline = () => {
             <li>
                 <Modal
                     direction="bottom-right"
-                    element={(hide) => <Sorting hide={hide}/>}
+                    element={(hide) => <Sorting hide={hide} />}
                 >
                     <Tooltip text="Sort events">
                         <Button className="aspect-square">

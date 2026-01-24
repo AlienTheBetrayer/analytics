@@ -1,6 +1,6 @@
 "use client";
-import { AbsentTopline } from "@/features/loading/components/AbsentTopline";
-import { LoadingSearch } from "@/features/loading/components/LoadingSearch";
+import { AbsentTopline } from "@/features/ui/loading/components/AbsentTopline";
+import { LoadingSearch } from "@/features/ui/loading/components/LoadingSearch";
 import { NoResults } from "@/features/search/components/errors/NoResults";
 import { Results } from "@/features/search/components/Results";
 import { Topline } from "@/features/search/components/Topline";

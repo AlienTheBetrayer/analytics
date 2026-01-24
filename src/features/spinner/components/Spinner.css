@@ -8,6 +8,6 @@
 }
 
 .loading-spinner {
-    animation: 0.75s loadingSpinner infinite linear;
+    animation: 0.5s loadingSpinner infinite linear;
     filter: invert(0.5) grayscale(1);
 }

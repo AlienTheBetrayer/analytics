@@ -5,8 +5,8 @@ import { useEffect } from "react";
 import { useAppStore } from "@/zustand/store";
 import { Content } from "./display/Content";
 import { Topline } from "./display/Topline";
-import { LoadingProfile } from "@/features/loading/components/LoadingProfile";
-import { AbsentTopline } from "@/features/loading/components/AbsentTopline";
+import { LoadingProfile } from "@/features/ui/loading/components/LoadingProfile";
+import { AbsentTopline } from "@/features/ui/loading/components/AbsentTopline";
 
 export const UserProfile = () => {
     // url

@@ -12,7 +12,7 @@ type Props = {
 export const AbsentTopline = ({ title, color, className }: Props) => {
     return (
         <ul
-            className={`box loading p-0! sticky! z-2! top-8! rounded-full! px-1! gap-1! my-2! mx-auto! flex-row! max-w-400 w-full transition-all duration-500 h-10 items-center ${className ?? ""}`}
+            className={`box loading p-0! sticky! z-2! top-4! rounded-full! px-1! gap-1! my-2! mx-auto! flex-row! max-w-400 w-full transition-all duration-500 h-10 items-center ${className ?? ""}`}
         >
             <li>
                 <motion.ul
@@ -33,7 +33,7 @@ export const AbsentTopline = ({ title, color, className }: Props) => {
                         </Tooltip>
                     </li>
 
-                    <li className="absolute left-1/2 top-1/2 -translate-1/2 flex gap-1 items-center">
+                    <li className="absolute left-1/2 top-1/2 -translate-1/2 flex gap-1 items-center whitespace-nowrap">
                         <div
                             className="w-1 h-1 rounded-full"
                             style={{ background: color ?? "var(--red-1)" }}

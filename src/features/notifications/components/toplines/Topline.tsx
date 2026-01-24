@@ -37,7 +37,7 @@ export const Topline = ({ tab }: Props) => {
 
     return (
         <ul
-            className={`box p-0! gap-1! sticky! top-8 z-2 flex-row! transition-all duration-300 h-10 min-h-10 items-center ${!hasNotification ? "opacity-30" : ""}`}
+            className={`box p-0! gap-1! sticky! top-4 z-2 flex-row! transition-all duration-300 h-10 min-h-10 items-center ${!hasNotification ? "opacity-30" : ""}`}
             inert={!hasNotification}
         >
             {notificationsBox.render({
@@ -94,7 +94,12 @@ export const Topline = ({ tab }: Props) => {
             <li>
                 <Modal
                     direction="bottom-right"
-                    element={(hide) => <Filter tab={tab} hide={hide}/>}
+                    element={(hide) => (
+                        <Filter
+                            tab={tab}
+                            hide={hide}
+                        />
+                    )}
                 >
                     <Tooltip text="Filter notifications">
                         <Button className="aspect-square">
@@ -117,7 +122,12 @@ export const Topline = ({ tab }: Props) => {
             <li>
                 <Modal
                     direction="bottom-right"
-                    element={(hide) => <Sort tab={tab} hide={hide}/>}
+                    element={(hide) => (
+                        <Sort
+                            tab={tab}
+                            hide={hide}
+                        />
+                    )}
                 >
                     <Tooltip text="Sort notifications">
                         <Button className="aspect-square">

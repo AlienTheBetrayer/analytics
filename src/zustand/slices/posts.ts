@@ -10,6 +10,8 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
     return {
         posts: {},
         postIds: {},
+        likeIds: {},
+        likes: {},
         postFiltering: {
             filter: "",
         },
@@ -62,6 +64,8 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                         profile: Profile;
                         posts: Post[];
                     };
+
+                    console.log(data);
 
                     set((state) => {
                         const posts = { ...state.posts };
@@ -154,6 +158,21 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                     });
 
                     return data;
+                },
+            );
+        },
+
+        likePost: async (options) => {
+            const { setPromise } = get();
+
+            return await setPromise(
+                options.promiseKey ?? "likePost",
+                async () => {
+                    const res = await refreshedRequest("/api/like", "POST", {
+                        type: options.type,
+                        id: options.id,
+                        user_id: options.user_id,
+                    });
                 },
             );
         },

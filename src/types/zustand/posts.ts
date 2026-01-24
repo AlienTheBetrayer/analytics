@@ -1,4 +1,4 @@
-import { Post } from "@/types/tables/posts";
+import { Like, Post } from "@/types/tables/posts";
 
 export type PostData = {
     title?: string;
@@ -20,11 +20,13 @@ export type PostStore = {
      * post_id : Post
      */
     posts: Record<string, Post>;
+    likes: Record<string, Like>;
 
     /**
      * username: post ids[]
      */
     postIds: Record<string, Set<string>>;
+    likeIds: Record<string, Set<string>>;
 
     /**
      * updates the filtering metadata
@@ -46,11 +48,33 @@ export type PostStore = {
         ) & { promiseKey?: string; caching?: boolean },
     ) => Promise<void>;
 
+    /**
+     * updates the post in a specified way (deletes / edits / creates)
+     * @param type type of the API interaction
+     * @param id [edit/delete]: id of the post needed
+     * @param data [edit/create]: the updated data for the post
+     * @param user_id the id of the user that wants to make a change
+     * @param promiseKey a unique id for the promise status
+     */
     updatePost: (
         options: (
             | { type: "delete"; id: string }
             | { type: "edit"; id: string; data: PostData }
             | { type: "create"; data: PostData }
+        ) & { user_id: string; promiseKey?: string },
+    ) => Promise<void>;
+
+    /**
+     * likes the post in a specific way (like / remove like)
+     * @param type type of the API interaction
+     * @param id  id of the post needed
+     * @param user_id the id of the user that wants to make a change
+     * @param promiseKey a unique id for the promise status
+     */
+    likePost: (
+        options: (
+            | { type: "like"; id: string }
+            | { type: "unlike"; id: string }
         ) & { user_id: string; promiseKey?: string },
     ) => Promise<void>;
 };

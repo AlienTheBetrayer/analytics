@@ -6,7 +6,7 @@ import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { Button } from "@/features/ui/button/components/Button";
 import { useLocalStore } from "@/zustand/localStore";
 import { AuthElements } from "./AuthElements";
-import { LoadingToolbox } from "@/features/loading/components/LoadingToolbox";
+import { LoadingToolbox } from "@/features/ui/loading/components/LoadingToolbox";
 import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 
 export const AuthButton = () => {
@@ -43,7 +43,7 @@ export const AuthButton = () => {
                 <Tooltip text="Sign up / Log in">
                     <Modal
                         direction="left"
-                        element={(hide) => <AuthElements hide={hide}/>}
+                        element={(hide) => <AuthElements hide={hide} />}
                     >
                         <Button className="p-0!">
                             <LoadingToolbox />

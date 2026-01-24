@@ -11,7 +11,7 @@ export const POST = async (request: NextRequest) => {
             return nextResponse({ error: "id is missing." }, 400);
         }
 
-        tokenVerify(request, id);
+        tokenVerify(request, [id]);
 
         // deleting profile images
         const { data: avatarData, error: avatarError } =

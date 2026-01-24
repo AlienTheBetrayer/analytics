@@ -4,8 +4,8 @@ import { DashboardEvents } from "./events/DashboardEvents";
 import { DashboardProjects } from "./projects/DashboardProjects";
 import { Topline } from "./Topline";
 import { useEffect, useRef } from "react";
-import { LoadingDashboard } from "@/features/loading/components/LoadingDashboard";
-import { AbsentTopline } from "@/features/loading/components/AbsentTopline";
+import { LoadingDashboard } from "@/features/ui/loading/components/LoadingDashboard";
+import { AbsentTopline } from "@/features/ui/loading/components/AbsentTopline";
 
 export const Dashboard = () => {
     // zustand states

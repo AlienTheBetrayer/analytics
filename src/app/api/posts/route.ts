@@ -1,6 +1,6 @@
 import { supabaseServer } from "@/server/private/supabase";
 import { Profile, User } from "@/types/tables/account";
-import { Post } from "@/types/tables/posts";
+import { Like, Post } from "@/types/tables/posts";
 import { nextResponse } from "@/utils/api/response";
 import { PostgrestError } from "@supabase/supabase-js";
 import { NextRequest } from "next/server";
@@ -52,32 +52,51 @@ export const GET = async (request: NextRequest) => {
                     });
                 }
 
-                const { data, error } = (await supabaseServer
-                    .from("users")
-                    .select("*, profile:profiles(*), posts:posts(*)")
-                    .eq("username", username)
-                    .order("edited_at", {
-                        referencedTable: "posts",
-                        ascending: false,
-                        nullsFirst: false,
-                    })
-                    .order("created_at", {
-                        referencedTable: "posts",
-                        ascending: false,
-                    })) as {
-                    data: (User & { profile: Profile; posts: Post[] })[];
-                    error: PostgrestError | null;
-                };
+                const { data: postData, error: postError } =
+                    (await supabaseServer
+                        .from("users")
+                        .select("*, profile:profiles(*), posts:posts(*)")
+                        .eq("username", username)
+                        .order("edited_at", {
+                            referencedTable: "posts",
+                            ascending: false,
+                            nullsFirst: false,
+                        })
+                        .order("created_at", {
+                            referencedTable: "posts",
+                            ascending: false,
+                        })) as {
+                        data: (User & { profile: Profile; posts: Post[] })[];
+                        error: PostgrestError | null;
+                    };
 
-                if (error) {
-                    console.error(error);
-                    return nextResponse(error, 400);
+                if (postError) {
+                    console.error(postError);
+                    return nextResponse(postError, 400);
+                }
+
+                const { data: likesData, error: likesError } =
+                    (await supabaseServer
+                        .from("likes")
+                        .select("*", { head: true, count: "exact" })
+                        .in(
+                            "post_id",
+                            postData[0].posts.map((p) => p.id),
+                        )) as {
+                        data: Like[];
+                        error: PostgrestError | null;
+                    };
+
+                if (likesError) {
+                    console.error(likesError);
+                    return nextResponse(likesError, 400);
                 }
 
                 return nextResponse(
                     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                    data.map(({ password, ...rest }) => ({
+                    postData.map(({ password, ...rest }) => ({
                         ...rest,
+                        likes: likesData,
                     }))?.[0],
                     200,
                 );

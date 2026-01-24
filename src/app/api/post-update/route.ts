@@ -12,6 +12,11 @@ export const POST = async (request: NextRequest) => {
         const { user_id, id, image, image_name, image_type, type, ...rest } =
             await request.json();
 
+        if (!user_id || !type) {
+            console.error("user_id and type are missing");
+            return nextResponse({ error: "user_id and type are missing" }, 400);
+        }
+
         tokenVerify(request, [user_id]);
 
         // delete the post along with its image

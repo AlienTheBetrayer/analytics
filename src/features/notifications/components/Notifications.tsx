@@ -3,8 +3,8 @@ import { useAppStore } from "@/zustand/store";
 import { Select } from "./Select";
 import { Topline } from "./Topline";
 import { NotificationRoute } from "../types/notifications";
-import { LoadingNotifications } from "@/features/loading/components/LoadingNotifications";
-import { AbsentTopline } from "@/features/loading/components/AbsentTopline";
+import { LoadingNotifications } from "@/features/ui/loading/components/LoadingNotifications";
+import { AbsentTopline } from "@/features/ui/loading/components/AbsentTopline";
 
 type Props = {
     type: NotificationRoute;

@@ -23,7 +23,7 @@ export const Topline = ({ data }: Props) => {
 
     return (
         <ul
-            className={`box p-0! gap-1! sticky! top-8 z-2 my-2! mx-auto! flex-row! max-w-400 w-full transition-all duration-500 h-10 items-center`}
+            className={`box p-0! gap-1! sticky! top-4 z-2 my-2! mx-auto! flex-row! max-w-400 w-full transition-all duration-500 h-10 items-center`}
         >
             <li className="absolute left-1/2 -translate-1/2 top-1/2">
                 <span className="flex gap-1 items-center">
@@ -59,7 +59,12 @@ export const Topline = ({ data }: Props) => {
                     <Tooltip text="Administrator panel">
                         <Modal
                             direction="bottom-left"
-                            element={(hide) => <RoleEditing data={data} hide={hide}/>}
+                            element={(hide) => (
+                                <RoleEditing
+                                    data={data}
+                                    hide={hide}
+                                />
+                            )}
                         >
                             <Button>
                                 <div className="w-1 h-1 rounded-full bg-blue-1" />
