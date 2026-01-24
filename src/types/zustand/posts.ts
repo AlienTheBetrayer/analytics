@@ -8,8 +8,10 @@ export type PostData = {
     image_type?: string;
 };
 
+export type PostFilteringColumn = "Liked" | "Edited" | "Raw" | "With Images";
 export type PostFiltering = {
     filter: string;
+    column: PostFilteringColumn;
 };
 
 export type PostStore = {
@@ -46,7 +48,11 @@ export type PostStore = {
         options: (
             | { type: "single"; id: string }
             | { type: "all"; username: string }
-        ) & { promiseKey?: string; caching?: boolean; user_id: string | undefined },
+        ) & {
+            promiseKey?: string;
+            caching?: boolean;
+            user_id: string | undefined;
+        },
     ) => Promise<void>;
 
     /**

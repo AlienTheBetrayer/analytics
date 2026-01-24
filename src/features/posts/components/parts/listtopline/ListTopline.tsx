@@ -1,4 +1,5 @@
 import { DisplayFormat } from "@/features/posts/components/parts/listtopline/DisplayFormat";
+import { Filtering } from "@/features/posts/components/parts/listtopline/Filtering";
 import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
 import { Modal } from "@/features/ui/popovers/components/modal/Modal";
@@ -55,6 +56,27 @@ export const ListTopline = () => {
                             color={`var(${display.sorting.posts === "descendant" ? "--orange-1" : "--blue-1"}`}
                         />
                     </Button>
+                </Tooltip>
+            </li>
+
+            <li>
+                <Tooltip text="Filtering">
+                    <Modal element={(hide) => <Filtering hide={hide} />}>
+                        <Button className="aspect-square">
+                            <Image
+                                alt="filter"
+                                src="/filter.svg"
+                                width={16}
+                                height={16}
+                                className="duration-500! ease-out!"
+                            />
+
+                            <TabSelection
+                                condition={true}
+                                color={`var(${postFiltering.column === "Raw" ? "--orange-1" : "--blue-1"}`}
+                            />
+                        </Button>
+                    </Modal>
                 </Tooltip>
             </li>
 
