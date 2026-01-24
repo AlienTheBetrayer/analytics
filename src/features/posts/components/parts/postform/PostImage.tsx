@@ -2,9 +2,10 @@ import { Button } from "@/features/ui/button/components/Button";
 import { FileSelect } from "@/features/ui/fileselect/components/FileSelect";
 import { useMessageBox } from "@/features/ui/messagebox/hooks/useMessageBox";
 import { useAppStore } from "@/zustand/store";
+import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 
 type Props = {
     image: File | undefined | null;
@@ -31,13 +32,14 @@ export const PostImage = React.memo(function PostImageComponent({
                 ? URL.createObjectURL(image)
                 : id && posts[id]?.image_url
             : undefined;
+    const [error, setError] = useState<boolean>(false);
 
     // messageboxes
     const deleteBox = useMessageBox();
 
     // fallbacks / jsx
     return (
-        <div className="relative flex flex-col-reverse p-1 group items-center gap-2 w-full h-81">
+        <div className="relative flex flex-col-reverse p-1 group items-center gap-2 w-full h-81 overflow-hidden">
             {deleteBox.render({
                 children:
                     "After you apply changes the post's image is going to be gone",
@@ -52,9 +54,46 @@ export const PostImage = React.memo(function PostImageComponent({
                 onSelect={(file) => {
                     setImage(file ?? undefined);
                 }}
+                onError={() => {
+                    setError(true);
+                    setTimeout(() => {
+                        setError(false);
+                    }, 10000);
+                }}
                 sizeLimit={1}
                 ref={selectRef}
             />
+
+            <AnimatePresence>
+                {error && (
+                    <motion.div
+                        className="flex items-center gap-1 absolute left-1/2 -translate-1/2 top-6 z-2"
+                        initial={{ opacity: 0, scale: 0.5, y: -50 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.5, y: -50 }}
+                        transition={{
+                            type: "spring",
+                            stiffness: 200,
+                            damping: 30,
+                        }}
+                    >
+                        <em>
+                            <Image
+                                alt=""
+                                width={16}
+                                height={16}
+                                src="/warning.svg"
+                            />
+                        </em>
+
+                        <span>
+                            <em>
+                                <u>Error</u>: File size cannot exceed 1MB
+                            </em>
+                        </span>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
             <Button
                 className={`absolute! inset-0 rounded-4xl! w-full! ${img ? "border-2! border-blue-1!" : "border-0!"}`}
@@ -108,6 +147,7 @@ export const PostImage = React.memo(function PostImageComponent({
                             Change
                         </Button>
                     </li>
+
                     <li>
                         <Button
                             className="w-full"

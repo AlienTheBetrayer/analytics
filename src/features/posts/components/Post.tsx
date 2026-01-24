@@ -35,7 +35,6 @@ export const Post = () => {
     const post = id ? posts[id] : undefined;
 
     if (tab !== "create" && !post) {
-        console.log(post);
         errorString = "Post does not exist";
     }
 
