@@ -56,6 +56,11 @@ export const GET = async (request: NextRequest) => {
                     .from("users")
                     .select("*, profile:profiles(*), posts:posts(*)")
                     .eq("username", username)
+                    .order("edited_at", {
+                        referencedTable: "posts",
+                        ascending: false,
+                        nullsFirst: false,
+                    })
                     .order("created_at", {
                         referencedTable: "posts",
                         ascending: false,

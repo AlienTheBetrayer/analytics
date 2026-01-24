@@ -18,13 +18,9 @@ export const usePostList = (user: User) => {
         let allPosts = [...postsData];
 
         // sorting
-        const direction = display.sorting.posts === "descendant" ? -1 : 1;
-        allPosts.sort(
-            (a, b) =>
-                (new Date(a.created_at).getTime() -
-                    new Date(b.created_at).getTime()) *
-                direction,
-        );
+        if (display.sorting.posts === "ascendant") {
+            allPosts.reverse();
+        }
 
         // filtering
         if (postFiltering.filter.trim()) {
@@ -33,9 +29,10 @@ export const usePostList = (user: User) => {
                     post.title
                         .toLowerCase()
                         .includes(postFiltering.filter.toLowerCase()) ||
-                    post.content
-                        .toLowerCase()
-                        .includes(postFiltering.filter.toLowerCase()),
+                    (post.content &&
+                        post.content
+                            .toLowerCase()
+                            .includes(postFiltering.filter.toLowerCase())),
             );
         }
 

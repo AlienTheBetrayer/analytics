@@ -12,6 +12,7 @@ export const PostImagesGrid = ({ data }: Props) => {
     const posts = useAppStore((state) => state.posts);
     const postIds = useAppStore((state) => state.postIds);
 
+    // 8 most recent posts
     const userPosts = [...postIds[data.user.username]]
         .map((id) => posts[id])
         .slice(0, 8);
@@ -30,9 +31,9 @@ export const PostImagesGrid = ({ data }: Props) => {
                 </span>
             </div>
 
-            <hr className="w-full max-w-64 self-center"/>
+            <hr className="w-full max-w-64 self-center" />
 
-            <ul className="grid grid-cols-4 gap-2">
+            <ul className="grid grid-cols-4 gap-2 my-auto grow">
                 {userPosts.map(
                     (post) =>
                         post.image_url && (
@@ -44,6 +45,18 @@ export const PostImagesGrid = ({ data }: Props) => {
                                     href={`/post/view/${post.id}`}
                                     className="w-full h-full outline-2! hover:outline-blue-1!"
                                 >
+                                    {post.edited_at && (
+                                        <div className="absolute left-1/2 -translate-x-1/2 top-1 rounded-full p-2 backdrop-blur-md mix-blend-difference z-2">
+                                            <Image
+                                                alt="edited"
+                                                width={16}
+                                                height={16}
+                                                src="/pencil.svg"
+                                                className="mix-blend-difference invert-100!"
+                                            />
+                                        </div>
+                                    )}
+
                                     <Image
                                         alt={post.title}
                                         fill
