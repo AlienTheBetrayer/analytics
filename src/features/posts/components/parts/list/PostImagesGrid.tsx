@@ -15,6 +15,13 @@ export const PostImagesGrid = ({ data }: Props) => {
     // 8 most recent posts
     const userPosts = [...postIds[data.user.username]]
         .map((id) => posts[id])
+        .sort((a, b) =>
+            a.image_url && !b.image_url
+                ? -1
+                : !a.image_url && b.image_url
+                  ? 1
+                  : 0,
+        )
         .slice(0, 8);
 
     return (
