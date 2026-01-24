@@ -16,14 +16,14 @@ export const PostsAuthor = ({ data }: Props) => {
                     alt=""
                     width={16}
                     height={16}
-                    src="/book.svg"
+                    src="/account.svg"
                 />
                 <span>
-                    <mark>{data.user.username}</mark>&apos;s posts
+                    <mark>{data.user.username}</mark>&apos;s account:
                 </span>
             </div>
 
-            <hr className="w-full max-w-64"/>
+            <hr className="w-full max-w-64" />
 
             <ProfileImage
                 width={256}
