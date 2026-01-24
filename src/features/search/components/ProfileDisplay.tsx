@@ -4,6 +4,7 @@ import { ProfileImage } from "@/features/profile/components/ProfileImage";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { Profile, User } from "@/types/tables/account";
 import { relativeTime } from "@/utils/other/relativeTime";
+import Image from "next/image";
 
 type Props = {
     data: { user: User; profile: Profile };
@@ -44,7 +45,13 @@ export const ProfileDisplay = ({ data }: Props) => {
 
                 <li className="absolute right-4 top-4">
                     <span>
-                        <small>
+                        <small className="flex items-center gap-1">
+                            <Image
+                                alt=""
+                                width={16}
+                                height={16}
+                                src="/calendar.svg"
+                            />
                             seen {relativeTime(data.user.last_seen_at)}
                         </small>
                     </span>

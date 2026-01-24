@@ -1,5 +1,6 @@
 import { supabaseServer } from "@/server/private/supabase";
 import { Profile, User } from "@/types/tables/account";
+import { Post } from "@/types/tables/posts";
 import { nextResponse } from "@/utils/api/response";
 import { PostgrestError } from "@supabase/supabase-js";
 import { NextRequest } from "next/server";
@@ -15,7 +16,7 @@ export const GET = async (request: NextRequest) => {
     }
 
     try {
-        const { data, error } = (await supabaseServer
+        const { data: profileData, error: profileError } = (await supabaseServer
             .from("users")
             .select("*, profile:profiles(*)")
             .ilike("username", query === "*" ? "%" : `%${query}%`)
@@ -24,14 +25,38 @@ export const GET = async (request: NextRequest) => {
             error: PostgrestError | null;
         };
 
-        if (error) {
-            console.error(error);
-            return nextResponse(error, 400);
+        const { data: postsData, error: postsError } = (await supabaseServer
+            .from("posts")
+            .select()
+            .ilike("title", query === "*" ? "%" : `%${query}%`)
+            .order("edited_at", {
+                ascending: false,
+                nullsFirst: false,
+            })
+            .order("created_at", {
+                ascending: false,
+            })) as {
+            data: Post[];
+            error: PostgrestError | null;
+        };
+
+        if (profileError) {
+            console.error(profileError);
+            return nextResponse(profileError, 400);
+        }
+
+        if (postsError) {
+            console.error(postsError);
+            return nextResponse(postsError, 400);
         }
 
         return nextResponse(
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            { users: data.map(({ password, ...rest }) => ({ ...rest })) },
+            {
+                users: profileData.map(({ password, ...rest }) => ({
+                    ...rest,
+                })),
+                posts: postsData,
+            },
             200,
         );
     } catch (e) {

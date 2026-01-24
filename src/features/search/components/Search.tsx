@@ -7,6 +7,7 @@ import { Topline } from "@/features/search/components/Topline";
 import { useAppStore } from "@/zustand/store";
 import { useParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { SearchResults } from "@/types/zustand/user";
 
 export const Search = () => {
     // url
@@ -16,9 +17,7 @@ export const Search = () => {
 
     // fetching
     const hasFetched = useRef<boolean>(false);
-    const [results, setResults] = useState<Awaited<
-        ReturnType<typeof search>
-    > | null>(null);
+    const [results, setResults] = useState<SearchResults | null>(null);
 
     /**
      * safely fetches with the current query in the url
@@ -65,8 +64,8 @@ export const Search = () => {
         );
     }
 
-    // empty results (no users found)
-    if (results && !results.length) {
+    // empty results (no вфеф found)
+    if (results && !results.posts?.length && !results.users?.length) {
         return (
             <>
                 <Topline />

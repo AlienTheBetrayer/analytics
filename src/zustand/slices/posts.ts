@@ -13,6 +13,7 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
         likeIds: {},
         likes: {},
         postFiltering: {
+            column: undefined,
             filter: "",
         },
 

@@ -11,7 +11,7 @@ export type PostData = {
 export type PostFilteringColumn = "Liked" | "Edited" | "Raw" | "With Images";
 export type PostFiltering = {
     filter: string;
-    column: PostFilteringColumn;
+    column: PostFilteringColumn | undefined;
 };
 
 export type PostStore = {

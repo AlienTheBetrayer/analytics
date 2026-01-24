@@ -2,6 +2,7 @@ import { ResponseUsers } from "@/types/api/responses/users";
 import { AuthenticationRole } from "@/types/auth/authentication";
 import { APIResponseType } from "@/types/response";
 import { Profile, User } from "@/types/tables/account";
+import { Post } from "@/types/tables/posts";
 import type { UserStore } from "@/types/zustand/user";
 import type { SliceFunction } from "@/types/zustand/utils/sliceFunction";
 import { refreshedRequest } from "@/utils/auth/refreshedRequest";
@@ -536,15 +537,18 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
                         },
                     );
 
-                    const data = res.data.users as (User & {
-                        profile: Profile;
-                    })[];
+                    const data = res.data as {
+                        users: (User & {
+                            profile: Profile;
+                        })[];
+                        posts: Post[];
+                    };
 
                     set((state) => {
                         const users = { ...state.users };
                         const profiles = { ...state.profiles };
 
-                        for (const { profile, ...user } of data) {
+                        for (const { profile, ...user } of data.users) {
                             users[user.id] = user;
                             profiles[user.id] = profile;
                         }
@@ -552,10 +556,13 @@ export const UserSlice: SliceFunction<UserStore> = (set, get) => {
                         return { ...state, users, profiles };
                     });
 
-                    return data.map(({ profile, ...user }) => ({
-                        profile,
-                        user,
-                    }));
+                    return {
+                        posts: data.posts,
+                        users: data.users.map(({ profile, ...user }) => ({
+                            profile,
+                            user,
+                        })),
+                    };
                 },
             );
         },

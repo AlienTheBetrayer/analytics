@@ -1,6 +1,15 @@
+import { Post } from "@/types/tables/posts";
 import { CachedUser } from "../api/responses/users";
 import { AuthenticationRole } from "../auth/authentication";
 import { Profile, ProfileGender, User } from "../tables/account";
+
+export type SearchResults = {
+    users: {
+        user: User;
+        profile: Profile;
+    }[];
+    posts: Post[];
+};
 
 export type UserStore = {
     users: Record<string, User>;
@@ -89,5 +98,5 @@ export type UserStore = {
     search: (options: {
         query: string;
         promiseKey?: string;
-    }) => Promise<{ user: User; profile: Profile }[]>;
+    }) => Promise<SearchResults>;
 };
