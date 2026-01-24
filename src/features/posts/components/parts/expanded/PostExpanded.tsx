@@ -10,17 +10,17 @@ export const PostExpanded = ({ data }: Props) => {
     // main jsx
     return (
         <article
-            className={`flex flex-col rounded-4xl! min-h-128! relative
+            className={`flex flex-col rounded-4xl! overflow-hidden min-h-128! relative
         ${data.image_url ? "" : "border border-background-a-5"}`}
         >
             <ToplineExpanded
                 data={data}
-                className="overflow-hidden! rounded-t-full!"
+                className="overflow-hidden! rounded-b-none!"
             />
 
             <ul className="flex flex-col gap-4">
                 {data.image_url && (
-                    <li className="w-full relative min-h-72">
+                    <li className="w-full relative min-h-128">
                         <Image
                             alt="post image"
                             fill

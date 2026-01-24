@@ -21,12 +21,14 @@ export const AuthorView = ({ id }: Props) => {
             {profile && user ? (
                 <>
                     <span>{user.username}</span>
+
                     <ProfileImage
                         width={256}
                         height={256}
                         profile={profiles[id]}
                         className="w-full max-w-16"
                     />
+
                     <LinkButton
                         href={`/profile/${user.username}`}
                         className="w-full"
