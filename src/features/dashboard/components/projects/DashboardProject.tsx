@@ -42,7 +42,9 @@ export const DashboardProject = ({ id }: Props) => {
                     className={`relative rounded-4xl! w-full px-4! py-2! sm:h-16! project-button justify-between! items-center duration-300! 
                         ${id === selectedProjectId ? "border-blue-1!" : ""}`}
                     onClick={() => {
-                        selectProject(id ?? undefined);
+                        selectProject(
+                            id !== selectedProjectId ? id : undefined,
+                        );
                     }}
                 >
                     <div className="flex items-center gap-1">

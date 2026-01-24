@@ -5,7 +5,7 @@ import Image from "next/image";
 export const Topline = () => {
     return (
         <ul
-            className={`box p-0! gap-1! my-2! mx-auto! flex-row! max-w-400 w-full transition-all duration-500 h-10 items-center`}
+            className={`box p-0! gap-1! my-2! sticky! top-8 z-2 mx-auto! flex-row! max-w-400 w-full transition-all duration-500 h-10 items-center`}
         >
             <li className="absolute left-1/2 -translate-1/2 top-1/2">
                 <span className="flex gap-1 items-center">

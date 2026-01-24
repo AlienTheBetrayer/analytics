@@ -31,7 +31,7 @@ export const List = ({ data }: Props) => {
                 <hr />
             </li>
 
-            <li>
+            <li className="sticky! top-20! z-2 bg-background-3! rounded-full">
                 <ListTopline />
             </li>
 

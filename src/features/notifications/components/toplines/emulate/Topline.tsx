@@ -13,7 +13,7 @@ export const Topline = () => {
     const pushNotification = useAppStore((state) => state.pushNotification);
 
     return (
-        <ul className="box p-0! gap-1! flex-row! transition-all duration-300 h-10 min-h-10 items-center">
+        <ul className="box p-0! gap-1! flex-row! sticky! top-8 z-2 transition-all duration-300 h-10 min-h-10 items-center">
             <li className="absolute flex gap-1 items-center left-1/2 top-1/2 -translate-1/2 transition-all duration-500">
                 <Image
                     alt=""

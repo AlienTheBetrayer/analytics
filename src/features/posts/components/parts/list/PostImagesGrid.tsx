@@ -40,7 +40,7 @@ export const PostImagesGrid = ({ data }: Props) => {
 
             <hr className="w-full max-w-64 self-center" />
 
-            <ul className="grid grid-cols-4 gap-2 my-auto grow">
+            <ul className="grid grid-cols-2 sm:grid-cols-4 gap-2 my-auto grow">
                 {userPosts.map(
                     (post) =>
                         post.image_url && (
