@@ -67,7 +67,7 @@ export const PostImage = React.memo(function PostImageComponent({
             <AnimatePresence>
                 {error && (
                     <motion.div
-                        className="flex items-center gap-1 absolute left-1/2 -translate-1/2 top-6 z-2"
+                        className="flex items-center gap-1 absolute left-1/2 -translate-1/2 top-6 z-1"
                         initial={{ opacity: 0, scale: 0.5, y: -50 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.5, y: -50 }}

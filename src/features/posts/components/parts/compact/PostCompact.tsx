@@ -13,7 +13,7 @@ export const PostCompact = ({ data }: Props) => {
     // main jsx
     return (
         <article
-            className={`flex flex-col rounded-4xl! overflow-hidden h-64! relative
+            className={`flex flex-col rounded-4xl! overflow-hidden h-81! relative
         ${data.image_url ? "" : "border border-background-a-5"}`}
         >
             {data.image_url && (
@@ -37,7 +37,7 @@ export const PostCompact = ({ data }: Props) => {
                 element={<CompactInfo post={data} />}
             >
                 <LinkButton
-                    className={`box rounded-none! backdrop-blur-none! grow z-10! h-full border-0! outline-0! group
+                    className={`box rounded-none! backdrop-blur-none! grow z-1! h-full border-0! outline-0! group
                     ${data.image_url ? "not-[&:hover]:bg-transparent!" : ""}`}
                     style={
                         data.image_url

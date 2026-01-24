@@ -4,11 +4,14 @@ import Image from "next/image";
 
 type Props = {
     post: Post;
+    className?: string;
 };
 
-export const CompactInfo = ({ post }: Props) => {
+export const CompactInfo = ({ post, className }: Props) => {
     return (
-        <ul className="box w-screen max-w-64 p-4! items-center!">
+        <ul
+            className={`box w-screen max-w-64 p-4! items-center! ${className ?? ""}`}
+        >
             <li className="grid grid-cols-[10%_10%_1fr] gap-1">
                 <Image
                     alt=""

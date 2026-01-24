@@ -1,7 +1,11 @@
+import { CompactInfo } from "@/features/posts/components/parts/CompactInfo";
+import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
+import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Profile, User } from "@/types/tables/account";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
+import { redirect } from "next/navigation";
 
 type Props = {
     data: { user: User; profile: Profile };
@@ -22,7 +26,7 @@ export const PostImagesGrid = ({ data }: Props) => {
                   ? 1
                   : 0,
         )
-        .slice(0, 8);
+        .slice(0, 4);
 
     return (
         <article className="flex flex-col gap-4">
@@ -40,7 +44,7 @@ export const PostImagesGrid = ({ data }: Props) => {
 
             <hr className="w-full max-w-64 self-center" />
 
-            <ul className="grid grid-cols-2 sm:grid-cols-4 gap-2 my-auto grow">
+            <ul className="grid grid-cols-2 sm:grid-cols-4 gap-2 my-auto grow items-end">
                 {userPosts.map(
                     (post) =>
                         post.image_url && (
@@ -48,34 +52,75 @@ export const PostImagesGrid = ({ data }: Props) => {
                                 className="box p-2! aspect-square"
                                 key={post.id}
                             >
-                                <LinkButton
-                                    href={`/post/view/${post.id}`}
-                                    className="w-full h-full outline-2! hover:outline-blue-1!"
+                                <Tooltip
+                                    className="w-full h-full"
+                                    element={
+                                        <CompactInfo
+                                            post={post}
+                                            className="max-w-55!"
+                                        />
+                                    }
                                 >
-                                    {post.edited_at && (
-                                        <div className="absolute left-1/2 -translate-x-1/2 top-1 rounded-full p-2 backdrop-blur-md mix-blend-difference z-2">
-                                            <Image
-                                                alt="edited"
-                                                width={16}
-                                                height={16}
-                                                src="/pencil.svg"
-                                                className="mix-blend-difference invert-100!"
-                                            />
-                                        </div>
-                                    )}
+                                    <LinkButton
+                                        href={`/post/view/${post.id}`}
+                                        className="w-full h-full outline-2! hover:outline-blue-1!"
+                                    >
+                                        {post.edited_at && (
+                                            <div className="absolute left-1/2 -translate-x-1/2 top-1 rounded-full p-2 backdrop-blur-md mix-blend-difference z-1">
+                                                <Image
+                                                    alt="edited"
+                                                    width={16}
+                                                    height={16}
+                                                    src="/pencil.svg"
+                                                    className="mix-blend-difference invert-100!"
+                                                />
+                                            </div>
+                                        )}
 
-                                    <Image
-                                        alt={post.title}
-                                        fill
-                                        style={{ objectFit: "cover" }}
-                                        src={`${post.image_url}`}
-                                        className="rounded-full invert-0!"
-                                    />
-                                </LinkButton>
+                                        <Image
+                                            alt={post.title}
+                                            fill
+                                            style={{ objectFit: "cover" }}
+                                            src={`${post.image_url}`}
+                                            className="rounded-full invert-0!"
+                                        />
+                                    </LinkButton>
+                                </Tooltip>
                             </li>
                         ),
                 )}
             </ul>
+
+            <hr className="w-full max-w-lg self-center" />
+
+            <Tooltip
+                text={`Go to a random post`}
+                className="w-full max-w-64 self-center"
+            >
+                <Button
+                    className="w-full"
+                    onClick={() => {
+                        const ids = [...postIds[data.user.username]];
+                        const id = ids.at(
+                            Math.round(Math.random() * ids.length - 1),
+                        );
+
+                        if (!id) {
+                            return;
+                        }
+
+                        redirect(`/post/view/${id}`);
+                    }}
+                >
+                    <Image
+                        alt=""
+                        width={16}
+                        height={16}
+                        src="/random.svg"
+                    />
+                    Random
+                </Button>
+            </Tooltip>
         </article>
     );
 };
