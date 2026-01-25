@@ -15,6 +15,7 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
             column: undefined,
             filter: "",
         },
+        likes: {},
 
         updatePostFiltering: (filtering) => {
             set((state) => ({
@@ -77,6 +78,7 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                         const posts = { ...state.posts };
                         const postIds = { ...state.postIds };
                         const likeIds = { ...state.likeIds };
+                        const likes = { ...state.likes };
 
                         // user data
                         users[data.results.id] = {
@@ -92,9 +94,11 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                         const newPostIds = new Set(
                             state.postIds[data.results.username],
                         );
-                        for (const post of data.results.posts) {
+                        for (const { likes: postLikes, ...post } of data.results
+                            .posts) {
                             posts[post.id] = post;
                             newPostIds.add(post.id);
+                            likes[post.id] = postLikes;
                         }
                         postIds[data.results.username] = newPostIds;
 
@@ -114,6 +118,7 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                             profiles,
                             users,
                             likeIds,
+                            likes,
                         };
                     });
 
@@ -199,6 +204,7 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                     set((state) => {
                         const likeIds = { ...state.likeIds };
                         const posts = { ...state.posts };
+                        const likes = { ...state.likes };
 
                         switch (options.type) {
                             case "like": {
@@ -210,9 +216,7 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                                         options.id,
                                     ]);
                                 }
-                                posts[options.id].likes = String(
-                                    Number(posts[options.id].likes ?? "0") + 1,
-                                );
+                                likes[options.id] = likes[options.id] + 1;
 
                                 break;
                             }
@@ -226,9 +230,7 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                                         ),
                                     );
                                 }
-                                posts[options.id].likes = String(
-                                    Number(posts[options.id].likes ?? "1") - 1,
-                                );
+                                likes[options.id] = likes[options.id] - 1;
 
                                 break;
                             }
@@ -237,6 +239,7 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                         return {
                             ...state,
                             likeIds,
+                            likes,
                             posts,
                         };
                     });

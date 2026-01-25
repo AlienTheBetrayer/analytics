@@ -17,6 +17,7 @@ export const ToplineCompact = ({ data, className, type, onDelete }: Props) => {
     // zustand
     const postIds = useAppStore((state) => state.postIds);
     const likeIds = useAppStore((state) => state.likeIds);
+    const likes = useAppStore(state => state.likes);
     const status = useAppStore((state) => state.status);
     const likePost = useAppStore((state) => state.likePost);
 
@@ -52,7 +53,7 @@ export const ToplineCompact = ({ data, className, type, onDelete }: Props) => {
             />
 
             <TinyTooltip
-                data={data.likes}
+                data={likes[data.id]}
                 showData
                 src="/heart.svg"
                 size={10}

@@ -17,6 +17,10 @@ export const PostImagesGrid = ({ data }: Props) => {
     const postIds = useAppStore((state) => state.postIds);
     const likeIds = useAppStore((state) => state.likeIds);
 
+    if (!postIds[data.user.username]) {
+        return null;
+    }
+
     // 8 most recent posts
     const userPosts = [...postIds[data.user.username]]
         .map((id) => posts[id])

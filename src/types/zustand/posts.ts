@@ -24,6 +24,11 @@ export type PostStore = {
     posts: Record<string, Post>;
 
     /**
+     * post_id: like count
+     */
+    likes: Record<string, number>;
+
+    /**
      * username: post ids[]
      */
     postIds: Record<string, Set<string>>;

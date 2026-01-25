@@ -3,7 +3,7 @@ import { motion } from "motion/react";
 import Image from "next/image";
 
 type Props = {
-    data: string | undefined;
+    data: string | number | undefined;
     src: string;
     size?: number;
     showData?: boolean;

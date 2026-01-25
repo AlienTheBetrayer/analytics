@@ -9,7 +9,6 @@ type Props = {
 };
 
 export const Results = ({ data }: Props) => {
-    console.log(data.users);
     return (
         <ul className="flex flex-col gap-8">
             <li className="flex flex-col items-center gap-1 self-center">

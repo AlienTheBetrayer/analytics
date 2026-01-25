@@ -14,6 +14,10 @@ export const usePostList = (user: User) => {
 
     // sorted object
     const filtered = useMemo(() => {
+        if (!postIds[user.username]) {
+            return;
+        }
+
         const postsData = Array.from(postIds[user.username]).map(
             (id) => posts[id],
         );
