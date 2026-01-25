@@ -148,7 +148,7 @@ export const Desktop = ({ className }: Props) => {
                 <SearchButton />
             </li>
 
-            <li className="place-items-end">
+            <li className="flex items-center justify-end">
                 <ul className="flex gap-2 items-center">
                     <li>
                         <div

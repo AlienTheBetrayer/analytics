@@ -38,7 +38,7 @@ export const Mobile = ({ className, showMenu }: Props) => {
                 <SearchButton />
             </li>
 
-            <li className="place-items-end">
+            <li className="flex items-center justify-end">
                 <Button
                     styles="link"
                     className={`button-img ${!status ? "border-awaiting" : ""} p-2`}

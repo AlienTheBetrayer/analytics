@@ -1,4 +1,4 @@
-import { Like, Post } from "@/types/tables/posts";
+import { Post } from "@/types/tables/posts";
 
 export type PostData = {
     title?: string;
@@ -22,7 +22,6 @@ export type PostStore = {
      * post_id : Post
      */
     posts: Record<string, Post>;
-    likes: Record<string, Like>;
 
     /**
      * username: post ids[]

@@ -9,6 +9,7 @@ export type Post = {
     created_at: string;
     image_url?: string;
     edited_at?: string;
+    likes?: string; // specific to cache
 };
 
 /**

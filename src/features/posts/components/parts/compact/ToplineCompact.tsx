@@ -1,3 +1,4 @@
+import { TinyTooltip } from "@/features/posts/components/parts/TinyTooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
@@ -44,20 +45,19 @@ export const ToplineCompact = ({ data, className, type, onDelete }: Props) => {
                 </span>
             </li>
 
-            {data.edited_at && (
-                <li className="p-1!">
-                    <Tooltip text="This post had been edited">
-                        <em>
-                            <Image
-                                alt=""
-                                width={13}
-                                height={13}
-                                src="/pencil.svg"
-                            />
-                        </em>
-                    </Tooltip>
-                </li>
-            )}
+            <TinyTooltip
+                data={data.edited_at}
+                src="/pencil.svg"
+                tooltip="This post has been edited"
+            />
+
+            <TinyTooltip
+                data={data.likes}
+                showData
+                src="/heart.svg"
+                size={10}
+                tooltip="Total amount of likes"
+            />
 
             <li className="ml-auto!">
                 <Tooltip

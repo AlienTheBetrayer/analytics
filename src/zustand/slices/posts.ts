@@ -11,7 +11,6 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
         posts: {},
         postIds: {},
         likeIds: {},
-        likes: {},
         postFiltering: {
             column: undefined,
             filter: "",
@@ -64,10 +63,12 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                         `${"username" in options && options.username}${"id" in options && options.id}${options.user_id}`,
                     );
 
-                    const data = res.data as User & {
-                        profile: Profile;
-                        posts: Post[];
-                        liked: string[];
+                    const data = res.data as {
+                        results: User & {
+                            profile: Profile;
+                            posts: (Post & { likes: number })[];
+                        };
+                        ownLikes: string[];
                     };
 
                     set((state) => {
@@ -75,38 +76,36 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                         const users = { ...state.users };
                         const posts = { ...state.posts };
                         const postIds = { ...state.postIds };
-                        const likes = { ...state.likes };
                         const likeIds = { ...state.likeIds };
 
                         // user data
-                        users[data.id] = {
-                            id: data.id,
-                            username: data.username,
-                            role: data.role,
-                            created_at: data.created_at,
-                            last_seen_at: data.last_seen_at,
+                        users[data.results.id] = {
+                            id: data.results.id,
+                            username: data.results.username,
+                            role: data.results.role,
+                            created_at: data.results.created_at,
+                            last_seen_at: data.results.last_seen_at,
                         };
-                        profiles[data.id] = data.profile;
+                        profiles[data.results.id] = data.results.profile;
 
                         // posts and post ids
                         const newPostIds = new Set(
-                            state.postIds[data.username],
+                            state.postIds[data.results.username],
                         );
-                        for (const post of data.posts) {
+                        for (const post of data.results.posts) {
                             posts[post.id] = post;
                             newPostIds.add(post.id);
                         }
-                        postIds[data.username] = newPostIds;
+                        postIds[data.results.username] = newPostIds;
 
                         // likes and like ids
                         const newLikeIds = new Set(
-                            state.likeIds[data.username],
+                            state.likeIds[data.results.username],
                         );
-                        for (const likeId of data.liked) {
-                            // posts[post.id] = post;
+                        for (const likeId of data.ownLikes) {
                             newLikeIds.add(likeId);
                         }
-                        likeIds[data.username] = newLikeIds;
+                        likeIds[data.results.username] = newLikeIds;
 
                         return {
                             ...state,
@@ -115,7 +114,6 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                             profiles,
                             users,
                             likeIds,
-                            likes,
                         };
                     });
 
@@ -200,6 +198,7 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
 
                     set((state) => {
                         const likeIds = { ...state.likeIds };
+                        const posts = { ...state.posts };
 
                         switch (options.type) {
                             case "like": {
@@ -211,6 +210,9 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                                         options.id,
                                     ]);
                                 }
+                                posts[options.id].likes = String(
+                                    Number(posts[options.id].likes ?? "0") + 1,
+                                );
 
                                 break;
                             }
@@ -224,12 +226,23 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                                         ),
                                     );
                                 }
+                                posts[options.id].likes = String(
+                                    Number(posts[options.id].likes ?? "1") - 1,
+                                );
 
                                 break;
                             }
                         }
 
-                        return { ...state, likeIds };
+                        return {
+                            ...state,
+                            likeIds,
+                            posts,
+                            // posts: {
+                            //     ...state.posts,
+                            //     [options.id]: { ...(state.posts[options.id] ?? {}), likes: state.posts[options.id].likes },
+                            // },
+                        };
                     });
                 },
             );

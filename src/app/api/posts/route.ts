@@ -1,6 +1,6 @@
 import { supabaseServer } from "@/server/private/supabase";
 import { Profile, User } from "@/types/tables/account";
-import { Like, Post } from "@/types/tables/posts";
+import { Post } from "@/types/tables/posts";
 import { nextResponse } from "@/utils/api/response";
 import { PostgrestError } from "@supabase/supabase-js";
 import { NextRequest } from "next/server";
@@ -14,131 +14,102 @@ export const GET = async (request: NextRequest) => {
     const user_id = searchParams.get("user_id");
 
     try {
-        // selecting the route
+        let results:
+            | (User & {
+                  profile: Profile;
+                  posts: (Post & { likes: [{ count: number }] })[];
+              })[]
+            | null = null;
+        let error: PostgrestError | string | null = null;
+
+        // selecting the route and fetching data
         switch (type) {
             case "single": {
                 if (!id) {
-                    console.error("[id] is missing.");
-                    return nextResponse({
-                        error: "[id] is missing",
-                    });
+                    error = "[id] is missing.";
+                    break;
                 }
 
-                const { data, error } = (await supabaseServer
+                ({ data: results, error } = await supabaseServer
                     .from("users")
-                    .select("*, profile:profiles(*), posts:posts!inner(*)")
-                    .eq("posts.id", id)) as {
-                    data: (User & { profile: Profile; posts: Post[] })[];
-                    error: PostgrestError | null;
-                };
+                    .select(
+                        "*, profile:profiles(*), posts:posts!inner(*, likes:likes(count))",
+                    )
+                    .eq("posts.id", id));
 
-                if (error) {
-                    console.error(error);
-                    return nextResponse(error, 400);
-                }
-
-                let liked: string[] = [];
-
-                if (user_id) {
-                    const { data: likesData, error: likesError } =
-                        (await supabaseServer
-                            .from("likes")
-                            .select()
-                            .eq("post_id", id)
-                            .eq("user_id", user_id)) as {
-                            data: Like[];
-                            error: PostgrestError | null;
-                        };
-
-                    if (likesError) {
-                        console.error(likesError);
-                        return nextResponse(likesError, 400);
-                    }
-
-                    liked = likesData.map((l) => l.post_id);
-                }
-
-                return nextResponse(
-                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                    data.map(({ password, ...rest }) => ({
-                        ...rest,
-                        liked,
-                    }))?.[0],
-                    200,
-                );
+                break;
             }
             case "all": {
                 if (!username) {
-                    console.error("[username] is missing.");
-                    return nextResponse({
-                        error: "[username] is missing",
-                    });
+                    error = "[username] is missing.";
+                    break;
                 }
 
-                const { data: postData, error: postError } =
-                    (await supabaseServer
-                        .from("users")
-                        .select(`*, profile:profiles(*), posts:posts(*)`)
-                        .eq("username", username)
-                        .order("edited_at", {
-                            referencedTable: "posts",
-                            ascending: false,
-                            nullsFirst: false,
-                        })
-                        .order("created_at", {
-                            referencedTable: "posts",
-                            ascending: false,
-                        })) as {
-                        data: (User & { profile: Profile; posts: Post[] })[];
-                        error: PostgrestError | null;
-                    };
+                ({ data: results, error } = await supabaseServer
+                    .from("users")
+                    .select(
+                        `*, profile:profiles(*), posts:posts(*, likes:likes(count))`,
+                    )
+                    .eq("username", username)
+                    .order("edited_at", {
+                        referencedTable: "posts",
+                        ascending: false,
+                        nullsFirst: false,
+                    })
+                    .order("created_at", {
+                        referencedTable: "posts",
+                        ascending: false,
+                    }));
 
-                if (postError) {
-                    console.error(postError);
-                    return nextResponse(postError, 400);
-                }
-
-                let liked: string[] = [];
-
-                if (user_id) {
-                    const { data: likesData, error: likesError } =
-                        (await supabaseServer
-                            .from("posts")
-                            .select("*, likes:likes!left(id)")
-                            .eq("likes.user_id", user_id)) as {
-                            data: (Post & { likes: { id: string } | null })[];
-                            error: PostgrestError | null;
-                        };
-
-                    if (likesError) {
-                        console.error(likesError);
-                        return nextResponse(likesError, 400);
-                    }
-
-                    liked = likesData.flatMap((p) => (p.likes ? [p.id] : []));
-                }
-
-                return nextResponse(
-                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                    postData.map(({ password, ...rest }) => ({
-                        ...rest,
-                        liked,
-                    }))?.[0],
-                    200,
-                );
+                break;
             }
             default: {
-                console.error(
-                    "[type] is wrong. acceptable types: [all, single]",
-                );
-                return nextResponse(
-                    {
-                        error: "[type] is wrong. acceptable types: [all, single]",
-                    },
-                    400,
-                );
+                error = "[type] is wrong. acceptable types: [all, single]";
+                break;
             }
         }
+
+        // error
+        if (error || !results) {
+            throw error;
+        }
+
+        // own likes
+        let ownLikes: { post_id: string; user_id: string }[] | null = [];
+
+        if (user_id) {
+            ({ data: ownLikes, error } = await supabaseServer
+                .from("likes")
+                .select("post_id, user_id")
+                .eq("user_id", user_id)
+                .in(
+                    "post_id",
+                    results[0].posts.map((p) => p.id),
+                ));
+        }
+
+        // confirming no errors
+        if (error) {
+            throw error;
+        }
+
+        const newResults = results.map(({ posts, ...rest }) => ({
+            ...rest,
+            posts: posts.map(({ likes, ...post }) => ({
+                ...post,
+                likes: likes[0].count,
+            })),
+        }));
+
+        // returning data
+        return nextResponse(
+            {
+                message: "Successfully fetched posts!",
+                results: newResults[0],
+                ownLikes: ownLikes?.map((l) => l.post_id),
+            },
+            200,
+        );
     } catch (error) {
         console.error(error);
         return nextResponse({ error: "Failed fetching posts." }, 400);

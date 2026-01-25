@@ -50,7 +50,11 @@ export const Posts = () => {
         errorString = "Incorrect username";
     }
 
-    if (retrievedUsername && !postIds[retrievedUsername]?.size) {
+    if (
+        retrievedUsername &&
+        !postIds[retrievedUsername]?.size &&
+        retrievedUsername !== status?.username
+    ) {
         errorString = "User hasn't created a single post yet";
     }
 
