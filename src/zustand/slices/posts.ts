@@ -238,10 +238,6 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                             ...state,
                             likeIds,
                             posts,
-                            // posts: {
-                            //     ...state.posts,
-                            //     [options.id]: { ...(state.posts[options.id] ?? {}), likes: state.posts[options.id].likes },
-                            // },
                         };
                     });
                 },
