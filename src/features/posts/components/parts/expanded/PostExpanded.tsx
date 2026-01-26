@@ -1,3 +1,4 @@
+import { NoContent } from "@/features/posts/components/parts/errors/NoContent";
 import { ToplineExpanded } from "@/features/posts/components/parts/expanded/ToplineExpanded";
 import { Post } from "@/types/tables/posts";
 import Image from "next/image";
@@ -53,7 +54,11 @@ export const PostExpanded = ({ data }: Props) => {
                         marginTop: data.image_url ? "0rem" : "8rem",
                     }}
                 >
-                    <p>{data.content}</p>
+                    {data.content?.trim().length ? (
+                        <p>{data.content}</p>
+                    ) : (
+                        <NoContent data={data} />
+                    )}
                 </li>
 
                 <li>

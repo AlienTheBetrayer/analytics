@@ -8,15 +8,18 @@ type Props = {
 
 export const CommentList = ({ data }: Props) => {
     // zustand
+    const commentIds = useAppStore((state) => state.commentIds);
     const comments = useAppStore((state) => state.comments);
 
-    if (!comments[data.id]?.length) {
+    if (!commentIds[data.id]?.size) {
         return null;
     }
 
+    const commentData = [...commentIds[data.id]].map(id => comments[id]);
+
     return (
         <ul className="box">
-            {comments[data.id].map((comment) => (
+            {commentData.map((comment) => (
                 <CommentView
                     key={comment.id}
                     data={comment}
