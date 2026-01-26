@@ -22,17 +22,14 @@ export type PostStore = {
      * post_id : Post
      */
     posts: Record<string, Post>;
-
     /**
      * post_id: like count
      */
     likes: Record<string, number>;
-
     /**
-     * post_id: Comment
+     * comment_id: Comment
      */
     comments: Record<string, Comment[]>;
-
     /**
      * post_id: PostPrivacy
      */
@@ -45,7 +42,14 @@ export type PostStore = {
      * username: post ids[]
      */
     postIds: Record<string, Set<string>>;
+    /**
+     * username: post ids[]
+     */
     likeIds: Record<string, Set<string>>;
+    /**
+     * post_id: comment ids[]
+     */
+    commentIds: Record<string, Set<string>>;
 
     /**
      * updates the filtering metadata
@@ -101,5 +105,21 @@ export type PostStore = {
             | { type: "like"; id: string }
             | { type: "unlike"; id: string }
         ) & { user_id: string; promiseKey?: string },
+    ) => Promise<void>;
+
+    /**
+     * updates a comment in a specific way (send, edit or delete)
+     * @param type type of the API interaction
+     * @param comment comment's text
+     * @param comment_id comment id needed for edit to work
+     * @param user_id the id of the user that wants to make a change
+     * @param promiseKey a unique id for the promise status
+     */
+    updateComment: (
+        options: (
+            | { type: "send"; comment: string }
+            | { type: "edit"; comment_id: string; comment: string }
+            | { type: "delete" }
+        ) & { user_id: string; post_id: string; promiseKey?: string },
     ) => Promise<void>;
 };

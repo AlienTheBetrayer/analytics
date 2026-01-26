@@ -1,5 +1,5 @@
 import { Profile, User } from "@/types/tables/account";
-import { Post } from "@/types/tables/posts";
+import { Comment, Post } from "@/types/tables/posts";
 import { PostStore } from "@/types/zustand/posts";
 import { SliceFunction } from "@/types/zustand/utils/sliceFunction";
 import { refreshedRequest } from "@/utils/auth/refreshedRequest";
@@ -11,6 +11,7 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
         posts: {},
         postIds: {},
         likeIds: {},
+        commentIds: {},
         postFiltering: {
             column: undefined,
             filter: "",
@@ -266,6 +267,49 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                         type: options.type,
                         id: options.id,
                         user_id: options.user_id,
+                    });
+                },
+            );
+        },
+
+        updateComment: async (options) => {
+            const { setPromise } = get();
+
+            return await setPromise(
+                options.promiseKey ?? "updateComment",
+                async () => {
+                    const res = await refreshedRequest(
+                        "/api/comment/",
+                        "POST",
+                        {
+                            user_id: options.user_id,
+                            type: options.type,
+                            post_id: options.post_id,
+                            ...(options.type !== "delete" && {
+                                comment: options.comment,
+                            }),
+                            ...(options.type === "edit" && {
+                                comment_id: options.comment_id,
+                            }),
+                        },
+                    );
+
+                    const data = res.data as Comment;
+                    console.log(data);
+
+                    set((state) => {
+                        const comments = { ...state.comments };
+
+                        switch (options.type) {
+                            case "delete": {
+                                break;
+                            }
+                            default: {
+                                break;
+                            }
+                        }
+
+                        return { ...state, comments };
                     });
                 },
             );

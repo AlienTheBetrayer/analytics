@@ -1,4 +1,4 @@
-import { CommentView } from "@/features/posts/components/parts/replies/CommentView";
+import { CommentView } from "@/features/posts/components/parts/comments/CommentView";
 import { Post } from "@/types/tables/posts";
 import { useAppStore } from "@/zustand/store";
 

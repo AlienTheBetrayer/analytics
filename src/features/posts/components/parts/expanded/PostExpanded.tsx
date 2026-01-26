@@ -37,6 +37,16 @@ export const PostExpanded = ({ data }: Props) => {
                     </>
                 )}
 
+                <li className="flex justify-center items-center gap-1">
+                    <Image
+                        alt=""
+                        width={16}
+                        height={16}
+                        src="/menu.svg"
+                    />
+                    <span>Content:</span>
+                </li>
+
                 <li
                     className="box p-4! min-h-128"
                     style={{

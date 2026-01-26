@@ -16,7 +16,7 @@ export const CloseButton = ({ hide }: Props) => {
             }}
         >
             <Image
-                alt=""
+                alt="x"
                 width={14}
                 height={14}
                 src="/cross.svg"
