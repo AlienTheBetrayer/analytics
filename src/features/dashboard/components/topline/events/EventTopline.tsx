@@ -16,6 +16,7 @@ export const EventTopline = () => {
     const status = useAppStore((state) => state.status);
     const selectedProjectId = useAppStore((state) => state.selectedProjectId);
     const eventFilters = useAppStore((state) => state.eventFilters);
+    const events = useAppStore((state) => state.events);
 
     const filterColor = useMemo(() => {
         if (!selectedProjectId) {
@@ -26,8 +27,9 @@ export const EventTopline = () => {
 
     return (
         <ul
-            className={`box p-0! gap-1! sticky! top-16 z-2 bg-background-3! flex-row! transition-all duration-300 h-10 min-h-10 items-center ${!selectedProjectId ? "opacity-30" : ""}`}
-            inert={!selectedProjectId}
+            className={`box p-0! gap-1! sticky! top-16 z-2 bg-background-3! flex-row! transition-all duration-300 h-10 min-h-10 items-center 
+                ${!(selectedProjectId && events[selectedProjectId]?.length) ? "opacity-30" : ""}`}
+            inert={!(selectedProjectId && events[selectedProjectId]?.length)}
         >
             <li
                 className="select-none pointer-events-none transition-all duration-300 absolute inset-0 grid place-items-center z-1"
