@@ -19,13 +19,13 @@ export const ToplineCompact = ({ data, className, type, onDelete }: Props) => {
     // zustand
     const postIds = useAppStore((state) => state.postIds);
     const postPrivacy = useAppStore((state) => state.postPrivacy);
-    const likeIds = useAppStore((state) => state.likeIds);
-    const likes = useAppStore((state) => state.likes);
+    const postLikeIds = useAppStore((state) => state.postLikeIds);
+    const postLikes = useAppStore((state) => state.postLikes);
     const status = useAppStore((state) => state.status);
-    const likePost = useAppStore((state) => state.likePost);
+    const like = useAppStore((state) => state.like);
 
     const hasLiked =
-        (status && likeIds[status.username]?.has(data.id)) ?? false;
+        (status && postLikeIds[status.username]?.has(data.id)) ?? false;
 
     return (
         <ul
@@ -63,7 +63,7 @@ export const ToplineCompact = ({ data, className, type, onDelete }: Props) => {
             />
 
             <TinyTooltip
-                data={likes[data.id]}
+                data={postLikes[data.id]}
                 showData
                 src="/heart.svg"
                 size={10}
@@ -87,8 +87,9 @@ export const ToplineCompact = ({ data, className, type, onDelete }: Props) => {
                                         return;
                                     }
 
-                                    likePost({
-                                        type: hasLiked ? "unlike" : "like",
+                                    like({
+                                        what: "post",
+                                        type: "like",
                                         id: data.id,
                                         user_id: status.id,
                                         promiseKey: `likePost_${data.id}`,

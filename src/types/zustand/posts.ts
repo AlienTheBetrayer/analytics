@@ -25,11 +25,15 @@ export type PostStore = {
     /**
      * post_id: like count
      */
-    likes: Record<string, number>;
+    postLikes: Record<string, number>;
     /**
      * comment_id: Comment
      */
     comments: Record<string, Comment>;
+    /**
+     * comment_id: like count (likes - dislikes)
+     */
+    commentLikes: Record<string, number>;
     /**
      * post_id: PostPrivacy
      */
@@ -45,7 +49,11 @@ export type PostStore = {
     /**
      * username: post ids[]
      */
-    likeIds: Record<string, Set<string>>;
+    postLikeIds: Record<string, Set<string>>;
+    /**
+     * username : comment ids[]
+     */
+    commentLikeIds: Record<string, Set<string>>;
     /**
      * post_id: comment ids[]
      */
@@ -94,17 +102,17 @@ export type PostStore = {
     ) => Promise<void>;
 
     /**
-     * likes the post in a specific way (like / remove like)
+     * likes the post / column in a specific way (like / remove like)
      * @param type type of the API interaction
      * @param id  id of the post needed
      * @param user_id the id of the user that wants to make a change
      * @param promiseKey a unique id for the promise status
      */
-    likePost: (
+    like: (
         options: (
             | { type: "like"; id: string }
-            | { type: "unlike"; id: string }
-        ) & { user_id: string; promiseKey?: string },
+            | { type: "dislike"; id: string }
+        ) & { user_id: string; what: "post" | "comment"; promiseKey?: string },
     ) => Promise<void>;
 
     /**
@@ -120,6 +128,6 @@ export type PostStore = {
             | { type: "send"; post_id: string; comment: string }
             | { type: "edit"; comment_id: string; comment: string }
             | { type: "delete"; comment_id: string }
-        ) & { user_id: string;  promiseKey?: string },
+        ) & { user_id: string; promiseKey?: string },
     ) => Promise<void>;
 };

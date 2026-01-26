@@ -10,7 +10,7 @@ export const usePostList = (user: User) => {
     const posts = useAppStore((state) => state.posts);
     const postIds = useAppStore((state) => state.postIds);
     const status = useAppStore((state) => state.status);
-    const likeIds = useAppStore((state) => state.likeIds);
+    const postLikeIds = useAppStore((state) => state.postLikeIds);
 
     // sorted object
     const filtered = useMemo(() => {
@@ -59,7 +59,7 @@ export const usePostList = (user: User) => {
                     }
 
                     allPosts = allPosts.filter((post) =>
-                        likeIds[status.username].has(post.id),
+                        postLikeIds[status.username].has(post.id),
                     );
                     break;
                 }
@@ -72,7 +72,7 @@ export const usePostList = (user: User) => {
                         (post) =>
                             !post.edited_at &&
                             !post.image_url &&
-                            !likeIds[status.username].has(post.id),
+                            !postLikeIds[status.username].has(post.id),
                     );
                     break;
                 }
@@ -80,7 +80,7 @@ export const usePostList = (user: User) => {
         }
 
         return allPosts;
-    }, [posts, postIds, postFiltering, display, user, status, likeIds]);
+    }, [posts, postIds, postFiltering, display, user, status, postLikeIds]);
 
     return { filtered };
 };

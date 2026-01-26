@@ -9,9 +9,12 @@ const cache = new Set();
 export const PostSlice: SliceFunction<PostStore> = (set, get) => {
     return {
         posts: {},
+        postLikeIds: {},
         postIds: {},
-        likeIds: {},
+        postLikes: {},
         commentIds: {},
+        commentLikeIds: {},
+        commentLikes: {},
         postFiltering: {
             column: undefined,
             filter: "",
@@ -70,7 +73,7 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                     const data = res.data as {
                         results: User & {
                             profile: Profile;
-                            posts: (Post & { likes: number } & {
+                            posts: (Post & { post_likes: number } & {
                                 privacy: {
                                     likes: boolean;
                                     comments: boolean;
@@ -86,12 +89,12 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                         const users = { ...state.users };
 
                         const posts = { ...state.posts };
-                        const likes = { ...state.likes };
+                        const postLikes = { ...state.postLikes };
                         const postPrivacy = { ...state.postPrivacy };
                         const comments = { ...state.comments };
 
                         const postIds = { ...state.postIds };
-                        const likeIds = { ...state.likeIds };
+                        const postLikeIds = { ...state.postLikeIds };
                         const commentIds = { ...state.commentIds };
 
                         // user data
@@ -108,26 +111,23 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                         const newPostIds = new Set(
                             state.postIds[data.results.username] ?? [],
                         );
-                        for (const {
-                            likes: postLikes,
-                            privacy,
-                            ...post
-                        } of data.results.posts) {
+                        for (const { post_likes, privacy, ...post } of data
+                            .results.posts) {
                             posts[post.id] = post;
                             newPostIds.add(post.id);
-                            likes[post.id] = postLikes;
+                            postLikes[post.id] = post_likes;
                             postPrivacy[post.id] = privacy;
                         }
                         postIds[data.results.username] = newPostIds;
 
                         // likes and like ids
                         const newLikeIds = new Set(
-                            state.likeIds[data.results.username] ?? [],
+                            state.postLikeIds[data.results.username] ?? [],
                         );
                         for (const likeId of data.ownLikes) {
                             newLikeIds.add(likeId);
                         }
-                        likeIds[data.results.username] = newLikeIds;
+                        postLikeIds[data.results.username] = newLikeIds;
 
                         // comments and comment ids
                         if (
@@ -152,10 +152,10 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                             profiles,
                             postPrivacy,
                             users,
-                            likes,
+                            postLikes,
                             postIds,
                             commentIds,
-                            likeIds,
+                            postLikeIds,
                         };
                     });
 
@@ -236,57 +236,43 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
             );
         },
 
-        likePost: async (options) => {
+        like: async (options) => {
             const { setPromise } = get();
 
             return await setPromise(
                 options.promiseKey ?? "likePost",
                 async () => {
                     set((state) => {
-                        const likeIds = { ...state.likeIds };
-                        const posts = { ...state.posts };
-                        const likes = { ...state.likes };
+                        const postLikes = { ...state.postLikes };
+                        const postLikeIds = { ...state.postLikeIds };
 
-                        switch (options.type) {
-                            case "like": {
-                                const username =
-                                    state.users[options.user_id]?.username;
-                                if (username) {
-                                    likeIds[username] = new Set([
-                                        ...(likeIds[username] ?? []),
-                                        options.id,
-                                    ]);
-                                }
-                                likes[options.id] = likes[options.id] + 1;
+                        const username = state.users[options.user_id]?.username;
 
-                                break;
-                            }
-                            case "unlike": {
-                                const username =
-                                    state.users[options.user_id]?.username;
-                                if (username && likeIds[username]) {
-                                    likeIds[username] = new Set(
-                                        [...likeIds[username]].filter(
-                                            (id) => id !== options.id,
-                                        ),
-                                    );
-                                }
-                                likes[options.id] = likes[options.id] - 1;
-
-                                break;
+                        if (username) {
+                            if (!postLikeIds[username].has(options.id)) {
+                                postLikeIds[username] = new Set([
+                                    ...(postLikeIds[username] ?? []),
+                                    options.id,
+                                ]);
+                                postLikes[options.id] =
+                                    (postLikes[options.id] ?? 0) + 1;
+                            } else {
+                                postLikeIds[username] = new Set(
+                                    [...(postLikeIds[username] ?? [])].filter(
+                                        (id) => id !== options.id,
+                                    ),
+                                );
+                                postLikes[options.id] =
+                                    (postLikes[options.id] ?? 1) - 1;
                             }
                         }
 
-                        return {
-                            ...state,
-                            likeIds,
-                            likes,
-                            posts,
-                        };
+                        return { ...state, postLikes, postLikeIds };
                     });
 
                     await refreshedRequest("/api/like", "POST", {
                         type: options.type,
+                        what: options.what,
                         id: options.id,
                         user_id: options.user_id,
                     });

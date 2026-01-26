@@ -12,7 +12,7 @@ type Props = {
 export const PostGridElement = ({ post }: Props) => {
     // zustand
     const postPrivacy = useAppStore((state) => state.postPrivacy);
-    const likeIds = useAppStore((state) => state.likeIds);
+    const postLikeIds = useAppStore((state) => state.postLikeIds);
     const status = useAppStore((state) => state.status);
 
     return (
@@ -41,7 +41,7 @@ export const PostGridElement = ({ post }: Props) => {
                             />
                         )}
 
-                        {status && likeIds[status.username]?.has(post.id) && (
+                        {status && postLikeIds[status.username]?.has(post.id) && (
                             <Image
                                 alt="liked"
                                 width={16}

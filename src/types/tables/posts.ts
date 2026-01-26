@@ -24,12 +24,23 @@ export type PostPrivacy = {
 };
 
 /**
- * likes
+ * post_likes
  */
-export type Like = {
+export type PostLike = {
     id: string;
     user_id: string;
     post_id: string;
+    created_at: string;
+};
+
+/**
+ * comment_likes
+ */
+export type CommentLike = {
+    id: string;
+    user_id: string;
+    comment_id: string;
+    like: boolean;
     created_at: string;
 };
 

@@ -17,8 +17,8 @@ export const GET = async (request: NextRequest) => {
         let results:
             | (User & {
                   profile: Profile;
-                  posts: (Post & { likes: [{ count: number }] } & {
-                      privacy: { likes: boolean; comments: boolean };
+                  posts: (Post & { post_likes: [{ count: number }] } & {
+                      privacy: { post_likes: boolean; comments: boolean };
                   } & { comments?: Comment[] })[];
               })[]
             | null = null;
@@ -35,7 +35,7 @@ export const GET = async (request: NextRequest) => {
                 ({ data: results, error } = await supabaseServer
                     .from("users")
                     .select(
-                        "*, profile:profiles(*), posts:posts!inner(*, likes:likes(count), privacy:post_privacy(comments, likes, edited_at), comments:comments(*))",
+                        "*, profile:profiles(*), posts:posts!inner(*, post_likes:post_likes(count), privacy:post_privacy(comments, likes, edited_at), comments:comments(*, comment_likes:comment_likes(count)))",
                     )
                     .eq("posts.id", id)
                     .order("created_at", {
@@ -54,7 +54,7 @@ export const GET = async (request: NextRequest) => {
                 ({ data: results, error } = await supabaseServer
                     .from("users")
                     .select(
-                        `*, profile:profiles(*), posts:posts(*, likes:likes(count), privacy:post_privacy(comments, likes, edited_at))`,
+                        `*, profile:profiles(*), posts:posts(*, post_likes:post_likes(count), privacy:post_privacy(comments, likes, edited_at))`,
                     )
                     .eq("username", username)
                     .order("edited_at", {
@@ -85,7 +85,7 @@ export const GET = async (request: NextRequest) => {
 
         if (user_id) {
             ({ data: ownLikes, error } = await supabaseServer
-                .from("likes")
+                .from("post_likes")
                 .select("post_id, user_id")
                 .eq("user_id", user_id)
                 .in(
@@ -101,9 +101,9 @@ export const GET = async (request: NextRequest) => {
 
         const newResults = results.map(({ posts, ...rest }) => ({
             ...rest,
-            posts: posts.map(({ likes, ...post }) => ({
+            posts: posts.map(({ post_likes, ...post }) => ({
                 ...post,
-                likes: likes[0].count,
+                post_likes: post_likes[0].count,
             })),
         }));
 
