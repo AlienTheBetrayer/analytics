@@ -73,7 +73,7 @@ export const List = ({ data }: Props) => {
                                   <hr className="my-4!" />
                               </li>
                           ))
-                        : filtered.map((post) => (
+                        : filtered?.map((post) => (
                               <li
                                   className="flex flex-col gap-4"
                                   key={post.id}

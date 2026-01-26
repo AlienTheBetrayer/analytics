@@ -30,7 +30,7 @@ export const unfriendAll = async (request: NextRequest, from_id: string) => {
     return nextResponse(
         { message: "Successfully unfriended everyone" },
         200,
-        "all_unfriended"
+        "all_unfriended",
     );
 };
 
@@ -39,7 +39,11 @@ export const unfriendAll = async (request: NextRequest, from_id: string) => {
  * @param request next.js request
  * @returns
  */
-export const unfriend = async (request: NextRequest, from_id: string, to_id?: string) => {
+export const unfriend = async (
+    request: NextRequest,
+    from_id: string,
+    to_id?: string,
+) => {
     if (!from_id || !to_id) {
         console.error("from_id and to_id are missing.");
         return nextResponse({ error: "from_id and to_id are missing." }, 400);
@@ -51,7 +55,7 @@ export const unfriend = async (request: NextRequest, from_id: string, to_id?: st
         .from("friends")
         .delete()
         .or(
-            `and(user1_id.eq.${from_id},user2_id.eq.${to_id}),and(user1_id.eq.${to_id},user2_id.eq.${from_id})`
+            `and(user1_id.eq.${from_id},user2_id.eq.${to_id}),and(user1_id.eq.${to_id},user2_id.eq.${from_id})`,
         );
 
     if (unfriendError) {
@@ -62,7 +66,7 @@ export const unfriend = async (request: NextRequest, from_id: string, to_id?: st
     return nextResponse(
         { message: "Successfully unfriended the user!" },
         200,
-        "unfriended"
+        "unfriended",
     );
 };
 
@@ -70,7 +74,11 @@ export const unfriend = async (request: NextRequest, from_id: string, to_id?: st
  * sends a friend request
  * @param request next.js request
  */
-export const requestSend = async (request: NextRequest, from_id: string, to_id?: string) => {
+export const requestSend = async (
+    request: NextRequest,
+    from_id: string,
+    to_id?: string,
+) => {
     if (!from_id || !to_id) {
         console.error("from_id and to_id are missing.");
         return nextResponse({ error: "from_id and to_id are missing." }, 400);
@@ -80,9 +88,9 @@ export const requestSend = async (request: NextRequest, from_id: string, to_id?:
         console.error("you cannot send a friend request to yourself.");
         return nextResponse(
             { error: "you cannot send a friend request to yourself." },
-            400
+            400,
         );
-    }   
+    }
 
     tokenVerify(request, [from_id]);
 
@@ -90,7 +98,7 @@ export const requestSend = async (request: NextRequest, from_id: string, to_id?:
         .from("friends")
         .select()
         .or(
-            `and(user1_id.eq.${from_id},user2_id.eq.${to_id}),and(user1_id.eq.${to_id},user2_id.eq.${from_id})`
+            `and(user1_id.eq.${from_id},user2_id.eq.${to_id}),and(user1_id.eq.${to_id},user2_id.eq.${from_id})`,
         )
         .limit(1);
 
@@ -104,7 +112,7 @@ export const requestSend = async (request: NextRequest, from_id: string, to_id?:
         return nextResponse(
             { error: "You are already friends with this user." },
             400,
-            "friends_already"
+            "friends_already",
         );
     }
 
@@ -113,6 +121,7 @@ export const requestSend = async (request: NextRequest, from_id: string, to_id?:
             .from("friend_requests")
             .select()
             .eq("from_id", from_id)
+            .eq("to_id", to_id)
             .limit(1);
 
     if (fromRequestError) {
@@ -125,7 +134,7 @@ export const requestSend = async (request: NextRequest, from_id: string, to_id?:
         return nextResponse(
             { error: "The friend request had already been sent." },
             400,
-            "friend_request_already_sent"
+            "friend_request_already_sent",
         );
     }
 
@@ -141,7 +150,7 @@ export const requestSend = async (request: NextRequest, from_id: string, to_id?:
     return nextResponse(
         { message: "Successfully sent a friend request!" },
         200,
-        "friend_request_sent"
+        "friend_request_sent",
     );
 };
 
@@ -149,7 +158,11 @@ export const requestSend = async (request: NextRequest, from_id: string, to_id?:
  * rejects a friend request
  * @param request next.js request
  */
-export const requestReject = async (request: NextRequest, from_id: string, to_id?: string) => {
+export const requestReject = async (
+    request: NextRequest,
+    from_id: string,
+    to_id?: string,
+) => {
     if (!from_id || !to_id) {
         console.error("from_id and to_id are missing.");
         return nextResponse({ error: "from_id and to_id are missing." }, 400);
@@ -161,21 +174,21 @@ export const requestReject = async (request: NextRequest, from_id: string, to_id
         .from("friend_requests")
         .delete()
         .or(
-            `and(from_id.eq.${from_id},to_id.eq.${to_id}),and(from_id.eq.${to_id},to_id.eq.${from_id})`
+            `and(from_id.eq.${from_id},to_id.eq.${to_id}),and(from_id.eq.${to_id},to_id.eq.${from_id})`,
         );
 
     if (error) {
         console.error(error);
         return nextResponse(
             { error: "Failed rejecting a friend request." },
-            400
+            400,
         );
     }
 
     return nextResponse(
         { message: "Successfully rejected a friend request!" },
         200,
-        "friend_request_rejected"
+        "friend_request_rejected",
     );
 };
 
@@ -183,7 +196,11 @@ export const requestReject = async (request: NextRequest, from_id: string, to_id
  * accepts a friend request
  * @param request next.js request
  */
-export const requestAccept = async (request: NextRequest, from_id: string, to_id?: string) => {
+export const requestAccept = async (
+    request: NextRequest,
+    from_id: string,
+    to_id?: string,
+) => {
     if (!from_id || !to_id) {
         console.error("from_id and to_id are missing.");
         return nextResponse({ error: "from_id and to_id are missing." }, 400);
@@ -229,6 +246,6 @@ export const requestAccept = async (request: NextRequest, from_id: string, to_id
     return nextResponse(
         { message: "Friend request accepted!" },
         200,
-        "friend_request_accepted"
+        "friend_request_accepted",
     );
 };
