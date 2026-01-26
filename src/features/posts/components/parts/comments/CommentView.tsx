@@ -18,6 +18,7 @@ export const CommentView = ({ data, onEdit, editing }: Props) => {
     const profiles = useAppStore((state) => state.profiles);
     const users = useAppStore((state) => state.users);
     const status = useAppStore((state) => state.status);
+    const commentLikeIds = useAppStore((state) => state.commentLikeIds);
     const like = useAppStore((state) => state.like);
 
     const user = users[data.user_id];
@@ -26,6 +27,13 @@ export const CommentView = ({ data, onEdit, editing }: Props) => {
     if (!user || !profile) {
         return null;
     }
+
+    const hasLiked = status
+        ? commentLikeIds[status.username]?.has(`${data.id}:like`)
+        : false;
+    const hasDisliked = status
+        ? commentLikeIds[status.username]?.has(`${data.id}:dislike`)
+        : false;
 
     return (
         <li className="box grid! grid-cols-[42px_1fr] p-4! hover:bg-background-a-8! duration-400! transition-all!">
@@ -78,6 +86,9 @@ export const CommentView = ({ data, onEdit, editing }: Props) => {
                                 user_id: status.id,
                             });
                         }}
+                        style={{
+                            filter: `invert(${hasLiked ? 1 : 0})`,
+                        }}
                     >
                         <Image
                             alt="like"
@@ -100,6 +111,9 @@ export const CommentView = ({ data, onEdit, editing }: Props) => {
                                 id: data.id,
                                 user_id: status.id,
                             });
+                        }}
+                        style={{
+                            filter: `invert(${hasDisliked ? 1 : 0})`,
                         }}
                     >
                         <Image

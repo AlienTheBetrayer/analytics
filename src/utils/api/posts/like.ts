@@ -85,4 +85,55 @@ export const likeComment = async ({
     type?: string;
     id: string;
     user_id: string;
-}) => {};
+}) => {
+    if (!(type && ["like", "dislike"].includes(type))) {
+        console.error("type is wrong type. available types: like/dislike");
+        throw "type is wrong type. available types: like/dislike";
+    }
+
+    const { count, error } = await supabaseServer
+        .from("comment_likes")
+        .select("*", { count: "exact", head: true })
+        .eq("comment_id", id)
+        .eq("user_id", user_id)
+        .eq("like", type === "like")
+
+    if (error) {
+        console.error(error);
+        throw error;
+    }
+
+    // already exists - delete 
+    if (count) {
+        const { error: likeError } = await supabaseServer
+            .from("comment_likes")
+            .delete()
+            .eq("user_id", user_id)
+            .eq("comment_id", id)
+
+        if (likeError) {
+            console.error(likeError);
+            throw likeError;
+        }
+    } else {
+        // doesn't exist - create
+        const { error } = await supabaseServer
+            .from("comment_likes")
+            .upsert(
+                { comment_id: id, user_id, like: type === "like" },
+                { onConflict: "user_id, comment_id" },
+            );
+
+        if (error) {
+            console.error(error);
+            return nextResponse({ error }, 400);
+        }
+    }
+
+    return nextResponse(
+        {
+            message: "Successfully liked/unliked!",
+        },
+        200,
+    );
+};

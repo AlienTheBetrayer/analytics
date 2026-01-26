@@ -51,11 +51,11 @@ export type PostStore = {
      */
     postLikeIds: Record<string, Set<string>>;
     /**
-     * username : comment ids[]
+     * username : "comment_id:like"
      */
     commentLikeIds: Record<string, Set<string>>;
     /**
-     * post_id: comment ids[]
+     * username: comment ids[]
      */
     commentIds: Record<string, Set<string>>;
 
