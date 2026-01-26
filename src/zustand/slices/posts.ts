@@ -301,12 +301,14 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                 options.promiseKey ?? "updateComment",
                 async () => {
                     const res = await refreshedRequest(
-                        "/api/comment/",
+                        "/api/comment-update/",
                         "POST",
                         {
                             user_id: options.user_id,
                             type: options.type,
-                            post_id: options.post_id,
+                            ...("post_id" in options && {
+                                post_id: options.post_id,
+                            }),
                             ...("comment" in options && {
                                 comment: options.comment,
                             }),
@@ -316,9 +318,7 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                         },
                     );
 
-                    const data = res.data as Comment;
-
-                    console.log(data);
+                    const data = res.data.comment as Comment;
 
                     set((state) => {
                         const comments = { ...state.comments };
@@ -327,25 +327,31 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                         switch (options.type) {
                             case "delete": {
                                 delete comments[options.comment_id];
-                                commentIds[options.post_id] = new Set(
+                                commentIds[data.post_id] = new Set(
                                     [
-                                        ...(state.commentIds[options.post_id] ??
+                                        ...(state.commentIds[data.post_id] ??
                                             []),
                                     ].filter((id) => id !== options.comment_id),
                                 );
                                 break;
                             }
                             case "send": {
+                                commentIds[options.post_id] = new Set([
+                                    ...(state.commentIds[options.post_id] ??
+                                        []),
+                                    data.id,
+                                ]);
+                                comments[data.id] = data;
 
                                 break;
                             }
                             case "edit": {
-
+                                comments[data.id] = data;
                                 break;
                             }
                         }
 
-                        return { ...state, comments };
+                        return { ...state, comments, commentIds };
                     });
                 },
             );

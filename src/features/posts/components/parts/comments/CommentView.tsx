@@ -1,7 +1,9 @@
 import { ProfileImage } from "@/features/profile/components/ProfileImage";
 import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
+import { useMessageBox } from "@/features/ui/messagebox/hooks/useMessageBox";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
+import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
 import { Comment } from "@/types/tables/posts";
 import { relativeTime } from "@/utils/other/relativeTime";
 import { useAppStore } from "@/zustand/store";
@@ -16,9 +18,13 @@ export const CommentView = ({ data }: Props) => {
     const profiles = useAppStore((state) => state.profiles);
     const users = useAppStore((state) => state.users);
     const status = useAppStore((state) => state.status);
+    const promises = useAppStore((state) => state.promises);
+    const updateComment = useAppStore((state) => state.updateComment);
 
     const user = users[data.user_id];
     const profile = profiles[data.user_id];
+
+    const deleteBox = useMessageBox();
 
     if (!user || !profile) {
         return null;
@@ -26,6 +32,24 @@ export const CommentView = ({ data }: Props) => {
 
     return (
         <li className="box grid! grid-cols-[42px_1fr] p-4!">
+            {deleteBox.render({
+                children:
+                    "Your comment will be gone and no one will be able to see it.",
+                onSelect: (res) => {
+                    if (!status) {
+                        return;
+                    }
+
+                    if (res === "yes") {
+                        updateComment({
+                            type: "delete",
+                            user_id: status.id,
+                            comment_id: data.id,
+                            promiseKey: `deleteComment_${data.id}`,
+                        });
+                    }
+                },
+            })}
             <LinkButton
                 href={`/profile/${user.username}`}
                 className="p-0! w-fit! h-fit!"
@@ -112,7 +136,14 @@ export const CommentView = ({ data }: Props) => {
 
                                 <li>
                                     <Tooltip text="Delete your comment">
-                                        <Button>
+                                        <Button onClick={deleteBox.show}>
+                                            <PromiseStatus
+                                                status={
+                                                    promises[
+                                                        `deleteComment_${data.id}`
+                                                    ]
+                                                }
+                                            />
                                             <Image
                                                 alt=""
                                                 width={16}

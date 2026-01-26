@@ -37,7 +37,11 @@ export const GET = async (request: NextRequest) => {
                     .select(
                         "*, profile:profiles(*), posts:posts!inner(*, likes:likes(count), privacy:post_privacy(comments, likes, edited_at), comments:comments(*))",
                     )
-                    .eq("posts.id", id));
+                    .eq("posts.id", id)
+                    .order("created_at", {
+                        referencedTable: "posts.comments",
+                        ascending: false,
+                    }));
 
                 break;
             }

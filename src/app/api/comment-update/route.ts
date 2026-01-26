@@ -10,10 +10,10 @@ export const POST = async (request: NextRequest) => {
         const { type, user_id, post_id, comment_id, comment } =
             await request.json();
 
-        if (!type || !user_id || !post_id) {
-            console.error("type and user_id and post_id have to be present");
+        if (!type || !user_id) {
+            console.error("type and user_id have to be present");
             return nextResponse(
-                { message: "type and user_id and post_id have to be present" },
+                { message: "type and user_id have to be present" },
                 400,
             );
         }
@@ -24,11 +24,22 @@ export const POST = async (request: NextRequest) => {
         // picking query
         switch (type) {
             case "delete": {
-                const { error } = await supabaseServer
+                if (!comment_id) {
+                    console.error("comment_id are required for edit");
+                    return nextResponse(
+                        {
+                            error: "comment_id are required for edit",
+                        },
+                        400,
+                    );
+                }
+
+                const { data, error } = await supabaseServer
                     .from("comments")
                     .delete()
-                    .eq("post_id", post_id)
-                    .eq("user_id", user_id);
+                    .eq("id", comment_id)
+                    .select()
+                    .single();
 
                 if (error) {
                     console.error(error);
@@ -36,15 +47,22 @@ export const POST = async (request: NextRequest) => {
                 }
 
                 return nextResponse(
-                    { message: "Successfully deleted a comment!" },
+                    {
+                        message: "Successfully deleted a comment!",
+                        comment: data,
+                    },
                     200,
                 );
             }
             case "send": {
-                if (!comment) {
-                    console.error("comment is required for send/edit");
+                if (!comment || !post_id) {
+                    console.error(
+                        "comment and post_id are required for send/edit",
+                    );
                     return nextResponse(
-                        { error: "comment is required for send/edit" },
+                        {
+                            error: "comment and post_id are required for send/edit",
+                        },
                         400,
                     );
                 }
@@ -88,10 +106,8 @@ export const POST = async (request: NextRequest) => {
                     .from("comments")
                     .upsert(
                         {
-                            post_id,
-                            user_id,
-                            comment,
                             id: comment_id,
+                            comment,
                             edited_at: new Date().toISOString(),
                         },
                         { onConflict: "id" },

@@ -117,9 +117,9 @@ export type PostStore = {
      */
     updateComment: (
         options: (
-            | { type: "send"; comment: string }
+            | { type: "send"; post_id: string; comment: string }
             | { type: "edit"; comment_id: string; comment: string }
             | { type: "delete"; comment_id: string }
-        ) & { user_id: string; post_id: string; promiseKey?: string },
+        ) & { user_id: string;  promiseKey?: string },
     ) => Promise<void>;
 };
