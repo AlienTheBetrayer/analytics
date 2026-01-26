@@ -4,22 +4,20 @@ import { ProfileImage } from "@/features/profile/components/ProfileImage";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { Comment } from "@/types/tables/posts";
 import { useAppStore } from "@/zustand/store";
-import { useState } from "react";
 
 type Props = {
     data: Comment;
+    editing: string | null;
+    onEdit: (id: string | null) => void;
 };
 
-export const CommentView = ({ data }: Props) => {
+export const CommentView = ({ data, onEdit, editing }: Props) => {
     // zustand
     const profiles = useAppStore((state) => state.profiles);
     const users = useAppStore((state) => state.users);
 
     const user = users[data.user_id];
     const profile = profiles[data.user_id];
-
-    // react
-    const [editing, setEditing] = useState<boolean>(false);
 
     if (!user || !profile) {
         return null;
@@ -42,17 +40,17 @@ export const CommentView = ({ data }: Props) => {
             <div className="flex flex-col gap-2">
                 <CommentViewTopline
                     data={data}
-                    onEdit={() => setEditing((prev) => !prev)}
+                    onEdit={() => onEdit(data.id === editing ? null : data.id)}
                 />
 
                 <div>
-                    {editing ? (
+                    {editing === data.id ? (
                         <UpdateComment
                             type="edit"
                             data={{
                                 comment: data,
                                 onEdit: () => {
-                                    setEditing(false);
+                                    onEdit(null);
                                 },
                             }}
                         />
