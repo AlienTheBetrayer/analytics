@@ -80,8 +80,6 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                         ownLikes: string[];
                     };
 
-                    console.log(data);
-
                     set((state) => {
                         const profiles = { ...state.profiles };
                         const users = { ...state.users };
@@ -221,12 +219,6 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
             return await setPromise(
                 options.promiseKey ?? "likePost",
                 async () => {
-                    await refreshedRequest("/api/like", "POST", {
-                        type: options.type,
-                        id: options.id,
-                        user_id: options.user_id,
-                    });
-
                     set((state) => {
                         const likeIds = { ...state.likeIds };
                         const posts = { ...state.posts };
@@ -268,6 +260,12 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                             likes,
                             posts,
                         };
+                    });
+
+                    await refreshedRequest("/api/like", "POST", {
+                        type: options.type,
+                        id: options.id,
+                        user_id: options.user_id,
                     });
                 },
             );

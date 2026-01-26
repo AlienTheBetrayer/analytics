@@ -1,6 +1,7 @@
 import { supabaseServer } from "@/server/private/supabase";
 import { nextResponse } from "@/utils/api/response";
 import { tokenVerify } from "@/utils/auth/tokenVerify";
+import { PostgrestError } from "@supabase/supabase-js";
 import { NextRequest } from "next/server";
 
 export const POST = async (request: NextRequest) => {
@@ -16,7 +17,29 @@ export const POST = async (request: NextRequest) => {
             );
         }
 
+        // verifying permissions & privacy
         tokenVerify(request, [user_id]);
+
+        const { data: post, error: privacyError } = (await supabaseServer
+            .from("posts")
+            .select("user_id, privacy:post_privacy(likes)")
+            .eq("id", id)
+            .single()) as {
+            data: { user_id: string; privacy: { likes: boolean } };
+            error: PostgrestError | null;
+        };
+
+        if (privacyError) {
+            console.error(privacyError);
+            throw privacyError;
+        }
+
+        if (post?.privacy?.likes === false && post?.user_id !== user_id) {
+            return nextResponse(
+                { error: "Likes are not allowed by privacy settings." },
+                400,
+            );
+        }
 
         // queries
         switch (type) {

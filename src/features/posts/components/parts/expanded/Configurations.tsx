@@ -20,7 +20,7 @@ export const Configurations = ({ data, hide }: Props) => {
     const status = useAppStore((state) => state.status);
     const updatePost = useAppStore((state) => state.updatePost);
 
-    const thisPrivacy = postPrivacy[data.id];
+    const thisPrivacy = postPrivacy[data.id] ? postPrivacy[data.id] : undefined;
 
     // react state
     const [comments, setComments] = useState<boolean>(
@@ -40,7 +40,7 @@ export const Configurations = ({ data, hide }: Props) => {
                     src="/settings.svg"
                 />
                 <span>Privacy configurations</span>
-                {thisPrivacy.edited_at && (
+                {thisPrivacy?.edited_at && (
                     <span>
                         <small>
                             edited {relativeTime(thisPrivacy.edited_at)}

@@ -75,6 +75,10 @@ export const ToplineCompact = ({ data, className, type, onDelete }: Props) => {
                     <li>
                         <Tooltip
                             text={`${hasLiked ? "Remove like" : "Like this post"}`}
+                            isEnabled={
+                                postPrivacy[data.id]?.likes !== false ||
+                                status.id === data.user_id
+                            }
                         >
                             <Button
                                 aria-label={`${hasLiked ? "unlike post" : "like post"}`}
@@ -160,12 +164,12 @@ export const ToplineCompact = ({ data, className, type, onDelete }: Props) => {
                                             />
                                         )}
                                     >
-                                        <Button aria-label="configure">
+                                        <Button aria-label="privacy">
                                             <Image
                                                 alt=""
                                                 width={16}
                                                 height={16}
-                                                src="/settings.svg"
+                                                src="/security.svg"
                                             />
                                         </Button>
                                     </Modal>
