@@ -29,7 +29,7 @@ export type PostStore = {
     /**
      * comment_id: Comment
      */
-    comments: Record<string, Comment[]>;
+    comments: Record<string, Comment>;
     /**
      * post_id: PostPrivacy
      */
@@ -119,7 +119,7 @@ export type PostStore = {
         options: (
             | { type: "send"; comment: string }
             | { type: "edit"; comment_id: string; comment: string }
-            | { type: "delete" }
+            | { type: "delete"; comment_id: string }
         ) & { user_id: string; post_id: string; promiseKey?: string },
     ) => Promise<void>;
 };

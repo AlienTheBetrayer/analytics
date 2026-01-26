@@ -76,7 +76,7 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                                     comments: boolean;
                                     edited_at: string;
                                 };
-                            })[];
+                            } & { comments?: Comment[] })[];
                         };
                         ownLikes: string[];
                     };
@@ -84,11 +84,15 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                     set((state) => {
                         const profiles = { ...state.profiles };
                         const users = { ...state.users };
+
                         const posts = { ...state.posts };
-                        const postIds = { ...state.postIds };
-                        const likeIds = { ...state.likeIds };
                         const likes = { ...state.likes };
                         const postPrivacy = { ...state.postPrivacy };
+                        const comments = { ...state.comments };
+
+                        const postIds = { ...state.postIds };
+                        const likeIds = { ...state.likeIds };
+                        const commentIds = { ...state.commentIds };
 
                         // user data
                         users[data.results.id] = {
@@ -102,7 +106,7 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
 
                         // posts and post ids
                         const newPostIds = new Set(
-                            state.postIds[data.results.username],
+                            state.postIds[data.results.username] ?? [],
                         );
                         for (const {
                             likes: postLikes,
@@ -118,22 +122,40 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
 
                         // likes and like ids
                         const newLikeIds = new Set(
-                            state.likeIds[data.results.username],
+                            state.likeIds[data.results.username] ?? [],
                         );
                         for (const likeId of data.ownLikes) {
                             newLikeIds.add(likeId);
                         }
                         likeIds[data.results.username] = newLikeIds;
 
+                        // comments and comment ids
+                        if (
+                            options.type === "single" &&
+                            data.results.posts?.[0]?.comments?.length
+                        ) {
+                            const newCommentIds = new Set(
+                                state.commentIds[options.id] ?? [],
+                            );
+                            for (const comment of data.results.posts[0]
+                                ?.comments) {
+                                newCommentIds.add(comment.id);
+                                comments[comment.id] = comment;
+                            }
+                            commentIds[options.id] = newCommentIds;
+                        }
+
                         return {
                             ...state,
                             posts,
-                            postIds,
-                            postPrivacy,
+                            comments,
                             profiles,
+                            postPrivacy,
                             users,
-                            likeIds,
                             likes,
+                            postIds,
+                            commentIds,
+                            likeIds,
                         };
                     });
 
@@ -285,23 +307,30 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                             user_id: options.user_id,
                             type: options.type,
                             post_id: options.post_id,
-                            ...(options.type !== "delete" && {
+                            ...("comment" in options && {
                                 comment: options.comment,
                             }),
-                            ...(options.type === "edit" && {
+                            ...("comment_id" in options && {
                                 comment_id: options.comment_id,
                             }),
                         },
                     );
 
                     const data = res.data as Comment;
-                    console.log(data);
 
                     set((state) => {
                         const comments = { ...state.comments };
+                        const commentIds = { ...state.commentIds };
 
                         switch (options.type) {
                             case "delete": {
+                                delete comments[options.comment_id];
+                                commentIds[options.post_id] = new Set(
+                                    [
+                                        ...(state.commentIds[options.post_id] ??
+                                            []),
+                                    ].filter((id) => id !== options.comment_id),
+                                );
                                 break;
                             }
                             default: {

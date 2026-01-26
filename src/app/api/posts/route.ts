@@ -1,6 +1,6 @@
 import { supabaseServer } from "@/server/private/supabase";
 import { Profile, User } from "@/types/tables/account";
-import { Post } from "@/types/tables/posts";
+import { Comment, Post } from "@/types/tables/posts";
 import { nextResponse } from "@/utils/api/response";
 import { PostgrestError } from "@supabase/supabase-js";
 import { NextRequest } from "next/server";
@@ -19,7 +19,7 @@ export const GET = async (request: NextRequest) => {
                   profile: Profile;
                   posts: (Post & { likes: [{ count: number }] } & {
                       privacy: { likes: boolean; comments: boolean };
-                  })[];
+                  } & { comments?: Comment[] })[];
               })[]
             | null = null;
         let error: PostgrestError | string | null = null;
@@ -35,7 +35,7 @@ export const GET = async (request: NextRequest) => {
                 ({ data: results, error } = await supabaseServer
                     .from("users")
                     .select(
-                        "*, profile:profiles(*), posts:posts!inner(*, likes:likes(count), privacy:post_privacy(comments, likes, edited_at))",
+                        "*, profile:profiles(*), posts:posts!inner(*, likes:likes(count), privacy:post_privacy(comments, likes, edited_at), comments:comments(*))",
                     )
                     .eq("posts.id", id));
 
