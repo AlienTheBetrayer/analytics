@@ -21,7 +21,7 @@ export type PostPrivacy = {
     likes: boolean;
     created_at: string;
     edited_at: string;
-}
+};
 
 /**
  * likes

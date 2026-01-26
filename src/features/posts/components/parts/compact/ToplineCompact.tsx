@@ -18,6 +18,7 @@ type Props = {
 export const ToplineCompact = ({ data, className, type, onDelete }: Props) => {
     // zustand
     const postIds = useAppStore((state) => state.postIds);
+    const postPrivacy = useAppStore((state) => state.postPrivacy);
     const likeIds = useAppStore((state) => state.likeIds);
     const likes = useAppStore((state) => state.likes);
     const status = useAppStore((state) => state.status);
@@ -52,6 +53,13 @@ export const ToplineCompact = ({ data, className, type, onDelete }: Props) => {
                 data={data.edited_at}
                 src="/pencil.svg"
                 tooltip="This post has been edited"
+            />
+
+            <TinyTooltip
+                data={postPrivacy[data.id]?.edited_at}
+                src="/security.svg"
+                tooltip="Privacy configured"
+                size={14}
             />
 
             <TinyTooltip
@@ -145,11 +153,14 @@ export const ToplineCompact = ({ data, className, type, onDelete }: Props) => {
                             <li>
                                 <Tooltip text="Privacy configurations">
                                     <Modal
-                                        element={(hide) => <Configurations data={data} hide={hide}/>}
+                                        element={(hide) => (
+                                            <Configurations
+                                                data={data}
+                                                hide={hide}
+                                            />
+                                        )}
                                     >
-                                        <Button
-                                            aria-label="configure"
-                                        >
+                                        <Button aria-label="configure">
                                             <Image
                                                 alt=""
                                                 width={16}

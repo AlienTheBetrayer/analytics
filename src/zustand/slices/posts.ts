@@ -1,5 +1,5 @@
 import { Profile, User } from "@/types/tables/account";
-import { Post, PostPrivacy } from "@/types/tables/posts";
+import { Post } from "@/types/tables/posts";
 import { PostStore } from "@/types/zustand/posts";
 import { SliceFunction } from "@/types/zustand/utils/sliceFunction";
 import { refreshedRequest } from "@/utils/auth/refreshedRequest";
@@ -70,7 +70,11 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                         results: User & {
                             profile: Profile;
                             posts: (Post & { likes: number } & {
-                                privacy: { likes: boolean; comments: boolean; edited_at: string };
+                                privacy: {
+                                    likes: boolean;
+                                    comments: boolean;
+                                    edited_at: string;
+                                };
                             })[];
                         };
                         ownLikes: string[];

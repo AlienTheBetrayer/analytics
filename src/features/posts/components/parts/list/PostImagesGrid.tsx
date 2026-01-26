@@ -15,7 +15,9 @@ export const PostImagesGrid = ({ data }: Props) => {
     // zustand
     const posts = useAppStore((state) => state.posts);
     const postIds = useAppStore((state) => state.postIds);
+    const postPrivacy = useAppStore((state) => state.postPrivacy);
     const likeIds = useAppStore((state) => state.likeIds);
+    const status = useAppStore((state) => state.status);
 
     if (!postIds[data.user.username]) {
         return null;
@@ -70,24 +72,21 @@ export const PostImagesGrid = ({ data }: Props) => {
                                         href={`/post/view/${post.id}`}
                                         className="w-full h-full outline-2! hover:outline-blue-1!"
                                     >
-                                        {(post.edited_at ||
-                                            likeIds[data.user.username]?.has(
-                                                post.id,
-                                            )) && (
-                                            <div className="flex gap-2 items-center absolute left-1/2 -translate-x-1/2 top-1 rounded-full p-2 backdrop-blur-md mix-blend-difference z-1">
-                                                {post.edited_at && (
-                                                    <Image
-                                                        alt="edited"
-                                                        width={16}
-                                                        height={16}
-                                                        src="/pencil.svg"
-                                                        className="mix-blend-difference invert-100!"
-                                                    />
-                                                )}
+                                        <div className="flex gap-2 items-center absolute left-1/2 -translate-x-1/2 top-1 rounded-full p-2 backdrop-blur-md mix-blend-difference z-1">
+                                            {post.edited_at && (
+                                                <Image
+                                                    alt="edited"
+                                                    width={16}
+                                                    height={16}
+                                                    src="/pencil.svg"
+                                                    className="mix-blend-difference invert-100!"
+                                                />
+                                            )}
 
-                                                {likeIds[
-                                                    data.user.username
-                                                ]?.has(post.id) && (
+                                            {status &&
+                                                likeIds[status.username]?.has(
+                                                    post.id,
+                                                ) && (
                                                     <Image
                                                         alt="liked"
                                                         width={16}
@@ -96,8 +95,18 @@ export const PostImagesGrid = ({ data }: Props) => {
                                                         className="mix-blend-difference invert-100!"
                                                     />
                                                 )}
-                                            </div>
-                                        )}
+
+                                            {postPrivacy[post.id]
+                                                ?.edited_at && (
+                                                <Image
+                                                    alt="configured"
+                                                    width={16}
+                                                    height={16}
+                                                    src="/security.svg"
+                                                    className="mix-blend-difference invert-100!"
+                                                />
+                                            )}
+                                        </div>
 
                                         <Image
                                             alt={post.title}
