@@ -1,39 +1,29 @@
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import Image from "next/image";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
-import { Post } from "@/types/tables/posts";
-import { useAppStore } from "@/zustand/store";
 import { AbsentData } from "@/features/ui/absentdata/components/AbsentData";
 
-type Props = {
-    data: Post;
-};
-
-export const NoContent = ({ data }: Props) => {
-    // zustand
-    const users = useAppStore((state) => state.users);
-
+export const NoPosts = () => {
     return (
         <AbsentData
             title={
                 <>
-                    <u>Absent</u> content
+                    <u>Absent</u> posts
                 </>
             }
             description={
                 <>
-                    The post you are currently on does not have{" "}
-                    <u>any contents</u>
-                    in it, the <b>author</b> decided that it would be great for
-                    it to have nothing.
+                    The user you are currently viewng has <u>not</u> yet created
+                    a single post, you can try hitting this user up in hopes
+                    that they might <mark>create</mark> a post!
                 </>
             }
         >
             <Tooltip
-                text="To posts"
+                text="To home"
                 className="w-full"
             >
-                <LinkButton href={`/posts/${users[data.user_id]?.username}`}>
+                <LinkButton href="/home">
                     <Image
                         alt=""
                         width={16}

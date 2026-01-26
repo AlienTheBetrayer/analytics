@@ -4,12 +4,17 @@ import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
 import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
+import { Profile, User } from "@/types/tables/account";
 import { TabSelection } from "@/utils/other/TabSelection";
 import { useLocalStore } from "@/zustand/localStore";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 
-export const ListTopline = () => {
+type Props = {
+    data: { user: User; profile: Profile };
+};
+
+export const ListTopline = ({ data }: Props) => {
     // zustand & localstore
     const postFiltering = useAppStore((state) => state.postFiltering);
     const updatePostFiltering = useAppStore(
@@ -17,9 +22,15 @@ export const ListTopline = () => {
     );
     const display = useLocalStore((state) => state.display);
     const toggleSorting = useLocalStore((state) => state.toggleSorting);
+    const postIds = useAppStore((state) => state.postIds);
+
+    const hasPost = !!(postIds[data.user.username]?.size ?? undefined);
 
     return (
-        <ul className="box rounded-full! flex-row! gap-1! h-10! p-0! items-center!">
+        <ul
+            className={`box rounded-full! flex-row! gap-1! h-10! p-0! items-center! ${!hasPost ? "opacity-30" : ""}`}
+            inert={!hasPost}
+        >
             <li className="absolute left-1/2 -translate-1/2 top-1/2">
                 <span className="flex gap-1 items-center">
                     <div className="rounded-full w-1 h-1 bg-blue-1" />
