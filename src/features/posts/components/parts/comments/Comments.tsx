@@ -15,28 +15,30 @@ export const Comments = ({ data }: Props) => {
 
     return (
         <ul className="flex flex-col gap-8">
-            <li className="flex justify-center items-center gap-1">
-                <Image
-                    alt=""
-                    width={16}
-                    height={16}
-                    src="/plus.svg"
-                />
-                <span>Add a comment:</span>
-            </li>
-
             {status && (
-                <li>
-                    <UpdateComment
-                        type="send"
-                        data={{ post: data }}
-                    />
-                </li>
-            )}
+                <>
+                    <li className="flex justify-center items-center gap-1">
+                        <Image
+                            alt=""
+                            width={16}
+                            height={16}
+                            src="/plus.svg"
+                        />
+                        <span>Add a comment:</span>
+                    </li>
 
-            <li>
-                <hr />
-            </li>
+                    <li>
+                        <UpdateComment
+                            type="send"
+                            data={{ post: data }}
+                        />
+                    </li>
+
+                    <li>
+                        <hr />
+                    </li>
+                </>
+            )}
 
             <li className="flex justify-center items-center gap-1">
                 <Image

@@ -19,7 +19,11 @@ export const GET = async (request: NextRequest) => {
                   profile: Profile;
                   posts: (Post & { post_likes: [{ count: number }] } & {
                       privacy: { post_likes: boolean; comments: boolean };
-                  } & { comments?: Comment[] })[];
+                  } & {
+                      comments?: (Comment & {
+                          comment_likes: [{ count: number }];
+                      })[];
+                  })[];
               })[]
             | null = null;
         let error: PostgrestError | string | null = null;
@@ -38,6 +42,7 @@ export const GET = async (request: NextRequest) => {
                         "*, profile:profiles(*), posts:posts!inner(*, post_likes:post_likes(count), privacy:post_privacy(comments, likes, edited_at), comments:comments(*, comment_likes:comment_likes(count)))",
                     )
                     .eq("posts.id", id)
+                    .eq("posts.comments.comment_likes.like", true)
                     .order("created_at", {
                         referencedTable: "posts.comments",
                         ascending: false,
@@ -81,10 +86,13 @@ export const GET = async (request: NextRequest) => {
         }
 
         // own likes
-        let ownLikes: { post_id: string; user_id: string }[] | null = [];
+        let ownPostLikes: { post_id: string; user_id: string }[] | null = [];
+        let ownCommentLikes:
+            | { comment_id: string; like: boolean; user_id: string }[]
+            | null = [];
 
         if (user_id) {
-            ({ data: ownLikes, error } = await supabaseServer
+            ({ data: ownPostLikes, error } = await supabaseServer
                 .from("post_likes")
                 .select("post_id, user_id")
                 .eq("user_id", user_id)
@@ -92,6 +100,19 @@ export const GET = async (request: NextRequest) => {
                     "post_id",
                     results[0].posts.map((p) => p.id),
                 ));
+
+            if (type === "single") {
+                ({ data: ownCommentLikes, error } = await supabaseServer
+                    .from("comment_likes")
+                    .select("comment_id, user_id, like")
+                    .eq("user_id", user_id)
+                    .in(
+                        "comment_id",
+                        results[0].posts.flatMap((p) =>
+                            p.comments?.map((c) => c.id),
+                        ),
+                    ));
+            }
         }
 
         // confirming no errors
@@ -101,9 +122,13 @@ export const GET = async (request: NextRequest) => {
 
         const newResults = results.map(({ posts, ...rest }) => ({
             ...rest,
-            posts: posts.map(({ post_likes, ...post }) => ({
+            posts: posts.map(({ post_likes, comments, ...post }) => ({
                 ...post,
                 post_likes: post_likes[0].count,
+                comments: comments?.map(({ comment_likes, ...rest }) => ({
+                    comment_likes: comment_likes[0].count,
+                    ...rest,
+                })),
             })),
         }));
 
@@ -112,7 +137,10 @@ export const GET = async (request: NextRequest) => {
             {
                 message: "Successfully fetched posts!",
                 results: newResults[0],
-                ownLikes: ownLikes?.map((l) => l.post_id),
+                ownPostLikes: ownPostLikes?.map((l) => l.post_id),
+                ownCommentLikes: ownCommentLikes?.map(
+                    ({ comment_id, like }) => ({ id: comment_id, like }),
+                ),
             },
             200,
         );

@@ -18,6 +18,7 @@ export const CommentView = ({ data, onEdit, editing }: Props) => {
     const profiles = useAppStore((state) => state.profiles);
     const users = useAppStore((state) => state.users);
     const status = useAppStore((state) => state.status);
+    const commentLikes = useAppStore((state) => state.commentLikes);
     const commentLikeIds = useAppStore((state) => state.commentLikeIds);
     const like = useAppStore((state) => state.like);
 
@@ -25,7 +26,7 @@ export const CommentView = ({ data, onEdit, editing }: Props) => {
     const profile = profiles[data.user_id];
 
     if (!user || !profile) {
-        return null;
+        return <li className="box p-4! loading min-h-24 rounded-4xl!" />;
     }
 
     const hasLiked = status
@@ -36,7 +37,7 @@ export const CommentView = ({ data, onEdit, editing }: Props) => {
         : false;
 
     return (
-        <li className="box grid! grid-cols-[42px_1fr] p-4! hover:bg-background-a-8! duration-400! transition-all!">
+        <li className="box min-h-24 grid! grid-cols-[48px_1fr] p-4! gap-4! hover:bg-background-a-8! duration-400! transition-all!">
             <LinkButton
                 href={`/profile/${user.username}`}
                 className="p-0! w-fit! h-fit!"
@@ -71,8 +72,9 @@ export const CommentView = ({ data, onEdit, editing }: Props) => {
                     )}
                 </div>
 
-                <div className="flex items-center gap-1">
+                <div className="flex items-center gap-2">
                     <Button
+                        isEnabled={!!status}
                         aria-label="like"
                         onClick={() => {
                             if (!status) {
@@ -98,7 +100,14 @@ export const CommentView = ({ data, onEdit, editing }: Props) => {
                         />
                     </Button>
 
+                    {!!commentLikes[data.id] && (
+                        <span>{commentLikes[data.id]}</span>
+                    )}
+
+                    <hr className="w-px! h-1/2! self-stretch my-auto!" />
+
                     <Button
+                        isEnabled={!!status}
                         aria-label="dislike"
                         onClick={() => {
                             if (!status) {

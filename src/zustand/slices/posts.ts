@@ -79,9 +79,14 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                                     comments: boolean;
                                     edited_at: string;
                                 };
-                            } & { comments?: Comment[] })[];
+                            } & {
+                                comments?: (Comment & {
+                                    comment_likes: number;
+                                })[];
+                            })[];
                         };
-                        ownLikes: string[];
+                        ownPostLikes: string[];
+                        ownCommentLikes: { id: string; like: boolean }[];
                     };
 
                     set((state) => {
@@ -96,6 +101,8 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                         const postIds = { ...state.postIds };
                         const postLikeIds = { ...state.postLikeIds };
                         const commentIds = { ...state.commentIds };
+                        const commentLikeIds = { ...state.commentLikeIds };
+                        const commentLikes = { ...state.commentLikes };
 
                         // user data
                         users[data.results.id] = {
@@ -120,14 +127,25 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                         }
                         postIds[data.results.username] = newPostIds;
 
-                        // likes and like ids
+                        // post likes and like ids
                         const newLikeIds = new Set(
                             state.postLikeIds[data.results.username] ?? [],
                         );
-                        for (const likeId of data.ownLikes) {
+                        for (const likeId of data.ownPostLikes) {
                             newLikeIds.add(likeId);
                         }
                         postLikeIds[data.results.username] = newLikeIds;
+
+                        // comment likes and comment like ids
+                        const newCommentIds = new Set(
+                            state.commentLikeIds[data.results.username] ?? [],
+                        );
+                        for (const likeId of data.ownCommentLikes) {
+                            newCommentIds.add(
+                                `${likeId.id}:${likeId.like ? "like" : "dislike"}`,
+                            );
+                        }
+                        commentLikeIds[data.results.username] = newCommentIds;
 
                         // comments and comment ids
                         if (
@@ -141,6 +159,8 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                                 ?.comments) {
                                 newCommentIds.add(comment.id);
                                 comments[comment.id] = comment;
+                                commentLikes[comment.id] =
+                                    comment.comment_likes;
                             }
                             commentIds[options.id] = newCommentIds;
                         }
@@ -156,6 +176,8 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                             postIds,
                             commentIds,
                             postLikeIds,
+                            commentLikeIds,
+                            commentLikes,
                         };
                     });
 
@@ -286,13 +308,25 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                                     ),
                                 );
 
-                                // adding only if it's different
+                                // adding only if it's a different button
                                 if (
                                     !commentLikeIds[username]?.has(
                                         `${options.id}:${options.type}`,
                                     )
                                 ) {
                                     ids.add(`${options.id}:${options.type}`);
+
+                                    if (options.type === "dislike") {
+                                        commentLikes[options.id] =
+                                            (commentLikes[options.id] || 1) - 1;
+                                    } else {
+                                        commentLikes[options.id] =
+                                            (commentLikes[options.id] ?? 0) + 1;
+                                    }
+                                } else {
+                                    // unpressing the same button
+                                    commentLikes[options.id] =
+                                        (commentLikes[options.id] || 1) - 1;
                                 }
 
                                 commentLikeIds[username] = ids;

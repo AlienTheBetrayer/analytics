@@ -14,22 +14,25 @@ export const CommentList = ({ data }: Props) => {
     const getUsers = useAppStore((state) => state.getUsers);
     const [editing, setEditing] = useState<string | null>(null);
 
+    const commentData = [...commentIds[data.id]].map((id) => comments[id]);
+
     // fetching profiles
     const hasFetched = useRef<boolean>(false);
     useEffect(() => {
-        if (!commentIds[data.id]?.size || hasFetched.current) {
+        if (!commentData?.length || hasFetched.current) {
             return;
         }
 
-        getUsers({ select: ["profile"], id: [...commentIds[data.id]] });
+        getUsers({
+            select: ["profile"],
+            id: commentData.map((c) => c.user_id),
+        });
         hasFetched.current = true;
-    }, [commentIds, data, getUsers]);
+    }, [commentData, getUsers]);
 
     if (!commentIds[data.id]?.size) {
         return null;
     }
-
-    const commentData = [...commentIds[data.id]].map((id) => comments[id]);
 
     if (!commentData.length) {
         return null;
