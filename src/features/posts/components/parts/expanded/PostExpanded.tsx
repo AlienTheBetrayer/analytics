@@ -22,7 +22,7 @@ export const PostExpanded = ({ data }: Props) => {
             <ul className="flex flex-col gap-4">
                 {data.image_url && (
                     <>
-                        <li className="w-full relative h-128">
+                        <li className="w-full relative h-150">
                             <Image
                                 alt="post image"
                                 fill
@@ -38,27 +38,29 @@ export const PostExpanded = ({ data }: Props) => {
                     </>
                 )}
 
-                <li className="flex justify-center items-center gap-1">
-                    <Image
-                        alt=""
-                        width={16}
-                        height={16}
-                        src="/menu.svg"
-                    />
-                    <span>Content:</span>
-                </li>
-
                 <li
-                    className="box p-4! min-h-128"
+                    className="flex flex-col gap-4"
                     style={{
                         marginTop: data.image_url ? "0rem" : "8rem",
                     }}
                 >
-                    {data.content?.trim().length ? (
-                        <p>{data.content}</p>
-                    ) : (
-                        <NoContent data={data} />
-                    )}
+                    <div className="flex justify-center items-center gap-1">
+                        <Image
+                            alt=""
+                            width={16}
+                            height={16}
+                            src="/menu.svg"
+                        />
+                        <span>Content:</span>
+                    </div>
+
+                    <div className="box p-4! min-h-64">
+                        {data.content?.trim().length ? (
+                            <p>{data.content}</p>
+                        ) : (
+                            <NoContent data={data} />
+                        )}
+                    </div>
                 </li>
 
                 <li>

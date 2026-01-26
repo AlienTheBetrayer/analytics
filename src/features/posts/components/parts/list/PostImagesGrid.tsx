@@ -1,8 +1,8 @@
-import { CompactInfo } from "@/features/posts/components/parts/CompactInfo";
+import { PostGridElement } from "@/features/posts/components/parts/list/PostGridElement";
 import { Button } from "@/features/ui/button/components/Button";
-import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Profile, User } from "@/types/tables/account";
+import { Post } from "@/types/tables/posts";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import { redirect } from "next/navigation";
@@ -15,15 +15,12 @@ export const PostImagesGrid = ({ data }: Props) => {
     // zustand
     const posts = useAppStore((state) => state.posts);
     const postIds = useAppStore((state) => state.postIds);
-    const postPrivacy = useAppStore((state) => state.postPrivacy);
-    const likeIds = useAppStore((state) => state.likeIds);
-    const status = useAppStore((state) => state.status);
 
     if (!postIds[data.user.username]) {
         return null;
     }
 
-    // 8 most recent posts
+    // 4 most recent posts
     const userPosts = [...postIds[data.user.username]]
         .map((id) => posts[id])
         .sort((a, b) =>
@@ -34,6 +31,11 @@ export const PostImagesGrid = ({ data }: Props) => {
                   : 0,
         )
         .slice(0, 4);
+
+    const postsGrid: (Post | null)[] = [
+        ...userPosts,
+        ...Array(4).fill(null),
+    ].slice(0, 4);
 
     return (
         <article className="flex flex-col gap-4">
@@ -52,74 +54,20 @@ export const PostImagesGrid = ({ data }: Props) => {
             <hr className="w-full max-w-64 self-center" />
 
             <ul className="grid grid-cols-2 sm:grid-cols-4 gap-2 my-auto grow items-center">
-                {userPosts.map(
-                    (post) =>
-                        post.image_url && (
-                            <li
-                                className="box p-2! aspect-square"
-                                key={post.id}
+                {postsGrid.map((post, k) => (
+                    <li key={post?.id ?? k}>
+                        {post?.image_url ? (
+                            <PostGridElement post={post} />
+                        ) : (
+                            <Tooltip
+                                text="Does not exist"
+                                className="w-full h-full"
                             >
-                                <Tooltip
-                                    className="w-full h-full"
-                                    element={
-                                        <CompactInfo
-                                            post={post}
-                                            className="max-w-55!"
-                                        />
-                                    }
-                                >
-                                    <LinkButton
-                                        href={`/post/view/${post.id}`}
-                                        className="w-full h-full outline-2! hover:outline-blue-1!"
-                                    >
-                                        <div className="flex gap-2 items-center absolute left-1/2 -translate-x-1/2 top-1 rounded-full p-2 backdrop-blur-md mix-blend-difference z-1">
-                                            {post.edited_at && (
-                                                <Image
-                                                    alt="edited"
-                                                    width={16}
-                                                    height={16}
-                                                    src="/pencil.svg"
-                                                    className="mix-blend-difference invert-100!"
-                                                />
-                                            )}
-
-                                            {status &&
-                                                likeIds[status.username]?.has(
-                                                    post.id,
-                                                ) && (
-                                                    <Image
-                                                        alt="liked"
-                                                        width={16}
-                                                        height={16}
-                                                        src="/heart.svg"
-                                                        className="mix-blend-difference invert-100!"
-                                                    />
-                                                )}
-
-                                            {postPrivacy[post.id]
-                                                ?.edited_at && (
-                                                <Image
-                                                    alt="configured"
-                                                    width={16}
-                                                    height={16}
-                                                    src="/security.svg"
-                                                    className="mix-blend-difference invert-100!"
-                                                />
-                                            )}
-                                        </div>
-
-                                        <Image
-                                            alt={post.title}
-                                            fill
-                                            style={{ objectFit: "cover" }}
-                                            src={`${post.image_url}`}
-                                            className="rounded-full invert-0!"
-                                        />
-                                    </LinkButton>
-                                </Tooltip>
-                            </li>
-                        ),
-                )}
+                                <div className="box p-2! aspect-square rounded-full! loading" />
+                            </Tooltip>
+                        )}
+                    </li>
+                ))}
             </ul>
 
             <hr className="w-full max-w-lg self-center" />
@@ -127,6 +75,7 @@ export const PostImagesGrid = ({ data }: Props) => {
             <Tooltip
                 text={`Go to a random post`}
                 className="w-full sm:max-w-64 self-center"
+                isEnabled={!!postIds[data.user.username]?.size}
             >
                 <Button
                     className="w-full"
