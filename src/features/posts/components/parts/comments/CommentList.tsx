@@ -30,17 +30,11 @@ export const CommentList = ({ data }: Props) => {
         hasFetched.current = true;
     }, [commentData, getUsers]);
 
-    if (!commentIds[data.id]?.size) {
-        return null;
-    }
-
-    if (!commentData.length) {
-        return null;
-    }
-
     return (
-        <ul className="flex flex-col gap-2!">
-            {commentData.map((comment, i) => (
+        <ul
+            className={`flex flex-col gap-2! min-h-64 ${!commentData.length ? "loading" : ""}`}
+        >
+            {commentData?.map((comment, i) => (
                 <React.Fragment key={comment.id}>
                     <CommentView
                         data={comment}

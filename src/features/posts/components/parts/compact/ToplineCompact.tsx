@@ -24,6 +24,8 @@ export const ToplineCompact = ({ data, className, type, onDelete }: Props) => {
     const status = useAppStore((state) => state.status);
     const like = useAppStore((state) => state.like);
 
+    const isLikeAvailable =
+        postPrivacy[data.id]?.likes !== false || status?.id === data.user_id;
     const hasLiked =
         (status && postLikeIds[status.username]?.has(data.id)) ?? false;
 
@@ -75,10 +77,7 @@ export const ToplineCompact = ({ data, className, type, onDelete }: Props) => {
                     <li>
                         <Tooltip
                             text={`${hasLiked ? "Remove like" : "Like this post"}`}
-                            isEnabled={
-                                postPrivacy[data.id]?.likes !== false ||
-                                status.id === data.user_id
-                            }
+                            isEnabled={isLikeAvailable}
                         >
                             <Button
                                 aria-label={`${hasLiked ? "unlike post" : "like post"}`}
@@ -97,7 +96,15 @@ export const ToplineCompact = ({ data, className, type, onDelete }: Props) => {
                                 }}
                                 className={`${hasLiked ? "invert-100!" : ""}`}
                             >
-                                {hasLiked ? (
+                                {!isLikeAvailable ? (
+                                    <Image
+                                        alt="prohibited"
+                                        src="/prohibited.svg"
+                                        width={16}
+                                        height={16}
+                                        className="z-2 absolute left-1/2 top-1/2 -translate-1/2"
+                                    />
+                                ) : hasLiked ? (
                                     <Image
                                         alt=""
                                         width={15}

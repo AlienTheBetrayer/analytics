@@ -389,9 +389,9 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                             }
                             case "send": {
                                 commentIds[options.post_id] = new Set([
+                                    data.id,
                                     ...(state.commentIds[options.post_id] ??
                                         []),
-                                    data.id,
                                 ]);
                                 comments[data.id] = data;
 
@@ -399,7 +399,6 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                             }
                             case "edit": {
                                 comments[data.id] = data;
-                                console.log(data);
                                 break;
                             }
                         }
