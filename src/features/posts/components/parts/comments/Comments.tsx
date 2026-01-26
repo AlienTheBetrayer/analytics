@@ -11,9 +11,30 @@ type Props = {
 export const Comments = ({ data }: Props) => {
     // zustand
     const status = useAppStore((state) => state.status);
+    const commentIds = useAppStore((state) => state.commentIds);
 
     return (
-        <ul className="flex flex-col gap-4">
+        <ul className="flex flex-col gap-8">
+            <li className="flex justify-center items-center gap-1">
+                <Image
+                    alt=""
+                    width={16}
+                    height={16}
+                    src="/plus.svg"
+                />
+                <span>Add a comment:</span>
+            </li>
+
+            {status && (
+                <li>
+                    <SendComment data={data} />
+                </li>
+            )}
+
+            <li>
+                <hr />
+            </li>
+
             <li className="flex justify-center items-center gap-1">
                 <Image
                     alt=""
@@ -24,15 +45,19 @@ export const Comments = ({ data }: Props) => {
                 <span>Comments:</span>
             </li>
 
-            {status && (
+            {commentIds[data.id]?.size ? (
                 <li>
-                    <SendComment data={data} />
+                    <CommentList data={data} />
+                </li>
+            ) : (
+                <li className="mx-auto!">
+                    <span>
+                        <small>
+                            <u>No</u> comments yet...
+                        </small>
+                    </span>
                 </li>
             )}
-
-            <li>
-                <CommentList data={data} />
-            </li>
         </ul>
     );
 };

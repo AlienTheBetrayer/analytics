@@ -318,6 +318,8 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
 
                     const data = res.data as Comment;
 
+                    console.log(data);
+
                     set((state) => {
                         const comments = { ...state.comments };
                         const commentIds = { ...state.commentIds };
@@ -333,7 +335,12 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                                 );
                                 break;
                             }
-                            default: {
+                            case "send": {
+
+                                break;
+                            }
+                            case "edit": {
+
                                 break;
                             }
                         }

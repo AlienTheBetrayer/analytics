@@ -8,8 +8,9 @@ type Props = {
 
 export const View = ({ post }: Props) => {
     return (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-4">
             <PostExpanded data={post} />
+            <hr className="mt-16" />
             <Comments data={post} />
         </div>
     );

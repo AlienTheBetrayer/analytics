@@ -62,10 +62,6 @@ export const PostExpanded = ({ data }: Props) => {
                         )}
                     </div>
                 </li>
-
-                <li>
-                    <hr />
-                </li>
             </ul>
         </article>
     );

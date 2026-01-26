@@ -13,7 +13,6 @@ type Props = {
 
 export const SendComment = ({ data }: Props) => {
     // zustand
-    const comments = useAppStore((state) => state.comments);
     const promises = useAppStore((state) => state.promises);
     const status = useAppStore((state) => state.status);
     const updateComment = useAppStore((state) => state.updateComment);
@@ -24,7 +23,8 @@ export const SendComment = ({ data }: Props) => {
         <form
             onSubmit={(e) => {
                 e.preventDefault();
-                if (!status) {
+
+                if (!status || comment.trim().length < 8) {
                     return;
                 }
 
@@ -92,12 +92,6 @@ export const SendComment = ({ data }: Props) => {
                         </Tooltip>
                     </div>
                 </li>
-
-                <li className="flex flex-col gap-2 items-center">
-                    <hr />
-                </li>
-
-                <li className="flex flex-col gap-2 items-center"></li>
             </ul>
         </form>
     );

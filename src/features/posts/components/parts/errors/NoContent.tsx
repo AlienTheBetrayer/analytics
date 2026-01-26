@@ -23,9 +23,8 @@ export const NoContent = ({ data }: Props) => {
             description={
                 <>
                     The post you are currently on does not have{" "}
-                    <u>any contents</u>
-                    in it, the <b>author</b> decided that it would be great for
-                    it to have nothing.
+                    <u>any content</u> in it, the <b>author</b> decided that it
+                    would be great for it to be <u>empty</u>.
                 </>
             }
         >
