@@ -17,7 +17,7 @@ export const ToplineCompact = ({ data, className, type, onDelete }: Props) => {
     // zustand
     const postIds = useAppStore((state) => state.postIds);
     const likeIds = useAppStore((state) => state.likeIds);
-    const likes = useAppStore(state => state.likes);
+    const likes = useAppStore((state) => state.likes);
     const status = useAppStore((state) => state.status);
     const likePost = useAppStore((state) => state.likePost);
 
@@ -60,100 +60,107 @@ export const ToplineCompact = ({ data, className, type, onDelete }: Props) => {
                 tooltip="Total amount of likes"
             />
 
-            <li className="ml-auto!">
-                <Tooltip
-                    text={`${hasLiked ? "Remove like" : "Like this post"}`}
-                >
-                    <Button
-                        aria-label={`${hasLiked ? "unlike post" : "like post"}`}
-                        onClick={() => {
-                            if (!status) {
-                                return;
-                            }
-
-                            likePost({
-                                type: hasLiked ? "unlike" : "like",
-                                id: data.id,
-                                user_id: status.id,
-                                promiseKey: `likePost_${data.id}`,
-                            });
-                        }}
-                        className={`${hasLiked ? "invert-100!" : ""}`}
-                    >
-                        {hasLiked ? (
-                            <Image
-                                alt=""
-                                width={15}
-                                height={15}
-                                src="/heartbroken.svg"
-                            />
-                        ) : (
-                            <Image
-                                alt=""
-                                width={14}
-                                height={14}
-                                src="/heart.svg"
-                            />
-                        )}
-                    </Button>
-                </Tooltip>
-            </li>
-
-            {type === "compact" ? (
-                <>
+            <ul className="flex items-center gap-1 ml-auto!">
+                {status && (
                     <li>
-                        <Tooltip text="View this post">
+                        <Tooltip
+                            text={`${hasLiked ? "Remove like" : "Like this post"}`}
+                        >
+                            <Button
+                                aria-label={`${hasLiked ? "unlike post" : "like post"}`}
+                                onClick={() => {
+                                    if (!status) {
+                                        return;
+                                    }
+
+                                    likePost({
+                                        type: hasLiked ? "unlike" : "like",
+                                        id: data.id,
+                                        user_id: status.id,
+                                        promiseKey: `likePost_${data.id}`,
+                                    });
+                                }}
+                                className={`${hasLiked ? "invert-100!" : ""}`}
+                            >
+                                {hasLiked ? (
+                                    <Image
+                                        alt=""
+                                        width={15}
+                                        height={15}
+                                        src="/heartbroken.svg"
+                                    />
+                                ) : (
+                                    <Image
+                                        alt=""
+                                        width={14}
+                                        height={14}
+                                        src="/heart.svg"
+                                    />
+                                )}
+                            </Button>
+                        </Tooltip>
+                    </li>
+                )}
+
+                {type === "compact" ? (
+                    <>
+                        <li>
+                            <Tooltip text="View this post">
+                                <LinkButton
+                                    href={`/post/view/${data.id}`}
+                                    ariaLabel="view post"
+                                >
+                                    <Image
+                                        alt=""
+                                        width={16}
+                                        height={16}
+                                        src="/launch.svg"
+                                    />
+                                </LinkButton>
+                            </Tooltip>
+                        </li>
+                    </>
+                ) : (
+                    status &&
+                    status.id === data.user_id && (
+                        <>
+                            <li>
+                                <Tooltip text="Delete this post">
+                                    <Button
+                                        onClick={onDelete}
+                                        aria-label="delete post"
+                                    >
+                                        <Image
+                                            alt=""
+                                            width={16}
+                                            height={16}
+                                            src="/delete.svg"
+                                        />
+                                    </Button>
+                                </Tooltip>
+                            </li>
+                        </>
+                    )
+                )}
+
+                {status && postIds[status.username]?.has(data.id) && (
+                    <li>
+                        <Tooltip text="Edit this post">
                             <LinkButton
-                                href={`/post/view/${data.id}`}
-                                ariaLabel="view post"
+                                href={`/post/edit/${data.id}`}
+                                ariaLabel="edit post"
                             >
                                 <Image
                                     alt=""
                                     width={16}
                                     height={16}
-                                    src="/launch.svg"
+                                    src="/pencil.svg"
                                 />
                             </LinkButton>
                         </Tooltip>
                     </li>
-                </>
-            ) : (
-                <>
-                    <li>
-                        <Tooltip text="Delete this post">
-                            <Button
-                                onClick={onDelete}
-                                aria-label="delete post"
-                            >
-                                <Image
-                                    alt=""
-                                    width={16}
-                                    height={16}
-                                    src="/delete.svg"
-                                />
-                            </Button>
-                        </Tooltip>
-                    </li>
-                </>
-            )}
-
-            {status && postIds[status.username]?.has(data.id) && (
-                <li>
-                    <Tooltip text="Edit this post">
-                        <LinkButton
-                            href={`/post/edit/${data.id}`}
-                            ariaLabel="edit post"
-                        >
-                            <Image
-                                alt=""
-                                width={16}
-                                height={16}
-                                src="/pencil.svg"
-                            />
-                        </LinkButton>
-                    </Tooltip>
-                </li>
-            )}
+                )}
+            </ul>
         </ul>
     );
 };
