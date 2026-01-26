@@ -1,4 +1,4 @@
-import { Post } from "@/types/tables/posts";
+import { Comment, Post, PostPrivacy } from "@/types/tables/posts";
 
 export type PostData = {
     title?: string;
@@ -27,6 +27,19 @@ export type PostStore = {
      * post_id: like count
      */
     likes: Record<string, number>;
+
+    /**
+     * post_id: Comment
+     */
+    comments: Record<string, Comment[]>;
+
+    /**
+     * post_id: PostPrivacy
+     */
+    postPrivacy: Record<
+        string,
+        { likes: boolean; comments: boolean; edited_at: string }
+    >;
 
     /**
      * username: post ids[]
@@ -62,7 +75,7 @@ export type PostStore = {
     /**
      * updates the post in a specified way (deletes / edits / creates)
      * @param type type of the API interaction
-     * @param id [edit/delete]: id of the post needed
+     * @param id [edit/delete/privacy]: id of the post needed
      * @param data [edit/create]: the updated data for the post
      * @param user_id the id of the user that wants to make a change
      * @param promiseKey a unique id for the promise status
@@ -72,6 +85,7 @@ export type PostStore = {
             | { type: "delete"; id: string }
             | { type: "edit"; id: string; data: PostData }
             | { type: "create"; data: PostData }
+            | { type: "privacy"; id: string; privacy: Partial<PostPrivacy> }
         ) & { user_id: string; promiseKey?: string },
     ) => Promise<void>;
 

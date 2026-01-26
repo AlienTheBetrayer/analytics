@@ -1,6 +1,8 @@
+import { Configurations } from "@/features/posts/components/parts/expanded/Configurations";
 import { TinyTooltip } from "@/features/posts/components/parts/TinyTooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
+import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Post } from "@/types/tables/posts";
 import { useAppStore } from "@/zustand/store";
@@ -137,6 +139,25 @@ export const ToplineCompact = ({ data, className, type, onDelete }: Props) => {
                                             src="/delete.svg"
                                         />
                                     </Button>
+                                </Tooltip>
+                            </li>
+
+                            <li>
+                                <Tooltip text="Privacy configurations">
+                                    <Modal
+                                        element={(hide) => <Configurations data={data} hide={hide}/>}
+                                    >
+                                        <Button
+                                            aria-label="configure"
+                                        >
+                                            <Image
+                                                alt=""
+                                                width={16}
+                                                height={16}
+                                                src="/settings.svg"
+                                            />
+                                        </Button>
+                                    </Modal>
                                 </Tooltip>
                             </li>
                         </>

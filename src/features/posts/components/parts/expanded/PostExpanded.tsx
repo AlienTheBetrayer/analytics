@@ -27,7 +27,7 @@ export const PostExpanded = ({ data }: Props) => {
                                 fill
                                 src={data.image_url}
                                 style={{ objectFit: "cover" }}
-                                className="invert-0!"
+                                className="invert-0! rounded-4xl"
                             />
                         </li>
 

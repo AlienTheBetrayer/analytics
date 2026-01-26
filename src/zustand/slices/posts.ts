@@ -1,5 +1,5 @@
 import { Profile, User } from "@/types/tables/account";
-import { Post } from "@/types/tables/posts";
+import { Post, PostPrivacy } from "@/types/tables/posts";
 import { PostStore } from "@/types/zustand/posts";
 import { SliceFunction } from "@/types/zustand/utils/sliceFunction";
 import { refreshedRequest } from "@/utils/auth/refreshedRequest";
@@ -16,6 +16,8 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
             filter: "",
         },
         likes: {},
+        comments: {},
+        postPrivacy: {},
 
         updatePostFiltering: (filtering) => {
             set((state) => ({
@@ -67,10 +69,14 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                     const data = res.data as {
                         results: User & {
                             profile: Profile;
-                            posts: (Post & { likes: number })[];
+                            posts: (Post & { likes: number } & {
+                                privacy: { likes: boolean; comments: boolean; edited_at: string };
+                            })[];
                         };
                         ownLikes: string[];
                     };
+
+                    console.log(data);
 
                     set((state) => {
                         const profiles = { ...state.profiles };
@@ -79,6 +85,7 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                         const postIds = { ...state.postIds };
                         const likeIds = { ...state.likeIds };
                         const likes = { ...state.likes };
+                        const postPrivacy = { ...state.postPrivacy };
 
                         // user data
                         users[data.results.id] = {
@@ -94,11 +101,15 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                         const newPostIds = new Set(
                             state.postIds[data.results.username],
                         );
-                        for (const { likes: postLikes, ...post } of data.results
-                            .posts) {
+                        for (const {
+                            likes: postLikes,
+                            privacy,
+                            ...post
+                        } of data.results.posts) {
                             posts[post.id] = post;
                             newPostIds.add(post.id);
                             likes[post.id] = postLikes;
+                            postPrivacy[post.id] = privacy;
                         }
                         postIds[data.results.username] = newPostIds;
 
@@ -115,6 +126,7 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                             ...state,
                             posts,
                             postIds,
+                            postPrivacy,
                             profiles,
                             users,
                             likeIds,
@@ -138,8 +150,11 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                         "POST",
                         {
                             user_id: options.user_id,
-                            ...("data" in options ? options.data : {}),
-                            ...("id" in options ? { id: options.id } : {}),
+                            ...("data" in options && options.data),
+                            ...("id" in options && { id: options.id }),
+                            ...("privacy" in options && {
+                                privacy: options.privacy,
+                            }),
                             type: options.type,
                         },
                     );
@@ -149,6 +164,7 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                     set((state) => {
                         const posts = { ...state.posts };
                         const postIds = { ...state.postIds };
+                        const postPrivacy = { ...state.postPrivacy };
 
                         switch (options.type) {
                             case "delete": {
@@ -163,7 +179,13 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                                         ),
                                     );
                                 }
-
+                                break;
+                            }
+                            case "privacy": {
+                                postPrivacy[options.id] = {
+                                    ...(state.postPrivacy[options.id] ?? {}),
+                                    ...options.privacy,
+                                };
                                 break;
                             }
                             default: {
@@ -181,7 +203,7 @@ export const PostSlice: SliceFunction<PostStore> = (set, get) => {
                             }
                         }
 
-                        return { ...state, posts, postIds };
+                        return { ...state, posts, postIds, postPrivacy };
                     });
 
                     return data;

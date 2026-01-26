@@ -17,7 +17,9 @@ export const GET = async (request: NextRequest) => {
         let results:
             | (User & {
                   profile: Profile;
-                  posts: (Post & { likes: [{ count: number }] })[];
+                  posts: (Post & { likes: [{ count: number }] } & {
+                      privacy: { likes: boolean; comments: boolean };
+                  })[];
               })[]
             | null = null;
         let error: PostgrestError | string | null = null;
@@ -33,7 +35,7 @@ export const GET = async (request: NextRequest) => {
                 ({ data: results, error } = await supabaseServer
                     .from("users")
                     .select(
-                        "*, profile:profiles(*), posts:posts!inner(*, likes:likes(count))",
+                        "*, profile:profiles(*), posts:posts!inner(*, likes:likes(count), privacy:post_privacy(comments, likes, edited_at))",
                     )
                     .eq("posts.id", id));
 
@@ -48,7 +50,7 @@ export const GET = async (request: NextRequest) => {
                 ({ data: results, error } = await supabaseServer
                     .from("users")
                     .select(
-                        `*, profile:profiles(*), posts:posts(*, likes:likes(count))`,
+                        `*, profile:profiles(*), posts:posts(*, likes:likes(count), privacy:post_privacy(comments, likes, edited_at))`,
                     )
                     .eq("username", username)
                     .order("edited_at", {
