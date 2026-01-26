@@ -104,14 +104,11 @@ export const POST = async (request: NextRequest) => {
 
                 const { data, error } = (await supabaseServer
                     .from("comments")
-                    .upsert(
-                        {
-                            id: comment_id,
-                            comment,
-                            edited_at: new Date().toISOString(),
-                        },
-                        { onConflict: "id" },
-                    )
+                    .update({
+                        comment,
+                        edited_at: new Date().toISOString(),
+                    })
+                    .eq("id", comment_id)
                     .select()
                     .single()) as {
                     data: Comment;

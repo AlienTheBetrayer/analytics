@@ -1,5 +1,5 @@
 import { CommentList } from "@/features/posts/components/parts/comments/CommentList";
-import { SendComment } from "@/features/posts/components/parts/comments/SendComment";
+import { UpdateComment } from "@/features/posts/components/parts/comments/UpdateComment";
 import { Post } from "@/types/tables/posts";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
@@ -27,7 +27,10 @@ export const Comments = ({ data }: Props) => {
 
             {status && (
                 <li>
-                    <SendComment data={data} />
+                    <UpdateComment
+                        type="send"
+                        data={{ post: data }}
+                    />
                 </li>
             )}
 

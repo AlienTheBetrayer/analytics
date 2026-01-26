@@ -2,22 +2,25 @@ import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
-import { Post } from "@/types/tables/posts";
+import { Comment, Post } from "@/types/tables/posts";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import { useState } from "react";
 
-type Props = {
-    data: Post;
-};
+type Props =
+    | { type: "send"; data: { post: Post } }
+    | { type: "edit"; data: { comment: Comment; onEdit?: (comment: string) => void } };
 
-export const SendComment = ({ data }: Props) => {
+export const UpdateComment = ({ type, data }: Props) => {
     // zustand
     const promises = useAppStore((state) => state.promises);
     const status = useAppStore((state) => state.status);
     const updateComment = useAppStore((state) => state.updateComment);
 
-    const [comment, setComment] = useState<string>("");
+    // react
+    const [comment, setComment] = useState<string>(
+        type === "edit" ? data.comment.comment : "",
+    );
 
     return (
         <form
@@ -28,12 +31,22 @@ export const SendComment = ({ data }: Props) => {
                     return;
                 }
 
-                updateComment({
-                    type: "send",
-                    comment,
-                    user_id: status.id,
-                    post_id: data.id,
-                });
+                if (type === "send") {
+                    updateComment({
+                        type: "send",
+                        comment,
+                        user_id: status.id,
+                        post_id: data.post.id,
+                    });
+                } else {
+                    updateComment({
+                        type: "edit",
+                        comment,
+                        user_id: status.id,
+                        comment_id: data.comment.id,
+                    });
+                    data.onEdit?.(comment);
+                }
             }}
         >
             <ul className="flex flex-col gap-4">
@@ -50,11 +63,11 @@ export const SendComment = ({ data }: Props) => {
 
                     <div className="grid grid-cols-2 w-full sm:w-fit gap-2">
                         <Tooltip
-                            text="Cancel this comment"
+                            text="Clear comment"
                             className="w-full"
                         >
                             <Button
-                                aria-label="cancel"
+                                aria-label="clear"
                                 className="w-full"
                                 type="button"
                                 onClick={() => {
@@ -71,7 +84,7 @@ export const SendComment = ({ data }: Props) => {
                         </Tooltip>
 
                         <Tooltip
-                            text="Send"
+                            text={`${type === "edit" ? "Edit" : "Send"}`}
                             className="w-full"
                         >
                             <Button
