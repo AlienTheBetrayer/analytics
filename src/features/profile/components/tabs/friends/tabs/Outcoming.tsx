@@ -1,32 +1,22 @@
-import { Spinner } from "@/features/spinner/components/Spinner";
-import { useAppStore } from "@/zustand/store";
-import { useMemo } from "react";
-import { Profile, User } from "@/types/tables/account";
 import Image from "next/image";
 import { ProfileDisplay } from "../../../ProfileDisplay";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
+import { CacheAPIProtocol } from "@/query-api/protocol";
+import { useQuery } from "@/query/core";
+import { PromiseState } from "@/promises/components/PromiseState";
+import { wrapPromise } from "@/promises/core";
+import { queryInvalidate } from "@/query/auxiliary";
 
 type Props = {
-    data: { profile: Profile; user: User };
+    data: CacheAPIProtocol["user"]["data"];
 };
 
 export const Outcoming = ({ data }: Props) => {
-    // zustand
-    const promises = useAppStore((state) => state.promises);
-    const profiles = useAppStore((state) => state.profiles);
-    const users = useAppStore((state) => state.users);
-    const friendRequests = useAppStore((state) => state.friendRequests);
-    const getUsers = useAppStore((state) => state.getUsers);
-
-    // ui
-    const outcomingRequests = useMemo(() => {
-        if (!friendRequests[data.user.id]?.outcoming?.size) {
-            return [];
-        }
-
-        return [...friendRequests[data.user.id].outcoming];
-    }, [friendRequests, data]);
+    // fetching
+    const { data: requests_outcoming, isLoading } = useQuery({
+        key: ["requests_outcoming", data.id],
+    });
 
     return (
         <div className="flex flex-col gap-2 grow">
@@ -37,26 +27,23 @@ export const Outcoming = ({ data }: Props) => {
                     direction="top"
                 >
                     <Button
-                        className="p-0!"
                         onClick={() => {
-                            getUsers({
-                                select: ["friend_requests"],
-                                id: [data.user.id],
-                                promiseKey: "friendsReload",
-                                caching: false,
+                            wrapPromise("outcomingReload", async () => {
+                                return queryInvalidate({
+                                    key: ["requests_outcoming", data.id],
+                                    silent: false,
+                                });
                             });
                         }}
                     >
-                        {promises.friendsReload === "pending" ? (
-                            <Spinner />
-                        ) : (
-                            <Image
-                                src="/reload.svg"
-                                width={14}
-                                height={14}
-                                alt="refresh"
-                            />
-                        )}
+                        <PromiseState state="outcomingReload" />
+
+                        <Image
+                            src="/reload.svg"
+                            width={14}
+                            height={14}
+                            alt="refresh"
+                        />
                     </Button>
                 </Tooltip>
 
@@ -70,29 +57,23 @@ export const Outcoming = ({ data }: Props) => {
             </span>
 
             {/* outcoming requests */}
-            {promises.friend_requests === "pending" ? (
-                <Spinner className="mx-auto" />
-            ) : !outcomingRequests.length ? (
-                <span>
-                    <small>No outcoming requests</small>
-                </span>
+            {isLoading ? (
+                <ul className="flex flex-col gap-2">
+                    {Array.from({ length: 4 }, (_, k) => (
+                        <li
+                            key={k}
+                            className="w-full loading h-10"
+                        ></li>
+                    ))}
+                </ul>
             ) : (
                 <ul
                     className="flex flex-col gap-2 overflow-y-auto max-h-128 scheme-dark"
                     style={{ scrollbarWidth: "thin" }}
                 >
-                    {outcomingRequests.map((id) => (
+                    {requests_outcoming?.map((id) => (
                         <li key={id}>
-                            {!profiles?.[id] ? (
-                                <Spinner />
-                            ) : (
-                                <ProfileDisplay
-                                    data={{
-                                        profile: profiles[id],
-                                        user: users[id],
-                                    }}
-                                />
-                            )}
+                            <ProfileDisplay id={id} />
                         </li>
                     ))}
                 </ul>

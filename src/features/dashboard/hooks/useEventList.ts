@@ -1,3 +1,4 @@
+import { CacheAPIProtocol } from "@/query-api/protocol";
 import { Event } from "@/types/tables/project";
 import { useAppStore } from "@/zustand/store";
 import { useMemo } from "react";
@@ -5,14 +6,12 @@ import { useMemo } from "react";
 /**
  * returns all the events with filtering, searching and sorting
  */
-export const useEventList = () => {
+export const useEventList = (
+    selectedProjectId: string,
+    data: CacheAPIProtocol["events"]["data"] | null,
+) => {
     // zustand state
-    const selectedProjectId = useAppStore((state) => state.selectedProjectId);
-    const events = useAppStore((state) => state.events);
     const eventFilters = useAppStore((state) => state.eventFilters);
-
-    // all events
-    const allEvents = selectedProjectId && events[selectedProjectId];
 
     // filter events
     const search = selectedProjectId
@@ -27,17 +26,17 @@ export const useEventList = () => {
 
     // filtering & memoization
     const filteredEvents = useMemo(() => {
-        if (!allEvents || !selectedProjectId) {
+        if (!data) {
             return;
         }
 
-        let filtered: Event[] = allEvents;
+        let filtered: Event[] = Object.values(data);
 
         // search filtering
         if (search) {
             filtered = filtered.filter(
                 (e) =>
-                    e.type?.includes(search) || e.description?.includes(search)
+                    e.type?.includes(search) || e.description?.includes(search),
             );
         }
 
@@ -59,7 +58,7 @@ export const useEventList = () => {
                 filtered.sort((a, b) =>
                     !a.type || !b.type
                         ? 0
-                        : direction * a.type?.localeCompare(b.type)
+                        : direction * a.type?.localeCompare(b.type),
                 );
                 break;
             }
@@ -68,7 +67,7 @@ export const useEventList = () => {
                     !a.description || !b.description
                         ? 0
                         : direction *
-                          a.description?.localeCompare(b.description)
+                          a.description?.localeCompare(b.description),
                 );
                 break;
             }
@@ -78,14 +77,14 @@ export const useEventList = () => {
                         ? 0
                         : direction *
                           (new Date(a.created_at).getTime() -
-                              new Date(b.created_at).getTime())
+                              new Date(b.created_at).getTime()),
                 );
                 break;
             }
         }
 
         return filtered;
-    }, [selectedProjectId, search, allEvents, filtering, sorting]);
+    }, [data, search, filtering, sorting]);
 
     return {
         filteredEvents,

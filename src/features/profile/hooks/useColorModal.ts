@@ -1,38 +1,38 @@
 import { useCallback, useEffect, useState } from "react";
-import { useAppStore } from "@/zustand/store";
 import { COLORS_GRID_SIZE } from "../components/modals/Colors";
 import { generateColorPalette } from "../utils/generateColorPalette";
-import { Profile, User } from "@/types/tables/account";
+import { CacheAPIProtocol } from "@/query-api/protocol";
+import { useQuery } from "@/query/core";
+import { updateUser } from "@/query-api/calls/users";
+import { wrapPromise } from "@/promises/core";
 
-export const useColorModal = (data: { profile: Profile; user: User }) => {
-    // zustand state
-    const stateColors = useAppStore((state) => state.colors);
-
-    // zustand methods
-    const updateUser = useAppStore((state) => state.updateUser);
+export const useColorModal = (data: CacheAPIProtocol["user"]["data"]) => {
+    const { data: colorsData } = useQuery({ key: ["colors", data.id] });
 
     // internal states
     const [colors, setColors] = useState<string[]>(
         Array.from(
             { length: COLORS_GRID_SIZE * COLORS_GRID_SIZE },
-            () => "#000000"
-        )
+            () => "#000000",
+        ),
     );
 
     // assigning colors to ours
     useEffect(() => {
-        if (stateColors[data.user.id]?.length) {
-            requestAnimationFrame(() => {
-                setColors(() => {
-                    const colors = [];
-                    for (const { slot, color } of stateColors[data.user.id]) {
-                        colors[Number(slot)] = color;
-                    }
-                    return colors;
-                });
-            });
+        if (!colorsData?.length) {
+            return;
         }
-    }, [stateColors, data.user]);
+
+        requestAnimationFrame(() => {
+            setColors(() => {
+                const colors = [];
+                for (const { slot, color } of colorsData) {
+                    colors[Number(slot)] = color;
+                }
+                return colors;
+            });
+        });
+    }, [colorsData]);
 
     // states
     const [selectedId, setSelectedId] = useState<number | undefined>();
@@ -47,15 +47,15 @@ export const useColorModal = (data: { profile: Profile; user: User }) => {
         setColors(
             Array.from(
                 { length: COLORS_GRID_SIZE * COLORS_GRID_SIZE },
-                () => "#000000"
-            )
+                () => "#000000",
+            ),
         );
     }, []);
 
     const palette = useCallback(() => {
         const palette = generateColorPalette(
             COLORS_GRID_SIZE * COLORS_GRID_SIZE,
-            hueRotation
+            hueRotation,
         );
         setColors(palette);
     }, [hueRotation]);
@@ -72,20 +72,22 @@ export const useColorModal = (data: { profile: Profile; user: User }) => {
         }));
 
         if (selectedId) {
-            updateUser({
-                id: data.user.id,
-                data: {
-                    color: colors[selectedId],
-                    colors: colorsData,
-                },
-                promiseKey: "colorsUpdate",
+            wrapPromise("colorsUpdate", () => {
+                return updateUser({
+                    id: data.id,
+                    username: data.username,
+                    data: {
+                        color: colors[selectedId],
+                        colors: colorsData,
+                    },
+                });
             });
         }
-    }, [colors, data.user, updateUser, selectedId]);
+    }, [colors, data, selectedId]);
 
     const randomSelect = useCallback(() => {
         let rand = Math.floor(
-            Math.random() * COLORS_GRID_SIZE * COLORS_GRID_SIZE
+            Math.random() * COLORS_GRID_SIZE * COLORS_GRID_SIZE,
         );
 
         if (rand < 0) {

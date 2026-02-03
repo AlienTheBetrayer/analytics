@@ -3,22 +3,16 @@ import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
 import { EditAvatarProps } from "./Avatar";
-import { useAppStore } from "@/zustand/store";
 import { useState } from "react";
 import Image from "next/image";
 import { Select } from "@/features/ui/select/components/Select";
 import { ProfileGender } from "@/types/tables/account";
 import { capitalize } from "@/utils/other/capitalize";
-import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
+import { PromiseState } from "@/promises/components/PromiseState";
+import { updateUser } from "@/query-api/calls/users";
+import { wrapPromise } from "@/promises/core";
 
 export const Form = ({ avatar, avatarFile, data }: EditAvatarProps) => {
-    // zustand
-    // zustand state
-    const promises = useAppStore((state) => state.promises);
-
-    // zustand functions
-    const updateUser = useAppStore((state) => state.updateUser);
-
     // input states
     const [status, setStatus] = useState<string>(data.profile.status ?? "");
     const [name, setName] = useState<string>(data.profile.name ?? "");
@@ -39,18 +33,21 @@ export const Form = ({ avatar, avatarFile, data }: EditAvatarProps) => {
                     dataAvatar = await fileToBase64(avatarFile?.[0]);
                 }
 
-                updateUser({
-                    id: data.user.id,
-                    data: {
-                        status,
-                        bio,
-                        title,
-                        name,
-                        gender,
-                        avatar_url: dataAvatar,
-                        avatar_name: avatarFile?.[0]?.name,
-                        avatar_type: avatarFile?.[0]?.type,
-                    },
+                wrapPromise("updateUser", () => {
+                    return updateUser({
+                        id: data.id,
+                        username: data.username,
+                        data: {
+                            status,
+                            bio,
+                            title,
+                            name,
+                            gender,
+                            avatar_url: dataAvatar,
+                            avatar_name: avatarFile?.[0]?.name,
+                            avatar_type: avatarFile?.[0]?.type,
+                        },
+                    });
                 });
             }}
         >
@@ -210,7 +207,7 @@ export const Form = ({ avatar, avatarFile, data }: EditAvatarProps) => {
                             type="submit"
                             className="w-full"
                         >
-                            <PromiseStatus status={promises.updateUser} />
+                            <PromiseState state="updateUser" />
                             <Image
                                 src="/send.svg"
                                 width={16}

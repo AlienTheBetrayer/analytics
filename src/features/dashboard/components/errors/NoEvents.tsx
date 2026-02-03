@@ -2,13 +2,14 @@ import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
-import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
 import { AbsentData } from "@/features/ui/absentdata/components/AbsentData";
+import { queryInvalidate } from "@/query/auxiliary";
+import { wrapPromise } from "@/promises/core";
+import { PromiseState } from "@/promises/components/PromiseState";
 
 export const NoEvents = () => {
     // zustand
-    const promises = useAppStore((state) => state.promises);
-    const sync = useAppStore((state) => state.sync);
+    const selectedProjectId = useAppStore((state) => state.selectedProjectId);
 
     return (
         <AbsentData
@@ -22,7 +23,7 @@ export const NoEvents = () => {
                     The project you selected does <u>not</u> have any events
                     yet. You can try sending them from the{" "}
                     <mark>emulation</mark> page or wait for the analytics data
-                    to be <b>gathered</b>.
+                    to be <b>gathered</b>. This can also appear after filtering.
                 </>
             }
         >
@@ -33,13 +34,16 @@ export const NoEvents = () => {
                 <Button
                     className="w-full"
                     onClick={() => {
-                        sync({
-                            promiseKey: "noEventsRefetch",
-                            caching: false,
-                        });
+                        if (selectedProjectId) {
+                            wrapPromise("syncEvents", async () => {
+                                return queryInvalidate({
+                                    key: ["events", selectedProjectId],
+                                });
+                            });
+                        }
                     }}
                 >
-                    <PromiseStatus status={promises.noEventsRefetch} />
+                    <PromiseState state="syncEvents" />
                     <Image
                         width={16}
                         height={16}

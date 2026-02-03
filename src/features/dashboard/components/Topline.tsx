@@ -3,14 +3,13 @@ import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { useAppStore } from "@/zustand/store";
 import { Button } from "../../ui/button/components/Button";
-import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
+import { PromiseState } from "@/promises/components/PromiseState";
+import { wrapPromise } from "@/promises/core";
+import { dashboardSync } from "@/query-api/calls/dashboard";
 
 export const Topline = () => {
-    // zustand states
-    const promises = useAppStore((state) => state.promises);
-
-    // zustand functions
-    const sync = useAppStore((state) => state.sync);
+    // zustand
+    const selectedProjectId = useAppStore((state) => state.selectedProjectId);
 
     return (
         <ul
@@ -82,17 +81,18 @@ export const Topline = () => {
                     <Tooltip text="Re-sync all data">
                         <Button
                             onClick={() => {
-                                sync({ caching: false });
+                                wrapPromise("dashboardSync", () => {
+                                    return dashboardSync({ selectedProjectId });
+                                });
                             }}
                         >
-                            <PromiseStatus status={promises.sync} />
+                            <PromiseState state="dashboardSync" />
                             <Image
                                 src="/server.svg"
                                 alt=""
                                 width={16}
                                 height={16}
                             />
-                            Fetch
                         </Button>
                     </Tooltip>
                 </div>

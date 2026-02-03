@@ -1,19 +1,19 @@
 "use client";
-import { useAppStore } from "@/zustand/store";
 import { Select } from "./Select";
 import { Topline } from "./Topline";
 import { NotificationRoute } from "../types/notifications";
 import { LoadingNotifications } from "@/features/ui/loading/components/LoadingNotifications";
 import { AbsentTopline } from "@/features/ui/loading/components/AbsentTopline";
+import { useQuery } from "@/query/core";
 
 type Props = {
     type: NotificationRoute;
 };
 
 export const Notifications = ({ type }: Props) => {
-    // zustand
-    const status = useAppStore((state) => state.status);
+    const { data: status } = useQuery({ key: ["status"] });
 
+    // fallbacks
     if (!status) {
         return (
             <>

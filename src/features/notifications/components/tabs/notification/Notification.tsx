@@ -10,7 +10,7 @@ export const Notification = () => {
     // zustand
     const notifications = useAppStore((state) => state.notifications);
 
-    // fallback
+    // data propagated to components
     const data = id
         ? notifications.Account[id] || notifications.Dashboard[id]
         : undefined;

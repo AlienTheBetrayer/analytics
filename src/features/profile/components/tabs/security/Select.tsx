@@ -4,13 +4,13 @@ import { TabSelection } from "@/utils/other/TabSelection";
 import Image from "next/image";
 import { useState } from "react";
 import { Data } from "./tabs/Data";
-import { Profile, User } from "@/types/tables/account";
 import { Sessions } from "./tabs/Sessions";
+import { CacheAPIProtocol } from "@/query-api/protocol";
 
 export type SecurityTab = "Data" | "Sessions";
 
 type Props = {
-    data: { user: User; profile: Profile };
+    data: CacheAPIProtocol["user"]["data"];
 };
 
 export const Select = ({ data }: Props) => {

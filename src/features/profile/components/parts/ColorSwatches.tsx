@@ -1,22 +1,22 @@
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
-import { Profile, User } from "@/types/tables/account";
-import { useAppStore } from "@/zustand/store";
+import { CacheAPIProtocol } from "@/query-api/protocol";
+import { useQuery } from "@/query/core";
 
 type Props = {
-    data: { user: User; profile: Profile };
+    data: CacheAPIProtocol["user"]["data"];
 };
 
 export const ColorSwatches = ({ data }: Props) => {
-    // zustand
-    const colors = useAppStore((state) => state.colors);
+    // fetching
+    const { data: colors } = useQuery({ key: ["colors", data.id] });
 
-    if (!colors[data.user.id]?.length) {
+    if (!colors?.length) {
         return null;
     }
 
     return (
         <ul className="flex">
-            {colors[data.user.id].map((c) => (
+            {colors.map((c) => (
                 <li
                     className="px-px!"
                     key={`${c.slot}${c.color}`}

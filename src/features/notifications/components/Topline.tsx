@@ -110,10 +110,7 @@ export const Topline = ({ type }: Props) => {
 
             {lastNotificationId && !id && (
                 <li>
-                    <Tooltip
-                        text="View the most recent notification"
-                        direction="top"
-                    >
+                    <Tooltip text="View the most recent notification">
                         <LinkButton
                             href={`/notification/${lastNotificationId}`}
                         >

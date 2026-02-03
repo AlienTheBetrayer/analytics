@@ -1,35 +1,24 @@
-import { Spinner } from "@/features/spinner/components/Spinner";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { ProfileDisplay } from "../../../ProfileDisplay";
 import Image from "next/image";
-import { useMemo } from "react";
-import { useAppStore } from "@/zustand/store";
-import { Profile, User } from "@/types/tables/account";
-import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
 import { useMessageBox } from "@/features/ui/messagebox/hooks/useMessageBox";
+import { CacheAPIProtocol } from "@/query-api/protocol";
+import { PromiseState } from "@/promises/components/PromiseState";
+import { useQuery } from "@/query/core";
+import { modifyFriendship } from "@/query-api/calls/users";
+import { queryInvalidate } from "@/query/auxiliary";
+import { wrapPromise } from "@/promises/core";
 
 type Props = {
-    data: { profile: Profile; user: User };
+    data: CacheAPIProtocol["user"]["data"];
 };
 
 export const Friends = ({ data }: Props) => {
-    // zustand
-    const friends = useAppStore((state) => state.friends);
-    const profiles = useAppStore((state) => state.profiles);
-    const users = useAppStore((state) => state.users);
-    const promises = useAppStore((state) => state.promises);
-    const getUsers = useAppStore((state) => state.getUsers);
-    const modifyFriendship = useAppStore((state) => state.modifyFriendship);
-
-    // ui states
-    const availableFriends = useMemo(() => {
-        if (!friends[data.user.id]?.size) {
-            return [];
-        }
-
-        return [...friends[data.user.id]];
-    }, [friends, data]);
+    // fetching
+    const { data: friends, isLoading } = useQuery({
+        key: ["friends", data.id],
+    });
 
     // messageboxes
     const unfriendBox = useMessageBox();
@@ -42,9 +31,8 @@ export const Friends = ({ data }: Props) => {
                 onSelect: (res) => {
                     if (res === "yes") {
                         modifyFriendship({
-                            from_id: data.user.id,
+                            from_id: data.id,
                             type: "unfriend-all",
-                            promiseKey: "unfriendAll",
                         });
                     }
                 },
@@ -57,26 +45,22 @@ export const Friends = ({ data }: Props) => {
                     direction="top"
                 >
                     <Button
-                        className="p-0!"
                         onClick={() => {
-                            getUsers({
-                                select: ["friends"],
-                                id: [data.user.id],
-                                promiseKey: "friendsReload",
-                                caching: false,
+                            wrapPromise("friendsReload", async () => {
+                                queryInvalidate({
+                                    key: ["friends", data.id],
+                                    silent: false,
+                                });
                             });
                         }}
                     >
-                        {promises.friendsReload === "pending" ? (
-                            <Spinner />
-                        ) : (
-                            <Image
-                                src="/reload.svg"
-                                width={14}
-                                height={14}
-                                alt="refresh"
-                            />
-                        )}
+                        <PromiseState state="friendsReload" />
+                        <Image
+                            src="/reload.svg"
+                            width={14}
+                            height={14}
+                            alt="refresh"
+                        />
                     </Button>
                 </Tooltip>
 
@@ -90,29 +74,23 @@ export const Friends = ({ data }: Props) => {
             </span>
 
             {/* friends list */}
-            {promises.friends === "pending" ? (
-                <Spinner className="mx-auto" />
-            ) : !availableFriends.length ? (
-                <span>
-                    <small>No friends</small>
-                </span>
+            {isLoading ? (
+                <ul className="flex flex-col gap-2">
+                    {Array.from({ length: 4 }, (_, k) => (
+                        <li
+                            key={k}
+                            className="w-full loading h-10"
+                        ></li>
+                    ))}
+                </ul>
             ) : (
                 <ul
                     className="flex flex-col gap-2 overflow-y-auto max-h-128 scheme-dark"
                     style={{ scrollbarWidth: "thin" }}
                 >
-                    {[...availableFriends].map((id) => (
+                    {friends?.map((id) => (
                         <li key={id}>
-                            {!profiles?.[id] ? (
-                                <Spinner />
-                            ) : (
-                                <ProfileDisplay
-                                    data={{
-                                        profile: profiles[id],
-                                        user: users[id],
-                                    }}
-                                />
-                            )}
+                            <ProfileDisplay id={id} />
                         </li>
                     ))}
                 </ul>
@@ -124,7 +102,7 @@ export const Friends = ({ data }: Props) => {
                     unfriendBox.show();
                 }}
             >
-                <PromiseStatus status={promises.unfriendAll} />
+                <PromiseState state="unfriendAll" />
                 <Image
                     width={16}
                     height={16}

@@ -1,3 +1,5 @@
+import { Profile } from "@/types/tables/account";
+
 /**
  * currently available roles (each role has its own permissions)
  */
@@ -11,4 +13,5 @@ export type AuthenticationToken = {
     session_id: string;
     username: string;
     role: AuthenticationRole;
+    profile: Profile;
 };

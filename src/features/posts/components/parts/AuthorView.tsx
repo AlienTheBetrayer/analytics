@@ -1,7 +1,6 @@
 import { ProfileImage } from "@/features/profile/components/ProfileImage";
-import { Spinner } from "@/features/spinner/components/Spinner";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
-import { useAppStore } from "@/zustand/store";
+import { useQuery } from "@/query/core";
 import Image from "next/image";
 
 type Props = {
@@ -9,42 +8,46 @@ type Props = {
 };
 
 export const AuthorView = ({ id }: Props) => {
-    // zustand
-    const profiles = useAppStore((state) => state.profiles);
-    const users = useAppStore((state) => state.users);
+    // fetching
+    const { data: user, isLoading } = useQuery({ key: ["user", id] });
 
-    const user = users[id];
-    const profile = profiles[id];
+    if (isLoading) {
+        return (
+            <div className="box items-center! p-4! w-screen max-w-64 loading" />
+        );
+    }
+
+    if (!user) {
+        return (
+            <div className="box items-center! p-4! w-screen max-w-64">
+                <span className="m-auto!">Absent data</span>
+            </div>
+        );
+    }
 
     return (
         <div className="box items-center! p-4! w-screen max-w-64">
-            {profile && user ? (
-                <>
-                    <span>{user.username}</span>
+            <span>{user.username}</span>
 
-                    <ProfileImage
-                        width={256}
-                        height={256}
-                        profile={profiles[id]}
-                        className="w-full max-w-16"
-                    />
+            <ProfileImage
+                width={256}
+                height={256}
+                profile={user.profile}
+                className="w-full max-w-16"
+            />
 
-                    <LinkButton
-                        href={`/profile/${user.username}`}
-                        className="w-full"
-                    >
-                        <Image
-                            alt=""
-                            width={16}
-                            height={16}
-                            src="/launch.svg"
-                        />
-                        Profile
-                    </LinkButton>
-                </>
-            ) : (
-                <Spinner />
-            )}
+            <LinkButton
+                href={`/profile/${user.username}`}
+                className="w-full"
+            >
+                <Image
+                    alt=""
+                    width={16}
+                    height={16}
+                    src="/launch.svg"
+                />
+                Profile
+            </LinkButton>
         </div>
     );
 };

@@ -1,13 +1,51 @@
 import { NoContent } from "@/features/posts/components/parts/errors/NoContent";
 import { ToplineExpanded } from "@/features/posts/components/parts/expanded/ToplineExpanded";
-import { Post } from "@/types/tables/posts";
+import { AbsentTopline } from "@/features/ui/loading/components/AbsentTopline";
+import { LoadingEmulate } from "@/features/ui/loading/components/LoadingEmulate";
+import { useQuery } from "@/query/core";
 import Image from "next/image";
 
 type Props = {
-    data: Post;
+    id: string;
 };
 
-export const PostExpanded = ({ data }: Props) => {
+export const PostExpanded = ({ id }: Props) => {
+    const { data, isLoading } = useQuery({ key: ["post", id] });
+
+    if (isLoading) {
+        return (
+            <>
+                <AbsentTopline
+                    title="Loading..."
+                    className="max-w-400!"
+                />
+
+                <div
+                    className={`box max-w-400 w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}
+                >
+                    <LoadingEmulate />
+                </div>
+            </>
+        );
+    }
+
+    if (!data) {
+        return (
+            <>
+                <AbsentTopline
+                    title="Data is absent"
+                    className="max-w-400!"
+                />
+
+                <div
+                    className={`box max-w-400 w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}
+                >
+                    <LoadingEmulate />
+                </div>
+            </>
+        );
+    }
+
     // main jsx
     return (
         <article

@@ -4,58 +4,18 @@ import { LoadingSearch } from "@/features/ui/loading/components/LoadingSearch";
 import { NoResults } from "@/features/search/components/errors/NoResults";
 import { Results } from "@/features/search/components/Results";
 import { Topline } from "@/features/search/components/Topline";
-import { useAppStore } from "@/zustand/store";
 import { useParams } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { SearchResults } from "@/types/zustand/user";
+import { useQuery } from "@/query/core";
 
 export const Search = () => {
     // url
     const { query } = useParams<{ query?: string }>();
-    // zustand
-    const search = useAppStore((state) => state.search);
-
-    // fetching
-    const hasFetched = useRef<boolean>(false);
-    const [results, setResults] = useState<SearchResults | null>(null);
-
-    /**
-     * safely fetches with the current query in the url
-     */
-    const fetchSearch = useCallback(() => {
-        if (!query) {
-            return;
-        }
-
-        search({ query }).then((data) => setResults(data));
-    }, [search, query]);
-
-    useEffect(() => {
-        if (hasFetched.current || !query) {
-            return;
-        }
-
-        hasFetched.current = true;
-        fetchSearch();
-    }, [query, fetchSearch]);
-
-    // fallback handling
-    let errorString = "";
 
     // empty query
-    if (!query) {
-        errorString = "Query is empty";
-    }
-
-    // while fetching
-    if (!results) {
-        errorString = "Data is absent";
-    }
-
-    if (errorString) {
+    if (!query?.trim().length) {
         return (
             <>
-                <AbsentTopline title={errorString} />
+                <AbsentTopline title="Query is empty" />
 
                 <div className="box w-full max-w-400 mx-auto min-h-128">
                     <LoadingSearch />
@@ -64,26 +24,48 @@ export const Search = () => {
         );
     }
 
-    // empty results (no вфеф found)
-    if (results && !results.posts?.length && !results.users?.length) {
+    return <SearchQuery />;
+};
+
+const SearchQuery = () => {
+    // url
+    const { query } = useParams<{ query: string }>();
+
+    // fetching
+    const { data, isLoading } = useQuery({ key: ["search", query, 0] });
+
+    // while fetching
+    if (isLoading) {
         return (
             <>
-                <Topline />
+                <AbsentTopline title="Data is absent / Loading..." />
 
                 <div className="box w-full max-w-400 mx-auto min-h-128">
-                    <NoResults onSearch={fetchSearch} />
+                    <LoadingSearch />
                 </div>
             </>
         );
     }
 
-    // users found
+    if (!data?.pages) {
+        return (
+            <>
+                <Topline />
+
+                <div className="box w-full max-w-400 mx-auto min-h-128">
+                    <NoResults />
+                </div>
+            </>
+        );
+    }
+
+    // results found
     return (
         <>
             <Topline />
 
             <div className="box w-full max-w-400 mx-auto min-h-128">
-                {results && <Results data={results} />}
+                <Results/>
             </div>
         </>
     );

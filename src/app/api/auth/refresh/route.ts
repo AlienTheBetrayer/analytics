@@ -11,14 +11,14 @@ export const POST = async (request: NextRequest) => {
     const refreshToken = request.cookies.get("refreshToken")?.value;
 
     if (refreshToken === undefined) {
-        return nextResponse({ error: "Session is outdated. Re-login." }, 400);
+        throw "outdated session";
     }
 
     try {
         // if refresh token hasn't expired - issue a new access token
         const payload = jwt.verify(
             refreshToken,
-            process.env.REFRESH_SECRET as string
+            process.env.REFRESH_SECRET as string,
         ) as {
             id: string;
             role: string;
@@ -37,14 +37,12 @@ export const POST = async (request: NextRequest) => {
             };
 
         if (refreshTokensError) {
-            console.error(refreshTokensError);
-            return nextResponse(refreshTokensError, 400);
+            throw refreshTokensError;
         }
 
         // detecting token substitution
         if (refreshTokensData.length === 0) {
-            console.error("Incorrect authentication.");
-            return nextResponse({ error: "Incorrect authentication." }, 400);
+            throw "no token found";
         }
 
         // align permissions
@@ -57,13 +55,11 @@ export const POST = async (request: NextRequest) => {
         };
 
         if (userError) {
-            console.error(userError);
-            return nextResponse(userError, 400);
+            throw userError;
         }
 
         if (userData.length === 0) {
-            console.error("The user does not exist.");
-            return nextResponse({ error: "The user does not exist." }, 400);
+            throw "user does not exist";
         }
 
         // if everything went right we issue the tokens
@@ -77,7 +73,7 @@ export const POST = async (request: NextRequest) => {
                 username: userData[0].username,
             },
             process.env.ACCESS_SECRET as string,
-            { expiresIn: "15m" }
+            { expiresIn: "15m" },
         );
 
         const newRefreshToken = jwt.sign(
@@ -88,7 +84,7 @@ export const POST = async (request: NextRequest) => {
                 username: userData[0].username,
             },
             process.env.REFRESH_SECRET as string,
-            { expiresIn: "7d" }
+            { expiresIn: "7d" },
         );
 
         // replace the token from the database
@@ -98,8 +94,7 @@ export const POST = async (request: NextRequest) => {
             .eq("session_id", payload.session_id);
 
         if (refreshDeleteError) {
-            console.error(refreshDeleteError);
-            return nextResponse(refreshDeleteError, 400);
+            throw refreshDeleteError;
         }
 
         const { error: refreshRotateError } = await supabaseServer
@@ -111,14 +106,12 @@ export const POST = async (request: NextRequest) => {
             });
 
         if (refreshRotateError) {
-            console.error(refreshRotateError);
-            return nextResponse(refreshRotateError, 400);
+            throw refreshRotateError;
         }
 
         const response = nextResponse(
-            { message: "Authenticated!", user: userData[0] },
+            { success: true, user: userData[0] },
             200,
-            "user_refreshed"
         );
 
         response.cookies.set({
@@ -140,10 +133,6 @@ export const POST = async (request: NextRequest) => {
         return response;
     } catch (error) {
         console.error(error);
-        return nextResponse(
-            { error: "Not authenticated" },
-            401,
-            "not_authenticated"
-        );
+        return nextResponse({ success: false }, 401);
     }
 };

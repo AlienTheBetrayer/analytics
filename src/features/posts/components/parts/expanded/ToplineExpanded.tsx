@@ -1,27 +1,25 @@
 import { AuthorView } from "@/features/posts/components/parts/AuthorView";
 import { ToplineCompact } from "@/features/posts/components/parts/compact/ToplineCompact";
 import { ProfileImage } from "@/features/profile/components/ProfileImage";
+import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { useMessageBox } from "@/features/ui/messagebox/hooks/useMessageBox";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
-import { Post } from "@/types/tables/posts";
+import { wrapPromise } from "@/promises/core";
+import { updatePost } from "@/query-api/calls/posts";
+import { CacheAPIProtocol } from "@/query-api/protocol";
+import { useQuery } from "@/query/core";
 import { relativeTime } from "@/utils/other/relativeTime";
-import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 
 type Props = {
-    data: Post;
+    data: CacheAPIProtocol["post"]["data"];
     className?: string;
 };
 
 export const ToplineExpanded = ({ data, className }: Props) => {
-    // zustand
-    const profiles = useAppStore((state) => state.profiles);
-    const users = useAppStore((state) => state.users);
-    const updatePost = useAppStore((state) => state.updatePost);
-
-    const profile = profiles[data.user_id];
-    const user = users[data.user_id];
+    // fetching
+    const { data: user } = useQuery({ key: ["user", data.user_id] });
 
     // message boxes
     const deleteBox = useMessageBox();
@@ -37,11 +35,12 @@ export const ToplineExpanded = ({ data, className }: Props) => {
                     "You will permanently delete this post and no one will be able to see it again",
                 onSelect: (res) => {
                     if (res === "yes") {
-                        updatePost({
-                            type: "delete",
-                            user_id: data.user_id,
-                            id: data.id,
-                            promiseKey: "deletePost",
+                        wrapPromise("updatePost", () => {
+                            return updatePost({
+                                type: "delete",
+                                user_id: data.user_id,
+                                id: data.id,
+                            });
                         });
                         redirect("/posts");
                     }
@@ -57,18 +56,23 @@ export const ToplineExpanded = ({ data, className }: Props) => {
                             direction="right"
                         >
                             <ProfileImage
-                                profile={profile}
+                                profile={user?.profile}
                                 className="w-6"
                             />
                         </Tooltip>
                     </li>
 
                     <li className="flex items-center gap-1">
-                        <span>
-                            <em>
-                                <mark>{user.username}</mark>
-                            </em>
-                        </span>
+                        <LinkButton
+                            href={`/profile/${user?.username}`}
+                            className="p-0! bg-transparent! backdrop-blur-none! border-0!"
+                        >
+                            <span>
+                                <em>
+                                    <mark>{user?.username}</mark>
+                                </em>
+                            </span>
+                        </LinkButton>
                     </li>
 
                     <li className="flex ml-auto!">

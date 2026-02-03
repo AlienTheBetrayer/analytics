@@ -8,7 +8,7 @@ type Props = {
 };
 
 export const Search = ({ tab }: Props) => {
-    // zustand-state
+    // zustand
     const filter = useAppStore((state) => state.filter)[tab];
     const setNotificationFilter = useAppStore(
         (state) => state.setNotificationFilter,

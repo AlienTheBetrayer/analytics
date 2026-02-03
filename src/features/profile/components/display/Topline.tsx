@@ -1,22 +1,24 @@
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
-import { Profile, User } from "@/types/tables/account";
-import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import { RoleEditing } from "../modals/RoleEditing";
 import { useParams } from "next/navigation";
 import { TabSelection } from "@/utils/other/TabSelection";
 import { Modal } from "@/features/ui/popovers/components/modal/Modal";
+import { CacheAPIProtocol } from "@/query-api/protocol";
+import { useQuery } from "@/query/core";
 
 type Props = {
-    data: { user: User; profile: Profile };
+    data: CacheAPIProtocol["user"]["data"];
 };
 
 export const Topline = ({ data }: Props) => {
-    // zustand
-    const status = useAppStore((state) => state.status);
-    const friendRequests = useAppStore((state) => state.friendRequests);
+    // fetching
+    const { data: status } = useQuery({ key: ["status"] });
+    const { data: requests_outcoming } = useQuery({
+        key: ["requests_outcoming", data.id],
+    });
 
     // url
     const { tab } = useParams<{ tab?: string }>();
@@ -80,7 +82,7 @@ export const Topline = ({ data }: Props) => {
                 </li>
             )}
 
-            {status && status.id !== data.user.id && (
+            {status && status.id !== data.id && (
                 <li>
                     <Tooltip text="Go back to friends tab">
                         <LinkButton
@@ -99,7 +101,7 @@ export const Topline = ({ data }: Props) => {
 
             <li className="ml-auto!">
                 <Tooltip text="User's posts">
-                    <LinkButton href={`/posts/${data.user.username}`}>
+                    <LinkButton href={`/posts/${data.username}`}>
                         <Image
                             width={14}
                             height={14}
@@ -117,9 +119,7 @@ export const Topline = ({ data }: Props) => {
 
             <li>
                 <Tooltip text="Profile overview">
-                    <LinkButton
-                        href={`/profile/${data.user.username}/overview`}
-                    >
+                    <LinkButton href={`/profile/${data.username}/overview`}>
                         <Image
                             width={16}
                             height={16}
@@ -135,14 +135,11 @@ export const Topline = ({ data }: Props) => {
                 </Tooltip>
             </li>
 
-            {((status && status.id === data.user.id) ||
-                status?.role === "op") && (
+            {((status && status.id === data.id) || status?.role === "op") && (
                 <>
                     <li>
                         <Tooltip text="Edit the profile">
-                            <LinkButton
-                                href={`/profile/${data.user.username}/edit`}
-                            >
+                            <LinkButton href={`/profile/${data.username}/edit`}>
                                 <Image
                                     width={16}
                                     height={16}
@@ -161,7 +158,7 @@ export const Topline = ({ data }: Props) => {
                     <li>
                         <Tooltip text="Security measures">
                             <LinkButton
-                                href={`/profile/${data.user.username}/security`}
+                                href={`/profile/${data.username}/security`}
                             >
                                 <Image
                                     width={16}
@@ -183,7 +180,7 @@ export const Topline = ({ data }: Props) => {
                     <li>
                         <Tooltip text="Friends and Friend requests">
                             <LinkButton
-                                href={`/profile/${data.user.username}/friends`}
+                                href={`/profile/${data.username}/friends`}
                             >
                                 <Image
                                     width={16}
@@ -197,10 +194,7 @@ export const Topline = ({ data }: Props) => {
                                     color="var(--blue-1)"
                                 />
                                 <TabSelection
-                                    condition={
-                                        !!friendRequests[data.user.id]?.incoming
-                                            ?.size
-                                    }
+                                    condition={!!requests_outcoming?.length}
                                     color="var(--orange-1)"
                                 />
                             </LinkButton>

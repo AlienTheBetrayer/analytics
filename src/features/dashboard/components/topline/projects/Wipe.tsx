@@ -2,17 +2,21 @@ import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
-import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
 import { useMessageBox } from "@/features/ui/messagebox/hooks/useMessageBox";
+import { wrapPromise } from "@/promises/core";
+import { PromiseState } from "@/promises/components/PromiseState";
+import { useQuery } from "@/query/core";
+import { dashboardDeleteProject } from "@/query-api/calls/dashboard";
 
 export const Wipe = () => {
     // zustand
-    const deleteData = useAppStore((state) => state.deleteData);
-    const promises = useAppStore((state) => state.promises);
     const selectedProjectId = useAppStore((state) => state.selectedProjectId);
 
-    // messageboxes
+    // message boxes
     const deleteProjectsBox = useMessageBox();
+
+    // fetching
+    const { data } = useQuery({ key: ["projects"] });
 
     return (
         <>
@@ -20,15 +24,15 @@ export const Wipe = () => {
                 children:
                     "You will delete every single data entry about this project, including events!",
                 onSelect: (res) => {
-                    if (!selectedProjectId) {
+                    if (!selectedProjectId || !data?.[selectedProjectId]) {
                         return;
                     }
 
                     if (res === "yes") {
-                        deleteData({
-                            id: [selectedProjectId],
-                            type: "project",
-                            promiseKey: `projectsDeleteTopline`,
+                        wrapPromise("deleteProject", () => {
+                            return dashboardDeleteProject({
+                                project: data[selectedProjectId],
+                            });
                         });
                     }
                 },
@@ -41,7 +45,7 @@ export const Wipe = () => {
                         deleteProjectsBox.show();
                     }}
                 >
-                    <PromiseStatus status={promises.projectsDeleteTopline} />
+                    <PromiseState state="deleteProject" />
                     <Image
                         alt="delete"
                         src="/delete.svg"

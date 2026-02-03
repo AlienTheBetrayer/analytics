@@ -2,29 +2,22 @@ import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { Select } from "@/features/ui/select/components/Select";
 import { AuthenticationRole } from "@/types/auth/authentication";
-import { Profile, User } from "@/types/tables/account";
-import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import { useState } from "react";
-import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
 import { CloseButton } from "@/features/ui/closebutton/components/CloseButton";
+import { CacheAPIProtocol } from "@/query-api/protocol";
+import { wrapPromise } from "@/promises/core";
+import { PromiseState } from "@/promises/components/PromiseState";
+import { updateUser } from "@/query-api/calls/users";
 
 type Props = {
-    data: { profile: Profile; user: User };
+    data: CacheAPIProtocol["user"]["data"];
     hide: () => void;
 };
 
 export const RoleEditing = ({ data, hide }: Props) => {
-    // zustand states
-    const promises = useAppStore((state) => state.promises);
-
-    // zustand functions
-    const updateUser = useAppStore((state) => state.updateUser);
-
     // react states
-    const [role, setRole] = useState<AuthenticationRole>(
-        data.user.role ?? "user",
-    );
+    const [role, setRole] = useState<AuthenticationRole>(data.role ?? "user");
 
     return (
         <ul className="relative box h-full gap-4! min-h-80">
@@ -38,7 +31,7 @@ export const RoleEditing = ({ data, hide }: Props) => {
                         alt=""
                         src="/cube.svg"
                     />
-                    <span>{data.user.username}</span>
+                    <span>{data.username}</span>
                 </div>
 
                 <span className="text-5!">Role editing</span>
@@ -84,10 +77,16 @@ export const RoleEditing = ({ data, hide }: Props) => {
                     <Button
                         className="w-full"
                         onClick={() => {
-                            updateUser({ id: data.user.id, data: { role } });
+                            wrapPromise("updateUser", () => {
+                                return updateUser({
+                                    id: data.id,
+                                    username: data.username,
+                                    data: { role },
+                                });
+                            });
                         }}
                     >
-                        <PromiseStatus status={promises.updateUser} />
+                        <PromiseState state="updateUser" />
                         <Image
                             width={20}
                             height={20}

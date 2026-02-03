@@ -1,19 +1,25 @@
 import { CompactInfo } from "@/features/posts/components/parts/CompactInfo";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
-import { Post } from "@/types/tables/posts";
-import { useAppStore } from "@/zustand/store";
+import { useQuery } from "@/query/core";
 import Image from "next/image";
 
 type Props = {
-    post: Post;
+    id: string;
 };
 
-export const PostGridElement = ({ post }: Props) => {
-    // zustand
-    const postPrivacy = useAppStore((state) => state.postPrivacy);
-    const postLikeIds = useAppStore((state) => state.postLikeIds);
-    const status = useAppStore((state) => state.status);
+export const PostGridElement = ({ id }: Props) => {
+    // fetching
+    const { data: post, isLoading } = useQuery({ key: ["post", id] });
+    const { data: postPrivacy } = useQuery({ key: ["post_privacy", id] });
+
+    if (isLoading) {
+        return <div className="box p-2! aspect-square loading" />;
+    }
+
+    if (!post) {
+        return null;
+    }
 
     return (
         <article className="box p-2! aspect-square">
@@ -41,7 +47,7 @@ export const PostGridElement = ({ post }: Props) => {
                             />
                         )}
 
-                        {status && postLikeIds[status.username]?.has(post.id) && (
+                        {!!post.has_liked && (
                             <Image
                                 alt="liked"
                                 width={16}
@@ -51,7 +57,7 @@ export const PostGridElement = ({ post }: Props) => {
                             />
                         )}
 
-                        {postPrivacy[post.id]?.edited_at && (
+                        {postPrivacy?.edited_at && (
                             <Image
                                 alt="configured"
                                 width={16}
@@ -62,13 +68,15 @@ export const PostGridElement = ({ post }: Props) => {
                         )}
                     </div>
 
-                    <Image
-                        alt={post.title}
-                        fill
-                        style={{ objectFit: "cover" }}
-                        src={`${post.image_url}`}
-                        className="rounded-full invert-0!"
-                    />
+                    {post.image_url && (
+                        <Image
+                            alt={post.title}
+                            fill
+                            style={{ objectFit: "cover" }}
+                            src={`${post.image_url}`}
+                            className="rounded-full invert-0!"
+                        />
+                    )}
                 </LinkButton>
             </Tooltip>
         </article>

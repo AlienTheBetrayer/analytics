@@ -1,11 +1,11 @@
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
-import { Profile, User } from "@/types/tables/account";
+import { CacheAPIProtocol } from "@/query-api/protocol";
 import Image from "next/image";
 import React, { useMemo } from "react";
 
 type Props = {
     className?: string;
-    data: { user: User; profile: Profile };
+    data: CacheAPIProtocol["user"]["data"];
 };
 
 export const Role = ({ className, data }: Props) => {
@@ -13,12 +13,12 @@ export const Role = ({ className, data }: Props) => {
         element: React.ReactNode;
         tooltip: string;
     } => {
-        switch (data.user.role) {
+        switch (data.role) {
             case "user": {
                 return {
                     element: (
                         <div
-                            className={`box p-1! px-2! items-center! outline-1 outline-[#8a8b91] ${className ?? ""}`}
+                            className={`box p-1! px-2! w-max! items-center! outline-1 outline-[#8a8b91] ${className ?? ""}`}
                         >
                             <div className="flex gap-1">
                                 <Image
@@ -31,14 +31,14 @@ export const Role = ({ className, data }: Props) => {
                             </div>
                         </div>
                     ),
-                    tooltip: `${data.user.username} is a regular user.`,
+                    tooltip: `${data.username} is a regular user.`,
                 };
             }
             case "admin": {
                 return {
                     element: (
                         <div
-                            className={`box p-1! px-2! items-center! outline-1 outline-[#97a2da] ${className ?? ""}`}
+                            className={`box p-1! px-2! w-max! items-center! outline-1 outline-[#97a2da] ${className ?? ""}`}
                         >
                             <div className="flex gap-1">
                                 <Image
@@ -51,14 +51,14 @@ export const Role = ({ className, data }: Props) => {
                             </div>
                         </div>
                     ),
-                    tooltip: `${data.user.username} is an admin.`,
+                    tooltip: `${data.username} is an admin.`,
                 };
             }
             case "op": {
                 return {
                     element: (
                         <div
-                            className={`box p-1! px-2! items-center! outline-1 outline-[#cd5151] ${className ?? ""}`}
+                            className={`box p-1! px-2! w-max! items-center! outline-1 outline-[#cd5151] ${className ?? ""}`}
                         >
                             <div className="flex gap-1">
                                 <Image
@@ -71,7 +71,7 @@ export const Role = ({ className, data }: Props) => {
                             </div>
                         </div>
                     ),
-                    tooltip: `${data.user.username} is the founder.`,
+                    tooltip: `${data.username} is the founder.`,
                 };
             }
         }

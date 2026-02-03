@@ -1,23 +1,23 @@
 import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
-import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import { ComponentPropsWithoutRef } from "react";
 import { SearchButton } from "../parts/SearchButton";
+import { useQuery } from "@/query/core";
 
 type Props = {
     showMenu: () => void;
 } & ComponentPropsWithoutRef<"div">;
 
 export const Mobile = ({ className, showMenu }: Props) => {
-    // zustand states
-    const status = useAppStore((state) => state.status);
+    // fetching
+    const { data: status } = useQuery({ key: ["status"] });
 
     return (
         <ul
             className={`grid grid-cols-[15%_1fr_15%] items-center w-full px-4! ${className ?? ""}`}
         >
-            <li className='flex items-center group'>
+            <li className="flex items-center group">
                 <div className="w-1 aspect-square bg-blue-1 rounded-full group-hover:bg-red-1 duration-700 transition-all" />
 
                 <LinkButton

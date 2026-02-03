@@ -1,17 +1,17 @@
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import Image from "next/image";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
-import { Post } from "@/types/tables/posts";
-import { useAppStore } from "@/zustand/store";
 import { AbsentData } from "@/features/ui/absentdata/components/AbsentData";
+import { useQuery } from "@/query/core";
+import { CacheAPIProtocol } from "@/query-api/protocol";
 
 type Props = {
-    data: Post;
+    data: CacheAPIProtocol["post"]["data"];
 };
 
 export const NoContent = ({ data }: Props) => {
-    // zustand
-    const users = useAppStore((state) => state.users);
+    // fetching
+    const { data: user } = useQuery({ key: ["user", data.user_id] });
 
     return (
         <AbsentData
@@ -32,7 +32,7 @@ export const NoContent = ({ data }: Props) => {
                 text="To posts"
                 className="w-full"
             >
-                <LinkButton href={`/posts/${users[data.user_id]?.username}`}>
+                <LinkButton href={`/posts/${user?.username}`}>
                     <Image
                         alt=""
                         width={16}

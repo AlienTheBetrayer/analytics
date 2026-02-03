@@ -5,10 +5,10 @@ import { useLocalStore } from "@/zustand/localStore";
 import { useMessageBox } from "@/features/ui/messagebox/hooks/useMessageBox";
 
 export const Topline = () => {
-    // zustand
+    // local storage
     const resetPreferences = useLocalStore((state) => state.resetPreferences);
 
-    // messageboxes
+    // message boxes
     const preferencesBox = useMessageBox();
 
     return (

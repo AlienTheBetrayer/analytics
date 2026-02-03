@@ -14,7 +14,6 @@ export const Search = () => {
     const [searchValue, setSearchValue] = useState<string>(
         selectedProjectId ? (projectFilters?.projectSearch ?? "") : "",
     );
-
     const debounced = useDebounced(searchValue, 75);
 
     useEffect(() => {

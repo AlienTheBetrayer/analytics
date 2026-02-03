@@ -5,17 +5,19 @@ import Image from "next/image";
 import { Sorting } from "./Sorting";
 import { Search } from "./Search";
 import { Wipe } from "./Wipe";
-import { Deselect } from "./Deselect";
 import { Manipulation } from "./Manipulation";
 import { Emulate } from "./Emulate";
 import { TabSelection } from "@/utils/other/TabSelection";
 import { Modal } from "@/features/ui/popovers/components/modal/Modal";
+import { useQuery } from "@/query/core";
 
 export const ProjectTopline = () => {
-    // zustand-state
-    const status = useAppStore((state) => state.status);
+    // zustand
     const selectedProjectId = useAppStore((state) => state.selectedProjectId);
     const projectFilters = useAppStore((state) => state.projectFilters);
+
+    // fetching
+    const { data: status } = useQuery({ key: ["status"] });
 
     return (
         <ul
@@ -73,17 +75,6 @@ export const ProjectTopline = () => {
             <li className="ml-auto!">
                 <ul className="flex items-center gap-1 h-full">
                     <li>
-                        <Deselect />
-                    </li>
-
-                    <li className="self-stretch flex items-center">
-                        <hr className="w-px! h-1/3 bg-background-6" />
-                    </li>
-
-                    <li
-                        inert={status?.role === "user"}
-                        className={`${status?.role === "user" ? "opacity-30" : ""}`}
-                    >
                         <Emulate />
                     </li>
 

@@ -1,18 +1,18 @@
 .project-button {
     display: flex;
-	gap: 1rem;
+    gap: 1rem;
 }
 
 @media (max-width: 640px) {
-	.project-button {
+    .project-button {
         flex-direction: column;
-		gap: 0.5rem;
+        gap: 0.5rem;
         min-height: 8rem;
-	}
+    }
 }
 
 .project-button span {
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }

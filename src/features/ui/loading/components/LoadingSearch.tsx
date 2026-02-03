@@ -1,26 +1,38 @@
 export const LoadingSearch = () => {
     return (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-2">
+            <div className="w-full h-8 loading" />
+            <div className="w-full h-8 loading" />
+
+            <div className="w-full h-0.5 loading my-4" />
+
             {Array.from({ length: 4 }, (v, k) => (
-                <div
-                    className="flex flex-col w-full h-44 loading rounded-[10vw]!"
-                    key={k}
-                >
-                    <ul className="flex flex-col grow p-4! gap-2 w-full items-center">
-                        <li className="flex flex-col items-center w-full">
-                            <div className="loading w-full max-w-24 h-6 loading" />
-                        </li>
-
-                        <li className="flex flex-col w-full max-w-24">
-                            <div className="loading w-full aspect-square rounded-full!" />
-                        </li>
-
-                        <li className="flex flex-col items-center w-full">
-                            <div className="loading w-full max-w-36 h-6 loading" />
-                        </li>
-                    </ul>
-                </div>
+                <LoadingSearchEntryUser key={k} />
             ))}
+        </div>
+    );
+};
+
+export const LoadingSearchEntryUser = () => {
+    return (
+        <div className="flex flex-col w-full h-32 loading rounded-[10vw]!">
+            <ul className="flex grow p-4! gap-4 w-full">
+                <li className="flex flex-col w-full max-w-24">
+                    <div className="loading w-full aspect-square rounded-full!" />
+                </li>
+
+                <li className="flex flex-col w-full max-w-24 gap-2">
+                    <div className="loading w-full h-6 loading" />
+                    <div className="loading w-full h-6 loading" />
+                    <div className="loading w-full h-6 loading" />
+                </li>
+
+                <li className="flex flex-col w-full gap-2">
+                    <div className="loading w-full h-6 loading" />
+                    <div className="loading w-full h-6 loading" />
+                    <div className="loading w-full h-6 loading" />
+                </li>
+            </ul>
         </div>
     );
 };

@@ -1,7 +1,11 @@
 import { PostForm } from "@/features/posts/components/parts/postform/PostForm";
 import Image from "next/image";
 
-export const Edit = () => {
+type Props = {
+    id: string;
+};
+
+export const Edit = ({ id }: Props) => {
     return (
         <div className="flex flex-col gap-4 grow w-full mx-auto">
             <div className="flex gap-1 items-center justify-center">
@@ -16,7 +20,10 @@ export const Edit = () => {
 
             <hr />
 
-            <PostForm mode="edit" />
+            <PostForm
+                mode="edit"
+                id={id}
+            />
         </div>
     );
 };

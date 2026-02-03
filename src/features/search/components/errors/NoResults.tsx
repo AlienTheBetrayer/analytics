@@ -1,85 +1,77 @@
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
-import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
-import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
+import { queryInvalidate } from "@/query/auxiliary";
+import { useParams } from "next/navigation";
+import { wrapPromise } from "@/promises/core";
+import { PromiseState } from "@/promises/components/PromiseState";
+import { AbsentData } from "@/features/ui/absentdata/components/AbsentData";
 
-type Props = {
-    onSearch?: () => void;
-};
-
-export const NoResults = ({ onSearch }: Props) => {
-    // zustand
-    const promises = useAppStore((state) => state.promises);
+export const NoResults = () => {
+    // url
+    const { query } = useParams<{ query?: string }>();
 
     return (
-        <div className="flex flex-col items-center justify-center mt-16">
-            <div className="flex flex-col gap-4 items-center">
-                <div className="flex flex-col gap-2 items-center">
-                    <div className="relative flex gap-1">
+        <AbsentData
+            title={
+                <>
+                    <u>No</u> users found
+                </>
+            }
+            description={
+                <>
+                    The query you have prompted seems <mark>valid</mark>, but we
+                    have <u>not</u> found any users with it, try <b>changing</b>{" "}
+                    the query to something else, either you messed up or the
+                    user actually does not exist
+                </>
+            }
+        >
+            <>
+                <Tooltip
+                    text="Attempt a re-fetch"
+                    className="w-full"
+                    isEnabled={!!query?.trim().length}
+                >
+                    <Button
+                        className="w-full"
+                        onClick={() => {
+                            if (!query?.trim().length) {
+                                return;
+                            }
+
+                            wrapPromise("noResultsSearch", async () => {
+                                return queryInvalidate({
+                                    key: ["search", query],
+                                });
+                            });
+                        }}
+                    >
+                        <PromiseState state="noResultsSearch" />
                         <Image
                             width={16}
                             height={16}
                             alt=""
-                            src="/prohibited.svg"
+                            src="/server.svg"
                         />
-                    </div>
+                        Re-fetch
+                    </Button>
+                </Tooltip>
 
-                    <span className="text-5!">
-                        <u>No</u> users found
-                    </span>
-
-                    <p className="max-w-100 text-center">
-                        The query you have prompted seems <mark>valid</mark>,
-                        but we have <u>not</u>
-                        found any users with it, try <b>changing</b> the query
-                        to something else, either you messed up or the user
-                        actually does not exist
-                    </p>
-                </div>
-
-                <hr />
-
-                <div className="flex flex-col gap-2 items-center w-full">
-                    <Tooltip
-                        text="Attempt a re-fetch"
-                        className="w-full"
-                    >
-                        <Button
-                            className="w-full"
-                            onClick={onSearch}
-                        >
-                            <PromiseStatus status={promises.search} />
-                            <Image
-                                width={16}
-                                height={16}
-                                alt=""
-                                src="/server.svg"
-                            />
-                            Re-fetch
-                        </Button>
-                    </Tooltip>
-
-                    <Tooltip
-                        text="Go back home"
-                        className="w-full"
-                    >
-                        <LinkButton
-                            className="w-full"
-                            href="/home"
-                        >
-                            <Image
-                                width={16}
-                                height={16}
-                                alt=""
-                                src="/cube.svg"
-                            />
-                            Home
-                        </LinkButton>
-                    </Tooltip>
-                </div>
-            </div>
-        </div>
+                <LinkButton
+                    className="w-full"
+                    href="/home"
+                >
+                    <Image
+                        width={16}
+                        height={16}
+                        alt=""
+                        src="/cube.svg"
+                    />
+                    Home
+                </LinkButton>
+            </>
+        </AbsentData>
     );
 };

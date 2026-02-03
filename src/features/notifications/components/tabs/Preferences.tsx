@@ -3,7 +3,7 @@ import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
 import { useLocalStore } from "@/zustand/localStore";
 
 export const Preferences = () => {
-    // zustand
+    // local storage
     const preferences = useLocalStore((state) => state.preferences);
     const updatePreferences = useLocalStore((state) => state.updatePreferences);
 

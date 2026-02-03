@@ -4,30 +4,22 @@ import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
-import { Post } from "@/types/tables/posts";
-import { useAppStore } from "@/zustand/store";
+import { like } from "@/query-api/calls/posts";
+import { CacheAPIProtocol } from "@/query-api/protocol";
+import { useQuery } from "@/query/core";
 import Image from "next/image";
 
 type Props = {
-    data: Post;
+    data: CacheAPIProtocol["post"]["data"];
     type: "compact" | "expanded";
     className?: string;
     onDelete?: () => void;
 };
 
 export const ToplineCompact = ({ data, className, type, onDelete }: Props) => {
-    // zustand
-    const postIds = useAppStore((state) => state.postIds);
-    const postPrivacy = useAppStore((state) => state.postPrivacy);
-    const postLikeIds = useAppStore((state) => state.postLikeIds);
-    const postLikes = useAppStore((state) => state.postLikes);
-    const status = useAppStore((state) => state.status);
-    const like = useAppStore((state) => state.like);
-
-    const isLikeAvailable =
-        postPrivacy[data.id]?.likes !== false || status?.id === data.user_id;
-    const hasLiked =
-        (status && postLikeIds[status.username]?.has(data.id)) ?? false;
+    // fetching
+    const { data: status } = useQuery({ key: ["status"] });
+    const { data: post_privacy } = useQuery({ key: ["post_privacy", data.id] });
 
     return (
         <ul
@@ -58,14 +50,14 @@ export const ToplineCompact = ({ data, className, type, onDelete }: Props) => {
             />
 
             <TinyTooltip
-                data={postPrivacy[data.id]?.edited_at}
+                data={post_privacy?.edited_at}
                 src="/security.svg"
                 tooltip="Privacy configured"
                 size={14}
             />
 
             <TinyTooltip
-                data={postLikes[data.id]}
+                data={data.likes}
                 showData
                 src="/heart.svg"
                 size={10}
@@ -76,11 +68,14 @@ export const ToplineCompact = ({ data, className, type, onDelete }: Props) => {
                 {status && (
                     <li>
                         <Tooltip
-                            text={`${hasLiked ? "Remove like" : "Like this post"}`}
-                            isEnabled={isLikeAvailable}
+                            text={`${data.has_liked ? "Remove like" : "Like this post"}`}
+                            isEnabled={
+                                post_privacy?.likes !== false ||
+                                data.user_id === status?.id
+                            }
                         >
                             <Button
-                                aria-label={`${hasLiked ? "unlike post" : "like post"}`}
+                                aria-label={`${data.has_liked ? "unlike post" : "like post"}`}
                                 onClick={() => {
                                     if (!status) {
                                         return;
@@ -91,20 +86,11 @@ export const ToplineCompact = ({ data, className, type, onDelete }: Props) => {
                                         type: "like",
                                         id: data.id,
                                         user_id: status.id,
-                                        promiseKey: `likePost_${data.id}`,
                                     });
                                 }}
-                                className={`${hasLiked ? "invert-100!" : ""}`}
+                                className={`${data.has_liked ? "invert-100!" : ""}`}
                             >
-                                {!isLikeAvailable ? (
-                                    <Image
-                                        alt="prohibited"
-                                        src="/prohibited.svg"
-                                        width={16}
-                                        height={16}
-                                        className="z-2 absolute left-1/2 top-1/2 -translate-1/2"
-                                    />
-                                ) : hasLiked ? (
+                                {data.has_liked ? (
                                     <Image
                                         alt=""
                                         width={15}
@@ -187,7 +173,7 @@ export const ToplineCompact = ({ data, className, type, onDelete }: Props) => {
                     )
                 )}
 
-                {status && postIds[status.username]?.has(data.id) && (
+                {data.user_id === status?.id && (
                     <li>
                         <Tooltip text="Edit this post">
                             <LinkButton

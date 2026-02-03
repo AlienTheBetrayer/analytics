@@ -1,9 +1,9 @@
-import { Post } from "@/types/tables/posts";
+import { CacheAPIProtocol } from "@/query-api/protocol";
 import { relativeTime } from "@/utils/other/relativeTime";
 import Image from "next/image";
 
 type Props = {
-    post: Post;
+    post: CacheAPIProtocol["post"]["data"];
     className?: string;
 };
 

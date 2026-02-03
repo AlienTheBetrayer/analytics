@@ -1,19 +1,14 @@
 import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
-import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
-import { useAppStore } from "@/zustand/store";
+import { PromiseState } from "@/promises/components/PromiseState";
+import { wrapPromise } from "@/promises/core";
+import { dashboardSync } from "@/query-api/calls/dashboard";
 import Image from "next/image";
 
 export const FetchPrompt = () => {
-    // zustand state
-    const promises = useAppStore((state) => state.promises);
-
-    // zustand functions
-    const sync = useAppStore((state) => state.sync);
-
     return (
         <div className="flex flex-col gap-4 rounded-4xl!">
-            <div className="flex flex-col gap-2 items-center">
+            <div className="flex flex-col gap-2 items-center max-w-xl mx-auto">
                 <Image
                     alt=""
                     src="/prohibited.svg"
@@ -35,10 +30,12 @@ export const FetchPrompt = () => {
             <div className="flex flex-col gap-1">
                 <Button
                     onClick={() => {
-                        sync();
+                        wrapPromise("dashboardSync", () => {
+                            return dashboardSync({});
+                        });
                     }}
                 >
-                    <PromiseStatus status={promises.sync} />
+                    <PromiseState state="dashboardSync" />
                     <Image
                         width={16}
                         height={16}

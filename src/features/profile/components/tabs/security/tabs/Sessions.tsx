@@ -1,34 +1,41 @@
-import { Spinner } from "@/features/spinner/components/Spinner";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
-import { Profile, User } from "@/types/tables/account";
-import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import { SessionList } from "../parts/SessionList";
-import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
 import { useMemo } from "react";
 import { useMessageBox } from "@/features/ui/messagebox/hooks/useMessageBox";
+import { CacheAPIProtocol } from "@/query-api/protocol";
+import { PromiseState } from "@/promises/components/PromiseState";
+import { useQuery } from "@/query/core";
+import { queryInvalidate } from "@/query/auxiliary";
+import { wrapPromise } from "@/promises/core";
+import { terminateSessions } from "@/query-api/calls/auth";
 
 type Props = {
-    data: { user: User; profile: Profile };
+    data: CacheAPIProtocol["user"]["data"];
 };
 
 export const Sessions = ({ data }: Props) => {
-    // zustand
-    const status = useAppStore((state) => state.status);
-    const sessions = useAppStore((state) => state.sessions);
-    const promises = useAppStore((state) => state.promises);
-    const getSessions = useAppStore((state) => state.getSessions);
-    const terminateSessions = useAppStore((state) => state.terminateSessions);
+    // fetching
+    const { data: status } = useQuery({ key: ["status"] });
+    const { data: sessions, isLoading: sessionsLoading } = useQuery({
+        key: ["sessions", data.id],
+    });
 
     // ui states
     const currentSessions = useMemo(() => {
-        if (!sessions[data.user.id]?.length || !status) {
-            return undefined;
+        if (!sessions || !status) {
+            return;
         }
 
-        return [...sessions[data.user.id].sort((a) => (a.isCurrent ? -1 : 1))];
-    }, [sessions, data, status]);
+        const objSessions = Object.values(sessions);
+
+        if (!objSessions.length) {
+            return;
+        }
+
+        return [...objSessions].sort((a) => (a.is_current ? -1 : 1));
+    }, [sessions, status]);
 
     // message boxes
     const deleteBox = useMessageBox();
@@ -45,7 +52,7 @@ export const Sessions = ({ data }: Props) => {
                         }
 
                         const notCurrent = currentSessions
-                            ?.filter((s) => !s.isCurrent)
+                            ?.filter((s) => !s.is_current)
                             .map((s) => s.id);
 
                         // if by some accident there's no current sessions
@@ -53,9 +60,11 @@ export const Sessions = ({ data }: Props) => {
                             return;
                         }
 
-                        terminateSessions({
-                            user_id: data.user.id,
-                            ids: notCurrent,
+                        wrapPromise("terminateSessions", () => {
+                            return terminateSessions({
+                                user_id: data.id,
+                                session_ids: notCurrent,
+                            });
                         });
                     }
                 },
@@ -67,26 +76,22 @@ export const Sessions = ({ data }: Props) => {
                     direction="top"
                 >
                     <Button
-                        className="p-0!"
                         onClick={() => {
-                            getSessions({
-                                type: "all",
-                                user_id: data.user.id,
-                                caching: false,
-                                promiseKey: "sessionsReload",
+                            wrapPromise("sessionsReload", async () => {
+                                return queryInvalidate({
+                                    key: ["sessions", data.id],
+                                    silent: false,
+                                });
                             });
                         }}
                     >
-                        {promises.sessionsReload === "pending" ? (
-                            <Spinner />
-                        ) : (
-                            <Image
-                                src="/reload.svg"
-                                width={14}
-                                height={14}
-                                alt="refresh"
-                            />
-                        )}
+                        <PromiseState state="sessionsReload" />
+                        <Image
+                            src="/reload.svg"
+                            width={14}
+                            height={14}
+                            alt="refresh"
+                        />
                     </Button>
                 </Tooltip>
 
@@ -97,10 +102,21 @@ export const Sessions = ({ data }: Props) => {
                 </small>
             </span>
 
-            <SessionList
-                data={data}
-                currentSessions={currentSessions}
-            />
+            {sessionsLoading ? (
+                <ul className="flex flex-col gap-2">
+                    {Array.from({ length: 4 }, (_, k) => (
+                        <li
+                            key={k}
+                            className="w-full loading h-10"
+                        ></li>
+                    ))}
+                </ul>
+            ) : (
+                <SessionList
+                    data={data}
+                    currentSessions={currentSessions}
+                />
+            )}
 
             <hr className="mt-auto -mb-2" />
 
@@ -114,8 +130,9 @@ export const Sessions = ({ data }: Props) => {
                     onClick={() => {
                         deleteBox.show();
                     }}
+                    isEnabled={(currentSessions?.length ?? 0) > 1}
                 >
-                    <PromiseStatus status={promises.terminateSessions} />
+                    <PromiseState state="terminateSessions" />
                     <Image
                         src="/auth.svg"
                         width={16}

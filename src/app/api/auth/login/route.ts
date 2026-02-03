@@ -12,48 +12,34 @@ export const POST = async (request: NextRequest) => {
         const { username, password } = await request.json();
 
         if (!username || !password) {
-            return nextResponse(
-                { error: "username or password are missing." },
-                400,
-                "fields_missing"
-            );
+            throw "Username and password are undefined";
         }
 
         // user checking
         const { data: userData, error: userError } = (await supabaseServer
             .from("users")
             .select(`*, profile:profiles(*)`)
-            .eq("username", username)
-            ) as {
+            .eq("username", username)) as {
             data: (User & { profile: Profile })[];
             error: PostgrestError | null;
         };
 
         if (userError) {
-            console.error(userError);
-            return nextResponse(userError, 400);
+            throw userError;
         }
 
         if (!userData.length) {
-            return nextResponse(
-                { error: "The user has not been created yet." },
-                400,
-                "user_not_exists"
-            );
+            throw "User does not exist";
         }
 
         // password comparing
         const isPasswordCorrect = await bcrypt.compare(
             password,
-            userData[0].password!
+            userData[0].password!,
         );
 
         if (!isPasswordCorrect) {
-            return nextResponse(
-                { error: "Invalid credentials" },
-                401,
-                "invalid_credentials"
-            );
+            throw "Incorrect credentials";
         }
 
         // logged in
@@ -68,7 +54,7 @@ export const POST = async (request: NextRequest) => {
                 username: userData[0].username,
             },
             process.env.ACCESS_SECRET as string,
-            { expiresIn: "15m" }
+            { expiresIn: "15m" },
         );
 
         const refreshToken = jwt.sign(
@@ -79,23 +65,13 @@ export const POST = async (request: NextRequest) => {
                 username: userData[0].username,
             },
             process.env.REFRESH_SECRET as string,
-            { expiresIn: "7d" }
+            { expiresIn: "7d" },
         );
 
         // http-only cookies
         const res = nextResponse(
-            {
-                message: "Authenticated!",
-                user: userData[0],
-                payload: {
-                    id: userData[0].id,
-                    role: userData[0].role,
-                    session_id,
-                    username: userData[0].username,
-                },
-            },
+            { success: true, message: "Successfully logged in!" },
             200,
-            "user_logged_in"
         );
 
         res.cookies.set({
@@ -123,13 +99,18 @@ export const POST = async (request: NextRequest) => {
             });
 
         if (refreshError) {
-            console.error(refreshError);
-            return nextResponse(refreshError, 400);
+            throw refreshError;
         }
 
         return res;
     } catch (error) {
         console.error(error);
-        return nextResponse({ error: "Failed logging in the user." }, 400);
+        return nextResponse(
+            {
+                success: false,
+                message: typeof error === "string" ? error : "unknown",
+            },
+            400,
+        );
     }
 };

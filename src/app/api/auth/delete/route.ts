@@ -5,26 +5,25 @@ import { nextResponse } from "@/utils/api/response";
 
 export const POST = async (request: NextRequest) => {
     try {
-        const { id } = await request.json();
+        const { user_id } = await request.json();
 
-        if (!id) {
-            return nextResponse({ error: "id is missing." }, 400);
+        if (!user_id) {
+            throw "user_id is undefined";
         }
 
-        tokenVerify(request, [id]);
+        tokenVerify({ request, id: [user_id] });
 
         // deleting profile images
         const { data: avatarData, error: avatarError } =
-            await supabaseServer.storage.from("avatars").list(id);
+            await supabaseServer.storage.from("avatars").list(user_id);
 
         if (avatarError) {
-            console.error(avatarError);
-            return nextResponse(avatarError, 400);
+            throw avatarError;
         }
 
         if (avatarData?.length) {
             const paths = avatarData.map(
-                (data) => `avatars/${id}/${data.name}`
+                (data) => `avatars/${user_id}/${data.name}`,
             );
 
             const { error: avatarDeleteError } = await supabaseServer.storage
@@ -32,8 +31,7 @@ export const POST = async (request: NextRequest) => {
                 .remove(paths);
 
             if (avatarDeleteError) {
-                console.error(avatarDeleteError);
-                return nextResponse(avatarDeleteError, 400);
+                throw avatarDeleteError;
             }
         }
 
@@ -41,16 +39,15 @@ export const POST = async (request: NextRequest) => {
         const { error: deleteError } = await supabaseServer
             .from("users")
             .delete()
-            .eq("id", id);
+            .eq("id", user_id);
 
         if (deleteError) {
-            console.error(deleteError);
-            return nextResponse(deleteError, 400);
+            throw deleteError;
         }
 
-        return nextResponse({ message: "Successful account deletion." }, 200);
+        return nextResponse({ success: true }, 200);
     } catch (error) {
         console.error(error);
-        return nextResponse({ error: "Account deletion has failed." }, 400);
+        return nextResponse({ success: false }, 400);
     }
 };

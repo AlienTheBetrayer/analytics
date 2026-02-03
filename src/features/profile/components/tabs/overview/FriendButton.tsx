@@ -1,39 +1,40 @@
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
-import { Profile, User } from "@/types/tables/account";
-import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
-import React, { useMemo } from "react";
-import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
+import React from "react";
 import { useMessageBox } from "@/features/ui/messagebox/hooks/useMessageBox";
+import { CacheAPIProtocol } from "@/query-api/protocol";
+import { PromiseState } from "@/promises/components/PromiseState";
+import { useQuery } from "@/query/core";
+import { modifyFriendship } from "@/query-api/calls/users";
+import { wrapPromise } from "@/promises/core";
 
 type Props = {
-    data: { user: User; profile: Profile };
+    data: CacheAPIProtocol["user"]["data"];
 };
 
 export const FriendButton = ({ data }: Props) => {
-    //zustand
-    const friendRequests = useAppStore((state) => state.friendRequests);
-    const friends = useAppStore((state) => state.friends);
-    const promises = useAppStore((state) => state.promises);
-    const status = useAppStore((state) => state.status);
-    const modifyFriendship = useAppStore((state) => state.modifyFriendship);
-
-    // ui states
-    const hasOutcomingRequest = useMemo(() => {
-        return (
-            status && friendRequests[status.id]?.outcoming?.has(data.user.id)
-        );
-    }, [friendRequests, status, data]);
-    const hasIncomingRequest = useMemo(() => {
-        return status && friendRequests[status.id]?.incoming?.has(data.user.id);
-    }, [friendRequests, status, data]);
+    // fetching
+    const { data: status } = useQuery({ key: ["status"] });
+    const { data: relationship } = useQuery({
+        key: ["relationship", status?.id, data.id],
+        trigger: !!status && status.id !== data.id,
+    });
 
     // message boxes
     const unfriendBox = useMessageBox();
 
+    if (!relationship) {
+        return null;
+    }
+
+    // ui states
+    const hasOutcomingRequest = relationship.sent;
+    const hasIncomingRequest = relationship.received;
+    const areFriends = relationship.friends;
+
     // not logged in or viewing own profile
-    if (!status || status.id === data.user.id) {
+    if (!status || status.id === data.id) {
         return null;
     }
 
@@ -50,15 +51,16 @@ export const FriendButton = ({ data }: Props) => {
                     >
                         <Button
                             onClick={() => {
-                                modifyFriendship({
-                                    from_id: status.id,
-                                    to_id: data.user.id,
-                                    type: "request-accept",
-                                    promiseKey: "requestAccept",
+                                wrapPromise("requestAccept", () => {
+                                    return modifyFriendship({
+                                        from_id: status.id,
+                                        to_id: data.id,
+                                        type: "request-accept",
+                                    });
                                 });
                             }}
                         >
-                            <PromiseStatus status={promises.requestAccept} />
+                            <PromiseState state="requestAccept" />
                             <Image
                                 src="/checkmark.svg"
                                 width={12}
@@ -77,15 +79,16 @@ export const FriendButton = ({ data }: Props) => {
                     >
                         <Button
                             onClick={() => {
-                                modifyFriendship({
-                                    from_id: status.id,
-                                    to_id: data.user.id,
-                                    type: "request-reject",
-                                    promiseKey: "requestReject",
+                                wrapPromise("requestReject", () => {
+                                    return modifyFriendship({
+                                        from_id: status.id,
+                                        to_id: data.id,
+                                        type: "request-reject",
+                                    });
                                 });
                             }}
                         >
-                            <PromiseStatus status={promises.requestReject} />
+                            <PromiseState state="requestReject" />
                             <Image
                                 src="/cross.svg"
                                 width={16}
@@ -106,7 +109,7 @@ export const FriendButton = ({ data }: Props) => {
                 <li>
                     <Tooltip
                         direction="top"
-                        text={`Wait for ${data.user.username} to respond`}
+                        text={`Wait for ${data.username} to respond`}
                     >
                         <Button isEnabled={false}>
                             <Image
@@ -127,15 +130,16 @@ export const FriendButton = ({ data }: Props) => {
                     >
                         <Button
                             onClick={() => {
-                                modifyFriendship({
-                                    from_id: status.id,
-                                    to_id: data.user.id,
-                                    type: "request-reject",
-                                    promiseKey: "requestUnsend",
+                                wrapPromise("requestUnsend", () => {
+                                    return modifyFriendship({
+                                        from_id: status.id,
+                                        to_id: data.id,
+                                        type: "request-reject",
+                                    });
                                 });
                             }}
                         >
-                            <PromiseStatus status={promises.requestUnsend} />
+                            <PromiseState state="requestUnsend" />
                             <Image
                                 src="/auth.svg"
                                 width={16}
@@ -150,7 +154,7 @@ export const FriendButton = ({ data }: Props) => {
         );
 
         // friends already
-    } else if (friends[data.user.id]?.has(status.id)) {
+    } else if (areFriends) {
         component = (
             <li>
                 <Tooltip
@@ -162,7 +166,7 @@ export const FriendButton = ({ data }: Props) => {
                             unfriendBox.show();
                         }}
                     >
-                        <PromiseStatus status={promises.unfriend} />
+                        <PromiseState state="unfriend" />
                         <Image
                             src="/unfriend.svg"
                             width={16}
@@ -184,15 +188,17 @@ export const FriendButton = ({ data }: Props) => {
                 >
                     <Button
                         onClick={() => {
-                            modifyFriendship({
-                                from_id: status.id,
-                                to_id: data.user.id,
-                                type: "request-send",
-                                promiseKey: "requestSend",
+                            wrapPromise("requestSend", () => {
+                                return modifyFriendship({
+                                    from_id: status.id,
+                                    to_id: data.id,
+                                    type: "request-send",
+                                });
                             });
                         }}
                     >
-                        <PromiseStatus status={promises.requestSend} />
+                        <PromiseState state="requestSend" />
+
                         <Image
                             src="/plus.svg"
                             width={16}
@@ -217,17 +223,18 @@ export const FriendButton = ({ data }: Props) => {
     }
 
     return (
-        <ul className="flex justify-center items-center w-full min-h-8">
+        <ul className="flex justify-center items-center w-full min-h-8 gap-2">
             {unfriendBox.render({
                 children:
                     "You are about to delete this user from your friends!",
                 onSelect: (res) => {
                     if (res === "yes" && status) {
-                        modifyFriendship({
-                            from_id: status.id,
-                            to_id: data.user.id,
-                            type: "unfriend",
-                            promiseKey: "unfriend",
+                        wrapPromise("unfriend", () => {
+                            return modifyFriendship({
+                                from_id: status.id,
+                                to_id: data.id,
+                                type: "unfriend",
+                            });
                         });
                     }
                 },

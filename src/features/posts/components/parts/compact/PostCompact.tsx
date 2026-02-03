@@ -2,14 +2,21 @@ import { ToplineCompact } from "@/features/posts/components/parts/compact/Toplin
 import { CompactInfo } from "@/features/posts/components/parts/CompactInfo";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
-import { Post } from "@/types/tables/posts";
+import { useQuery } from "@/query/core";
 import Image from "next/image";
 
 type Props = {
-    data: Post;
+    id: string;
 };
 
-export const PostCompact = ({ data }: Props) => {
+export const PostCompact = ({ id }: Props) => {
+    // fetching
+    const { data } = useQuery({ key: ["post", id] });
+
+    if (!data) {
+        return null;
+    }
+
     // main jsx
     return (
         <article

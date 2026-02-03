@@ -19,11 +19,13 @@ export const TabDisplay = ({ tab }: Props) => {
     // notification data
     const { filtered } = useNotificationList(tab);
     const [pagination, setPagination] = useState<number>(0);
-
+    
+    // fallbacks
     if (!Object.keys(notifications).length) {
         return <AbsentNotifications />;
     }
-
+    
+    // data mapped
     const paginatedFiltered = filtered?.slice(0, 4 * (pagination + 1));
 
     return (

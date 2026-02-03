@@ -20,15 +20,11 @@ export const likePost = async ({
     };
 
     if (privacyError) {
-        console.error(privacyError);
         throw privacyError;
     }
 
     if (post?.privacy?.likes === false && post?.user_id !== user_id) {
-        return nextResponse(
-            { error: "Likes are not allowed by privacy settings." },
-            400,
-        );
+        throw "likes are disallowed";
     }
 
     const { count, error } = await supabaseServer
@@ -38,7 +34,6 @@ export const likePost = async ({
         .eq("user_id", user_id);
 
     if (error) {
-        console.error(error);
         throw error;
     }
 
@@ -51,7 +46,6 @@ export const likePost = async ({
             .eq("post_id", id);
 
         if (likeError) {
-            console.error(likeError);
             throw likeError;
         }
     } else {
@@ -64,17 +58,11 @@ export const likePost = async ({
             );
 
         if (error) {
-            console.error(error);
-            return nextResponse({ error }, 400);
+            throw error;
         }
     }
 
-    return nextResponse(
-        {
-            message: "Successfully liked/unliked!",
-        },
-        200,
-    );
+    return nextResponse({ success: true }, 200);
 };
 
 export const likeComment = async ({
@@ -87,8 +75,7 @@ export const likeComment = async ({
     user_id: string;
 }) => {
     if (!(type && ["like", "dislike"].includes(type))) {
-        console.error("type is wrong type. available types: like/dislike");
-        throw "type is wrong type. available types: like/dislike";
+        throw "type is wrong";
     }
 
     const { count, error } = await supabaseServer
@@ -96,23 +83,21 @@ export const likeComment = async ({
         .select("*", { count: "exact", head: true })
         .eq("comment_id", id)
         .eq("user_id", user_id)
-        .eq("like", type === "like")
+        .eq("like", type === "like");
 
     if (error) {
-        console.error(error);
         throw error;
     }
 
-    // already exists - delete 
+    // already exists - delete
     if (count) {
         const { error: likeError } = await supabaseServer
             .from("comment_likes")
             .delete()
             .eq("user_id", user_id)
-            .eq("comment_id", id)
+            .eq("comment_id", id);
 
         if (likeError) {
-            console.error(likeError);
             throw likeError;
         }
     } else {
@@ -125,15 +110,9 @@ export const likeComment = async ({
             );
 
         if (error) {
-            console.error(error);
-            return nextResponse({ error }, 400);
+            throw error;
         }
     }
 
-    return nextResponse(
-        {
-            message: "Successfully liked/unliked!",
-        },
-        200,
-    );
+    return nextResponse({ success: true }, 200);
 };

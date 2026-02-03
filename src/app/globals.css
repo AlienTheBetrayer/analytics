@@ -555,7 +555,7 @@ img {
     );
 
     background-size: 200% 100%;
-    border-radius: 0.75rem;
+    border-radius: 1.5rem;
     overflow: hidden;
     animation: 4s loading ease-in-out infinite alternate;
 }

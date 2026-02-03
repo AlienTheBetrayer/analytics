@@ -2,26 +2,30 @@ import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
-import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
 import { useMessageBox } from "@/features/ui/messagebox/hooks/useMessageBox";
 import { CloseButton } from "@/features/ui/closebutton/components/CloseButton";
+import { wrapPromise } from "@/promises/core";
+import { PromiseState } from "@/promises/components/PromiseState";
+import { useQuery } from "@/query/core";
+import {
+    dashboardDeleteProject,
+    dashboardDeleteEvents,
+} from "@/query-api/calls/dashboard";
 
 type Props = {
     hide: () => void;
 };
 
 export const ProjectManipulation = ({ hide }: Props) => {
-    // zustand states
-    const promises = useAppStore((state) => state.promises);
-    const events = useAppStore((state) => state.events);
+    // zustand
     const selectedProjectId = useAppStore((state) => state.selectedProjectId);
 
-    // zustand functions
-    const deleteData = useAppStore((state) => state.deleteData);
-
-    // messageboxes
-    const deleteProjectsBox = useMessageBox();
+    // message boxes
     const deleteEventsBox = useMessageBox();
+    const deleteProjectsBox = useMessageBox();
+
+    // fetching
+    const { data } = useQuery({ key: ["projects"] });
 
     return (
         <div className="relative flex flex-col box w-screen! max-w-md! gap-4!">
@@ -31,15 +35,15 @@ export const ProjectManipulation = ({ hide }: Props) => {
                 children:
                     "You will delete every single data entry about this project, including events!",
                 onSelect: (res) => {
-                    if (!selectedProjectId) {
+                    if (!selectedProjectId || !data?.[selectedProjectId]) {
                         return;
                     }
 
                     if (res === "yes") {
-                        deleteData({
-                            id: [selectedProjectId],
-                            type: "project",
-                            promiseKey: `projectDelete_${selectedProjectId}`,
+                        wrapPromise("deleteProject", () => {
+                            return dashboardDeleteProject({
+                                project: data[selectedProjectId],
+                            });
                         });
                     }
                 },
@@ -48,15 +52,15 @@ export const ProjectManipulation = ({ hide }: Props) => {
             {deleteEventsBox.render({
                 children: "You will delete every single event in this project!",
                 onSelect: (res) => {
-                    if (!selectedProjectId || !events[selectedProjectId]) {
+                    if (!selectedProjectId || !data?.[selectedProjectId]) {
                         return;
                     }
 
                     if (res === "yes") {
-                        deleteData({
-                            id: events[selectedProjectId].map((e) => e.id),
-                            type: "event",
-                            promiseKey: `eventsDelete_${selectedProjectId}`,
+                        wrapPromise("deleteEvents", () => {
+                            return dashboardDeleteEvents({
+                                project: data[selectedProjectId],
+                            });
                         });
                     }
                 },
@@ -110,13 +114,7 @@ export const ProjectManipulation = ({ hide }: Props) => {
                                     deleteProjectsBox.show();
                                 }}
                             >
-                                <PromiseStatus
-                                    status={
-                                        promises[
-                                            `projectDelete_${selectedProjectId}`
-                                        ]
-                                    }
-                                />
+                                <PromiseState state="deleteProject" />
                                 <Image
                                     src="/delete.svg"
                                     width={16}
@@ -134,13 +132,7 @@ export const ProjectManipulation = ({ hide }: Props) => {
                                     deleteEventsBox.show();
                                 }}
                             >
-                                <PromiseStatus
-                                    status={
-                                        promises[
-                                            `eventsDelete_${selectedProjectId}`
-                                        ]
-                                    }
-                                />
+                                <PromiseState state="deleteEvents" />
                                 <Image
                                     src="/type.svg"
                                     width={16}

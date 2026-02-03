@@ -1,36 +1,23 @@
 /** biome-ignore-all lint/suspicious/noArrayIndexKey: <> */
 import "./Colors.css";
 import Image from "next/image";
-import { Spinner } from "@/features/spinner/components/Spinner";
 import { Button } from "@/features/ui/button/components/Button";
-import { useAppStore } from "@/zustand/store";
 import { useColorModal } from "../../hooks/useColorModal";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
-import { Profile, User } from "@/types/tables/account";
-import { useEffect } from "react";
-import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
 import { CloseButton } from "@/features/ui/closebutton/components/CloseButton";
+import { PromiseState } from "@/promises/components/PromiseState";
+import { CacheAPIProtocol } from "@/query-api/protocol";
 
 export const COLORS_GRID_SIZE = 4;
 
 type Props = {
-    data: { profile: Profile; user: User };
+    data: CacheAPIProtocol["user"]["data"];
     hide: () => void;
 };
 
 export const Colors = ({ data, hide }: Props) => {
-    // zustand states
-    const colors = useAppStore((state) => state.colors);
-    const promises = useAppStore((state) => state.promises);
-    const getUsers = useAppStore((state) => state.getUsers);
-
     // controller
     const controller = useColorModal(data);
-
-    // fetching
-    useEffect(() => {
-        getUsers({ id: [data.user.id], select: ["colors"] });
-    }, [data, getUsers]);
 
     return (
         <div className="relative box">
@@ -52,40 +39,31 @@ export const Colors = ({ data, hide }: Props) => {
             </div>
 
             <div className="grid md:grid-flow-col gap-4">
-                {!colors[data.user.id] ? (
-                    <div className="flex w-screen max-w-64">
-                        <Spinner
-                            styles="big"
-                            className="m-auto"
-                        />
-                    </div>
-                ) : (
-                    <ul
-                        className="grid gap-1 w-screen max-w-64 self-center"
-                        style={{
-                            gridTemplateColumns: `repeat(${COLORS_GRID_SIZE}, minmax(0, 1fr))`,
-                        }}
-                    >
-                        {Array.from({
-                            length: COLORS_GRID_SIZE * COLORS_GRID_SIZE,
-                        }).map((_, idx) => (
-                            <li
-                                key={idx}
-                                className={`flex aspect-square ${controller.selectedId === idx ? "color-selected" : ""}`}
-                            >
-                                <input
-                                    value={controller.colors[idx]}
-                                    onChange={(e) =>
-                                        controller.set(idx, e.target.value)
-                                    }
-                                    onClick={() => controller.select(idx)}
-                                    type="color"
-                                    className="cursor-pointer outline-0 w-full h-full!"
-                                />
-                            </li>
-                        ))}
-                    </ul>
-                )}
+                <ul
+                    className="grid gap-1 w-screen max-w-64 self-center"
+                    style={{
+                        gridTemplateColumns: `repeat(${COLORS_GRID_SIZE}, minmax(0, 1fr))`,
+                    }}
+                >
+                    {Array.from({
+                        length: COLORS_GRID_SIZE * COLORS_GRID_SIZE,
+                    }).map((_, idx) => (
+                        <li
+                            key={idx}
+                            className={`flex aspect-square ${controller.selectedId === idx ? "color-selected" : ""}`}
+                        >
+                            <input
+                                value={controller.colors[idx]}
+                                onChange={(e) =>
+                                    controller.set(idx, e.target.value)
+                                }
+                                onClick={() => controller.select(idx)}
+                                type="color"
+                                className="cursor-pointer outline-0 w-full h-full!"
+                            />
+                        </li>
+                    ))}
+                </ul>
 
                 <hr className="md:w-px! md:h-full! border-background-5!" />
 
@@ -210,7 +188,7 @@ export const Colors = ({ data, hide }: Props) => {
                                 onClick={controller.apply}
                                 className="w-full"
                             >
-                                <PromiseStatus status={promises.colorsUpdate} />
+                                <PromiseState state="colorsUpdate" />
                                 <Image
                                     width={16}
                                     height={16}

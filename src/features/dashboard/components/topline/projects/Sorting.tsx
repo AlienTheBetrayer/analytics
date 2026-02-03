@@ -10,11 +10,12 @@ type Props = {
 };
 
 export const Sorting = ({ hide }: Props) => {
-    // zustand-state
+    // zustand
     const selectedProjectId = useAppStore((state) => state.selectedProjectId);
     const projectFilters = useAppStore((state) => state.projectFilters);
     const setFilter = useAppStore((state) => state.setDashboardFilter);
 
+    // fallback
     if (!selectedProjectId) {
         return null;
     }
@@ -44,7 +45,7 @@ export const Sorting = ({ hide }: Props) => {
                         items={["Name", "Created Date", "Updated Date"]}
                         value={
                             projectFilters?.projectSorting?.column ??
-                            "Created Date"
+                            "Updated Date"
                         }
                         onChange={(item) => {
                             setFilter({

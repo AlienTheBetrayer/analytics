@@ -1,40 +1,27 @@
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
-import { useAppStore } from "@/zustand/store";
-import { Profile, User } from "@/types/tables/account";
-import { useLocalStore } from "@/zustand/localStore";
 import { ProfileImage } from "../../ProfileImage";
-import { Spinner } from "@/features/spinner/components/Spinner";
 import { redirect } from "next/navigation";
 import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
 import { Select } from "./Select";
-import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
 import { useMessageBox } from "@/features/ui/messagebox/hooks/useMessageBox";
+import { CacheAPIProtocol } from "@/query-api/protocol";
+import { PromiseState } from "@/promises/components/PromiseState";
+import { useQuery } from "@/query/core";
+import { applicationLogout, deleteUser } from "@/query-api/calls/auth";
+import { wrapPromise } from "@/promises/core";
 
 type Props = {
-    data: { profile: Profile; user: User };
+    data: CacheAPIProtocol["user"]["data"];
 };
 
 export const Security = ({ data }: Props) => {
-    // zustand states
-    const promises = useAppStore((state) => state.promises);
-    const status = useAppStore((state) => state.status);
-
-    // zustand functions
-    const logout = useAppStore((state) => state.logout);
-    const deleteUser = useAppStore((state) => state.deleteUser);
-    const getSessions = useAppStore((state) => state.getSessions);
-    const setVisibleProfile = useLocalStore((state) => state.setVisibleProfile);
+    const { data: status } = useQuery({ key: ["status"] });
 
     // react states
     const [isDeletionEnabled, setIsDeletionEnabled] = useState<boolean>(false);
-
-    // fetching
-    useEffect(() => {
-        getSessions({ type: "all", user_id: data.user.id });
-    }, [getSessions, data.user]);
 
     // message boxes
     const deleteBox = useMessageBox();
@@ -46,10 +33,8 @@ export const Security = ({ data }: Props) => {
                     "You are about to delete your account data forever! Think twice!",
                 onSelect: (res) => {
                     if (res === "yes") {
-                        deleteUser(data.user.id);
-                        if (data.user.id === status?.id) {
-                            logout();
-                            setVisibleProfile(undefined);
+                        if (data.id === status?.id) {
+                            deleteUser({ user_id: data.id });
                             redirect("/home");
                         }
                     }
@@ -66,7 +51,7 @@ export const Security = ({ data }: Props) => {
                         style={{ filter: `invert(var(--invert-8))` }}
                     />
                     <span className="text-foreground-2! text-5! flex">
-                        <mark>{data.user.username}</mark>
+                        <mark>{data.username}</mark>
                         &apos;s profile
                     </span>
                 </div>
@@ -86,11 +71,12 @@ export const Security = ({ data }: Props) => {
                     <Tooltip text="Log yourself out">
                         <Button
                             onClick={() => {
-                                logout();
-                                setVisibleProfile(undefined);
+                                wrapPromise("logout", async () => {
+                                    applicationLogout();
+                                });
                             }}
                         >
-                            <PromiseStatus status={promises.logout} />
+                            <PromiseState state="logout" />
                             <Image
                                 width={16}
                                 height={16}
@@ -128,7 +114,7 @@ export const Security = ({ data }: Props) => {
                                     deleteBox.show();
                                 }}
                             >
-                                {promises.delete === "pending" && <Spinner />}
+                                <PromiseState state="delete" />
                                 <Image
                                     src="/delete.svg"
                                     width={16}

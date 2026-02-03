@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Header } from "../features/header/components/Header";
-import { StoreWatcher } from "@/zustand/StoreWatcher";
-import { LocalStoreWatcher } from "@/zustand/LocalStoreWatcher";
 import { Meteors } from "@/features/ui/aceternity/meteors/meteors";
+import { AuthWatcher } from "@/watchers/AuthWatcher";
+import { LocalStoreWatcher } from "@/watchers/LocalStoreWatcher";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -28,7 +28,7 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <StoreWatcher />
+            <AuthWatcher />
             <LocalStoreWatcher />
 
             <body

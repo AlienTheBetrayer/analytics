@@ -19,7 +19,7 @@ export const Search = () => {
 
     const debounced = useDebounced(searchValue, 75);
 
-    // updating data
+    // updating sorting data
     useEffect(() => {
         if (!selectedProjectId) {
             return;

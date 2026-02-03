@@ -13,6 +13,7 @@ export const SearchButton = () => {
     const [isFocused, setIsFocused] = useState<boolean>(false);
     const [search, setSearch] = useState<string>(query ?? "");
 
+    // function that redirects to the search page
     const querySearch = useCallback(() => {
         if (!search.trim().length) {
             return;

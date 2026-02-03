@@ -2,33 +2,29 @@ import { PostImage } from "@/features/posts/components/parts/postform/PostImage"
 import { fileToBase64 } from "@/features/profile/utils/fileToBase64";
 import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
-import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
-import { PostData } from "@/types/zustand/posts";
-import { useAppStore } from "@/zustand/store";
+import { PromiseState } from "@/promises/components/PromiseState";
+import { wrapPromise } from "@/promises/core";
+import { PostData, updatePost } from "@/query-api/calls/posts";
+import { useQuery } from "@/query/core";
 import Image from "next/image";
-import { useParams } from "next/navigation";
 import { useState } from "react";
 
 type Props = {
     mode: "create" | "edit";
+    id?: string;
 };
 
-export const PostForm = ({ mode }: Props) => {
-    // url
-    const { id } = useParams<{ id?: string }>();
-
-    // zustand
-    const status = useAppStore((state) => state.status);
-    const promises = useAppStore((state) => state.promises);
-    const posts = useAppStore((state) => state.posts);
-    const updatePost = useAppStore((state) => state.updatePost);
+export const PostForm = ({ mode, id }: Props) => {
+    // fetching
+    const { data: post } = useQuery({ key: ["post", id] });
+    const { data: status } = useQuery({ key: ["status"] });
 
     // react states
     const [title, setTitle] = useState<string>(
-        mode === "create" ? "" : posts[id!].title,
+        mode === "create" ? "" : (post?.title ?? ""),
     );
     const [content, setContent] = useState<string>(
-        mode === "create" ? "" : (posts[id!]?.content ?? ""),
+        mode === "create" ? "" : (post?.content ?? ""),
     );
     const [image, setImage] = useState<File | undefined | null>(undefined);
 
@@ -59,25 +55,25 @@ export const PostForm = ({ mode }: Props) => {
                     data.image = null;
                 }
 
-                switch (mode) {
-                    case "create": {
-                        updatePost({
-                            user_id: status.id,
-                            type: "create",
-                            data,
-                        });
-                        break;
+                wrapPromise("updatePost", () => {
+                    switch (mode) {
+                        case "create": {
+                            return updatePost({
+                                user_id: status.id,
+                                type: "create",
+                                data,
+                            });
+                        }
+                        case "edit": {
+                            return updatePost({
+                                user_id: status.id,
+                                type: "edit",
+                                id: id!,
+                                data,
+                            });
+                        }
                     }
-                    case "edit": {
-                        updatePost({
-                            user_id: status.id,
-                            type: "edit",
-                            id: id!,
-                            data,
-                        });
-                        break;
-                    }
-                }
+                });
             }}
         >
             <ul className="flex flex-col gap-4 grow">
@@ -123,6 +119,7 @@ export const PostForm = ({ mode }: Props) => {
                         Image
                     </label>
                     <PostImage
+                        id={id}
                         image={image}
                         setImage={setImage}
                     />
@@ -167,7 +164,7 @@ export const PostForm = ({ mode }: Props) => {
 
                 <li className="flex flex-col">
                     <Button type="submit">
-                        <PromiseStatus status={promises.updatePost} />
+                        <PromiseState state="updatePost" />
                         <Image
                             alt=""
                             width={16}

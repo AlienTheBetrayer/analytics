@@ -4,20 +4,18 @@ import Image from "next/image";
 import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { ProfileImage } from "@/features/profile/components/ProfileImage";
-import { useLocalStore } from "@/zustand/localStore";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
-import { Theme } from "@/features/toolbox/components/Theme";
+import { Theme } from "@/features/header/components/toolbox/components/Theme";
 import { Socials } from "../parts/Socials";
-import { useAppStore } from "@/zustand/store";
+import { useQuery } from "@/query/core";
 
 type Props = {
     hideMenu: () => void;
 };
 
 export const Menu = ({ hideMenu }: Props) => {
-    // ui states
-    const visibleProfile = useLocalStore((state) => state.visibleProfile);
-    const status = useAppStore((state) => state.status);
+    // fetching
+    const { data: status } = useQuery({ key: ["status"] });
 
     return (
         <motion.nav
@@ -105,31 +103,26 @@ export const Menu = ({ hideMenu }: Props) => {
                         )}
 
                         <li>
-                            <Socials
-                                className="flex-row! max-w-full! *:w-full p-0! bg-transparent! border-0! outline-0!"
-                                closeButton={false}
-                            />
+                            <Socials className="flex-row! max-w-full! *:w-full p-0! bg-transparent! border-0! outline-0!" />
                         </li>
                     </ul>
                 </li>
 
                 <li>
                     <ul className="flex flex-col gap-2">
-                        {visibleProfile ? (
+                        {status ? (
                             <li>
                                 <LinkButton
                                     href="/profile"
                                     className="gap-2!"
                                 >
                                     <ProfileImage
-                                        profile={visibleProfile}
+                                        profile={status.profile}
                                         width={16}
                                         height={16}
                                         className="w-6"
                                     />
-                                    <span>
-                                        {visibleProfile.username ?? "Account"}
-                                    </span>
+                                    <span>{status.username ?? "Account"}</span>
                                 </LinkButton>
                             </li>
                         ) : (

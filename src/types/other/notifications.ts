@@ -1,7 +1,18 @@
 // notifications
 export type NotificationStatus = "Information" | "Error" | "Warning";
 export type NotificationTab = "Account" | "Dashboard";
-export type NotificationType = "Analytics Sync" | "Profile Edit" | "Emulated";
+export type NotificationType =
+    | "Analytics Sync"
+    | "Profile Edit"
+    | "Emulated"
+    | "Post deleted"
+    | "Post changed"
+    | "Project deleted"
+    | "Events deleted"
+    | "Sessions terminated"
+    | "Account deleted"
+    | "Signed up"
+    | "Profile modified";
 
 export type Notification = {
     id: string;
@@ -13,12 +24,12 @@ export type Notification = {
     sentAt?: string;
 };
 
-export type NotificationPartial = {
+export type NotificationData = {
     title: string;
     status: NotificationStatus;
     tab: NotificationTab;
+    type: NotificationType;
     description?: string;
-    type?: NotificationType;
 };
 
 // filters

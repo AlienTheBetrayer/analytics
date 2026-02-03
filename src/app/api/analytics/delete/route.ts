@@ -7,7 +7,7 @@ import { tokenVerify } from "@/utils/auth/tokenVerify";
 import { NextRequest } from "next/server";
 
 export const POST = async (request: NextRequest) => {
-    tokenVerify(request, undefined, "admin");
+    tokenVerify({ request, role: "admin" });
 
     try {
         const { id, type } = (await request.json()) as {
@@ -31,7 +31,7 @@ export const POST = async (request: NextRequest) => {
                 console.error("type is not [event, project]");
                 return nextResponse(
                     { error: "type is not [event, project]" },
-                    400
+                    400,
                 );
             }
         }

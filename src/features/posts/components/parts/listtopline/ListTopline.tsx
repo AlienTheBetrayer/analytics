@@ -4,14 +4,15 @@ import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
 import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
-import { Profile, User } from "@/types/tables/account";
+import { CacheAPIProtocol } from "@/query-api/protocol";
+import { useQuery } from "@/query/core";
 import { TabSelection } from "@/utils/other/TabSelection";
 import { useLocalStore } from "@/zustand/localStore";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 
 type Props = {
-    data: { user: User; profile: Profile };
+    data: CacheAPIProtocol["user"]["data"];
 };
 
 export const ListTopline = ({ data }: Props) => {
@@ -22,9 +23,10 @@ export const ListTopline = ({ data }: Props) => {
     );
     const display = useLocalStore((state) => state.display);
     const toggleSorting = useLocalStore((state) => state.toggleSorting);
-    const postIds = useAppStore((state) => state.postIds);
 
-    const hasPost = !!(postIds[data.user.username]?.size ?? undefined);
+    // fetching / ui state
+    const { data: posts } = useQuery({ key: ["posts", data.id] });
+    const hasPost = posts?.length;
 
     return (
         <ul

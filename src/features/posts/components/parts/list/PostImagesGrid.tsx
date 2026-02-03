@@ -1,39 +1,21 @@
 import { PostGridElement } from "@/features/posts/components/parts/list/PostGridElement";
 import { Button } from "@/features/ui/button/components/Button";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
-import { Profile, User } from "@/types/tables/account";
-import { Post } from "@/types/tables/posts";
-import { useAppStore } from "@/zustand/store";
+import { CacheAPIProtocol } from "@/query-api/protocol";
+import { useQuery } from "@/query/core";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 
 type Props = {
-    data: { user: User; profile: Profile };
+    data: CacheAPIProtocol["user"]["data"];
 };
 
 export const PostImagesGrid = ({ data }: Props) => {
-    // zustand
-    const posts = useAppStore((state) => state.posts);
-    const postIds = useAppStore((state) => state.postIds);
-
-    if (!postIds[data.user.username]) {
-        return null;
-    }
+    const { data: posts } = useQuery({ key: ["posts", data.id] });
 
     // 4 most recent posts
-    const userPosts = [...postIds[data.user.username]]
-        .map((id) => posts[id])
-        .sort((a, b) =>
-            a.image_url && !b.image_url
-                ? -1
-                : !a.image_url && b.image_url
-                  ? 1
-                  : 0,
-        )
-        .slice(0, 4);
-
-    const postsGrid: (Post | null)[] = [
-        ...userPosts,
+    const recentIds: (string | null)[] = [
+        ...(posts?.slice(0, 4) ?? []),
         ...Array(4).fill(null),
     ].slice(0, 4);
 
@@ -54,10 +36,10 @@ export const PostImagesGrid = ({ data }: Props) => {
             <hr className="w-full max-w-64 self-center" />
 
             <ul className="grid grid-cols-2 sm:grid-cols-4 gap-2 my-auto grow items-center">
-                {postsGrid.map((post, k) => (
-                    <li key={post?.id ?? k}>
-                        {post?.image_url ? (
-                            <PostGridElement post={post} />
+                {recentIds.map((id, k) => (
+                    <li key={id ?? k}>
+                        {id ? (
+                            <PostGridElement id={id} />
                         ) : (
                             <Tooltip
                                 text="Does not exist"
@@ -75,12 +57,16 @@ export const PostImagesGrid = ({ data }: Props) => {
             <Tooltip
                 text={`Go to a random post`}
                 className="w-full sm:max-w-64 self-center"
-                isEnabled={!!postIds[data.user.username]?.size}
+                isEnabled={!!posts}
             >
                 <Button
                     className="w-full"
                     onClick={() => {
-                        const ids = [...postIds[data.user.username]];
+                        if (!posts) {
+                            return;
+                        }
+
+                        const ids = [...posts];
                         const id = ids.at(
                             Math.round(Math.random() * ids.length - 1),
                         );

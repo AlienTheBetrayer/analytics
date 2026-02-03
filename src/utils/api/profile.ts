@@ -22,8 +22,7 @@ export const deleteAvatar = async (user_id: string) => {
         };
 
     if (existingProfileError) {
-        console.error(existingProfileError);
-        throw nextResponse(existingProfileError, 400);
+        throw existingProfileError;
     }
 
     if (profileData[0].avatar_url) {
@@ -34,7 +33,7 @@ export const deleteAvatar = async (user_id: string) => {
         });
     }
 
-    return nextResponse({ message: "Successfully deleted the avatar." }, 200);
+    return nextResponse({ success: true }, 200);
 };
 
 /**
@@ -58,14 +57,10 @@ export const updateProfile = async (
         );
 
     if (profileError) {
-        console.error(profileError);
-        throw nextResponse(profileError, 400);
+        throw profileError;
     }
 
-    return nextResponse(
-        { message: "Successfully updated the profile data!" },
-        200,
-    );
+    return nextResponse({ success: true }, 200);
 };
 
 /**
@@ -81,8 +76,7 @@ export const updateColors = async (
     const colors = rest.colors as { slot: string; color: string }[];
 
     if (!colors) {
-        console.error("colors is missing.");
-        return nextResponse({ message: "colors is missing." }, 400);
+        throw "colors is undefined";
     }
 
     const colorsData = colors.map(({ slot, color }) => ({
@@ -96,11 +90,10 @@ export const updateColors = async (
         .upsert(colorsData, { onConflict: "user_id,slot" });
 
     if (error) {
-        console.error(error);
-        return nextResponse(error, 400);
+        throw error;
     }
 
-    return nextResponse({ message: "colors updated!" }, 200);
+    return nextResponse({ success: true }, 200);
 };
 
 /**
@@ -125,13 +118,11 @@ export const updateUser = async (
         .eq("id", user_id);
 
     if (userError) {
-        console.error(userError);
-        return nextResponse(userError, 400);
+        throw userError;
     }
 
     if (!userData?.length) {
-        console.error("User hasn't been created yet.");
-        return nextResponse({ error: "User hasn't been created yet." }, 400);
+        throw "user hasn't been created yet";
     }
 
     const { error: roleError } = await supabaseServer
@@ -140,11 +131,10 @@ export const updateUser = async (
         .eq("id", user_id);
 
     if (roleError) {
-        console.error(roleError);
-        return nextResponse({ roleError }, 400);
+        throw roleError;
     }
 
-    return nextResponse({ message: "role in profile updated!" }, 200);
+    return nextResponse({ success: true }, 200);
 };
 
 /**
@@ -163,7 +153,7 @@ export const updateUserData = async (
     };
 
     if (!(password || username)) {
-        return nextResponse({ error: "password / username are missing" }, 400);
+        throw "password and username are undefined";
     }
 
     const { data: userData, error: userError } = await supabaseServer
@@ -172,23 +162,15 @@ export const updateUserData = async (
         .eq("id", user_id);
 
     if (userError) {
-        console.error(userError);
-        return nextResponse(userError, 400);
+        throw userError;
     }
 
     if (!userData?.length) {
-        console.error("User hasn't been created yet.");
-        return nextResponse({ error: "User hasn't been created yet." }, 400);
+        throw "user hasn't been created yet";
     }
 
     if (password && password.trim().length < 5) {
-        console.error("username and password length has to be longer than 5.");
-        return nextResponse(
-            {
-                error: "username and password length has to be longer than 5.",
-            },
-            400,
-        );
+        throw "username and password have to be longer than 5";
     }
 
     const data = {
@@ -202,9 +184,8 @@ export const updateUserData = async (
         .eq("id", user_id);
 
     if (changeError) {
-        console.error(changeError);
-        return nextResponse(changeError, 400);
+        throw changeError;
     }
 
-    return nextResponse({ message: "auth in profile updated!" }, 200);
+    return nextResponse({ success: true }, 200);
 };

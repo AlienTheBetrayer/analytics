@@ -1,10 +1,9 @@
 import { Button } from "@/features/ui/button/components/Button";
 import { FileSelect } from "@/features/ui/fileselect/components/FileSelect";
 import { useMessageBox } from "@/features/ui/messagebox/hooks/useMessageBox";
-import { useAppStore } from "@/zustand/store";
+import { useQuery } from "@/query/core";
 import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
-import { useParams } from "next/navigation";
 import React, { useRef, useState } from "react";
 
 const FILE_LIMIT = 1;
@@ -12,17 +11,16 @@ const FILE_LIMIT = 1;
 type Props = {
     image: File | undefined | null;
     setImage: React.Dispatch<React.SetStateAction<File | undefined | null>>;
+    id?: string;
 };
 
 export const PostImage = React.memo(function PostImageComponent({
     image,
+    id,
     setImage,
 }: Props) {
-    // url
-    const { id } = useParams<{ id?: string }>();
-
-    // zustand
-    const posts = useAppStore((state) => state.posts);
+    // fetching
+    const { data: post } = useQuery({ key: ["post", id] });
 
     // refs
     const selectRef = useRef<HTMLInputElement | null>(null);
@@ -33,7 +31,7 @@ export const PostImage = React.memo(function PostImageComponent({
         image !== null
             ? image
                 ? URL.createObjectURL(image)
-                : id && posts[id]?.image_url
+                : post?.image_url
             : undefined;
 
     const [error, setError] = useState<boolean>(false);

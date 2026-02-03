@@ -1,32 +1,30 @@
 import { Button } from "@/features/ui/button/components/Button";
 import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
 import { CloseButton } from "@/features/ui/closebutton/components/CloseButton";
-import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
-import { Post } from "@/types/tables/posts";
+import { PromiseState } from "@/promises/components/PromiseState";
+import { wrapPromise } from "@/promises/core";
+import { updatePost } from "@/query-api/calls/posts";
+import { CacheAPIProtocol } from "@/query-api/protocol";
+import { useQuery } from "@/query/core";
 import { relativeTime } from "@/utils/other/relativeTime";
-import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import { useState } from "react";
 
 type Props = {
-    data: Post;
+    data: CacheAPIProtocol["post"]["data"];
     hide?: () => void;
 };
 
 export const Configurations = ({ data, hide }: Props) => {
     // zustand
-    const postPrivacy = useAppStore((state) => state.postPrivacy);
-    const promises = useAppStore((state) => state.promises);
-    const status = useAppStore((state) => state.status);
-    const updatePost = useAppStore((state) => state.updatePost);
-
-    const thisPrivacy = postPrivacy[data.id] ? postPrivacy[data.id] : undefined;
+    const { data: post_privacy } = useQuery({ key: ["post_privacy", data.id] });
+    const { data: status } = useQuery({ key: ["status"] });
 
     // react state
     const [comments, setComments] = useState<boolean>(
-        thisPrivacy?.comments ?? true,
+        post_privacy?.comments ?? true,
     );
-    const [likes, setLikes] = useState<boolean>(thisPrivacy?.likes ?? true);
+    const [likes, setLikes] = useState<boolean>(post_privacy?.likes ?? true);
 
     return (
         <div className="box w-screen max-w-91">
@@ -40,10 +38,10 @@ export const Configurations = ({ data, hide }: Props) => {
                     src="/settings.svg"
                 />
                 <span>Privacy configurations</span>
-                {thisPrivacy?.edited_at && (
+                {post_privacy?.edited_at && (
                     <span>
                         <small>
-                            edited {relativeTime(thisPrivacy.edited_at)}
+                            edited {relativeTime(post_privacy.edited_at)}
                         </small>
                     </span>
                 )}
@@ -59,12 +57,13 @@ export const Configurations = ({ data, hide }: Props) => {
                         return;
                     }
 
-                    updatePost({
-                        type: "privacy",
-                        id: data.id,
-                        user_id: status.id,
-                        privacy: { comments, likes },
-                        promiseKey: "updatePostPrivacy",
+                    wrapPromise("updatePrivacy", () => {
+                        return updatePost({
+                            type: "privacy",
+                            id: data.id,
+                            user_id: status.id,
+                            privacy: { comments, likes },
+                        });
                     });
                 }}
             >
@@ -106,9 +105,7 @@ export const Configurations = ({ data, hide }: Props) => {
                             className="w-full"
                             type="submit"
                         >
-                            <PromiseStatus
-                                status={promises.updatePostPrivacy}
-                            />
+                            <PromiseState state="updatePrivacy" />
                             <Image
                                 alt=""
                                 width={16}

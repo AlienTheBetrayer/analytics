@@ -1,22 +1,15 @@
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
-import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
-import { useParams } from "next/navigation";
-import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
+import { PromiseState } from "@/promises/components/PromiseState";
+import { wrapPromise } from "@/promises/core";
+import { dashboardSync } from "@/query-api/calls/dashboard";
 
 export const Topline = () => {
-    // url
-    const { id } = useParams<{ id: string | undefined }>();
-
-    // zustand
-    const promises = useAppStore((state) => state.promises);
-    const sync = useAppStore((state) => state.sync);
-
     return (
         <ul
-            className={`box w-full max-w-7xl mx-auto! sticky! top-4 z-2 my-2! p-0! flex-row! gap-1! flex-wrap transition-all duration-500 items-center h-10!`}
+            className={`box w-full max-w-400 mx-auto! sticky! top-4 z-2 my-2! p-0! flex-row! gap-1! flex-wrap transition-all duration-500 items-center h-10!`}
         >
             <li className="absolute left-1/2 -translate-1/2 top-1/2">
                 <span className="flex gap-1 items-center">
@@ -34,7 +27,7 @@ export const Topline = () => {
                 <Tooltip text="Back to the dashboard">
                     <LinkButton href="/dashboard">
                         <Image
-                            src="/dashboard.svg"
+                            src="/back.svg"
                             alt="goback"
                             width={16}
                             height={16}
@@ -43,35 +36,16 @@ export const Topline = () => {
                 </Tooltip>
             </li>
 
-            {id && (
-                <li className="self-stretch flex items-center">
-                    <hr className="w-px! h-1/3! bg-background-6" />
-                </li>
-            )}
-
-            {id && (
-                <li>
-                    <Tooltip text="Deselect a project">
-                        <LinkButton href="/emulate">
-                            <Image
-                                src="/select.svg"
-                                alt="deselect"
-                                width={14}
-                                height={14}
-                            />
-                        </LinkButton>
-                    </Tooltip>
-                </li>
-            )}
-
             <li className="ml-auto!">
                 <Tooltip text="Reload project data">
                     <Button
                         onClick={() => {
-                            sync({ caching: false });
+                            wrapPromise("dashboardSync", () => {
+                                return dashboardSync({});
+                            });
                         }}
                     >
-                        <PromiseStatus status={promises.sync} />
+                        <PromiseState state="dashboardSync" />
                         <Image
                             width={16}
                             height={16}

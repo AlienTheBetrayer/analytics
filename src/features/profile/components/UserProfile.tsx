@@ -1,12 +1,11 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { useEffect } from "react";
-import { useAppStore } from "@/zustand/store";
 import { Content } from "./display/Content";
 import { Topline } from "./display/Topline";
 import { LoadingProfile } from "@/features/ui/loading/components/LoadingProfile";
 import { AbsentTopline } from "@/features/ui/loading/components/AbsentTopline";
+import { useQuery } from "@/query/core";
 
 export const UserProfile = () => {
     // url
@@ -14,50 +13,16 @@ export const UserProfile = () => {
         name: string | undefined;
     }>();
 
-    // zustand state
-    const status = useAppStore((state) => state.status);
-    const users = useAppStore((state) => state.users);
-    const profiles = useAppStore((state) => state.profiles);
+    // fetching
+    const { data: status } = useQuery({ key: ["status"] });
 
-    // zustand functions
-    const getUsers = useAppStore((state) => state.getUsers);
-
-    // user data
-    const retrievedUsername = name ?? status?.username;
-
-    // fetch if haven't cached
-    useEffect(() => {
-        if (!retrievedUsername) {
-            return;
-        }
-
-        getUsers({
-            username: [retrievedUsername],
-            select: ["profile", "friend_requests", "friends", "colors"],
-        });
-    }, [retrievedUsername, getUsers]);
-
-    const user = Object.values(users).find(
-        (u) => u.username === retrievedUsername,
-    );
+    const username = name ?? status?.username;
 
     // fallbacks
-    let errorString = "";
-
-    // wrong username
-    if (!retrievedUsername) {
-        errorString = "Incorrect username";
-    }
-
-    // no user found in db
-    if (!user) {
-        errorString = "User does not exist";
-    }
-
-    if (errorString || !user) {
+    if (!username) {
         return (
             <>
-                <AbsentTopline title={errorString} />
+                <AbsentTopline title="Incorrect username" />
 
                 <div
                     className={`box max-w-400 mt-2 w-full m-auto min-h-128 rounded-4xl! overflow-hidden`}
@@ -68,16 +33,52 @@ export const UserProfile = () => {
         );
     }
 
-    const retrievedData = { user, profile: profiles[user.id] };
+    return <UserProfileResult username={username} />;
+};
+
+type ResultProps = {
+    username: string;
+};
+const UserProfileResult = ({ username }: ResultProps) => {
+    // fetching
+    const { data, isLoading } = useQuery({ key: ["user__username", username] });
+
+    if (isLoading) {
+        return (
+            <>
+                <AbsentTopline title="Loading..." />
+
+                <div
+                    className={`box max-w-400 mt-2 w-full m-auto min-h-128 rounded-4xl! overflow-hidden`}
+                >
+                    <LoadingProfile />
+                </div>
+            </>
+        );
+    }
+
+    if (!data) {
+        return (
+            <>
+                <AbsentTopline title="User does not exist!" />
+
+                <div
+                    className={`box max-w-400 mt-2 w-full m-auto min-h-128 rounded-4xl! overflow-hidden`}
+                >
+                    <LoadingProfile />
+                </div>
+            </>
+        );
+    }
 
     return (
         <>
-            <Topline data={retrievedData} />
+            <Topline data={data} />
 
             <div
                 className={`box max-w-400 w-full m-auto rounded-4xl! min-h-128 overflow-hidden`}
             >
-                <Content data={retrievedData} />
+                <Content data={data} />
             </div>
         </>
     );

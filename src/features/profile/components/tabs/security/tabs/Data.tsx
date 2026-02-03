@@ -2,22 +2,19 @@ import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
 import { Input } from "@/features/ui/input/components/Input";
-import { Profile, User } from "@/types/tables/account";
-import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
-import { redirect } from "next/navigation";
 import { useState } from "react";
-import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
+import { CacheAPIProtocol } from "@/query-api/protocol";
+import { PromiseState } from "@/promises/components/PromiseState";
+import { updateUser } from "@/query-api/calls/users";
+import { wrapPromise } from "@/promises/core";
+import { redirect } from "next/navigation";
 
 type Props = {
-    data: { user: User; profile: Profile };
+    data: CacheAPIProtocol["user"]["data"];
 };
 
 export const Data = ({ data }: Props) => {
-    // zusatnd
-    const updateUser = useAppStore((state) => state.updateUser);
-    const promises = useAppStore((state) => state.promises);
-
     // internal states
     const [fieldsEnabled, setFieldsEnabled] = useState<{
         password: boolean;
@@ -25,21 +22,26 @@ export const Data = ({ data }: Props) => {
     }>({ password: false, username: false });
 
     const [password, setPassword] = useState<string>("");
-    const [username, setUsername] = useState<string>(data.user.username);
+    const [username, setUsername] = useState<string>(data.username);
 
     return (
         <form
             className="flex flex-col grow"
             onSubmit={async (e) => {
                 e.preventDefault();
-                await updateUser({
-                    id: data.user.id,
-                    data: {
-                        ...(fieldsEnabled.password && { password }),
-                        ...(fieldsEnabled.username && { username }),
-                    },
+                await wrapPromise("updateUser", () => {
+                    return updateUser({
+                        id: data.id,
+                        username: data.username,
+                        data: {
+                            ...(fieldsEnabled.password && { password }),
+                            ...(fieldsEnabled.username && { username }),
+                        },
+                    });
                 });
-                redirect("/profile");
+                if (username) {
+                    redirect(`/profile/${username}`);
+                }
             }}
         >
             <ul className="flex flex-col gap-4 grow">
@@ -147,7 +149,7 @@ export const Data = ({ data }: Props) => {
                                 Boolean,
                             )}
                         >
-                            <PromiseStatus status={promises.updateUser} />
+                            <PromiseState state="updateUser" />
                             <Image
                                 src="/send.svg"
                                 width={16}

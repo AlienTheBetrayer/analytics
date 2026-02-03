@@ -7,6 +7,7 @@ type Props = {
 };
 
 export const Display = ({ data }: Props) => {
+    // fallbacks
     if (!data) {
         return <AbsentNotification />;
     }

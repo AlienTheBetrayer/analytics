@@ -3,16 +3,16 @@ import { Button } from "@/features/ui/button/components/Button";
 import { AnimatePresence, motion } from "motion/react";
 import { Colors } from "../../modals/Colors";
 import { ProfileImage } from "../../ProfileImage";
-import { Profile, User } from "@/types/tables/account";
-import React, { JSX } from "react";
+import React, { JSX, useRef } from "react";
 import Image from "next/image";
 import { ColorSwatches } from "../../parts/ColorSwatches";
-import { useAppStore } from "@/zustand/store";
 import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 import { useMessageBox } from "@/features/ui/messagebox/hooks/useMessageBox";
+import { CacheAPIProtocol } from "@/query-api/protocol";
+import { useQuery } from "@/query/core";
 
 export type EditAvatarProps = {
-    data: { profile: Profile; user: User };
+    data: CacheAPIProtocol["user"]["data"];
     avatar: [
         string | null | undefined,
         React.Dispatch<React.SetStateAction<string | null | undefined>>,
@@ -33,8 +33,11 @@ export const Avatar = ({
     avatarFile,
     avatar,
 }: EditAvatarProps) => {
-    // zustand
-    const colors = useAppStore((state) => state.colors);
+    // fetching
+    const { data: colors } = useQuery({ key: ["colors", data.id] });
+
+    // refs
+    const inputRef = useRef<HTMLInputElement | null>(null);
 
     // derived states
     const avatarImage = avatarFile[0]
@@ -83,6 +86,7 @@ export const Avatar = ({
                             focus-within:border-blue-1 hover:border-blue-1 left-0 top-0 flex rounded-full w-full h-full aspect-square cursor-pointer z-100"
                     >
                         <input
+                            ref={inputRef}
                             onChange={(e) => {
                                 const file = e.target.files?.[0];
                                 if (!file) return;
@@ -146,29 +150,43 @@ export const Avatar = ({
                             Cancel
                         </Button>
                     </Tooltip>
+                ) : avatar[0] ? (
+                    <Tooltip text="Wipe profile image">
+                        <Button
+                            onClick={() => {
+                                avatarBox.show();
+                            }}
+                        >
+                            <Image
+                                src="/delete.svg"
+                                width={16}
+                                height={16}
+                                alt=""
+                            />
+                            Delete image
+                        </Button>
+                    </Tooltip>
                 ) : (
-                    avatar[0] && (
-                        <Tooltip text="Wipe profile image">
-                            <Button
-                                onClick={() => {
-                                    avatarBox.show();
-                                }}
-                            >
-                                <Image
-                                    src="/delete.svg"
-                                    width={16}
-                                    height={16}
-                                    alt=""
-                                />
-                                Delete image
-                            </Button>
-                        </Tooltip>
-                    )
+                    <Tooltip text="Set a profile image">
+                        <Button
+                            onClick={() => {
+                                inputRef.current?.click();
+                            }}
+                        >
+                            <Image
+                                src="/plus.svg"
+                                width={16}
+                                height={16}
+                                alt=""
+                            />
+                            Set image
+                        </Button>
+                    </Tooltip>
                 )}
             </div>
 
             <hr className="mt-auto" />
-            
+
             <Tooltip
                 text="Modify your color palette"
                 className="w-full"
@@ -176,11 +194,16 @@ export const Avatar = ({
             >
                 <Modal
                     direction="top"
-                    element={(hide) => <Colors data={data} hide={hide}/>}
+                    element={(hide) => (
+                        <Colors
+                            data={data}
+                            hide={hide}
+                        />
+                    )}
                     className="w-full"
                 >
-                    <Button className="w-full! min-h-9!">
-                        {colors[data.user.id] ? (
+                    <Button className="w-full! min-h-9! flex flex-col!">
+                        {colors ? (
                             <ColorSwatches data={data} />
                         ) : (
                             <div className="flex gap-1 items-center">

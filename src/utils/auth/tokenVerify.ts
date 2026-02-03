@@ -4,7 +4,7 @@ import { AuthenticationToken } from "@/types/auth/authentication";
 
 export const TokenRoles = ["user", "admin", "op"];
 
-type TokenRole = (typeof TokenRoles)[number];
+type TokenRole = "user" | "admin" | "op";
 
 /**
  * verifies the user's permissions and throws if they're not aligned
@@ -13,13 +13,13 @@ type TokenRole = (typeof TokenRoles)[number];
  * @param role the role of the user that's required
  * @returns true if permissions are aligned, otherwise throws
  */
-export const tokenVerify = (
-    request: NextRequest,
-    id?: string[],
-    role?: TokenRole
-) => {
+export const tokenVerify = (config: {
+    request: NextRequest;
+    id?: string[];
+    role?: TokenRole;
+}) => {
     // checking if refresh token even exists
-    const accessToken = request.cookies.get("accessToken")?.value;
+    const accessToken = config.request.cookies.get("accessToken")?.value;
 
     if (!accessToken) {
         throw "Not authenticated.";
@@ -29,7 +29,7 @@ export const tokenVerify = (
         // verifying the age
         const payload = jwt.verify(
             accessToken,
-            process.env.ACCESS_SECRET as string
+            process.env.ACCESS_SECRET as string,
         ) as AuthenticationToken;
 
         // allowing op to do anything
@@ -38,15 +38,16 @@ export const tokenVerify = (
         }
 
         // verifying id
-        if (id && (!payload.id || !id.includes(payload.id))) {
+        if (config.id && (!payload.id || !config.id.includes(payload.id))) {
             throw "Wrong user.";
         }
 
         // verifying role
         if (
-            role &&
+            config.role &&
             (!payload.role ||
-                TokenRoles.indexOf(payload.role) < TokenRoles.indexOf(role))
+                TokenRoles.indexOf(payload.role) <
+                    TokenRoles.indexOf(config.role))
         ) {
             throw "Wrong permissions.";
         }

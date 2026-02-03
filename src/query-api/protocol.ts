@@ -1,0 +1,115 @@
+import { AuthenticationToken } from "@/types/auth/authentication";
+import { Color, Profile, User } from "@/types/tables/account";
+import { Token } from "@/types/tables/auth";
+import { Comment, Post, PostPrivacy } from "@/types/tables/posts";
+import { Event, Project } from "@/types/tables/project";
+
+/**
+ * type for values along with their respective keys
+ */
+export type CacheAPIProtocol = {
+    // auth
+    status: {
+        key: ["status"];
+        data: AuthenticationToken;
+    };
+    sessions: {
+        key: ["sessions", string];
+        data: Record<string, Token>;
+    };
+
+    // relationship
+    relationship: {
+        key: ["relationship", string, string];
+        data: {
+            sent: boolean;
+            received: boolean;
+            friends: boolean;
+            message: boolean;
+        };
+    };
+
+    // posts
+    posts: {
+        key: ["posts", string];
+        data: string[];
+    };
+    post: {
+        key: ["post", string];
+        data: Post & { has_liked: boolean; likes: number };
+    };
+    post_privacy: {
+        key: ["post_privacy", string];
+        data: PostPrivacy | null;
+    };
+
+    // comments
+    comments: {
+        key: ["comments", string];
+        data: string[];
+    };
+    comment: {
+        key: ["comment", string];
+        data: Comment & {
+            has_liked: boolean;
+            has_disliked: boolean;
+            likes: number;
+        };
+    };
+
+    // users
+    user: {
+        key: ["user", string];
+        data: User & { profile: Profile };
+    };
+    user__username: {
+        key: ["user__username", string];
+        data: User & { profile: Profile };
+    };
+
+    // friends
+    friends: {
+        key: ["friends", string];
+        data: string[];
+    };
+
+    // colors
+    colors: {
+        key: ["colors", string];
+        data: Color[];
+    };
+
+    // friend_requests
+    requests_incoming: {
+        key: ["requests_incoming", string];
+        data: string[];
+    };
+    requests_outcoming: {
+        key: ["requests_outcoming", string];
+        data: string[];
+    };
+
+    // dashboard
+    projects: {
+        key: ["projects"];
+        data: Record<
+            string,
+            Project & {
+                event_count: number;
+            }
+        >;
+    };
+    events: {
+        key: ["events", string];
+        data: Record<string, Event>;
+    };
+
+    // search
+    search: {
+        key: ["search", string, number];
+        data: {
+            ids: { id: string; post_ids: string[] }[];
+            pages: number;
+        };
+    };
+};

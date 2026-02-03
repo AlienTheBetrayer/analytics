@@ -1,14 +1,10 @@
-import { Project } from "@/types/tables/project";
+import { CacheAPIProtocol } from "@/query-api/protocol";
 import { useAppStore } from "@/zustand/store";
 import { useMemo } from "react";
 
-export const useProjectList = () => {
+export const useProjectList = (data?: CacheAPIProtocol["projects"]["data"]) => {
     // zustand state
-    const projects = useAppStore((state) => state.projects);
     const projectFilters = useAppStore((state) => state.projectFilters);
-
-    // all projects
-    const allProjects = Object.values(projects);
 
     // filter projects
     const search = projectFilters.projectSearch;
@@ -16,11 +12,11 @@ export const useProjectList = () => {
 
     // filtering & memoization
     const filteredProjects = useMemo(() => {
-        if (!allProjects) {
+        if (!data) {
             return;
         }
 
-        let filtered: Project[] = allProjects;
+        let filtered = [...Object.values(data)];
 
         // search filtering
         if (search) {
@@ -28,7 +24,7 @@ export const useProjectList = () => {
         }
 
         // sorting
-        const column = sorting?.column ?? "Created Date";
+        const column = sorting?.column ?? "Updated Date";
         const direction = !sorting
             ? -1
             : (sorting.direction ?? "descendant") === "descendant"
@@ -38,7 +34,7 @@ export const useProjectList = () => {
         switch (column) {
             case "Name": {
                 filtered.sort(
-                    (a, b) => direction * a.name.localeCompare(b.name)
+                    (a, b) => direction * a.name.localeCompare(b.name),
                 );
                 break;
             }
@@ -48,7 +44,7 @@ export const useProjectList = () => {
                         ? 0
                         : direction *
                           (new Date(a.created_at).getTime() -
-                              new Date(b.created_at).getTime())
+                              new Date(b.created_at).getTime()),
                 );
                 break;
             }
@@ -58,14 +54,14 @@ export const useProjectList = () => {
                         ? 0
                         : direction *
                           (new Date(a.last_event_at).getTime() -
-                              new Date(b.last_event_at).getTime())
+                              new Date(b.last_event_at).getTime()),
                 );
                 break;
             }
         }
 
         return filtered;
-    }, [search, sorting, allProjects]);
+    }, [search, sorting, data]);
 
     return {
         filteredProjects,

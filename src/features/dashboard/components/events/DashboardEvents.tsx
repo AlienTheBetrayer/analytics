@@ -1,51 +1,66 @@
 import { useState } from "react";
 import { useScroll } from "@/hooks/useScroll";
-import { useAppStore } from "@/zustand/store";
-import { DashboardEventList } from "./DashboardEventList";
 import { DashboardScrollTop } from "./DashboardScrollTop";
-import { EventTopline } from "../topline/events/EventTopline";
-import { NoEvents } from "../errors/NoEvents";
-import { NoProjectSelected } from "../errors/NoProjectSelected";
+import { DashboardEvent } from "@/features/dashboard/components/events/DashboardEvent";
+import { useEventList } from "@/features/dashboard/hooks/useEventList";
+import { motion } from "motion/react";
+import { NoEvents } from "@/features/dashboard/components/errors/NoEvents";
+import { useQuery } from "@/query/core";
 
-export const DashboardEvents = () => {
-    // zustand
-    const events = useAppStore((state) => state.events);
-    const selectedProjectId = useAppStore((state) => state.selectedProjectId);
+type Props = {
+    id: string;
+};
 
-    // scroll
+export const DashboardEvents = ({ id }: Props) => {
+    // scrolling
     const [hasScrolledEnough, setHasScrolledEnough] = useState<boolean>(false);
-    const scroll = useScroll<HTMLUListElement>((value) => {
+    const { ref } = useScroll<HTMLUListElement>((value) => {
         setHasScrolledEnough(value > 0.5);
     });
 
-    if (!selectedProjectId) {
-        return (
-            <div className="flex flex-col gap-4 max-h-256 relative">
-                <EventTopline />
-                <NoProjectSelected />
-            </div>
-        );
+    // fetching
+    const { data, isLoading } = useQuery({ key: ["events", id] });
+
+    // filtering
+    const { filteredEvents } = useEventList(id, data);
+
+    // fallbacks
+    if (isLoading) {
+        return Array.from({ length: 8 }, (_, k) => (
+            <div
+                key={k}
+                className="w-full h-16 loading rounded-full!"
+            />
+        ));
     }
 
-    if (!events[selectedProjectId ?? ""]?.length) {
-        return (
-            <div className="flex flex-col gap-4 max-h-256 relative">
-                <EventTopline />
-                <NoEvents />
-            </div>
-        );
+    if (!filteredEvents?.length) {
+        return <NoEvents />;
     }
 
     return (
-        <div className="flex flex-col gap-3 max-h-256 relative">
-            <EventTopline />
-            <hr />
+        <>
+            <motion.ul
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                ref={ref}
+                className="flex flex-col gap-2 h-full overflow-y-auto overflow-x-hidden scheme-dark p-1!"
+                style={{
+                    scrollbarWidth: "thin",
+                }}
+            >
+                {filteredEvents?.map((event) => (
+                    <DashboardEvent
+                        key={event.id}
+                        event={event}
+                    />
+                ))}
+            </motion.ul>
 
-            <DashboardEventList scrollRef={scroll.ref} />
             <DashboardScrollTop
                 isVisible={hasScrolledEnough}
-                scrollRef={scroll.ref}
+                scrollRef={ref}
             />
-        </div>
+        </>
     );
 };

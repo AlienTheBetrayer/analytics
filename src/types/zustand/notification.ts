@@ -1,8 +1,8 @@
 import {
-    NotificationPartial,
     Filter,
     NotificationTab,
     Notification,
+    NotificationData,
 } from "../other/notifications";
 
 export type NotificationStore = {
@@ -24,7 +24,7 @@ export type NotificationStore = {
      * @param description description of the notification
      * @param type tab that receives the notification
      */
-    pushNotification: (options: NotificationPartial) => void;
+    pushNotification: (options: NotificationData) => void;
 
     /**
      * explicitly clears all notifications that have been sent

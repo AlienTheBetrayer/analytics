@@ -4,9 +4,10 @@ import { Tooltip } from "../../ui/popovers/components/tooltip/Tooltip";
 import { Button } from "../../ui/button/components/Button";
 import { Input } from "../../ui/input/components/Input";
 import { LinkButton } from "../../ui/linkbutton/components/LinkButton";
-import { ResponseLogin } from "@/types/api/responses/auth";
-import { useAppStore } from "@/zustand/store";
-import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
+import { wrapPromise } from "@/promises/core";
+import { PromiseState } from "@/promises/components/PromiseState";
+import { AxiosResponse } from "axios";
+import { motion } from "motion/react";
 
 type Props = {
     title: string;
@@ -14,7 +15,10 @@ type Props = {
         text: string;
         tooltip: string;
     };
-    onSubmit: (username: string, password: string) => Promise<ResponseLogin>;
+    onSubmit: (
+        username: string,
+        password: string,
+    ) => Promise<AxiosResponse | undefined>;
     className?: string;
     type?: "login" | "register";
 };
@@ -25,15 +29,15 @@ export const AuthenticationForm = ({
     onSubmit,
     type = "login",
 }: Props) => {
-    // zustand states
-    const promises = useAppStore((state) => state.promises);
-
-    // input states
+    // react input states
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
 
     // authentication internal states
-    const [response, setResponse] = useState<ResponseLogin | undefined>();
+    const [response, setResponse] = useState<{
+        success: boolean;
+        message: string;
+    } | null>(null);
 
     return (
         <div className="flex flex-col gap-2 w-full max-w-7xl">
@@ -87,10 +91,22 @@ export const AuthenticationForm = ({
                     onSubmit={async (e) => {
                         e.preventDefault();
 
-                        if (e.currentTarget.checkValidity()) {
+                        wrapPromise("auth", async () => {
                             const res = await onSubmit(username, password);
-                            setResponse(res);
-                        }
+
+                            if (res?.data.message && "success" in res?.data) {
+                                setResponse({
+                                    message: res.data.message,
+                                    success: res.data.success,
+                                });
+                            }
+
+                            if (res?.data?.success !== true) {
+                                throw "";
+                            }
+
+                            return res;
+                        });
                     }}
                 >
                     <ul className="flex flex-col gap-4 grow">
@@ -156,8 +172,7 @@ export const AuthenticationForm = ({
                                     className="w-full"
                                     type="submit"
                                 >
-                                    <PromiseStatus status={promises.login} />
-                                    <PromiseStatus status={promises.register} />
+                                    <PromiseState state="auth" />
 
                                     <Image
                                         alt=""
@@ -172,8 +187,12 @@ export const AuthenticationForm = ({
                     </ul>
                 </form>
 
-                {response?.type === "user_registered" && (
-                    <>
+                {response?.success && (
+                    <motion.div
+                        className="flex flex-col gap-2 w-full mt-8"
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                    >
                         <hr />
                         <Tooltip
                             text="Proceed the authentication"
@@ -187,23 +206,24 @@ export const AuthenticationForm = ({
                                 Redirect to log in
                             </LinkButton>
                         </Tooltip>
-                    </>
+                    </motion.div>
                 )}
 
                 {/* status message */}
                 {response && (
-                    <>
+                    <motion.div
+                        className="flex flex-col gap-2 w-full mt-8"
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                    >
                         <hr />
-                        <div className="flex gap-2 items-center mx-auto">
+                        <div className="flex gap-1 items-center mx-auto">
                             <div
-                                className={`rounded-full w-2 h-2 ${response.type ? "bg-blue-1" : "bg-red-1"} shrink-0`}
+                                className={`rounded-full w-1 h-1 ${response.success ? "bg-blue-1" : "bg-red-1"} shrink-0`}
                             />
-                            <span>
-                                {response.response?.data.error ||
-                                    response.message}
-                            </span>
+                            <span>{response.message}</span>
                         </div>
-                    </>
+                    </motion.div>
                 )}
             </div>
         </div>

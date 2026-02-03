@@ -1,6 +1,5 @@
 "use client";
 import { useParams } from "next/navigation";
-import { useAppStore } from "@/zustand/store";
 import { Controller } from "./Controller";
 import { FetchPrompt } from "./FetchPrompt";
 import { ProjectList } from "./ProjectList";
@@ -8,22 +7,22 @@ import { Topline } from "./Topline";
 import { LoadingEmulate } from "@/features/ui/loading/components/LoadingEmulate";
 import { AbsentTopline } from "@/features/ui/loading/components/AbsentTopline";
 import { Button } from "@/features/ui/button/components/Button";
-import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
 import Image from "next/image";
+import { wrapPromise } from "@/promises/core";
+import { PromiseState } from "@/promises/components/PromiseState";
+import { useQuery } from "@/query/core";
+import { dashboardSync } from "@/query-api/calls/dashboard";
 
 export const Emulate = () => {
     // url
     const { id } = useParams<{ id: string | undefined }>();
 
-    // zustand states
-    const projects = useAppStore((state) => state.projects);
-    const status = useAppStore((state) => state.status);
-    const promises = useAppStore((state) => state.promises);
-    const sync = useAppStore((state) => state.sync);
+    // fetching
+    const { data: status } = useQuery({ key: ["status"] });
+    const { data, isLoading } = useQuery({ key: ["projects"] });
 
-    // error handling:
-    // authentcation's missing
-    if (!status || status?.role === "user") {
+    // fallbacks
+    if (!status) {
         return (
             <>
                 <AbsentTopline title="Not authenticated / lacking permissions" />
@@ -35,33 +34,42 @@ export const Emulate = () => {
         );
     }
 
+    // loading
+    if (isLoading) {
+        return (
+            <>
+                <AbsentTopline title="Loading..." />
+
+                <div className="flex flex-col w-full mt-16 max-w-400 min-h-128 p-6! rounded-4xl! gap-4! m-auto box">
+                    <LoadingEmulate />
+                </div>
+            </>
+        );
+    }
+
     // no data fetched
-    if (!projects) {
+    if (!data) {
         return (
             <>
                 <AbsentTopline title="Data is absent" />
 
-                <div className="flex flex-col w-full mt-16 max-w-400 p-6! rounded-4xl! gap-4! m-auto box">
-                    <div className="flex flex-col gap-2 w-full max-w-4xl mx-auto">
-                        <FetchPrompt />
-                    </div>
+                <div className="flex flex-col w-full mt-16 max-w-400 min-h-128 p-6! rounded-4xl! gap-4! m-auto box">
+                    <FetchPrompt />
                 </div>
             </>
         );
     }
 
     // data is fetched and project at the id is not fetched
-    if (id && !projects[id]) {
+    if (data && id && !data[id]) {
         return (
             <>
                 <AbsentTopline title="Project does not exist" />
 
-                <div className="flex flex-col w-full max-w-400 m-auto box p-6! rounded-4xl!">
-                    <div className="flex flex-col gap-8 w-full max-w-4xl mx-auto">
-                        <FetchPrompt />
-                        <hr />
-                        <ProjectList />
-                    </div>
+                <div className="flex flex-col gap-8! w-full max-w-400 min-h-128 m-auto box p-6! rounded-4xl!">
+                    <FetchPrompt />
+                    <hr />
+                    <ProjectList data={data} />
                 </div>
             </>
         );
@@ -71,9 +79,9 @@ export const Emulate = () => {
         <>
             <Topline />
 
-            <div className="flex flex-col w-full max-w-7xl p-6! rounded-4xl! gap-8! box m-auto">
+            <div className="flex flex-col w-full max-w-400 p-6! min-h-128 rounded-4xl! gap-8! box m-auto">
                 <div className="flex flex-col gap-2">
-                    {!Object.values(projects).length ? (
+                    {!Object.values(data).length ? (
                         <>
                             <span className="text-center text-foreground-2! text-5! whitespace-nowrap">
                                 <u>No project data</u>
@@ -86,10 +94,12 @@ export const Emulate = () => {
                             <Button
                                 className="w-full max-w-64 self-center"
                                 onClick={() => {
-                                    sync();
+                                    wrapPromise("dashboardSync",  () => {
+                                        return dashboardSync({});
+                                    });
                                 }}
                             >
-                                <PromiseStatus status={promises.sync} />
+                                <PromiseState state="dashboardSync" />
                                 <Image
                                     width={16}
                                     height={16}
@@ -111,15 +121,15 @@ export const Emulate = () => {
                     )}
                 </div>
 
-                {!!Object.values(projects).length && (
+                {!!Object.values(data).length && (
                     <>
                         <hr />
-                        <ProjectList />
+                        <ProjectList data={data} />
                     </>
                 )}
 
                 <hr />
-                <Controller />
+                <Controller data={data} />
             </div>
         </>
     );

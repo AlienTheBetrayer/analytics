@@ -10,14 +10,17 @@ import { useMemo } from "react";
 import { dotColors } from "@/utils/other/dotColors";
 import { TabSelection } from "@/utils/other/TabSelection";
 import { Modal } from "@/features/ui/popovers/components/modal/Modal";
+import { useQuery } from "@/query/core";
 
 export const EventTopline = () => {
-    // zustand-state
-    const status = useAppStore((state) => state.status);
+    // zustand
     const selectedProjectId = useAppStore((state) => state.selectedProjectId);
     const eventFilters = useAppStore((state) => state.eventFilters);
-    const events = useAppStore((state) => state.events);
 
+    // fetching
+    const { data: status } = useQuery({ key: ["status"] });
+
+    // color
     const filterColor = useMemo(() => {
         if (!selectedProjectId) {
             return "transparent";
@@ -28,8 +31,8 @@ export const EventTopline = () => {
     return (
         <ul
             className={`box p-0! gap-1! sticky! top-16 z-2 bg-background-3! flex-row! transition-all duration-300 h-10 min-h-10 items-center 
-                ${!(selectedProjectId && events[selectedProjectId]?.length) ? "opacity-30" : ""}`}
-            inert={!(selectedProjectId && events[selectedProjectId]?.length)}
+                ${!selectedProjectId ? "opacity-30" : ""}`}
+            inert={!selectedProjectId}
         >
             <li
                 className="select-none pointer-events-none transition-all duration-300 absolute inset-0 grid place-items-center z-1"
@@ -43,7 +46,16 @@ export const EventTopline = () => {
             <li>
                 <Modal
                     direction="bottom-right"
-                    element={(hide) => <Filtering hide={hide} />}
+                    element={(hide) =>
+                        selectedProjectId ? (
+                            <Filtering
+                                hide={hide}
+                                project_id={selectedProjectId}
+                            />
+                        ) : (
+                            <></>
+                        )
+                    }
                 >
                     <Tooltip text="Filter events">
                         <Button className="aspect-square">

@@ -3,45 +3,33 @@ import { useAppStore } from "@/zustand/store";
 import { DashboardEvents } from "./events/DashboardEvents";
 import { DashboardProjects } from "./projects/DashboardProjects";
 import { Topline } from "./Topline";
-import { useEffect, useRef } from "react";
 import { LoadingDashboard } from "@/features/ui/loading/components/LoadingDashboard";
 import { AbsentTopline } from "@/features/ui/loading/components/AbsentTopline";
+import { EventTopline } from "@/features/dashboard/components/topline/events/EventTopline";
+import { NoProjectSelected } from "@/features/dashboard/components/errors/NoProjectSelected";
+import { ProjectTopline } from "@/features/dashboard/components/topline/projects/ProjectTopline";
+import { useQuery } from "@/query/core";
 
 export const Dashboard = () => {
-    // zustand states
-    const status = useAppStore((state) => state.status);
-    const projects = useAppStore((state) => state.projects);
-
-    // zustand functions
-    const deleteState = useAppStore((state) => state.deleteState);
-    const selectProject = useAppStore((state) => state.selectProject);
-    const sync = useAppStore((state) => state.sync);
-
-    const hasFetched = useRef<boolean>(false);
+    // zustand
+    const selectedProjectId = useAppStore((state) => state.selectedProjectId);
 
     // fetching
-    useEffect(() => {
-        if (!status) {
-            hasFetched.current = false;
-            deleteState();
-            selectProject(undefined);
-        } else {
-            if (hasFetched.current) {
-                return;
-            }
-            hasFetched.current = true;
-            sync();
-        }
-    }, [status, deleteState, selectProject, sync]);
+    const { data: status } = useQuery({ key: ["status"] });
+    const { data, isLoading } = useQuery({ key: ["projects"] });
 
-    // fallback
+    // fallbacks
     let errorString = "";
 
     if (!status) {
         errorString = "Not authenticated";
     }
 
-    if (!Object.values(projects)?.length) {
+    if (isLoading) {
+        errorString = "Loading...";
+    }
+
+    if (!data) {
         errorString = "Data is absent";
     }
 
@@ -49,7 +37,6 @@ export const Dashboard = () => {
         return (
             <>
                 <AbsentTopline title={errorString} />
-
                 <div className="w-full max-w-400 m-auto min-h-200 box">
                     <LoadingDashboard />
                 </div>
@@ -64,9 +51,23 @@ export const Dashboard = () => {
                 <hr />
 
                 <div className="flex flex-col lg:flex-row gap-8 lg:gap-4 grow *:w-full">
-                    <DashboardProjects />
+                    <div className="flex flex-col gap-3 relative max-h-256">
+                        <ProjectTopline />
+                        <hr />
+                        {data && <DashboardProjects data={data} />}
+                    </div>
+
                     <hr className="lg:hidden" />
-                    <DashboardEvents />
+
+                    <div className="flex flex-col gap-3 max-h-256 relative">
+                        <EventTopline />
+                        <hr />
+                        {selectedProjectId ? (
+                            <DashboardEvents id={selectedProjectId} />
+                        ) : (
+                            <NoProjectSelected />
+                        )}
+                    </div>
                 </div>
             </div>
         </>

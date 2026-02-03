@@ -1,38 +1,13 @@
-import { Profile, User } from "@/types/tables/account";
 import { ProfileImage } from "../../ProfileImage";
 import { Select } from "./Select";
-import { useEffect } from "react";
-import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
+import { CacheAPIProtocol } from "@/query-api/protocol";
 
 type Props = {
-    data: { profile: Profile; user: User };
+    data: CacheAPIProtocol["user"]["data"];
 };
 
 export const Friends = ({ data }: Props) => {
-    // zustand
-    const friends = useAppStore((state) => state.friends);
-    const friendRequests = useAppStore((state) => state.friendRequests);
-    const getUsers = useAppStore((state) => state.getUsers);
-
-    useEffect(() => {
-        getUsers({
-            select: ["friends", "friend_requests"],
-            id: [data.user.id],
-        });
-    }, [getUsers, data]);
-
-    useEffect(() => {
-        getUsers({
-            select: ["profile"],
-            id: [
-                ...(friends[data.user.id] ?? []),
-                ...(friendRequests?.[data.user.id]?.incoming ?? []),
-                ...(friendRequests?.[data.user.id]?.outcoming ?? []),
-            ],
-        });
-    }, [friends, friendRequests, data, getUsers]);
-
     return (
         <div className="flex flex-col gap-4 w-full grow">
             <div className="flex flex-col gap-2 items-center">
@@ -45,7 +20,7 @@ export const Friends = ({ data }: Props) => {
                         style={{ filter: `invert(var(--invert-8))` }}
                     />
                     <span className="text-foreground-2! text-5! flex">
-                        <mark>{data.user.username}</mark>
+                        <mark>{data.username}</mark>
                         &apos;s profile
                     </span>
                 </div>

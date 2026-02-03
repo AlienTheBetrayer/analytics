@@ -3,38 +3,24 @@ import { UpdateComment } from "@/features/posts/components/parts/comments/Update
 import { ProfileImage } from "@/features/profile/components/ProfileImage";
 import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
-import { Comment } from "@/types/tables/posts";
-import { useAppStore } from "@/zustand/store";
+import { like } from "@/query-api/calls/posts";
+import { useQuery } from "@/query/core";
 import Image from "next/image";
 
 type Props = {
-    data: Comment;
+    id: string;
     editing: string | null;
     onEdit: (id: string | null) => void;
 };
 
-export const CommentView = ({ data, onEdit, editing }: Props) => {
-    // zustand
-    const profiles = useAppStore((state) => state.profiles);
-    const users = useAppStore((state) => state.users);
-    const status = useAppStore((state) => state.status);
-    const commentLikes = useAppStore((state) => state.commentLikes);
-    const commentLikeIds = useAppStore((state) => state.commentLikeIds);
-    const like = useAppStore((state) => state.like);
+export const CommentView = ({ id, onEdit, editing }: Props) => {
+    const { data: comment } = useQuery({ key: ["comment", id] });
+    const { data: user } = useQuery({ key: ["user", comment?.user_id] });
+    const { data: status } = useQuery({ key: ["status"] });
 
-    const user = users[data.user_id];
-    const profile = profiles[data.user_id];
-
-    if (!user || !profile) {
+    if (!user || !comment) {
         return <li className="box p-4! loading min-h-24 rounded-4xl!" />;
     }
-
-    const hasLiked = status
-        ? commentLikeIds[status.username]?.has(`${data.id}:like`)
-        : false;
-    const hasDisliked = status
-        ? commentLikeIds[status.username]?.has(`${data.id}:dislike`)
-        : false;
 
     return (
         <li className="box min-h-24 grid! grid-cols-[48px_1fr] p-4! gap-4! hover:bg-background-a-8! duration-400! transition-all!">
@@ -43,7 +29,7 @@ export const CommentView = ({ data, onEdit, editing }: Props) => {
                 className="p-0! w-fit! h-fit!"
             >
                 <ProfileImage
-                    profile={profile}
+                    profile={user.profile}
                     width={256}
                     height={256}
                     className="w-full"
@@ -52,23 +38,25 @@ export const CommentView = ({ data, onEdit, editing }: Props) => {
 
             <div className="flex flex-col gap-2">
                 <CommentViewTopline
-                    data={data}
-                    onEdit={() => onEdit(data.id === editing ? null : data.id)}
+                    data={comment}
+                    onEdit={() =>
+                        onEdit(comment.id === editing ? null : comment.id)
+                    }
                 />
 
                 <div>
-                    {editing === data.id ? (
+                    {editing === comment.id ? (
                         <UpdateComment
                             type="edit"
                             data={{
-                                comment: data,
+                                comment,
                                 onEdit: () => {
                                     onEdit(null);
                                 },
                             }}
                         />
                     ) : (
-                        <span>{data.comment}</span>
+                        <span>{comment.comment}</span>
                     )}
                 </div>
 
@@ -84,12 +72,12 @@ export const CommentView = ({ data, onEdit, editing }: Props) => {
                             like({
                                 type: "like",
                                 what: "comment",
-                                id: data.id,
+                                id: comment.id,
                                 user_id: status.id,
                             });
                         }}
                         style={{
-                            filter: `invert(${hasLiked ? 1 : 0})`,
+                            filter: `invert(${comment.has_liked ? 1 : 0})`,
                         }}
                     >
                         <Image
@@ -100,9 +88,7 @@ export const CommentView = ({ data, onEdit, editing }: Props) => {
                         />
                     </Button>
 
-                    {!!commentLikes[data.id] && (
-                        <span>{commentLikes[data.id]}</span>
-                    )}
+                    {!!comment.likes && <span>{comment.likes}</span>}
 
                     <hr className="w-px! h-1/2! self-stretch my-auto!" />
 
@@ -117,12 +103,12 @@ export const CommentView = ({ data, onEdit, editing }: Props) => {
                             like({
                                 type: "dislike",
                                 what: "comment",
-                                id: data.id,
+                                id: comment.id,
                                 user_id: status.id,
                             });
                         }}
                         style={{
-                            filter: `invert(${hasDisliked ? 1 : 0})`,
+                            filter: `invert(${comment.has_disliked ? 1 : 0})`,
                         }}
                     >
                         <Image

@@ -3,50 +3,20 @@ import { AbsentTopline } from "@/features/ui/loading/components/AbsentTopline";
 import { LoadingEmulate } from "@/features/ui/loading/components/LoadingEmulate";
 import { Select } from "@/features/posts/components/Select";
 import { Topline } from "@/features/posts/components/Topline";
-import { useAppStore } from "@/zustand/store";
 import { useParams } from "next/navigation";
-import { useEffect } from "react";
+import { useQuery } from "@/query/core";
 
 export const Post = () => {
     // url
-    const { id, tab } = useParams<{ id?: string; tab?: string }>();
+    const { id } = useParams<{ id?: string; tab?: string }>();
 
-    // zustand
-    const posts = useAppStore((state) => state.posts);
-    const postIds = useAppStore((state) => state.postIds);
-    const status = useAppStore((state) => state.status);
-    const getPosts = useAppStore((state) => state.getPosts);
-
-    // fetching
-    useEffect(() => {
-        if (!id) {
-            return;
-        }
-
-        getPosts({ type: "single", id, user_id: status?.id });
-    }, [id, getPosts, status]);
+    const { data: status } = useQuery({ key: ["status"] });
 
     // fallbacks
     let errorString = "";
-
     // no post
-    const post = id ? posts[id] : undefined;
-
-    if (tab !== "create" && !post) {
-        errorString = "Post does not exist";
-    }
-
-    // trying to do anything other than view other posts (or not logged in)
-    if (
-        tab !== "view" &&
-        (!status || (id && !postIds[status.username]?.has(id)))
-    ) {
-        errorString = "Not authenticated";
-    }
-
-    // no tab or create tab has no id
-    if (!tab || (tab !== "create" && !id)) {
-        errorString = "Incorrect URL";
+    if (!id && !status) {
+        errorString = "Wrong URL";
     }
 
     if (errorString) {
@@ -67,6 +37,17 @@ export const Post = () => {
     }
 
     // the url is correct and a post has been found
+
+    return <PostResult id={id} />;
+};
+
+type ResultProps = {
+    id?: string;
+};
+const PostResult = ({ id }: ResultProps) => {
+    // fetching
+    const { data: post } = useQuery({ key: ["post", id] });
+
     return (
         <>
             <Topline

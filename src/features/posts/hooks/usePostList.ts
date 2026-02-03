@@ -1,26 +1,33 @@
-import { User } from "@/types/tables/account";
+import { CacheAPIProtocol } from "@/query-api/protocol";
+import { useQuery } from "@/query/core";
+import { queryCache } from "@/query/init";
 import { useLocalStore } from "@/zustand/localStore";
 import { useAppStore } from "@/zustand/store";
 import { useMemo } from "react";
 
-export const usePostList = (user: User) => {
+export const usePostList = (data: CacheAPIProtocol["user"]["data"]) => {
     // zustand
     const postFiltering = useAppStore((state) => state.postFiltering);
     const display = useLocalStore((state) => state.display);
-    const posts = useAppStore((state) => state.posts);
-    const postIds = useAppStore((state) => state.postIds);
-    const status = useAppStore((state) => state.status);
-    const postLikeIds = useAppStore((state) => state.postLikeIds);
+
+    const { data: postIds } = useQuery({ key: ["posts", data.id] });
+    const { data: status } = useQuery({ key: ["status"] });
 
     // sorted object
     const filtered = useMemo(() => {
-        if (!postIds[user.username]) {
+        if (!postIds?.length) {
             return;
         }
 
-        const postsData = Array.from(postIds[user.username]).map(
-            (id) => posts[id],
+        const postsData = Array.from(
+            postIds.map(
+                (id) =>
+                    queryCache.get({
+                        key: ["post", id],
+                    }) as CacheAPIProtocol["post"]["data"],
+            ),
         );
+
         let allPosts = [...postsData];
 
         // sorting
@@ -58,9 +65,7 @@ export const usePostList = (user: User) => {
                         break;
                     }
 
-                    allPosts = allPosts.filter((post) =>
-                        postLikeIds[status.username].has(post.id),
-                    );
+                    allPosts = allPosts.filter((post) => post.has_liked);
                     break;
                 }
                 case "Raw": {
@@ -72,7 +77,7 @@ export const usePostList = (user: User) => {
                         (post) =>
                             !post.edited_at &&
                             !post.image_url &&
-                            !postLikeIds[status.username].has(post.id),
+                            !post.has_liked,
                     );
                     break;
                 }
@@ -80,7 +85,7 @@ export const usePostList = (user: User) => {
         }
 
         return allPosts;
-    }, [posts, postIds, postFiltering, display, user, status, postLikeIds]);
+    }, [postIds, postFiltering, display, status]);
 
     return { filtered };
 };

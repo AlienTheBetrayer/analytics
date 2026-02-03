@@ -1,18 +1,15 @@
 import Image from "next/image";
 import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
-import { useAppStore } from "@/zustand/store";
-import { useLocalStore } from "@/zustand/localStore";
-import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
 import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
 import { useState } from "react";
+import { wrapPromise } from "@/promises/core";
+import { PromiseState } from "@/promises/components/PromiseState";
+import { useQuery } from "@/query/core";
+import { applicationLogout } from "@/query-api/calls/auth";
 
 export const AlreadyLoggedIn = () => {
-    // zustand state
-    const promises = useAppStore((state) => state.promises);
-    const status = useAppStore((state) => state.status);
-    const logout = useAppStore((state) => state.logout);
-    const setVisibleProfile = useLocalStore((state) => state.setVisibleProfile);
+    const { data: status } = useQuery({ key: ["status"] });
 
     // react states
     const [isLogoutEnabled, setIsLogoutEnabled] = useState<boolean>(false);
@@ -41,7 +38,7 @@ export const AlreadyLoggedIn = () => {
             <ul className="box w-full max-w-7xl grid! lg:grid-cols-3 gap-16! lg:gap-8!">
                 <li className="flex flex-col gap-2">
                     <aside className="flex items-center gap-1 justify-center text-center">
-                        <div className="w-1 h-1 rounded-full bg-blue-3" />
+                        <div className="w-1 h-1 rounded-full bg-orange-3" />
                         <span>Miscellaneous</span>
                     </aside>
 
@@ -171,11 +168,12 @@ export const AlreadyLoggedIn = () => {
                                 isEnabled={isLogoutEnabled}
                                 className="w-full"
                                 onClick={() => {
-                                    logout();
-                                    setVisibleProfile(undefined);
+                                    wrapPromise("logout", () => {
+                                        return applicationLogout();
+                                    });
                                 }}
                             >
-                                <PromiseStatus status={promises.logout} />
+                                <PromiseState state="logout" />
                                 <Image
                                     alt=""
                                     src="/auth.svg"
@@ -190,7 +188,7 @@ export const AlreadyLoggedIn = () => {
 
                 <li className="flex flex-col gap-2">
                     <aside className="flex items-center gap-1 justify-center text-center">
-                        <div className="w-1 h-1 rounded-full bg-blue-2" />
+                        <div className="w-1 h-1 rounded-full bg-blue-3" />
                         <span>Dashboard</span>
                     </aside>
 

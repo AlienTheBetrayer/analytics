@@ -10,10 +10,7 @@ export const POST = async (request: NextRequest) => {
         const { project_name, event_type, description } = await request.json();
 
         if (!project_name || !event_type) {
-            return nextResponse(
-                { error: "project_name & event_type are missing." },
-                400
-            );
+            throw "project_name & event_type are missing.";
         }
 
         // 1. inserting / updating a project
@@ -21,13 +18,15 @@ export const POST = async (request: NextRequest) => {
             .from("projects")
             .upsert(
                 { name: project_name, last_event_at: new Date().toISOString() },
-                { onConflict: "name" }
+                { onConflict: "name" },
             )
-            .select()) as { data: Project[]; error: PostgrestError | null };
+            .select()) as {
+            data: Project[];
+            error: PostgrestError | null;
+        };
 
         if (projectError) {
-            console.error(projectError);
-            return nextResponse({ projectError }, 400);
+            throw projectError;
         }
 
         // 2. inserting / updating new metadata
@@ -44,8 +43,7 @@ export const POST = async (request: NextRequest) => {
         };
 
         if (eventsError) {
-            console.error(eventsError);
-            return nextResponse({ eventsError }, 400);
+            throw eventsError;
         }
 
         return nextResponse(
@@ -56,13 +54,13 @@ export const POST = async (request: NextRequest) => {
                     event: eventsData?.[0],
                 },
             },
-            200
+            200,
         );
     } catch (error) {
         console.error(error);
         return nextResponse(
             { error: "Failed sending the analytics from the SDK." },
-            400
+            400,
         );
     }
 };
@@ -77,6 +75,6 @@ export const OPTIONS = () => {
                 "Access-Control-Allow-Headers": "Content-Type, Authorization",
             },
             status: 200,
-        }
+        },
     );
 };

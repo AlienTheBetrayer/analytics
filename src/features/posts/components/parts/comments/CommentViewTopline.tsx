@@ -2,25 +2,23 @@ import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { useMessageBox } from "@/features/ui/messagebox/hooks/useMessageBox";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
-import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
-import { Comment } from "@/types/tables/posts";
+import { PromiseState } from "@/promises/components/PromiseState";
+import { wrapPromise } from "@/promises/core";
+import { updateComment } from "@/query-api/calls/posts";
+import { CacheAPIProtocol } from "@/query-api/protocol";
+import { useQuery } from "@/query/core";
 import { relativeTime } from "@/utils/other/relativeTime";
-import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 
 type Props = {
-    data: Comment;
+    data: CacheAPIProtocol["comment"]["data"];
     onEdit: () => void;
 };
 
 export const CommentViewTopline = ({ data, onEdit }: Props) => {
-    // zustand
-    const status = useAppStore((state) => state.status);
-    const promises = useAppStore((state) => state.promises);
-    const users = useAppStore((state) => state.users);
-    const updateComment = useAppStore((state) => state.updateComment);
-
-    const user = users[data.user_id];
+    // fetching
+    const { data: user } = useQuery({ key: ["user", data.user_id] });
+    const { data: status } = useQuery({ key: ["status"] });
 
     // box
     const deleteBox = useMessageBox();
@@ -36,11 +34,13 @@ export const CommentViewTopline = ({ data, onEdit }: Props) => {
                     }
 
                     if (res === "yes") {
-                        updateComment({
-                            type: "delete",
-                            user_id: status.id,
-                            comment_id: data.id,
-                            promiseKey: `deleteComment_${data.id}`,
+                        wrapPromise(`deleteComment_${data.id}`, () => {
+                            return updateComment({
+                                type: "delete",
+                                user_id: status.id,
+                                comment_id: data.id,
+                                post_id: data.post_id,
+                            });
                         });
                     }
                 },
@@ -49,11 +49,11 @@ export const CommentViewTopline = ({ data, onEdit }: Props) => {
             <li className="flex items-center">
                 <LinkButton
                     styles="link"
-                    href={`/profile/${user.username}`}
+                    href={`/profile/${user?.username}`}
                     className="p-0! w-fit! h-fit!"
                 >
                     <span>
-                        <mark>{user.username}</mark>
+                        <mark>{user?.username}</mark>
                     </span>
                 </LinkButton>
             </li>
@@ -117,10 +117,8 @@ export const CommentViewTopline = ({ data, onEdit }: Props) => {
                         <li>
                             <Tooltip text="Delete your comment">
                                 <Button onClick={deleteBox.show}>
-                                    <PromiseStatus
-                                        status={
-                                            promises[`deleteComment_${data.id}`]
-                                        }
+                                    <PromiseState
+                                        state={`deleteComment_${data.id}`}
                                     />
                                     <Image
                                         alt=""

@@ -2,16 +2,27 @@ import Image from "next/image";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { relativeTime } from "@/utils/other/relativeTime";
 import { ProfileImage } from "./ProfileImage";
-import { Profile, User } from "@/types/tables/account";
+import { useQuery } from "@/query/core";
 
 type Props = {
-    data: { profile: Profile; user: User };
+    id: string;
 };
 
-export const ProfileDisplay = ({ data }: Props) => {
+export const ProfileDisplay = ({ id }: Props) => {
+    // fetching
+    const { data, isLoading } = useQuery({ key: ["user", id] });
+
+    if (isLoading) {
+        return <div className="w-full h-8 loading" />;
+    }
+
+    if (!data) {
+        return null;
+    }
+
     return (
         <LinkButton
-            href={`/profile/${data.user.username}`}
+            href={`/profile/${data.username}`}
             className="justify-start! p-4! h-full rounded-4xl!"
             style={
                 data.profile.color
@@ -45,7 +56,7 @@ export const ProfileDisplay = ({ data }: Props) => {
                                 />
                                 Username
                             </small>
-                            {data.user.username}
+                            {data.username}
                         </span>
 
                         {data.profile.title && (
@@ -57,7 +68,7 @@ export const ProfileDisplay = ({ data }: Props) => {
                                         height={16}
                                         alt=""
                                     />
-                                    One-liner
+                                    Title
                                 </small>
                                 {data.profile.title}
                             </span>
@@ -73,7 +84,7 @@ export const ProfileDisplay = ({ data }: Props) => {
                             height={16}
                             alt=""
                         />
-                        seen {relativeTime(data.user.last_seen_at)}
+                        seen {relativeTime(data.last_seen_at)}
                     </span>
                 </li>
             </ul>

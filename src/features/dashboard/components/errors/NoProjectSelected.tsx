@@ -3,11 +3,14 @@ import { Button } from "@/features/ui/button/components/Button";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import { AbsentData } from "@/features/ui/absentdata/components/AbsentData";
+import { useQuery } from "@/query/core";
 
 export const NoProjectSelected = () => {
     // zustand
-    const projects = useAppStore((state) => state.projects);
     const selectProject = useAppStore((state) => state.selectProject);
+
+    // fetching
+    const { data } = useQuery({ key: ["projects"] });
 
     return (
         <AbsentData
@@ -31,7 +34,11 @@ export const NoProjectSelected = () => {
                 <Button
                     className="w-full"
                     onClick={() => {
-                        const ids = Object.keys(projects);
+                        if (!data) {
+                            return;
+                        }
+
+                        const ids = Object.keys(data);
 
                         if (!ids.length) {
                             return;

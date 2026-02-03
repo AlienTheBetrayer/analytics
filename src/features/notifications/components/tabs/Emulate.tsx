@@ -14,7 +14,7 @@ export const Emulate = () => {
     // zustand
     const pushNotification = useAppStore((state) => state.pushNotification);
 
-    // react states
+    // react input states
     const [status, setStatus] = useState<NotificationStatus>("Information");
     const [tab, setTab] = useState<NotificationTab>("Account");
     const [title, setTitle] = useState<string>("");
@@ -36,7 +36,7 @@ export const Emulate = () => {
                     });
                 }}
             >
-                <ul className="flex flex-col gap-2 grow">
+                <ul className="flex flex-col gap-4 grow">
                     <li className="flex flex-col gap-1">
                         <label
                             className="flex items-center gap-1"

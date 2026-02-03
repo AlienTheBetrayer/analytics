@@ -21,8 +21,6 @@ export const Topline = ({ tab }: Props) => {
     const filter = useAppStore((state) => state.filter)[tab];
     const notifications = useAppStore((state) => state.notifications)[tab];
     const isExpanded = useAppStore((state) => state.expandedTabs)[tab];
-
-    // zusatnd functions
     const toggleCollapsed = useAppStore((state) => state.toggleCollapsed);
     const clearData = useAppStore((state) => state.clearData);
 

@@ -2,25 +2,28 @@ import { useParams } from "next/navigation";
 import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
 import Image from "next/image";
-import { useAppStore } from "@/zustand/store";
 import { useRef, useState } from "react";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
-import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
+import { wrapPromise } from "@/promises/core";
+import { PromiseState } from "@/promises/components/PromiseState";
+import { dashboardEmulateEvents } from "@/query-api/calls/dashboard";
+import { CacheAPIProtocol } from "@/query-api/protocol";
+import { useQuery } from "@/query/core";
 
-export const Controller = () => {
-    // zustand state
-    const projects = useAppStore((state) => state.projects);
-    const promises = useAppStore((state) => state.promises);
+type Props = {
+    data: CacheAPIProtocol["projects"]["data"];
+};
 
-    // zustand functions
-    const emulateEvent = useAppStore((state) => state.emulateEvent);
-
+export const Controller = ({ data }: Props) => {
     // url
     const { id } = useParams<{ id: string | undefined }>();
 
     // refs
     const formRef = useRef<HTMLFormElement | null>(null);
+
+    // fetching
+    const { data: status } = useQuery({ key: ["status"] });
 
     // input states
     const [name, setName] = useState<string>("");
@@ -42,7 +45,8 @@ export const Controller = () => {
 
             <div className="flex flex-col gap-2">
                 <form
-                    className="flex flex-col gap-2"
+                    className={`flex flex-col gap-2 ${!status || status?.role === "user" ? "opacity-30" : ""}`}
+                    inert={!status || status?.role === "user"}
                     ref={formRef}
                     onInput={() => {
                         setIsValid(formRef.current?.checkValidity() ?? false);
@@ -50,17 +54,18 @@ export const Controller = () => {
                     onSubmit={(e) => {
                         e.preventDefault();
 
-                        const project_name = !id ? name : projects[id]?.name;
+                        const project_name = !id ? name : data[id]?.name;
                         if (!project_name) {
                             return;
                         }
 
-                        emulateEvent({
-                            project_name,
-                            event_type: eventType,
-                            description,
-                        }).then(() => {
+                        wrapPromise("emulateEvents", () => {
                             setEmulationStatus(true);
+                            return dashboardEmulateEvents({
+                                project_name,
+                                event_type: eventType,
+                                description,
+                            });
                         });
                     }}
                 >
@@ -135,7 +140,7 @@ export const Controller = () => {
                             className="w-full"
                             isEnabled={isValid}
                         >
-                            <PromiseStatus status={promises.emulateEvent} />
+                            <PromiseState state="emulateEvents" />
                             <Image
                                 width={16}
                                 height={16}

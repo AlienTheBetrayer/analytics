@@ -1,11 +1,11 @@
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
-import { Profile, User } from "@/types/tables/account";
+import { CacheAPIProtocol } from "@/query-api/protocol";
 import Image from "next/image";
 import React, { useMemo } from "react";
 
 type Props = {
     className?: string;
-    data: { user: User; profile: Profile };
+    data: CacheAPIProtocol["user"]["data"];
 };
 
 export const Gender = ({ className, data }: Props) => {
@@ -18,7 +18,7 @@ export const Gender = ({ className, data }: Props) => {
                 return {
                     element: (
                         <div
-                            className={`box p-1! px-2! items-center! outline-1 outline-[#e0afbb] ${className ?? ""}`}
+                            className={`box p-1! px-2! w-max! items-center! outline-1 outline-[#e0afbb] ${className ?? ""}`}
                         >
                             <div className="flex gap-1">
                                 <Image
@@ -31,14 +31,14 @@ export const Gender = ({ className, data }: Props) => {
                             </div>
                         </div>
                     ),
-                    tooltip: `${data.user.username} is a girl.`,
+                    tooltip: `${data.username} is a girl.`,
                 };
             }
             case "male": {
                 return {
                     element: (
                         <div
-                            className={`box p-1! px-2! items-center! outline-1 outline-[#82aece] ${className ?? ""}`}
+                            className={`box p-1! px-2! w-max! items-center! outline-1 outline-[#82aece] ${className ?? ""}`}
                         >
                             <div className="flex gap-1">
                                 <Image
@@ -51,14 +51,14 @@ export const Gender = ({ className, data }: Props) => {
                             </div>
                         </div>
                     ),
-                    tooltip: `${data.user.username} is a man.`,
+                    tooltip: `${data.username} is a man.`,
                 };
             }
             case "other": {
                 return {
                     element: (
                         <div
-                            className={`box p-1! px-2! items-center! outline-1 outline-[#9d95c7] ${className ?? ""}`}
+                            className={`box p-1! px-2! w-max! outline-1 outline-[#9d95c7] ${className ?? ""}`}
                         >
                             <div className="flex gap-1">
                                 <Image
@@ -71,7 +71,7 @@ export const Gender = ({ className, data }: Props) => {
                             </div>
                         </div>
                     ),
-                    tooltip: `${data.user.username} has a different gender.`,
+                    tooltip: `${data.username} has a different gender.`,
                 };
             }
             default:
@@ -79,7 +79,7 @@ export const Gender = ({ className, data }: Props) => {
                 return {
                     element: (
                         <div
-                            className={`box p-1! px-2! items-center! ${className ?? ""}`}
+                            className={`box p-1! px-2! w-max! items-center! ${className ?? ""}`}
                         >
                             <div className="flex gap-1">
                                 <Image
@@ -92,7 +92,7 @@ export const Gender = ({ className, data }: Props) => {
                             </div>
                         </div>
                     ),
-                    tooltip: `${data.user.username} hasn't specified a gender.`,
+                    tooltip: `${data.username} hasn't specified a gender.`,
                 };
             }
         }

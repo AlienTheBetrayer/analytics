@@ -4,21 +4,19 @@ import Image from "next/image";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { relativeTime } from "@/utils/other/relativeTime";
-import { useAppStore } from "@/zustand/store";
 import { Event } from "@/types/tables/project";
-import { PromiseStatus } from "@/features/ui/promisestatus/components/PromiseStatus";
+import { wrapPromise } from "@/promises/core";
+import { PromiseState } from "@/promises/components/PromiseState";
+import { dashboardDeleteEvent } from "@/query-api/calls/dashboard";
+import { useQuery } from "@/query/core";
 
 type Props = {
     event: Event;
 };
 
 export const DashboardEvent = ({ event }: Props) => {
-    // zustand state
-    const promises = useAppStore((state) => state.promises);
-    const status = useAppStore((state) => state.status);
-
-    // zustand functions
-    const deleteData = useAppStore((state) => state.deleteData);
+    // fetching
+    const { data: status } = useQuery({ key: ["status"] });
 
     return (
         <Tooltip
@@ -68,17 +66,13 @@ export const DashboardEvent = ({ event }: Props) => {
                         aria-label="delete event"
                         isEnabled={status?.role !== "user"}
                         className="w-full"
-                        onClick={() => {
-                            deleteData({
-                                id: [event.id],
-                                type: "event",
-                                promiseKey: `eventDelete_${event.id}`,
+                        onClick={async () => {
+                            wrapPromise(`deleteEvent_${event.id}`, () => {
+                                return dashboardDeleteEvent({ event });
                             });
                         }}
                     >
-                        <PromiseStatus
-                            status={promises[`eventDelete_${event.id}`]}
-                        />
+                        <PromiseState state={`deleteEvent_${event.id}`} />
                         <Image
                             width={16}
                             height={16}

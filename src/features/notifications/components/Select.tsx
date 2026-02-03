@@ -33,6 +33,7 @@ export const Select = ({ type }: Props) => {
         }
     }, [tab, clearData]);
 
+    // selecting jsx tab
     switch (type) {
         case "general": {
             switch (tab) {

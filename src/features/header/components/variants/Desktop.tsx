@@ -1,5 +1,5 @@
-import { AuthButton } from "@/features/toolbox/components/AuthButton";
-import { Theme } from "@/features/toolbox/components/Theme";
+import { AuthButton } from "@/features/header/components/toolbox/components/AuthButton";
+import { Theme } from "@/features/header/components/toolbox/components/Theme";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { useLocalStore } from "@/zustand/localStore";
 import Image from "next/image";
@@ -8,16 +8,17 @@ import { SearchButton } from "../parts/SearchButton";
 import { Button } from "@/features/ui/button/components/Button";
 import { Socials } from "../parts/Socials";
 import { Modal } from "@/features/ui/popovers/components/modal/Modal";
-import { useAppStore } from "@/zustand/store";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
+import { useQuery } from "@/query/core";
 
 type Props = {} & ComponentPropsWithoutRef<"div">;
 
 export const Desktop = ({ className }: Props) => {
-    // zustand's localstore
-    const visibleProfile = useLocalStore((state) => state.visibleProfile);
-    const status = useAppStore((state) => state.status);
+    // local storage
     const theme = useLocalStore((state) => state.theme);
+
+    // fetching
+    const { data: status } = useQuery({ key: ["status"] });
 
     return (
         <ul
@@ -48,8 +49,11 @@ export const Desktop = ({ className }: Props) => {
                         <hr className="w-px! h-1/3! bg-background-6" />
                     </li>
 
-                    {status && (
-                        <>
+                    <li>
+                        <ul
+                            className={`flex items-center ${!status ? "opacity-30" : ""}`}
+                            inert={!!!status}
+                        >
                             <li>
                                 <Tooltip text="Posts">
                                     <LinkButton
@@ -117,8 +121,8 @@ export const Desktop = ({ className }: Props) => {
                                     </LinkButton>
                                 </Tooltip>
                             </li>
-                        </>
-                    )}
+                        </ul>
+                    </li>
 
                     <li className="self-stretch flex items-center">
                         <hr className="w-px! h-1/3! bg-background-6" />
@@ -152,7 +156,7 @@ export const Desktop = ({ className }: Props) => {
                 <ul className="flex gap-2 items-center">
                     <li>
                         <div
-                            className={`rounded-full ${!visibleProfile ? "border-awaiting" : ""}`}
+                            className={`rounded-full ${!status ? "border-awaiting" : ""}`}
                         >
                             <AuthButton />
                         </div>

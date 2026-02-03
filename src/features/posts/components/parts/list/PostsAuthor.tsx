@@ -1,11 +1,11 @@
 import { ProfileImage } from "@/features/profile/components/ProfileImage";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
-import { Profile, User } from "@/types/tables/account";
+import { CacheAPIProtocol } from "@/query-api/protocol";
 import Image from "next/image";
 
 type Props = {
-    data: { user: User; profile: Profile };
+    data: CacheAPIProtocol["user"]["data"];
 };
 
 export const PostsAuthor = ({ data }: Props) => {
@@ -19,7 +19,7 @@ export const PostsAuthor = ({ data }: Props) => {
                     src="/account.svg"
                 />
                 <span>
-                    <mark>{data.user.username}</mark>&apos;s account:
+                    <mark>{data.username}</mark>&apos;s account:
                 </span>
             </div>
 
@@ -35,11 +35,11 @@ export const PostsAuthor = ({ data }: Props) => {
             <hr className="w-full max-w-32" />
 
             <Tooltip
-                text={`Go to ${data.user.username}'s profile`}
+                text={`Go to ${data.username}'s profile`}
                 className="w-full sm:max-w-64"
             >
                 <LinkButton
-                    href={`/profile/${data.user.username}`}
+                    href={`/profile/${data.username}`}
                     className="w-full"
                 >
                     <Image

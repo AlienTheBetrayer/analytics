@@ -11,27 +11,21 @@ import { nextResponse } from "./response";
  */
 export const unfriendAll = async (request: NextRequest, from_id: string) => {
     if (!from_id) {
-        console.error("from_id is missing.");
-        return nextResponse({ error: "from_id is missing." }, 400);
+        throw "from_id is undefined";
     }
 
-    tokenVerify(request, [from_id]);
+    tokenVerify({ request, id: [from_id] });
 
-    const { error: unfriendError } = await supabaseServer
+    const { error } = await supabaseServer
         .from("friends")
         .delete()
         .or(`user1_id.eq.${from_id},user2_id.eq.${from_id}`);
 
-    if (unfriendError) {
-        console.error(unfriendError);
-        return nextResponse(unfriendError, 400);
+    if (error) {
+        throw error;
     }
 
-    return nextResponse(
-        { message: "Successfully unfriended everyone" },
-        200,
-        "all_unfriended",
-    );
+    return nextResponse({ success: true }, 200, "all_unfriended");
 };
 
 /**
@@ -45,22 +39,20 @@ export const unfriend = async (
     to_id?: string,
 ) => {
     if (!from_id || !to_id) {
-        console.error("from_id and to_id are missing.");
-        return nextResponse({ error: "from_id and to_id are missing." }, 400);
+        throw "from_id and to_id are undefined";
     }
 
-    tokenVerify(request, [from_id]);
+    tokenVerify({ request, id: [from_id] });
 
-    const { error: unfriendError } = await supabaseServer
+    const { error } = await supabaseServer
         .from("friends")
         .delete()
         .or(
             `and(user1_id.eq.${from_id},user2_id.eq.${to_id}),and(user1_id.eq.${to_id},user2_id.eq.${from_id})`,
         );
 
-    if (unfriendError) {
-        console.error(unfriendError);
-        return nextResponse(unfriendError, 400);
+    if (error) {
+        throw error;
     }
 
     return nextResponse(
@@ -80,19 +72,14 @@ export const requestSend = async (
     to_id?: string,
 ) => {
     if (!from_id || !to_id) {
-        console.error("from_id and to_id are missing.");
-        return nextResponse({ error: "from_id and to_id are missing." }, 400);
+        throw "from_id and to_id are undefined";
     }
 
     if (from_id === to_id) {
-        console.error("you cannot send a friend request to yourself.");
-        return nextResponse(
-            { error: "you cannot send a friend request to yourself." },
-            400,
-        );
+        throw "you cannot send a friend request to yourself";
     }
 
-    tokenVerify(request, [from_id]);
+    tokenVerify({ request, id: [from_id] });
 
     const { data: alreadyData, error: alreadyError } = await supabaseServer
         .from("friends")
@@ -103,17 +90,11 @@ export const requestSend = async (
         .limit(1);
 
     if (alreadyError) {
-        console.error(alreadyError);
-        return nextResponse(alreadyError, 400);
+        throw alreadyError;
     }
 
     if (alreadyData.length > 0) {
-        console.error("You are already friends with this user.");
-        return nextResponse(
-            { error: "You are already friends with this user." },
-            400,
-            "friends_already",
-        );
+        throw "you are already friends";
     }
 
     const { data: fromRequestData, error: fromRequestError } =
@@ -125,17 +106,11 @@ export const requestSend = async (
             .limit(1);
 
     if (fromRequestError) {
-        console.error(fromRequestError);
-        return nextResponse(fromRequestError, 400);
+        throw fromRequestError;
     }
 
     if (fromRequestData.length > 0) {
-        console.error("The friend request had already been sent.");
-        return nextResponse(
-            { error: "The friend request had already been sent." },
-            400,
-            "friend_request_already_sent",
-        );
+        throw "friend request had already been sent";
     }
 
     const { error: sendRequestError } = await supabaseServer
@@ -143,15 +118,10 @@ export const requestSend = async (
         .insert({ from_id, to_id });
 
     if (sendRequestError) {
-        console.error(sendRequestError);
-        return nextResponse(sendRequestError, 400);
+        throw sendRequestError;
     }
 
-    return nextResponse(
-        { message: "Successfully sent a friend request!" },
-        200,
-        "friend_request_sent",
-    );
+    return nextResponse({ success: true }, 200, "friend_request_sent");
 };
 
 /**
@@ -164,11 +134,10 @@ export const requestReject = async (
     to_id?: string,
 ) => {
     if (!from_id || !to_id) {
-        console.error("from_id and to_id are missing.");
-        return nextResponse({ error: "from_id and to_id are missing." }, 400);
+        throw "from_id and to_id are undefined";
     }
 
-    tokenVerify(request, [from_id]);
+    tokenVerify({ request, id: [from_id] });
 
     const { error } = await supabaseServer
         .from("friend_requests")
@@ -178,18 +147,10 @@ export const requestReject = async (
         );
 
     if (error) {
-        console.error(error);
-        return nextResponse(
-            { error: "Failed rejecting a friend request." },
-            400,
-        );
+        throw error;
     }
 
-    return nextResponse(
-        { message: "Successfully rejected a friend request!" },
-        200,
-        "friend_request_rejected",
-    );
+    return nextResponse({ success: true }, 200, "friend_request_rejected");
 };
 
 /**
@@ -202,11 +163,10 @@ export const requestAccept = async (
     to_id?: string,
 ) => {
     if (!from_id || !to_id) {
-        console.error("from_id and to_id are missing.");
-        return nextResponse({ error: "from_id and to_id are missing." }, 400);
+        throw "from_id and to_id are undefined";
     }
 
-    tokenVerify(request, [from_id]);
+    tokenVerify({ request, id: [from_id] });
 
     const { data: toRequestData, error: toRequestError } = await supabaseServer
         .from("friend_requests")
@@ -215,13 +175,11 @@ export const requestAccept = async (
         .limit(1);
 
     if (toRequestError) {
-        console.error(toRequestError);
-        return nextResponse(toRequestError, 400);
+        throw toRequestError;
     }
 
     if (!toRequestData.length) {
-        console.error("No requests sent.");
-        return nextResponse({ error: "No requests sent." }, 400);
+        throw "no requests sent";
     }
 
     const { error: acceptRequestError } = await supabaseServer
@@ -230,8 +188,7 @@ export const requestAccept = async (
         .eq("to_id", from_id);
 
     if (acceptRequestError) {
-        console.error(acceptRequestError);
-        return nextResponse(acceptRequestError, 400);
+        throw acceptRequestError;
     }
 
     const { error: friendError } = await supabaseServer
@@ -239,13 +196,8 @@ export const requestAccept = async (
         .insert({ user1_id: from_id, user2_id: to_id });
 
     if (friendError) {
-        console.error(friendError);
-        return nextResponse(friendError, 400);
+        throw friendError;
     }
 
-    return nextResponse(
-        { message: "Friend request accepted!" },
-        200,
-        "friend_request_accepted",
-    );
+    return nextResponse({ success: true }, 200, "friend_request_accepted");
 };

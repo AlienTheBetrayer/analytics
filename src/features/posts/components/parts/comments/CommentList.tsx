@@ -1,48 +1,26 @@
 import { CommentView } from "@/features/posts/components/parts/comments/CommentView";
-import { Post } from "@/types/tables/posts";
-import { useAppStore } from "@/zustand/store";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 
 type Props = {
-    data: Post;
+    comments: string[];
 };
 
-export const CommentList = ({ data }: Props) => {
-    // zustand
-    const commentIds = useAppStore((state) => state.commentIds);
-    const comments = useAppStore((state) => state.comments);
-    const getUsers = useAppStore((state) => state.getUsers);
+export const CommentList = ({ comments }: Props) => {
     const [editing, setEditing] = useState<string | null>(null);
-
-    const commentData = [...commentIds[data.id]].map((id) => comments[id]);
-
-    // fetching profiles
-    const hasFetched = useRef<boolean>(false);
-    useEffect(() => {
-        if (!commentData?.length || hasFetched.current) {
-            return;
-        }
-
-        getUsers({
-            select: ["profile"],
-            id: commentData.map((c) => c.user_id),
-        });
-        hasFetched.current = true;
-    }, [commentData, getUsers]);
 
     return (
         <ul
-            className={`flex flex-col gap-2! min-h-64 ${!commentData.length ? "loading" : ""}`}
+            className={`flex flex-col gap-2! min-h-64 ${!comments.length ? "loading" : ""}`}
         >
-            {commentData?.map((comment, i) => (
-                <React.Fragment key={comment.id}>
+            {comments?.map((id, i) => (
+                <React.Fragment key={id}>
                     <CommentView
-                        data={comment}
+                        id={id}
                         editing={editing}
                         onEdit={(id) => setEditing(id)}
                     />
 
-                    {i < commentData.length - 1 && (
+                    {i < comments.length - 1 && (
                         <hr className="w-11/12! mx-auto!" />
                     )}
                 </React.Fragment>

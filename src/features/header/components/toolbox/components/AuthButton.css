@@ -1,0 +1,15 @@
+.auth-button-tooltip {
+    width: 0;
+    padding: 0;
+    opacity: 0;
+    overflow: hidden;
+    interpolate-size: allow-keywords;
+    transition: 0.35s all ease-out;
+}
+
+.logged-in-nav:hover .auth-button-tooltip,
+.logged-in-nav:focus-within .auth-button-tooltip {
+    margin-right: 0.4rem;
+    opacity: 1;
+    width: auto;
+}

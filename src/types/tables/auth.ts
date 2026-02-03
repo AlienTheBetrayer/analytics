@@ -4,8 +4,8 @@
 export type Token = {
     id: string;
     user_id: string;
-    token: string;
+    token?: string;
     session_id: string;
     last_seen_at: string;
-    isCurrent?: boolean;
-}
+    is_current?: boolean;
+};

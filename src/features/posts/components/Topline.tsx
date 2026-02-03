@@ -1,29 +1,21 @@
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
-import { Profile, User } from "@/types/tables/account";
-import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
-import { useParams, usePathname } from "next/navigation";
-import { Post } from "@/types/tables/posts";
+import { useParams } from "next/navigation";
+import { useQuery } from "@/query/core";
+import { CacheAPIProtocol } from "@/query-api/protocol";
 
-type Props =
-    | {
-          type: "posts";
-          data?: { user: User; profile: Profile };
-      }
-    | {
-          type: "post";
-          data?: Post;
-      };
+type Props = {
+    type: "post" | "posts";
+    data?: CacheAPIProtocol["post"]["data"] | null;
+};
 
 export const Topline = ({ type, data }: Props) => {
     // url
     const { tab } = useParams<{ tab?: string }>();
-    const path = usePathname().split("/").slice(1);
 
-    // zustand
-    const status = useAppStore((state) => state.status);
-    const users = useAppStore((state) => state.users);
+    // fetching
+    const { data: status } = useQuery({ key: ["status"] });
 
     const title = ((): { alt: string; src: string } => {
         switch (type) {
@@ -42,36 +34,6 @@ export const Topline = ({ type, data }: Props) => {
             }
             case "posts": {
                 return { alt: "view", src: "/select.svg" };
-            }
-        }
-    })();
-
-    const username =
-        data && users[type === "post" ? data.user_id : data.user.id].username;
-
-    const backButton = (() => {
-        switch (path[0]) {
-            case "posts": {
-                return {
-                    topline: "Back to profile",
-                    href: `/profile/${username ?? ""}`,
-                };
-            }
-            case "post": {
-                switch (path[1]) {
-                    case "edit": {
-                        return {
-                            topline: "Back to post",
-                            href: `${type === "post" && data ? `/post/view/${data.id}` : `/posts/${username}`}`,
-                        };
-                    }
-                    default: {
-                        return {
-                            topline: "Back to posts",
-                            href: `/posts/${username ?? ""}`,
-                        };
-                    }
-                }
             }
         }
     })();
@@ -105,25 +67,23 @@ export const Topline = ({ type, data }: Props) => {
                 </Tooltip>
             </li>
 
-            {backButton && (
+            {status && (
                 <li>
-                    <Tooltip text={backButton.topline}>
-                        <LinkButton href={backButton.href ?? "/"}>
-                            <Image
-                                width={16}
-                                height={16}
-                                alt=""
-                                src="/back.svg"
-                            />
-                        </LinkButton>
-                    </Tooltip>
+                    <LinkButton href={`/posts/${status.username}`}>
+                        <Image
+                            width={16}
+                            height={16}
+                            alt=""
+                            src="/back.svg"
+                        />
+                    </LinkButton>
                 </li>
             )}
 
             <li className="ml-auto!">
                 {type === "posts" && (
                     <ul>
-                        {data?.user.id === status?.id && (
+                        {status && (
                             <li>
                                 <Tooltip text="Create a new post">
                                     <LinkButton href={`/post/create`}>

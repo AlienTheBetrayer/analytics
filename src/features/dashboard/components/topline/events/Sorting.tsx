@@ -10,11 +10,12 @@ type Props = {
 };
 
 export const Sorting = ({ hide }: Props) => {
-    // zustand-state
+    // zustand
     const selectedProjectId = useAppStore((state) => state.selectedProjectId);
     const eventFilters = useAppStore((state) => state.eventFilters);
     const setFilter = useAppStore((state) => state.setDashboardFilter);
 
+    // fallback
     if (!selectedProjectId) {
         return null;
     }

@@ -12,6 +12,7 @@ type Props = {
 };
 
 export const Sort = ({ tab, hide }: Props) => {
+    // zustand
     const filter = useAppStore((state) => state.filter)[tab];
     const setNotificationFilter = useAppStore(
         (state) => state.setNotificationFilter,

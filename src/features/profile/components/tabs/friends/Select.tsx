@@ -3,21 +3,26 @@ import { Button } from "@/features/ui/button/components/Button";
 import { TabSelection } from "@/utils/other/TabSelection";
 import Image from "next/image";
 import { useState } from "react";
-import { Profile, User } from "@/types/tables/account";
 import { Outcoming } from "./tabs/Outcoming";
 import { Incoming } from "./tabs/Incoming";
 import { Friends } from "./tabs/Friends";
-import { useAppStore } from "@/zustand/store";
+import { CacheAPIProtocol } from "@/query-api/protocol";
+import { useQuery } from "@/query/core";
 
 export type FriendsTab = "Friends" | "Incoming" | "Outcoming";
 
 type Props = {
-    data: { user: User; profile: Profile };
+    data: CacheAPIProtocol["user"]["data"];
 };
 
 export const Select = ({ data }: Props) => {
-    // zustand
-    const friendRequests = useAppStore((state) => state.friendRequests);
+    // fetching
+    const { data: requests_outcoming } = useQuery({
+        key: ["requests_outcoming", data.id],
+    });
+    const { data: requests_incoming } = useQuery({
+        key: ["requests_incoming", data.id],
+    });
 
     const [selected, setSelected] = useState<FriendsTab>("Friends");
 
@@ -93,10 +98,7 @@ export const Select = ({ data }: Props) => {
                                 color="var(--blue-1)"
                             />
                             <TabSelection
-                                condition={
-                                    !!friendRequests[data.user.id]?.incoming
-                                        ?.size
-                                }
+                                condition={!!requests_incoming?.length}
                                 color="var(--orange-1)"
                             />
                         </Button>
@@ -126,10 +128,7 @@ export const Select = ({ data }: Props) => {
                                 color="var(--blue-1)"
                             />
                             <TabSelection
-                                condition={
-                                    !!friendRequests[data.user.id]?.outcoming
-                                        ?.size
-                                }
+                                condition={!!requests_outcoming?.length}
                                 color="var(--orange-1)"
                             />
                         </Button>

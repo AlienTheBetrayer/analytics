@@ -1,10 +1,3 @@
-// profile / authentication optimization
-export type VisibleProfile = {
-    username: string;
-    avatar_url?: string;
-    color?: string;
-};
-
 // preferences
 export type Preferences = {
     visibility: boolean;
@@ -32,9 +25,6 @@ export type LocalStore = {
     // settings
     preferences: Preferences;
 
-    // profiles
-    visibleProfile?: VisibleProfile;
-
     // theme
     theme: "dark" | "light";
 
@@ -45,12 +35,6 @@ export type LocalStore = {
      * toggles the theme (goes from dark to light to dark)
      */
     toggleTheme: () => void;
-
-    /**
-     * sets the visible profile (no authentication flicker)
-     * @param profile the profile
-     */
-    setVisibleProfile: (visibleProfile?: VisibleProfile) => void;
 
     /**
      * updates the sorting metadata

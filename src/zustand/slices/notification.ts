@@ -97,8 +97,8 @@ export const NotificationSlice: SliceFunction<NotificationStore> = (set) => {
                         const notifications = { ...state.notifications };
                         const filtered = Object.fromEntries(
                             Object.entries(notifications[options.tab]).filter(
-                                ([id]) => !removeId.has(id)
-                            )
+                                ([id]) => !removeId.has(id),
+                            ),
                         );
 
                         return {
@@ -129,7 +129,7 @@ export const NotificationSlice: SliceFunction<NotificationStore> = (set) => {
                             )
                         ) {
                             throw new Error(
-                                "[flag, column] are undefined, both of them have to be present."
+                                "[flag, column] are undefined, both of them have to be present.",
                             );
                         }
 
@@ -139,7 +139,7 @@ export const NotificationSlice: SliceFunction<NotificationStore> = (set) => {
                             options.column.map((c) => [
                                 c,
                                 options.flag ?? false,
-                            ])
+                            ]),
                         );
 
                         return {
@@ -167,7 +167,7 @@ export const NotificationSlice: SliceFunction<NotificationStore> = (set) => {
                             Object.keys(prev.filtering ?? {}).map((k) => [
                                 k,
                                 options.flag ?? false,
-                            ])
+                            ]),
                         );
 
                         return {
@@ -202,7 +202,7 @@ export const NotificationSlice: SliceFunction<NotificationStore> = (set) => {
                     case "sort": {
                         if (!(options.column || options.direction)) {
                             throw new Error(
-                                "[column, direction] are undefined, at least one has to be present"
+                                "[column, direction] are undefined, at least one has to be present",
                             );
                         }
 

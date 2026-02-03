@@ -1,10 +1,8 @@
 import Image from "next/image";
-import { VisibleProfile } from "@/types/zustand/local";
 import { Profile } from "@/types/tables/account";
 import { CSSProperties } from "react";
-
 type Props = {
-    profile?: Profile | VisibleProfile;
+    profile?: Profile;
     src?: string;
     width?: number;
     height?: number;

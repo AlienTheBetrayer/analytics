@@ -1,14 +1,14 @@
 import Image from "next/image";
-import { Profile, User } from "@/types/tables/account";
 import { ProfileImage } from "../../ProfileImage";
 import { FriendButton } from "./FriendButton";
 import { ColorSwatches } from "../../parts/ColorSwatches";
 import { Gender } from "../../parts/Gender";
 import { Role } from "../../parts/Role";
 import { relativeTime } from "@/utils/other/relativeTime";
+import { CacheAPIProtocol } from "@/query-api/protocol";
 
 type Props = {
-    data: { user: User; profile: Profile };
+    data: CacheAPIProtocol["user"]["data"];
 };
 
 export const Overview = ({ data }: Props) => {
@@ -24,7 +24,7 @@ export const Overview = ({ data }: Props) => {
                         style={{ filter: `invert(var(--invert-8))` }}
                     />
                     <span className="text-foreground-2! text-5! flex">
-                        <mark>{data.user.username}</mark>
+                        <mark>{data.username}</mark>
                         &apos;s profile
                     </span>
                 </div>
@@ -43,7 +43,7 @@ export const Overview = ({ data }: Props) => {
                             src="/calendar.svg"
                         />
                         <span className="whitespace-nowrap">
-                            seen {relativeTime(data.user.last_seen_at)}
+                            seen {relativeTime(data.last_seen_at)}
                         </span>
                     </div>
 
