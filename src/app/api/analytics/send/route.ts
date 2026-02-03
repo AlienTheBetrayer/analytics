@@ -13,7 +13,7 @@ export const POST = async (request: NextRequest) => {
             throw "project_name & event_type are missing.";
         }
 
-        // 1. inserting / updating a project
+        // project
         const { data: projectData, error: projectError } = (await supabaseServer
             .from("projects")
             .upsert(
@@ -29,7 +29,7 @@ export const POST = async (request: NextRequest) => {
             throw projectError;
         }
 
-        // 2. inserting / updating new metadata
+        // event
         const { data: eventsData, error: eventsError } = (await supabaseServer
             .from("events")
             .upsert({
@@ -48,7 +48,7 @@ export const POST = async (request: NextRequest) => {
 
         return nextResponse(
             {
-                message: "Successfully created an event!",
+                success: true,
                 sent: {
                     project: projectData?.[0],
                     event: eventsData?.[0],
@@ -58,10 +58,7 @@ export const POST = async (request: NextRequest) => {
         );
     } catch (error) {
         console.error(error);
-        return nextResponse(
-            { error: "Failed sending the analytics from the SDK." },
-            400,
-        );
+        return nextResponse({ success: false }, 400);
     }
 };
 
