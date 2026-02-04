@@ -60,11 +60,11 @@ export type CacheAPIProtocol = {
     // users
     user: {
         key: ["user", string];
-        data: User & { profile: Profile };
+        data: User & { profile: Profile; post_ids: string[] };
     };
     user__username: {
         key: ["user__username", string];
-        data: User & { profile: Profile };
+        data: CacheAPIProtocol["user"]["data"];
     };
 
     // friends

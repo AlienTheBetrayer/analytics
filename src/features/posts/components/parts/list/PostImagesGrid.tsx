@@ -57,7 +57,7 @@ export const PostImagesGrid = ({ data }: Props) => {
             <Tooltip
                 text={`Go to a random post`}
                 className="w-full sm:max-w-64 self-center"
-                isEnabled={!!posts}
+                isEnabled={!!posts?.length}
             >
                 <Button
                     className="w-full"

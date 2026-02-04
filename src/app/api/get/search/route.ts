@@ -20,6 +20,7 @@ export const GET = async (request: NextRequest) => {
             .from("users")
             .select("id, posts:posts(id)", { count: "exact" })
             .ilike("username", `%${query}%`)
+            .limit(3, { referencedTable: "posts" })
             .order("last_seen_at", { ascending: false })
             .range(from, to)) as {
             data: { id: string; posts: { id: string }[] }[];

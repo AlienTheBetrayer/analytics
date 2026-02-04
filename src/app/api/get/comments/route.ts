@@ -11,7 +11,7 @@ export const GET = async (request: NextRequest) => {
         const post_id = searchParams.get("post_id");
         const comment_id = searchParams.get("comment_id");
 
-        const caller_id = tokenPayload(request)?.accessToken?.id;
+        const caller_id = tokenPayload(request)?.refreshToken?.id;
 
         if (!post_id && !comment_id) {
             throw "post_id and comment_id are undefined";

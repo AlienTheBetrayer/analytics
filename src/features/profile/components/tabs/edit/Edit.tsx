@@ -27,7 +27,6 @@ export const Edit = ({ data }: Props) => {
                         height={16}
                         alt=""
                         src="/pencil.svg"
-                        style={{ filter: `invert(var(--invert-8))` }}
                     />
                     <span className="text-foreground-2! text-5! flex">
                         <mark>{data.username}</mark>

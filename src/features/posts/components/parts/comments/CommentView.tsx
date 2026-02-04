@@ -18,6 +18,8 @@ export const CommentView = ({ id, onEdit, editing }: Props) => {
     const { data: user } = useQuery({ key: ["user", comment?.user_id] });
     const { data: status } = useQuery({ key: ["status"] });
 
+    console.log(comment);
+
     if (!user || !comment) {
         return <li className="box p-4! loading min-h-24 rounded-4xl!" />;
     }

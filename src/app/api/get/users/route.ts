@@ -16,15 +16,12 @@ export const GET = async (request: NextRequest) => {
 
         const { data, error } = (await supabaseServer
             .from("users")
-            .select(
-                `
-                *, 
-                profile:profiles(*)
-                `,
-            )
+            .select(`*, profile:profiles(*), post_ids:posts(id)`)
+            .limit(3, { referencedTable: "post_ids" })
             .in(user_ids ? "id" : "username", (user_ids || user_names)!)) as {
             data: (User & {
                 profile: Profile;
+                post_ids: { id: string }[];
             })[];
             error: PostgrestError | null;
         };
@@ -39,6 +36,7 @@ export const GET = async (request: NextRequest) => {
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 users: data.map(({ password, ...user }) => ({
                     ...user,
+                    post_ids: user.post_ids.map((id) => id.id),
                 })),
             },
             200,

@@ -30,7 +30,7 @@ export const NoPosts = () => {
                         height={16}
                         src="/back.svg"
                     />
-                    Go back
+                    Go home
                 </LinkButton>
             </Tooltip>
         </AbsentData>

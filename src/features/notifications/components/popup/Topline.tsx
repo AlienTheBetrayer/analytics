@@ -3,10 +3,10 @@ import { Button } from "@/features/ui/button/components/Button";
 import { NotificationColors } from "../parts/NotificationCompact";
 import Image from "next/image";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
-import { NotificationPartial } from "@/types/other/notifications";
+import { NotificationData } from "@/types/other/notifications";
 
 type Props = {
-    notification: NotificationPartial;
+    notification: NotificationData;
     onInteract?: () => void;
 };
 

@@ -2,6 +2,7 @@ import { SearchDisplay } from "@/features/search/components/SearchDisplay";
 import { LoadingSearchEntryUser } from "@/features/ui/loading/components/LoadingSearch";
 import { useQuery } from "@/query/core";
 import { useParams } from "next/navigation";
+import React from "react";
 
 type Props = {
     page: number;
@@ -24,9 +25,9 @@ export const Page = ({ page }: Props) => {
     }
 
     return data.ids.map((id) => (
-        <SearchDisplay
-            data={id}
-            key={id.id}
-        />
+        <React.Fragment key={id.id}>
+            <SearchDisplay data={id} />
+            <hr className="mx-auto w-9/12!" />
+        </React.Fragment>
     ));
 };

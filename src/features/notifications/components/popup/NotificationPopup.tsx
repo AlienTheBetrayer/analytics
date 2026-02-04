@@ -1,9 +1,9 @@
-import { NotificationPartial } from "@/types/other/notifications";
+import { NotificationData } from "@/types/other/notifications";
 import { Topline } from "./Topline";
 import { motion } from "motion/react";
 
 type Props = {
-    notification: NotificationPartial;
+    notification: NotificationData;
     onInteract?: () => void;
 };
 

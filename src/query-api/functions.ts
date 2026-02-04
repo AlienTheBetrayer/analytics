@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { CacheAPIProtocol } from "@/query-api/protocol";
+import { __posts, __user } from "@/query-api/utils";
 import { queryMutate } from "@/query/auxiliary";
 import { CacheKey, CacheKeyEntity, CacheValue } from "@/query/types/types";
 import { PostPrivacy } from "@/types/tables/posts";
@@ -47,32 +48,10 @@ export const CacheAPIFunctions: Record<
 
     // users
     user: async (args: unknown[]) => {
-        if (!args[0]) {
-            throw new Error("user_id is undefined");
-        }
-
-        return (
-            await axios.get("/api/get/users", {
-                params: { user_ids: args[0] },
-            })
-        ).data?.users?.[0];
+        return __user(args, "id");
     },
     user__username: async (args: unknown[]) => {
-        if (!args[0]) {
-            throw new Error("username is undefined");
-        }
-
-        const user = (
-            await axios.get("/api/get/users", {
-                params: { user_names: args[0] },
-            })
-        ).data?.users?.[0];
-
-        if (user) {
-            queryMutate({ key: ["user", user.id], value: user });
-        }
-
-        return user;
+        return __user(args, "name");
     },
 
     // colors
@@ -99,15 +78,18 @@ export const CacheAPIFunctions: Record<
                 params: { user_id: args[0] },
             })
         ).data.friends as string[];
-        const user_ids = friends.join(",");
 
-        // caching and normalizing them all
-        const users = await axios.get("/api/get/users", {
-            params: { user_ids },
-        });
+        if (friends.length) {
+            const user_ids = friends.join(",");
 
-        for (const user of users.data.users) {
-            queryMutate({ key: ["user", user.id], value: user });
+            // caching and normalizing them all
+            const users = await axios.get("/api/get/users", {
+                params: { user_ids },
+            });
+
+            for (const user of users.data.users) {
+                queryMutate({ key: ["user", user.id], value: user });
+            }
         }
 
         return friends;
@@ -126,17 +108,15 @@ export const CacheAPIFunctions: Record<
         ).data.requests as string[];
         const user_ids = requests.join(",");
 
-        if (!user_ids) {
-            return requests;
-        }
+        if (user_ids.length) {
+            // caching and normalizing them all
+            const users = await axios.get("/api/get/users", {
+                params: { user_ids },
+            });
 
-        // caching and normalizing them all
-        const users = await axios.get("/api/get/users", {
-            params: { user_ids },
-        });
-
-        for (const user of users.data.users) {
-            queryMutate({ key: ["user", user.id], value: user });
+            for (const user of users.data.users) {
+                queryMutate({ key: ["user", user.id], value: user });
+            }
         }
 
         return requests;
@@ -153,17 +133,15 @@ export const CacheAPIFunctions: Record<
         ).data.requests as string[];
         const user_ids = requests.join(",");
 
-        if (!user_ids) {
-            return requests;
-        }
+        if (user_ids.length) {
+            // caching and normalizing them all
+            const users = await axios.get("/api/get/users", {
+                params: { user_ids },
+            });
 
-        // caching and normalizing them all
-        const users = await axios.get("/api/get/users", {
-            params: { user_ids },
-        });
-
-        for (const user of users.data.users) {
-            queryMutate({ key: ["user", user.id], value: user });
+            for (const user of users.data.users) {
+                queryMutate({ key: ["user", user.id], value: user });
+            }
         }
 
         return requests;
@@ -171,42 +149,7 @@ export const CacheAPIFunctions: Record<
 
     // posts
     posts: async (args: unknown[]) => {
-        if (!args[0]) {
-            throw new Error("user_id is undefined");
-        }
-
-        const posts = (
-            await axios.get("/api/get/posts", { params: { user_ids: args[0] } })
-        ).data.posts as CacheAPIProtocol["post"]["data"][];
-        const post_ids = posts.map((p) => p.id);
-
-        for (const post of posts) {
-            queryMutate({ key: ["post", post.id], value: post });
-        }
-
-        if (!post_ids) {
-            return;
-        }
-
-        // caching and normalizing them all
-        const [privacies] = await Promise.all([
-            axios.get("/api/get/post_privacy", {
-                params: { post_ids: post_ids.join(",") },
-            }),
-        ]);
-
-        for (const post_id of post_ids) {
-            const privacy = (privacies.data.privacy as PostPrivacy[]).find(
-                (p) => p.post_id === post_id,
-            );
-
-            queryMutate({
-                key: ["post_privacy", post_id],
-                value: privacy ?? null,
-            });
-        }
-
-        return post_ids;
+        return __posts(args, "user_ids");
     },
     post_privacy: async (args: unknown[]) => {
         if (!args[0]) {

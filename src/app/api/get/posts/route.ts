@@ -11,7 +11,7 @@ export const GET = async (request: NextRequest) => {
         const post_ids = searchParams.get("post_ids")?.split(",");
         const user_ids = searchParams.get("user_ids")?.split(",");
 
-        const caller_id = tokenPayload(request)?.accessToken?.id;
+        const caller_id = tokenPayload(request)?.refreshToken?.id;
 
         if (!(post_ids || user_ids)) {
             throw "post_ids and user_ids are undefined";

@@ -7,11 +7,16 @@ import Image from "next/image";
 
 type Props = {
     id: string;
+    className?: string;
 };
 
-export const PostCompact = ({ id }: Props) => {
+export const PostCompact = ({ id, className }: Props) => {
     // fetching
-    const { data } = useQuery({ key: ["post", id] });
+    const { data, isLoading } = useQuery({ key: ["post", id] });
+
+    if (isLoading) {
+        return <article className="w-full h-81 loading" />;
+    }
 
     if (!data) {
         return null;
@@ -20,8 +25,13 @@ export const PostCompact = ({ id }: Props) => {
     // main jsx
     return (
         <article
-            className={`flex flex-col rounded-4xl! overflow-hidden h-81! relative
-        ${data.image_url ? "" : "border border-background-a-5"}`}
+            className={`flex flex-col rounded-4xl! overflow-hidden h-81 relative
+        ${data.image_url ? "" : "border border-background-a-5"}
+        ${className ?? ""}`}
+            style={{
+                maskImage: "radial-gradient(white, black)",
+                WebkitMaskImage: "-webkit-radial-gradient(white, black)",
+            }}
         >
             {data.image_url && (
                 <Image
@@ -36,7 +46,6 @@ export const PostCompact = ({ id }: Props) => {
             <ToplineCompact
                 data={data}
                 type="compact"
-                className="rounded-none!"
             />
 
             <Tooltip

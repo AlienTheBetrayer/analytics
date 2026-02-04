@@ -1,5 +1,6 @@
 import { Page } from "@/features/search/components/Page";
 import { Button } from "@/features/ui/button/components/Button";
+import { Spinner } from "@/features/ui/spinner/components/Spinner";
 import { useQuery } from "@/query/core";
 import Image from "next/image";
 import { useParams } from "next/navigation";
@@ -13,10 +14,10 @@ export const Results = () => {
     const [page, setPage] = useState<number>(0);
 
     // fetching
-    const { data } = useQuery({ key: ["search", query, page] });
+    const { data, isLoading } = useQuery({ key: ["search", query, page] });
 
     return (
-        <ul className="flex flex-col gap-8">
+        <ul className="flex flex-col gap-4">
             <li className="flex flex-col items-center gap-1 self-center">
                 <Image
                     alt=""
@@ -26,9 +27,7 @@ export const Results = () => {
                 />
 
                 <div className="flex items-center gap-2">
-                    <span>
-                        <mark>Results: {data?.pages}</mark>
-                    </span>
+                    <span>Results: {data?.pages}</span>
                 </div>
             </li>
 
@@ -37,7 +36,7 @@ export const Results = () => {
             </li>
 
             <li>
-                <ul className="flex flex-col gap-24">
+                <ul className="flex flex-col gap-8">
                     {Array.from({ length: page + 1 }, (_, k) => (
                         <Page
                             page={k}
@@ -55,17 +54,12 @@ export const Results = () => {
                             setPage((prev) => prev + 1);
                         }}
                     >
+                        {isLoading && <Spinner />}
                         <Image
                             alt=""
                             width={16}
                             height={16}
-                            src="/plus.svg"
-                        />
-                        <Image
-                            alt=""
-                            width={16}
-                            height={16}
-                            src="/account.svg"
+                            src="/server.svg"
                         />
                         Load more
                     </Button>

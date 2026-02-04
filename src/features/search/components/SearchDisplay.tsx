@@ -14,7 +14,7 @@ type Props = {
 
 export const SearchDisplay = ({ data }: Props) => {
     return (
-        <div className="flex flex-col w-full p-0.5! gap-1">
+        <div className="box flex flex-col w-full p-4! gap-1">
             <SearchDisplayProfile data={data} />
 
             {!!data.post_ids.length && <SearchDisplayPosts data={data} />}
@@ -94,7 +94,7 @@ const SearchDisplayProfile = ({ data }: Props) => {
 
 const SearchDisplayPosts = ({ data }: Props) => {
     return (
-        <ul className="flex flex-col gap-2 w-full relative">
+        <ul className="flex flex-col gap-1 w-full relative">
             {data.post_ids.map((id) => (
                 <SearchDisplayPost
                     id={id}
@@ -118,11 +118,11 @@ const SearchDisplayPost = ({ id }: PostProps) => {
     return (
         <li
             key={post.id}
-            className="w-full rounded-4xl overflow-hidden"
+            className="w-full"
         >
             <LinkButton
                 href={`/post/view/${post.id}`}
-                className="h-8 border-0! relative flex justify-between! p-4! hover:scale-98 focus-within:scale-98"
+                className="h-8 border-0! relative flex justify-between! rounded-lg! p-4! hover:scale-98 focus-within:scale-98"
             >
                 {post.image_url && (
                     <Image

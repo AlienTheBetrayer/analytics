@@ -16,9 +16,6 @@ type Props = {
 export const Topline = ({ data }: Props) => {
     // fetching
     const { data: status } = useQuery({ key: ["status"] });
-    const { data: requests_outcoming } = useQuery({
-        key: ["requests_outcoming", data.id],
-    });
 
     // url
     const { tab } = useParams<{ tab?: string }>();
@@ -192,10 +189,6 @@ export const Topline = ({ data }: Props) => {
                                 <TabSelection
                                     condition={tab === "friends"}
                                     color="var(--blue-1)"
-                                />
-                                <TabSelection
-                                    condition={!!requests_outcoming?.length}
-                                    color="var(--orange-1)"
                                 />
                             </LinkButton>
                         </Tooltip>
