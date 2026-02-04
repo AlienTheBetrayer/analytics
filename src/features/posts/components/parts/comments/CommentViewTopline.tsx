@@ -24,7 +24,7 @@ export const CommentViewTopline = ({ data, onEdit }: Props) => {
     const deleteBox = useMessageBox();
 
     return (
-        <ul className="flex flex-col sm:flex-row sm:gap-2">
+        <ul className="flex gap-2">
             {deleteBox.render({
                 children:
                     "Your comment will be gone and no one will be able to see it.",
@@ -46,39 +46,21 @@ export const CommentViewTopline = ({ data, onEdit }: Props) => {
                 },
             })}
 
-            <li className="flex items-center">
-                <LinkButton
-                    styles="link"
-                    href={`/profile/${user?.username}`}
-                    className="p-0! w-fit! h-fit!"
-                >
-                    <span>
-                        <mark>{user?.username}</mark>
-                    </span>
-                </LinkButton>
-            </li>
-
-            <li className="flex items-center">
-                <hr className="w-px! h-2/3! self-center" />
-            </li>
-
-            <li className="flex items-center">
-                <span className="flex items-center gap-0.5">
-                    <small>
-                        <Image
-                            alt=""
-                            width={12}
-                            height={12}
-                            src="/plus.svg"
-                        />
-                    </small>
-                    <small>{relativeTime(data.created_at)}</small>
-                </span>
-            </li>
-
-            {data.edited_at && (
-                <>
+            <li>
+                <ul className="flex flex-col sm:flex-row sm:items-center gap-2">
                     <li className="flex items-center">
+                        <LinkButton
+                            styles="link"
+                            href={`/profile/${user?.username}`}
+                            className="p-0! w-fit! h-fit!"
+                        >
+                            <span>
+                                <mark>{user?.username}</mark>
+                            </span>
+                        </LinkButton>
+                    </li>
+
+                    <li className="hidden sm:flex items-center self-stretch">
                         <hr className="w-px! h-2/3! self-center" />
                     </li>
 
@@ -87,51 +69,71 @@ export const CommentViewTopline = ({ data, onEdit }: Props) => {
                             <small>
                                 <Image
                                     alt=""
-                                    width={13}
-                                    height={13}
-                                    src="/pencil.svg"
+                                    width={12}
+                                    height={12}
+                                    src="/plus.svg"
                                 />
                             </small>
-                            <small>{relativeTime(data.edited_at)}</small>
+                            <small>{relativeTime(data.created_at)}</small>
                         </span>
                     </li>
-                </>
-            )}
+                </ul>
+            </li>
 
-            {status?.id === data.user_id && (
-                <li className="ml-auto!">
-                    <ul className="flex items-center gap-1">
-                        <li>
-                            <Tooltip text="Edit your comment">
-                                <Button onClick={onEdit}>
+            <li className="ml-auto!">
+                <ul className="flex flex-col sm:flex-row gap-2 items-end sm:items-start">
+                    {data.edited_at && (
+                        <li className="flex items-center">
+                            <span className="flex items-center gap-0.5">
+                                <small>
                                     <Image
                                         alt=""
-                                        width={16}
-                                        height={16}
+                                        width={13}
+                                        height={13}
                                         src="/pencil.svg"
                                     />
-                                </Button>
-                            </Tooltip>
+                                </small>
+                                <small>{relativeTime(data.edited_at)}</small>
+                            </span>
                         </li>
+                    )}
 
+                    {status?.id === data.user_id && (
                         <li>
-                            <Tooltip text="Delete your comment">
-                                <Button onClick={deleteBox.show}>
-                                    <PromiseState
-                                        state={`deleteComment_${data.id}`}
-                                    />
-                                    <Image
-                                        alt=""
-                                        width={16}
-                                        height={16}
-                                        src="/delete.svg"
-                                    />
-                                </Button>
-                            </Tooltip>
+                            <ul className="flex items-center gap-1">
+                                <li>
+                                    <Tooltip text="Edit your comment">
+                                        <Button onClick={onEdit}>
+                                            <Image
+                                                alt=""
+                                                width={16}
+                                                height={16}
+                                                src="/pencil.svg"
+                                            />
+                                        </Button>
+                                    </Tooltip>
+                                </li>
+
+                                <li>
+                                    <Tooltip text="Delete your comment">
+                                        <Button onClick={deleteBox.show}>
+                                            <PromiseState
+                                                state={`deleteComment_${data.id}`}
+                                            />
+                                            <Image
+                                                alt=""
+                                                width={16}
+                                                height={16}
+                                                src="/delete.svg"
+                                            />
+                                        </Button>
+                                    </Tooltip>
+                                </li>
+                            </ul>
                         </li>
-                    </ul>
-                </li>
-            )}
+                    )}
+                </ul>
+            </li>
         </ul>
     );
 };

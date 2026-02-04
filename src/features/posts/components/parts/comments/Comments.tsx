@@ -63,7 +63,7 @@ export const Comments = ({ id }: Props) => {
                     onChange={(value) => setFilter(value)}
                 />
 
-                <div className="flex items-center gap-1 absolute left-1/2 top-1/2 -translate-1/2">
+                <div className="flex items-center gap-1 absolute left-1/2 -top-1/2 md:top-1/2 -translate-1/2">
                     <Image
                         alt=""
                         width={16}
