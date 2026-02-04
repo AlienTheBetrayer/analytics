@@ -23,7 +23,7 @@ export const Theme = ({ className, children }: Props) => {
                 width={18}
                 height={18}
                 className="transition-all duration-1000!"
-                style={{ rotate: theme === "dark" ? "0deg" : "180deg" }}
+                style={{ rotate: theme === "dark" ? "0deg" : "270deg" }}
             />
             {children}
         </Button>

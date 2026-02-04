@@ -42,10 +42,7 @@ export const AuthenticationForm = ({
     return (
         <div className="flex flex-col gap-2 w-full max-w-7xl">
             <div className="box w-full box flex flex-row! p-0! min-h-10 h-10 items-center gap-1">
-                <Tooltip
-                    text="Home"
-                    direction="top"
-                >
+                <Tooltip text="Home">
                     <LinkButton
                         href="/home"
                         ariaLabel="home page"
@@ -70,17 +67,14 @@ export const AuthenticationForm = ({
                 </span>
             </div>
 
-            <div className="box w-full flex flex-col items-center gap-2">
-                <div className="flex flex-col gap-1 items-center">
-                    <div className="grid place-items-center rounded-full w-10 aspect-square outline-2 outline-blue-1">
-                        <Image
-                            alt=""
-                            width={24}
-                            height={24}
-                            src="/privacy.svg"
-                        />
-                    </div>
-
+            <div className="box w-full flex flex-col items-center gap-8!">
+                <div className="flex gap-1 items-center">
+                    <Image
+                        alt=""
+                        width={24}
+                        height={24}
+                        src="/privacy.svg"
+                    />
                     <span>{title}</span>
                 </div>
                 <hr />
@@ -109,7 +103,7 @@ export const AuthenticationForm = ({
                         });
                     }}
                 >
-                    <ul className="flex flex-col gap-4 grow">
+                    <ul className="flex flex-col gap-8 grow">
                         <li className="flex flex-col gap-2">
                             <label
                                 htmlFor="username"

@@ -19,9 +19,9 @@ const RegisterPage = () => {
 
     return (
         <main className="w-full flex flex-col items-center gap-8">
-            <div className="box flex flex-col gap-1 text-center w-full max-w-7xl">
+            <div className="box flex flex-col gap-1 items-center text-center w-full max-w-7xl">
                 <h1>Signing up</h1>
-                <p>
+                <p className="w-full max-w-3xl">
                     Create an account to get started. Your information is
                     securely stored and used only to provide access to the
                     platform and its features. Your account ensures protected,

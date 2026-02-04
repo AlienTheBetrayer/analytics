@@ -4,7 +4,8 @@
     opacity: 0;
     overflow: hidden;
     interpolate-size: allow-keywords;
-    transition: 0.35s all ease-out;
+    transition: 0.4s all ease-in-out;
+    scale: 0.33;
 }
 
 .logged-in-nav:hover .auth-button-tooltip,
@@ -12,4 +13,5 @@
     margin-right: 0.4rem;
     opacity: 1;
     width: auto;
+    scale: 1;
 }

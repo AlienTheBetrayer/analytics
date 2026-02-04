@@ -19,9 +19,9 @@ const LoginPage = () => {
 
     return (
         <main className="w-full flex flex-col items-center gap-8">
-            <div className="box flex flex-col gap-1 text-center w-full max-w-7xl">
+            <div className="box flex flex-col items-center gap-1 text-center w-full max-w-7xl">
                 <h1>Authentication</h1>
-                <p>
+                <p className="w-full max-w-3xl">
                     Sign in to your account to continue. If your account is
                     inactive for 7 days, you&apos;ll be automatically signed out
                     and asked to log in again to ensure your access remains
