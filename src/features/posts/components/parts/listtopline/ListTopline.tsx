@@ -114,7 +114,7 @@ export const ListTopline = ({ data }: Props) => {
                 <Tooltip text="Display format">
                     <Modal
                         element={(hide) => <DisplayFormat hide={hide} />}
-                        direction="bottom-right"
+                        direction="bottom-left"
                     >
                         <Button>
                             <Image

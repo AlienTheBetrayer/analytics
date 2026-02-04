@@ -91,7 +91,6 @@ export const Topline = ({ tab }: Props) => {
 
             <li>
                 <Modal
-                    direction="bottom-right"
                     element={(hide) => (
                         <Filter
                             tab={tab}
@@ -119,7 +118,6 @@ export const Topline = ({ tab }: Props) => {
 
             <li>
                 <Modal
-                    direction="bottom-right"
                     element={(hide) => (
                         <Sort
                             tab={tab}

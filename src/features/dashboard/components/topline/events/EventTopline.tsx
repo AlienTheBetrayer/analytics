@@ -45,7 +45,6 @@ export const EventTopline = () => {
 
             <li>
                 <Modal
-                    direction="bottom-right"
                     element={(hide) =>
                         selectedProjectId ? (
                             <Filtering
@@ -77,7 +76,6 @@ export const EventTopline = () => {
 
             <li>
                 <Modal
-                    direction="bottom-right"
                     element={(hide) => <Sorting hide={hide} />}
                 >
                     <Tooltip text="Sort events">

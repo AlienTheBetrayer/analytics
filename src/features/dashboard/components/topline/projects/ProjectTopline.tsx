@@ -35,7 +35,7 @@ export const ProjectTopline = () => {
 
             <li>
                 <Modal
-                    direction="bottom-left"
+                    direction="bottom-right"
                     element={(hide) => <Sorting hide={hide} />}
                 >
                     <Tooltip text="Sort projects">

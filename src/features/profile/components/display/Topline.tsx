@@ -59,7 +59,7 @@ export const Topline = ({ data }: Props) => {
                 <li>
                     <Tooltip text="Administrator panel">
                         <Modal
-                            direction="bottom-left"
+                            direction="bottom-right"
                             element={(hide) => (
                                 <RoleEditing
                                     data={data}
