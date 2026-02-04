@@ -11,19 +11,34 @@ type Props = {
 export const PostsAuthor = ({ data }: Props) => {
     return (
         <article className="flex flex-col gap-4 items-center">
-            <div className="flex flex-col items-center">
-                <Image
-                    alt=""
-                    width={16}
-                    height={16}
-                    src="/account.svg"
-                />
-                <span>
-                    <mark>{data.username}</mark>&apos;s account:
-                </span>
-            </div>
+            <ul className="flex flex-row! h-10! items-center gap-1 box p-0! w-full">
+                <li>
+                    <Tooltip text="Go to profile">
+                        <LinkButton href={`/profile/${data.username}`}>
+                            <Image
+                                alt=""
+                                width={16}
+                                height={16}
+                                src="/launch.svg"
+                            />
+                        </LinkButton>
+                    </Tooltip>
+                </li>
 
-            <hr className="w-full max-w-64" />
+                <li className="flex items-center gap-1 absolute left-1/2 top-1/2 -translate-1/2">
+                    <Image
+                        alt=""
+                        width={16}
+                        height={16}
+                        src="/account.svg"
+                    />
+                    <span>
+                        <mark>{data.username}</mark>:
+                    </span>
+                </li>
+            </ul>
+
+            <hr className="w-full max-w-32" />
 
             <ProfileImage
                 width={256}

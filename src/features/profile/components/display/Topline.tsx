@@ -25,15 +25,17 @@ export const Topline = ({ data }: Props) => {
             className={`box p-0! gap-1! sticky! top-4 z-2 my-2! mx-auto! flex-row! max-w-400 w-full transition-all duration-500 h-10 items-center`}
         >
             <li className="absolute left-1/2 -translate-1/2 top-1/2">
-                <span className="flex gap-1 items-center">
-                    <div className="rounded-full w-1 h-1 bg-blue-1" />
-                    <Image
-                        width={18}
-                        height={18}
-                        alt="Profile"
-                        src="/account.svg"
-                    />
-                </span>
+                <LinkButton href={`/profile/${data.username}`}>
+                    <span className="flex gap-1 items-center">
+                        <div className="rounded-full w-1 h-1 bg-blue-1" />
+                        <Image
+                            width={18}
+                            height={18}
+                            alt="Profile"
+                            src="/account.svg"
+                        />
+                    </span>
+                </LinkButton>
             </li>
 
             <li>

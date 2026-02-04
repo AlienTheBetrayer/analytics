@@ -3,6 +3,7 @@ import { Gender } from "@/features/profile/components/parts/Gender";
 import { Role } from "@/features/profile/components/parts/Role";
 import { ProfileImage } from "@/features/profile/components/ProfileImage";
 import { Button } from "@/features/ui/button/components/Button";
+import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { TabSelection } from "@/utils/other/TabSelection";
 import { motion } from "motion/react";
@@ -30,29 +31,31 @@ export const ProfileOverview = ({
         <div className="flex flex-col gap-4">
             <ul className="box p-0! h-10! rounded-full! flex-row! items-center">
                 <li>
-                    <Button
-                        className="p-0!"
-                        onClick={() =>
-                            setCollapsed((prev) =>
-                                prev === "profile" ? null : "profile",
-                            )
-                        }
-                    >
-                        <Image
-                            alt=""
-                            width={20}
-                            height={20}
-                            src="/collapse.svg"
-                        />
-                        <TabSelection
-                            condition={true}
-                            color={
-                                collapsed === "profile"
-                                    ? "var(--orange-1)"
-                                    : "var(--blue-1)"
+                    <Tooltip text="Collapse / Expand">
+                        <Button
+                            className="p-0!"
+                            onClick={() =>
+                                setCollapsed((prev) =>
+                                    prev === "profile" ? null : "profile",
+                                )
                             }
-                        />
-                    </Button>
+                        >
+                            <Image
+                                alt=""
+                                width={20}
+                                height={20}
+                                src="/collapse.svg"
+                            />
+                            <TabSelection
+                                condition={true}
+                                color={
+                                    collapsed === "profile"
+                                        ? "var(--orange-1)"
+                                        : "var(--blue-1)"
+                                }
+                            />
+                        </Button>
+                    </Tooltip>
                 </li>
 
                 <li className="flex items-center gap-1 absolute left-1/2 top-1/2 -translate-1/2">
