@@ -4,7 +4,7 @@ import React from "react";
 type Props = {
     title: React.ReactNode;
     description: React.ReactNode;
-    children: React.ReactNode;
+    children?: React.ReactNode;
     src?: string;
     className?: string;
 };
@@ -36,11 +36,14 @@ export const AbsentData = ({
                     <p className="max-w-100 text-center">{description}</p>
                 </div>
 
-                <hr />
-                
-                <div className="flex flex-col gap-2 items-center w-full">
-                    {children}
-                </div>
+                {children && (
+                    <>
+                        <hr />
+                        <div className="flex flex-col gap-2 items-center w-full">
+                            {children}
+                        </div>
+                    </>
+                )}
             </div>
         </div>
     );

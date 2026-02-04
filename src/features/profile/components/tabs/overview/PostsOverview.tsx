@@ -1,4 +1,5 @@
 import { PostCompact } from "@/features/posts/components/parts/compact/PostCompact";
+import { NoPosts } from "@/features/profile/components/errors/NoPosts";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import Image from "next/image";
 
@@ -19,21 +20,33 @@ export const PostsOverview = ({ data }: Props) => {
                     />
                 </li>
                 <li>
-                    <span>
-                        Posts:
-                    </span>
+                    <span>Posts:</span>
                 </li>
             </ul>
 
-            <ul className="flex flex-col gap-4 w-full justify-center">
-                {data.post_ids.map((id) => (
-                    <li key={id}>
-                        <PostCompact
-                            id={id}
-                            className="h-48!"
-                        />
-                    </li>
-                ))}
+            <ul className="flex flex-col gap-4 w-full justify-center relative">
+                {data.post_ids?.length ? (
+                    data.post_ids.map((id) => (
+                        <li key={id}>
+                            <PostCompact
+                                id={id}
+                                className="h-48!"
+                            />
+                        </li>
+                    ))
+                ) : (
+                    <>
+                        {Array.from({ length: 3 }, (_, k) => (
+                            <li key={k}>
+                                <div className="w-full h-48 rounded-4xl loading" />
+                            </li>
+                        ))}
+
+                        <li className="absolute left-1/2 top-1/2 -translate-1/2">
+                            <NoPosts />
+                        </li>
+                    </>
+                )}
             </ul>
         </div>
     );

@@ -43,10 +43,8 @@ export const Overview = ({ data }: Props) => {
 
             <hr />
 
-            <div
-                className={`flex flex-col-reverse lg:grid ${data.post_ids.length ? "lg:grid-cols-2" : ""} gap-4`}
-            >
-                {!!data.post_ids.length && <PostsOverview data={data} />}
+            <div className="flex flex-col-reverse lg:grid lg:grid-cols-2 gap-4">
+                <PostsOverview data={data} />
                 <ProfileOverview data={data} />
             </div>
 
