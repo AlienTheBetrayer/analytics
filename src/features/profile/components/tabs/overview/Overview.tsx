@@ -83,12 +83,12 @@ export const Overview = ({ data }: Props) => {
 
             <hr />
 
-            <div className="flex flex-col-reverse xl:grid xl:grid-cols-2 gap-4">
-                <PostsOverview
+            <div className="flex flex-col xl:grid xl:grid-cols-2 gap-4">
+                <ProfileOverview
                     data={data}
                     collapsed={collapsed}
                 />
-                <ProfileOverview
+                <PostsOverview
                     data={data}
                     collapsed={collapsed}
                 />
