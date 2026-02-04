@@ -24,59 +24,15 @@ export const Comments = ({ id }: Props) => {
     const { data: status } = useQuery({ key: ["status"] });
 
     const areCommentsEditable =
-        privacy?.comments !== false || status?.id === post?.user_id;
+        status && (privacy?.comments !== false || status.id === post?.user_id);
 
     // react states
     const [collapsed, setCollapsed] = useState<boolean>(false);
     const [filter, setFilter] = useState<string>("");
 
     return (
-        <ul className="flex flex-col gap-8">
-            {status && (
-                <li
-                    style={{
-                        opacity: areCommentsEditable ? 1 : 0.3,
-                    }}
-                    inert={!areCommentsEditable}
-                >
-                    <ul className="flex flex-col gap-8 relative">
-                        {!areCommentsEditable && (
-                            <Image
-                                alt="prohibited"
-                                src="/prohibited.svg"
-                                width={32}
-                                height={32}
-                                className="z-1 absolute left-1/2 top-1/2 -translate-1/2"
-                            />
-                        )}
-
-                        <li className="flex justify-center items-center gap-1  box p-0! flex-row! h-10! bg-background-a-0!">
-                            <Image
-                                alt=""
-                                width={16}
-                                height={16}
-                                src="/plus.svg"
-                            />
-                            <span>Add a comment:</span>
-                        </li>
-
-                        <li>
-                            {post && (
-                                <UpdateComment
-                                    type="send"
-                                    data={{ post }}
-                                />
-                            )}
-                        </li>
-
-                        <li>
-                            <hr />
-                        </li>
-                    </ul>
-                </li>
-            )}
-
-            <li className="flex items-center gap-1! box p-0! flex-row! h-10! bg-background-a-0!">
+        <ul className="flex flex-col gap-4">
+            <li className="flex items-center gap-1! box p-0! flex-row! h-10!">
                 <Tooltip text="Collapse / Expand">
                     <Button
                         onClick={() => setCollapsed((prev) => !prev)}
@@ -140,6 +96,24 @@ export const Comments = ({ id }: Props) => {
                         />
                     </Button>
                 </Tooltip>
+            </li>
+
+            <li>
+                <ul className="flex flex-col gap-4 relative">
+                    <li>
+                        {post && (
+                            <UpdateComment
+                                isEnabled={!!areCommentsEditable}
+                                type="send"
+                                data={{ post }}
+                            />
+                        )}
+                    </li>
+
+                    <li>
+                        <hr />
+                    </li>
+                </ul>
             </li>
 
             <li

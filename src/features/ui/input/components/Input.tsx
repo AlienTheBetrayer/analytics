@@ -54,7 +54,7 @@ export const Input = ({
                     outline-0!
                     border-2 border-background-a-8 p-2.5 rounded-full focus:border-blue-1 bg-background-a-3
                     hover:bg-background-a-6 transition-colors duration-500 focus-visible:bg-background-a-6 resize-y
-                    ${isEnabled && (required || minLength || maxLength) ? "invalid:border-red-3! valid:border-blue-1!" : ""} 
+                    ${isEnabled && (required || minLength || maxLength) ? "valid:border-blue-1!" : ""} 
                     ${className ?? ""}`}
                 value={inputValue}
                 onChange={(e) => {

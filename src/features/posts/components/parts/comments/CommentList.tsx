@@ -27,7 +27,7 @@ export const CommentList = ({ comments, filter }: Props) => {
 
     return (
         <ul
-            className={`flex flex-col gap-2! min-h-64 ${!comments.length ? "loading" : ""}`}
+            className={`flex flex-col gap-4! min-h-64 ${!comments.length ? "loading" : ""}`}
         >
             {filtered?.map((id, i) => (
                 <React.Fragment key={id}>

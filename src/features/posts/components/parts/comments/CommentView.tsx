@@ -5,6 +5,7 @@ import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { like } from "@/query-api/calls/posts";
 import { useQuery } from "@/query/core";
+import { motion } from "motion/react";
 import Image from "next/image";
 
 type Props = {
@@ -88,7 +89,15 @@ export const CommentView = ({ id, onEdit, editing }: Props) => {
                         />
                     </Button>
 
-                    {!!comment.likes && <span>{comment.likes}</span>}
+                    {!!comment.likes && (
+                        <motion.span
+                            key={comment.likes}
+                            initial={{ y: 5 }}
+                            animate={{ y: 0 }}
+                        >
+                            {comment.likes}
+                        </motion.span>
+                    )}
 
                     <hr className="w-px! h-1/2! self-stretch my-auto!" />
 

@@ -10,7 +10,7 @@ import { Post } from "@/types/tables/posts";
 import Image from "next/image";
 import { useState } from "react";
 
-type Props =
+type Props = (
     | { type: "send"; data: { post: Post } }
     | {
           type: "edit";
@@ -18,9 +18,10 @@ type Props =
               comment: CacheAPIProtocol["comment"]["data"];
               onEdit?: (comment: string) => void;
           };
-      };
+      }
+) & { isEnabled?: boolean };
 
-export const UpdateComment = ({ type, data }: Props) => {
+export const UpdateComment = ({ type, data, isEnabled }: Props) => {
     const { data: status } = useQuery({ key: ["status"] });
 
     // react
@@ -28,14 +29,11 @@ export const UpdateComment = ({ type, data }: Props) => {
         type === "edit" ? data.comment.comment : "",
     );
 
-    if (!status) {
-        return null;
-    }
-
     return (
         <form
             onSubmit={(e) => {
                 e.preventDefault();
+                setComment("");
 
                 if (!status || comment.trim().length < 8) {
                     return;
@@ -65,11 +63,16 @@ export const UpdateComment = ({ type, data }: Props) => {
             <ul className="flex flex-col gap-4">
                 <li className="flex flex-col sm:flex-row gap-2 items-center">
                     <Input
+                        isEnabled={isEnabled ?? true}
                         aria-label="comment text"
                         required
                         minLength={8}
                         maxLength={256}
-                        placeholder="at least 8 characters"
+                        placeholder={
+                            type === "edit"
+                                ? "Edit this comment"
+                                : "Add a comment"
+                        }
                         value={comment}
                         onChange={setComment}
                     />
@@ -78,6 +81,7 @@ export const UpdateComment = ({ type, data }: Props) => {
                         <Tooltip
                             text="Clear comment"
                             className="w-full"
+                            isEnabled={isEnabled ?? true}
                         >
                             <Button
                                 aria-label="clear"
@@ -99,6 +103,7 @@ export const UpdateComment = ({ type, data }: Props) => {
                         <Tooltip
                             text={`${type === "edit" ? "Edit" : "Send"}`}
                             className="w-full"
+                            isEnabled={isEnabled ?? true}
                         >
                             <Button
                                 aria-label="send"
