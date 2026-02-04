@@ -1,12 +1,16 @@
 import { CommentList } from "@/features/posts/components/parts/comments/CommentList";
 import { UpdateComment } from "@/features/posts/components/parts/comments/UpdateComment";
+import { NoComments } from "@/features/posts/components/parts/errors/NoComments";
 import { Button } from "@/features/ui/button/components/Button";
+import { Input } from "@/features/ui/input/components/Input";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { PromiseState } from "@/promises/components/PromiseState";
 import { wrapPromise } from "@/promises/core";
 import { queryInvalidate } from "@/query/auxiliary";
 import { useQuery } from "@/query/core";
+import { TabSelection } from "@/utils/other/TabSelection";
 import Image from "next/image";
+import { useState } from "react";
 
 type Props = {
     id: string;
@@ -22,53 +26,101 @@ export const Comments = ({ id }: Props) => {
     const areCommentsEditable =
         privacy?.comments !== false || status?.id === post?.user_id;
 
+    // react states
+    const [collapsed, setCollapsed] = useState<boolean>(false);
+    const [filter, setFilter] = useState<string>("");
+
     return (
         <ul className="flex flex-col gap-8">
             {status && (
-                <div
-                    className="flex flex-col gap-8 relative"
+                <li
                     style={{
                         opacity: areCommentsEditable ? 1 : 0.3,
                     }}
                     inert={!areCommentsEditable}
                 >
-                    {!areCommentsEditable && (
-                        <Image
-                            alt="prohibited"
-                            src="/prohibited.svg"
-                            width={32}
-                            height={32}
-                            className="z-1 absolute left-1/2 top-1/2 -translate-1/2"
-                        />
-                    )}
-
-                    <li className="flex justify-center items-center gap-1">
-                        <Image
-                            alt=""
-                            width={16}
-                            height={16}
-                            src="/plus.svg"
-                        />
-                        <span>Add a comment:</span>
-                    </li>
-
-                    <li>
-                        {post && (
-                            <UpdateComment
-                                type="send"
-                                data={{ post }}
+                    <ul className="flex flex-col gap-8 relative">
+                        {!areCommentsEditable && (
+                            <Image
+                                alt="prohibited"
+                                src="/prohibited.svg"
+                                width={32}
+                                height={32}
+                                className="z-1 absolute left-1/2 top-1/2 -translate-1/2"
                             />
                         )}
-                    </li>
 
-                    <li>
-                        <hr />
-                    </li>
-                </div>
+                        <li className="flex justify-center items-center gap-1  box p-0! flex-row! h-10! bg-background-a-0!">
+                            <Image
+                                alt=""
+                                width={16}
+                                height={16}
+                                src="/plus.svg"
+                            />
+                            <span>Add a comment:</span>
+                        </li>
+
+                        <li>
+                            {post && (
+                                <UpdateComment
+                                    type="send"
+                                    data={{ post }}
+                                />
+                            )}
+                        </li>
+
+                        <li>
+                            <hr />
+                        </li>
+                    </ul>
+                </li>
             )}
 
-            <li className="flex justify-center items-center gap-1">
-                <Tooltip text="Reload comments">
+            <li className="flex items-center gap-1! box p-0! flex-row! h-10! bg-background-a-0!">
+                <Tooltip text="Collapse / Expand">
+                    <Button
+                        onClick={() => setCollapsed((prev) => !prev)}
+                        className="p-0!"
+                    >
+                        <Image
+                            alt=""
+                            width={20}
+                            height={20}
+                            src="/collapse.svg"
+                        />
+                        <TabSelection
+                            condition={true}
+                            color={
+                                collapsed ? "var(--orange-1)" : "var(--blue-1)"
+                            }
+                        />
+                    </Button>
+                </Tooltip>
+
+                <hr className="w-px! h-1/2!" />
+
+                <Input
+                    container={{ style: { width: "fit-content" } }}
+                    isEnabled={!!comments?.length}
+                    placeholder="Filter by comment"
+                    value={filter}
+                    onChange={(value) => setFilter(value)}
+                />
+
+                <div className="flex items-center gap-1 absolute left-1/2 top-1/2 -translate-1/2">
+                    <Image
+                        alt=""
+                        width={16}
+                        height={16}
+                        src="/comments.svg"
+                    />
+                    <span>Comments:</span>
+                </div>
+
+                <Tooltip
+                    text="Reload comments"
+                    className="ml-auto!"
+                >
                     <Button
                         onClick={() => {
                             wrapPromise("reloadComments", async () => {
@@ -84,17 +136,23 @@ export const Comments = ({ id }: Props) => {
                             alt=""
                             width={16}
                             height={16}
-                            src="/comments.svg"
+                            src="/reload.svg"
                         />
                     </Button>
                 </Tooltip>
-                <span>Comments:</span>
             </li>
 
-            <li>
+            <li
+                className="duration-500 transition-all overflow-hidden"
+                style={{
+                    interpolateSize: "allow-keywords",
+                    height: collapsed ? "0" : "auto",
+                }}
+            >
                 <CommentsDisplay
                     isLoading={isLoading}
                     comments={comments}
+                    filter={filter}
                 />
             </li>
         </ul>
@@ -104,8 +162,9 @@ export const Comments = ({ id }: Props) => {
 type DisplayProps = {
     isLoading: boolean;
     comments: string[] | null;
+    filter?: string;
 };
-const CommentsDisplay = ({ isLoading, comments }: DisplayProps) => {
+const CommentsDisplay = ({ isLoading, comments, filter }: DisplayProps) => {
     if (isLoading) {
         return (
             <div className="flex flex-col gap-2">
@@ -121,13 +180,16 @@ const CommentsDisplay = ({ isLoading, comments }: DisplayProps) => {
 
     if (!comments?.length) {
         return (
-            <span className="mx-auto!">
-                <small>
-                    <u>No</u> comments yet...
-                </small>
-            </span>
+            <div className="w-full h-36 loading flex justify-center items-center">
+                <NoComments />
+            </div>
         );
     }
 
-    return <CommentList comments={comments} />;
+    return (
+        <CommentList
+            comments={comments}
+            filter={filter}
+        />
+    );
 };
