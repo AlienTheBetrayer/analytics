@@ -53,6 +53,6 @@ export type User = {
     username: string;
     password?: string;
     role: AuthenticationRole;
-    created_at?: string;
-    last_seen_at?: string;
+    created_at: string;
+    last_seen_at: string;
 };

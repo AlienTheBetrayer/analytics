@@ -147,7 +147,7 @@ export const ProfileOverview = ({
 
                             <motion.span
                                 key={field}
-                                initial={{ y: -10, opacity: 0 }}
+                                initial={{ y: -5, opacity: 0 }}
                                 animate={{ y: 0, opacity: 1 }}
                             >
                                 {field === "Bio"
