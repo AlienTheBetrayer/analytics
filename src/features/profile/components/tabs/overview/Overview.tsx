@@ -4,12 +4,15 @@ import { relativeTime } from "@/utils/other/relativeTime";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { ProfileOverview } from "@/features/profile/components/tabs/overview/ProfileOverview";
 import { PostsOverview } from "@/features/profile/components/tabs/overview/PostsOverview";
+import { useState } from "react";
 
 type Props = {
     data: CacheAPIProtocol["user"]["data"];
 };
 
 export const Overview = ({ data }: Props) => {
+    const collapsed = useState<"profile" | "posts" | null>(null);
+
     return (
         <div className="flex flex-col gap-4">
             <ul className="flex flex-col gap-1 items-center">
@@ -43,9 +46,15 @@ export const Overview = ({ data }: Props) => {
 
             <hr />
 
-            <div className="flex flex-col-reverse lg:grid lg:grid-cols-2 gap-4">
-                <PostsOverview data={data} />
-                <ProfileOverview data={data} />
+            <div className="flex flex-col-reverse xl:grid xl:grid-cols-2 gap-4">
+                <PostsOverview
+                    data={data}
+                    collapsed={collapsed}
+                />
+                <ProfileOverview
+                    data={data}
+                    collapsed={collapsed}
+                />
             </div>
 
             <FriendButton data={data} />

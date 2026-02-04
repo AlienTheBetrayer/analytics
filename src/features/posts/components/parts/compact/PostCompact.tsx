@@ -7,10 +7,11 @@ import Image from "next/image";
 
 type Props = {
     id: string;
+    filter?: string;
     className?: string;
 };
 
-export const PostCompact = ({ id, className }: Props) => {
+export const PostCompact = ({ id, filter, className }: Props) => {
     // fetching
     const { data, isLoading } = useQuery({ key: ["post", id] });
 
@@ -19,6 +20,10 @@ export const PostCompact = ({ id, className }: Props) => {
     }
 
     if (!data) {
+        return null;
+    }
+
+    if(typeof filter === "string" && !data.title.includes(filter)) {
         return null;
     }
 
