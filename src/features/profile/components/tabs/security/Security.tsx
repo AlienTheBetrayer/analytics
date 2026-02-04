@@ -49,7 +49,7 @@ export const Security = ({ data }: Props) => {
                         alt=""
                         src="/security.svg"
                     />
-                    <span className="text-foreground-2! text-5! flex">
+                    <span className="text-foreground-2! flex">
                         <mark>{data.username}</mark>
                         &apos;s profile
                     </span>

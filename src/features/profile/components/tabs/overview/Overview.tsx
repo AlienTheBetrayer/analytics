@@ -19,7 +19,7 @@ export const Overview = ({ data }: Props) => {
 
     return (
         <div className="flex flex-col gap-4">
-            <ul className="flex flex-col gap-1 items-center">
+            <ul className="flex flex-col items-center">
                 <li className="flex gap-1 items-center self-end">
                     <Button
                         onClick={() =>
@@ -62,6 +62,7 @@ export const Overview = ({ data }: Props) => {
                         </motion.div>
                     </Button>
                 </li>
+
                 <li className="flex gap-1 items-center">
                     <Image
                         width={16}
@@ -69,11 +70,12 @@ export const Overview = ({ data }: Props) => {
                         alt=""
                         src="/book.svg"
                     />
-                    <span className="text-foreground-2! text-5! flex">
+                    <span className="text-foreground-2! flex">
                         <mark>{data.username}</mark>
                         &apos;s profile
                     </span>
                 </li>
+
                 <li>
                     <span>Profile overview</span>
                 </li>

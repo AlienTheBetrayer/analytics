@@ -18,7 +18,7 @@ export const Friends = ({ data }: Props) => {
                         alt=""
                         src="/friends.svg"
                     />
-                    <span className="text-foreground-2! text-5! flex">
+                    <span className="text-foreground-2! flex">
                         <mark>{data.username}</mark>
                         &apos;s profile
                     </span>

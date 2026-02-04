@@ -28,7 +28,7 @@ export const Edit = ({ data }: Props) => {
                         alt=""
                         src="/pencil.svg"
                     />
-                    <span className="text-foreground-2! text-5! flex">
+                    <span className="text-foreground-2! flex">
                         <mark>{data.username}</mark>
                         &apos;s profile
                     </span>
