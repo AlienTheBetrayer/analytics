@@ -7,18 +7,34 @@ import { Gender } from "@/features/profile/components/parts/Gender";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { useQuery } from "@/query/core";
+import { queryCache } from "@/query/init";
 
 type Props = {
+    filter?: string;
     data: CacheAPIProtocol["search"]["data"]["ids"][number];
 };
 
-export const SearchDisplay = ({ data }: Props) => {
-    return (
-        <div className="box flex flex-col w-full p-4! gap-1">
-            <SearchDisplayProfile data={data} />
+export const SearchDisplay = ({ filter, data }: Props) => {
+    if (
+        filter &&
+        !(
+            queryCache.get({
+                key: ["user", data.id],
+            }) as CacheAPIProtocol["user"]["data"]
+        )?.username.includes(filter)
+    ) {
+        return null;
+    }
 
-            {!!data.post_ids.length && <SearchDisplayPosts data={data} />}
-        </div>
+    return (
+        <>
+            <div className="box flex flex-col w-full p-4!">
+                <SearchDisplayProfile data={data} />
+
+                {!!data.post_ids.length && <SearchDisplayPosts data={data} />}
+            </div>
+            <hr className="mx-auto w-9/12!" />
+        </>
     );
 };
 
@@ -143,7 +159,7 @@ const SearchDisplayPost = ({ id }: PostProps) => {
                         alt=""
                         width={16}
                         height={16}
-                        src={`${post.edited_at ? "/pencil.svg" : "/imageadd.svg"}`}
+                        src={`${post.edited_at ? "/pencil.svg" : "/plus.svg"}`}
                         className="invert-100!"
                     />
                     <span className="text-white!">

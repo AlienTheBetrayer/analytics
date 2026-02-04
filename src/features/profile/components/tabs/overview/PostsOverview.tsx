@@ -165,7 +165,7 @@ export const PostElementNotFound = ({ className, type }: NotFoundProps) => {
                     <span>
                         {type === "absent" ? (
                             <>
-                                Post <u>not</u> found
+                                Post does <u>not</u> exist
                             </>
                         ) : (
                             <>

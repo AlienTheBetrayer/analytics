@@ -1,13 +1,20 @@
 import { motion } from "motion/react";
 import { type ComponentPropsWithoutRef } from "react";
 import { useInputSelect } from "../hooks/useInputSelect";
+import Image from "next/image";
 
 type Props = {
     items: string[];
     onChange?: (item: string) => void;
 } & Omit<ComponentPropsWithoutRef<"button">, "onChange">;
 
-export const Select = ({ items, value, onChange, ...rest }: Props) => {
+export const Select = ({
+    items,
+    className,
+    value,
+    onChange,
+    ...rest
+}: Props) => {
     // controller
     const { inputRef, inputValue, expandToggle, keyDown, render } =
         useInputSelect(items, value as string | undefined, onChange);
@@ -18,16 +25,23 @@ export const Select = ({ items, value, onChange, ...rest }: Props) => {
             type="button"
             className={`flex w-full items-center min-h-8 
             bg-background-a-3 outline-2 outline-background-5 p-2 rounded-full focus:outline-blue-1 
-             hover:bg-background-a-7 transition-all duration-300 ease-out cursor-pointer`}
+             hover:bg-background-a-7 transition-all duration-300 ease-out cursor-pointer ${className ?? ""}`}
             onClick={expandToggle}
             onKeyDown={keyDown}
             {...rest}
         >
             <motion.span
                 key={`${inputValue}`}
-                initial={{ y: 7.5 }}
+                initial={{ y: 5 }}
                 animate={{ y: 0 }}
+                className="flex items-center gap-1"
             >
+                <Image
+                    alt=""
+                    width={12}
+                    height={12}
+                    src="/select.svg"
+                />
                 {inputValue}
             </motion.span>
 
