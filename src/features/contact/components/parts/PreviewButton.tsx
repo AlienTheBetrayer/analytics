@@ -15,6 +15,7 @@ type Props = {
     contents: SendFormContents;
     validity?: SendFormValidity;
     expanded?: boolean;
+    className?: string;
 } & (
     | { type: "form"; contents: SendFormContents }
     | { type: "message"; contents: CacheAPIProtocol["contact_message"]["data"] }
@@ -26,6 +27,7 @@ export const PreviewButton = ({
     avatar_color,
     avatar_url,
     contents,
+    className,
     validity = { title: true, message: true, email: true },
     expanded,
 }: Props) => {
@@ -56,7 +58,7 @@ export const PreviewButton = ({
                 }
                 className={`flex flex-col p-4! w-full h-fit 
                  justify-start! items-stretch! rounded-4xl! 
-                 ${expanded ? "h-full max-h-full" : "max-h-96 md:max-h-32"} `}
+                 ${expanded ? "h-full max-h-full" : "max-h-96 md:max-h-32"} ${className ?? ""}`}
                 style={{
                     interpolateSize: "allow-keywords",
                 }}

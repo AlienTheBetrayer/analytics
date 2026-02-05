@@ -4,9 +4,10 @@ import { useQuery } from "@/query/core";
 type Props = {
     id: string;
     filter?: string;
+    className?: string;
 };
 
-export const Item = ({ id, filter }: Props) => {
+export const Item = ({ className, id, filter }: Props) => {
     // fetching
     const { data, isLoading } = useQuery({ key: ["contact_message", id] });
     const { data: user } = useQuery({ key: ["user", data?.user_id] });
@@ -26,6 +27,7 @@ export const Item = ({ id, filter }: Props) => {
     return (
         <li>
             <PreviewButton
+                className={className}
                 type="message"
                 expanded={false}
                 avatar_color={user?.profile.color}
