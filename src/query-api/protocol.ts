@@ -1,6 +1,7 @@
 import { AuthenticationToken } from "@/types/auth/authentication";
 import { Color, Profile, User } from "@/types/tables/account";
 import { Token } from "@/types/tables/auth";
+import { ContactMessage } from "@/types/tables/contact";
 import { Comment, Post, PostPrivacy } from "@/types/tables/posts";
 import { Event, Project } from "@/types/tables/project";
 
@@ -16,6 +17,16 @@ export type CacheAPIProtocol = {
     sessions: {
         key: ["sessions", string];
         data: Record<string, Token>;
+    };
+
+    // contact
+    contact_messages: {
+        key: ["contact_messages", string];
+        data: string[];
+    };
+    contact_message: {
+        key: ["contact_message", string];
+        data: ContactMessage;
     };
 
     // relationship

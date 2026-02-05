@@ -3,6 +3,7 @@ import { CacheAPIProtocol } from "@/query-api/protocol";
 import { __posts, __user } from "@/query-api/utils";
 import { queryMutate } from "@/query/auxiliary";
 import { CacheKey, CacheKeyEntity, CacheValue } from "@/query/types/types";
+import { ContactMessage } from "@/types/tables/contact";
 import { PostPrivacy } from "@/types/tables/posts";
 import { refreshedRequest } from "@/utils/auth/refreshedRequest";
 import axios from "axios";
@@ -27,6 +28,64 @@ export const CacheAPIFunctions: Record<
                 config: { params: { user_id: args[0] } },
             })
         ).data.sessions;
+    },
+
+    // contact
+    contact_messages: async (args: unknown[]) => {
+        const ids = (
+            await refreshedRequest({
+                route: "/api/get/contact_messages",
+                method: "GET",
+                config: { params: { user_id: args[0] } },
+            })
+        ).data.ids as string[];
+
+        if (ids?.length) {
+            const messages = (
+                await refreshedRequest({
+                    route: "/api/get/contact_message",
+                    method: "GET",
+                    config: {
+                        params: {
+                            message_ids: ids.join(","),
+                        },
+                    },
+                })
+            ).data.messages as ContactMessage[];
+
+            if (messages?.length) {
+                const users = (
+                    await axios.get("/api/get/users", {
+                        params: {
+                            user_ids: messages.map((m) => m.user_id).join(","),
+                        },
+                    })
+                ).data.users as CacheAPIProtocol["user"]["data"][];
+
+                for (const message of messages) {
+                    queryMutate({
+                        key: ["contact_message", message.id],
+                        value: message,
+                    });
+                }
+
+                for (const user of users) {
+                    queryMutate({
+                        key: ["user", user.id],
+                        value: user,
+                    });
+                }
+            }
+        }
+
+        return ids;
+    },
+    contact_message: async (args: unknown[]) => {
+        if (!args[0]) {
+            throw new Error("message_ids are undefined");
+        }
+
+        return Promise.resolve(3);
     },
 
     // relationship

@@ -1,19 +1,73 @@
+import { ListItems } from "@/features/contact/components/tabs/list/ListItems";
 import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
+import { useQuery } from "@/query/core";
 import { TabSelection } from "@/utils/other/TabSelection";
 import Image from "next/image";
 import { useState } from "react";
 
+export const ContactListItems = ["own", "received"] as const;
+
 export const List = () => {
+    // fetching
+    const { data: status } = useQuery({ key: ["status"] });
+
     // react states
     const [collapsed, setCollapsed] = useState<boolean>(false);
     const [filter, setFilter] = useState<string>("");
     const [reversed, setReversed] = useState<boolean>(false);
+    const [tab, setTab] = useState<(typeof ContactListItems)[number]>("own");
 
     return (
-        <div className="flex flex-col gap-4 w-full h-full">
-            <ul className="box p-0! h-10! flex-row! w-full items-center mt-6! md:mt-0!">
+        <div className="flex flex-col gap-2 w-full h-full grow">
+            <ul className="box sticky! top-4 p-0! h-10! flex-row! w-full items-center mt-6! md:mt-0!">
+                <li>
+                    <Tooltip text="Own messages">
+                        <Button onClick={() => setTab("own")}>
+                            <Image
+                                alt="+"
+                                width={16}
+                                height={16}
+                                src="/book.svg"
+                            />
+                            Personal
+                            <TabSelection condition={tab === "own"} />
+                        </Button>
+                    </Tooltip>
+                </li>
+
+                {status && status.role !== "user" && (
+                    <li>
+                        <Tooltip text="Admin panel">
+                            <Button onClick={() => setTab("received")}>
+                                <Image
+                                    alt="+"
+                                    width={16}
+                                    height={16}
+                                    src="/arrow.svg"
+                                />
+                                <TabSelection condition={tab === "received"} />
+                                Received
+                            </Button>
+                        </Tooltip>
+                    </li>
+                )}
+
+                <li className="absolute left-1/2 -top-1/2 md:top-1/2 -translate-1/2">
+                    <span className="flex items-center gap-1">
+                        <Image
+                            alt=""
+                            width={16}
+                            height={16}
+                            src="/cubes.svg"
+                        />
+                        Messages:
+                    </span>
+                </li>
+            </ul>
+
+            <ul className="box sticky! top-16 p-0! h-10! flex-row! w-full items-center">
                 <li>
                     <Tooltip text="Expanded / Collapsed">
                         <Button
@@ -81,19 +135,9 @@ export const List = () => {
                         onChange={(value) => setFilter(value)}
                     />
                 </li>
-
-                <li className="absolute left-1/2 -top-1/2 md:top-1/2 -translate-1/2">
-                    <span className="flex items-center gap-1">
-                        <Image
-                            alt=""
-                            width={16}
-                            height={16}
-                            src="/cubes.svg"
-                        />
-                        Messages:
-                    </span>
-                </li>
             </ul>
+
+            <ListItems tab={tab} />
         </div>
     );
 };
