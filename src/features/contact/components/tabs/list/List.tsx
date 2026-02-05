@@ -26,7 +26,7 @@ export const List = () => {
     const [tab, setTab] = useState<(typeof ContactListItems)[number]>("own");
 
     return (
-        <div className="flex flex-col gap-2 w-full h-full grow">
+        <div className="flex flex-col gap-4 w-full h-full grow">
             <ul
                 className={`box sticky! top-4 p-0! h-10! flex-row! w-full items-center mt-6! md:mt-0!`}
             >

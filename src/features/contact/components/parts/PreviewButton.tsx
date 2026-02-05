@@ -62,7 +62,7 @@ export const PreviewButton = ({
                 }}
             >
                 {type === "message" && (
-                    <ul className="absolute right-4 top-2 flex items-center gap-1 whitespace-nowrap">
+                    <ul className="z-1 absolute right-4 top-2 flex items-center gap-1 whitespace-nowrap">
                         {contents.edited_at && (
                             <li className="flex items-center gap-1">
                                 <Image
@@ -117,9 +117,17 @@ export const PreviewButton = ({
                         <li className="h-full">
                             {contents.title ? (
                                 <span
-                                    className={`overflow-hidden ${!validity?.title ? "invalid" : ""}`}
+                                    className={`box flex-row! gap-1! justify-center! p-0! bg-background-a-4! overflow-hidden ${!validity?.title ? "invalid" : ""}`}
                                 >
-                                    {contents.title}
+                                    {type === "message" && (
+                                        <Image
+                                            alt=""
+                                            width={16}
+                                            height={16}
+                                            src="/cube.svg"
+                                        />
+                                    )}
+                                    <b>{contents.title}</b>
                                 </span>
                             ) : (
                                 <div className="flex items-center justify-center w-full loading rounded-lg! h-full">
