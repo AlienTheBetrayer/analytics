@@ -1,4 +1,4 @@
-import { CacheKey } from "@/query/types/protocol";
+import { CacheKey } from "@/query/types/types";
 
 /**
  * safely converts an array-like key to a cache-ready key. throws an error if the key is not valid

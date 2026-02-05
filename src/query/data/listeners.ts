@@ -1,5 +1,8 @@
-import { CacheKey } from "@/query/types/protocol";
-import { CacheListener, CacheListenerOptions } from "@/query/types/types";
+import {
+    CacheKey,
+    CacheListener,
+    CacheListenerOptions,
+} from "@/query/types/types";
 import { convertKey } from "@/query/utils/other";
 
 /**

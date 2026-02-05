@@ -5,9 +5,9 @@ import {
     queryPromises,
     queryListeners,
 } from "@/query/init";
-import { CacheKey } from "@/query/types/protocol";
 import { QueryConfig } from "@/query/types/config";
 import { resolveAPIFunction } from "@/query-api/functions";
+import { CacheKey } from "@/query/types/types";
 
 /**
  * performs an API request at a specific key with a specific function

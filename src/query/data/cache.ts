@@ -1,5 +1,4 @@
-import { CacheKey } from "@/query/types/protocol";
-import { CacheValue } from "@/query/types/types";
+import { CacheKey, CacheValue } from "@/query/types/types";
 import { convertKey } from "@/query/utils/other";
 
 /**
