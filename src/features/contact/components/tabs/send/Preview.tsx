@@ -16,9 +16,10 @@ type ToBoolean<T extends object> = {
 type Props = {
     contents: SendFormContents;
     handle: React.RefObject<SendFormHandle | null>;
+    expanded?: boolean;
 };
 
-export const Preview = ({ contents, handle }: Props) => {
+export const Preview = ({ contents, handle, expanded }: Props) => {
     // fetching
     const { data: status } = useQuery({ key: ["status"] });
 
@@ -48,10 +49,10 @@ export const Preview = ({ contents, handle }: Props) => {
     }
 
     return (
-        <div className="w-full h-full flex items-center justify-center">
+        <div className="w-full h-full flex items-center justify-center min-h-128">
             <LinkButton
                 href={`/profile/`}
-                className="flex! p-4! w-full max-h-32 focus-within:max-h-fit hover:max-h-fit justify-start! items-stretch! rounded-4xl! gap-4!"
+                className={`flex! p-4! w-full h-fit ${expanded ? "h-full max-h-full" : "max-h-32"} focus-within:max-h-fit hover:max-h-fit justify-start! items-stretch! rounded-4xl! gap-4!`}
                 style={{
                     interpolateSize: "allow-keywords",
                 }}
