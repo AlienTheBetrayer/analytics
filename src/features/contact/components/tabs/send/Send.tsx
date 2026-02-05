@@ -2,12 +2,13 @@ import { Preview } from "@/features/contact/components/tabs/send/Preview";
 import {
     SendForm,
     SendFormContents,
+    SendFormHandle,
 } from "@/features/contact/components/tabs/send/SendForm";
 import { Button } from "@/features/ui/button/components/Button";
 import { useMessageBox } from "@/features/ui/messagebox/hooks/useMessageBox";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import Image from "next/image";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 export const Send = () => {
     // react states
@@ -15,6 +16,9 @@ export const Send = () => {
 
     // message boxes
     const deleteBox = useMessageBox();
+
+    // refs & handles
+    const handle = useRef<SendFormHandle | null>(null);
 
     return (
         <div className="flex flex-col items-center gap-8 grow">
@@ -70,6 +74,7 @@ export const Send = () => {
                     </span>
                     <hr />
                     <SendForm
+                        ref={handle}
                         onSubmit={() => {}}
                         onDelete={deleteBox.show}
                         contents={contents}
@@ -88,7 +93,10 @@ export const Send = () => {
                         <mark>Preview:</mark>
                     </span>
                     <hr />
-                    <Preview contents={contents} />
+                    <Preview
+                        contents={contents}
+                        handle={handle}
+                    />
                 </div>
             </div>
         </div>

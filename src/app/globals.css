@@ -383,6 +383,14 @@ img {
     background-repeat: repeat;
 }
 
+.invalid {
+    text-decoration: underline wavy var(--red-1) 1px;
+}
+
+.valid {
+    text-decoration: underline wavy var(--blue-1) 1px;
+}
+
 .text-ellipsis-left {
     white-space: nowrap;
     overflow: hidden;
