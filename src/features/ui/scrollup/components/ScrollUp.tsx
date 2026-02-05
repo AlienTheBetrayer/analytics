@@ -1,6 +1,5 @@
 "use client";
 import { Button } from "@/features/ui/button/components/Button";
-import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { AnimatePresence, motion, useScroll } from "motion/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -44,24 +43,19 @@ export const ScrollUp = () => {
                     }}
                     transition={{ type: "spring", stiffness: 200, damping: 30 }}
                 >
-                    <Tooltip
-                        direction="left"
-                        text="Scroll upwards"
+                    <Button
+                        className="p-3!"
+                        onClick={() => {
+                            window.scrollTo({ behavior: "smooth", top: 0 });
+                        }}
                     >
-                        <Button
-                            className="p-3!"
-                            onClick={() => {
-                                window.scrollTo({ behavior: "smooth", top: 0 });
-                            }}
-                        >
-                            <Image
-                                alt="up"
-                                width={16}
-                                height={16}
-                                src="/arrow.svg"
-                            />
-                        </Button>
-                    </Tooltip>
+                        <Image
+                            alt="up"
+                            width={16}
+                            height={16}
+                            src="/arrow.svg"
+                        />
+                    </Button>
                 </motion.aside>
             )}
         </AnimatePresence>
