@@ -40,7 +40,7 @@ export const Preview = ({ contents, handle, expanded }: Props) => {
     // fallbacks
     if (!contents.email && !contents.message && !contents.title) {
         return (
-            <div className="w-full h-full loading flex items-center justify-center">
+            <div className="w-full h-full loading flex items-center justify-center min-h-72">
                 <div className="w-full max-w-3/4">
                     <NoPreview />
                 </div>
@@ -49,7 +49,7 @@ export const Preview = ({ contents, handle, expanded }: Props) => {
     }
 
     return (
-        <div className="w-full h-full flex items-center justify-center min-h-128">
+        <div className="w-full h-full flex items-center justify-center min-h-72">
             <LinkButton
                 href={`/profile/`}
                 className={`flex! p-4! w-full h-fit ${expanded ? "h-full max-h-full" : "max-h-32"} focus-within:max-h-fit hover:max-h-fit justify-start! items-stretch! rounded-4xl! gap-4!`}
