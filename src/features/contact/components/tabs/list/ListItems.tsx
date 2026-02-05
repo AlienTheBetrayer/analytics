@@ -6,15 +6,18 @@ import { AuthenticationToken } from "@/types/auth/authentication";
 
 type Props = {
     tab: (typeof ContactListItems)[number];
+    collapsed?: boolean;
+    filter?: string;
+    reversed?: boolean;
 };
 
-export const ListItems = ({ tab }: Props) => {
+export const ListItems = ({ filter, reversed, tab, collapsed }: Props) => {
     const { data: status, isLoading } = useQuery({ key: ["status"] });
 
     if (isLoading) {
         return (
             <div className="flex flex-col gap-2">
-                {Array.from({ length: 1 }, (_, k) => (
+                {Array.from({ length: 4 }, (_, k) => (
                     <div
                         className="w-full min-h-32 loading rounded-4xl!"
                         key={k}
@@ -36,6 +39,9 @@ export const ListItems = ({ tab }: Props) => {
         <ListItemsSelect
             status={status}
             tab={tab}
+            collapsed={collapsed ?? false}
+            filter={filter}
+            reversed={reversed}
         />
     );
 };
@@ -43,8 +49,17 @@ export const ListItems = ({ tab }: Props) => {
 type SelectProps = {
     tab: Props["tab"];
     status: AuthenticationToken;
+    collapsed: boolean;
+    filter?: string;
+    reversed?: boolean;
 };
-const ListItemsSelect = ({ tab, status }: SelectProps) => {
+const ListItemsSelect = ({
+    reversed,
+    filter,
+    tab,
+    status,
+    collapsed,
+}: SelectProps) => {
     const { data, isLoading } = useQuery({
         key:
             tab === "own"
@@ -55,7 +70,7 @@ const ListItemsSelect = ({ tab, status }: SelectProps) => {
     if (isLoading) {
         return (
             <div className="flex flex-col gap-2">
-                {Array.from({ length: 10 }, (_, k) => (
+                {Array.from({ length: 4 }, (_, k) => (
                     <div
                         className="w-full min-h-32 loading rounded-4xl!"
                         key={k}
@@ -66,13 +81,24 @@ const ListItemsSelect = ({ tab, status }: SelectProps) => {
     }
 
     if (!data?.length) {
-        return <NoMessages />;
+        return (
+            <div className="flex items-center justify-center grow">
+                <NoMessages />
+            </div>
+        );
     }
 
     return (
-        <ul className="flex flex-col gap-4">
-            {data.map((id) => (
+        <ul
+            className="flex flex-col gap-4 overflow-hidden transition-all duration-500"
+            style={{
+                height: collapsed ? "0" : "auto",
+                interpolateSize: "allow-keywords",
+            }}
+        >
+            {(reversed ? [...data].reverse() : data).map((id) => (
                 <Item
+                    filter={filter}
                     key={id}
                     id={id}
                 />

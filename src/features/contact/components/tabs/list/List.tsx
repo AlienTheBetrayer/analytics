@@ -2,6 +2,9 @@ import { ListItems } from "@/features/contact/components/tabs/list/ListItems";
 import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
+import { PromiseState } from "@/promises/components/PromiseState";
+import { wrapPromise } from "@/promises/core";
+import { queryInvalidate } from "@/query/auxiliary";
 import { useQuery } from "@/query/core";
 import { TabSelection } from "@/utils/other/TabSelection";
 import Image from "next/image";
@@ -12,6 +15,9 @@ export const ContactListItems = ["own", "received"] as const;
 export const List = () => {
     // fetching
     const { data: status } = useQuery({ key: ["status"] });
+    const { data: message_ids } = useQuery({
+        key: ["contact_messages", status?.id],
+    });
 
     // react states
     const [collapsed, setCollapsed] = useState<boolean>(false);
@@ -21,7 +27,9 @@ export const List = () => {
 
     return (
         <div className="flex flex-col gap-2 w-full h-full grow">
-            <ul className="box sticky! top-4 p-0! h-10! flex-row! w-full items-center mt-6! md:mt-0!">
+            <ul
+                className={`box sticky! top-4 p-0! h-10! flex-row! w-full items-center mt-6! md:mt-0!`}
+            >
                 <li>
                     <Tooltip text="Own messages">
                         <Button onClick={() => setTab("own")}>
@@ -65,9 +73,55 @@ export const List = () => {
                         Messages:
                     </span>
                 </li>
+
+                <li className="ml-auto!">
+                    <Tooltip text="Refresh data">
+                        <Button
+                            aria-label="reload"
+                            onClick={() => {
+                                if (!status) {
+                                    return;
+                                }
+
+                                wrapPromise("reloadContact", async () => {
+                                    return queryInvalidate({
+                                        key:
+                                            tab === "received"
+                                                ? ["contact_messages"]
+                                                : [
+                                                      "contact_messages",
+                                                      status.id,
+                                                  ],
+                                        silent: false,
+                                    });
+                                });
+                            }}
+                        >
+                            <PromiseState state="reloadContact" />
+                            <Image
+                                alt=""
+                                width={16}
+                                height={16}
+                                src="/reload.svg"
+                            />
+                        </Button>
+                    </Tooltip>
+                </li>
             </ul>
 
-            <ul className="box sticky! top-16 p-0! h-10! flex-row! w-full items-center">
+            <ul
+                className={`box sticky! top-16 p-0! h-10! flex-row! w-full items-center
+            ${!message_ids?.length ? "opacity-30" : ""}`}
+                inert={!!!message_ids?.length}
+            >
+                {!message_ids?.length && (
+                    <li className="absolute left-1/2 top-1/2 -translate-1/2">
+                        <span>
+                            Send a <mark>message</mark> to access
+                        </span>
+                    </li>
+                )}
+
                 <li>
                     <Tooltip text="Expanded / Collapsed">
                         <Button
@@ -137,7 +191,12 @@ export const List = () => {
                 </li>
             </ul>
 
-            <ListItems tab={tab} />
+            <ListItems
+                tab={tab}
+                collapsed={collapsed}
+                filter={filter}
+                reversed={reversed}
+            />
         </div>
     );
 };
