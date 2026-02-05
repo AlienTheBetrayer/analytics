@@ -24,9 +24,24 @@ export const ScrollUp = () => {
             {visible && (
                 <motion.aside
                     className="box p-1! fixed! bottom-2 right-2 z-10"
-                    initial={{ opacity: 0, y: 100 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 100 }}
+                    initial={{
+                        opacity: 0,
+                        y: 32,
+                        scale: 0,
+                        filter: `blur(0.5rem)`,
+                    }}
+                    animate={{
+                        opacity: 1,
+                        y: 0,
+                        scale: 1,
+                        filter: `blur(0rem)`,
+                    }}
+                    exit={{
+                        opacity: 0,
+                        y: 32,
+                        scale: 0,
+                        filter: `blur(0.5rem)`,
+                    }}
                     transition={{ type: "spring", stiffness: 200, damping: 30 }}
                 >
                     <Tooltip

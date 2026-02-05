@@ -5,7 +5,7 @@ import { Header } from "../features/header/components/Header";
 import { Meteors } from "@/features/ui/aceternity/meteors/meteors";
 import { AuthWatcher } from "@/watchers/AuthWatcher";
 import { LocalStoreWatcher } from "@/watchers/LocalStoreWatcher";
-import { ScrollUp } from "@/features/scrollup/components/ScrollUp";
+import { ScrollUp } from "@/features/ui/scrollup/components/ScrollUp";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
