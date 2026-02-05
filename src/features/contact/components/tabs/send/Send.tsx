@@ -7,11 +7,15 @@ import {
 import { Button } from "@/features/ui/button/components/Button";
 import { useMessageBox } from "@/features/ui/messagebox/hooks/useMessageBox";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
+import { useQuery } from "@/query/core";
 import { TabSelection } from "@/utils/other/TabSelection";
 import Image from "next/image";
 import { useRef, useState } from "react";
 
 export const Send = () => {
+    // fetching
+    const { data: status } = useQuery({ key: ["status"] });
+
     // react states
     const [contents, setContents] = useState<SendFormContents>({});
     const [previewExpanded, setPreviewExpanded] = useState<boolean>(true);
@@ -23,7 +27,10 @@ export const Send = () => {
     const handle = useRef<SendFormHandle | null>(null);
 
     return (
-        <div className="flex flex-col items-center gap-8 grow">
+        <div
+            className={`flex flex-col items-center gap-8 grow ${!status ? "opacity-30" : ""}`}
+            inert={!status}
+        >
             {deleteBox.render({
                 children: "Everything from this form will disappear!",
                 onSelect: (res) => {

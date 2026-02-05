@@ -1,8 +1,16 @@
 "use client";
 import { Select } from "@/features/contact/components/Select";
 import { Topline } from "@/features/contact/components/Topline";
+import { useQuery } from "@/query/core";
 
 export const Contact = () => {
+    // fetching
+    const { data: status } = useQuery({ key: ["status"]});
+
+    // fallbacks
+    
+
+
     return (
         <>
             <Topline />

@@ -68,11 +68,11 @@ export const AuthenticationForm = ({
             </div>
 
             <div className="box w-full flex flex-col items-center gap-8!">
-                <div className="flex gap-1 items-center">
+                <div className="box h-10! flex-row! p-0! w-full gap-1! justify-center items-center">
                     <Image
                         alt=""
-                        width={24}
-                        height={24}
+                        width={20}
+                        height={20}
                         src="/privacy.svg"
                     />
                     <span>{title}</span>
@@ -107,11 +107,19 @@ export const AuthenticationForm = ({
                         <li className="flex flex-col gap-2">
                             <label
                                 htmlFor="username"
-                                className="flex justify-between"
+                                className="flex items-center gap-1"
                             >
-                                Username
+                                <Image
+                                    alt=""
+                                    width={16}
+                                    height={16}
+                                    src="/account.svg"
+                                />
+                                <span>Username</span>
                                 {type === "register" && (
-                                    <small>(your unique name)</small>
+                                    <small className="ml-auto!">
+                                        (your unique name)
+                                    </small>
                                 )}
                             </label>
                             <Input
@@ -133,11 +141,19 @@ export const AuthenticationForm = ({
                         <li className="flex flex-col gap-2">
                             <label
                                 htmlFor="password"
-                                className="flex justify-between"
+                                className="flex items-center gap-1"
                             >
-                                Password
+                                <Image
+                                    alt=""
+                                    width={16}
+                                    height={16}
+                                    src="/security.svg"
+                                />
+                                <span>Password</span>
                                 {type === "register" && (
-                                    <small>(create a strong password)</small>
+                                    <small className="ml-auto!">
+                                        (create a strong password)
+                                    </small>
                                 )}
                             </label>
                             <Input
