@@ -1,8 +1,4 @@
-import {
-    LocalStore,
-    PreferencesDefaults,
-    VisibleProfile,
-} from "@/types/zustand/local";
+import { LocalStore, PreferencesDefaults } from "@/types/zustand/local";
 import { SliceFunction } from "@/types/zustand/utils/sliceFunction";
 
 export const LocalSlice: SliceFunction<LocalStore, LocalStore> = (set) => {
@@ -55,10 +51,6 @@ export const LocalSlice: SliceFunction<LocalStore, LocalStore> = (set) => {
                 ...state,
                 theme: state.theme === "dark" ? "light" : "dark",
             }));
-        },
-
-        setVisibleProfile: (visibleProfile?: VisibleProfile) => {
-            set((state) => ({ ...state, visibleProfile }));
         },
 
         updatePreferences: (options) => {

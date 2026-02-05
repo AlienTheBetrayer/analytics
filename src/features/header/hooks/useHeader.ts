@@ -30,10 +30,12 @@ export const useHeader = () => {
                 if (diff > 42) {
                     headerRef.current.style.top = "-5rem";
                     headerRef.current.style.opacity = "0";
+                    headerRef.current.style.filter = `blur(1rem)`;
                     headerRef.current.style.transform = `scale(0.85)`;
                 } else if (diff < -8) {
                     headerRef.current.style.top = "0.5rem";
                     headerRef.current.style.opacity = "1";
+                    headerRef.current.style.filter = `blur(0)`;
                     headerRef.current.style.transform = `scale(1)`;
                 }
                 lastScroll.current = scroll;
