@@ -65,6 +65,11 @@
     --green-3: hsl(160, 30%, 61%);
     --green-4: hsl(160, 20%, 61%);
 
+    --red-a-1: hsla(0, 100%, 61%, 0.3);
+    --red-a-2: hsla(0, 75%, 61%, 0.3);
+    --red-a-3: hsla(0, 50%, 61%, 0.3);
+    --red-a-4: hsla(0, 35%, 61%, 0.3);
+
     --font-1: 3rem;
     --font-2: 2.5rem;
     --font-3: 2rem;
@@ -201,6 +206,11 @@
     --color-green-2: var(--green-2);
     --color-green-3: var(--green-3);
     --color-green-4: var(--green-4);
+
+    --color-red-a-1: var(--red-a-1);
+    --color-red-a-2: var(--red-a-2);
+    --color-red-a-3: var(--red-a-3);
+    --color-red-a-4: var(--red-a-4);
 
     --color-foreground-0: var(--foreground-0);
     --color-foreground-1: var(--foreground-1);

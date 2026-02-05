@@ -7,6 +7,8 @@ import {
 import { Button } from "@/features/ui/button/components/Button";
 import { useMessageBox } from "@/features/ui/messagebox/hooks/useMessageBox";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
+import { wrapPromise } from "@/promises/core";
+import { updateContact } from "@/query-api/calls/contact";
 import { useQuery } from "@/query/core";
 import { TabSelection } from "@/utils/other/TabSelection";
 import Image from "next/image";
@@ -28,7 +30,7 @@ export const Send = () => {
 
     return (
         <div
-            className={`flex flex-col items-center gap-8 grow ${!status ? "opacity-30" : ""}`}
+            className={`flex flex-col items-center transition-all duration-500 gap-8 grow ${!status ? "opacity-30" : ""}`}
             inert={!status}
         >
             {deleteBox.render({
@@ -90,7 +92,26 @@ export const Send = () => {
 
                     <SendForm
                         ref={handle}
-                        onSubmit={() => {}}
+                        onSubmit={() => {
+                            wrapPromise("updateContact", () => {
+                                if (
+                                    !status ||
+                                    !contents.email ||
+                                    !contents.message ||
+                                    !contents.title
+                                ) {
+                                    return Promise.reject();
+                                }
+
+                                return updateContact({
+                                    type: "send",
+                                    user_id: status.id,
+                                    title: contents.title,
+                                    message: contents.message,
+                                    email: contents.email,
+                                });
+                            });
+                        }}
                         onDelete={deleteBox.show}
                         contents={contents}
                         setContents={setContents}

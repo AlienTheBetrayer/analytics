@@ -1,7 +1,15 @@
+import { AlreadySent } from "@/features/contact/components/errors/AlreadySent";
 import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
+import { PromiseState } from "@/promises/components/PromiseState";
+import { motion } from "motion/react";
 import Image from "next/image";
-import React, { forwardRef, useImperativeHandle, useRef } from "react";
+import React, {
+    forwardRef,
+    useImperativeHandle,
+    useRef,
+    useState,
+} from "react";
 
 export type SendFormHandle = {
     title: React.RefObject<HTMLInputElement | null>;
@@ -37,15 +45,35 @@ export const SendForm = forwardRef<SendFormHandle, Props>(
             message: messageRef,
         }));
 
+        const [sent, setSent] = useState<boolean>(false);
+
         return (
             <form
-                className="flex flex-col items-center w-full"
+                className={`relative flex flex-col items-center w-full`}
                 onSubmit={(e) => {
                     e.preventDefault();
+                    if (sent) {
+                        return;
+                    }
+
+                    setSent(true);
                     onSubmit();
                 }}
             >
-                <ul className="flex flex-col gap-8 w-full">
+                {sent && (
+                    <motion.div
+                        className="absolute left-1/2 top-1/2 -translate-1/2 z-1"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                    >
+                        <AlreadySent />
+                    </motion.div>
+                )}
+
+                <ul
+                    className={`flex flex-col gap-8 w-full transition-all duration-500 ${sent ? "opacity-30" : ""}`}
+                    inert={sent}
+                >
                     <li className="flex flex-col gap-2 items-center">
                         <label
                             htmlFor="title"
@@ -118,7 +146,7 @@ export const SendForm = forwardRef<SendFormHandle, Props>(
                             />
                             Message
                         </label>
-                        <Input 
+                        <Input
                             ref={messageRef}
                             required
                             minLength={32}
@@ -164,6 +192,7 @@ export const SendForm = forwardRef<SendFormHandle, Props>(
                                     className="w-full"
                                     type="submit"
                                 >
+                                    <PromiseState state="updateContact" />
                                     <Image
                                         alt=""
                                         width={16}
