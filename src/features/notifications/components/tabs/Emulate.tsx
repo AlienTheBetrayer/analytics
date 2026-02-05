@@ -33,6 +33,7 @@ export const Emulate = () => {
                         tab,
                         description,
                         title,
+                        type: "Emulated",
                     });
                 }}
             >
