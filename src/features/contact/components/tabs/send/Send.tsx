@@ -9,17 +9,29 @@ import { useMessageBox } from "@/features/ui/messagebox/hooks/useMessageBox";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { wrapPromise } from "@/promises/core";
 import { updateContact } from "@/query-api/calls/contact";
+import { CacheAPIProtocol } from "@/query-api/protocol";
 import { useQuery } from "@/query/core";
 import { TabSelection } from "@/utils/other/TabSelection";
 import Image from "next/image";
 import { useRef, useState } from "react";
 
-export const Send = () => {
+type Props =
+    | {
+          type: "send";
+          data?: never;
+      }
+    | { type: "edit"; data: CacheAPIProtocol["contact_message"]["data"] };
+
+export const Send = ({ type, data }: Props) => {
     // fetching
     const { data: status } = useQuery({ key: ["status"] });
 
     // react states
-    const [contents, setContents] = useState<SendFormContents>({});
+    const [contents, setContents] = useState<SendFormContents>({
+        title: data?.title ?? "",
+        message: data?.message ?? "",
+        email: data?.email ?? "",
+    });
     const [previewExpanded, setPreviewExpanded] = useState<boolean>(true);
 
     // message boxes
@@ -28,10 +40,13 @@ export const Send = () => {
     // refs & handles
     const handle = useRef<SendFormHandle | null>(null);
 
+    const isEditable =
+        !status || (type === "edit" && status.id !== data.user_id);
+
     return (
         <div
-            className={`flex flex-col items-center transition-all duration-500 gap-8 grow ${!status ? "opacity-30" : ""}`}
-            inert={!status}
+            className={`flex flex-col items-center transition-all duration-500 gap-8 grow ${isEditable ? "opacity-30" : ""}`}
+            inert={isEditable}
         >
             {deleteBox.render({
                 children: "Everything from this form will disappear!",
@@ -51,7 +66,7 @@ export const Send = () => {
                             height={16}
                             src="/send.svg"
                         />
-                        Sending:
+                        Form:
                     </span>
                 </li>
 
@@ -91,6 +106,7 @@ export const Send = () => {
                     <hr />
 
                     <SendForm
+                        type={type}
                         ref={handle}
                         onSubmit={() => {
                             wrapPromise("updateContact", () => {
@@ -104,7 +120,12 @@ export const Send = () => {
                                 }
 
                                 return updateContact({
-                                    type: "send",
+                                    ...(type === "edit"
+                                        ? {
+                                              type: "edit",
+                                              message_id: data.id,
+                                          }
+                                        : { type: "send" }),
                                     user_id: status.id,
                                     title: contents.title,
                                     message: contents.message,
@@ -165,6 +186,7 @@ export const Send = () => {
                         contents={contents}
                         handle={handle}
                         expanded={previewExpanded}
+                        data={data}
                     />
                 </div>
             </div>

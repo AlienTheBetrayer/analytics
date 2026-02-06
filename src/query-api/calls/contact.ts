@@ -10,7 +10,7 @@ export const updateContact = async (
               message: string;
           }
         | {
-              type: "update";
+              type: "edit";
               user_id: string;
               message_id: string;
               title?: string;
@@ -24,7 +24,7 @@ export const updateContact = async (
         body: {
             type: options.type,
             user_id: options.user_id,
-            message_id: options.type === "update" && options.message_id,
+            message_id: options.type === "edit" && options.message_id,
             data: {
                 title: options.title,
                 email: options.email,

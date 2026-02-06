@@ -24,7 +24,7 @@ export const ListItems = ({ filter, reversed, tab, collapsed }: Props) => {
 
     if (isLoading) {
         return (
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-4">
                 {Array.from({ length: 4 }, (_, k) => (
                     <div
                         className="w-full min-h-32 loading rounded-4xl!"
@@ -82,7 +82,7 @@ const ListItemsSelect = ({
     // fallbacks
     if (isLoading) {
         return (
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-4">
                 {Array.from({ length: 4 }, (_, k) => (
                     <div
                         className="w-full min-h-32 loading rounded-4xl!"

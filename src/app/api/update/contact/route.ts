@@ -41,7 +41,8 @@ export const POST = async (request: NextRequest) => {
                 const { error } = await supabaseServer
                     .from("contact_messages")
                     .update({ ...data, edited_at: new Date().toISOString() })
-                    .eq("user_id", user_id);
+                    .eq("user_id", user_id)
+                    .eq("id", message_id)
 
                 if (error) {
                     throw error;

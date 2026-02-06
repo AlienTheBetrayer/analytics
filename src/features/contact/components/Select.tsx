@@ -12,10 +12,10 @@ export const Select = () => {
             return <View />;
         }
         case "send": {
-            return <Send />;
+            return <Send type="send"/>
         }
         case "edit": {
-            return <Edit />;
+            return <Edit/>
         }
         case "list":
         default: {

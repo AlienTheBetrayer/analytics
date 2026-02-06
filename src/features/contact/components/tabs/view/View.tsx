@@ -113,7 +113,8 @@ const ViewMessage = ({ data, isLoading }: MessageProps) => {
             expanded
             username={user?.username}
             type="message"
-            contents={data}
+            data={data}
+            contents={{ ...data }}
             avatar_color={user?.profile.color}
             avatar_url={user?.profile.avatar_url}
         />

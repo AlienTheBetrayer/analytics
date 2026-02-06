@@ -24,6 +24,7 @@ export type SendFormContents = {
 };
 
 type Props = {
+    type: "edit" | "send";
     contents: SendFormContents;
     setContents: React.Dispatch<React.SetStateAction<SendFormContents>>;
     onDelete: () => void;
@@ -32,7 +33,7 @@ type Props = {
 
 export const SendForm = forwardRef<SendFormHandle, Props>(
     function SendFormComponent(
-        { onSubmit, onDelete, contents, setContents }: Props,
+        { type, onSubmit, onDelete, contents, setContents }: Props,
         ref,
     ) {
         // refs & access
@@ -197,9 +198,15 @@ export const SendForm = forwardRef<SendFormHandle, Props>(
                                         alt=""
                                         width={16}
                                         height={16}
-                                        src="/send.svg"
+                                        src={
+                                            type === "send"
+                                                ? "/send.svg"
+                                                : "/pencil.svg"
+                                        }
                                     />
-                                    <mark>Send</mark>
+                                    <mark>
+                                        {type === "send" ? "Send" : "Edit"}
+                                    </mark>
                                 </Button>
                             </li>
                         </ul>

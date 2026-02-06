@@ -31,6 +31,7 @@ export const Item = ({ className, id, filter }: Props) => {
             expanded={false}
             avatar_color={user?.profile.color}
             contents={data}
+            data={data}
             username={user?.username}
             avatar_url={user?.profile.avatar_url}
         />

@@ -4,6 +4,7 @@ import {
     SendFormContents,
     SendFormHandle,
 } from "@/features/contact/components/tabs/send/SendForm";
+import { CacheAPIProtocol } from "@/query-api/protocol";
 import { useQuery } from "@/query/core";
 import { useEffect, useState } from "react";
 
@@ -17,11 +18,13 @@ type Props = {
     contents: SendFormContents;
     handle: React.RefObject<SendFormHandle | null>;
     expanded?: boolean;
+    data?: CacheAPIProtocol["contact_message"]["data"];
 };
 
-export const Preview = ({ contents, handle, expanded }: Props) => {
+export const Preview = ({ data, contents, handle, expanded }: Props) => {
     // fetching
     const { data: status } = useQuery({ key: ["status"] });
+    const { data: user } = useQuery({ key: ["user", data?.user_id] });
 
     // error states
     const [validity, setValidity] = useState<SendFormValidity>({});
@@ -51,13 +54,16 @@ export const Preview = ({ contents, handle, expanded }: Props) => {
     return (
         <div className="w-full h-full flex items-center justify-center min-h-96">
             <PreviewButton
-                type="form"
-                avatar_color={status?.profile.color}
+                {...(data
+                    ? { type: "message", contents, data }
+                    : { type: "form", contents })}
                 expanded={expanded}
-                contents={contents}
                 validity={validity}
-                username={status?.username}
-                avatar_url={status?.profile.avatar_url}
+                username={user?.username ?? status?.username}
+                avatar_color={user?.profile.color ?? status?.profile.color}
+                avatar_url={
+                    user?.profile.avatar_url ?? status?.profile.avatar_url
+                }
             />
         </div>
     );
