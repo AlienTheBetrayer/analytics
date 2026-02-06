@@ -1,11 +1,15 @@
 import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
+import { TabSelection } from "@/utils/other/TabSelection";
 import Image from "next/image";
-import { redirect, useParams } from "next/navigation";
+import { redirect, useParams, usePathname } from "next/navigation";
 import { useCallback, useState } from "react";
 
 export const SearchButton = () => {
+    // url
+    const page = usePathname().split("/")[1];
+
     // url states
     const { query } = useParams<{ query?: string }>();
 
@@ -65,6 +69,7 @@ export const SearchButton = () => {
                         height={16}
                         src="/pencil.svg"
                     />
+                    <TabSelection condition={page === "search"} />
                 </Button>
             </Tooltip>
         </Input>

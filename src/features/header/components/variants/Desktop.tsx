@@ -10,10 +10,15 @@ import { Socials } from "../parts/Socials";
 import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { useQuery } from "@/query/core";
+import { usePathname } from "next/navigation";
+import { TabSelection } from "@/utils/other/TabSelection";
 
 type Props = {} & ComponentPropsWithoutRef<"div">;
 
 export const Desktop = ({ className }: Props) => {
+    // url
+    const page = usePathname().split("/")[1];
+
     // local storage
     const theme = useLocalStore((state) => state.theme);
 
@@ -41,6 +46,9 @@ export const Desktop = ({ className }: Props) => {
                                     height={18}
                                     alt="home"
                                 />
+                                <TabSelection
+                                    condition={!page || page === "home"}
+                                />
                             </LinkButton>
                         </Tooltip>
                     </li>
@@ -67,6 +75,12 @@ export const Desktop = ({ className }: Props) => {
                                             src="/select.svg"
                                             alt="posts"
                                         />
+                                        <TabSelection
+                                            condition={
+                                                page === "posts" ||
+                                                page === "post"
+                                            }
+                                        />
                                     </LinkButton>
                                 </Tooltip>
                             </li>
@@ -83,6 +97,9 @@ export const Desktop = ({ className }: Props) => {
                                             height={18}
                                             src="/dashboard.svg"
                                             alt="dashboard"
+                                        />
+                                        <TabSelection
+                                            condition={page === "dashboard"}
                                         />
                                     </LinkButton>
                                 </Tooltip>
@@ -101,6 +118,12 @@ export const Desktop = ({ className }: Props) => {
                                             src="/notification.svg"
                                             alt="notification"
                                         />
+                                        <TabSelection
+                                            condition={
+                                                page === "notifications" ||
+                                                page === "notification"
+                                            }
+                                        />
                                     </LinkButton>
                                 </Tooltip>
                             </li>
@@ -117,6 +140,9 @@ export const Desktop = ({ className }: Props) => {
                                             height={18}
                                             src="/phone.svg"
                                             alt="contact"
+                                        />
+                                        <TabSelection
+                                            condition={page === "contact"}
                                         />
                                     </LinkButton>
                                 </Tooltip>
@@ -156,9 +182,10 @@ export const Desktop = ({ className }: Props) => {
                 <ul className="flex gap-2 items-center">
                     <li>
                         <div
-                            className={`rounded-full ${!status ? "border-awaiting" : ""}`}
+                            className={`relative rounded-full ${!status ? "border-awaiting" : ""}`}
                         >
                             <AuthButton />
+                            <TabSelection condition={page === "profile"} />
                         </div>
                     </li>
 

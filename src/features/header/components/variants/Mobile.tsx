@@ -4,12 +4,17 @@ import Image from "next/image";
 import { ComponentPropsWithoutRef } from "react";
 import { SearchButton } from "../parts/SearchButton";
 import { useQuery } from "@/query/core";
+import { usePathname } from "next/navigation";
+import { TabSelection } from "@/utils/other/TabSelection";
 
 type Props = {
     showMenu: () => void;
 } & ComponentPropsWithoutRef<"div">;
 
 export const Mobile = ({ className, showMenu }: Props) => {
+    // url
+    const page = usePathname().split("/")[1];
+
     // fetching
     const { data: status } = useQuery({ key: ["status"] });
 
@@ -31,6 +36,7 @@ export const Mobile = ({ className, showMenu }: Props) => {
                         height={18}
                         alt="home"
                     />
+                    <TabSelection condition={!page || page === "home"} />
                 </LinkButton>
             </li>
 
@@ -50,6 +56,7 @@ export const Mobile = ({ className, showMenu }: Props) => {
                         src="/menu.svg"
                         alt="menu"
                     />
+                    <TabSelection condition={!!(page && page !== "home")} />
                 </Button>
             </li>
         </ul>

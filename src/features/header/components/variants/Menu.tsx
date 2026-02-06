@@ -8,12 +8,17 @@ import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Theme } from "@/features/header/components/toolbox/components/Theme";
 import { Socials } from "../parts/Socials";
 import { useQuery } from "@/query/core";
+import { usePathname } from "next/navigation";
+import { TabSelection } from "@/utils/other/TabSelection";
 
 type Props = {
     hideMenu: () => void;
 };
 
 export const Menu = ({ hideMenu }: Props) => {
+    // url
+    const page = usePathname().split("/")[1];
+
     // fetching
     const { data: status } = useQuery({ key: ["status"] });
 
@@ -39,6 +44,10 @@ export const Menu = ({ hideMenu }: Props) => {
                                     alt=""
                                 />
                                 <span>Home</span>
+                                <TabSelection
+                                    className="right-4! top-2!"
+                                    condition={!page || page === "home"}
+                                />
                             </LinkButton>
                         </li>
 
@@ -57,6 +66,10 @@ export const Menu = ({ hideMenu }: Props) => {
                                             alt=""
                                         />
                                         <span>Dashboard</span>
+                                        <TabSelection
+                                            className="right-4! top-2!"
+                                            condition={page === "dashboard"}
+                                        />
                                     </LinkButton>
                                 </li>
 
@@ -69,6 +82,13 @@ export const Menu = ({ hideMenu }: Props) => {
                                             alt=""
                                         />
                                         <span>Notifications</span>
+                                        <TabSelection
+                                            className="right-4! top-2!"
+                                            condition={
+                                                page === "notifications" ||
+                                                page === "notification"
+                                            }
+                                        />
                                     </LinkButton>
                                 </li>
 
@@ -81,6 +101,10 @@ export const Menu = ({ hideMenu }: Props) => {
                                             alt=""
                                         />
                                         <span>Contact</span>
+                                        <TabSelection
+                                            className="right-4! top-2!"
+                                            condition={page === "contact"}
+                                        />
                                     </LinkButton>
                                 </li>
 
@@ -93,6 +117,13 @@ export const Menu = ({ hideMenu }: Props) => {
                                             alt=""
                                         />
                                         <span>Posts</span>
+                                        <TabSelection
+                                            className="right-4! top-2!"
+                                            condition={
+                                                page === "post" ||
+                                                page === "posts"
+                                            }
+                                        />
                                     </LinkButton>
                                 </li>
 
@@ -123,6 +154,10 @@ export const Menu = ({ hideMenu }: Props) => {
                                         className="w-6"
                                     />
                                     <span>{status.username ?? "Account"}</span>
+                                    <TabSelection
+                                        className="right-4! top-2!"
+                                        condition={page === "profile"}
+                                    />
                                 </LinkButton>
                             </li>
                         ) : (
@@ -140,6 +175,10 @@ export const Menu = ({ hideMenu }: Props) => {
                                                 src="/pencil.svg"
                                             />
                                             <span>Sign up</span>
+                                            <TabSelection
+                                                className="right-4! top-2!"
+                                                condition={page === "signup"}
+                                            />
                                         </LinkButton>
                                     </Tooltip>
                                 </li>
@@ -157,6 +196,10 @@ export const Menu = ({ hideMenu }: Props) => {
                                                 src="/security.svg"
                                             />
                                             <span>Log in</span>
+                                            <TabSelection
+                                                className="right-4! top-2!"
+                                                condition={page === "login"}
+                                            />
                                         </LinkButton>
                                     </Tooltip>
                                 </li>

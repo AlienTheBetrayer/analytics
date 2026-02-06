@@ -8,8 +8,13 @@ import { AuthElements } from "./AuthElements";
 import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 import Image from "next/image";
 import { useQuery } from "@/query/core";
+import { TabSelection } from "@/utils/other/TabSelection";
+import { usePathname } from "next/navigation";
 
 export const AuthButton = () => {
+    // url
+    const page = usePathname().split("/")[1];
+
     // fetching
     const { data: status } = useQuery({ key: ["status"] });
 
@@ -46,6 +51,9 @@ export const AuthButton = () => {
                             width={16}
                             height={16}
                             src="/auth.svg"
+                        />
+                        <TabSelection
+                            condition={page === "login" || page === "signup"}
                         />
                     </Button>
                 </Modal>
