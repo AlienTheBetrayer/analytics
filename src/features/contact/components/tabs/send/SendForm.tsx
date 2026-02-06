@@ -91,10 +91,9 @@ export const SendForm = forwardRef<SendFormHandle, Props>(
                         <Input
                             ref={titleRef}
                             id="title"
-                            placeholder="at least 12 characters"
+                            placeholder="make this brief and important"
                             required
-                            minLength={12}
-                            maxLength={128}
+                            maxLength={256}
                             value={contents.title}
                             onChange={(value) =>
                                 setContents((prev) => ({
@@ -121,9 +120,10 @@ export const SendForm = forwardRef<SendFormHandle, Props>(
                         <Input
                             ref={emailRef}
                             required
+                            maxLength={256}
                             id="email"
                             type="email"
-                            placeholder="a valid e-mail"
+                            placeholder="your email"
                             value={contents.email}
                             onChange={(value) =>
                                 setContents((prev) => ({
@@ -150,12 +150,11 @@ export const SendForm = forwardRef<SendFormHandle, Props>(
                         <Input
                             ref={messageRef}
                             required
-                            minLength={32}
                             maxLength={1024}
                             className="grow rounded-2xl! min-h-64 max-h-128"
                             as="textarea"
                             id="message"
-                            placeholder="at least 32 characters"
+                            placeholder="describe your situation in details"
                             value={contents.message}
                             onChange={(value) =>
                                 setContents((prev) => ({

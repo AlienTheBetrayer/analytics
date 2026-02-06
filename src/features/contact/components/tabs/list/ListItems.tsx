@@ -1,16 +1,8 @@
 import { NoMessages } from "@/features/contact/components/errors/NoMessages";
 import { Item } from "@/features/contact/components/tabs/list/Item";
 import { ContactListItems } from "@/features/contact/components/tabs/list/List";
-import { Button } from "@/features/ui/button/components/Button";
-import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
-import { useMessageBox } from "@/features/ui/messagebox/hooks/useMessageBox";
-import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { useQuery } from "@/query/core";
-import { queryCache } from "@/query/init";
 import { AuthenticationToken } from "@/types/auth/authentication";
-import { ContactMessage } from "@/types/tables/contact";
-import Image from "next/image";
-import React from "react";
 
 type Props = {
     tab: (typeof ContactListItems)[number];
@@ -76,9 +68,6 @@ const ListItemsSelect = ({
                 : ["contact_messages"],
     });
 
-    // ui states
-    const deleteBox = useMessageBox();
-
     // fallbacks
     if (isLoading) {
         return (
@@ -109,89 +98,14 @@ const ListItemsSelect = ({
                 interpolateSize: "allow-keywords",
             }}
         >
-            {deleteBox.render({
-                children:
-                    "This message will be permanently deleted and we won't be able to see it.",
-                onSelect: (res) => {
-                    if (res === "yes") {
-                        alert("delte");
-                    }
-                },
-            })}
-
             {(reversed ? [...data].reverse() : data).map((id) => (
-                <React.Fragment key={id}>
-                    <li>
-                        <div className="flex flex-col">
-                            <ul className="box h-10! px-3! flex-row! gap-1! items-center! justify-start! p-0! rounded-b-none!">
-                                <li>
-                                    <LinkButton href={`/contact/view/${id}`}>
-                                        <Image
-                                            alt="view"
-                                            width={16}
-                                            height={16}
-                                            src="/launch.svg"
-                                        />
-                                    </LinkButton>
-                                </li>
-
-                                <li className="ml-auto!">
-                                    <ul className="flex items-center gap-1">
-                                        {status.id ===
-                                            (
-                                                queryCache.get({
-                                                    key: [
-                                                        "contact_message",
-                                                        id,
-                                                    ],
-                                                }) as ContactMessage
-                                            ).user_id && (
-                                            <li>
-                                                <Tooltip text="Edit message">
-                                                    <LinkButton
-                                                        href={`/contact/edit/${id}`}
-                                                    >
-                                                        <Image
-                                                            alt="edit"
-                                                            width={16}
-                                                            height={16}
-                                                            src="/pencil.svg"
-                                                        />
-                                                    </LinkButton>
-                                                </Tooltip>
-                                            </li>
-                                        )}
-
-                                        <li>
-                                            <Tooltip text="Unsend">
-                                                <Button
-                                                    onClick={deleteBox.show}
-                                                >
-                                                    <Image
-                                                        alt="delete"
-                                                        width={16}
-                                                        height={16}
-                                                        src="/delete.svg"
-                                                    />
-                                                </Button>
-                                            </Tooltip>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-
-                            <Item
-                                className="rounded-t-none!"
-                                filter={filter}
-                                id={id}
-                            />
-                        </div>
-                    </li>
-
-                    <li>
-                        <hr className="w-full max-w-9/11 mx-auto" />
-                    </li>
-                </React.Fragment>
+                <li key={id}>
+                    <Item
+                        className="rounded-t-none!"
+                        filter={filter}
+                        id={id}
+                    />
+                </li>
             ))}
         </ul>
     );

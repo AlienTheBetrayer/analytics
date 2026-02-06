@@ -191,6 +191,8 @@ export const List = () => {
                 </li>
             </ul>
 
+            <hr/>
+
             <ListItems
                 tab={tab}
                 collapsed={collapsed}

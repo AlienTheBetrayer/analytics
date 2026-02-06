@@ -116,6 +116,7 @@ export const Send = ({ type, data }: Props) => {
                                     !contents.message ||
                                     !contents.title
                                 ) {
+                                    alert("empty");
                                     return Promise.reject();
                                 }
 

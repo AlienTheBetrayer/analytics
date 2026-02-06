@@ -20,14 +20,17 @@ export const POST = async (request: NextRequest) => {
                     throw "data is undefined";
                 }
 
-                const { error } = await supabaseServer
+                const { data: message, error } = await supabaseServer
                     .from("contact_messages")
-                    .insert({ user_id, ...data });
+                    .insert({ user_id, ...data })
+                    .select()
+                    .single();
 
                 if (error) {
                     throw error;
                 }
-                break;
+
+                return nextResponse({ success: true, message }, 200);
             }
             case "edit": {
                 if (!data) {
@@ -38,23 +41,24 @@ export const POST = async (request: NextRequest) => {
                     throw "message_id is undefined";
                 }
 
-                const { error } = await supabaseServer
+                const { data: message, error } = await supabaseServer
                     .from("contact_messages")
                     .update({ ...data, edited_at: new Date().toISOString() })
                     .eq("user_id", user_id)
                     .eq("id", message_id)
+                    .select()
+                    .single();
 
                 if (error) {
                     throw error;
                 }
-                break;
+
+                return nextResponse({ success: true, message }, 200);
             }
             default: {
                 throw "type is wrong. available: send/edit";
             }
         }
-
-        return nextResponse({ success: true }, 200);
     } catch (error) {
         console.error(error);
         return nextResponse({ success: false }, 400);

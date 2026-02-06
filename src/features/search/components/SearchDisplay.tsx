@@ -21,7 +21,7 @@ export const SearchDisplay = ({ filter, data }: Props) => {
             queryCache.get({
                 key: ["user", data.id],
             }) as CacheAPIProtocol["user"]["data"]
-        )?.username.includes(filter)
+        )?.username?.includes(filter)
     ) {
         return null;
     }

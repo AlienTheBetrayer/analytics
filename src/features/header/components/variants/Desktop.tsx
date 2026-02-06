@@ -51,7 +51,7 @@ export const Desktop = ({ className }: Props) => {
 
                     <li>
                         <ul
-                            className={`flex items-center ${!status ? "opacity-30" : ""}`}
+                            className={`flex items-center ${!status ? "opacity-30" : ""} transition-all duration-500`}
                             inert={!!!status}
                         >
                             <li>
