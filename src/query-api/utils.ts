@@ -1,6 +1,8 @@
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { queryMutate } from "@/query/auxiliary";
+import { ContactMessage } from "@/types/tables/contact";
 import { PostPrivacy } from "@/types/tables/posts";
+import { refreshedRequest } from "@/utils/auth/refreshedRequest";
 import axios from "axios";
 
 export const __user = async (args: unknown[], type: "id" | "name") => {
@@ -71,4 +73,46 @@ export const __posts = async (
     }
 
     return post_ids;
+};
+
+export const __contact = async (type: "single" | "all", ids: string[]) => {
+    const messages = (
+        await refreshedRequest({
+            route: "/api/get/contact_message",
+            method: "GET",
+            config: {
+                params: {
+                    message_ids: ids.join(","),
+                },
+            },
+        })
+    ).data.messages as ContactMessage[];
+
+    if (messages?.length) {
+        const users = (
+            await axios.get("/api/get/users", {
+                params: {
+                    user_ids: messages.map((m) => m.user_id).join(","),
+                },
+            })
+        ).data.users as CacheAPIProtocol["user"]["data"][];
+
+        if (type === "all") {
+            for (const message of messages) {
+                queryMutate({
+                    key: ["contact_message", message.id],
+                    value: message,
+                });
+            }
+        }
+
+        for (const user of users) {
+            queryMutate({
+                key: ["user", user.id],
+                value: user,
+            });
+        }
+    }
+
+    return messages;
 };

@@ -5,7 +5,7 @@ import { View } from "@/features/contact/components/tabs/view/View";
 import { useParams } from "next/navigation";
 
 export const Select = () => {
-    const { tab, id } = useParams<{ tab?: string; id?: string }>();
+    const { tab } = useParams<{ tab?: string; id?: string }>();
 
     switch (tab) {
         case "view": {

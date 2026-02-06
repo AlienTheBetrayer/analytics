@@ -187,7 +187,10 @@ const ListItemsSelect = ({
                             />
                         </div>
                     </li>
-                    <hr className="w-full max-w-9/11 mx-auto" />
+
+                    <li>
+                        <hr className="w-full max-w-9/11 mx-auto" />
+                    </li>
                 </React.Fragment>
             ))}
         </ul>

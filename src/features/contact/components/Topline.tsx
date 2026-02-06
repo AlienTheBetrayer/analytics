@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 
 export const Topline = () => {
-    const { tab, id } = useParams<{ tab?: string; id?: string }>();
+    const { tab } = useParams<{ tab?: string; id?: string }>();
 
     return (
         <ul className="w-full max-w-400 mx-auto! box p-0! h-10! flex-row! my-2! gap-1!">

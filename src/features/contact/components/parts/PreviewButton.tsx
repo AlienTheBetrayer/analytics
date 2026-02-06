@@ -56,7 +56,7 @@ export const PreviewButton = ({
                         ? `/contact/send/`
                         : `/contact/view/${contents.id}`
                 }
-                className={`flex flex-col p-4! w-full h-fit 
+                className={`flex flex-col p-4! w-full h-fit
                  justify-start! items-stretch! rounded-4xl! 
                  ${expanded ? "h-full max-h-full" : "max-h-96 md:max-h-32"} ${className ?? ""}`}
                 style={{

@@ -9,7 +9,7 @@ export const NoMessages = () => {
             className="mt-0!"
             title={
                 <>
-                    Messages are <mark>absent</mark>
+                    Messages are <u>absent</u>
                 </>
             }
             description={

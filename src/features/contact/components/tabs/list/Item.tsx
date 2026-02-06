@@ -13,7 +13,7 @@ export const Item = ({ className, id, filter }: Props) => {
     const { data: user } = useQuery({ key: ["user", data?.user_id] });
 
     if (isLoading) {
-        return <li className="w-full min-h-32 loading rounded-4xl!" />;
+        return <div className="w-full min-h-32 loading rounded-4xl!" />;
     }
 
     if (!data) {
@@ -25,16 +25,14 @@ export const Item = ({ className, id, filter }: Props) => {
     }
 
     return (
-        <li>
-            <PreviewButton
-                className={className}
-                type="message"
-                expanded={false}
-                avatar_color={user?.profile.color}
-                contents={data}
-                username={user?.username}
-                avatar_url={user?.profile.avatar_url}
-            />
-        </li>
+        <PreviewButton
+            className={className}
+            type="message"
+            expanded={false}
+            avatar_color={user?.profile.color}
+            contents={data}
+            username={user?.username}
+            avatar_url={user?.profile.avatar_url}
+        />
     );
 };
