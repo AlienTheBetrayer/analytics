@@ -1,3 +1,4 @@
+import { notificationListeners } from "@/notifications/data/init";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { queryDelete, queryMutate } from "@/query/auxiliary";
 import { refreshedRequest } from "@/utils/auth/refreshedRequest";
@@ -32,7 +33,9 @@ export const updateContact = async (
                     title: options.title,
                     email: options.email,
                     message: options.message,
-                    ...("response" in options && { response: options.response}),
+                    ...("response" in options && {
+                        response: options.response,
+                    }),
                 },
             },
         })
@@ -47,6 +50,17 @@ export const updateContact = async (
         queryMutate({
             key: ["contact_messages", options.user_id],
             value: (value) => [message.id, ...(value ?? [])],
+        });
+
+        notificationListeners.fire({
+            key: "all",
+            notification: {
+                status: "Information",
+                tab: "Account",
+                title: "Messages successfully sent!",
+                description: "Thanks for your feedback!",
+                type: "Feedback sent",
+            },
         });
     }
 

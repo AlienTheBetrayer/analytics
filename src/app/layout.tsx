@@ -6,6 +6,7 @@ import { Meteors } from "@/features/ui/aceternity/meteors/meteors";
 import { AuthWatcher } from "@/watchers/AuthWatcher";
 import { LocalStoreWatcher } from "@/watchers/LocalStoreWatcher";
 import { ScrollUp } from "@/features/ui/scrollup/components/ScrollUp";
+import { Footer } from "@/features/footer/components/Footer";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -33,7 +34,7 @@ export default function RootLayout({
             <LocalStoreWatcher />
 
             <body
-                className={`${geistSans.variable} ${geistMono.variable} px-4! mb-16! dotted antialiased overflow-x-hidden min-h-screen flex flex-col relative`}
+                className={`${geistSans.variable} ${geistMono.variable} px-4! dotted antialiased overflow-x-hidden min-h-screen flex flex-col relative`}
             >
                 <Header />
                 <ScrollUp />
@@ -43,6 +44,8 @@ export default function RootLayout({
                 </div>
 
                 <div className="flex flex-col w-full">{children}</div>
+
+                <Footer />
             </body>
         </html>
     );

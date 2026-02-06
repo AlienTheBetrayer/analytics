@@ -35,15 +35,13 @@ export const SessionList = ({ data, currentSessions }: Props) => {
                             ${token.is_current ? "border-2 border-blue-2" : ""}`}
                 >
                     {token.is_current ? (
-                        <div className="flex items-center gap-2">
-                            <div className="rounded-full outline-2 outline-blue-2 p-2">
-                                <Image
-                                    alt=""
-                                    width={20}
-                                    height={20}
-                                    src="/privacy.svg"
-                                />
-                            </div>
+                        <div className="flex items-center gap-1">
+                            <Image
+                                alt=""
+                                width={20}
+                                height={20}
+                                src="/privacy.svg"
+                            />
                             <span>Ongoing</span>
                         </div>
                     ) : (

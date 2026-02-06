@@ -12,7 +12,8 @@ export type NotificationType =
     | "Sessions terminated"
     | "Account deleted"
     | "Signed up"
-    | "Profile modified";
+    | "Profile modified"
+    | "Feedback sent";
 
 export type Notification = {
     id: string;

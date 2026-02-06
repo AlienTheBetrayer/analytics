@@ -20,10 +20,10 @@ export const deleteImage = async (options: {
 
     if (error) {
         console.error(error);
-        throw nextResponse({ error: "Image deleting has failed." }, 400);
+        throw nextResponse({ success: false }, 400);
     }
 
-    return nextResponse({ message: "Image deletion has succeded!" }, 200);
+    return nextResponse({ success: true }, 200);
 };
 
 /**
@@ -55,7 +55,7 @@ export const uploadImage = async (options: {
 
     if (error) {
         console.error(error);
-        throw nextResponse({ error: "Uploading failed." }, 400);
+        throw nextResponse({ success: false }, 400);
     }
 
     const { data } = supabaseServer.storage.from(options.folder).getPublicUrl(path);

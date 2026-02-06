@@ -22,7 +22,7 @@ export const ScrollUp = () => {
         <AnimatePresence>
             {visible && (
                 <motion.aside
-                    className="box p-1! fixed! bottom-2 right-2 z-10"
+                    className="box p-1! fixed! bottom-2 right-2 z-2"
                     initial={{
                         opacity: 0,
                         y: 32,

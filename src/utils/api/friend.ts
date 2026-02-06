@@ -25,7 +25,7 @@ export const unfriendAll = async (request: NextRequest, from_id: string) => {
         throw error;
     }
 
-    return nextResponse({ success: true }, 200, "all_unfriended");
+    return nextResponse({ success: true }, 200);
 };
 
 /**
@@ -55,11 +55,7 @@ export const unfriend = async (
         throw error;
     }
 
-    return nextResponse(
-        { message: "Successfully unfriended the user!" },
-        200,
-        "unfriended",
-    );
+    return nextResponse({ success: true }, 200);
 };
 
 /**
@@ -121,7 +117,7 @@ export const requestSend = async (
         throw sendRequestError;
     }
 
-    return nextResponse({ success: true }, 200, "friend_request_sent");
+    return nextResponse({ success: true }, 200);
 };
 
 /**
@@ -150,7 +146,7 @@ export const requestReject = async (
         throw error;
     }
 
-    return nextResponse({ success: true }, 200, "friend_request_rejected");
+    return nextResponse({ success: true }, 200);
 };
 
 /**
@@ -199,5 +195,5 @@ export const requestAccept = async (
         throw friendError;
     }
 
-    return nextResponse({ success: true }, 200, "friend_request_accepted");
+    return nextResponse({ success: true }, 200);
 };
