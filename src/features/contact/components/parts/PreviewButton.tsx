@@ -120,7 +120,7 @@ export const PreviewButton = ({
                         )}
                     </div>
 
-                    <ul className="grid grid-flow-row grid-rows-[1.5rem_1.5rem_1fr] wrap-anywhere items-center w-full grow gap-1 overflow-hidden text-center">
+                    <ul className="grid grid-flow-row grid-rows-[1.5rem_1.5rem_1fr] wrap-anywhere items-center w-full grow gap-1 overflow-hidden">
                         <li className="h-full">
                             {contents.title ? (
                                 <span

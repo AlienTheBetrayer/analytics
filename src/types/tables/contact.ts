@@ -9,4 +9,5 @@ export type ContactMessage = {
     message: string;
     created_at: string;
     edited_at?: string;
+    response?: string;
 };

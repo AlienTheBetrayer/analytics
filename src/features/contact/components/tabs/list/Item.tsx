@@ -6,6 +6,7 @@ import { useQuery } from "@/query/core";
 import { queryCache } from "@/query/init";
 import { ContactMessage } from "@/types/tables/contact";
 import { relativeTime } from "@/utils/other/relativeTime";
+import { TabSelection } from "@/utils/other/TabSelection";
 import { useLocalStore } from "@/zustand/localStore";
 import Image from "next/image";
 
@@ -55,6 +56,10 @@ export const Item = ({ className, id, filter }: Props) => {
                                 height={16}
                                 src="/launch.svg"
                             />
+                            <TabSelection
+                                condition={!!data.response}
+                                color="var(--orange-1)"
+                            />
                         </LinkButton>
                     </li>
                 )}
@@ -73,6 +78,10 @@ export const Item = ({ className, id, filter }: Props) => {
                                     className="w-5! h-5!"
                                 />
                                 <span>{user?.username}</span>
+                                <TabSelection
+                                    condition={!!data.response}
+                                    color="var(--orange-1)"
+                                />
                             </div>
 
                             <hr className="w-px! h-1/2! bg-background-a-8!" />

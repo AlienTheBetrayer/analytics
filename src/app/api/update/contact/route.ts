@@ -10,12 +10,12 @@ export const POST = async (request: NextRequest) => {
             throw "type is undefined. available: send/edit";
         }
 
-        if (!user_id) {
-            throw "user_id is undefined";
-        }
-
         switch (type) {
             case "send": {
+                if (!user_id) {
+                    throw "user_id is undefined";
+                }
+
                 if (!data || !data.title || !data.email || !data.message) {
                     throw "data is undefined";
                 }
@@ -43,8 +43,12 @@ export const POST = async (request: NextRequest) => {
 
                 const { data: message, error } = await supabaseServer
                     .from("contact_messages")
-                    .update({ ...data, edited_at: new Date().toISOString() })
-                    .eq("user_id", user_id)
+                    .update({
+                        ...data,
+                        ...(!("response" in data) && {
+                            edited_at: new Date().toISOString(),
+                        }),
+                    })
                     .eq("id", message_id)
                     .select()
                     .single();

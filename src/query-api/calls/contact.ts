@@ -13,11 +13,11 @@ export const updateContact = async (
           }
         | {
               type: "edit";
-              user_id: string;
               message_id: string;
               title?: string;
               email?: string;
               message?: string;
+              response?: string | null;
           },
 ) => {
     const message = (
@@ -26,25 +26,30 @@ export const updateContact = async (
             method: "POST",
             body: {
                 type: options.type,
-                user_id: options.user_id,
+                ...("user_id" in options && { user_id: options.user_id }),
                 message_id: options.type === "edit" && options.message_id,
                 data: {
                     title: options.title,
                     email: options.email,
                     message: options.message,
+                    ...("response" in options && { response: options.response}),
                 },
             },
         })
     ).data.message as CacheAPIProtocol["contact_message"]["data"];
 
-    queryMutate({
-        key: ["contact_messages"],
-        value: (value) => [message.id, ...(value ?? [])],
-    });
-    queryMutate({
-        key: ["contact_messages", options.user_id],
-        value: (value) => [message.id, ...(value ?? [])],
-    });
+    if (options.type === "send") {
+        queryMutate({
+            key: ["contact_messages"],
+            value: (value) => [message.id, ...(value ?? [])],
+        });
+
+        queryMutate({
+            key: ["contact_messages", options.user_id],
+            value: (value) => [message.id, ...(value ?? [])],
+        });
+    }
+
     queryMutate({ key: ["contact_message", message.id], value: message });
 
     return message;
