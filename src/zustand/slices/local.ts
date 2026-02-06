@@ -12,6 +12,7 @@ export const LocalSlice: SliceFunction<LocalStore, LocalStore> = (set) => {
             },
             view: {
                 postsColumns: "1",
+                contactMessages: "expanded",
             },
         },
         theme: "dark",

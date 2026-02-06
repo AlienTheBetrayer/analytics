@@ -1,3 +1,12 @@
+// helper type
+type DeepPartial<T> = {
+    [P in keyof T]?: T[P] extends (infer U)[]
+        ? DeepPartial<U>[]
+        : T[P] extends object
+          ? DeepPartial<T[P]>
+          : T[P];
+};
+
 // preferences
 export type Preferences = {
     visibility: boolean;
@@ -12,8 +21,11 @@ export type Sorting = {
     posts: SortingDirection;
 };
 export type ViewPostColumns = "1" | "2" | "3" | "4";
+export type ContactMessages = "compact" | "expanded";
+
 export type View = {
     postsColumns: ViewPostColumns;
+    contactMessages: ContactMessages;
 };
 
 export type Display = {
@@ -40,7 +52,7 @@ export type LocalStore = {
      * updates the sorting metadata
      * @param sorting a partial sorting object
      */
-    updateDisplay: (sorting: Partial<Display>) => void;
+    updateDisplay: (sorting: DeepPartial<Display>) => void;
 
     /**
      * toggles the sorting metadata
@@ -52,7 +64,7 @@ export type LocalStore = {
      * updates the preferences (don't provide a value if you want it unchanged)
      * @param preferences a partial preferences object
      */
-    updatePreferences: (preferences: Partial<Preferences>) => void;
+    updatePreferences: (preferences: DeepPartial<Preferences>) => void;
 
     /**
      * explicitly updates the preferences object

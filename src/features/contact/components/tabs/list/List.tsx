@@ -1,6 +1,8 @@
+import { DisplayFormat } from "@/features/contact/components/tabs/list/DisplayFormat";
 import { ListItems } from "@/features/contact/components/tabs/list/ListItems";
 import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
+import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { PromiseState } from "@/promises/components/PromiseState";
 import { wrapPromise } from "@/promises/core";
@@ -115,7 +117,7 @@ export const List = () => {
                 inert={!!!message_ids?.length}
             >
                 {!message_ids?.length && (
-                    <li className="absolute left-1/2 top-1/2 -translate-1/2">
+                    <li className="absolute left-1/2 top-1/2 -translate-1/2 whitespace-nowrap">
                         <span>
                             Send a <mark>message</mark> to access
                         </span>
@@ -189,9 +191,27 @@ export const List = () => {
                         onChange={(value) => setFilter(value)}
                     />
                 </li>
+
+                <li className="ml-auto!">
+                    <Tooltip text="Display format">
+                        <Modal
+                            direction="bottom-left"
+                            element={(hide) => <DisplayFormat hide={hide} />}
+                        >
+                            <Button>
+                                <Image
+                                    alt=""
+                                    width={16}
+                                    height={16}
+                                    src="/cubes.svg"
+                                />
+                            </Button>
+                        </Modal>
+                    </Tooltip>
+                </li>
             </ul>
 
-            <hr/>
+            <hr />
 
             <ListItems
                 tab={tab}

@@ -92,7 +92,7 @@ const ListItemsSelect = ({
 
     return (
         <ul
-            className="flex flex-col gap-8 overflow-hidden transition-all duration-500"
+            className="flex flex-col gap-4 overflow-hidden transition-all duration-500"
             style={{
                 height: collapsed ? "0" : "auto",
                 interpolateSize: "allow-keywords",

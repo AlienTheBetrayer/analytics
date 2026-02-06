@@ -36,7 +36,7 @@ export const DisplayFormat = ({ hide }: Props) => {
                 {Array.from({ length: isMobile ? 2 : 4 }, (_, k) => (
                     <li
                         key={k}
-                        className="flex flex-col gap-4"
+                        className="flex flex-col gap-1"
                     >
                         <Checkbox
                             value={display.view.postsColumns === String(k + 1)}
