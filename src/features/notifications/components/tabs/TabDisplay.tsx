@@ -19,18 +19,18 @@ export const TabDisplay = ({ tab }: Props) => {
     // notification data
     const { filtered } = useNotificationList(tab);
     const [pagination, setPagination] = useState<number>(0);
-    
+
     // fallbacks
     if (!Object.keys(notifications).length) {
         return <AbsentNotifications />;
     }
-    
+
     // data mapped
     const paginatedFiltered = filtered?.slice(0, 4 * (pagination + 1));
 
     return (
         <ul
-            className="flex flex-col gap-2 transition-all duration-500 overflow-hidden"
+            className="flex flex-col gap-8 transition-all duration-500 overflow-hidden"
             style={{
                 height: expandedTab ? "auto" : "0px",
                 interpolateSize: "allow-keywords",
@@ -41,15 +41,14 @@ export const TabDisplay = ({ tab }: Props) => {
                     notification && (
                         <li key={notification.id}>
                             <NotificationCompact notification={notification} />
-                            <hr className="my-4" />
                         </li>
-                    )
+                    ),
             )}
 
             <li className="w-full">
                 {(filtered?.length ?? 0) > 4 * (pagination + 1) && (
                     <Button
-                        className="p-4! w-full"
+                        className="w-full"
                         onClick={() => {
                             setPagination((prev) => prev + 1);
                         }}
@@ -58,9 +57,8 @@ export const TabDisplay = ({ tab }: Props) => {
                             alt=""
                             width={16}
                             height={16}
-                            src="/reload.svg"
+                            src="/download.svg"
                         />
-                        Load more
                     </Button>
                 )}
             </li>

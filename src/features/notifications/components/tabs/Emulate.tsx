@@ -21,9 +21,11 @@ export const Emulate = () => {
     const [description, setDescription] = useState<string>("");
 
     return (
-        <div className="flex flex-col gap-2 grow">
+        <div className="flex flex-col gap-4 grow">
             <Topline />
+
             <hr />
+
             <form
                 className="flex flex-col grow"
                 onSubmit={(e) => {
@@ -37,7 +39,7 @@ export const Emulate = () => {
                     });
                 }}
             >
-                <ul className="flex flex-col gap-4 grow">
+                <ul className="flex flex-col gap-8 grow">
                     <li className="flex flex-col gap-1">
                         <label
                             className="flex items-center gap-1"
@@ -60,10 +62,6 @@ export const Emulate = () => {
                             maxLength={32}
                             required
                         />
-                    </li>
-
-                    <li className="mb-2!">
-                        <hr />
                     </li>
 
                     <li className="flex flex-col gap-1">
@@ -89,11 +87,7 @@ export const Emulate = () => {
                     </li>
 
                     <li>
-                        <hr className="mb-2" />
-                    </li>
-
-                    <li>
-                        <ul className="grid md:grid-cols-[1fr_auto_1fr] gap-4">
+                        <ul className="grid md:grid-cols-2 gap-8">
                             <li className="flex flex-col gap-1">
                                 <label
                                     className="flex items-center gap-1"
@@ -115,10 +109,6 @@ export const Emulate = () => {
                                         setStatus(e as NotificationStatus)
                                     }
                                 />
-                            </li>
-
-                            <li className="flex">
-                                <hr className="self-center md:w-px! md:h-1/2!" />
                             </li>
 
                             <li className="flex flex-col gap-1">
@@ -146,11 +136,7 @@ export const Emulate = () => {
                         </ul>
                     </li>
 
-                    <li className="mt-auto!">
-                        <hr />
-                    </li>
-
-                    <li className="flex flex-col gap-1">
+                    <li className="flex flex-col gap-1 mt-auto!">
                         <Button
                             type="submit"
                             className="w-full"

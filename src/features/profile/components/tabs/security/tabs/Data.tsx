@@ -44,7 +44,7 @@ export const Data = ({ data }: Props) => {
                 }
             }}
         >
-            <ul className="flex flex-col gap-4 grow">
+            <ul className="flex flex-col gap-8 grow">
                 <li className="flex flex-col gap-2">
                     <label
                         htmlFor="username"
@@ -73,8 +73,6 @@ export const Data = ({ data }: Props) => {
                             }
                             value={fieldsEnabled.username}
                         />
-                        <hr className="w-px! h-1/3 bg-background-a-10" />
-
                         <Input
                             id="username"
                             type="username"
@@ -86,10 +84,6 @@ export const Data = ({ data }: Props) => {
                             required
                         />
                     </div>
-                </li>
-
-                <li>
-                    <hr />
                 </li>
 
                 <li className="flex flex-col gap-2">
@@ -120,8 +114,6 @@ export const Data = ({ data }: Props) => {
                             }
                             value={fieldsEnabled.password}
                         />
-                        <hr className="w-px! h-1/3 bg-background-a-10" />
-
                         <Input
                             id="password"
                             isEnabled={fieldsEnabled.password}
@@ -136,7 +128,6 @@ export const Data = ({ data }: Props) => {
                 </li>
 
                 <li className="mt-auto! flex flex-col gap-2">
-                    <hr />
                     <Tooltip
                         className="w-full"
                         text="Change your password"

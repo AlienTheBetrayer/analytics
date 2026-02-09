@@ -51,9 +51,9 @@ export const Form = ({ avatar, avatarFile, data }: EditAvatarProps) => {
                 });
             }}
         >
-            <ul className="flex flex-col gap-4 grow">
+            <ul className="flex flex-col gap-8 grow">
                 <li className="flex flex-col">
-                    <ul className="grid md:grid-cols-[1fr_auto_1fr] gap-2">
+                    <ul className="grid md:grid-cols-2 gap-8 md:gap-4">
                         <li className="flex flex-col gap-2">
                             <label
                                 htmlFor="name"
@@ -77,10 +77,6 @@ export const Form = ({ avatar, avatarFile, data }: EditAvatarProps) => {
                                 placeholder="24 characters max"
                                 maxLength={24}
                             />
-                        </li>
-
-                        <li className="flex h-full items-center">
-                            <hr className="hidden md:block w-px! h-1/2!" />
                         </li>
 
                         <li className="flex flex-col gap-2">
@@ -136,10 +132,6 @@ export const Form = ({ avatar, avatarFile, data }: EditAvatarProps) => {
                     />
                 </li>
 
-                <li>
-                    <hr />
-                </li>
-
                 <li className="flex flex-col gap-2">
                     <label
                         htmlFor="bio"
@@ -163,10 +155,6 @@ export const Form = ({ avatar, avatarFile, data }: EditAvatarProps) => {
                         placeholder="128 characters max"
                         maxLength={128}
                     />
-                </li>
-
-                <li>
-                    <hr />
                 </li>
 
                 <li className="flex flex-col gap-2">
@@ -196,8 +184,6 @@ export const Form = ({ avatar, avatarFile, data }: EditAvatarProps) => {
                 </li>
 
                 <li className="flex flex-col gap-2 mt-auto!">
-                    <hr />
-
                     <Tooltip
                         text="Save all of your changes"
                         className="w-full"

@@ -50,7 +50,7 @@ export const Filtering = ({ hide, project_id }: Props) => {
     }, [data]);
 
     return (
-        <div className="relative box p-3! min-w-81">
+        <div className="relative box p-4! w-screen max-w-lg gap-4! acrylic">
             <CloseButton hide={hide} />
 
             <span className="flex flex-col items-center">
@@ -65,26 +65,33 @@ export const Filtering = ({ hide, project_id }: Props) => {
 
             <hr />
 
-            {uniqueEventTypes?.map((type) => (
-                <Checkbox
-                    key={type}
-                    onToggle={(flag) => {
-                        setFilter({
-                            project_id,
-                            column: [type],
-                            flag,
-                            type: "event-filter",
-                        });
-                    }}
-                    value={eventFilters[project_id]?.eventsFiltering?.[type]}
-                >
-                    <span>{type}</span>
+            <ul className="flex flex-col gap-2">
+                {uniqueEventTypes?.map((type) => (
+                    <li key={type}>
+                        <Checkbox
+                            onToggle={(flag) => {
+                                setFilter({
+                                    project_id,
+                                    column: [type],
+                                    flag,
+                                    type: "event-filter",
+                                });
+                            }}
+                            value={
+                                eventFilters[project_id]?.eventsFiltering?.[
+                                    type
+                                ]
+                            }
+                        >
+                            <span>{type}</span>
 
-                    <span className="ml-auto">
-                        <small>{eventsCount?.[type] ?? 0}</small>
-                    </span>
-                </Checkbox>
-            ))}
+                            <span className="ml-auto">
+                                <small>{eventsCount?.[type] ?? 0}</small>
+                            </span>
+                        </Checkbox>
+                    </li>
+                ))}
+            </ul>
 
             <hr />
 

@@ -28,7 +28,7 @@ export const Friends = ({ data }: Props) => {
 
             <hr />
 
-            <div className="grid lg:grid-cols-[30%_auto_1fr] gap-4 grow">
+            <div className="grid lg:grid-cols-[30%_1fr] gap-16 lg:gap-8 grow">
                 <div className="flex flex-col items-center gap-2">
                     <span>{data.profile.name}</span>
                     <ProfileImage
@@ -37,8 +37,6 @@ export const Friends = ({ data }: Props) => {
                         height={256}
                     />
                 </div>
-
-                <hr className="sm:w-px! sm:h-full" />
 
                 <Select data={data} />
             </div>

@@ -44,7 +44,6 @@ export const PostList = ({ data }: Props) => {
                           <div className="w-full flex flex-col h-48 rounded-4xl! loading p-0!">
                               <div className="w-full h-10 loading" />
                           </div>
-                          <hr className="my-4!" />
                       </li>
                   ))
                 : filtered.map((post) => (
@@ -53,7 +52,6 @@ export const PostList = ({ data }: Props) => {
                           key={post.id}
                       >
                           <PostCompact id={post.id} />
-                          <hr className="my-4!" />
                       </li>
                   ))}
         </ul>

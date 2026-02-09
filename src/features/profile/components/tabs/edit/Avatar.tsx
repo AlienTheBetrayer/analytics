@@ -133,13 +133,17 @@ export const Avatar = ({
                 )}
             </AnimatePresence>
 
-            <div className="flex gap-1">
+            <div className="flex gap-1 w-full max-w-48">
                 {avatarFile[0] ? (
-                    <Tooltip text="Cancel image changing">
+                    <Tooltip
+                        text="Cancel image changing"
+                        className="w-full"
+                    >
                         <Button
                             onClick={() => {
                                 avatarFile[1](undefined);
                             }}
+                            className="w-full"
                         >
                             <Image
                                 src="/cross.svg"
@@ -151,11 +155,15 @@ export const Avatar = ({
                         </Button>
                     </Tooltip>
                 ) : avatar[0] ? (
-                    <Tooltip text="Wipe profile image">
+                    <Tooltip
+                        text="Wipe profile image"
+                        className="w-full"
+                    >
                         <Button
                             onClick={() => {
                                 avatarBox.show();
                             }}
+                            className="w-full"
                         >
                             <Image
                                 src="/delete.svg"
@@ -167,14 +175,18 @@ export const Avatar = ({
                         </Button>
                     </Tooltip>
                 ) : (
-                    <Tooltip text="Set a profile image">
+                    <Tooltip
+                        text="Set a profile image"
+                        className="w-full"
+                    >
                         <Button
                             onClick={() => {
                                 inputRef.current?.click();
                             }}
+                            className="w-full"
                         >
                             <Image
-                                src="/plus.svg"
+                                src="/imageadd.svg"
                                 width={16}
                                 height={16}
                                 alt=""
@@ -185,11 +197,9 @@ export const Avatar = ({
                 )}
             </div>
 
-            <hr className="mt-auto" />
-
             <Tooltip
                 text="Modify your color palette"
-                className="w-full"
+                className="w-full mt-auto!"
                 direction="top"
             >
                 <Modal
@@ -202,7 +212,7 @@ export const Avatar = ({
                     )}
                     className="w-full"
                 >
-                    <Button className="w-full! min-h-9! flex flex-col!">
+                    <Button className="w-full! max-w-81 lg:max-w-full mx-auto min-h-9! flex flex-col!">
                         {colors ? (
                             <ColorSwatches data={data} />
                         ) : (

@@ -58,7 +58,8 @@ export const Security = ({ data }: Props) => {
             </div>
 
             <hr />
-            <div className="grid lg:grid-cols-[30%_auto_1fr] gap-12 lg:gap-4 grow">
+
+            <div className="grid lg:grid-cols-[30%_1fr] gap-16 lg:gap-8 grow">
                 <div className="flex flex-col items-center gap-2">
                     <span>{data.profile.name}</span>
                     <ProfileImage
@@ -67,66 +68,74 @@ export const Security = ({ data }: Props) => {
                         height={256}
                     />
 
-                    <Tooltip text="Log yourself out">
-                        <Button
-                            onClick={() => {
-                                wrapPromise("logout", async () => {
-                                    applicationLogout();
-                                });
-                            }}
-                        >
-                            <PromiseState state="logout" />
-                            <Image
-                                width={16}
-                                height={16}
-                                alt=""
-                                src="/auth.svg"
-                            />
-                            Log out
-                        </Button>
-                    </Tooltip>
-
-                    <hr className="mt-auto" />
-                    <div className="grid grid-cols-[auto_auto_1fr] items-center gap-2 w-full">
+                    <div className="grid grid-cols-2 items-center gap-2 w-full max-w-96 lg:max-w-full mt-auto!">
                         <Tooltip
-                            direction="top"
-                            text="Confirm deletion"
-                        >
-                            <Checkbox
-                                className="rounded-full! w-8! justify-center!"
-                                onToggle={(e) => setIsDeletionEnabled(e)}
-                                value={isDeletionEnabled}
-                            />
-                        </Tooltip>
-                        <hr className="w-px! h-1/3" />
-
-                        <Tooltip
-                            text="Wipe your account data"
-                            direction="top"
+                            text="Log yourself out"
                             className="w-full"
-                            isEnabled={isDeletionEnabled}
                         >
                             <Button
-                                isEnabled={isDeletionEnabled}
                                 className="w-full"
                                 onClick={() => {
-                                    deleteBox.show();
+                                    wrapPromise("logout", async () => {
+                                        applicationLogout();
+                                    });
                                 }}
                             >
-                                <PromiseState state="delete" />
+                                <PromiseState state="logout" />
                                 <Image
-                                    src="/delete.svg"
                                     width={16}
                                     height={16}
                                     alt=""
+                                    src="/auth.svg"
                                 />
-                                Delete account
+                                Log out
                             </Button>
                         </Tooltip>
+
+                        <div className="flex items-center gap-1">
+                            <Tooltip
+                                direction="top"
+                                text="Confirm deletion"
+                            >
+                                <Checkbox
+                                    className="rounded-full! w-8! justify-center! bg-blue-1"
+                                    onToggle={(e) => setIsDeletionEnabled(e)}
+                                    value={isDeletionEnabled}
+                                />
+                            </Tooltip>
+
+                            <Tooltip
+                                text="Wipe your account data"
+                                direction="top"
+                                className="w-full whitespace-nowrap"
+                                isEnabled={isDeletionEnabled}
+                            >
+                                <Button
+                                    className="w-full"
+                                    onClick={() => {
+                                        deleteBox.show();
+                                    }}
+                                    isEnabled={isDeletionEnabled}
+                                >
+                                    <PromiseState state="delete" />
+                                    <Image
+                                        src="/delete.svg"
+                                        width={16}
+                                        height={16}
+                                        alt=""
+                                    />
+                                    <Image
+                                        src="/account.svg"
+                                        width={13}
+                                        height={13}
+                                        alt=""
+                                    />
+                                    Delete
+                                </Button>
+                            </Tooltip>
+                        </div>
                     </div>
                 </div>
-
-                <hr className="sm:w-px! sm:h-full" />
 
                 <Select data={data} />
             </div>

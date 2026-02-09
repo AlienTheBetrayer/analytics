@@ -59,25 +59,19 @@ export const PostExpanded = ({ id }: Props) => {
 
             <ul className="flex flex-col gap-16">
                 {data.image_url && (
-                    <>
-                        <li className="w-full relative h-150">
-                            <Image
-                                alt="post image"
-                                fill
-                                src={data.image_url}
-                                style={{ objectFit: "cover" }}
-                                className="invert-0! rounded-4xl"
-                            />
-                        </li>
-
-                        <li>
-                            <hr />
-                        </li>
-                    </>
+                    <li className="w-full relative h-150">
+                        <Image
+                            alt="post image"
+                            fill
+                            src={data.image_url}
+                            style={{ objectFit: "cover" }}
+                            className="invert-0! rounded-4xl"
+                        />
+                    </li>
                 )}
 
                 <li
-                    className="box p-4! min-h-64 flex flex-col gap-4"
+                    className="box bg-bg-2! p-4! min-h-64 flex flex-col gap-4"
                     style={{
                         marginTop: data.image_url ? "0rem" : "8rem",
                     }}

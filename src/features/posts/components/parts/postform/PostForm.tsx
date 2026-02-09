@@ -76,7 +76,7 @@ export const PostForm = ({ mode, id }: Props) => {
                 });
             }}
         >
-            <ul className="flex flex-col gap-4 grow">
+            <ul className="flex flex-col gap-12 grow">
                 <li className="flex flex-col gap-2">
                     <label
                         htmlFor="title"
@@ -101,10 +101,6 @@ export const PostForm = ({ mode, id }: Props) => {
                     />
                 </li>
 
-                <li>
-                    <hr className="mt-4" />
-                </li>
-
                 <li className="flex flex-col gap-2">
                     <label
                         htmlFor="image"
@@ -123,10 +119,6 @@ export const PostForm = ({ mode, id }: Props) => {
                         image={image}
                         setImage={setImage}
                     />
-                </li>
-
-                <li>
-                    <hr className="mt-4" />
                 </li>
 
                 <li className="flex flex-col gap-2">
@@ -156,10 +148,6 @@ export const PostForm = ({ mode, id }: Props) => {
                         value={content}
                         onChange={(value) => setContent(value)}
                     />
-                </li>
-
-                <li>
-                    <hr className="mt-4" />
                 </li>
 
                 <li className="flex flex-col">

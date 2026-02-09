@@ -113,6 +113,10 @@ export const CacheAPIFunctions: Record<
 
             for (const user of users.data.users) {
                 queryMutate({ key: ["user", user.id], value: user });
+                queryMutate({
+                    key: ["user__username", user.username],
+                    value: user,
+                });
             }
         }
 
@@ -140,6 +144,10 @@ export const CacheAPIFunctions: Record<
 
             for (const user of users.data.users) {
                 queryMutate({ key: ["user", user.id], value: user });
+                queryMutate({
+                    key: ["user__username", user.username],
+                    value: user,
+                });
             }
         }
 
@@ -165,6 +173,10 @@ export const CacheAPIFunctions: Record<
 
             for (const user of users.data.users) {
                 queryMutate({ key: ["user", user.id], value: user });
+                queryMutate({
+                    key: ["user__username", user.username],
+                    value: user,
+                });
             }
         }
 
@@ -227,6 +239,10 @@ export const CacheAPIFunctions: Record<
 
         for (const user of users) {
             queryMutate({ key: ["user", user.id], value: user });
+            queryMutate({
+                key: ["user__username", user.username],
+                value: user,
+            });
         }
 
         return data.map((d) => d.id);
@@ -304,6 +320,10 @@ export const CacheAPIFunctions: Record<
 
         for (const user of users.data.users) {
             queryMutate({ key: ["user", user.id], value: user });
+            queryMutate({
+                key: ["user__username", user.username],
+                value: user,
+            });
         }
 
         for (const post of posts.data.posts) {

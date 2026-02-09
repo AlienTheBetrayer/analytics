@@ -3,11 +3,11 @@ import { Button } from "@/features/ui/button/components/Button";
 import { TabSelection } from "@/utils/other/TabSelection";
 import Image from "next/image";
 import { useState } from "react";
-import { Outcoming } from "./tabs/Outcoming";
-import { Incoming } from "./tabs/Incoming";
-import { Friends } from "./tabs/Friends";
 import { CacheAPIProtocol } from "@/query-api/protocol";
-import { useQuery } from "@/query/core";
+import { PromiseState } from "@/promises/components/PromiseState";
+import { wrapPromise } from "@/promises/core";
+import { queryInvalidate } from "@/query/auxiliary";
+import { FriendsTab } from "@/features/profile/components/tabs/friends/FriendsTab";
 
 export type FriendsTab = "Friends" | "Incoming" | "Outcoming";
 
@@ -16,26 +16,33 @@ type Props = {
 };
 
 export const Select = ({ data }: Props) => {
-    // fetching
-    const { data: requests_outcoming } = useQuery({
-        key: ["requests_outcoming", data.id],
-    });
-    const { data: requests_incoming } = useQuery({
-        key: ["requests_incoming", data.id],
-    });
-
     const [selected, setSelected] = useState<FriendsTab>("Friends");
 
     const element = () => {
         switch (selected) {
             case "Friends": {
-                return <Friends data={data} />;
+                return (
+                    <FriendsTab
+                        data={data}
+                        fetchKey="friends"
+                    />
+                );
             }
             case "Incoming": {
-                return <Incoming data={data} />;
+                return (
+                    <FriendsTab
+                        data={data}
+                        fetchKey="requests_incoming"
+                    />
+                );
             }
             case "Outcoming": {
-                return <Outcoming data={data} />;
+                return (
+                    <FriendsTab
+                        data={data}
+                        fetchKey="requests_outcoming"
+                    />
+                );
             }
         }
     };
@@ -97,10 +104,6 @@ export const Select = ({ data }: Props) => {
                                 condition={selected === "Incoming"}
                                 color="var(--blue-1)"
                             />
-                            <TabSelection
-                                condition={!!requests_incoming?.length}
-                                color="var(--orange-1)"
-                            />
                         </Button>
                     </Tooltip>
                 </li>
@@ -127,9 +130,35 @@ export const Select = ({ data }: Props) => {
                                 condition={selected === "Outcoming"}
                                 color="var(--blue-1)"
                             />
-                            <TabSelection
-                                condition={!!requests_outcoming?.length}
-                                color="var(--orange-1)"
+                        </Button>
+                    </Tooltip>
+                </li>
+
+                <li className="ml-auto!">
+                    <Tooltip text="Re-fetch data">
+                        <Button
+                            onClick={() => {
+                                wrapPromise("friendsTabReload", async () => {
+                                    return queryInvalidate({
+                                        key: [
+                                            selected === "Friends"
+                                                ? "friends"
+                                                : selected === "Incoming"
+                                                  ? "requests_incoming"
+                                                  : "requests_outcoming",
+                                            data.id,
+                                        ],
+                                        silent: false,
+                                    });
+                                });
+                            }}
+                        >
+                            <PromiseState state="friendsTabReload" />
+                            <Image
+                                src="/reload.svg"
+                                width={14}
+                                height={14}
+                                alt="refresh"
                             />
                         </Button>
                     </Tooltip>

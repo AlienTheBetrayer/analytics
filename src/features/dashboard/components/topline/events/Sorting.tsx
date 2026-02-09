@@ -21,7 +21,7 @@ export const Sorting = ({ hide }: Props) => {
     }
 
     return (
-        <div className="relative box p-3! min-w-81">
+        <div className="relative box p-4! acrylic gap-4! w-screen max-w-92">
             <CloseButton hide={hide} />
 
             <span className="flex flex-col items-center">

@@ -170,7 +170,7 @@ export const SendForm = forwardRef<SendFormHandle, Props>(
                     </li>
 
                     <li className="flex flex-col items-center">
-                        <ul className="grid grid-cols-2 w-full lg:max-w-lg gap-2">
+                        <ul className="grid grid-cols-2 w-full lg:max-w-lg gap-4">
                             <li>
                                 <Button
                                     className="w-full"

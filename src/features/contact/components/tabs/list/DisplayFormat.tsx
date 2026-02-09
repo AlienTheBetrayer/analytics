@@ -14,7 +14,7 @@ export const DisplayFormat = ({ hide }: Props) => {
     const updateDisplay = useLocalStore((state) => state.updateDisplay);
 
     return (
-        <div className="box w-screen max-w-lg p-3!">
+        <div className="box items-stretch! w-screen max-w-lg p-4! gap-4! acrylic">
             <CloseButton hide={hide} />
 
             <span className="flex flex-col gap-1 items-center">
@@ -26,6 +26,8 @@ export const DisplayFormat = ({ hide }: Props) => {
                 />
                 Messages format
             </span>
+
+            <hr/>
 
             <ul className="grid grid-flow-col auto-cols-fr gap-4">
                 <li className="flex flex-col gap-1 items-center">

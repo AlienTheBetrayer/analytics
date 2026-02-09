@@ -23,7 +23,7 @@ export const FilterSelector = ({ tab, notificationTab }: Props) => {
 
     return (
         <div
-            className="flex flex-col gap-1 max-h-36 overflow-y-auto scheme-dark p-1"
+            className="flex flex-col gap-1.5 max-h-48 overflow-y-auto scheme-dark p-1"
             style={{
                 scrollbarWidth: "thin",
             }}

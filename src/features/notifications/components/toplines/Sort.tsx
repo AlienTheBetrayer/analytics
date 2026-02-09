@@ -19,7 +19,7 @@ export const Sort = ({ tab, hide }: Props) => {
     );
 
     return (
-        <div className="relative box p-3! min-w-81">
+        <div className="relative box p-4! gap-4! acrylic min-w-92">
             <CloseButton hide={hide} />
 
             <span className="flex flex-col items-center">

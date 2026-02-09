@@ -34,8 +34,8 @@ export const NotificationCompact = ({
     return (
         <div className="flex flex-col">
             <ul
-                className={`box backdrop-blur-none! w-full max-w-400 justify-between!
-                     mx-auto p-0! gap-1! flex-row! transition-all duration-500 min-h-10 h-10 items-center
+                className={`box bg-bg-2! w-full max-w-400 justify-between!
+                     mx-auto p-0! px-2! gap-1! flex-row! transition-all duration-500 min-h-10 h-10 items-center
                      rounded-b-none! `}
             >
                 <li className="flex gap-1 items-center min-h-8 min-w-8 justify-center">

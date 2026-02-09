@@ -48,8 +48,6 @@ export const Dashboard = () => {
         <>
             <Topline />
             <div className="w-full max-w-400 m-auto min-h-200 box gap-3!">
-                <hr />
-
                 <div className="flex flex-col lg:flex-row gap-8 lg:gap-4 grow *:w-full">
                     <div className="flex flex-col gap-3 relative max-h-256">
                         <ProjectTopline />

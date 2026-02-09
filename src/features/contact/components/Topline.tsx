@@ -7,7 +7,7 @@ export const Topline = () => {
     const { tab } = useParams<{ tab?: string; id?: string }>();
 
     return (
-        <ul className="w-full max-w-400 mx-auto! box p-0! h-10! flex-row! my-2! gap-1!">
+        <ul className="w-full items-center! max-w-400 mx-auto! box p-0! h-10! flex-row! my-4! gap-1!">
             <li className="absolute left-1/2 top-1/2 -translate-1/2 flex items-center gap-1">
                 <div className="w-1 h-1 bg-blue-1 rounded-full" />
                 <Image

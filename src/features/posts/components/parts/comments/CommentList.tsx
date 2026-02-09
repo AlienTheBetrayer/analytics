@@ -2,7 +2,7 @@ import { CommentView } from "@/features/posts/components/parts/comments/CommentV
 import { NoCommentsFiltered } from "@/features/posts/components/parts/errors/NoCommentsFiltered";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { queryCache } from "@/query/init";
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 type Props = {
     comments: string[];
@@ -27,22 +27,15 @@ export const CommentList = ({ comments, filter }: Props) => {
 
     return (
         <ul
-            className={`flex flex-col gap-4! min-h-64 ${!comments.length ? "loading" : ""}`}
+            className={`flex flex-col gap-8! min-h-64 ${!comments.length ? "loading" : ""}`}
         >
-            {filtered?.map((id, i) => (
-                <React.Fragment key={id}>
-                    <CommentView
-                        id={id}
-                        editing={editing}
-                        onEdit={(id) => setEditing(id)}
-                    />
-
-                    {i < comments.length - 1 && (
-                        <li>
-                            <hr className="w-11/12! mx-auto!" />
-                        </li>
-                    )}
-                </React.Fragment>
+            {filtered?.map((id) => (
+                <CommentView
+                    key={id}
+                    id={id}
+                    editing={editing}
+                    onEdit={(id) => setEditing(id)}
+                />
             ))}
 
             {!filtered.length && (

@@ -16,9 +16,8 @@ export const Notification = () => {
         : undefined;
 
     return (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-8">
             <Topline data={data} />
-            <hr />
             <Display data={data} />
         </div>
     );

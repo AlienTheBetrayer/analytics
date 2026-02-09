@@ -5,7 +5,7 @@ import Image from "next/image";
 
 export const Footer = () => {
     return (
-        <footer className="box p-0! px-4! h-10 w-full max-w-400 z-3 mx-auto! mt-8! mb-6! rounded-full!">
+        <footer className="box items-stretch! p-0! backdrop-blur-md! bg-bg-a-2! px-4! h-10 w-full max-w-400 z-3 mx-auto! mt-24! mb-6! rounded-full!">
             <ul className="flex gap-2 h-full">
                 <li className="flex items-center shrink-0">
                     <Tooltip
@@ -30,10 +30,6 @@ export const Footer = () => {
                             />
                         </LinkButton>
                     </Tooltip>
-                </li>
-
-                <li className="flex items-center">
-                    <hr className="w-px! h-1/3!" />
                 </li>
 
                 <li className="flex items-center truncate">

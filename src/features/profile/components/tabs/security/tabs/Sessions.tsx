@@ -118,12 +118,10 @@ export const Sessions = ({ data }: Props) => {
                 />
             )}
 
-            <hr className="mt-auto -mb-2" />
-
             <Tooltip
                 text="Keep only this session logged in"
                 direction="bottom"
-                className="w-full"
+                className="w-full mt-auto!"
             >
                 <Button
                     className="w-full"

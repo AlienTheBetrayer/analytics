@@ -28,7 +28,7 @@ export const ProjectManipulation = ({ hide }: Props) => {
     const { data } = useQuery({ key: ["projects"] });
 
     return (
-        <div className="relative flex flex-col box w-screen! max-w-md! gap-4!">
+        <div className="relative flex flex-col box acrylic w-screen max-w-lg gap-8!">
             <CloseButton hide={hide} />
 
             {deleteProjectsBox.render({
@@ -73,76 +73,62 @@ export const ProjectManipulation = ({ hide }: Props) => {
                     height={16}
                     src="/cube.svg"
                 />
-                <span className="text-5! text-foreground-5!">
-                    Project manipulation
-                </span>
+                <span className="text-5!">Project manipulation</span>
                 <p className="whitespace-normal text-center">
-                    Alter this project&apos;s data in every way you could have
-                    imagined
+                    Add new events or projects or remove existing ones
                 </p>
             </div>
-            <hr />
-
-            <LinkButton
-                className="w-full"
-                href={`/emulate/${selectedProjectId}`}
-            >
-                <Image
-                    src="/emulate.svg"
-                    width={16}
-                    height={16}
-                    alt=""
-                />
-                Emulate events
-            </LinkButton>
-
-            <hr />
 
             <ul className="flex flex-col gap-2">
-                <li className="flex flex-col gap-2 items-center">
-                    <span>
-                        <u>Data wiping</u>
-                    </span>
+                <li>
+                    <LinkButton
+                        className="w-full"
+                        href={`/emulate/${selectedProjectId}`}
+                    >
+                        <Image
+                            src="/emulate.svg"
+                            width={16}
+                            height={16}
+                            alt=""
+                        />
+                        Emulate events
+                    </LinkButton>
                 </li>
 
                 <li>
-                    <ul className="flex flex-col sm:flex-row *:w-full gap-4">
-                        <li>
-                            <Button
-                                className="w-full"
-                                onClick={() => {
-                                    deleteProjectsBox.show();
-                                }}
-                            >
-                                <PromiseState state="deleteProject" />
-                                <Image
-                                    src="/delete.svg"
-                                    width={16}
-                                    height={16}
-                                    alt=""
-                                />
-                                Delete project
-                            </Button>
-                        </li>
+                    <Button
+                        className="w-full"
+                        onClick={() => {
+                            deleteProjectsBox.show();
+                        }}
+                    >
+                        <PromiseState state="deleteProject" />
+                        <Image
+                            src="/delete.svg"
+                            width={16}
+                            height={16}
+                            alt=""
+                        />
+                        Delete project
+                    </Button>
+                </li>
 
-                        <li>
-                            <Button
-                                className="w-full"
-                                onClick={() => {
-                                    deleteEventsBox.show();
-                                }}
-                            >
-                                <PromiseState state="deleteEvents" />
-                                <Image
-                                    src="/type.svg"
-                                    width={16}
-                                    height={16}
-                                    alt=""
-                                />
-                                Delete all events
-                            </Button>
-                        </li>
-                    </ul>
+                <li>
+                    <Button
+                        className="w-full"
+                        onClick={() => {
+                            deleteEventsBox.show();
+                        }}
+                    >
+                        <PromiseState state="deleteEvents" />
+                        <Image
+                            src="/type.svg"
+                            width={16}
+                            height={16}
+                            alt=""
+                        />
+                        Delete all events
+                    </Button>
                 </li>
             </ul>
         </div>

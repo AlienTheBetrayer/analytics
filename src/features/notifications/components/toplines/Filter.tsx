@@ -31,7 +31,7 @@ export const Filter = ({ tab, hide }: Props) => {
     const [filterTab, setFilterTab] = useState<FilterTabType>("Status");
 
     return (
-        <div className="relative box p-3! min-w-81">
+        <div className="relative box p-4! gap-4! acrylic w-screen max-w-lg">
             <CloseButton hide={hide} />
 
             <span className="flex flex-col items-center">
@@ -44,7 +44,7 @@ export const Filter = ({ tab, hide }: Props) => {
                 Filtering
             </span>
 
-            <div className="grid grid-flow-col gap-1">
+            <div className="grid grid-flow-col gap-2">
                 {["Status", "Type", "Title"].map((type) => (
                     <Button
                         key={type}
@@ -74,7 +74,7 @@ export const Filter = ({ tab, hide }: Props) => {
             />
 
             <hr />
-            <div className="grid grid-cols-2 gap-1">
+            <div className="grid grid-cols-2 gap-2">
                 <Button
                     className="w-full"
                     onClick={() => {

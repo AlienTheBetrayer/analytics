@@ -8,7 +8,7 @@ export const Account = () => {
     const notifications = useAppStore((state) => state.notifications).Account;
 
     return (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-4">
             <div className="flex items-center relative w-full justify-center gap-1">
                 <Image
                     alt="account-only"
@@ -22,7 +22,6 @@ export const Account = () => {
                 </span>
             </div>
 
-            <hr />
             <Topline tab="Account" />
 
             <hr />

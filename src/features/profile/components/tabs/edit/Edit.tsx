@@ -38,15 +38,13 @@ export const Edit = ({ data }: Props) => {
 
             <hr />
 
-            <div className="grid lg:grid-cols-[30%_auto_1fr] gap-4 grow">
+            <div className="grid lg:grid-cols-[30%_1fr] gap-16 lg:gap-8 grow">
                 <Avatar
                     data={data}
                     avatar={[avatar, setAvatar]}
                     avatarFile={[avatarFile, setAvatarFile]}
                     fileError={[fileError, setFileError]}
                 />
-
-                <hr className="sm:w-px! sm:h-full" />
 
                 <Form
                     data={data}

@@ -24,8 +24,8 @@ export const Select = ({
             ref={inputRef}
             type="button"
             className={`flex w-full items-center min-h-8 
-            bg-background-a-3 outline-2 outline-background-5 p-2 rounded-full focus:outline-blue-1 
-             hover:bg-background-a-7 transition-all duration-300 ease-out cursor-pointer ${className ?? ""}`}
+            bg-bg-2 outline-2 outline-bg-3 p-2 rounded-full focus:outline-blue-1 
+             hover:bg-bg-3 active:bg-bg-4 transition-all duration-300 ease-out cursor-pointer ${className ?? ""}`}
             onClick={expandToggle}
             onKeyDown={keyDown}
             {...rest}

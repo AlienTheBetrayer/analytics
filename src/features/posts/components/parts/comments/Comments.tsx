@@ -32,7 +32,7 @@ export const Comments = ({ id }: Props) => {
 
     return (
         <ul className="flex flex-col gap-4">
-            <li className="flex items-center gap-1! box p-0! flex-row! h-10!">
+            <li className="flex items-center gap-1! box bg-bg-2! p-0! flex-row! h-10!">
                 <Tooltip text="Collapse / Expand">
                     <Button
                         onClick={() => setCollapsed((prev) => !prev)}

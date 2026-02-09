@@ -37,7 +37,7 @@ export const ResponseAdmin = ({ data }: Props) => {
                 },
             })}
 
-            <ul className="box h-10! p-0! flex-row! items-center! w-full">
+            <ul className="box bg-bg-2! h-10! p-0! flex-row! items-center! w-full">
                 <li className="absolute left-1/2 top-1/2 -translate-1/2">
                     <span className="flex items-center gap-1">
                         <Image

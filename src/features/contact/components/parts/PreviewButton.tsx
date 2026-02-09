@@ -124,7 +124,7 @@ export const PreviewButton = ({
                         <li className="h-full">
                             {contents.title ? (
                                 <span
-                                    className={`box flex-row! gap-1! justify-center! p-0! overflow-hidden ${!validity?.title ? "invalid" : ""}`}
+                                    className={`flex mx-auto gap-1 bg-bg-3 w-fit px-4! rounded-full overflow-hidden ${!validity?.title ? "invalid" : ""}`}
                                 >
                                     {type === "message" && (
                                         <Image

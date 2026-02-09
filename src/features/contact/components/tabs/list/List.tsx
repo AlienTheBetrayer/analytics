@@ -30,7 +30,7 @@ export const List = () => {
     return (
         <div className="flex flex-col gap-4 w-full h-full grow">
             <ul
-                className={`box sticky! top-4 p-0! h-10! flex-row! w-full items-center mt-6! md:mt-0!`}
+                className={`box bg-bg-2! sticky! top-4 p-0! h-10! flex-row! w-full items-center mt-6! md:mt-0!`}
             >
                 <li>
                     <Tooltip text="Own messages">
@@ -112,7 +112,7 @@ export const List = () => {
             </ul>
 
             <ul
-                className={`box sticky! top-16 p-0! h-10! flex-row! w-full items-center
+                className={`box bg-bg-2! sticky! top-16 p-0! h-10! flex-row! w-full items-center
             ${!message_ids?.length ? "opacity-30" : ""}`}
                 inert={!!!message_ids?.length}
             >

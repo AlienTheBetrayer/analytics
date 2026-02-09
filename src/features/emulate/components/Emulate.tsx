@@ -80,7 +80,7 @@ export const Emulate = () => {
             <Topline />
 
             <div className="flex flex-col w-full max-w-400 p-6! min-h-128 rounded-4xl! gap-8! box m-auto">
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2 items-center">
                     {!Object.values(data).length ? (
                         <>
                             <span className="text-center text-foreground-2! text-5! whitespace-nowrap">
@@ -94,7 +94,7 @@ export const Emulate = () => {
                             <Button
                                 className="w-full max-w-64 self-center"
                                 onClick={() => {
-                                    wrapPromise("dashboardSync",  () => {
+                                    wrapPromise("dashboardSync", () => {
                                         return dashboardSync({});
                                     });
                                 }}
@@ -111,8 +111,16 @@ export const Emulate = () => {
                         </>
                     ) : (
                         <>
-                            <span className="text-center text-foreground-2! text-5! whitespace-nowrap">
-                                Project selection
+                            <span className="flex items-center gap-1 text-center whitespace-nowrap">
+                                <Image
+                                    width={16}
+                                    height={16}
+                                    alt=""
+                                    src="/link.svg"
+                                />
+                                <span className="text-5!">
+                                    Project selection
+                                </span>
                             </span>
                             <span className="text-center">
                                 Select a project first to emulate events
@@ -121,14 +129,8 @@ export const Emulate = () => {
                     )}
                 </div>
 
-                {!!Object.values(data).length && (
-                    <>
-                        <hr />
-                        <ProjectList data={data} />
-                    </>
-                )}
+                {!!Object.values(data).length && <ProjectList data={data} />}
 
-                <hr />
                 <Controller data={data} />
             </div>
         </>

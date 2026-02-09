@@ -35,7 +35,7 @@ export const Topline = ({ tab }: Props) => {
 
     return (
         <ul
-            className={`box p-0! gap-1! sticky! top-4 z-2 flex-row! transition-all duration-300 h-10 min-h-10 items-center ${!hasNotification ? "opacity-30" : ""}`}
+            className={`box bg-bg-2! p-0! gap-1! sticky! top-4 z-2 flex-row! transition-all duration-300 h-10 min-h-10 items-center ${!hasNotification ? "opacity-30" : ""}`}
             inert={!hasNotification}
         >
             {notificationsBox.render({
@@ -86,7 +86,7 @@ export const Topline = ({ tab }: Props) => {
             </li>
 
             <li className="self-stretch flex items-center">
-                <hr className="w-px! h-1/3! bg-background-6" />
+                <hr className="w-px! h-1/3!" />
             </li>
 
             <li>
@@ -151,7 +151,7 @@ export const Topline = ({ tab }: Props) => {
             </li>
 
             <li className="self-stretch flex items-center">
-                <hr className="w-px! h-1/3! bg-background-6" />
+                <hr className="w-px! h-1/3!" />
             </li>
 
             <li>

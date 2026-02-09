@@ -23,7 +23,7 @@ export const AuthButton = () => {
             <nav className="flex items-center justify-center">
                 <Tooltip text="Sign up / Log in">
                     <Modal
-                        direction="bottom"
+                        direction="bottom-left"
                         element={(hide) => <AuthElements hide={hide} />}
                     >
                         <Button className="p-0!">
@@ -78,7 +78,7 @@ export const AuthButton = () => {
                         profile={status.profile}
                         width={256}
                         height={256}
-                        className="w-10! h-10! aspect-square"
+                        className="w-8! h-8! aspect-square"
                     />
                 </LinkButton>
             </Tooltip>

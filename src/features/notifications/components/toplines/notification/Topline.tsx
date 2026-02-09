@@ -8,7 +8,7 @@ type Props = {
 export const Topline = ({ data }: Props) => {
     return (
         <ul
-            className={`box p-0! gap-1! flex-row! sticky! top-4 z-2 transition-all duration-300 h-10 min-h-10 items-center ${!data ? "opacity-30" : ""}`}
+            className={`box bg-bg-2! p-0! gap-1! flex-row! sticky! top-4 z-2 transition-all duration-300 h-10 min-h-10 items-center ${!data ? "opacity-30" : ""}`}
             inert={!data}
         >
             <li

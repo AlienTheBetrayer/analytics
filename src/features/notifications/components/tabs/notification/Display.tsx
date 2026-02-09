@@ -18,7 +18,6 @@ export const Display = ({ data }: Props) => {
                 notification={data}
                 buttonClassName="p-20!"
             />
-            <hr className="my-4" />
         </div>
     );
 };

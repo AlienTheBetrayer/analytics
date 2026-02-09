@@ -27,10 +27,10 @@ export const Desktop = ({ className }: Props) => {
 
     return (
         <ul
-            className={`grid grid-cols-[30%_1fr_30%] items-center w-full px-4! ${className ?? ""}`}
+            className={`grid grid-cols-[1fr_1fr_1fr] items-center w-full px-4! ${className ?? ""}`}
         >
-            <li>
-                <ul className="flex items-center">
+            <li className="min-w-max">
+                <ul className="flex items-center gap-1">
                     <li className="flex group items-center">
                         <div className="w-1 aspect-square bg-blue-1 rounded-full group-hover:bg-red-1 duration-700 transition-all" />
 
@@ -54,7 +54,7 @@ export const Desktop = ({ className }: Props) => {
                     </li>
 
                     <li className="self-stretch flex items-center">
-                        <hr className="w-px! h-1/3! bg-background-6" />
+                        <hr className="w-px! h-1/3!" />
                     </li>
 
                     <li>
@@ -151,7 +151,7 @@ export const Desktop = ({ className }: Props) => {
                     </li>
 
                     <li className="self-stretch flex items-center">
-                        <hr className="w-px! h-1/3! bg-background-6" />
+                        <hr className="w-px! h-1/3!" />
                     </li>
 
                     <li>
@@ -179,7 +179,7 @@ export const Desktop = ({ className }: Props) => {
             </li>
 
             <li className="flex items-center justify-end">
-                <ul className="flex gap-2 items-center">
+                <ul className="flex gap-1 items-center">
                     <li>
                         <div
                             className={`relative rounded-full ${!status ? "border-awaiting" : ""}`}
@@ -190,7 +190,7 @@ export const Desktop = ({ className }: Props) => {
                     </li>
 
                     <li className="self-stretch flex items-center">
-                        <hr className="w-px! h-1/3! bg-background-6" />
+                        <hr className="w-px! h-1/3!" />
                     </li>
 
                     <li>

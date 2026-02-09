@@ -30,7 +30,7 @@ export const ListTopline = ({ data }: Props) => {
 
     return (
         <ul
-            className={`box rounded-full! flex-row! gap-1! h-10! p-0! items-center! ${!hasPost ? "opacity-30" : ""}`}
+            className={`box bg-bg-2! rounded-full! flex-row! gap-1! h-10! p-0! items-center! ${!hasPost ? "opacity-30" : ""}`}
             inert={!hasPost}
         >
             <li className="absolute left-1/2 -translate-1/2 top-1/2">
@@ -74,7 +74,10 @@ export const ListTopline = ({ data }: Props) => {
 
             <li>
                 <Tooltip text="Filtering">
-                    <Modal element={(hide) => <Filtering hide={hide} />}>
+                    <Modal
+                        element={(hide) => <Filtering hide={hide} />}
+                        direction="bottom-right"
+                    >
                         <Button className="aspect-square">
                             <Image
                                 alt="filter"
@@ -94,7 +97,7 @@ export const ListTopline = ({ data }: Props) => {
             </li>
 
             <li className="self-stretch flex items-center">
-                <hr className="w-px! h-1/3 bg-background-6" />
+                <hr className="w-px! h-1/3" />
             </li>
 
             <li>

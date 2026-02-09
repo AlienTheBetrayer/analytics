@@ -22,7 +22,7 @@ export const View = () => {
     const deleteBox = useMessageBox();
 
     return (
-        <div className="flex flex-col grow! w-full gap-2!">
+        <div className="flex flex-col grow! w-full gap-8">
             {deleteBox.render({
                 children:
                     "This message will be permanently deleted and we won't be able to see it.",
@@ -43,7 +43,7 @@ export const View = () => {
             })}
 
             <ul
-                className={`box p-0! h-10! w-full items-center flex-row! ${!data ? "opacity-30" : ""}`}
+                className={`box bg-bg-2! p-0! h-10! w-full items-center flex-row! ${!data ? "opacity-30" : ""}`}
                 inert={!!!data}
             >
                 <li>
@@ -115,7 +115,6 @@ export const View = () => {
                 status?.role === "admin" ||
                 status?.role === "op") && (
                 <>
-                    <hr />
                     <Response data={data} />
                 </>
             )}

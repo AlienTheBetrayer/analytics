@@ -44,7 +44,7 @@ export const PostImagesGrid = ({ data }: Props) => {
 
     return (
         <article className="flex flex-col gap-4">
-            <ul className="flex flex-row! h-10! items-center gap-1 box p-0! w-full">
+            <ul className="flex bg-bg-2! flex-row! h-10! items-center gap-1 box p-0! w-full">
                 <li>
                     <Tooltip text="Go to a random post">
                         <Button

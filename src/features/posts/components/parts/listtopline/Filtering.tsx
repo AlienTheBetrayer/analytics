@@ -17,7 +17,7 @@ export const Filtering = ({ hide }: Props) => {
     );
 
     return (
-        <div className="relative box p-3! min-w-81">
+        <div className="relative box p-4! gap-4! w-screen max-w-92 acrylic">
             <CloseButton hide={hide} />
 
             <span className="flex flex-col items-center">
@@ -30,7 +30,7 @@ export const Filtering = ({ hide }: Props) => {
                 Filtering
             </span>
 
-            <hr />
+            <hr/>
 
             <ul className="flex flex-col gap-1">
                 {["Liked", "Edited", "With Images", "Raw"].map((tab) => (
@@ -51,7 +51,7 @@ export const Filtering = ({ hide }: Props) => {
                 ))}
 
                 <li className="my-2!">
-                    <hr />
+                    <hr/>
                 </li>
 
                 <li className="w-full">

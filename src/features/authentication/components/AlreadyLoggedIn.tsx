@@ -57,7 +57,7 @@ export const AlreadyLoggedIn = () => {
 
             <ul className="box w-full max-w-7xl grid! lg:grid-cols-3 gap-16! lg:gap-8!">
                 <li className="flex flex-col gap-4">
-                    <aside className="box flex-row! h-10! p-0! gap! items-center justify-center">
+                    <aside className="box bg-bg-2! flex-row! h-10! p-0! gap! items-center justify-center">
                         <div className="w-1 h-1 rounded-full bg-orange-3" />
                         <span>Miscellaneous</span>
                     </aside>
@@ -104,7 +104,7 @@ export const AlreadyLoggedIn = () => {
                 </li>
 
                 <li className="flex flex-col gap-4">
-                    <aside className="box flex-row! h-10! p-0! gap! items-center justify-center">
+                    <aside className="box bg-bg-2! flex-row! h-10! p-0! gap! items-center justify-center">
                         <div className="w-1 h-1 rounded-full bg-blue-1" />
                         <span>Account</span>
                     </aside>
@@ -207,7 +207,7 @@ export const AlreadyLoggedIn = () => {
                 </li>
 
                 <li className="flex flex-col gap-4">
-                    <aside className="box flex-row! h-10! p-0! gap! items-center justify-center">
+                    <aside className="box bg-bg-2! flex-row! h-10! p-0! gap! items-center justify-center">
                         <div className="w-1 h-1 rounded-full bg-blue-3" />
                         <span>Dashboard</span>
                     </aside>

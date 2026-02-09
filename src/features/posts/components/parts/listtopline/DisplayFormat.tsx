@@ -19,7 +19,7 @@ export const DisplayFormat = ({ hide }: Props) => {
     const isMobile = useMediaQuery("(max-width:640px)");
 
     return (
-        <div className="box w-screen max-w-96 p-3!">
+        <div className="box w-screen max-w-102 p-4! gap-4! acrylic">
             <CloseButton hide={hide} />
 
             <div className="flex flex-col gap-1 items-center">
@@ -31,6 +31,8 @@ export const DisplayFormat = ({ hide }: Props) => {
                 />
                 <span>Columns per row</span>
             </div>
+
+            <hr />
 
             <ul className="grid grid-cols-2 gap-2">
                 {Array.from({ length: isMobile ? 2 : 4 }, (_, k) => (
@@ -75,7 +77,7 @@ export const DisplayFormat = ({ hide }: Props) => {
                                             { length: k + 1 },
                                             (_, g) => (
                                                 <div
-                                                    className="w-full h-6 rounded-md! box p-0! outline-1 outline-background-a-8 
+                                                    className="w-full h-6 rounded-md! box p-0! outline-1 outline-bg-3
                                             hover:outline-blue-2 transition-all duration-400"
                                                     key={`${k}${g}${i}`}
                                                 />

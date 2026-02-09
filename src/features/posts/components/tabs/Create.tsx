@@ -3,8 +3,8 @@ import Image from "next/image";
 
 export const Create = () => {
     return (
-        <div className="flex flex-col gap-4 grow w-full mx-auto">
-            <div className="flex gap-1 items-center justify-center">
+        <div className="flex flex-col gap-8 grow w-full mx-auto">
+            <div className="box h-10! p-0! flex-row! flex gap-1 items-center justify-center">
                 <Image
                     alt=""
                     width={16}
@@ -13,8 +13,6 @@ export const Create = () => {
                 />
                 <span>Post publishing</span>
             </div>
-
-            <hr />
 
             <PostForm mode="create" />
         </div>

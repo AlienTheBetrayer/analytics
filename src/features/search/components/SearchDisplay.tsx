@@ -27,14 +27,11 @@ export const SearchDisplay = ({ filter, data }: Props) => {
     }
 
     return (
-        <>
-            <div className="box flex flex-col w-full p-4!">
-                <SearchDisplayProfile data={data} />
+        <div className="box flex flex-col w-full p-4!">
+            <SearchDisplayProfile data={data} />
 
-                {!!data.post_ids.length && <SearchDisplayPosts data={data} />}
-            </div>
-            <hr className="mx-auto w-9/12!" />
-        </>
+            {!!data.post_ids.length && <SearchDisplayPosts data={data} />}
+        </div>
     );
 };
 

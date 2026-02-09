@@ -70,7 +70,7 @@ export const NotificationSlice: SliceFunction<NotificationStore> = (set) => {
                                         column: "Sent Date",
                                         direction: "descendant",
                                     },
-                                    search: undefined,
+                                    search: "",
                                     filtering: undefined,
                                 },
                             },

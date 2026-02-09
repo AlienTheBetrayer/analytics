@@ -23,17 +23,12 @@ export const ProfileDisplay = ({ id }: Props) => {
     return (
         <LinkButton
             href={`/profile/${data.username}`}
-            className="justify-start! p-4! h-full rounded-4xl!"
-            style={
-                data.profile.color
-                    ? { borderColor: `${data.profile.color}` }
-                    : {}
-            }
+            className="justify-start! px-4! py-2! h-full rounded-3xl!"
         >
-            <ul className="flex flex-col w-full! lg:flex-row gap-2! items-center! justify-start! text-center">
+            <ul className="flex flex-col w-full! lg:flex-row gap-2 items-center! justify-start! text-center">
                 <li>
                     <ProfileImage
-                        className="mt-6 lg:mt-0 w-24 lg:w-auto"
+                        className="mt-6 lg:mt-0 w-16! h-16! lg:w-8! lg:h-8!"
                         profile={data.profile}
                         width={40}
                         height={40}
@@ -45,33 +40,31 @@ export const ProfileDisplay = ({ id }: Props) => {
                 </li>
 
                 <li>
-                    <div className="flex gap-2 items-center">
-                        <span className="flex flex-col gap-1">
-                            <small className="flex gap-1">
-                                <Image
-                                    src="/type.svg"
-                                    width={16}
-                                    height={16}
-                                    alt=""
-                                />
-                                Username
-                            </small>
-                            {data.username}
+                    <div className="grid grid-flow-col gap-2">
+                        <span className="flex items-center gap-1">
+                            <Image
+                                alt=""
+                                width={12}
+                                height={12}
+                                src="/account.svg"
+                            />
+                            <span>{data.username}</span>
                         </span>
 
                         {data.profile.title && (
-                            <span className="flex flex-col gap-1">
-                                <small className="flex gap-1">
+                            <>
+                                <hr className="w-px! h-3/4! my-auto!" />
+                                <span className="flex items-center gap-1">
                                     <Image
-                                        src="/book.svg"
-                                        width={16}
-                                        height={16}
                                         alt=""
+                                        width={12}
+                                        height={12}
+                                        src="/menu.svg"
                                     />
-                                    Title
-                                </small>
-                                {data.profile.title}
-                            </span>
+
+                                    {data.profile.title}
+                                </span>
+                            </>
                         )}
                     </div>
                 </li>
@@ -80,8 +73,8 @@ export const ProfileDisplay = ({ id }: Props) => {
                     <span className="flex gap-1 items-center">
                         <Image
                             src="/calendar.svg"
-                            width={16}
-                            height={16}
+                            width={14}
+                            height={14}
                             alt=""
                         />
                         seen {relativeTime(data.last_seen_at)}

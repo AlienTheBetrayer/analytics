@@ -33,7 +33,6 @@ export const useInputSelect = (
             dialogRef.current.showModal();
             setIsDisabled(true);
         } else {
-            dialogRef.current.close();
             setIsDisabled(false);
         }
     }, [isExpanded, setIsDisabled]);
@@ -97,7 +96,11 @@ export const useInputSelect = (
 
     const render = useCallback(() => {
         return createPortal(
-            <AnimatePresence>
+            <AnimatePresence
+                onExitComplete={() => {
+                    dialogRef.current?.close();
+                }}
+            >
                 {isExpanded && (
                     <motion.dialog
                         ref={dialogRef}
@@ -113,21 +116,16 @@ export const useInputSelect = (
                             initial={{ height: "0px" }}
                             animate={{ height: "auto" }}
                             exit={{ height: "0px" }}
-                            transition={{
-                                type: "spring",
-                                stiffness: 200,
-                                damping: 30,
-                            }}
                             data-tooltip
-                            className="flex flex-col overflow-hidden rounded-xl border-2 border-background-5"
+                            className="flex flex-col overflow-hidden rounded-xl border-2 border-bg-3!"
                         >
                             {items.map((item) => (
                                 <li key={item}>
                                     <button
                                         type="button"
-                                        className={`flex items-center  w-full 
-            bg-background-a-2 backdrop-blur-xl p-2 outline-0 focus-visible:bg-background-a-11
-             hover:bg-background-a-9 active:bg-background-a-11 active:text-foreground-1! transition-colors duration-300 ease-out cursor-pointer`}
+                                        className={`grid grid-cols-[1.25rem_1fr] gap-2 items-center w-full 
+             backdrop-blur-md p-2.5 outline-0 focus:bg-bg-2
+             hover:bg-bg-a-3 active:bg-bg-a-4 transition-colors duration-300 ease-out group cursor-pointer`}
                                         onClick={(e) => {
                                             e.stopPropagation();
                                             if (value) {
@@ -138,20 +136,25 @@ export const useInputSelect = (
                                             setIsExpanded(false);
                                         }}
                                     >
-                                        <span className="whitespace-nowrap text-ellipsis">
-                                            {item}
-                                        </span>
-
-                                        {item === inputValue && (
-                                            <div className="ml-auto aspect-square rounded-full outline-2 p-1 outline-blue-1">
+                                        <div
+                                            className={`w-4 h-4 aspect-square outline-2 p-0 flex items-center justify-center
+                                            ${item === inputValue ? "outline-blue-1 rounded-lg" : "outline-bg-5 rounded-sm"}
+                                            group-hover:rounded-lg group-hover:outline-bg-6 group-active:outline-bg-7 transition-all duration-500 
+                                            group-focus-visible:rounded-lg group-focus-visible:outline-bg-6`}
+                                        >
+                                            {item === inputValue && (
                                                 <Image
                                                     src="/checkmark.svg"
                                                     width={10}
                                                     height={10}
                                                     alt="selected"
                                                 />
-                                            </div>
-                                        )}
+                                            )}
+                                        </div>
+
+                                        <span className="whitespace-nowrap text-ellipsis text-left">
+                                            {item}
+                                        </span>
                                     </button>
                                 </li>
                             ))}

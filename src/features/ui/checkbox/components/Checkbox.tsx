@@ -30,13 +30,13 @@ export const Checkbox = ({
             {...rest}
         >
             <div
-                className={`flex items-center justify-center aspect-square h-full rounded-xl outline-2 outline-background-5 duration-300 ease-out
+                className={`flex items-center justify-center aspect-square h-full rounded-xl outline-2 outline-bg-3 duration-300 ease-out
                 ${controller.inputValue ? "outline-blue-1" : ""}`}
             >
                 <Image
                     src="/checkmark.svg"
-                    width={12}
-                    height={12}
+                    width={11}
+                    height={11}
                     alt=""
                     className={`${controller.inputValue ? "opacity-100 scale-100" : "opacity-0 scale-10"} transition-all! duration-300! ease-in-out`}
                 />

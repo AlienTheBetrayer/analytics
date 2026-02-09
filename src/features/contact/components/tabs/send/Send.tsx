@@ -57,7 +57,7 @@ export const Send = ({ type, data }: Props) => {
                 },
             })}
 
-            <ul className="box p-0! h-10! flex-row! w-full items-center mt-6! md:mt-0!">
+            <ul className="box bg-bg-2! p-0! h-10! flex-row! w-full mt-6! md:mt-0!">
                 <li className="absolute left-1/2 -top-1/2 md:top-1/2 -translate-1/2">
                     <span className="flex items-center gap-1">
                         <Image
@@ -87,9 +87,9 @@ export const Send = ({ type, data }: Props) => {
                 </li>
             </ul>
 
-            <div className="w-full grid lg:grid-cols-[1fr_40%] gap-8">
-                <div className="flex flex-col items-center gap-4">
-                    <ul className="box flex-row! items-center min-h-10 h-10! p-0! w-full">
+            <div className="w-full grid lg:grid-cols-[1fr_40%]  gap-8">
+                <div className="flex flex-col items-center gap-8">
+                    <ul className="box bg-bg-2! flex-row! items-center min-h-10 h-10! p-0! w-full">
                         <li className="absolute left-1/2 -top-1/2 md:top-1/2 -translate-1/2">
                             <span className="flex items-center gap-1">
                                 <Image
@@ -101,9 +101,18 @@ export const Send = ({ type, data }: Props) => {
                                 Message:
                             </span>
                         </li>
-                    </ul>
 
-                    <hr />
+                        <li className="ml-auto!">
+                            <Button onClick={deleteBox.show}>
+                                <Image
+                                    alt=""
+                                    width={16}
+                                    height={16}
+                                    src="/delete.svg"
+                                />
+                            </Button>
+                        </li>
+                    </ul>
 
                     <SendForm
                         type={type}
@@ -138,8 +147,8 @@ export const Send = ({ type, data }: Props) => {
                     />
                 </div>
 
-                <div className="flex flex-col items-center gap-4">
-                    <ul className="box flex-row! items-center min-h-10 h-10! p-0! w-full">
+                <div className="flex flex-col items-center gap-8">
+                    <ul className="box bg-bg-2! flex-row! items-center min-h-10 h-10! p-0! w-full">
                         <li>
                             <Tooltip text="Expanded / Collapsed">
                                 <Button
@@ -178,8 +187,6 @@ export const Send = ({ type, data }: Props) => {
                             </span>
                         </li>
                     </ul>
-
-                    <hr />
 
                     <Preview
                         contents={contents}

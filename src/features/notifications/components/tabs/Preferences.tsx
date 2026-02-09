@@ -8,7 +8,7 @@ export const Preferences = () => {
     const updatePreferences = useLocalStore((state) => state.updatePreferences);
 
     return (
-        <div className="flex flex-col gap-2 grow">
+        <div className="flex flex-col gap-4 grow">
             <Topline />
 
             <hr />
@@ -31,9 +31,6 @@ export const Preferences = () => {
             >
                 Visibility
             </Checkbox>
-            <hr className="mb-2" />
-
-            <hr className="mt-auto" />
         </div>
     );
 };

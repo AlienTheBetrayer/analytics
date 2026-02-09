@@ -26,8 +26,16 @@ export const AuthorView = ({ id }: Props) => {
     }
 
     return (
-        <div className="box items-center! p-4! w-screen max-w-64">
-            <span>{user.username}</span>
+        <div className="box items-center! p-4! w-screen max-w-64 acrylic">
+            <span className="flex items-center gap-1">
+                <Image
+                    alt=""
+                    width={12}
+                    height={12}
+                    src="/account.svg"
+                />
+                {user.username}
+            </span>
 
             <ProfileImage
                 width={256}

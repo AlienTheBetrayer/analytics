@@ -29,7 +29,7 @@ export const ProfileOverview = ({
 
     return (
         <div className="flex flex-col gap-4">
-            <ul className="box p-0! h-10! rounded-full! flex-row! items-center">
+            <ul className="box bg-bg-2! p-0! h-10! rounded-full! flex-row! items-center">
                 <li>
                     <Tooltip text="Collapse / Expand">
                         <Button
@@ -150,8 +150,8 @@ export const ProfileOverview = ({
 
                             <motion.span
                                 key={field}
-                                initial={{ y: -5, opacity: 0 }}
-                                animate={{ y: 0, opacity: 1 }}
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
                             >
                                 {field === "Bio"
                                     ? data.profile.bio

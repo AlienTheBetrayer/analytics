@@ -25,7 +25,7 @@ export const PostsOverview = ({
 
     return (
         <div className="flex flex-col gap-4">
-            <ul className="box p-0! h-10! rounded-full! flex-row! items-center">
+            <ul className="box bg-bg-2! p-0! h-10! rounded-full! flex-row! items-center">
                 <li>
                     <Tooltip text="Collapse / Expand">
                         <Button

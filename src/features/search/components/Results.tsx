@@ -29,7 +29,7 @@ export const Results = () => {
 
     return (
         <ul className="flex flex-col gap-8">
-            <li className="box flex-row! h-10! p-0! mt-8! md:mt-0! w-full gap-2! items-center">
+            <li className="box bg-bg-2! flex-row! h-10! p-0! mt-8! md:mt-0! w-full gap-2! items-center">
                 <Tooltip text="Collapse / Expand">
                     <Button onClick={() => setCollapsed((prev) => !prev)}>
                         <Image
@@ -54,7 +54,7 @@ export const Results = () => {
                     onChange={(value) => setFilter(value)}
                 />
 
-                <div className="flex items-center gap-1! absolute left-1/2 -top-1/2 md:top-1/2 -translate-1/2">
+                <div className="flex items-center gap-2! absolute left-1/2 -top-1/2 md:top-1/2 -translate-1/2">
                     <Image
                         alt=""
                         width={16}
@@ -62,19 +62,18 @@ export const Results = () => {
                         src="/arrow.svg"
                     />
 
-                    <span>
-                        Results: <mark>{data?.pages}</mark>
-                    </span>
+                    <span>{data?.pages ?? 0} Results</span>
                 </div>
 
                 <Select
                     items={[...WhatSelect]}
-                    className="ml-auto! w-full! max-w-32! whitespace-nowrap!"
+                    className="ml-auto! w-full! max-w-48! whitespace-nowrap!"
                     value={whatReload}
                     onChange={(item) =>
                         setWhatReload(item as (typeof WhatSelect)[number])
                     }
                 />
+
                 <Tooltip text="Re-fetch">
                     <Button
                         onClick={() => {

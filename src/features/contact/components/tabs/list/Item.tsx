@@ -45,7 +45,7 @@ export const Item = ({ className, id, filter }: Props) => {
     return (
         <div className="flex flex-col">
             <ul
-                className={`box h-10! flex-row! gap-1! items-center! justify-start! p-0! ${display !== "compact" ? "rounded-b-none! px-3!" : ""}`}
+                className={`box bg-bg-2! h-10! flex-row! gap-1! items-center! justify-start! p-0! ${display !== "compact" ? "rounded-b-none! px-3!" : ""}`}
             >
                 {display !== "compact" && (
                     <li>
@@ -70,7 +70,7 @@ export const Item = ({ className, id, filter }: Props) => {
                             className="grid! grid-cols-[6rem_auto_1fr_auto] w-full gap-1! whitespace-nowrap"
                             href={`/contact/view/${id}`}
                         >
-                            <div className="flex items-center gap-1 box p-0.5! flex-row! bg-background-a-8! truncate">
+                            <div className="flex items-center gap-1 box p-0.5! flex-row! bg-bg-3! truncate">
                                 <ProfileImage
                                     profile={user?.profile}
                                     width={256}
@@ -84,7 +84,7 @@ export const Item = ({ className, id, filter }: Props) => {
                                 />
                             </div>
 
-                            <hr className="w-px! h-1/2! bg-background-a-8!" />
+                            <hr className="w-px! h-1/2!" />
 
                             <span className="truncate">{data.title}</span>
 

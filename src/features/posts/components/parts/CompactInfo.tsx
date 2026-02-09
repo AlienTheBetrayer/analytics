@@ -10,7 +10,7 @@ type Props = {
 export const CompactInfo = ({ post, className }: Props) => {
     return (
         <ul
-            className={`box w-screen max-w-64 p-4! items-center! ${className ?? ""}`}
+            className={`box w-screen max-w-64 acrylic p-4! items-center! ${className ?? ""}`}
         >
             <li className="grid grid-cols-[10%_10%_1fr] gap-1">
                 <Image

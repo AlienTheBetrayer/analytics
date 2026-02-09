@@ -20,7 +20,7 @@ export const Topline = ({ type }: Props) => {
 
     return (
         <ul
-            className={`box w-full max-w-400 mx-auto! p-0! my-2! gap-1! flex-row! transition-all duration-500 h-10 items-center`}
+            className={`box w-full max-w-400 mx-auto! my-4! p-0! 4! gap-1! flex-row! transition-all duration-500 h-10 items-center`}
         >
             <li className="absolute left-1/2 -translate-1/2 top-1/2">
                 <span className="flex gap-1 items-center">
@@ -48,7 +48,7 @@ export const Topline = ({ type }: Props) => {
             </li>
 
             <li className="self-stretch flex items-center">
-                <hr className="w-px! h-1/3! bg-background-6" />
+                <hr className="w-px! h-1/3!" />
             </li>
 
             <li>
@@ -89,7 +89,7 @@ export const Topline = ({ type }: Props) => {
 
             {((lastNotificationId && !id) || type === "specific") && (
                 <li className="self-stretch flex items-center">
-                    <hr className="w-px! h-1/3! bg-background-6" />
+                    <hr className="w-px! h-1/3!" />
                 </li>
             )}
 

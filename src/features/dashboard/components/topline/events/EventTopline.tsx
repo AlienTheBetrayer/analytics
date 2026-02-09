@@ -30,7 +30,7 @@ export const EventTopline = () => {
 
     return (
         <ul
-            className={`box p-0! gap-1! sticky! top-16 z-2 bg-background-3! flex-row! transition-all duration-300 h-10 min-h-10 items-center 
+            className={`box p-0! gap-1! sticky! top-16 z-2 bg-bg-2! flex-row! transition-all duration-300 h-10 min-h-10 items-center 
                 ${!selectedProjectId ? "opacity-30" : ""}`}
             inert={!selectedProjectId}
         >
@@ -109,7 +109,7 @@ export const EventTopline = () => {
             </li>
 
             <li className="self-stretch flex items-center">
-                <hr className="w-px! h-1/3 bg-background-6" />
+                <hr className="w-px! h-1/3" />
             </li>
 
             <li>

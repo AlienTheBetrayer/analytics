@@ -20,7 +20,7 @@ export const RoleEditing = ({ data, hide }: Props) => {
     const [role, setRole] = useState<AuthenticationRole>(data.role ?? "user");
 
     return (
-        <ul className="relative box h-full gap-4! min-h-80">
+        <ul className="relative box h-full gap-4! acrylic min-h-80">
             <CloseButton hide={hide} />
 
             <li className="flex flex-col gap-1 items-center text-center">

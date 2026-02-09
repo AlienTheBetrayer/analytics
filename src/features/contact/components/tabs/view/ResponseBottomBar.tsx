@@ -12,7 +12,7 @@ type Props = {
 
 export const ResponseBottomBar = ({ tab, data, onSelect }: Props) => {
     return (
-        <ul className="box h-10! p-0! flex-row! items-center! gap-1!">
+        <ul className="box bg-bg-2! h-10! p-0! flex-row! items-center! gap-1!">
             <li className="flex items-center gap-1 absolute left-1/2 top-1/2 -translate-1/2">
                 <div className="w-1 h-1 bg-blue-1 rounded-full aspect-square" />
                 <Image

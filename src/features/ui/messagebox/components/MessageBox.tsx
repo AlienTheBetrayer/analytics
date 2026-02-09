@@ -116,7 +116,7 @@ export const MessageBox = ({ visibility, children, onSelect }: Props) => {
                                 scale: 1,
                             }}
                             exit={{ opacity: 0, scale: 0.85 }}
-                            className="relative box justify-between w-screen max-w-86 aspect-video backdrop-blur-xl!"
+                            className="relative box justify-between w-screen max-w-92 gap-4! aspect-video backdrop-blur-xl!"
                         >
                             <CloseButton hide={() => onSelect?.("no")} />
 
@@ -126,9 +126,8 @@ export const MessageBox = ({ visibility, children, onSelect }: Props) => {
                                     width={16}
                                     height={16}
                                     src="/type.svg"
-                                    className="invert-60!"
                                 />
-                                <span className="text-center text-5! text-foreground-4!">
+                                <span className="text-center text-5!">
                                     Are you <u>sure?</u>
                                 </span>
                             </div>
@@ -137,7 +136,7 @@ export const MessageBox = ({ visibility, children, onSelect }: Props) => {
                                 {children}
                             </span>
 
-                            <ul className="grid grid-cols-2 w-full gap-2">
+                            <ul className="grid grid-cols-2 w-full gap-4">
                                 <li>
                                     <Button
                                         ref={yesRef}
@@ -149,8 +148,8 @@ export const MessageBox = ({ visibility, children, onSelect }: Props) => {
                                             width={12}
                                             height={12}
                                             src="/checkmark.svg"
-                                        />
-                                        Yes
+                                            />
+                                            Yes
                                     </Button>
                                 </li>
 
@@ -163,9 +162,9 @@ export const MessageBox = ({ visibility, children, onSelect }: Props) => {
                                             alt=""
                                             width={16}
                                             height={16}
-                                            src="/delete.svg"
-                                        />
-                                        No
+                                            src="/cross.svg"
+                                            />
+                                            No
                                     </Button>
                                 </li>
                             </ul>

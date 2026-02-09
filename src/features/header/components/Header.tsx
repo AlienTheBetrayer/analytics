@@ -28,12 +28,12 @@ export const Header = () => {
         <>
             <header
                 ref={headerRef}
-                className="sticky my-8 top-2  rounded-full backdrop-blur-3xl
+                className="box sticky! p-0! my-8 top-2 rounded-full backdrop-blur-md!
         flex w-full max-w-400 mx-auto z-3
-        duration-500 ease-in-out transition-all justify-center bg-background-a-3 min-h-16"
+        duration-500 ease-in-out transition-all justify-center bg-bg-a-2! min-h-14"
             >
                 <motion.nav
-                    className="flex items-center w-full rounded-full outline-background-a-6 outline-1"
+                    className="flex items-center w-full rounded-full"
                     initial={
                         !animations.header
                             ? {

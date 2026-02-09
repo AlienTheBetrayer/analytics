@@ -68,7 +68,7 @@ export const AuthenticationForm = ({
             </div>
 
             <div className="box w-full flex flex-col items-center gap-8!">
-                <div className="box h-10! flex-row! p-0! w-full gap-1! justify-center items-center">
+                <div className="box bg-bg-2! h-10! flex-row! p-0! w-full gap-1! justify-center items-center">
                     <Image
                         alt=""
                         width={20}

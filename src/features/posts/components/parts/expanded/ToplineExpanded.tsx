@@ -104,7 +104,7 @@ export const ToplineExpanded = ({ data, className }: Props) => {
                             {data.edited_at && (
                                 <>
                                     <li className="flex self-stretch items-center">
-                                        <hr className="w-px! h-2/3! bg-background-a-20" />
+                                        <hr className="w-px! h-2/3!" />
                                     </li>
 
                                     <li className="flex items-center gap-1 whitespace-nowrap">
