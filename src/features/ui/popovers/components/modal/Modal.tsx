@@ -5,6 +5,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { PopoverDirection } from "@/features/ui/popovers/types/popover";
 import { positionPopover } from "@/features/ui/popovers/utils/positionPopover";
 import { useDisabledScroll } from "@/hooks/useDisabledScroll";
+import { DragButton } from "@/features/ui/draggable/components/DragButton";
 
 type Props = {
     element?: (hide: () => void) => React.ReactNode;
@@ -153,6 +154,10 @@ export const Modal = React.memo(function ModalFunction({
                                         scale: 0.9,
                                     }}
                                 >
+                                    <DragButton
+                                        ref={modalRef}
+                                        className="z-1"
+                                    />
                                     {element?.(hide)}
                                 </motion.div>
                             </dialog>
