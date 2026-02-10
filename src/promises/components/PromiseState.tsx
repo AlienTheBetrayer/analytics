@@ -70,8 +70,8 @@ export const PromiseState = ({ state }: Props) => {
                                     return (
                                         <Image
                                             alt=""
-                                            width={12}
-                                            height={12}
+                                            width={16}
+                                            height={16}
                                             src="/checkmark.svg"
                                         />
                                     );

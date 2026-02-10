@@ -135,6 +135,14 @@ export const Modal = React.memo(function ModalFunction({
                                     e.preventDefault();
                                     setIsShown(false);
                                 }}
+                                onKeyDown={(e) => {
+                                    switch (e.key) {
+                                        case " ": {
+                                            e.stopPropagation();
+                                            break;
+                                        }
+                                    }
+                                }}
                                 onFocus={(e) => {
                                     e.stopPropagation();
                                 }}

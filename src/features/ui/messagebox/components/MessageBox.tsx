@@ -145,8 +145,8 @@ export const MessageBox = ({ visibility, children, onSelect }: Props) => {
                                     >
                                         <Image
                                             alt=""
-                                            width={12}
-                                            height={12}
+                                            width={16}
+                                            height={16}
                                             src="/checkmark.svg"
                                             />
                                             Yes

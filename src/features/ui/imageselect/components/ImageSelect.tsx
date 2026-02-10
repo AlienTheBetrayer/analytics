@@ -98,8 +98,8 @@ export const ImageSelect = forwardRef<HTMLInputElement, Props>(
                             <div className="absolute right-3.5 top-1/2 -translate-y-1/2 p-2 aspect-square rounded-full outline-2 outline-blue-1">
                                 <Image
                                     alt=""
-                                    width={14}
-                                    height={14}
+                                    width={16}
+                                    height={16}
                                     src="/checkmark.svg"
                                 />
                             </div>

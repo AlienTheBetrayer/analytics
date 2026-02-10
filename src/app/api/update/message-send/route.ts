@@ -1,7 +1,6 @@
 import { supabaseServer } from "@/server/private/supabase";
 import { nextResponse } from "@/utils/api/response";
 import { tokenVerify } from "@/utils/auth/tokenVerify";
-import { PostgrestError } from "@supabase/supabase-js";
 import { NextRequest } from "next/server";
 
 export const POST = async (request: NextRequest) => {
@@ -23,23 +22,22 @@ export const POST = async (request: NextRequest) => {
                 throw "to_id is undefined";
             }
 
-            const { data, error } = (await supabaseServer
+            const { data, error } = await supabaseServer
                 .from("conversations")
                 .select(
-                    "id, conversation_members:conversation_members(user_id)",
+                    `
+                        id,
+                        conversation_members!inner(user_id)
+                    `,
                 )
-                .filter("conversation_members.user_id", "eq", from_id)
-                .filter("conversation_members.user_id", "eq", to_id)
-                .eq("type", "dm")) as {
-                data: { id: string }[];
-                error: PostgrestError | null;
-            };
+                .eq("type", "dm")
+                .in("conversation_members.user_id", [from_id, to_id]);
 
             if (error) {
                 throw error;
             }
 
-            if (!data?.length) {
+            if (data?.length < 2) {
                 const { data: newId, error } = await supabaseServer
                     .from("conversations")
                     .insert({ type: "dm" })

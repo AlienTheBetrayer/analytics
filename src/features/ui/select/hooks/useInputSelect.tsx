@@ -145,8 +145,8 @@ export const useInputSelect = (
                                             {item === inputValue && (
                                                 <Image
                                                     src="/checkmark.svg"
-                                                    width={10}
-                                                    height={10}
+                                                    width={14}
+                                                    height={14}
                                                     alt="selected"
                                                 />
                                             )}

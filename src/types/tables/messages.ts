@@ -15,6 +15,7 @@ export type Conversation = {
     id: string;
     title?: string;
     description?: string;
+    type: string;
     created_at: string;
     edited_at?: string;
 };
@@ -29,4 +30,5 @@ export type Message = {
     user_id: string;
     created_at: string;
     edited_at?: string;
+    seen_at?: string;
 };

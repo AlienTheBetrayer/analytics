@@ -135,7 +135,7 @@ const SearchDisplayPost = ({ id }: PostProps) => {
         >
             <LinkButton
                 href={`/post/view/${post.id}`}
-                className="h-8 border-0! relative flex justify-between! rounded-lg! p-4! hover:scale-98 focus-within:scale-98"
+                className="h-8 border-0! relative flex justify-between! rounded-lg! p-4! group hover:scale-98 focus-visible:scale-98"
             >
                 {post.image_url && (
                     <Image
@@ -143,7 +143,7 @@ const SearchDisplayPost = ({ id }: PostProps) => {
                         fill
                         style={{ objectFit: "cover" }}
                         src={post.image_url}
-                        className="invert-0!"
+                        className="invert-0! grayscale-75 group-hover:grayscale-0 group-focus-visible:grayscale-0 duration-500!"
                     />
                 )}
 

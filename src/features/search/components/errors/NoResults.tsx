@@ -1,4 +1,3 @@
-import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import Image from "next/image";
@@ -30,35 +29,31 @@ export const NoResults = () => {
             }
         >
             <>
-                <Tooltip
-                    text="Attempt a re-fetch"
-                    className="w-full"
+                <Button
                     isEnabled={!!query?.trim().length}
-                >
-                    <Button
-                        className="w-full"
-                        onClick={() => {
-                            if (!query?.trim().length) {
-                                return;
-                            }
+                    className="w-full"
+                    onClick={() => {
+                        if (!query?.trim().length) {
+                            return;
+                        }
 
-                            wrapPromise("noResultsSearch", async () => {
-                                return queryInvalidate({
-                                    key: ["search", query],
-                                });
+                        wrapPromise("noResultsSearch", async () => {
+                            return queryInvalidate({
+                                key: ["search", query, 0],
+                                silent: false,
                             });
-                        }}
-                    >
-                        <PromiseState state="noResultsSearch" />
-                        <Image
-                            width={16}
-                            height={16}
-                            alt=""
-                            src="/server.svg"
-                        />
-                        Re-fetch
-                    </Button>
-                </Tooltip>
+                        });
+                    }}
+                >
+                    <PromiseState state="noResultsSearch" />
+                    <Image
+                        width={16}
+                        height={16}
+                        alt=""
+                        src="/server.svg"
+                    />
+                    Re-fetch
+                </Button>
 
                 <LinkButton
                     className="w-full"

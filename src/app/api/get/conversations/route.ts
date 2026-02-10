@@ -5,25 +5,28 @@ import { NextRequest } from "next/server";
 export const GET = async (request: NextRequest) => {
     try {
         const { searchParams } = request.nextUrl;
-        const username = searchParams.get("username");
+        const user_id = searchParams.get("user_id");
 
-        if (!username) {
+        if (!user_id) {
             throw "username is undefined";
         }
 
         const { data, error } = await supabaseServer
             .from("conversations")
             .select(
-                "*, conversation_members:conversation_members!inner(*, user:users!inner(*, profile:profiles(*))), last_message:messages(*)",
+                `
+                    *, 
+                    membership:conversation_members!inner(user_id),
+                    conversation_members:conversation_members(*, user:users(*, profile:profiles(*))),
+                    last_message:messages(*)
+                `,
             )
-            .eq("conversation_members.user.username", username)
+            .eq("membership.user_id", user_id)
             .order("created_at", {
                 referencedTable: "last_message",
                 ascending: false,
             })
             .limit(1, { referencedTable: "last_message" });
-
-        console.log(data);
 
         if (error) {
             throw error;

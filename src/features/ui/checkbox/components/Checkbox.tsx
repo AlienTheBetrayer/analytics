@@ -35,8 +35,8 @@ export const Checkbox = ({
             >
                 <Image
                     src="/checkmark.svg"
-                    width={11}
-                    height={11}
+                    width={15}
+                    height={15}
                     alt=""
                     className={`${controller.inputValue ? "opacity-100 scale-100" : "opacity-0 scale-10"} transition-all! duration-300! ease-in-out`}
                 />

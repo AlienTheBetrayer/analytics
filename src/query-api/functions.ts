@@ -32,14 +32,14 @@ export const CacheAPIFunctions: Record<
     // messages
     conversations: async (args: unknown[]) => {
         if (!args[0]) {
-            throw new Error("username is undefined");
+            throw new Error("user_id is undefined");
         }
 
         const data = (
             await refreshedRequest({
                 route: "/api/get/conversations",
                 method: "GET",
-                config: { params: { username: args[0] } },
+                config: { params: { user_id: args[0] } },
             })
         ).data.conversations as CacheAPIProtocol["conversations"]["data"];
 

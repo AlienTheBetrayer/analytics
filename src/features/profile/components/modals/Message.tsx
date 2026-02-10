@@ -31,7 +31,7 @@ export const Message = ({ hide, data }: Props) => {
                     height={16}
                     src="/send.svg"
                 />
-                <span className="flex items-center gap-1">Messenger</span>
+                <span className="flex items-center gap-1">Send a message</span>
             </div>
 
             {data && (
@@ -64,7 +64,7 @@ export const Message = ({ hide, data }: Props) => {
                                     alt=""
                                     width={16}
                                     height={16}
-                                    src="/message.svg"
+                                    src="/pencil.svg"
                                 />
                                 Message
                             </label>
@@ -100,6 +100,7 @@ export const Message = ({ hide, data }: Props) => {
                     </ul>
                 </form>
             )}
+
             <LinkButton href="/messages">
                 <Image
                     alt=""
