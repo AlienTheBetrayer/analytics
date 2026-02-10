@@ -42,7 +42,7 @@ export const AuthButton = () => {
                 className="auth-button-tooltip p-0.5!"
             >
                 <Modal
-                    direction="bottom"
+                    direction="bottom-left"
                     element={(hide) => <AuthElements hide={hide} />}
                 >
                     <Button className="p-0!">
@@ -65,13 +65,6 @@ export const AuthButton = () => {
             >
                 <LinkButton
                     href="/profile"
-                    style={
-                        status.profile.color
-                            ? {
-                                  outline: `1px solid ${status.profile.color}`,
-                              }
-                            : {}
-                    }
                     className="p-0!"
                 >
                     <ProfileImage

@@ -5,9 +5,6 @@ import { useLocalStore } from "@/zustand/localStore";
 import Image from "next/image";
 import { ComponentPropsWithoutRef } from "react";
 import { SearchButton } from "../parts/SearchButton";
-import { Button } from "@/features/ui/button/components/Button";
-import { Socials } from "../parts/Socials";
-import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { useQuery } from "@/query/core";
 import { usePathname } from "next/navigation";
@@ -38,7 +35,7 @@ export const Desktop = ({ className }: Props) => {
                             <LinkButton
                                 href="/home"
                                 styles="link"
-                                className="button-img p-2"
+                                className="button-img"
                             >
                                 <Image
                                     src="/cube.svg"
@@ -54,7 +51,7 @@ export const Desktop = ({ className }: Props) => {
                     </li>
 
                     <li className="self-stretch flex items-center">
-                        <hr className="w-px! h-1/3!" />
+                        <hr className="w-px! h-5/12!" />
                     </li>
 
                     <li>
@@ -63,34 +60,11 @@ export const Desktop = ({ className }: Props) => {
                             inert={!!!status}
                         >
                             <li>
-                                <Tooltip text="Posts">
-                                    <LinkButton
-                                        href="/posts"
-                                        styles="link"
-                                        className="button-img p-2"
-                                    >
-                                        <Image
-                                            width={14}
-                                            height={14}
-                                            src="/select.svg"
-                                            alt="posts"
-                                        />
-                                        <TabSelection
-                                            condition={
-                                                page === "posts" ||
-                                                page === "post"
-                                            }
-                                        />
-                                    </LinkButton>
-                                </Tooltip>
-                            </li>
-
-                            <li>
                                 <Tooltip text="Dashboard">
                                     <LinkButton
                                         href="/dashboard"
                                         styles="link"
-                                        className="button-img p-2"
+                                        className="button-img"
                                     >
                                         <Image
                                             width={18}
@@ -110,7 +84,7 @@ export const Desktop = ({ className }: Props) => {
                                     <LinkButton
                                         href="/notifications"
                                         styles="link"
-                                        className="button-img p-2"
+                                        className="button-img"
                                     >
                                         <Image
                                             width={18}
@@ -133,11 +107,11 @@ export const Desktop = ({ className }: Props) => {
                                     <LinkButton
                                         href="/contact"
                                         styles="link"
-                                        className="button-img p-2"
+                                        className="button-img"
                                     >
                                         <Image
-                                            width={18}
-                                            height={18}
+                                            width={16}
+                                            height={16}
                                             src="/phone.svg"
                                             alt="contact"
                                         />
@@ -147,30 +121,92 @@ export const Desktop = ({ className }: Props) => {
                                     </LinkButton>
                                 </Tooltip>
                             </li>
+
+                            <li>
+                                <Tooltip text="Profile">
+                                    <LinkButton
+                                        href="/profile"
+                                        styles="link"
+                                        className="button-img"
+                                    >
+                                        <Image
+                                            width={14}
+                                            height={14}
+                                            src="/account.svg"
+                                            alt="posts"
+                                        />
+                                        <TabSelection
+                                            condition={
+                                                page === "posts" ||
+                                                page === "post"
+                                            }
+                                        />
+                                    </LinkButton>
+                                </Tooltip>
+                            </li>
+
+                            <li>
+                                <Tooltip text="Posts">
+                                    <LinkButton
+                                        href="/posts"
+                                        styles="link"
+                                        className="button-img"
+                                    >
+                                        <Image
+                                            width={14}
+                                            height={14}
+                                            src="/select.svg"
+                                            alt="posts"
+                                        />
+                                        <TabSelection
+                                            condition={
+                                                page === "posts" ||
+                                                page === "post"
+                                            }
+                                        />
+                                    </LinkButton>
+                                </Tooltip>
+                            </li>
+
+                            <li>
+                                <Tooltip text="Messages">
+                                    <LinkButton
+                                        href="/messages"
+                                        styles="link"
+                                        className="button-img"
+                                    >
+                                        <Image
+                                            width={18}
+                                            height={18}
+                                            src="/send.svg"
+                                            alt="msg"
+                                        />
+                                        <TabSelection
+                                            condition={page === "messages"}
+                                        />
+                                    </LinkButton>
+                                </Tooltip>
+                            </li>
                         </ul>
                     </li>
 
-                    <li className="self-stretch flex items-center">
-                        <hr className="w-px! h-1/3!" />
-                    </li>
-
-                    <li>
+                    {/* <li>
                         <Modal element={(hide) => <Socials hide={hide} />}>
                             <Tooltip text="Socials">
                                 <Button
                                     styles="link"
-                                    className="button-img p-2"
+                                    className="button-img"
                                 >
                                     <Image
-                                        width={18}
-                                        height={18}
+                                        width={16}
+                                        height={16}
                                         src="/social.svg"
                                         alt="contact"
                                     />
                                 </Button>
                             </Tooltip>
                         </Modal>
-                    </li>
+                    </li> */}
                 </ul>
             </li>
 

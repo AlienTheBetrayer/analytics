@@ -6,7 +6,6 @@ import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { ProfileImage } from "@/features/profile/components/ProfileImage";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { Theme } from "@/features/header/components/toolbox/components/Theme";
-import { Socials } from "../parts/Socials";
 import { useQuery } from "@/query/core";
 import { usePathname } from "next/navigation";
 import { TabSelection } from "@/utils/other/TabSelection";
@@ -49,10 +48,6 @@ export const Menu = ({ hideMenu }: Props) => {
                                     condition={!page || page === "home"}
                                 />
                             </LinkButton>
-                        </li>
-
-                        <li>
-                            <hr />
                         </li>
 
                         {status && (
@@ -109,6 +104,22 @@ export const Menu = ({ hideMenu }: Props) => {
                                 </li>
 
                                 <li>
+                                    <LinkButton href="/messages">
+                                        <Image
+                                            src="/send.svg"
+                                            width={16}
+                                            height={16}
+                                            alt=""
+                                        />
+                                        <span>Messages</span>
+                                        <TabSelection
+                                            className="right-4! top-2!"
+                                            condition={page === "messages"}
+                                        />
+                                    </LinkButton>
+                                </li>
+
+                                <li>
                                     <LinkButton href="/posts">
                                         <Image
                                             src="/select.svg"
@@ -126,16 +137,8 @@ export const Menu = ({ hideMenu }: Props) => {
                                         />
                                     </LinkButton>
                                 </li>
-
-                                <li>
-                                    <hr />
-                                </li>
                             </>
                         )}
-
-                        <li>
-                            <Socials className="flex-row! max-w-full! *:w-full p-0! bg-transparent! border-0! outline-0!" />
-                        </li>
                     </ul>
                 </li>
 
@@ -210,10 +213,6 @@ export const Menu = ({ hideMenu }: Props) => {
                             <Theme className="gap-1!">
                                 <span>Theme</span>
                             </Theme>
-                        </li>
-
-                        <li>
-                            <hr />
                         </li>
 
                         <li>

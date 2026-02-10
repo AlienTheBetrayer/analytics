@@ -51,7 +51,7 @@ export const Header = () => {
                         delay: 1,
                     }}
                 >
-                    <Desktop className="hidden md:grid" />
+                    <Desktop className="hidden md:grid header-buttons" />
                     <Mobile
                         className="grid md:hidden"
                         showMenu={showMenu}
