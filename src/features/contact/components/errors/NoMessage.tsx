@@ -6,7 +6,6 @@ import Image from "next/image";
 export const NoMessage = () => {
     return (
         <AbsentData
-            className="mt-0!"
             title={
                 <>
                     This message is <u>absent</u>

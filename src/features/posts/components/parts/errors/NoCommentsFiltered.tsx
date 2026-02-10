@@ -3,7 +3,6 @@ import { AbsentData } from "@/features/ui/absentdata/components/AbsentData";
 export const NoCommentsFiltered = () => {
     return (
         <AbsentData
-            className="m-0!"
             title={
                 <>
                     <u>Filtered</u> out everything

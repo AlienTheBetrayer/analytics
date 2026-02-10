@@ -3,7 +3,6 @@ import { AbsentData } from "@/features/ui/absentdata/components/AbsentData";
 export const NoComments = () => {
     return (
         <AbsentData
-            className="m-0!"
             title={
                 <>
                     <u>Absent</u> comments

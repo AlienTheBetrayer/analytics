@@ -3,7 +3,6 @@ import { AbsentData } from "@/features/ui/absentdata/components/AbsentData";
 export const NoResponse = () => {
     return (
         <AbsentData
-            className="mt-0!"
             title={
                 <>
                     Please <u>wait</u> for our response

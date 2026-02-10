@@ -13,6 +13,7 @@ export const NoEvents = () => {
 
     return (
         <AbsentData
+            className="mt-8"
             title={
                 <>
                     <u>Absent</u> events

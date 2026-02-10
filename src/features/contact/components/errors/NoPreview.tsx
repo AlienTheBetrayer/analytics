@@ -3,7 +3,6 @@ import { AbsentData } from "@/features/ui/absentdata/components/AbsentData";
 export const NoPreview = () => {
     return (
         <AbsentData
-            className="mt-0!"
             title={
                 <>
                     No preview <u>yet</u>

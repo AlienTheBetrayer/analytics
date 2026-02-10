@@ -1,3 +1,3 @@
-import MessagesPage from "@/app/messages/[name]/page";
+import MessagesPage from "@/app/messages/[id]/page";
 
 export default MessagesPage;

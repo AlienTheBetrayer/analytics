@@ -8,6 +8,7 @@ import { TabSelection } from "@/utils/other/TabSelection";
 import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { useQuery } from "@/query/core";
+import { Message } from "@/features/profile/components/modals/Message";
 
 type Props = {
     data: CacheAPIProtocol["user"]["data"];
@@ -97,104 +98,146 @@ export const Topline = ({ data }: Props) => {
             )}
 
             <li className="ml-auto!">
-                <Tooltip text="User's posts">
-                    <LinkButton href={`/posts/${data.username}`}>
-                        <Image
-                            width={14}
-                            height={14}
-                            alt=""
-                            src="/select.svg"
-                        />
-                        <span className="hidden sm:block">Posts</span>
-                        <TabSelection
-                            condition={tab === "posts"}
-                            color="var(--blue-1)"
-                        />
-                    </LinkButton>
-                </Tooltip>
-            </li>
+                <ul className="flex items-center gap-1">
+                    {status && (
+                        <li>
+                            <Tooltip text="Messenger">
+                                <Modal
+                                    element={(hide) => <Message hide={hide} data={status.id === data.id ? null : data}/>}
+                                >
+                                    <Button>
+                                        <Image
+                                            width={16}
+                                            height={16}
+                                            alt=""
+                                            src="/send.svg"
+                                        />
+                                    </Button>
+                                </Modal>
+                            </Tooltip>
+                        </li>
+                    )}
 
-            <li>
-                <Tooltip text="Profile overview">
-                    <LinkButton href={`/profile/${data.username}/overview`}>
-                        <Image
-                            width={16}
-                            height={16}
-                            alt="home"
-                            src="/launch.svg"
-                        />
-                        <span className="hidden sm:block">Overview</span>
-                        <TabSelection
-                            condition={!tab || tab === "overview"}
-                            color="var(--blue-1)"
-                        />
-                    </LinkButton>
-                </Tooltip>
-            </li>
+                    <li className="self-stretch flex items-center">
+                        <hr className="w-px! h-1/3!" />
+                    </li>
 
-            {((status && status.id === data.id) || status?.role === "op") && (
-                <>
                     <li>
-                        <Tooltip text="Edit the profile">
-                            <LinkButton href={`/profile/${data.username}/edit`}>
+                        <Tooltip text="User's posts">
+                            <LinkButton href={`/posts/${data.username}`}>
                                 <Image
-                                    width={16}
-                                    height={16}
-                                    alt="home"
-                                    src="/pencil.svg"
+                                    width={14}
+                                    height={14}
+                                    alt=""
+                                    src="/select.svg"
                                 />
-                                <span className="hidden sm:block">Edit</span>
+                                <span className="hidden sm:block">Posts</span>
                                 <TabSelection
-                                    condition={tab === "edit"}
+                                    condition={tab === "posts"}
                                     color="var(--blue-1)"
                                 />
                             </LinkButton>
                         </Tooltip>
                     </li>
 
+                    <li className="self-stretch flex items-center">
+                        <hr className="w-px! h-1/3!" />
+                    </li>
+
                     <li>
-                        <Tooltip text="Security measures">
+                        <Tooltip text="Profile overview">
                             <LinkButton
-                                href={`/profile/${data.username}/security`}
+                                href={`/profile/${data.username}/overview`}
                             >
                                 <Image
                                     width={16}
                                     height={16}
                                     alt="home"
-                                    src="/security.svg"
+                                    src="/launch.svg"
                                 />
                                 <span className="hidden sm:block">
-                                    Security
+                                    Overview
                                 </span>
                                 <TabSelection
-                                    condition={tab === "security"}
+                                    condition={!tab || tab === "overview"}
                                     color="var(--blue-1)"
                                 />
                             </LinkButton>
                         </Tooltip>
                     </li>
 
-                    <li>
-                        <Tooltip text="Friends and Friend requests">
-                            <LinkButton
-                                href={`/profile/${data.username}/friends`}
-                            >
-                                <Image
-                                    width={16}
-                                    height={16}
-                                    alt="home"
-                                    src="/friends.svg"
-                                />
-                                <span className="hidden sm:block">Friends</span>
-                                <TabSelection
-                                    condition={tab === "friends"}
-                                    color="var(--blue-1)"
-                                />
-                            </LinkButton>
-                        </Tooltip>
-                    </li>
-                </>
-            )}
+                    {((status && status.id === data.id) ||
+                        status?.role === "op") && (
+                        <>
+                            <li>
+                                <Tooltip text="Edit the profile">
+                                    <LinkButton
+                                        href={`/profile/${data.username}/edit`}
+                                    >
+                                        <Image
+                                            width={16}
+                                            height={16}
+                                            alt="home"
+                                            src="/pencil.svg"
+                                        />
+                                        <span className="hidden sm:block">
+                                            Edit
+                                        </span>
+                                        <TabSelection
+                                            condition={tab === "edit"}
+                                            color="var(--blue-1)"
+                                        />
+                                    </LinkButton>
+                                </Tooltip>
+                            </li>
+
+                            <li>
+                                <Tooltip text="Security measures">
+                                    <LinkButton
+                                        href={`/profile/${data.username}/security`}
+                                    >
+                                        <Image
+                                            width={16}
+                                            height={16}
+                                            alt="home"
+                                            src="/security.svg"
+                                        />
+                                        <span className="hidden sm:block">
+                                            Security
+                                        </span>
+                                        <TabSelection
+                                            condition={tab === "security"}
+                                            color="var(--blue-1)"
+                                        />
+                                    </LinkButton>
+                                </Tooltip>
+                            </li>
+
+                            <li>
+                                <Tooltip text="Friends and Friend requests">
+                                    <LinkButton
+                                        href={`/profile/${data.username}/friends`}
+                                    >
+                                        <Image
+                                            width={16}
+                                            height={16}
+                                            alt="home"
+                                            src="/friends.svg"
+                                        />
+                                        <span className="hidden sm:block">
+                                            Friends
+                                        </span>
+                                        <TabSelection
+                                            condition={tab === "friends"}
+                                            color="var(--blue-1)"
+                                        />
+                                    </LinkButton>
+                                </Tooltip>
+                            </li>
+                        </>
+                    )}
+                </ul>
+            </li>
         </ul>
     );
 };

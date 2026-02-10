@@ -29,6 +29,33 @@ export const CacheAPIFunctions: Record<
         ).data.sessions;
     },
 
+    // messages
+    conversations: async (args: unknown[]) => {
+        if (!args[0]) {
+            throw new Error("username is undefined");
+        }
+
+        const data = (
+            await refreshedRequest({
+                route: "/api/get/conversations",
+                method: "GET",
+                config: { params: { username: args[0] } },
+            })
+        ).data.conversations as CacheAPIProtocol["conversations"]["data"];
+
+        return data;
+    },
+
+    messages: async (args: unknown[]) => {
+        if (!args[0]) {
+            throw new Error("conversation_id is undefined");
+        }
+
+        return await axios.get("/api/get/messages", {
+            params: { conversation_id: args[0] },
+        });
+    },
+
     // contact
     contact_messages: async (args: unknown[]) => {
         const ids = (

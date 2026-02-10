@@ -14,6 +14,7 @@ export const NoProjectSelected = () => {
 
     return (
         <AbsentData
+            className="mt-8"
             title={
                 <>
                     <u>No project</u> is selected

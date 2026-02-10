@@ -18,7 +18,7 @@ export const AbsentData = ({
 }: Props) => {
     return (
         <div
-            className={`flex flex-col items-center justify-center mt-8 ${className ?? ""}`}
+            className={`flex flex-col items-center justify-center ${className ?? ""}`}
         >
             <div className="flex flex-col gap-4 items-center">
                 <div className="flex flex-col gap-2 items-center">
@@ -37,12 +37,9 @@ export const AbsentData = ({
                 </div>
 
                 {children && (
-                    <>
-                        <hr />
-                        <div className="flex flex-col gap-2 items-center w-full">
-                            {children}
-                        </div>
-                    </>
+                    <div className="flex flex-col gap-2 items-center w-full">
+                        {children}
+                    </div>
                 )}
             </div>
         </div>

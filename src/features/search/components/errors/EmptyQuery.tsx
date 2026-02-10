@@ -6,6 +6,7 @@ import { AbsentData } from "@/features/ui/absentdata/components/AbsentData";
 export const EmptyQuery = () => {
     return (
         <AbsentData
+            className="mt-8"
             title={
                 <>
                     <u>Invalid</u> query

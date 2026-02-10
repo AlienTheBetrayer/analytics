@@ -6,6 +6,7 @@ import { AbsentData } from "@/features/ui/absentdata/components/AbsentData";
 export const AbsentNotifications = () => {
     return (
         <AbsentData
+            className="mt-8"
             title={
                 <>
                     <u>Absent</u> notifications

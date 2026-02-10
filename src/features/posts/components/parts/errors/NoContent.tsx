@@ -15,6 +15,7 @@ export const NoContent = ({ data }: Props) => {
 
     return (
         <AbsentData
+            className="mt-8"
             title={
                 <>
                     <u>Absent</u> content

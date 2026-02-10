@@ -6,7 +6,6 @@ import Image from "next/image";
 export const AlreadySent = () => {
     return (
         <AbsentData
-            className="mt-0!"
             title={
                 <>
                     <mark>Successfully</mark> sent!

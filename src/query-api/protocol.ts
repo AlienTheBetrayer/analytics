@@ -2,6 +2,11 @@ import { AuthenticationToken } from "@/types/auth/authentication";
 import { Color, Profile, User } from "@/types/tables/account";
 import { Token } from "@/types/tables/auth";
 import { ContactMessage } from "@/types/tables/contact";
+import {
+    Conversation,
+    Message,
+    ConversationMember,
+} from "@/types/tables/messages";
 import { Comment, Post, PostPrivacy } from "@/types/tables/posts";
 import { Event, Project } from "@/types/tables/project";
 
@@ -17,6 +22,22 @@ export type CacheAPIProtocol = {
     sessions: {
         key: ["sessions", string];
         data: Record<string, Token>;
+    };
+
+    // messsages
+    conversations: {
+        key: ["conversations", string];
+        data: (Conversation & {
+            last_message: Message[];
+            conversation_members: (ConversationMember & {
+                user: (User & { profile: Profile })[];
+            })[];
+        })[];
+    };
+
+    messages: {
+        key: ["messages", string];
+        data: null;
     };
 
     // contact

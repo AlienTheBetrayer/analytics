@@ -14,6 +14,7 @@ export const NoResults = () => {
 
     return (
         <AbsentData
+            className="mt-8"
             title={
                 <>
                     <u>No</u> users found
