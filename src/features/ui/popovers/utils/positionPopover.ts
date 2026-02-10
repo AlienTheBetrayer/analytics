@@ -98,6 +98,14 @@ export const positionPopover = (
         left = document.documentElement.clientWidth - tooltipBounds.width;
     }
 
+    if (top < 0) {
+        top = 0;
+    }
+
+    if (top + tooltipBounds.height > document.documentElement.clientHeight) {
+        top = document.documentElement.clientHeight - tooltipBounds.height;
+    }
+
     // setting the initial positions
     tooltipRef.current.style.left = `${left}px`;
     tooltipRef.current.style.top = `${top}px`;
