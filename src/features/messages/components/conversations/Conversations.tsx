@@ -1,6 +1,8 @@
+import { CreateConversation } from "@/features/messages/components/conversations/CreateConversation";
 import { List } from "@/features/messages/components/conversations/List";
 import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
+import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { PromiseState } from "@/promises/components/PromiseState";
 import { wrapPromise } from "@/promises/core";
@@ -61,6 +63,24 @@ export const Conversations = () => {
                 <li className="ml-auto!">
                     <Tooltip
                         direction="top"
+                        text="Create a conversation"
+                    >
+                        <Modal element={() => <CreateConversation/>} direction="bottom">
+
+                        <Button>
+                            <Image
+                                alt=""
+                                width={16}
+                                height={16}
+                                src="/cubeadd.svg"
+                                />
+                        </Button>
+                                </Modal>
+                    </Tooltip>
+                </li>
+                <li>
+                    <Tooltip
+                        direction="top"
                         text="Re-fetch list"
                     >
                         <Button
@@ -76,8 +96,8 @@ export const Conversations = () => {
                             <PromiseState state="reloadConversations" />
                             <Image
                                 alt=""
-                                width={16}
-                                height={16}
+                                width={14}
+                                height={14}
                                 src="/reload.svg"
                             />
                         </Button>

@@ -90,8 +90,8 @@ export const Comments = ({ id }: Props) => {
                         <PromiseState state="reloadComments" />
                         <Image
                             alt=""
-                            width={16}
-                            height={16}
+                            width={14}
+                            height={14}
                             src="/reload.svg"
                         />
                     </Button>

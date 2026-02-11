@@ -101,13 +101,17 @@ export const Modal = React.memo(function ModalFunction({
                 return;
             }
 
+            if ((e.target as Element).closest(".modal-element")) {
+                return;
+            }
+
             setIsShown(false);
         };
 
-        window.addEventListener("pointerdown", handle);
+        window.addEventListener("pointerdown", handle, true);
 
         return () => {
-            window.removeEventListener("pointerdown", handle);
+            window.removeEventListener("pointerdown", handle, true);
         };
     }, [isShown]);
 
@@ -165,7 +169,7 @@ export const Modal = React.memo(function ModalFunction({
                                 className="fixed"
                             >
                                 <motion.div
-                                    className="backdrop-blur-lg rounded-4xl"
+                                    className="backdrop-blur-lg rounded-4xl modal-element"
                                     initial={{
                                         opacity: 0,
                                         scale: 0.9,

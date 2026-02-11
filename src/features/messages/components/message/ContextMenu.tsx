@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export const ContextMenu = () => {
     return (
-        <ul className="box acrylic p-4! rounded-2xl! gap-1! **:border-0! w-screen max-w-55 message-ctx">
+        <ul className="box acrylic p-4! rounded-2xl! gap-1! **:border-0! w-screen max-w-64 message-ctx">
             <li className="mt-6!">
                 <Button>
                     <Image
