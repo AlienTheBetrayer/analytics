@@ -1,9 +1,11 @@
-.header-ul button, .header-ul a {
+.header-ul button,
+.header-ul a {
     min-height: 3.25rem;
     height: 3.25rem;
 }
 
-.header-ul button img, .header-ul a img {
+.header-ul button img,
+.header-ul a img {
     min-width: 1rem;
     aspect-ratio: 1/1;
 }

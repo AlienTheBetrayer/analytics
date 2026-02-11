@@ -14,7 +14,7 @@ type Props = {} & ComponentPropsWithoutRef<"div">;
 
 export const Desktop = ({ className }: Props) => {
     // url
-    const page = usePathname().split("/")[1];
+    const [, page, secondary] = usePathname().split("/");
 
     // local storage
     const theme = useLocalStore((state) => state.theme);
@@ -182,31 +182,37 @@ export const Desktop = ({ className }: Props) => {
                                             alt="msg"
                                         />
                                         <TabSelection
-                                            condition={page === "messages"}
+                                            condition={
+                                                page === "messages" &&
+                                                secondary !== "notes"
+                                            }
                                         />
                                     </LinkButton>
                                 </Tooltip>
                             </li>
-                        </ul>
-                    </li>
 
-                    {/* <li>
-                        <Modal element={(hide) => <Socials hide={hide} />}>
-                            <Tooltip text="Socials">
-                                <Button
+                            <li>
+                                <LinkButton
+                                    href="/messages/notes"
                                     styles="link"
                                     className="button-img"
                                 >
                                     <Image
+                                        src="/save.svg"
                                         width={16}
                                         height={16}
-                                        src="/social.svg"
-                                        alt="contact"
+                                        alt=""
                                     />
-                                </Button>
-                            </Tooltip>
-                        </Modal>
-                    </li> */}
+                                    <TabSelection
+                                        condition={
+                                            page === "messages" &&
+                                            secondary === "notes"
+                                        }
+                                    />
+                                </LinkButton>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
             </li>
 

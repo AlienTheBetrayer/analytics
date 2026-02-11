@@ -16,7 +16,7 @@ type Props = {
 
 export const Menu = ({ hideMenu }: Props) => {
     // url
-    const page = usePathname().split("/")[1];
+    const [, page, secondary] = usePathname().split("/");
 
     // fetching
     const { data: status } = useQuery({ key: ["status"] });
@@ -30,7 +30,7 @@ export const Menu = ({ hideMenu }: Props) => {
             className="fixed z-100 inset-0 bg-background-a-1 backdrop-blur-md md:hidden w-full h-full overflow-hidden"
             onClick={hideMenu}
         >
-            <ul className="w-full h-full flex flex-col justify-between p-4! header-ul">
+            <ul className="acrylic w-full h-full flex flex-col justify-between p-4! header-ul">
                 <li>
                     <ul className="flex flex-col gap-2">
                         <li>
@@ -103,7 +103,7 @@ export const Menu = ({ hideMenu }: Props) => {
                                     </LinkButton>
                                 </li>
 
-                                <li>
+                                <li className="grid grid-cols-2 gap-2">
                                     <LinkButton href="/messages">
                                         <Image
                                             src="/send.svg"
@@ -114,7 +114,27 @@ export const Menu = ({ hideMenu }: Props) => {
                                         <span>Messages</span>
                                         <TabSelection
                                             className="right-4! top-2!"
-                                            condition={page === "messages"}
+                                            condition={
+                                                page === "messages" &&
+                                                secondary !== "notes"
+                                            }
+                                        />
+                                    </LinkButton>
+
+                                    <LinkButton href="/messages/notes">
+                                        <Image
+                                            src="/save.svg"
+                                            width={16}
+                                            height={16}
+                                            alt=""
+                                        />
+                                        <span>Notes</span>
+                                        <TabSelection
+                                            className="right-4! top-2!"
+                                            condition={
+                                                page === "messages" &&
+                                                secondary === "notes"
+                                            }
                                         />
                                     </LinkButton>
                                 </li>
