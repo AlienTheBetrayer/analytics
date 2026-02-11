@@ -1,0 +1,104 @@
+import { Button } from "@/features/ui/button/components/Button";
+import { Input } from "@/features/ui/input/components/Input";
+import { sendMessage } from "@/query-api/calls/messages";
+import { useQuery } from "@/query/core";
+import { AnimatePresence, motion } from "motion/react";
+import Image from "next/image";
+import { useRef, useEffect, useCallback, useState } from "react";
+
+type Props = {
+    conversation_id: string;
+    whom?: string;
+};
+
+export const MessageInput = ({ conversation_id, whom }: Props) => {
+    // fetching
+    const { data: status } = useQuery({ key: ["status"] });
+
+    // react states
+    const [message, setMessage] = useState<string>("");
+    const isSendable = !!message.trim();
+
+    // input + auto-focusing + button showing
+    const inputRef = useRef<HTMLInputElement>(null);
+    useEffect(() => {
+        inputRef.current?.focus();
+    }, []);
+
+    // API
+    const send = useCallback(() => {
+        if (!message.trim() || !status) {
+            return;
+        }
+
+        sendMessage({
+            type: "send",
+            from_id: status.id,
+            conversation_id,
+            message,
+        });
+        setMessage("");
+    }, [message, setMessage, status, conversation_id]);
+
+    return (
+        <div className="flex items-center gap-1">
+            <Input
+                ref={inputRef}
+                className="bg-bg-1!"
+                placeholder={`Write to ${whom}...`}
+                value={message}
+                onChange={(value) => setMessage(value)}
+                onKeyDown={(e: React.KeyboardEvent) => {
+                    switch (e.code) {
+                        case "Enter": {
+                            send();
+                            break;
+                        }
+                    }
+                }}
+            />
+
+            <Button
+                className="not-hover:bg-bg-1! h-full! aspect-square overflow-hidden"
+                onClick={send}
+                isEnabled={isSendable}
+            >
+                <AnimatePresence>
+                    {isSendable ? (
+                        <motion.div
+                            key="sendable"
+                            className="absolute"
+                            initial={{ x: -20, opacity: 0, scale: 0 }}
+                            animate={{ x: 0, opacity: 1, scale: 1 }}
+                            exit={{ x: -20, opacity: 0, scale: 0 }}
+                            transition={{ duration: 0.2 }}
+                        >
+                            <Image
+                                alt=""
+                                width={16}
+                                height={16}
+                                src="/send.svg"
+                            />
+                        </motion.div>
+                    ) : (
+                        <motion.div
+                            key="notsendable"
+                            className="absolute"
+                            initial={{ x: 20, opacity: 0, scale: 0 }}
+                            animate={{ x: 0, opacity: 1, scale: 1 }}
+                            exit={{ x: 20, opacity: 0, scale: 0 }}
+                            transition={{ duration: 0.2 }}
+                        >
+                            <Image
+                                alt=""
+                                width={16}
+                                height={16}
+                                src="/cross.svg"
+                            />
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </Button>
+        </div>
+    );
+};

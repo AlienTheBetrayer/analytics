@@ -35,7 +35,7 @@ export const filterConversation = (
     }
 
     // last message matched
-    if (data.last_message[0].message.toLowerCase().trim().includes(filter)) {
+    if (data.last_message?.message.toLowerCase().trim().includes(filter)) {
         return true;
     }
 
