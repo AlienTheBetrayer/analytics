@@ -62,7 +62,7 @@ export const Input = forwardRef<HTMLInputElement, Props>(
                     required={required && isEnabled}
                     className={`input w-full h-full min-h-8 
                     outline-0!
-                    bg-bg-2 border-2 border-bg-3 p-2.5 rounded-full focus:border-blue-1! placeholder-bg-5!
+                    bg-bg-2 border border-bg-3 p-2.5 rounded-full focus:border-blue-1! placeholder-bg-5!
                     hover:border-bg-5 transition-colors duration-500  resize-y
                     ${isEnabled && (required || minLength || maxLength) ? "invalid:underline decoration-wavy decoration-red-1 placeholder-shown:no-underline! valid:border-blue-1!" : ""} 
                     ${className ?? ""}`}
@@ -96,11 +96,16 @@ export const Input = forwardRef<HTMLInputElement, Props>(
                 <AnimatePresence>
                     {inputValue !== "" && (
                         <Button
-                            className={`absolute! right-2 top-1/2 -translate-y-1/2 min-w-6! min-h-6! w-6 h-6 p-0!
+                            className={`absolute! right-2 top-1/2 min-w-6! min-h-6! w-6 h-6 p-0!
                             `}
-                            initial={{ opacity: 0, y: 5 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: 5 }}
+                            initial={{ opacity: 0, y: 1 }}
+                            animate={{ opacity: 1, y: `-50%` }}
+                            exit={{
+                                opacity: 0,
+                                y: 1,
+                                transition: { duration: 0.2 },
+                            }}
+                            transition={{ duration: 0.5 }}
                             onClick={() => {
                                 if (!value) {
                                     setData("");

@@ -6,14 +6,15 @@ import { PromiseState } from "@/promises/components/PromiseState";
 import { wrapPromise } from "@/promises/core";
 import { queryInvalidate } from "@/query/auxiliary";
 import { useQuery } from "@/query/core";
+import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 type Props = {
     conversation_id?: string;
 };
 
-export const ConversationView = ({ conversation_id }: Props) => {
+export const MessageView = ({ conversation_id }: Props) => {
     const { data: status } = useQuery({ key: ["status"] });
 
     if (!status || !conversation_id) {
@@ -24,13 +25,13 @@ export const ConversationView = ({ conversation_id }: Props) => {
         );
     }
 
-    return <ConversationViewId conversation_id={conversation_id} />;
+    return <MessageViewId conversation_id={conversation_id} />;
 };
 
 type IdProps = {
     conversation_id: string;
 };
-const ConversationViewId = ({ conversation_id }: IdProps) => {
+const MessageViewId = ({ conversation_id }: IdProps) => {
     // fetching (pre-fetched)
     const { data: status } = useQuery({ key: ["status"] });
     const { data: conversations } = useQuery({
@@ -49,12 +50,21 @@ const ConversationViewId = ({ conversation_id }: IdProps) => {
 
     // react states
     const [message, setMessage] = useState<string>("");
+    const isSendable = !!message.trim();
 
-    // input + auto-focusing
+    // input + auto-focusing + button showing
     const inputRef = useRef<HTMLInputElement>(null);
     useEffect(() => {
         inputRef.current?.focus();
     }, []);
+
+    const send = useCallback(() => {
+        if (!message.trim()) {
+            return;
+        }
+
+        setMessage("");
+    }, [message]);
 
     return (
         <article className="flex flex-col bg-bg-2! grow p-4! gap-4 rounded-4xl">
@@ -88,40 +98,64 @@ const ConversationViewId = ({ conversation_id }: IdProps) => {
 
             <MessageList conversation_id={conversation_id} />
 
-            <div className="flex items-center">
+            <div className="flex items-center gap-1">
                 <Input
                     ref={inputRef}
-                    className="bg-bg-1! not-hover:border-transparent hover:border-bg-3!"
-                    placeholder="Send..."
+                    className="bg-bg-1!"
+                    placeholder={`Write to ${conversationTitle}...`}
                     value={message}
                     onChange={(value) => setMessage(value)}
                     onKeyDown={(e: React.KeyboardEvent) => {
                         switch (e.code) {
                             case "Enter": {
-                                setMessage("");
+                                send();
                                 break;
                             }
                         }
                     }}
                 />
 
-                <div
-                    className="overflow-hidden transition-all duration-300"
-                    style={{
-                        interpolateSize: "allow-keywords",
-                        width: message ? "auto" : "0",
-                        marginLeft: message ? "0.5rem" : "0",
-                    }}
+                <Button
+                    className="not-hover:bg-bg-1! h-full! aspect-square overflow-hidden"
+                    onClick={send}
+                    isEnabled={isSendable}
                 >
-                    <Button className="not-hover:bg-bg-1! h-full! aspect-square">
-                        <Image
-                            alt=""
-                            width={16}
-                            height={16}
-                            src="/send.svg"
-                        />
-                    </Button>
-                </div>
+                    <AnimatePresence>
+                        {isSendable ? (
+                            <motion.div
+                                key="sendable"
+                                className="absolute"
+                                initial={{ x: -20, opacity: 0, scale: 0 }}
+                                animate={{ x: 0, opacity: 1, scale: 1 }}
+                                exit={{ x: -20, opacity: 0, scale: 0 }}
+                                transition={{ duration: 0.2 }}
+                            >
+                                <Image
+                                    alt=""
+                                    width={16}
+                                    height={16}
+                                    src="/send.svg"
+                                />
+                            </motion.div>
+                        ) : (
+                            <motion.div
+                                key="notsendable"
+                                className="absolute"
+                                initial={{ x: 20, opacity: 0, scale: 0 }}
+                                animate={{ x: 0, opacity: 1, scale: 1 }}
+                                exit={{ x: 20, opacity: 0, scale: 0 }}
+                                transition={{ duration: 0.2 }}
+                            >
+                                <Image
+                                    alt=""
+                                    width={16}
+                                    height={16}
+                                    src="/cross.svg"
+                                />
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </Button>
             </div>
         </article>
     );
