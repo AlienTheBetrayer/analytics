@@ -15,7 +15,7 @@ export type Conversation = {
     id: string;
     title?: string;
     description?: string;
-    type: string;
+    type: "dm";
     created_at: string;
     edited_at?: string;
 };
@@ -31,4 +31,5 @@ export type Message = {
     created_at: string;
     edited_at?: string;
     seen_at?: string;
+    type: "msg" | "forward";
 };

@@ -28,7 +28,7 @@ export type CacheAPIProtocol = {
     conversations: {
         key: ["conversations", string];
         data: (Conversation & {
-            last_message: Message[];
+            last_message?: Message;
             conversation_members: (ConversationMember & {
                 user: User & { profile: Profile };
             })[];

@@ -67,7 +67,12 @@ export const POST = async (request: NextRequest) => {
         // if we give conversation_id - send
         const { data, error } = await supabaseServer
             .from("messages")
-            .insert({ user_id: from_id, conversation_id: id, message })
+            .insert({
+                user_id: from_id,
+                conversation_id: id,
+                message,
+                type: "message",
+            })
             .select();
 
         if (error) {

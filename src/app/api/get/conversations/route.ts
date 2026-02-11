@@ -1,5 +1,12 @@
 import { supabaseServer } from "@/server/private/supabase";
+import { Profile, User } from "@/types/tables/account";
+import {
+    Conversation,
+    ConversationMember,
+    Message,
+} from "@/types/tables/messages";
 import { nextResponse } from "@/utils/api/response";
+import { PostgrestError } from "@supabase/supabase-js";
 import { NextRequest } from "next/server";
 
 export const GET = async (request: NextRequest) => {
@@ -11,7 +18,7 @@ export const GET = async (request: NextRequest) => {
             throw "username is undefined";
         }
 
-        const { data, error } = await supabaseServer
+        const { data, error } = (await supabaseServer
             .from("conversations")
             .select(
                 `
@@ -26,13 +33,31 @@ export const GET = async (request: NextRequest) => {
                 referencedTable: "last_message",
                 ascending: false,
             })
-            .limit(1, { referencedTable: "last_message" });
+            .limit(1, { referencedTable: "last_message" })) as {
+            data: (Conversation & {
+                membership: { user_id: string };
+                conversation_members: ConversationMember & {
+                    user: User & Profile;
+                };
+                last_message: Message[];
+            })[];
+            error: PostgrestError | null;
+        };
 
         if (error) {
             throw error;
         }
 
-        return nextResponse({ success: true, conversations: data }, 200);
+        return nextResponse(
+            {
+                success: true,
+                conversations: data.map((entry) => ({
+                    ...entry,
+                    last_message: entry.last_message?.[0],
+                })),
+            },
+            200,
+        );
     } catch (error) {
         console.error(error);
         return nextResponse({ success: false }, 400);

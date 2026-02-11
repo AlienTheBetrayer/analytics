@@ -1,3 +1,4 @@
+import { NoMessages } from "@/features/messages/components/errors/NoMessages";
 import { MessageDisplay } from "@/features/messages/components/message/MessageDisplay";
 import { useQuery } from "@/query/core";
 
@@ -26,9 +27,15 @@ export const MessageList = ({ conversation_id }: Props) => {
         );
     }
 
+    if(!messages?.length) {
+        return <div className="grow relative">
+            <NoMessages/>
+        </div>
+    }
+
     return (
         <ul className="flex flex-col-reverse gap-4 grow">
-            {messages?.map((message) => (
+            {messages.map((message) => (
                 <li key={message.id}>
                     <MessageDisplay
                         message={message}
