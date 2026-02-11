@@ -72,9 +72,9 @@ export const ContextMenu = () => {
                         alt=""
                         width={16}
                         height={16}
-                        src="/delete.svg"
+                        src="/select.svg"
                     />
-                    <span>Delete</span>
+                    <span>Select</span>
                 </Button>
             </li>
 
@@ -84,9 +84,11 @@ export const ContextMenu = () => {
                         alt=""
                         width={16}
                         height={16}
-                        src="/select.svg"
+                        src="/delete.svg"
                     />
-                    <span>Select</span>
+                    <span>
+                        <u>Delete</u>
+                    </span>
                 </Button>
             </li>
         </ul>

@@ -68,7 +68,7 @@ export const ConversationDisplay = ({ data }: Props) => {
 
             <div className="absolute right-2 bottom-2">
                 <Modal
-                    element={() => <ContextMenu />}
+                    element={() => <ContextMenu data={data} />}
                     direction="right"
                 >
                     <Button className="min-w-6! min-h-6! h-6! w-6! p-0!">

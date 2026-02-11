@@ -65,7 +65,13 @@ export const List = ({
     return (
         <ul className="flex flex-col gap-1 relative grow">
             {elements.length ? (
-                elements
+                <>
+                    <li>
+                        
+                    </li>
+
+                    {elements}
+                </>
             ) : (
                 <FilterNothing onClear={() => onClear?.()} />
             )}

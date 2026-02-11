@@ -44,7 +44,7 @@ export const SearchButton = () => {
             container={{
                 style: {
                     height: "100%",
-                    transition: `300ms ease-out`,
+                    transition: `300ms ease-in-out`,
                     width: isFocused ? "100%" : "75%",
                 },
                 onFocus: () => {
