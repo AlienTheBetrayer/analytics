@@ -54,7 +54,7 @@ const MessageViewId = ({ conversation_id }: IdProps) => {
                             width={256}
                             height={256}
                             src={toplineData.image_url}
-                            className="rounded-full! invert-0! h-6! w-6!"
+                            className="rounded-full! invert-0! h-5! w-5!"
                         />
                     )}
                     <span>{toplineData?.title}</span>
