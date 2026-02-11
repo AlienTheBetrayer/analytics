@@ -1,0 +1,8 @@
+.message-ctx button {
+    padding: 0.5rem 1rem;
+    display: grid;
+    grid-template-columns: 1.6rem 1fr;
+    width: 100%;
+    align-items: center;
+    justify-items: start
+}

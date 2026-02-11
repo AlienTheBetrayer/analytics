@@ -7,7 +7,7 @@ import { wrapPromise } from "@/promises/core";
 import { queryInvalidate } from "@/query/auxiliary";
 import { useQuery } from "@/query/core";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 type Props = {
     conversation_id?: string;
@@ -31,10 +31,27 @@ type IdProps = {
     conversation_id: string;
 };
 const ConversationViewId = ({ conversation_id }: IdProps) => {
+    // fetching (pre-fetched)
+    const { data: status } = useQuery({ key: ["status"] });
+    const { data: conversations } = useQuery({
+        key: ["conversations", status?.id],
+    });
+
+    // ui states
+    const conversationTitle = useMemo(() => {
+        const convo = conversations?.find((c) => c.id === conversation_id);
+        return (
+            convo?.title ??
+            convo?.conversation_members.find((m) => m.user_id !== status?.id)
+                ?.user.username
+        );
+    }, [conversations, conversation_id, status]);
+
     // react states
     const [message, setMessage] = useState<string>("");
-    const inputRef = useRef<HTMLInputElement>(null);
 
+    // input + auto-focusing
+    const inputRef = useRef<HTMLInputElement>(null);
     useEffect(() => {
         inputRef.current?.focus();
     }, []);
@@ -42,6 +59,11 @@ const ConversationViewId = ({ conversation_id }: IdProps) => {
     return (
         <article className="flex flex-col bg-bg-2! grow p-4! gap-4 rounded-4xl">
             <ul className="box min-h-10! h-10! gap-1! p-0! items-center! flex-row!">
+                <li className="flex items-center gap-1 ml-4!">
+                    <div className="w-1 h-1 rounded-full bg-blue-1" />
+                    <span>{conversationTitle}</span>
+                </li>
+
                 <li className="ml-auto!">
                     <Button
                         onClick={() => {

@@ -1,3 +1,5 @@
+import { ContextMenu } from "@/features/messages/components/message/ContextMenu";
+import { Button } from "@/features/ui/button/components/Button";
 import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { exactTime } from "@/utils/other/relativeTime";
@@ -11,22 +13,20 @@ type Props = {
 export const MessageDisplay = ({ message, status }: Props) => {
     return (
         <Modal
-            element={(hide) => (
-                <div className="box">
-                    <h1>hi</h1>
-                </div>
-            )}
-            contextMenu
+            direction="top"
             className={`w-fit! ${message.user_id === status.id ? "ml-auto!" : ""}`}
+            element={() => <ContextMenu />}
         >
-            <div className={`box p-1.5! px-4! w-fit! flex-row!`}>
+            <Button
+                className={`box not-hover:bg-bg-1! p-1.5! px-5! w-fit! flex-row!`}
+            >
                 <div className="p-1">
                     <span>{message.message}</span>
                 </div>
 
                 <div className="mt-auto">
                     <small className="flex items-center gap-0.5">
-                        {!message.edited_at && (
+                        {message.edited_at && (
                             <Image
                                 alt=""
                                 width={14}
@@ -39,7 +39,7 @@ export const MessageDisplay = ({ message, status }: Props) => {
                         </span>
                     </small>
                 </div>
-            </div>
+            </Button>
         </Modal>
     );
 };
