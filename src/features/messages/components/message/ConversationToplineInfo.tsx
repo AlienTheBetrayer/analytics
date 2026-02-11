@@ -1,4 +1,6 @@
 import { ProfileImage } from "@/features/profile/components/ProfileImage";
+import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
+import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { useQuery } from "@/query/core";
 
 type Props = {
@@ -33,15 +35,23 @@ export const ConversationToplineInfo = ({ conversation_id }: Props) => {
                         )?.user;
 
                         return (
-                            <>
-                                <ProfileImage
-                                    profile={user?.profile}
-                                    width={256}
-                                    height={256}
-                                    className="w-5! h-5!"
-                                />
-                                <span>{user?.username}</span>
-                            </>
+                            <Tooltip
+                                direction="top"
+                                text="Go to profile"
+                            >
+                                <LinkButton
+                                    href={`/profile/${user?.username}`}
+                                    className="gap-1!"
+                                >
+                                    <ProfileImage
+                                        profile={user?.profile}
+                                        width={256}
+                                        height={256}
+                                        className="w-5! h-5!"
+                                    />
+                                    <span>{user?.username}</span>
+                                </LinkButton>
+                            </Tooltip>
                         );
                     }
                     default: {

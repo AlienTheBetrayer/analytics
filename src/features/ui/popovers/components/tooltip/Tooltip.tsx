@@ -127,12 +127,12 @@ export const Tooltip = React.memo(function TooltipFunction({
                                 >
                                     {element ?? (
                                         <small className="flex flex-col items-center">
-                                            {title && (
+                                            {title && <span>{title}</span>}
+                                            {text && (
                                                 <span>
-                                                    <b>{title}</b>
+                                                    <small>{text}</small>
                                                 </span>
                                             )}
-                                            {text && <span>{text}</span>}
                                         </small>
                                     )}
                                 </motion.div>

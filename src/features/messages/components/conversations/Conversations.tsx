@@ -1,6 +1,7 @@
 import { List } from "@/features/messages/components/conversations/List";
 import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
+import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { PromiseState } from "@/promises/components/PromiseState";
 import { wrapPromise } from "@/promises/core";
 import { queryInvalidate } from "@/query/auxiliary";
@@ -24,21 +25,28 @@ export const Conversations = () => {
         <div className="flex flex-col bg-bg-2! grow p-4! gap-4 rounded-4xl">
             <ul className="box h-10! gap-1! p-0! items-center! flex-row!">
                 <li>
-                    <Button onClick={() => setReversed((prev) => !prev)}>
-                        <Image
-                            alt=""
-                            width={16}
-                            height={16}
-                            src="/sort.svg"
-                            className={`${reversed ? "rotate-180" : ""} duration-500!`}
-                        />
-                        <TabSelection
-                            condition={true}
-                            color={
-                                reversed ? "var(--orange-1)" : "var(--blue-1)"
-                            }
-                        />
-                    </Button>
+                    <Tooltip
+                        direction="top"
+                        text="Sorting direction"
+                    >
+                        <Button onClick={() => setReversed((prev) => !prev)}>
+                            <Image
+                                alt=""
+                                width={16}
+                                height={16}
+                                src="/sort.svg"
+                                className={`${reversed ? "rotate-180" : ""} duration-500!`}
+                            />
+                            <TabSelection
+                                condition={true}
+                                color={
+                                    reversed
+                                        ? "var(--orange-1)"
+                                        : "var(--blue-1)"
+                                }
+                            />
+                        </Button>
+                    </Tooltip>
                 </li>
 
                 <li className="w-full">
@@ -51,24 +59,29 @@ export const Conversations = () => {
                 </li>
 
                 <li className="ml-auto!">
-                    <Button
-                        onClick={() => {
-                            wrapPromise("reloadConversations", async () => {
-                                return queryInvalidate({
-                                    key: ["conversations", status?.id],
-                                    silent: false,
-                                });
-                            });
-                        }}
+                    <Tooltip
+                        direction="top"
+                        text="Re-fetch list"
                     >
-                        <PromiseState state="reloadConversations" />
-                        <Image
-                            alt=""
-                            width={16}
-                            height={16}
-                            src="/reload.svg"
-                        />
-                    </Button>
+                        <Button
+                            onClick={() => {
+                                wrapPromise("reloadConversations", async () => {
+                                    return queryInvalidate({
+                                        key: ["conversations", status?.id],
+                                        silent: false,
+                                    });
+                                });
+                            }}
+                        >
+                            <PromiseState state="reloadConversations" />
+                            <Image
+                                alt=""
+                                width={16}
+                                height={16}
+                                src="/reload.svg"
+                            />
+                        </Button>
+                    </Tooltip>
                 </li>
             </ul>
 

@@ -3,6 +3,7 @@ import { ConversationToplineInfo } from "@/features/messages/components/message/
 import { MessageInput } from "@/features/messages/components/message/MessageInput";
 import { MessageList } from "@/features/messages/components/message/MessageList";
 import { Button } from "@/features/ui/button/components/Button";
+import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { PromiseState } from "@/promises/components/PromiseState";
 import { wrapPromise } from "@/promises/core";
 import { queryInvalidate } from "@/query/auxiliary";
@@ -39,24 +40,29 @@ const MessageViewId = ({ conversation_id }: IdProps) => {
                 </li>
 
                 <li className="ml-auto!">
-                    <Button
-                        onClick={() => {
-                            wrapPromise("reloadMessages", async () => {
-                                return queryInvalidate({
-                                    key: ["messages", conversation_id],
-                                    silent: false,
-                                });
-                            });
-                        }}
+                    <Tooltip
+                        direction="top"
+                        text="Re-fetch messages"
                     >
-                        <PromiseState state="reloadMessages" />
-                        <Image
-                            alt=""
-                            width={16}
-                            height={16}
-                            src="/reload.svg"
-                        />
-                    </Button>
+                        <Button
+                            onClick={() => {
+                                wrapPromise("reloadMessages", async () => {
+                                    return queryInvalidate({
+                                        key: ["messages", conversation_id],
+                                        silent: false,
+                                    });
+                                });
+                            }}
+                        >
+                            <PromiseState state="reloadMessages" />
+                            <Image
+                                alt=""
+                                width={16}
+                                height={16}
+                                src="/reload.svg"
+                            />
+                        </Button>
+                    </Tooltip>
                 </li>
             </ul>
 
