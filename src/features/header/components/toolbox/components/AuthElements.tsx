@@ -1,6 +1,5 @@
 import { Button } from "@/features/ui/button/components/Button";
 import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
-import { CloseButton } from "@/features/ui/closebutton/components/CloseButton";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { PromiseState } from "@/promises/components/PromiseState";
 import { wrapPromise } from "@/promises/core";
@@ -9,11 +8,7 @@ import { useQuery } from "@/query/core";
 import Image from "next/image";
 import { useState } from "react";
 
-type Props = {
-    hide: () => void;
-};
-
-export const AuthElements = ({ hide }: Props) => {
+export const AuthElements = () => {
     // status
     const { data: status } = useQuery({ key: ["status"] });
 
@@ -22,8 +17,6 @@ export const AuthElements = ({ hide }: Props) => {
 
     return (
         <div className="relative box gap-4! acrylic h-full w-screen max-w-100">
-            <CloseButton hide={hide} />
-
             <div className="flex flex-col gap-1 items-center">
                 <div className="relative flex gap-1">
                     <Image

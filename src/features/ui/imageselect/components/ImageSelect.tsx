@@ -56,7 +56,6 @@ export const ImageSelect = forwardRef<HTMLInputElement, Props>(
                     direction="top"
                     element={(hide) => (
                         <Edit
-                            hide={hide}
                             file={fileValue}
                             onEdit={() => {
                                 inputRef.current?.click();

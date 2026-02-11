@@ -37,7 +37,7 @@ export type CacheAPIProtocol = {
 
     messages: {
         key: ["messages", string];
-        data: null;
+        data: (Message & { user: User & { profile: Profile } })[];
     };
 
     // contact

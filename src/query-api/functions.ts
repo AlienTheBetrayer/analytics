@@ -51,9 +51,11 @@ export const CacheAPIFunctions: Record<
             throw new Error("conversation_id is undefined");
         }
 
-        return await axios.get("/api/get/messages", {
-            params: { conversation_id: args[0] },
-        });
+        return (
+            await axios.get("/api/get/messages", {
+                params: { conversation_id: args[0] },
+            })
+        ).data.messages;
     },
 
     // contact

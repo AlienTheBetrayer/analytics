@@ -151,16 +151,11 @@ export const ToplineCompact = ({ data, className, type, onDelete }: Props) => {
                             <li>
                                 <Tooltip text="Privacy configurations">
                                     <Modal
-                                        element={(hide) => (
-                                            <Configurations
-                                                data={data}
-                                                hide={hide}
-                                            />
+                                        element={() => (
+                                            <Configurations data={data} />
                                         )}
                                     >
-                                        <Button
-                                            aria-label="privacy"
-                                        >
+                                        <Button aria-label="privacy">
                                             <Image
                                                 alt=""
                                                 width={16}

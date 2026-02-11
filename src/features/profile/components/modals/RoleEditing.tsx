@@ -4,7 +4,6 @@ import { Select } from "@/features/ui/select/components/Select";
 import { AuthenticationRole } from "@/types/auth/authentication";
 import Image from "next/image";
 import { useState } from "react";
-import { CloseButton } from "@/features/ui/closebutton/components/CloseButton";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { wrapPromise } from "@/promises/core";
 import { PromiseState } from "@/promises/components/PromiseState";
@@ -12,17 +11,14 @@ import { updateUser } from "@/query-api/calls/users";
 
 type Props = {
     data: CacheAPIProtocol["user"]["data"];
-    hide: () => void;
 };
 
-export const RoleEditing = ({ data, hide }: Props) => {
+export const RoleEditing = ({ data }: Props) => {
     // react states
     const [role, setRole] = useState<AuthenticationRole>(data.role ?? "user");
 
     return (
         <ul className="relative box h-full gap-4! acrylic min-h-80">
-            <CloseButton hide={hide} />
-
             <li className="flex flex-col gap-1 items-center text-center">
                 <div className="relative flex gap-1">
                     <Image

@@ -1,15 +1,10 @@
 import { Button } from "@/features/ui/button/components/Button";
 import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
-import { CloseButton } from "@/features/ui/closebutton/components/CloseButton";
 import { PostFilteringColumn } from "@/types/zustand/posts";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 
-type Props = {
-    hide: () => void;
-};
-
-export const Filtering = ({ hide }: Props) => {
+export const Filtering = () => {
     // zustand & localstore
     const postFiltering = useAppStore((state) => state.postFiltering);
     const updatePostFiltering = useAppStore(
@@ -18,8 +13,6 @@ export const Filtering = ({ hide }: Props) => {
 
     return (
         <div className="relative box p-4! gap-4! w-screen max-w-92 acrylic">
-            <CloseButton hide={hide} />
-
             <span className="flex flex-col items-center">
                 <Image
                     alt="filter"
@@ -30,7 +23,7 @@ export const Filtering = ({ hide }: Props) => {
                 Filtering
             </span>
 
-            <hr/>
+            <hr />
 
             <ul className="flex flex-col gap-1">
                 {["Liked", "Edited", "With Images", "Raw"].map((tab) => (
@@ -51,7 +44,7 @@ export const Filtering = ({ hide }: Props) => {
                 ))}
 
                 <li className="my-2!">
-                    <hr/>
+                    <hr />
                 </li>
 
                 <li className="w-full">

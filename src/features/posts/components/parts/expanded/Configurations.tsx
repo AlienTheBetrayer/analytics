@@ -1,6 +1,5 @@
 import { Button } from "@/features/ui/button/components/Button";
 import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
-import { CloseButton } from "@/features/ui/closebutton/components/CloseButton";
 import { PromiseState } from "@/promises/components/PromiseState";
 import { wrapPromise } from "@/promises/core";
 import { updatePost } from "@/query-api/calls/posts";
@@ -12,10 +11,9 @@ import { useState } from "react";
 
 type Props = {
     data: CacheAPIProtocol["post"]["data"];
-    hide?: () => void;
 };
 
-export const Configurations = ({ data, hide }: Props) => {
+export const Configurations = ({ data }: Props) => {
     // zustand
     const { data: post_privacy } = useQuery({ key: ["post_privacy", data.id] });
     const { data: status } = useQuery({ key: ["status"] });
@@ -28,8 +26,6 @@ export const Configurations = ({ data, hide }: Props) => {
 
     return (
         <div className="box w-screen max-w-91">
-            <CloseButton hide={() => hide?.()} />
-
             <div className="flex flex-col items-center">
                 <Image
                     alt=""

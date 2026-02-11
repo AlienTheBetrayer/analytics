@@ -3,13 +3,8 @@ import { Button } from "@/features/ui/button/components/Button";
 import { Select } from "@/features/ui/select/components/Select";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
-import { CloseButton } from "@/features/ui/closebutton/components/CloseButton";
 
-type Props = {
-    hide: () => void;
-};
-
-export const Sorting = ({ hide }: Props) => {
+export const Sorting = () => {
     // zustand
     const selectedProjectId = useAppStore((state) => state.selectedProjectId);
     const eventFilters = useAppStore((state) => state.eventFilters);
@@ -22,8 +17,6 @@ export const Sorting = ({ hide }: Props) => {
 
     return (
         <div className="relative box p-4! acrylic gap-4! w-screen max-w-92">
-            <CloseButton hide={hide} />
-
             <span className="flex flex-col items-center">
                 <Image
                     alt="filter"

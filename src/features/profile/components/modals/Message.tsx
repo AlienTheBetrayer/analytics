@@ -1,5 +1,4 @@
 import { Button } from "@/features/ui/button/components/Button";
-import { CloseButton } from "@/features/ui/closebutton/components/CloseButton";
 import { Input } from "@/features/ui/input/components/Input";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
@@ -12,18 +11,15 @@ import Image from "next/image";
 import { useState } from "react";
 
 type Props = {
-    hide: () => void;
     data: CacheAPIProtocol["user"]["data"] | null;
 };
 
-export const Message = ({ hide, data }: Props) => {
+export const Message = ({ data }: Props) => {
     const { data: status } = useQuery({ key: ["status"] });
     const [message, setMessage] = useState<string>("");
 
     return (
         <div className="acrylic box p-4! gap-4! w-screen max-w-lg">
-            <CloseButton hide={hide} />
-
             <div className="flex flex-col items-center">
                 <Image
                     alt=""

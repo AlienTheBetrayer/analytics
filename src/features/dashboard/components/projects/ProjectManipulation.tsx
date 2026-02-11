@@ -3,7 +3,6 @@ import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import { useMessageBox } from "@/features/ui/messagebox/hooks/useMessageBox";
-import { CloseButton } from "@/features/ui/closebutton/components/CloseButton";
 import { wrapPromise } from "@/promises/core";
 import { PromiseState } from "@/promises/components/PromiseState";
 import { useQuery } from "@/query/core";
@@ -12,11 +11,7 @@ import {
     dashboardDeleteEvents,
 } from "@/query-api/calls/dashboard";
 
-type Props = {
-    hide: () => void;
-};
-
-export const ProjectManipulation = ({ hide }: Props) => {
+export const ProjectManipulation = () => {
     // zustand
     const selectedProjectId = useAppStore((state) => state.selectedProjectId);
 
@@ -29,8 +24,6 @@ export const ProjectManipulation = ({ hide }: Props) => {
 
     return (
         <div className="relative flex flex-col box acrylic w-screen max-w-lg gap-8!">
-            <CloseButton hide={hide} />
-
             {deleteProjectsBox.render({
                 children:
                     "You will delete every single data entry about this project, including events!",

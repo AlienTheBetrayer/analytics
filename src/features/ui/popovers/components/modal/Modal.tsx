@@ -6,10 +6,12 @@ import { PopoverDirection } from "@/features/ui/popovers/types/popover";
 import { positionPopover } from "@/features/ui/popovers/utils/positionPopover";
 import { useDisabledScroll } from "@/hooks/useDisabledScroll";
 import { DragButton } from "@/features/ui/draggable/components/DragButton";
+import { CloseButton } from "@/features/ui/closebutton/components/CloseButton";
 
 type Props = {
-    element?: (hide: () => void) => React.ReactNode;
+    element?: (hide?: () => void) => React.ReactNode;
     direction?: PopoverDirection;
+    contextMenu?: boolean;
     className?: string;
     isEnabled?: boolean;
     children: React.ReactNode;
@@ -19,6 +21,7 @@ export const Modal = React.memo(function ModalFunction({
     element,
     direction = "bottom",
     className = "",
+    contextMenu = false,
     isEnabled = true,
     children,
 }: Props) {
@@ -118,7 +121,18 @@ export const Modal = React.memo(function ModalFunction({
                 {/* trigger element */}
                 <div
                     ref={elementRef}
-                    onClick={() => setIsShown((prev) => !prev)}
+                    onClick={() => {
+                        if (!contextMenu) {
+                            setIsShown((prev) => !prev);
+                        }
+                    }}
+                    onContextMenu={(e) => {
+                        if (contextMenu) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            setIsShown((prev) => !prev);
+                        }
+                    }}
                     inert={!isEnabled}
                     className={`w-fit h-fit ${!isEnabled ? "opacity-30" : ""} ${className ?? ""}`}
                 >
@@ -166,6 +180,7 @@ export const Modal = React.memo(function ModalFunction({
                                         ref={modalRef}
                                         className="z-1"
                                     />
+                                    <CloseButton hide={hide} />
                                     {element?.(hide)}
                                 </motion.div>
                             </dialog>

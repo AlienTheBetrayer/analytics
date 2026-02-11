@@ -1,16 +1,11 @@
 import { Button } from "@/features/ui/button/components/Button";
 import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
-import { CloseButton } from "@/features/ui/closebutton/components/CloseButton";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { ViewPostColumns } from "@/types/zustand/local";
 import { useLocalStore } from "@/zustand/localStore";
 import Image from "next/image";
 
-type Props = {
-    hide: () => void;
-};
-
-export const DisplayFormat = ({ hide }: Props) => {
+export const DisplayFormat = () => {
     // zustand
     const display = useLocalStore((state) => state.display);
     const updateDisplay = useLocalStore((state) => state.updateDisplay);
@@ -20,8 +15,6 @@ export const DisplayFormat = ({ hide }: Props) => {
 
     return (
         <div className="box w-screen max-w-102 p-4! gap-4! acrylic">
-            <CloseButton hide={hide} />
-
             <div className="flex flex-col gap-1 items-center">
                 <Image
                     alt=""

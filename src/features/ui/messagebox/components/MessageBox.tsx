@@ -148,8 +148,8 @@ export const MessageBox = ({ visibility, children, onSelect }: Props) => {
                                             width={16}
                                             height={16}
                                             src="/checkmark.svg"
-                                            />
-                                            Yes
+                                        />
+                                        Yes
                                     </Button>
                                 </li>
 
@@ -163,8 +163,8 @@ export const MessageBox = ({ visibility, children, onSelect }: Props) => {
                                             width={16}
                                             height={16}
                                             src="/cross.svg"
-                                            />
-                                            No
+                                        />
+                                        No
                                     </Button>
                                 </li>
                             </ul>

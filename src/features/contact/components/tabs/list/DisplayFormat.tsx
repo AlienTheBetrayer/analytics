@@ -1,22 +1,15 @@
 import { Button } from "@/features/ui/button/components/Button";
 import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
-import { CloseButton } from "@/features/ui/closebutton/components/CloseButton";
 import { useLocalStore } from "@/zustand/localStore";
 import Image from "next/image";
 
-type Props = {
-    hide: () => void;
-};
-
-export const DisplayFormat = ({ hide }: Props) => {
+export const DisplayFormat = () => {
     // local store
     const format = useLocalStore((state) => state.display.view.contactMessages);
     const updateDisplay = useLocalStore((state) => state.updateDisplay);
 
     return (
         <div className="box items-stretch! w-screen max-w-lg p-4! gap-4! acrylic">
-            <CloseButton hide={hide} />
-
             <span className="flex flex-col gap-1 items-center">
                 <Image
                     alt=""
@@ -27,7 +20,7 @@ export const DisplayFormat = ({ hide }: Props) => {
                 Messages format
             </span>
 
-            <hr/>
+            <hr />
 
             <ul className="grid grid-flow-col auto-cols-fr gap-4">
                 <li className="flex flex-col gap-1 items-center">

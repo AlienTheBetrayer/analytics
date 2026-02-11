@@ -1,17 +1,15 @@
 import { Button } from "@/features/ui/button/components/Button";
 import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
-import { CloseButton } from "@/features/ui/closebutton/components/CloseButton";
 import { useQuery } from "@/query/core";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import { useMemo } from "react";
 
 type Props = {
-    hide: () => void;
     project_id: string;
 };
 
-export const Filtering = ({ hide, project_id }: Props) => {
+export const Filtering = ({ project_id }: Props) => {
     // zustand
     const eventFilters = useAppStore((state) => state.eventFilters);
     const setFilter = useAppStore((state) => state.setDashboardFilter);
@@ -51,8 +49,6 @@ export const Filtering = ({ hide, project_id }: Props) => {
 
     return (
         <div className="relative box p-4! w-screen max-w-lg gap-4! acrylic">
-            <CloseButton hide={hide} />
-
             <span className="flex flex-col items-center">
                 <Image
                     alt="filter"

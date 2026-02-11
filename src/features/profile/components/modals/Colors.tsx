@@ -4,7 +4,6 @@ import Image from "next/image";
 import { Button } from "@/features/ui/button/components/Button";
 import { useColorModal } from "../../hooks/useColorModal";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
-import { CloseButton } from "@/features/ui/closebutton/components/CloseButton";
 import { PromiseState } from "@/promises/components/PromiseState";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 
@@ -12,17 +11,14 @@ export const COLORS_GRID_SIZE = 4;
 
 type Props = {
     data: CacheAPIProtocol["user"]["data"];
-    hide: () => void;
 };
 
-export const Colors = ({ data, hide }: Props) => {
+export const Colors = ({ data }: Props) => {
     // controller
     const controller = useColorModal(data);
 
     return (
         <div className="relative box acrylic gap-4!">
-            <CloseButton hide={hide} />
-
             <ul className="box h-10! p-0! flex-row! w-full items-center!">
                 <li className="absolute left-1/2 top-1/2 -translate-1/2">
                     <span className="flex items-center w-full gap-1">

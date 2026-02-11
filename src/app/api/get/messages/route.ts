@@ -13,7 +13,7 @@ export const GET = async (request: NextRequest) => {
 
         const { data, error } = await supabaseServer
             .from("messages")
-            .select()
+            .select("*, user:users(*, profile:profiles(*))")
             .eq("conversation_id", conversation_id);
 
         if (error) {

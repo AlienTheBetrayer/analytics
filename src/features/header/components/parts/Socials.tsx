@@ -1,19 +1,14 @@
-import { CloseButton } from "@/features/ui/closebutton/components/CloseButton";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import Image from "next/image";
 import { ComponentPropsWithoutRef } from "react";
 
-type Props = {
-    hide?: () => void;
-} & ComponentPropsWithoutRef<"div">;
+type Props = {} & ComponentPropsWithoutRef<"div">;
 
-export const Socials = ({ hide, className }: Props) => {
+export const Socials = ({ className }: Props) => {
     return (
         <ul
             className={`relative box w-screen max-w-64 p-4! acrylic gap-4! ${className ?? ""}`}
         >
-            {hide && <CloseButton hide={hide} />}
-
             <li className="flex items-center self-center gap-1">
                 <Image
                     alt=""

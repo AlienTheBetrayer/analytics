@@ -75,7 +75,7 @@ export const ListTopline = ({ data }: Props) => {
             <li>
                 <Tooltip text="Filtering">
                     <Modal
-                        element={(hide) => <Filtering hide={hide} />}
+                        element={() => <Filtering />}
                         direction="bottom-right"
                     >
                         <Button className="aspect-square">
@@ -116,7 +116,7 @@ export const ListTopline = ({ data }: Props) => {
             <li className="ml-auto!">
                 <Tooltip text="Display format">
                     <Modal
-                        element={(hide) => <DisplayFormat hide={hide} />}
+                        element={() => <DisplayFormat />}
                         direction="bottom-left"
                     >
                         <Button>

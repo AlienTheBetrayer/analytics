@@ -90,14 +90,7 @@ export const Topline = ({ tab }: Props) => {
             </li>
 
             <li>
-                <Modal
-                    element={(hide) => (
-                        <Filter
-                            tab={tab}
-                            hide={hide}
-                        />
-                    )}
-                >
+                <Modal element={() => <Filter tab={tab} />}>
                     <Tooltip text="Filter notifications">
                         <Button className="aspect-square">
                             <Image
@@ -117,14 +110,7 @@ export const Topline = ({ tab }: Props) => {
             </li>
 
             <li>
-                <Modal
-                    element={(hide) => (
-                        <Sort
-                            tab={tab}
-                            hide={hide}
-                        />
-                    )}
-                >
+                <Modal element={() => <Sort tab={tab} />}>
                     <Tooltip text="Sort notifications">
                         <Button className="aspect-square">
                             <Image

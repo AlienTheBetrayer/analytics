@@ -24,7 +24,7 @@ export const AuthButton = () => {
                 <Tooltip text="Sign up / Log in">
                     <Modal
                         direction="bottom-left"
-                        element={(hide) => <AuthElements hide={hide} />}
+                        element={() => <AuthElements />}
                     >
                         <Button className="p-0!">
                             <div className="loading w-10 rounded-full! aspect-square" />
@@ -43,7 +43,7 @@ export const AuthButton = () => {
             >
                 <Modal
                     direction="bottom-left"
-                    element={(hide) => <AuthElements hide={hide} />}
+                    element={() => <AuthElements />}
                 >
                     <Button className="p-0!">
                         <Image

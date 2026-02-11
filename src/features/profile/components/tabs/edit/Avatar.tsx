@@ -204,12 +204,7 @@ export const Avatar = ({
             >
                 <Modal
                     direction="top"
-                    element={(hide) => (
-                        <Colors
-                            data={data}
-                            hide={hide}
-                        />
-                    )}
+                    element={() => <Colors data={data} />}
                     className="w-full"
                 >
                     <Button className="w-full! max-w-81 lg:max-w-full mx-auto min-h-9! flex flex-col!">

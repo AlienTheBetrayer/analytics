@@ -196,7 +196,7 @@ export const List = () => {
                     <Tooltip text="Display format">
                         <Modal
                             direction="bottom-left"
-                            element={(hide) => <DisplayFormat hide={hide} />}
+                            element={() => <DisplayFormat />}
                         >
                             <Button>
                                 <Image

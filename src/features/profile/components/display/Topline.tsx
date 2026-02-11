@@ -59,12 +59,7 @@ export const Topline = ({ data }: Props) => {
                     <Tooltip text="Administrator panel">
                         <Modal
                             direction="bottom-right"
-                            element={(hide) => (
-                                <RoleEditing
-                                    data={data}
-                                    hide={hide}
-                                />
-                            )}
+                            element={() => <RoleEditing data={data} />}
                         >
                             <Button>
                                 <div className="w-1 h-1 rounded-full bg-blue-1" />
@@ -103,7 +98,15 @@ export const Topline = ({ data }: Props) => {
                         <li>
                             <Tooltip text="Messenger">
                                 <Modal
-                                    element={(hide) => <Message hide={hide} data={status.id === data.id ? null : data}/>}
+                                    element={() => (
+                                        <Message
+                                            data={
+                                                status.id === data.id
+                                                    ? null
+                                                    : data
+                                            }
+                                        />
+                                    )}
                                 >
                                     <Button>
                                         <Image
