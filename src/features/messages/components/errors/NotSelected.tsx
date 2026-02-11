@@ -11,7 +11,7 @@ export const NotSelected = () => {
             }
             description={
                 <>
-                    <mark>Messages</mark> will appear here if you select any
+                    <mark>Messages</mark> will appear here when you select any
                     conversation or go to someone&apos;s profile
                 </>
             }

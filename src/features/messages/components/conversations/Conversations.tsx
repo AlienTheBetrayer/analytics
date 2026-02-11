@@ -1,11 +1,8 @@
-import { ConversationDisplay } from "@/features/messages/components/conversations/ConversationDisplay";
-import { NoConversations } from "@/features/messages/components/errors/NoConversations";
-import { filterConversation } from "@/features/messages/utils/filter";
+import { List } from "@/features/messages/components/conversations/List";
 import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
 import { PromiseState } from "@/promises/components/PromiseState";
 import { wrapPromise } from "@/promises/core";
-import { CacheAPIProtocol } from "@/query-api/protocol";
 import { queryInvalidate } from "@/query/auxiliary";
 import { useQuery } from "@/query/core";
 import { TabSelection } from "@/utils/other/TabSelection";
@@ -47,7 +44,7 @@ export const Conversations = () => {
                 <li>
                     <Input
                         isEnabled={!!conversations?.length}
-                        placeholder="Search..."
+                        placeholder="Filter..."
                         value={filter}
                         onChange={(value) => setFilter(value)}
                     />
@@ -80,60 +77,8 @@ export const Conversations = () => {
                 conversations={conversations}
                 filter={filter}
                 reversed={reversed}
+                onClear={() => setFilter("")}
             />
         </div>
-    );
-};
-
-type ListProps = {
-    isLoading: boolean;
-    conversations: CacheAPIProtocol["conversations"]["data"] | null;
-    filter?: string;
-    reversed?: boolean;
-};
-const List = ({ isLoading, conversations, filter, reversed }: ListProps) => {
-    const { data: status } = useQuery({ key: ["status"] });
-
-    if (isLoading) {
-        return (
-            <div className="flex flex-col gap-2 relative">
-                {Array.from({ length: 8 }, (_, k) => (
-                    <div
-                        key={k}
-                        className="w-full h-12 loading"
-                    />
-                ))}
-            </div>
-        );
-    }
-
-    // fallbacks
-    if (!conversations?.length) {
-        return (
-            <div className="flex flex-col gap-2 relative">
-                {Array.from({ length: 8 }, (_, k) => (
-                    <div
-                        key={k}
-                        className="w-full h-12 loading"
-                    />
-                ))}
-
-                <NoConversations username={status?.username} />
-            </div>
-        );
-    }
-
-    // jsx
-    return (
-        <ul className="flex flex-col gap-1">
-            {(reversed ? [...conversations].reverse() : conversations).map(
-                (c) =>
-                    filterConversation(c, filter) && (
-                        <li key={c.id}>
-                            <ConversationDisplay data={c} />
-                        </li>
-                    ),
-            )}
-        </ul>
     );
 };
