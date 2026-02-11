@@ -8,10 +8,9 @@ import { useRef, useEffect, useCallback, useState } from "react";
 
 type Props = {
     conversation_id: string;
-    whom?: string;
 };
 
-export const MessageInput = ({ conversation_id, whom }: Props) => {
+export const MessageInput = ({ conversation_id }: Props) => {
     // fetching
     const { data: status } = useQuery({ key: ["status"] });
 
@@ -45,7 +44,7 @@ export const MessageInput = ({ conversation_id, whom }: Props) => {
             <Input
                 ref={inputRef}
                 className="bg-bg-1!"
-                placeholder={`Write to ${whom}...`}
+                placeholder={`Write...`}
                 value={message}
                 onChange={(value) => setMessage(value)}
                 onKeyDown={(e: React.KeyboardEvent) => {

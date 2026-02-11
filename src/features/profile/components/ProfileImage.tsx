@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Profile } from "@/types/tables/account";
 import { CSSProperties } from "react";
+
 type Props = {
     profile?: Profile;
     src?: string;

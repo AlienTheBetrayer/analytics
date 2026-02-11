@@ -3,11 +3,8 @@
 import { Conversations } from "@/features/messages/components/conversations/Conversations";
 import { MessageView } from "@/features/messages/components/message/MessageView";
 import { Topline } from "@/features/messages/components/Topline";
-import { useParams } from "next/navigation";
 
 export const Messages = () => {
-    const { id } = useParams<{ id?: string }>();
-
     return (
         <>
             <Topline />
@@ -15,7 +12,7 @@ export const Messages = () => {
             <div className="box w-full max-w-400 mx-auto min-h-140 p-4! overflow-hidden">
                 <div className="grid grid-cols-[30%_1fr] grow gap-4">
                     <Conversations />
-                    {<MessageView conversation_id={id} />}
+                    <MessageView />
                 </div>
             </div>
         </>

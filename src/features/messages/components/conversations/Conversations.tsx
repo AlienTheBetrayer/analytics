@@ -41,7 +41,7 @@ export const Conversations = () => {
                     </Button>
                 </li>
 
-                <li>
+                <li className="w-full">
                     <Input
                         isEnabled={!!conversations?.length}
                         placeholder="Filter..."

@@ -1,20 +1,17 @@
 import { NotSelected } from "@/features/messages/components/errors/NotSelected";
+import { ConversationToplineInfo } from "@/features/messages/components/message/ConversationToplineInfo";
 import { MessageInput } from "@/features/messages/components/message/MessageInput";
 import { MessageList } from "@/features/messages/components/message/MessageList";
-import { conversationData } from "@/features/messages/utils/ui";
 import { Button } from "@/features/ui/button/components/Button";
 import { PromiseState } from "@/promises/components/PromiseState";
 import { wrapPromise } from "@/promises/core";
 import { queryInvalidate } from "@/query/auxiliary";
 import { useQuery } from "@/query/core";
 import Image from "next/image";
-import { useMemo } from "react";
+import { useParams } from "next/navigation";
 
-type Props = {
-    conversation_id?: string;
-};
-
-export const MessageView = ({ conversation_id }: Props) => {
+export const MessageView = () => {
+    const { id: conversation_id } = useParams<{ id?: string }>();
     const { data: status } = useQuery({ key: ["status"] });
 
     if (!status || !conversation_id) {
@@ -32,32 +29,13 @@ type IdProps = {
     conversation_id: string;
 };
 const MessageViewId = ({ conversation_id }: IdProps) => {
-    // fetching (pre-fetched)
-    const { data: status } = useQuery({ key: ["status"] });
-    const { data: conversations } = useQuery({
-        key: ["conversations", status?.id],
-    });
-
-    // ui states
-    const toplineData = useMemo(() => {
-        return conversationData({ conversations, status, conversation_id });
-    }, [conversations, status, conversation_id]);
-
     return (
         <article className="flex flex-col bg-bg-2! grow p-4! gap-4 rounded-4xl">
             <ul className="box min-h-10! h-10! gap-1! p-0! items-center! flex-row!">
-                <li className="flex items-center gap-1 ml-4!">
-                    <div className="w-1 h-1 rounded-full bg-blue-1" />
-                    {toplineData?.image_url && (
-                        <Image
-                            alt=""
-                            width={256}
-                            height={256}
-                            src={toplineData.image_url}
-                            className="rounded-full! invert-0! h-5! w-5!"
-                        />
-                    )}
-                    <span>{toplineData?.title}</span>
+                <li className="ml-4!">
+                    <ConversationToplineInfo
+                        conversation_id={conversation_id}
+                    />
                 </li>
 
                 <li className="ml-auto!">
@@ -84,10 +62,7 @@ const MessageViewId = ({ conversation_id }: IdProps) => {
 
             <MessageList conversation_id={conversation_id} />
 
-            <MessageInput
-                whom={toplineData?.title}
-                conversation_id={conversation_id}
-            />
+            <MessageInput conversation_id={conversation_id} />
         </article>
     );
 };
