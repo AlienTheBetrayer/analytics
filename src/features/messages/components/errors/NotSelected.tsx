@@ -6,7 +6,7 @@ export const NotSelected = () => {
             className="absolute left-1/2 top-1/2 -translate-1/2"
             title={
                 <>
-                    <u>No</u> conversation selected
+                    <u>No</u> conversation / user selected
                 </>
             }
             description={

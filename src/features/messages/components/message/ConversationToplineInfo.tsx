@@ -1,24 +1,18 @@
 import { ProfileImage } from "@/features/profile/components/ProfileImage";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
+import { CacheAPIProtocol } from "@/query-api/protocol";
 import { useQuery } from "@/query/core";
 
 type Props = {
-    conversation_id: string;
+    data: CacheAPIProtocol["messages"]["data"] | null;
 };
 
-export const ConversationToplineInfo = ({ conversation_id }: Props) => {
+export const ConversationToplineInfo = ({ data }: Props) => {
     // fetching
     const { data: status } = useQuery({ key: ["status"] });
-    const { data: conversations } = useQuery({
-        key: ["conversations", status?.id],
-    });
 
-    // derived
-    const conversation = conversations?.find((c) => c.id === conversation_id);
-
-    // fallbacks
-    if (!conversation) {
+    if (!data) {
         return null;
     }
 
@@ -28,9 +22,9 @@ export const ConversationToplineInfo = ({ conversation_id }: Props) => {
             <div className="w-1 h-1 rounded-full bg-blue-1" />
 
             {(() => {
-                switch (conversation.type) {
+                switch (data.type) {
                     case "dm": {
-                        const user = conversation.conversation_members.find(
+                        const user = data.conversation_members.find(
                             (m) => m.user_id !== status?.id,
                         )?.user;
 

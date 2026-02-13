@@ -45,6 +45,28 @@ export const CacheAPIFunctions: Record<
 
         return data;
     },
+    conversation_retrieve: async (args: unknown[]) => {
+        if (!args[0] || !args[1]) {
+            throw new Error("status_id and type are undefined");
+        }
+
+        const data = (
+            await refreshedRequest({
+                route: "/api/get/conversation_retrieve",
+                method: "GET",
+                config: {
+                    params: {
+                        type: args[0],
+                        status_id: args[1],
+                        what: args[2],
+                    },
+                },
+            })
+        ).data
+            .conversation_id as CacheAPIProtocol["conversation_retrieve"]["data"];
+
+        return data;
+    },
 
     messages: async (args: unknown[]) => {
         if (!args[0]) {

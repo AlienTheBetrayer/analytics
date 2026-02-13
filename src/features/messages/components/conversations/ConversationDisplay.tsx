@@ -26,7 +26,7 @@ export const ConversationDisplay = ({ data }: Props) => {
             <LinkButton
                 className={`box p-4! flex-row! rounded-4xl! justify-start! items-start! gap-4!
                 ${id === data.id ? "not-hover:bg-bg-4! hover:border-bg-5!" : "not-hover:bg-bg-1!"}`}
-                href={`/messages/${data.id}`}
+                href={id === data.id ? "/messages/" : `/messages/c/${data.id}`}
             >
                 <ProfileImage
                     profile={otherUser?.profile}

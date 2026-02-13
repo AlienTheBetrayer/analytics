@@ -40,6 +40,7 @@ export const useQuery = <T extends CacheKey>(config: QueryConfig<T>) => {
     useEffect(() => {
         // trigger
         if ("trigger" in config && !config.trigger) {
+            setIsLoading(false);
             return;
         }
 
@@ -56,6 +57,7 @@ export const useQuery = <T extends CacheKey>(config: QueryConfig<T>) => {
 
         // undefined keys prevention
         if (keyRef.current.some((k) => typeof k === "undefined")) {
+            setIsLoading(false);
             return;
         }
 

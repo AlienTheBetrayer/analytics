@@ -25,6 +25,11 @@ export type CacheAPIProtocol = {
     };
 
     // messsages
+    conversation_retrieve: {
+        key: ["conversation_retrieve", string, string, string];
+        data: string | null;
+    };
+
     conversations: {
         key: ["conversations", string];
         data: (Conversation & {
@@ -37,7 +42,12 @@ export type CacheAPIProtocol = {
 
     messages: {
         key: ["messages", string];
-        data: (Message & { user: User & { profile: Profile } })[];
+        data: Conversation & {
+            messages: (Message & { user: User & { profile: Profile } })[];
+            conversation_members: (ConversationMember & {
+                user: User & { profile: Profile };
+            })[];
+        };
     };
 
     // contact

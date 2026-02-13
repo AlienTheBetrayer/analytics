@@ -1,21 +1,23 @@
 import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
-import { sendMessage } from "@/query-api/calls/messages";
+import { CacheAPIProtocol } from "@/query-api/protocol";
 import { useQuery } from "@/query/core";
 import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
 import { useRef, useEffect, useCallback, useState } from "react";
 
 type Props = {
-    conversation_id: string;
+    data: CacheAPIProtocol["messages"]["data"] | null;
 };
 
-export const MessageInput = ({ conversation_id }: Props) => {
+export const MessageInput = ({ data }: Props) => {
     // fetching
     const { data: status } = useQuery({ key: ["status"] });
 
     // react states
     const [message, setMessage] = useState<string>("");
+
+    // ui states
     const isSendable = !!message.trim();
 
     // input + auto-focusing + button showing
@@ -30,14 +32,14 @@ export const MessageInput = ({ conversation_id }: Props) => {
             return;
         }
 
-        sendMessage({
-            type: "send",
-            from_id: status.id,
-            conversation_id,
-            message,
-        });
+        // sendMessage({
+        //     type: "send",
+        //     from_id: status.id,
+        //     id,
+        //     message,
+        // });
         setMessage("");
-    }, [message, setMessage, status, conversation_id]);
+    }, [message, setMessage, status]);
 
     return (
         <div className="flex items-center gap-1">

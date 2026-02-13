@@ -8,7 +8,6 @@ import { TabSelection } from "@/utils/other/TabSelection";
 import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { useQuery } from "@/query/core";
-import { Message } from "@/features/profile/components/modals/Message";
 
 type Props = {
     data: CacheAPIProtocol["user"]["data"];
@@ -97,26 +96,17 @@ export const Topline = ({ data }: Props) => {
                     {status && (
                         <li>
                             <Tooltip text="Messenger">
-                                <Modal
-                                    element={() => (
-                                        <Message
-                                            data={
-                                                status.id === data.id
-                                                    ? null
-                                                    : data
-                                            }
-                                        />
-                                    )}
+                                <LinkButton
+                                    aria-label="open messenger"
+                                    href={`/messages/u/${data.username}`}
                                 >
-                                    <Button>
-                                        <Image
-                                            width={16}
-                                            height={16}
-                                            alt=""
-                                            src="/send.svg"
-                                        />
-                                    </Button>
-                                </Modal>
+                                    <Image
+                                        alt=""
+                                        width={16}
+                                        height={16}
+                                        src="/send.svg"
+                                    />
+                                </LinkButton>
                             </Tooltip>
                         </li>
                     )}

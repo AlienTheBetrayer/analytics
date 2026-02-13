@@ -1,7 +1,7 @@
-import { NotSelected } from "@/features/messages/components/errors/NotSelected";
+import { NoMessages } from "@/features/messages/components/errors/NoMessages";
 import { ConversationToplineInfo } from "@/features/messages/components/message/ConversationToplineInfo";
+import { MessageDisplay } from "@/features/messages/components/message/MessageDisplay";
 import { MessageInput } from "@/features/messages/components/message/MessageInput";
-import { MessageList } from "@/features/messages/components/message/MessageList";
 import { Button } from "@/features/ui/button/components/Button";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { PromiseState } from "@/promises/components/PromiseState";
@@ -9,34 +9,35 @@ import { wrapPromise } from "@/promises/core";
 import { queryInvalidate } from "@/query/auxiliary";
 import { useQuery } from "@/query/core";
 import Image from "next/image";
-import { useParams } from "next/navigation";
 
-export const MessageView = () => {
-    const { id: conversation_id } = useParams<{ id?: string }>();
-    const { data: status } = useQuery({ key: ["status"] });
+type Props = {
+    conversation_id: string | undefined;
+};
+export const MessageView = ({ conversation_id }: Props) => {
+    // won't load if we have no conversation_id
+    const { data, isLoading } = useQuery({
+        key: ["messages", conversation_id],
+    });
 
-    if (!status || !conversation_id) {
+    // fallbacks
+    if (isLoading) {
         return (
-            <div className="w-full h-full loading flex items-center justify-center">
-                <NotSelected />
+            <div className="flex flex-col justify-between gap-2 grow">
+                {Array.from({ length: 8 }, (_, k) => (
+                    <div
+                        key={k}
+                        className="w-full h-14 loading"
+                    />
+                ))}
             </div>
         );
     }
 
-    return <MessageViewId conversation_id={conversation_id} />;
-};
-
-type IdProps = {
-    conversation_id: string;
-};
-const MessageViewId = ({ conversation_id }: IdProps) => {
     return (
         <article className="flex flex-col bg-bg-2! grow p-4! gap-4 rounded-4xl">
             <ul className="box min-h-10! h-10! gap-1! p-0! items-center! flex-row!">
                 <li className="ml-4!">
-                    <ConversationToplineInfo
-                        conversation_id={conversation_id}
-                    />
+                    <ConversationToplineInfo data={data} />
                 </li>
 
                 <li className="ml-auto!">
@@ -66,9 +67,19 @@ const MessageViewId = ({ conversation_id }: IdProps) => {
                 </li>
             </ul>
 
-            <MessageList conversation_id={conversation_id} />
+            <ul className="flex flex-col-reverse gap-4 grow relative">
+                {data?.messages?.length ? (
+                    data.messages.map((message) => (
+                        <li key={message.id}>
+                            <MessageDisplay data={message} />
+                        </li>
+                    ))
+                ) : (
+                    <NoMessages />
+                )}
+            </ul>
 
-            <MessageInput conversation_id={conversation_id} />
+            <MessageInput data={data} />
         </article>
     );
 };

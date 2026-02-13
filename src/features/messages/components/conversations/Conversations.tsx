@@ -2,6 +2,7 @@ import { CreateConversation } from "@/features/messages/components/conversations
 import { List } from "@/features/messages/components/conversations/List";
 import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
+import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { PromiseState } from "@/promises/components/PromiseState";
@@ -10,9 +11,13 @@ import { queryInvalidate } from "@/query/auxiliary";
 import { useQuery } from "@/query/core";
 import { TabSelection } from "@/utils/other/TabSelection";
 import Image from "next/image";
+import { useParams } from "next/navigation";
 import { useState } from "react";
 
 export const Conversations = () => {
+    // url
+    const { tab } = useParams<{ tab?: string }>();
+
     // fetching
     const { data: status } = useQuery({ key: ["status"] });
     const { data: conversations, isLoading } = useQuery({
@@ -26,6 +31,19 @@ export const Conversations = () => {
     return (
         <div className="flex flex-col bg-bg-2! grow p-4! gap-4 rounded-4xl">
             <ul className="box h-10! gap-1! p-0! items-center! flex-row!">
+                {tab && (
+                    <li>
+                        <LinkButton href="/messages/">
+                            <Image
+                                alt=""
+                                width={16}
+                                height={16}
+                                src="/back.svg"
+                            />
+                        </LinkButton>
+                    </li>
+                )}
+
                 <li>
                     <Tooltip
                         direction="top"
@@ -65,29 +83,36 @@ export const Conversations = () => {
                         direction="top"
                         text="Create a conversation"
                     >
-                        <Modal element={() => <CreateConversation/>} direction="bottom">
-
-                        <Button>
-                            <Image
-                                alt=""
-                                width={16}
-                                height={16}
-                                src="/cubeadd.svg"
+                        <Modal
+                            element={() => <CreateConversation />}
+                            direction="bottom"
+                        >
+                            <Button>
+                                <Image
+                                    alt=""
+                                    width={16}
+                                    height={16}
+                                    src="/cubeadd.svg"
                                 />
-                        </Button>
-                                </Modal>
+                            </Button>
+                        </Modal>
                     </Tooltip>
                 </li>
-                <li>
+
+                <li className="shrink-0">
                     <Tooltip
                         direction="top"
                         text="Re-fetch list"
                     >
                         <Button
                             onClick={() => {
+                                if(!status) {
+                                    return;
+                                }
+
                                 wrapPromise("reloadConversations", async () => {
                                     return queryInvalidate({
-                                        key: ["conversations", status?.id],
+                                        key: ["conversations", status.id],
                                         silent: false,
                                     });
                                 });

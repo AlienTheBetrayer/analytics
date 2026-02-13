@@ -34,7 +34,7 @@ export const tokenVerify = (config: {
 
         // allowing op to do anything
         if (payload.role === "op") {
-            return true;
+            return payload;
         }
 
         // verifying id
@@ -52,7 +52,7 @@ export const tokenVerify = (config: {
             throw "Wrong permissions.";
         }
 
-        return true;
+        return payload;
     } catch {
         throw "Not authenticated.";
     }
