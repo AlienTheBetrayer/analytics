@@ -75,6 +75,7 @@ export const Conversations = ({ retrieved }: Props) => {
                             direction="bottom"
                         >
                             <Button>
+                                <PromiseState state="createConversation"/>
                                 <Image
                                     alt=""
                                     width={16}

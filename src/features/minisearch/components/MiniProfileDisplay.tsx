@@ -27,7 +27,7 @@ export const MiniProfileDisplay = ({ data, ...props }: Props) => {
                 />
             )}
             <LinkButton
-                className="rounded-4xl! px-4! py-2! w-full"
+                className="grid! grid-cols-[auto_5rem_1fr] rounded-4xl! px-4! py-2! w-full"
                 href={`/profile/${data.username}`}
             >
                 <ProfileImage
@@ -36,7 +36,7 @@ export const MiniProfileDisplay = ({ data, ...props }: Props) => {
                     height={256}
                     className="w-6! h-6!"
                 />
-                <span>{data.username}</span>
+                <span className="truncate">{data.username}</span>
                 <span className="ml-auto! flex items-center gap-1">
                     <small>
                         <Image

@@ -2,19 +2,26 @@ import { MiniProfileDisplay } from "@/features/minisearch/components/MiniProfile
 import { NoFriends } from "@/features/minisearch/errors/NoFriends";
 import { NoResults } from "@/features/minisearch/errors/NoResults";
 import { useMiniSearch } from "@/features/minisearch/hooks/useMiniSearch";
-import { MiniSearchData } from "@/features/minisearch/types/data";
 import { Button } from "@/features/ui/button/components/Button";
+import { PromiseState } from "@/promises/components/PromiseState";
 import Image from "next/image";
 import { useMemo, useState } from "react";
 
 type Props = {
     type: "users" | "friends";
     view: "list" | "select";
-    onSelect?: (users: MiniSearchData) => void;
+    onSelect?: (ids: string[]) => void;
     search: ReturnType<typeof useMiniSearch>;
+    promiseState?: string;
 };
 
-export const Results = ({ type, view, onSelect, search }: Props) => {
+export const Results = ({
+    type,
+    view,
+    onSelect,
+    search,
+    promiseState,
+}: Props) => {
     // view = select only
     const [selected, setSelected] = useState<Record<string, boolean>>({});
     const selectedToggled = useMemo(() => {
@@ -47,7 +54,7 @@ export const Results = ({ type, view, onSelect, search }: Props) => {
     }
 
     return (
-        <ul className="flex flex-col gap-2">
+        <ul className="flex flex-col gap-2 grow">
             {search.data.map((d) => (
                 <li key={d.id}>
                     {view === "list" ? (
@@ -71,22 +78,35 @@ export const Results = ({ type, view, onSelect, search }: Props) => {
                 </li>
             ))}
 
-            <hr />
+            {view === "select" && (
+                <>
+                    <li className="mt-auto!">
+                        <hr />
+                    </li>
 
-            <Button
-                onClick={() => {
-                    console.log(selectedToggled);
-                }}
-            >
-                <Image
-                    alt=""
-                    width={16}
-                    height={16}
-                    src="/imageadd.svg"
-                />
-                Add
-                <small className="ml-1">({selectedToggled.length})</small>
-            </Button>
+                    <li className="w-full">
+                        <Button
+                            className="w-full"
+                            isEnabled={!!selectedToggled.length}
+                            onClick={() => onSelect?.(selectedToggled)}
+                        >
+                            {promiseState && (
+                                <PromiseState state={promiseState} />
+                            )}
+                            <Image
+                                alt=""
+                                width={16}
+                                height={16}
+                                src="/imageadd.svg"
+                            />
+                            Add
+                            <small className="ml-1">
+                                ({selectedToggled.length})
+                            </small>
+                        </Button>
+                    </li>
+                </>
+            )}
         </ul>
     );
 };

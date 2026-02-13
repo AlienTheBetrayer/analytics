@@ -12,7 +12,13 @@ export const createConversation = async (options: {
         route: "/api/update/conversation-create",
         method: "POST",
         body: {
-            ...options,
+            user_id: options.user_id,
+            type: options.type,
+            member_ids: options.member_ids.join(","),
+            ...("title" in options && { title: options.title }),
+            ...("description" in options && {
+                description: options.description,
+            }),
         },
     });
 

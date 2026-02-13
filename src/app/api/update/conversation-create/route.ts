@@ -53,6 +53,7 @@ export const POST = async (request: NextRequest) => {
         const { data, error } = (await supabaseServer
             .from("conversations")
             .insert({ type, title, description })
+            .select()
             .single()) as {
             data: Conversation;
             error: PostgrestError | null;

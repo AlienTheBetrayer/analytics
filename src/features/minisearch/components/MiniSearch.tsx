@@ -1,7 +1,6 @@
 import { Results } from "@/features/minisearch/components/Results";
 import { SearchUsers } from "@/features/minisearch/components/SearchUsers";
 import { useMiniSearch } from "@/features/minisearch/hooks/useMiniSearch";
-import { MiniSearchData } from "@/features/minisearch/types/data";
 import { useQuery } from "@/query/core";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
@@ -9,10 +8,11 @@ import { useEffect, useRef } from "react";
 type Props = {
     type: "friends" | "users";
     view: "list" | "select";
-    onSelect?: (users: MiniSearchData) => void;
+    onSelect?: (ids: string[]) => void;
+    promiseState?: string;
 };
 
-export const MiniSearch = ({ type, view, onSelect }: Props) => {
+export const MiniSearch = ({ type, view, onSelect, promiseState }: Props) => {
     const { data: status } = useQuery({ key: ["status"] });
     const { data, isLoading, fetch } = useMiniSearch();
 
@@ -55,6 +55,7 @@ export const MiniSearch = ({ type, view, onSelect }: Props) => {
                 type={type}
                 view={view}
                 onSelect={onSelect}
+                promiseState={promiseState}
             />
         </div>
     );

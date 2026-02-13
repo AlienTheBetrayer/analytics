@@ -1,9 +1,32 @@
 import { MiniSearch } from "@/features/minisearch/components/MiniSearch";
 import { Button } from "@/features/ui/button/components/Button";
 import { Modal } from "@/features/ui/popovers/components/modal/Modal";
+import { wrapPromise } from "@/promises/core";
+import { createConversation } from "@/query-api/calls/conversation";
+import { useQuery } from "@/query/core";
 import Image from "next/image";
+import { useCallback } from "react";
 
 export const CreateConversation = () => {
+    const { data: status } = useQuery({ key: ["status"] });
+
+    const create = useCallback(
+        (ids: string[]) => {
+            if (!ids.length || !status || ids.some((id) => id === status.id)) {
+                return;
+            }
+
+            wrapPromise("createConversation", async () => {
+                return createConversation({
+                    type: "group",
+                    user_id: status.id,
+                    member_ids: ids,
+                });
+            });
+        },
+        [status],
+    );
+
     return (
         <ul className="box acrylic p-4! rounded-2xl! gap-1! **:border-0! w-screen max-w-64 message-ctx">
             <li className="flex items-center gap-1 mb-6! self-center">
@@ -36,6 +59,8 @@ export const CreateConversation = () => {
                         <MiniSearch
                             type="friends"
                             view="select"
+                            onSelect={create}
+                            promiseState="createConversation"
                         />
                     )}
                 >
@@ -68,6 +93,8 @@ export const CreateConversation = () => {
                         <MiniSearch
                             type="users"
                             view="select"
+                            onSelect={create}
+                            promiseState="createConversation"
                         />
                     )}
                 >

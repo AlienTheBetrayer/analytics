@@ -33,6 +33,9 @@ export const GET = async (request: NextRequest) => {
                 referencedTable: "last_message",
                 ascending: false,
             })
+            .order("created_at", {
+                ascending: false,
+            })
             .limit(1, { referencedTable: "last_message" })) as {
             data: (Conversation & {
                 membership: { user_id: string };
