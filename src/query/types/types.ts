@@ -21,7 +21,10 @@ import { CacheAPIProtocol } from "@/query-api/protocol";
  * type for a key within the cache
  */
 export type CacheKeyEntity = keyof CacheAPIProtocol;
-export type CacheKey = [CacheKeyEntity, ...(string | number | undefined)[]];
+export type CacheKey = [
+    CacheKeyEntity,
+    ...(string | number | undefined | null)[],
+];
 
 /**
  * type for a value within the cache

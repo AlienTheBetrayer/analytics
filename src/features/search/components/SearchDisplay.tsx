@@ -27,7 +27,7 @@ export const SearchDisplay = ({ filter, data }: Props) => {
     }
 
     return (
-        <div className="box flex flex-col w-full p-4!">
+        <div className="flex flex-col gap-2">
             <SearchDisplayProfile data={data} />
 
             {!!data.post_ids.length && <SearchDisplayPosts data={data} />}

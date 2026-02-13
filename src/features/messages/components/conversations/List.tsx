@@ -6,7 +6,8 @@ import { CacheAPIProtocol } from "@/query-api/protocol";
 import { useQuery } from "@/query/core";
 
 type Props = {
-    isLoading: boolean;
+    isLoading?: boolean;
+    conversation_id?: string | null;
     conversations: CacheAPIProtocol["conversations"]["data"] | null;
     filter?: string;
     reversed?: boolean;
@@ -16,12 +17,13 @@ export const List = ({
     isLoading,
     conversations,
     filter,
+    conversation_id,
     reversed,
     onClear,
 }: Props) => {
     const { data: status } = useQuery({ key: ["status"] });
 
-    if (isLoading) {
+    if (isLoading || !conversations) {
         return (
             <div className="flex flex-col gap-2 relative">
                 {Array.from({ length: 8 }, (_, k) => (
@@ -35,7 +37,7 @@ export const List = ({
     }
 
     // fallbacks
-    if (!conversations?.length) {
+    if (conversations && !conversations.length) {
         return (
             <div className="flex flex-col gap-2 relative">
                 {Array.from({ length: 8 }, (_, k) => (
@@ -55,7 +57,10 @@ export const List = ({
             (c) =>
                 filterConversation(c, filter) && (
                     <li key={c.id}>
-                        <ConversationDisplay data={c} />
+                        <ConversationDisplay
+                            data={c}
+                            isSelected={c.id === conversation_id}
+                        />
                     </li>
                 ),
         )
@@ -66,9 +71,7 @@ export const List = ({
         <ul className="flex flex-col gap-1 relative grow">
             {elements.length ? (
                 <>
-                    <li>
-                        
-                    </li>
+                    <li></li>
 
                     {elements}
                 </>

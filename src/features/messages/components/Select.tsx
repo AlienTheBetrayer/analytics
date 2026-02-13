@@ -1,12 +1,22 @@
-import { NotSelected } from "@/features/messages/components/errors/NotSelected";
 import { MessageView } from "@/features/messages/components/message/MessageView";
-import { MessageIDRetrieve } from "@/features/messages/components/message/MessageIDRetrieve";
 import { useParams } from "next/navigation";
+import { useQuery } from "@/query/core";
+import { Conversations } from "@/features/messages/components/conversations/Conversations";
+import { NotSelected } from "@/features/messages/components/errors/NotSelected";
 
 export type MessagesTab = "u" | "c" | "notes" | "none";
 
 export const Select = () => {
     const { id, tab } = useParams<{ tab?: string; id?: string }>();
+
+    // retrieving conversation_id from url if: present id & tab is not already "c"
+    const { data: status } = useQuery({ key: ["status"] });
+    const { data: conversation_id } = useQuery({
+        key: ["conversation_retrieve", tab, status?.id, id ?? null],
+        trigger: !!((tab !== "c" && id) || tab === "notes"),
+    });
+
+    let cid = null;
 
     // jsx selector
     switch (tab) {
@@ -15,32 +25,40 @@ export const Select = () => {
                 break;
             }
 
-            return <MessageView conversation_id={id} />;
+            cid = id;
+            break;
         }
         case "u": {
             if (!id) {
                 break;
             }
 
-            return (
-                <MessageIDRetrieve
-                    type="u"
-                    id={id}
-                />
-            );
+            cid = conversation_id;
+            break;
         }
         case "notes": {
-            return <MessageIDRetrieve type="notes" />;
-        }
-        default: {
+            cid = conversation_id;
             break;
         }
     }
 
-    // fallback if none of the above worked
+    // not selected anything
+    if (!id && !tab) {
+        return (
+            <div className="grid grid-cols-[30%_1fr] grow gap-4">
+                <Conversations />
+
+                <div className="flex items-center justify-center relative grow loading">
+                    <NotSelected />
+                </div>
+            </div>
+        );
+    }
+
     return (
-        <div className="flex items-center justify-center relative grow loading">
-            <NotSelected />
+        <div className="grid grid-cols-[30%_1fr] grow gap-4">
+            <Conversations conversation_id={cid} />
+            <MessageView conversation_id={cid} />
         </div>
     );
 };

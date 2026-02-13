@@ -7,14 +7,13 @@ import { CacheAPIProtocol } from "@/query-api/protocol";
 import { useQuery } from "@/query/core";
 import { exactTime } from "@/utils/other/relativeTime";
 import Image from "next/image";
-import { useParams } from "next/navigation";
 
 type Props = {
+    isSelected?: boolean;
     data: CacheAPIProtocol["conversations"]["data"][number];
 };
 
-export const ConversationDisplay = ({ data }: Props) => {
-    const { id } = useParams<{ id?: string }>();
+export const ConversationDisplay = ({ isSelected, data }: Props) => {
     const { data: status } = useQuery({ key: ["status"] });
 
     const otherUser = data.conversation_members.find(
@@ -25,8 +24,8 @@ export const ConversationDisplay = ({ data }: Props) => {
         <div className="relative">
             <LinkButton
                 className={`box p-4! flex-row! rounded-4xl! justify-start! items-start! gap-4!
-                ${id === data.id ? "not-hover:bg-bg-4! hover:border-bg-5!" : "not-hover:bg-bg-1!"}`}
-                href={id === data.id ? "/messages/" : `/messages/c/${data.id}`}
+                ${isSelected ? "not-hover:bg-bg-4! hover:border-bg-5!" : "not-hover:bg-bg-1!"}`}
+                href={isSelected ? "/messages/" : `/messages/c/${data.id}`}
             >
                 <ProfileImage
                     profile={otherUser?.profile}

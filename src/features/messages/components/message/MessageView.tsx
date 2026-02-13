@@ -11,12 +11,12 @@ import { useQuery } from "@/query/core";
 import Image from "next/image";
 
 type Props = {
-    conversation_id: string | undefined;
+    conversation_id: string | undefined | null;
 };
 export const MessageView = ({ conversation_id }: Props) => {
     // won't load if we have no conversation_id
     const { data, isLoading } = useQuery({
-        key: ["messages", conversation_id],
+        key: ["messages", conversation_id ?? undefined],
     });
 
     // fallbacks
@@ -47,6 +47,10 @@ export const MessageView = ({ conversation_id }: Props) => {
                     >
                         <Button
                             onClick={() => {
+                                if (!conversation_id) {
+                                    return;
+                                }
+
                                 wrapPromise("reloadMessages", async () => {
                                     return queryInvalidate({
                                         key: ["messages", conversation_id],
@@ -75,7 +79,9 @@ export const MessageView = ({ conversation_id }: Props) => {
                         </li>
                     ))
                 ) : (
-                    <NoMessages />
+                    <div className="opacity-50 pointer-events-none select-none">
+                        <NoMessages />
+                    </div>
                 )}
             </ul>
 
