@@ -8,11 +8,15 @@ import { promiseStates } from "@/promises/data/init";
 export const wrapPromise = async <T>(key: string, fn: () => Promise<T>) => {
     promiseStates.set({ key, status: "idle" });
 
+    let res;
+
     try {
         promiseStates.set({ key, status: "pending" });
-        await fn();
+        res = await fn();
         promiseStates.set({ key, status: "resolved" });
     } catch {
         promiseStates.set({ key, status: "rejected" });
+    } finally {
+        return res;
     }
 };

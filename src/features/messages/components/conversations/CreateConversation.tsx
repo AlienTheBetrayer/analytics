@@ -1,5 +1,4 @@
-import { MiniSearchFriends } from "@/features/minisearch/components/MiniSearchFriends";
-import { MiniSearchUsers } from "@/features/minisearch/components/MiniSearchUsers";
+import { MiniSearch } from "@/features/minisearch/components/MiniSearch";
 import { Button } from "@/features/ui/button/components/Button";
 import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 import Image from "next/image";
@@ -15,7 +14,6 @@ export const CreateConversation = () => {
                     height={16}
                     src="/imageadd.svg"
                 />
-                <span>Create</span>
             </li>
 
             <li>
@@ -33,7 +31,13 @@ export const CreateConversation = () => {
             <li>
                 <Modal
                     className="w-full"
-                    element={() => <MiniSearchFriends />}
+                    direction="right"
+                    element={() => (
+                        <MiniSearch
+                            type="friends"
+                            view="select"
+                        />
+                    )}
                 >
                     <Button>
                         <Image
@@ -42,7 +46,16 @@ export const CreateConversation = () => {
                             height={16}
                             src="/friends.svg"
                         />
-                        <span>Friends</span>
+                        <div className="flex justify-between items-center w-full gap-1">
+                            <span>Friends</span>
+                            <Image
+                                className="-scale-100"
+                                alt=""
+                                width={16}
+                                height={16}
+                                src="/prev.svg"
+                            />
+                        </div>
                     </Button>
                 </Modal>
             </li>
@@ -50,7 +63,13 @@ export const CreateConversation = () => {
             <li>
                 <Modal
                     className="w-full"
-                    element={() => <MiniSearchUsers />}
+                    direction="right"
+                    element={() => (
+                        <MiniSearch
+                            type="users"
+                            view="select"
+                        />
+                    )}
                 >
                     <Button>
                         <Image
@@ -59,7 +78,16 @@ export const CreateConversation = () => {
                             height={14}
                             src="/account.svg"
                         />
-                        <span>Users</span>
+                        <div className="flex justify-between items-center w-full gap-1">
+                            <span>Users</span>
+                            <Image
+                                className="-scale-100"
+                                alt=""
+                                width={16}
+                                height={16}
+                                src="/prev.svg"
+                            />
+                        </div>
                     </Button>
                 </Modal>
             </li>
