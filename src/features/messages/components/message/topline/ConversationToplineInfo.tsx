@@ -1,6 +1,7 @@
 import { MiniProfile } from "@/features/messages/components/message/topline/MiniProfile";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { useQuery } from "@/query/core";
+import Image from "next/image";
 
 type Props = {
     data: CacheAPIProtocol["messages"]["data"] | null;
@@ -41,6 +42,32 @@ export const ConversationToplineInfo = ({ data, retrieved }: Props) => {
                         }
 
                         return <MiniProfile data={user} />;
+                    }
+                    case "group": {
+                        return (
+                            <span className="flex items-center gap-1">
+                                <Image
+                                    alt=""
+                                    width={16}
+                                    height={16}
+                                    src="/friends.svg"
+                                />
+                                {data.title ?? "Group"}
+                            </span>
+                        );
+                    }
+                    case "notes": {
+                        return (
+                            <span className="flex items-center gap-1">
+                                <Image
+                                    alt=""
+                                    width={16}
+                                    height={16}
+                                    src="/save.svg"
+                                />
+                                {data.title ?? "Notes"}
+                            </span>
+                        );
                     }
                     default: {
                         return null;

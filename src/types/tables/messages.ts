@@ -15,7 +15,7 @@ export type Conversation = {
     id: string;
     title?: string;
     description?: string;
-    type: "dm";
+    type: "dm" | "group" | "notes" | "channel";
     created_at: string;
     edited_at?: string;
 };
