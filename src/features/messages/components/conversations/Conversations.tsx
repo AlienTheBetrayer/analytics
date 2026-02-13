@@ -6,6 +6,7 @@ import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { PromiseState } from "@/promises/components/PromiseState";
 import { wrapPromise } from "@/promises/core";
+import { CacheAPIProtocol } from "@/query-api/protocol";
 import { queryInvalidate } from "@/query/auxiliary";
 import { useQuery } from "@/query/core";
 import { TabSelection } from "@/utils/other/TabSelection";
@@ -13,10 +14,10 @@ import Image from "next/image";
 import { useState } from "react";
 
 type Props = {
-    conversation_id?: string | null;
+    retrieved?: CacheAPIProtocol["conversation_retrieve"]["data"];
 };
 
-export const Conversations = ({ conversation_id }: Props) => {
+export const Conversations = ({ retrieved }: Props) => {
     // fetching
     const { data: status } = useQuery({ key: ["status"] });
     const { data: conversations, isLoading } = useQuery({
@@ -119,7 +120,7 @@ export const Conversations = ({ conversation_id }: Props) => {
             <List
                 isLoading={isLoading}
                 conversations={conversations}
-                conversation_id={conversation_id}
+                conversation_id={retrieved?.conversation_id}
                 filter={filter}
                 reversed={reversed}
                 onClear={() => setFilter("")}

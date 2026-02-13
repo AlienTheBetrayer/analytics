@@ -22,9 +22,9 @@ export const GET = async (request: NextRequest) => {
                     throw "what is undefined";
                 }
 
-                const { data: id, error: idError } = await supabaseServer
+                const { data: user, error: idError } = await supabaseServer
                     .from("users")
-                    .select("id")
+                    .select("*, profile:profiles(*)")
                     .eq("username", what);
 
                 if (idError) {
@@ -34,7 +34,7 @@ export const GET = async (request: NextRequest) => {
                 const { data, error } = await supabaseServer
                     .from("conversation_members")
                     .select("conversation_id, user_id")
-                    .in("user_id", [status_id, id[0].id]);
+                    .in("user_id", [status_id, user[0].id]);
 
                 if (error) {
                     throw error;
@@ -44,8 +44,9 @@ export const GET = async (request: NextRequest) => {
                     {
                         success: true,
                         conversation_id:
-                            data.find((d) => d.user_id === id[0]?.id)
+                            data.find((d) => d.user_id === user[0]?.id)
                                 ?.conversation_id ?? null,
+                        user: user[0],
                     },
                     200,
                 );

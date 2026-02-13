@@ -3,6 +3,7 @@ import { useParams } from "next/navigation";
 import { useQuery } from "@/query/core";
 import { Conversations } from "@/features/messages/components/conversations/Conversations";
 import { NotSelected } from "@/features/messages/components/errors/NotSelected";
+import { WrongURL } from "@/features/messages/components/errors/WrongURL";
 
 export type MessagesTab = "u" | "c" | "notes" | "none";
 
@@ -11,54 +12,67 @@ export const Select = () => {
 
     // retrieving conversation_id from url if: present id & tab is not already "c"
     const { data: status } = useQuery({ key: ["status"] });
-    const { data: conversation_id } = useQuery({
+    const { data: retrievedConversation } = useQuery({
         key: ["conversation_retrieve", tab, status?.id, id ?? null],
         trigger: !!((tab !== "c" && id) || tab === "notes"),
     });
 
-    let cid = null;
+    let result: "url" | "fetch" | "notselected" | "wrong" = "notselected";
 
-    // jsx selector
     switch (tab) {
-        case "c": {
-            if (!id) {
-                break;
-            }
-
-            cid = id;
-            break;
-        }
         case "u": {
             if (!id) {
+                result = "wrong";
                 break;
             }
 
-            cid = conversation_id;
+            result = "fetch";
+            break;
+        }
+        case "c": {
+            if (!id) {
+                result = "wrong";
+                break;
+            }
+
+            result = "url";
             break;
         }
         case "notes": {
-            cid = conversation_id;
+            result = "fetch";
+            break;
+        }
+        default: {
+            result = "notselected";
             break;
         }
     }
 
-    // not selected anything
-    if (!id && !tab) {
+    // wrong result
+    if (result === "notselected" || result === "wrong") {
         return (
             <div className="grid grid-cols-[30%_1fr] grow gap-4">
                 <Conversations />
 
                 <div className="flex items-center justify-center relative grow loading">
-                    <NotSelected />
+                    {result === "notselected" ? <NotSelected /> : <WrongURL />}
                 </div>
             </div>
         );
     }
 
+    const retrieved =
+        tab === "c"
+            ? {
+                  conversation_id: id,
+                  user: undefined,
+              }
+            : (retrievedConversation ?? undefined);
+
     return (
         <div className="grid grid-cols-[30%_1fr] grow gap-4">
-            <Conversations conversation_id={cid} />
-            <MessageView conversation_id={cid} />
+            <Conversations retrieved={retrieved} />
+            <MessageView retrieved={retrieved} />
         </div>
     );
 };

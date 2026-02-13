@@ -1,22 +1,17 @@
 import { NoMessages } from "@/features/messages/components/errors/NoMessages";
-import { ConversationToplineInfo } from "@/features/messages/components/message/ConversationToplineInfo";
 import { MessageDisplay } from "@/features/messages/components/message/MessageDisplay";
 import { MessageInput } from "@/features/messages/components/message/MessageInput";
-import { Button } from "@/features/ui/button/components/Button";
-import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
-import { PromiseState } from "@/promises/components/PromiseState";
-import { wrapPromise } from "@/promises/core";
-import { queryInvalidate } from "@/query/auxiliary";
+import { CacheAPIProtocol } from "@/query-api/protocol";
 import { useQuery } from "@/query/core";
-import Image from "next/image";
+import { MessagesTopline } from "@/features/messages/components/message/topline/MessagesTopline";
 
 type Props = {
-    conversation_id: string | undefined | null;
+    retrieved?: CacheAPIProtocol["conversation_retrieve"]["data"];
 };
-export const MessageView = ({ conversation_id }: Props) => {
+export const MessageView = ({ retrieved }: Props) => {
     // won't load if we have no conversation_id
     const { data, isLoading } = useQuery({
-        key: ["messages", conversation_id ?? undefined],
+        key: ["messages", retrieved?.conversation_id ?? undefined],
     });
 
     // fallbacks
@@ -35,41 +30,10 @@ export const MessageView = ({ conversation_id }: Props) => {
 
     return (
         <article className="flex flex-col bg-bg-2! grow p-4! gap-4 rounded-4xl">
-            <ul className="box min-h-10! h-10! gap-1! p-0! items-center! flex-row!">
-                <li className="ml-4!">
-                    <ConversationToplineInfo data={data} />
-                </li>
-
-                <li className="ml-auto!">
-                    <Tooltip
-                        direction="top"
-                        text="Re-fetch messages"
-                    >
-                        <Button
-                            onClick={() => {
-                                if (!conversation_id) {
-                                    return;
-                                }
-
-                                wrapPromise("reloadMessages", async () => {
-                                    return queryInvalidate({
-                                        key: ["messages", conversation_id],
-                                        silent: false,
-                                    });
-                                });
-                            }}
-                        >
-                            <PromiseState state="reloadMessages" />
-                            <Image
-                                alt=""
-                                width={14}
-                                height={14}
-                                src="/reload.svg"
-                            />
-                        </Button>
-                    </Tooltip>
-                </li>
-            </ul>
+            <MessagesTopline
+                data={data}
+                retrieved={retrieved}
+            />
 
             <ul className="flex flex-col-reverse gap-4 grow relative">
                 {data?.messages?.length ? (

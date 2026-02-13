@@ -62,8 +62,7 @@ export const CacheAPIFunctions: Record<
                     },
                 },
             })
-        ).data
-            .conversation_id as CacheAPIProtocol["conversation_retrieve"]["data"];
+        ).data as CacheAPIProtocol["conversation_retrieve"]["data"];
 
         return data;
     },

@@ -27,7 +27,10 @@ export type CacheAPIProtocol = {
     // messsages
     conversation_retrieve: {
         key: ["conversation_retrieve", string, string, string];
-        data: string | null;
+        data: {
+            conversation_id: string | null | undefined;
+            user: User & { profile: Profile } | undefined;
+        };
     };
 
     conversations: {
