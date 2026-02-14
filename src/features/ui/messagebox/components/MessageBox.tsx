@@ -116,7 +116,7 @@ export const MessageBox = ({ visibility, children, onSelect }: Props) => {
                                 scale: 1,
                             }}
                             exit={{ opacity: 0, scale: 0.85 }}
-                            className="relative box justify-between w-screen max-w-92 gap-4! aspect-video backdrop-blur-xl!"
+                            className="relative box acrylic justify-between w-screen max-w-92 gap-4! aspect-video backdrop-blur-xl!"
                         >
                             <CloseButton hide={() => onSelect?.("no")} />
 

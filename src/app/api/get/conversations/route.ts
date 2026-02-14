@@ -15,7 +15,7 @@ export const GET = async (request: NextRequest) => {
         const user_id = searchParams.get("user_id");
 
         if (!user_id) {
-            throw "username is undefined";
+            throw "user_id is undefined";
         }
 
         const { data, error } = (await supabaseServer
@@ -24,8 +24,8 @@ export const GET = async (request: NextRequest) => {
                 `
                     *, 
                     membership:conversation_members!inner(user_id),
-                    conversation_members:conversation_members(*, user:users(*, profile:profiles(*))),
-                    last_message:messages(*)
+                    conversation_members:conversation_members(user_id, created_at, user:users(id, username, role, created_at, last_seen_at, profile:profiles(*))),
+                    last_message:messages(message, created_at, edited_at, seen_at)
                 `,
             )
             .eq("membership.user_id", user_id)

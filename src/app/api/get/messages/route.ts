@@ -15,8 +15,8 @@ export const GET = async (request: NextRequest) => {
             .from("conversations")
             .select(
                 `*, 
-                messages:messages(*, user:users(*, profile:profiles(*))), 
-                conversation_members:conversation_members(*, user:users(*, profile:profiles(*)))`,
+                messages:messages(*, user:users(id, username, role, created_at, last_seen_at, profile:profiles(*))), 
+                conversation_members:conversation_members(user_id, created_at, user:users(id, username, role, created_at, last_seen_at, profile:profiles(*)))`,
             )
             .eq("id", conversation_id);
 

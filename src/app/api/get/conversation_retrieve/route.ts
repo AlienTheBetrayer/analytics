@@ -55,7 +55,7 @@ export const GET = async (request: NextRequest) => {
                 const { data, error } = await supabaseServer
                     .from("conversations")
                     .select(
-                        "id, conversation_members:conversation_members!inner(*)",
+                        "id, conversation_members:conversation_members!inner(user_id)",
                     )
                     .eq("conversation_members.user_id", status_id)
                     .eq("type", "notes");

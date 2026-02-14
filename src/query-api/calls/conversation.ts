@@ -26,3 +26,21 @@ export const createConversation = async (options: {
 
     return res;
 };
+
+export const deleteConversation = async (options: {
+    user_id: string;
+    conversation_id: string;
+    type: "leave" | "delete-all";
+}) => {
+    const res = await refreshedRequest({
+        route: "/api/delete/conversation",
+        method: "POST",
+        body: {
+            ...options,
+        },
+    });
+
+    queryInvalidate({ key: ["conversations", options.user_id] });
+
+    return res;
+};

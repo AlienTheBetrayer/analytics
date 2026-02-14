@@ -29,15 +29,21 @@ export type CacheAPIProtocol = {
         key: ["conversation_retrieve", string, string, string];
         data: {
             conversation_id: string | null | undefined;
-            user: User & { profile: Profile } | undefined;
+            user: (User & { profile: Profile }) | undefined;
         };
     };
 
     conversations: {
         key: ["conversations", string];
         data: (Conversation & {
-            last_message?: Message;
-            conversation_members: (ConversationMember & {
+            last_message?: Pick<
+                Message,
+                "message" | "seen_at" | "created_at" | "edited_at"
+            >;
+            conversation_members: (Pick<
+                ConversationMember,
+                "user_id" | "created_at"
+            > & {
                 user: User & { profile: Profile };
             })[];
         })[];
@@ -47,7 +53,10 @@ export type CacheAPIProtocol = {
         key: ["messages", string];
         data: Conversation & {
             messages: (Message & { user: User & { profile: Profile } })[];
-            conversation_members: (ConversationMember & {
+            conversation_members: (Pick<
+                ConversationMember,
+                "user_id" | "created_at"
+            > & {
                 user: User & { profile: Profile };
             })[];
         };

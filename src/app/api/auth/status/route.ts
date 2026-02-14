@@ -22,7 +22,7 @@ export const GET = async (request: NextRequest) => {
                 last_seen_at: new Date().toISOString(),
             })
             .eq("id", refreshToken.id)
-            .select("*, profile:profiles(*)")) as {
+            .select("id, role, username, profile:profiles(*)")) as {
             data: (User & { profile: Profile })[];
             error: PostgrestError | null;
         };
