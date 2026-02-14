@@ -1,11 +1,12 @@
 import { ContextMenu } from "@/features/messages/components/conversations/ContextMenu";
-import { ProfileImage } from "@/features/profile/components/ProfileImage";
+import { Avatar } from "@/features/messages/components/conversations/display/Avatar";
+import { LastMessage } from "@/features/messages/components/conversations/display/LastMessage";
+import { LastMessageDate } from "@/features/messages/components/conversations/display/LastMessageDate";
+import { Name } from "@/features/messages/components/conversations/display/Name";
 import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 import { CacheAPIProtocol } from "@/query-api/protocol";
-import { useQuery } from "@/query/core";
-import { exactTime } from "@/utils/other/relativeTime";
 import Image from "next/image";
 
 type Props = {
@@ -14,12 +15,6 @@ type Props = {
 };
 
 export const ConversationDisplay = ({ isSelected, data }: Props) => {
-    const { data: status } = useQuery({ key: ["status"] });
-
-    const otherUser = data.conversation_members.find(
-        (m) => m.user_id !== status?.id,
-    )?.user;
-
     return (
         <div className="relative">
             <LinkButton
@@ -27,41 +22,15 @@ export const ConversationDisplay = ({ isSelected, data }: Props) => {
                 ${isSelected ? "not-hover:bg-bg-4! hover:border-bg-5!" : "not-hover:bg-bg-1!"}`}
                 href={isSelected ? "/messages/" : `/messages/c/${data.id}`}
             >
-                <ProfileImage
-                    profile={otherUser?.profile}
-                    width={256}
-                    height={256}
-                    className="w-12! h-12!"
-                />
+                <Avatar data={data} />
 
                 <div className="flex flex-col gap-1 w-full overflow-hidden">
                     <div className="grid grid-cols-[auto_25%]">
-                        <span className="truncate">{otherUser?.username}</span>
-
-                        {data.last_message && (
-                            <span className="flex items-center gap-1 ml-auto! whitespace-nowrap">
-                                <Image
-                                    alt=""
-                                    width={16}
-                                    height={16}
-                                    src={
-                                        data.last_message.seen_at
-                                            ? "/seen.svg"
-                                            : "/checkmark.svg"
-                                    }
-                                />
-                                <small>
-                                    {exactTime(data.last_message.created_at)}
-                                </small>
-                            </span>
-                        )}
+                        <Name data={data} />
+                        <LastMessageDate data={data} />
                     </div>
 
-                    {data.last_message && (
-                        <small className="truncate">
-                            <span>{data.last_message.message}</span>
-                        </small>
-                    )}
+                    <LastMessage data={data} />
                 </div>
             </LinkButton>
 

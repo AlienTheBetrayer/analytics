@@ -1,4 +1,4 @@
-import { ConversationDisplay } from "@/features/messages/components/conversations/ConversationDisplay";
+import { ConversationDisplay } from "@/features/messages/components/conversations/display/ConversationDisplay";
 import { FilterNothing } from "@/features/messages/components/errors/FilterNothing";
 import { NoConversations } from "@/features/messages/components/errors/NoConversations";
 import { filterConversation } from "@/features/messages/utils/filter";
