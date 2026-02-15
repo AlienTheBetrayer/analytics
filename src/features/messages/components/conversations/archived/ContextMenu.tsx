@@ -1,6 +1,5 @@
 import "../../message/ContextMenu.css";
 import { Button } from "@/features/ui/button/components/Button";
-import { TabSelection } from "@/utils/other/TabSelection";
 import { useLocalStore } from "@/zustand/localStore";
 import Image from "next/image";
 
@@ -41,15 +40,6 @@ export const ContextMenu = () => {
                     <span>
                         {display?.archive?.collapsed ? "Expand" : "Collapse"}
                     </span>
-                    <TabSelection
-                        className="right-2 top-2"
-                        condition={true}
-                        color={
-                            display?.archive?.collapsed
-                                ? "var(--orange-1)"
-                                : "var(--blue-1)"
-                        }
-                    />
                 </Button>
             </li>
 
@@ -77,15 +67,6 @@ export const ContextMenu = () => {
                             ? "conversations"
                             : "main menu"}
                     </span>
-                    <TabSelection
-                        className="right-2 top-2"
-                        condition={true}
-                        color={
-                            display?.archive?.movedToMenu
-                                ? "var(--orange-1)"
-                                : "var(--blue-1)"
-                        }
-                    />
                 </Button>
             </li>
         </ul>

@@ -1,4 +1,4 @@
-import { ArchivedDisplay } from "@/features/messages/components/conversations/archived/Archived";
+import { ArchivedDisplay } from "@/features/messages/components/conversations/archived/ArchivedDisplay";
 import { ConversationDisplay } from "@/features/messages/components/conversations/display/ConversationDisplay";
 import { FilterNothing } from "@/features/messages/components/errors/FilterNothing";
 import { NoConversations } from "@/features/messages/components/errors/NoConversations";
