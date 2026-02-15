@@ -1,13 +1,8 @@
 import { ConversationsTopline } from "@/features/messages/components/conversations/topline/ConversationsTopline";
 import { List } from "@/features/messages/components/conversations/List";
-import { CacheAPIProtocol } from "@/query-api/protocol";
 import { useQuery } from "@/query/core";
 
-type Props = {
-    retrieved?: CacheAPIProtocol["conversation_retrieve"]["data"];
-};
-
-export const Conversations = ({ retrieved }: Props) => {
+export const Conversations = () => {
     // fetching
     const { data: status } = useQuery({ key: ["status"] });
     const { data: conversations, isLoading } = useQuery({
@@ -20,7 +15,6 @@ export const Conversations = ({ retrieved }: Props) => {
             <List
                 isLoading={isLoading}
                 conversations={conversations}
-                conversation_id={retrieved?.conversation_id}
             />
         </div>
     );

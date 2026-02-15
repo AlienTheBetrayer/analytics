@@ -10,10 +10,9 @@ import { motion } from "motion/react";
 
 type Props = {
     isLoading?: boolean;
-    conversation_id?: string | null;
     conversations: CacheAPIProtocol["conversations"]["data"] | null;
 };
-export const List = ({ isLoading, conversations, conversation_id }: Props) => {
+export const List = ({ isLoading, conversations }: Props) => {
     const { data: status } = useQuery({ key: ["status"] });
     const conversationsSorting = useAppStore(
         (state) => state.conversationsSorting,
@@ -108,7 +107,6 @@ export const List = ({ isLoading, conversations, conversation_id }: Props) => {
                             <li key={c.id}>
                                 <ConversationDisplay
                                     data={c}
-                                    isSelected={c.id === conversation_id}
                                 />
                             </li>
                         ))}
@@ -134,7 +132,6 @@ export const List = ({ isLoading, conversations, conversation_id }: Props) => {
                         <li key={c.id}>
                             <ConversationDisplay
                                 data={c}
-                                isSelected={c.id === conversation_id}
                             />
                         </li>
                     ))

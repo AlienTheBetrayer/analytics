@@ -7,19 +7,14 @@ import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 import { CacheAPIProtocol } from "@/query-api/protocol";
-import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 
 type Props = {
+    isSelected?: boolean;
     data: CacheAPIProtocol["conversations"]["data"][number];
 };
 
-export const ConversationDisplay = ({ data }: Props) => {
-    const selectedConversation = useAppStore(
-        (state) => state.selectedConversation,
-    );
-    const isSelected = selectedConversation === data.id;
-
+export const ConversationDisplay = ({ isSelected, data }: Props) => {
     return (
         <div className="relative">
             <LinkButton

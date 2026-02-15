@@ -20,6 +20,13 @@ export type MessagesStore = {
     messagesDisplay: MessagesDisplay;
     selectDisplay: MessagesSelectResult;
     conversationsSorting: ConversationsSorting;
+    selectedConversation: string | null;
+
+    /**
+     * sets the selected conversation id
+     * @param id a new id or null 
+     */
+    updateSelectedConversation: (id: string | null) => void;
 
     /**
      * updates the select string

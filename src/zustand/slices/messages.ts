@@ -13,10 +13,15 @@ export const MessagesSlice: SliceFunction<MessagesStore> = (set) => {
                 conversations: "conversations",
             },
         },
-        selectDisplay: "",
+        selectDisplay: "notselected",
         conversationsSorting: {
             filter: "",
             reversed: false,
+        },
+        selectedConversation: null,
+
+        updateSelectedConversation: (id) => {
+            set((state) => ({ ...state, selectedConversation: id }));
         },
 
         updateSelectDisplay: (display) => {

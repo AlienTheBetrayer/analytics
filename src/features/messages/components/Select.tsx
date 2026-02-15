@@ -5,7 +5,7 @@ import { Conversations } from "@/features/messages/components/conversations/Conv
 import { NotSelected } from "@/features/messages/components/errors/NotSelected";
 import { WrongURL } from "@/features/messages/components/errors/WrongURL";
 import { useAppStore } from "@/zustand/store";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
 export type MessagesSelectResult = "url" | "fetch" | "notselected" | "wrong";
 export type MessagesTab = "u" | "c" | "notes" | "none";
@@ -14,6 +14,9 @@ export const Select = () => {
     const { id, tab } = useParams<{ tab?: string; id?: string }>();
     const updateSelectDisplay = useAppStore(
         (state) => state.updateSelectDisplay,
+    );
+    const updateSelectedConversation = useAppStore(
+        (state) => state.updateSelectedConversation,
     );
 
     // retrieving conversation_id from url if: present id & tab is not already "c"
@@ -54,9 +57,22 @@ export const Select = () => {
         }
     }
 
+    const retrieved = useMemo(() => {
+        return tab === "c"
+            ? {
+                  conversation_id: id,
+                  user: undefined,
+              }
+            : (retrievedConversation ?? undefined);
+    }, [id, retrievedConversation, tab]);
+
     useEffect(() => {
         updateSelectDisplay(result);
     }, [result, updateSelectDisplay]);
+
+    useEffect(() => {
+        updateSelectedConversation(retrieved?.conversation_id ?? null);
+    }, [retrieved, updateSelectedConversation]);
 
     // wrong result
     if (result === "notselected" || result === "wrong") {
@@ -71,17 +87,9 @@ export const Select = () => {
         );
     }
 
-    const retrieved =
-        tab === "c"
-            ? {
-                  conversation_id: id,
-                  user: undefined,
-              }
-            : (retrievedConversation ?? undefined);
-
     return (
         <div className="grid grid-cols-[30%_1fr] grow gap-4">
-            <Conversations retrieved={retrieved} />
+            <Conversations />
             <MessageView retrieved={retrieved} />
         </div>
     );
