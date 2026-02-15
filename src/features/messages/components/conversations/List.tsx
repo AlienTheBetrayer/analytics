@@ -52,9 +52,7 @@ export const List = ({
         );
     }
 
-    const elements = (
-        reversed ? [...conversations].reverse() : [...conversations]
-    )
+    const elements = [...conversations]
         .sort((a, b) => {
             const aPin = a.conversation_meta?.pinned ? 1 : 0;
             const bPin = b.conversation_meta?.pinned ? 1 : 0;
@@ -80,6 +78,10 @@ export const List = ({
                 ),
         )
         .filter(Boolean);
+
+    if (reversed) {
+        elements.reverse();
+    }
 
     // jsx
     return (
