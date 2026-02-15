@@ -44,3 +44,24 @@ export const deleteConversation = async (options: {
 
     return res;
 };
+
+export const updateConversation = async (options: {
+    conversation_id: string;
+    user_id: string;
+    title?: string;
+    description?: string;
+    pinned?: boolean;
+    archived?: boolean;
+}) => {
+    const res = await refreshedRequest({
+        route: "/api/update/conversation",
+        method: "POST",
+        body: {
+            ...options,
+        },
+    });
+
+    queryInvalidate({ key: ["conversations", options.user_id] });
+
+    return res;
+};

@@ -6,6 +6,7 @@ import {
     Conversation,
     Message,
     ConversationMember,
+    ConversationMeta,
 } from "@/types/tables/messages";
 import { Comment, Post, PostPrivacy } from "@/types/tables/posts";
 import { Event, Project } from "@/types/tables/project";
@@ -46,6 +47,7 @@ export type CacheAPIProtocol = {
             > & {
                 user: User & { profile: Profile };
             })[];
+            conversation_meta: Pick<ConversationMeta, "archived" | "pinned">;
         })[];
     };
 

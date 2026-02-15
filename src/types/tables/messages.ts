@@ -9,6 +9,18 @@ export type ConversationMember = {
 };
 
 /**
+ * conversation_meta
+ */
+export type ConversationMeta = {
+    id: string;
+    user_id: string;
+    conversation_id: string;
+    pinned: boolean;
+    archived: boolean;
+    created_at: string;
+}
+
+/**
  * conversations
  */
 export type Conversation = {

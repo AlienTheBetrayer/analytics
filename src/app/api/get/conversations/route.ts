@@ -25,10 +25,12 @@ export const GET = async (request: NextRequest) => {
                     *, 
                     membership:conversation_members!inner(user_id),
                     conversation_members:conversation_members(user_id, created_at, user:users(id, username, role, created_at, last_seen_at, profile:profiles(*))),
-                    last_message:messages(message, created_at, edited_at, seen_at)
+                    last_message:messages(message, created_at, edited_at, seen_at),
+                    conversation_meta:conversation_meta(pinned, archived)
                 `,
             )
             .eq("membership.user_id", user_id)
+            .eq("conversation_meta.user_id", user_id)
             .order("created_at", {
                 referencedTable: "last_message",
                 ascending: false,
