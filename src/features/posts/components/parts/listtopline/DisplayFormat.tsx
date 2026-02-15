@@ -1,7 +1,6 @@
 import { Button } from "@/features/ui/button/components/Button";
 import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
-import { ViewPostColumns } from "@/types/zustand/local";
 import { useLocalStore } from "@/zustand/localStore";
 import Image from "next/image";
 
@@ -40,7 +39,7 @@ export const DisplayFormat = () => {
                                     view: {
                                         postsColumns: String(
                                             k + 1,
-                                        ) as ViewPostColumns,
+                                        ) as typeof display.view.postsColumns,
                                     },
                                 });
                             }}
@@ -55,7 +54,7 @@ export const DisplayFormat = () => {
                                     view: {
                                         postsColumns: String(
                                             k + 1,
-                                        ) as ViewPostColumns,
+                                        ) as typeof display.view.postsColumns,
                                     },
                                 });
                             }}

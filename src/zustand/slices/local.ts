@@ -1,5 +1,6 @@
 import { LocalStore, PreferencesDefaults } from "@/types/zustand/local";
 import { SliceFunction } from "@/types/zustand/utils/sliceFunction";
+import { deepMerge } from "@/utils/other/merge";
 
 export const LocalSlice: SliceFunction<LocalStore, LocalStore> = (set) => {
     return {
@@ -14,20 +15,19 @@ export const LocalSlice: SliceFunction<LocalStore, LocalStore> = (set) => {
                 postsColumns: "1",
                 contactMessages: "expanded",
             },
+            messages: {
+                archive: {
+                    collapsed: false,
+                    movedToMenu: false,
+                },
+            },
         },
         theme: "dark",
 
         updateDisplay: (display) => {
             set((state) => ({
                 ...state,
-                display: {
-                    ...state.display,
-                    sorting: {
-                        ...state.display.sorting,
-                        ...(display?.sorting ?? {}),
-                    },
-                    view: { ...state.display.view, ...(display?.view ?? {}) },
-                },
+                display: deepMerge(state.display, display),
             }));
         },
 

@@ -1,9 +1,12 @@
 import { ContextMenu } from "@/features/messages/components/conversations/archived/ContextMenu";
 import { Button } from "@/features/ui/button/components/Button";
 import { Modal } from "@/features/ui/popovers/components/modal/Modal";
+import { useLocalStore } from "@/zustand/localStore";
 import Image from "next/image";
 
 export const ArchivedDisplay = () => {
+    const display = useLocalStore((state) => state.display.messages);
+
     return (
         <div className="relative">
             <Button className="box not-hover:bg-bg-1! w-full p-4! flex-row! rounded-4xl! justify-start! items-start! gap-4!">
@@ -21,6 +24,8 @@ export const ArchivedDisplay = () => {
 
                     <span>
                         <small>hi</small>
+                        {String(display?.archive?.collapsed)}
+                        {String(display?.archive?.movedToMenu)}
                     </span>
                 </div>
             </Button>

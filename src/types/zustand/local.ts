@@ -1,11 +1,4 @@
-// helper type
-type DeepPartial<T> = {
-    [P in keyof T]?: T[P] extends (infer U)[]
-        ? DeepPartial<U>[]
-        : T[P] extends object
-          ? DeepPartial<T[P]>
-          : T[P];
-};
+import { DeepPartial } from "@/utils/other/merge";
 
 // preferences
 export type Preferences = {
@@ -16,21 +9,20 @@ export const PreferencesDefaults: Preferences = {
 };
 
 // display
-export type SortingDirection = "ascendant" | "descendant";
-export type Sorting = {
-    posts: SortingDirection;
-};
-export type ViewPostColumns = "1" | "2" | "3" | "4";
-export type ContactMessages = "compact" | "expanded";
-
-export type View = {
-    postsColumns: ViewPostColumns;
-    contactMessages: ContactMessages;
-};
-
 export type Display = {
-    sorting: Sorting;
-    view: View;
+    sorting: {
+        posts: "ascendant" | "descendant";
+    };
+    view: {
+        postsColumns: "1" | "2" | "3" | "4";
+        contactMessages: "compact" | "expanded";
+    };
+    messages: {
+        archive: {
+            collapsed: boolean;
+            movedToMenu: boolean;
+        };
+    };
 };
 
 export type LocalStore = {
@@ -49,16 +41,16 @@ export type LocalStore = {
     toggleTheme: () => void;
 
     /**
-     * updates the sorting metadata
-     * @param sorting a partial sorting object
+     * updates the display data
+     * @param display a deep partial display object
      */
-    updateDisplay: (sorting: DeepPartial<Display>) => void;
+    updateDisplay: (display: DeepPartial<Display>) => void;
 
     /**
      * toggles the sorting metadata
      * @param sorting a partial sorting object
      */
-    toggleSorting: (key: keyof Sorting) => void;
+    toggleSorting: (key: keyof Display["sorting"]) => void;
 
     /**
      * updates the preferences (don't provide a value if you want it unchanged)
