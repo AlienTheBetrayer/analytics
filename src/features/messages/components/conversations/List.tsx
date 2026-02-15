@@ -15,10 +15,10 @@ type Props = {
 };
 export const List = ({ isLoading, conversations, conversation_id }: Props) => {
     const { data: status } = useQuery({ key: ["status"] });
-    const messagesDisplay = useAppStore((state) => state.messagesDisplay);
     const conversationsSorting = useAppStore(
         (state) => state.conversationsSorting,
     );
+    const messagesDisplay = useAppStore((state) => state.messagesDisplay);
 
     if (isLoading || !conversations) {
         return (
@@ -91,6 +91,11 @@ export const List = ({ isLoading, conversations, conversation_id }: Props) => {
                 }}
                 transition={{ ease: "easeInOut", duration: 0.3 }}
             >
+                <div
+                    className={`absolute inset-0 bg-bg-2 z-1 pointer-events-none transition-all duration-500
+                        ${messagesDisplay.tabs.conversations !== "conversations" ? "opacity-100" : "opacity-0"}`}
+                />
+
                 {regular.length ? (
                     <>
                         {archived.length && (
