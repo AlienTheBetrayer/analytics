@@ -89,7 +89,7 @@ export const List = ({ isLoading, conversations, conversation_id }: Props) => {
                             ? "-50%"
                             : 0,
                 }}
-                transition={{ ease: "easeInOut", duration: 0.35 }}
+                transition={{ ease: "easeInOut", duration: 0.3 }}
             >
                 {regular.length ? (
                     <>
@@ -122,7 +122,7 @@ export const List = ({ isLoading, conversations, conversation_id }: Props) => {
                             ? "0%"
                             : "100%",
                 }}
-                transition={{ ease: "easeInOut", duration: 0.35 }}
+                transition={{ ease: "easeInOut", duration: 0.3 }}
             >
                 {archived.length ? (
                     archived.map((c) => (
