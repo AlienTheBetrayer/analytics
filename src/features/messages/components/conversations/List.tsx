@@ -1,7 +1,8 @@
+import { ArchivedDisplay } from "@/features/messages/components/conversations/archived/Archived";
 import { ConversationDisplay } from "@/features/messages/components/conversations/display/ConversationDisplay";
 import { FilterNothing } from "@/features/messages/components/errors/FilterNothing";
 import { NoConversations } from "@/features/messages/components/errors/NoConversations";
-import { filterConversation } from "@/features/messages/utils/filter";
+import { sortConversations } from "@/features/messages/utils/sort";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { useQuery } from "@/query/core";
 
@@ -52,48 +53,52 @@ export const List = ({
         );
     }
 
-    const elements = [...conversations]
-        .sort((a, b) => {
-            const metaA = a.conversation_meta;
-            const metaB = b.conversation_meta;
+    const conversationTypes = conversations.reduce(
+        (acc, val) => {
+            if (val.conversation_meta?.archived) {
+                acc.archived.push(val);
+            } else {
+                acc.regular.push(val);
+            }
 
-            return (
-                Number(!!metaB?.pinned) - Number(!!metaA?.pinned) ||
-                (metaA?.pinned && metaB?.pinned
-                    ? (metaB?.pinned_at || "").localeCompare(
-                          metaA?.pinned_at || "",
-                      )
-                    : 0) ||
-                (b.last_message?.created_at || "").localeCompare(
-                    a.last_message?.created_at || "",
-                )
-            );
-        })
-        .map(
-            (c) =>
-                filterConversation(c, filter) && (
-                    <li key={c.id}>
-                        <ConversationDisplay
-                            data={c}
-                            isSelected={c.id === conversation_id}
-                        />
-                    </li>
-                ),
-        )
-        .filter(Boolean);
+            return acc;
+        },
+        {
+            archived: Array<(typeof conversations)[number]>(),
+            regular: Array<(typeof conversations)[number]>(),
+        },
+    );
 
-    if (reversed) {
-        elements.reverse();
-    }
+    const archived = sortConversations({
+        conversations: conversationTypes.archived,
+        reversed,
+        filter,
+    });
+    const regular = sortConversations({
+        conversations: conversationTypes.regular,
+        reversed,
+        filter,
+    });
 
     // jsx
     return (
         <ul className="flex flex-col gap-1 relative grow">
-            {elements.length ? (
+            {regular.length ? (
                 <>
-                    <li></li>
+                    {archived.length && (
+                        <li>
+                            <ArchivedDisplay />
+                        </li>
+                    )}
 
-                    {elements}
+                    {regular.map((c) => (
+                        <li key={c.id}>
+                            <ConversationDisplay
+                                data={c}
+                                isSelected={c.id === conversation_id}
+                            />
+                        </li>
+                    ))}
                 </>
             ) : (
                 <FilterNothing onClear={() => onClear?.()} />
