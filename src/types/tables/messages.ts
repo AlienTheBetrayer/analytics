@@ -15,8 +15,8 @@ export type ConversationMeta = {
     id: string;
     user_id: string;
     conversation_id: string;
-    pinned: boolean;
-    archived: boolean;
+    pinned?: boolean;
+    archived?: boolean;
     created_at: string;
 }
 

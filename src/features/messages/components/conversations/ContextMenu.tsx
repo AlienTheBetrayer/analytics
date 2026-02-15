@@ -4,7 +4,10 @@ import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { useMessageBox } from "@/features/ui/messagebox/hooks/useMessageBox";
 import { PromiseState } from "@/promises/components/PromiseState";
 import { wrapPromise } from "@/promises/core";
-import { deleteConversation } from "@/query-api/calls/conversation";
+import {
+    deleteConversation,
+    updateConversation,
+} from "@/query-api/calls/conversation";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { useQuery } from "@/query/core";
 import Image from "next/image";
@@ -89,26 +92,60 @@ export const ContextMenu = ({ data }: Props) => {
                 )}
 
                 <li>
-                    <Button>
+                    <Button
+                        onClick={() => {
+                            if (!status) {
+                                return;
+                            }
+
+                            wrapPromise("archive", () => {
+                                return updateConversation({
+                                    conversation_id: data.id,
+                                    user_id: status.id,
+                                    archived: !data.conversation_meta?.archived,
+                                });
+                            });
+                        }}
+                    >
                         <Image
                             alt=""
                             width={16}
                             height={16}
                             src="/archive.svg"
                         />
-                        <span>Archive</span>
+                        <span className="flex items-center gap-1">
+                            <PromiseState state="archive" />
+                            <span>Archive</span>
+                        </span>
                     </Button>
                 </li>
 
                 <li>
-                    <Button>
+                    <Button
+                        onClick={() => {
+                            if (!status) {
+                                return;
+                            }
+
+                            wrapPromise("pin", () => {
+                                return updateConversation({
+                                    conversation_id: data.id,
+                                    user_id: status.id,
+                                    pinned: !data.conversation_meta?.pinned,
+                                });
+                            });
+                        }}
+                    >
                         <Image
                             alt=""
                             width={16}
                             height={16}
                             src="/pin.svg"
                         />
-                        <span>Pin</span>
+                        <span className="flex items-center gap-1">
+                            <PromiseState state="pin" />
+                            <span>Pin</span>
+                        </span>
                     </Button>
                 </li>
 
@@ -135,7 +172,7 @@ export const ContextMenu = ({ data }: Props) => {
                             height={16}
                             src="/delete.svg"
                         />
-                        <span className="flex items-center">
+                        <span className="flex items-center gap-1">
                             <PromiseState state="deleteConversation" />
                             <span>
                                 Delete for <u>everyone</u>

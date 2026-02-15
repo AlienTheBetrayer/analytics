@@ -53,12 +53,15 @@ export const POST = async (request: NextRequest) => {
         if (typeof pinned === "boolean" || typeof archived === "boolean") {
             const { error } = await supabaseServer
                 .from("conversation_meta")
-                .update({
-                    ...(typeof pinned === "boolean" && { pinned }),
-                    ...(typeof archived === "boolean" && { archived }),
-                })
-                .eq("conversation_id", conversation_id)
-                .eq("user_id", user_id);
+                .upsert(
+                    {
+                        conversation_id,
+                        user_id,
+                        ...(typeof pinned === "boolean" && { pinned }),
+                        ...(typeof archived === "boolean" && { archived }),
+                    },
+                    { onConflict: "user_id,conversation_id" },
+                );
 
             if (error) {
                 throw error;

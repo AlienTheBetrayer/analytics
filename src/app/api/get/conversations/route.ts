@@ -1,12 +1,5 @@
 import { supabaseServer } from "@/server/private/supabase";
-import { Profile, User } from "@/types/tables/account";
-import {
-    Conversation,
-    ConversationMember,
-    Message,
-} from "@/types/tables/messages";
 import { nextResponse } from "@/utils/api/response";
-import { PostgrestError } from "@supabase/supabase-js";
 import { NextRequest } from "next/server";
 
 export const GET = async (request: NextRequest) => {
@@ -18,7 +11,7 @@ export const GET = async (request: NextRequest) => {
             throw "user_id is undefined";
         }
 
-        const { data, error } = (await supabaseServer
+        const { data, error } = await supabaseServer
             .from("conversations")
             .select(
                 `
@@ -38,16 +31,7 @@ export const GET = async (request: NextRequest) => {
             .order("created_at", {
                 ascending: false,
             })
-            .limit(1, { referencedTable: "last_message" })) as {
-            data: (Conversation & {
-                membership: { user_id: string };
-                conversation_members: ConversationMember & {
-                    user: User & Profile;
-                };
-                last_message: Message[];
-            })[];
-            error: PostgrestError | null;
-        };
+            .limit(1, { referencedTable: "last_message" });
 
         if (error) {
             throw error;
@@ -59,6 +43,7 @@ export const GET = async (request: NextRequest) => {
                 conversations: data.map((entry) => ({
                     ...entry,
                     last_message: entry.last_message?.[0],
+                    conversation_meta: entry.conversation_meta?.[0],
                 })),
             },
             200,

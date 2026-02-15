@@ -31,8 +31,10 @@ export const ConversationDisplay = ({ isSelected, data }: Props) => {
                     </div>
 
                     <LastMessage data={data} />
-                    <span>archive: {String(data.conversation_meta.archived)}</span>
-                    <span>pin: {String(data.conversation_meta.pinned)}</span>
+                    <span>
+                        archive: {String(data.conversation_meta?.archived)}
+                    </span>
+                    <span>pin: {String(data.conversation_meta?.pinned)}</span>
                 </div>
             </LinkButton>
 

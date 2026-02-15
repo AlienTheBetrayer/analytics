@@ -1,4 +1,4 @@
-import { queryInvalidate } from "@/query/auxiliary";
+import { queryInvalidate, queryMutate } from "@/query/auxiliary";
 import { refreshedRequest } from "@/utils/auth/refreshedRequest";
 
 export const createConversation = async (options: {
@@ -53,6 +53,33 @@ export const updateConversation = async (options: {
     pinned?: boolean;
     archived?: boolean;
 }) => {
+    queryMutate({
+        key: ["conversations", options.user_id],
+        value: (state) =>
+            state.map((s) =>
+                s.id === options.conversation_id
+                    ? {
+                          ...s,
+                          ...(typeof options.title === "string" && {
+                              title: options.title,
+                          }),
+                          ...(typeof options.description === "string" && {
+                              description: options.description,
+                          }),
+                          conversation_meta: {
+                              ...s.conversation_meta,
+                              ...(typeof options.pinned === "boolean" && {
+                                  pinned: options.pinned,
+                              }),
+                              ...(typeof options.archived === "boolean" && {
+                                  archived: options.archived,
+                              }),
+                          },
+                      }
+                    : s,
+            ),
+    });
+
     const res = await refreshedRequest({
         route: "/api/update/conversation",
         method: "POST",
@@ -60,8 +87,6 @@ export const updateConversation = async (options: {
             ...options,
         },
     });
-
-    queryInvalidate({ key: ["conversations", options.user_id] });
 
     return res;
 };
