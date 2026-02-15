@@ -1,12 +1,13 @@
 import { AbsentData } from "@/features/ui/absentdata/components/AbsentData";
 import { Button } from "@/features/ui/button/components/Button";
+import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 
-type Props = {
-    onClear: () => void;
-};
+export const FilterNothing = () => {
+    const updateConversationsSorting = useAppStore(
+        (state) => state.updateConversationsSorting,
+    );
 
-export const FilterNothing = ({ onClear }: Props) => {
     return (
         <AbsentData
             className="absolute left-1/2 top-1/2 -translate-1/2"
@@ -21,7 +22,7 @@ export const FilterNothing = ({ onClear }: Props) => {
         >
             <Button
                 className="w-full not-hover:bg-bg-1!"
-                onClick={onClear}
+                onClick={() => updateConversationsSorting({ filter: "" })}
             >
                 <Image
                     alt=""

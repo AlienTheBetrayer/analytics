@@ -4,11 +4,17 @@ import { useQuery } from "@/query/core";
 import { Conversations } from "@/features/messages/components/conversations/Conversations";
 import { NotSelected } from "@/features/messages/components/errors/NotSelected";
 import { WrongURL } from "@/features/messages/components/errors/WrongURL";
+import { useAppStore } from "@/zustand/store";
+import { useEffect } from "react";
 
+export type MessagesSelectResult = "url" | "fetch" | "notselected" | "wrong";
 export type MessagesTab = "u" | "c" | "notes" | "none";
 
 export const Select = () => {
     const { id, tab } = useParams<{ tab?: string; id?: string }>();
+    const updateSelectDisplay = useAppStore(
+        (state) => state.updateSelectDisplay,
+    );
 
     // retrieving conversation_id from url if: present id & tab is not already "c"
     const { data: status } = useQuery({ key: ["status"] });
@@ -17,7 +23,7 @@ export const Select = () => {
         trigger: !!((tab !== "c" && id) || tab === "notes"),
     });
 
-    let result: "url" | "fetch" | "notselected" | "wrong" = "notselected";
+    let result: MessagesSelectResult = "notselected";
 
     switch (tab) {
         case "u": {
@@ -47,6 +53,10 @@ export const Select = () => {
             break;
         }
     }
+
+    useEffect(() => {
+        updateSelectDisplay(result);
+    }, [result, updateSelectDisplay]);
 
     // wrong result
     if (result === "notselected" || result === "wrong") {

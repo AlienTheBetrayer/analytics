@@ -1,17 +1,33 @@
 import { ContextMenu } from "@/features/messages/components/conversations/archived/ContextMenu";
+import { Name } from "@/features/messages/components/conversations/display/Name";
 import { Button } from "@/features/ui/button/components/Button";
 import { Modal } from "@/features/ui/popovers/components/modal/Modal";
+import { CacheAPIProtocol } from "@/query-api/protocol";
 import { useLocalStore } from "@/zustand/localStore";
+import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
+import React from "react";
 
-export const ArchivedDisplay = () => {
+type Props = {
+    data: CacheAPIProtocol["conversations"]["data"];
+};
+
+export const ArchivedDisplay = ({ data }: Props) => {
     const display = useLocalStore((state) => state.display.messages);
     const isCollapsed = display?.archive?.collapsed === true;
+    const updateMessagesDisplay = useAppStore(
+        (state) => state.updateMessagesDisplay,
+    );
 
     return (
         display?.archive?.movedToMenu === false && (
             <div className="relative">
                 <Button
+                    onClick={() => {
+                        updateMessagesDisplay({
+                            tabs: { conversations: "archive" },
+                        });
+                    }}
                     className={`box not-hover:bg-bg-1! w-full p-4! flex-row! rounded-4xl! duration-300! justify-start! gap-4!
                     ${isCollapsed ? "h-10! items-center!" : "h-20! items-start!"}`}
                 >
@@ -42,7 +58,16 @@ export const ArchivedDisplay = () => {
                                 interpolateSize: "allow-keywords",
                             }}
                         >
-                            <small>hi</small>
+                            <small className="flex items-center">
+                                {data.slice(0, 3).map((c, k, arr) => (
+                                    <React.Fragment key={c.id}>
+                                        <Name data={c} />
+                                        {k < arr.length - 1 && (
+                                            <span className="mr-1">,</span>
+                                        )}
+                                    </React.Fragment>
+                                ))}
+                            </small>
                         </span>
                     </div>
                 </Button>

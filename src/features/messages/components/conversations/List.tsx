@@ -5,24 +5,20 @@ import { NoConversations } from "@/features/messages/components/errors/NoConvers
 import { sortConversations } from "@/features/messages/utils/sort";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { useQuery } from "@/query/core";
+import { useAppStore } from "@/zustand/store";
+import { motion } from "motion/react";
 
 type Props = {
     isLoading?: boolean;
     conversation_id?: string | null;
     conversations: CacheAPIProtocol["conversations"]["data"] | null;
-    filter?: string;
-    reversed?: boolean;
-    onClear?: () => void;
 };
-export const List = ({
-    isLoading,
-    conversations,
-    filter,
-    conversation_id,
-    reversed,
-    onClear,
-}: Props) => {
+export const List = ({ isLoading, conversations, conversation_id }: Props) => {
     const { data: status } = useQuery({ key: ["status"] });
+    const messagesDisplay = useAppStore((state) => state.messagesDisplay);
+    const conversationsSorting = useAppStore(
+        (state) => state.conversationsSorting,
+    );
 
     if (isLoading || !conversations) {
         return (
@@ -53,6 +49,7 @@ export const List = ({
         );
     }
 
+    // splitting conversations into archived / nonarchived
     const conversationTypes = conversations.reduce(
         (acc, val) => {
             if (val.conversation_meta?.archived) {
@@ -69,40 +66,77 @@ export const List = ({
         },
     );
 
+    // sorting + filtering + reversing
     const archived = sortConversations({
         conversations: conversationTypes.archived,
-        reversed,
-        filter,
+        reversed: conversationsSorting.reversed,
+        filter: conversationsSorting.filter,
     });
     const regular = sortConversations({
         conversations: conversationTypes.regular,
-        reversed,
-        filter,
+        reversed: conversationsSorting.reversed,
+        filter: conversationsSorting.filter,
     });
 
     // jsx
     return (
-        <ul className="flex flex-col gap-1 relative grow">
-            {regular.length ? (
-                <>
-                    {archived.length && (
-                        <li>
-                            <ArchivedDisplay />
-                        </li>
-                    )}
+        <div className="flex flex-col relative grow overflow-hidden">
+            <motion.ul
+                className="flex flex-col gap-1 relative grow"
+                animate={{
+                    x:
+                        messagesDisplay.tabs.conversations !== "conversations"
+                            ? "-50%"
+                            : 0,
+                }}
+                transition={{ ease: "easeInOut", duration: 0.35 }}
+            >
+                {regular.length ? (
+                    <>
+                        {archived.length && (
+                            <li>
+                                <ArchivedDisplay data={archived} />
+                            </li>
+                        )}
 
-                    {regular.map((c) => (
+                        {regular.map((c) => (
+                            <li key={c.id}>
+                                <ConversationDisplay
+                                    data={c}
+                                    isSelected={c.id === conversation_id}
+                                />
+                            </li>
+                        ))}
+                    </>
+                ) : (
+                    <FilterNothing />
+                )}
+            </motion.ul>
+
+            <motion.ul
+                className="flex flex-col gap-1 absolute inset-0 grow bg-bg-2 z-2"
+                initial={false}
+                animate={{
+                    x:
+                        messagesDisplay.tabs.conversations === "archive"
+                            ? "0%"
+                            : "100%",
+                }}
+                transition={{ ease: "easeInOut", duration: 0.35 }}
+            >
+                {archived.length ? (
+                    archived.map((c) => (
                         <li key={c.id}>
                             <ConversationDisplay
                                 data={c}
                                 isSelected={c.id === conversation_id}
                             />
                         </li>
-                    ))}
-                </>
-            ) : (
-                <FilterNothing onClear={() => onClear?.()} />
-            )}
-        </ul>
+                    ))
+                ) : (
+                    <FilterNothing />
+                )}
+            </motion.ul>
+        </div>
     );
 };
