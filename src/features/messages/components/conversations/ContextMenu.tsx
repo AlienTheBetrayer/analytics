@@ -115,7 +115,11 @@ export const ContextMenu = ({ data }: Props) => {
                         />
                         <span className="flex items-center gap-1">
                             <PromiseState state="archive" />
-                            <span>Archive</span>
+                            <span>
+                                {data.conversation_meta?.archived
+                                    ? "Unarchive"
+                                    : "Archive"}
+                            </span>
                         </span>
                     </Button>
                 </li>
@@ -142,9 +146,14 @@ export const ContextMenu = ({ data }: Props) => {
                             height={16}
                             src="/pin.svg"
                         />
+
                         <span className="flex items-center gap-1">
                             <PromiseState state="pin" />
-                            <span>Pin</span>
+                            <span>
+                                {data.conversation_meta?.pinned
+                                    ? "Unpin"
+                                    : "Pin"}
+                            </span>
                         </span>
                     </Button>
                 </li>
