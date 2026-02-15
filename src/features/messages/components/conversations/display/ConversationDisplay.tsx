@@ -18,7 +18,7 @@ export const ConversationDisplay = ({ isSelected, data }: Props) => {
     return (
         <div className="relative">
             <LinkButton
-                className={`box p-4! flex-row! rounded-3xl! justify-start! items-start! gap-4!
+                className={`box p-4! flex-row! rounded-4xl! justify-start! items-start! gap-4!
                 ${isSelected ? "not-hover:bg-bg-4! hover:border-bg-5!" : "not-hover:bg-bg-1!"}`}
                 href={isSelected ? "/messages/" : `/messages/c/${data.id}`}
             >

@@ -54,17 +54,20 @@ export const List = ({
 
     const elements = [...conversations]
         .sort((a, b) => {
-            const aPin = a.conversation_meta?.pinned ? 1 : 0;
-            const bPin = b.conversation_meta?.pinned ? 1 : 0;
+            const metaA = a.conversation_meta;
+            const metaB = b.conversation_meta;
 
-            if (aPin !== bPin) {
-                return bPin - aPin;
-            }
-
-            const aDate = a.conversation_meta?.pinned_at || "";
-            const bDate = b.conversation_meta?.pinned_at || "";
-
-            return bDate.localeCompare(aDate);
+            return (
+                Number(!!metaB?.pinned) - Number(!!metaA?.pinned) ||
+                (metaA?.pinned && metaB?.pinned
+                    ? (metaB?.pinned_at || "").localeCompare(
+                          metaA?.pinned_at || "",
+                      )
+                    : 0) ||
+                (b.last_message?.created_at || "").localeCompare(
+                    a.last_message?.created_at || "",
+                )
+            );
         })
         .map(
             (c) =>
