@@ -27,12 +27,12 @@ export const ArchivedDisplay = () => {
                             src="/archive.svg"
                             width={24}
                             height={24}
-                            className={`duration-300! ${isCollapsed ? "w-4! h-4!" : "w-6! h-6!"}`}
+                            className={`duration-300! ${isCollapsed ? "w-4! h-4! opacity-50" : "w-6! h-6! opacity-100"}`}
                         />
                     </div>
 
                     <div
-                        className={`flex flex-col items-start gap-1 w-full overflow-hidden ${isCollapsed ? "gap-0!" : ""}`}
+                        className={`flex flex-col items-start w-full overflow-hidden ${isCollapsed ? "gap-0 opacity-50" : "gap-1 opacity-100"}`}
                     >
                         <span>Archived chats</span>
 
