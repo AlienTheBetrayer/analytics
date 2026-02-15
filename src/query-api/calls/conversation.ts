@@ -70,6 +70,7 @@ export const updateConversation = async (options: {
                               ...s.conversation_meta,
                               ...(typeof options.pinned === "boolean" && {
                                   pinned: options.pinned,
+                                  pinned_at: new Date().toISOString(),
                               }),
                               ...(typeof options.archived === "boolean" && {
                                   archived: options.archived,

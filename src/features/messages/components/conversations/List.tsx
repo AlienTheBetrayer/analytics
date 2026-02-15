@@ -52,7 +52,22 @@ export const List = ({
         );
     }
 
-    const elements = (reversed ? [...conversations].reverse() : conversations)
+    const elements = (
+        reversed ? [...conversations].reverse() : [...conversations]
+    )
+        .sort((a, b) => {
+            const aPin = a.conversation_meta?.pinned ? 1 : 0;
+            const bPin = b.conversation_meta?.pinned ? 1 : 0;
+
+            if (aPin !== bPin) {
+                return bPin - aPin;
+            }
+
+            const aDate = a.conversation_meta?.pinned_at || "";
+            const bDate = b.conversation_meta?.pinned_at || "";
+
+            return bDate.localeCompare(aDate);
+        })
         .map(
             (c) =>
                 filterConversation(c, filter) && (

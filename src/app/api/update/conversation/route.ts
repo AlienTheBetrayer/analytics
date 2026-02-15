@@ -57,7 +57,10 @@ export const POST = async (request: NextRequest) => {
                     {
                         conversation_id,
                         user_id,
-                        ...(typeof pinned === "boolean" && { pinned }),
+                        ...(typeof pinned === "boolean" && {
+                            pinned,
+                            pinned_at: new Date().toISOString(),
+                        }),
                         ...(typeof archived === "boolean" && { archived }),
                     },
                     { onConflict: "user_id,conversation_id" },

@@ -47,7 +47,7 @@ export type CacheAPIProtocol = {
             > & {
                 user: User & { profile: Profile };
             })[];
-            conversation_meta?: Pick<ConversationMeta, "archived" | "pinned">;
+            conversation_meta?: Pick<ConversationMeta, "archived" | "pinned" | "pinned_at">;
         })[];
     };
 

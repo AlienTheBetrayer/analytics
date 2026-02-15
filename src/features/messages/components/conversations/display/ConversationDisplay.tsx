@@ -36,9 +36,22 @@ export const ConversationDisplay = ({ isSelected, data }: Props) => {
                     </span>
                     <span>pin: {String(data.conversation_meta?.pinned)}</span>
                 </div>
+
+                {data.conversation_meta?.pinned && (
+                    <div className="absolute right-4 top-2">
+                        <small>
+                            <Image
+                                alt="pin"
+                                width={16}
+                                height={16}
+                                src="/pin.svg"
+                            />
+                        </small>
+                    </div>
+                )}
             </LinkButton>
 
-            <div className="absolute right-2 bottom-2">
+            <div className="absolute right-4 bottom-2">
                 <Modal
                     element={() => <ContextMenu data={data} />}
                     direction="right"

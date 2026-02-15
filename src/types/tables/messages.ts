@@ -18,7 +18,8 @@ export type ConversationMeta = {
     pinned?: boolean;
     archived?: boolean;
     created_at: string;
-}
+    pinned_at?: string;
+};
 
 /**
  * conversations
