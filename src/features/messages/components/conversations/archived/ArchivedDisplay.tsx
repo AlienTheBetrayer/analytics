@@ -31,14 +31,19 @@ export const ArchivedDisplay = () => {
                         />
                     </div>
 
-                    <div className="flex flex-col items-start gap-1 w-full overflow-hidden">
+                    <div
+                        className={`flex flex-col items-start gap-1 w-full overflow-hidden ${isCollapsed ? "gap-0!" : ""}`}
+                    >
                         <span>Archived chats</span>
 
-                        {!isCollapsed && (
-                            <span>
-                                <small>hi</small>
-                            </span>
-                        )}
+                        <span
+                            className={`transition-all duration-300 ${isCollapsed ? "h-0" : "h-fit"}`}
+                            style={{
+                                interpolateSize: "allow-keywords",
+                            }}
+                        >
+                            <small>hi</small>
+                        </span>
                     </div>
                 </Button>
 
