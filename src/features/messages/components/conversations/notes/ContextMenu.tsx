@@ -4,7 +4,7 @@ import Image from "next/image";
 
 type Props = {
     data?: CacheAPIProtocol["conversations"]["data"][number];
-}
+};
 
 export const ContextMenu = ({ data }: Props) => {
     return (

@@ -11,7 +11,7 @@ type Props = {
 };
 
 export const MessageDisplay = ({ data }: Props) => {
-    const { data: status } = useQuery({ key: ["status"]});
+    const { data: status } = useQuery({ key: ["status"] });
 
     return (
         <Modal
