@@ -38,7 +38,7 @@ export const BoardInput = () => {
             <Input
                 required
                 minLength={4}
-                placeholder="title"
+                placeholder="Enter..."
                 className="w-full"
                 value={title}
                 onChange={(value) => setTitle(value)}
