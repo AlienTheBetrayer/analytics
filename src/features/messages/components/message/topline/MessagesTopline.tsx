@@ -17,8 +17,10 @@ type Props = {
 
 export const MessagesTopline = ({ data, retrieved }: Props) => {
     const { data: status } = useQuery({ key: ["status"] });
-    const { tab, id, extra } = useParams<{ tab?: string; id?: string; extra?: string }>();
-    const isBoard = tab === "notes" && id === "board";
+    const { tab, id } = useParams<{
+        tab?: string;
+        id?: string;
+    }>();
 
     return (
         <ul className="box min-h-10! h-10! gap-1! p-0! items-center! flex-row!">
@@ -30,62 +32,58 @@ export const MessagesTopline = ({ data, retrieved }: Props) => {
             </li>
 
             <li className="ml-auto!">
-                <LinkButton
-                    href={(isBoard && !extra) ? "/messages/notes" : "/messages/notes/board"}
-                >
-                    <Image
-                        alt={isBoard ? "back" : "board"}
-                        width={16}
-                        height={16}
-                        src={isBoard ? "/back.svg" : "/dashboard.svg"}
-                    />
-                </LinkButton>
-            </li>
+                <ul className="flex items-center gap-1">
+                    {tab === "notes" && id !== "board" && (
+                        <li>
+                            <LinkButton href="/messages/notes/board">
+                                <Image
+                                    alt="board"
+                                    width={16}
+                                    height={16}
+                                    src="/dashboard.svg"
+                                />
+                            </LinkButton>
+                        </li>
+                    )}
 
-            <li>
-                <Tooltip
-                    direction="top"
-                    text={`Re-fetch ${isBoard ? "boards" : "messages"}`}
-                >
-                    <Button
-                        onClick={() => {
-                            if (!status) {
-                                return;
-                            }
+                    <li>
+                        <Tooltip
+                            direction="top"
+                            text="Re-fetch messages"
+                            isEnabled={!!retrieved?.conversation_id}
+                        >
+                            <Button
+                                onClick={() => {
+                                    if (!status) {
+                                        return;
+                                    }
 
-                            if (isBoard) {
-                                wrapPromise("reload", async () => {
-                                    return queryInvalidate({
-                                        key: ["noteboards", status.id],
-                                        silent: false,
+                                    if (!retrieved?.conversation_id) {
+                                        return;
+                                    }
+
+                                    wrapPromise("reload", async () => {
+                                        return queryInvalidate({
+                                            key: [
+                                                "messages",
+                                                retrieved.conversation_id,
+                                            ],
+                                            silent: false,
+                                        });
                                     });
-                                });
-                            } else {
-                                if (!retrieved?.conversation_id) {
-                                    return;
-                                }
-
-                                wrapPromise("reload", async () => {
-                                    return queryInvalidate({
-                                        key: [
-                                            "messages",
-                                            retrieved.conversation_id,
-                                        ],
-                                        silent: false,
-                                    });
-                                });
-                            }
-                        }}
-                    >
-                        <PromiseState state="reload" />
-                        <Image
-                            alt=""
-                            width={14}
-                            height={14}
-                            src="/reload.svg"
-                        />
-                    </Button>
-                </Tooltip>
+                                }}
+                            >
+                                <PromiseState state="reload" />
+                                <Image
+                                    alt=""
+                                    width={14}
+                                    height={14}
+                                    src="/reload.svg"
+                                />
+                            </Button>
+                        </Tooltip>
+                    </li>
+                </ul>
             </li>
         </ul>
     );

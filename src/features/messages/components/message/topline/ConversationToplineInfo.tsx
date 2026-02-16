@@ -2,6 +2,7 @@ import { MiniProfile } from "@/features/messages/components/message/topline/Mini
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { useQuery } from "@/query/core";
 import Image from "next/image";
+import { useParams } from "next/navigation";
 
 type Props = {
     data: CacheAPIProtocol["messages"]["data"] | null;
@@ -11,21 +12,37 @@ type Props = {
 export const ConversationToplineInfo = ({ data, retrieved }: Props) => {
     // fetching
     const { data: status } = useQuery({ key: ["status"] });
+    const { tab, id } = useParams<{ tab?: string; id?: string }>();
 
     if (!data) {
-        if (!retrieved?.user) {
-            return null;
+        if (tab === "notes") {
+            return (
+                <div className="flex items-center gap-1">
+                    <div className="w-1 h-1 rounded-full bg-orange-1" />
+                    <Image
+                        alt=""
+                        width={16}
+                        height={16}
+                        src="/pencil.svg"
+                    />
+                    <span>Notes</span>
+                </div>
+            );
         }
 
-        return (
-            <div className="flex items-center gap-1">
-                <div className="w-1 h-1 rounded-full bg-orange-1" />
-                <MiniProfile data={retrieved.user} />
-            </div>
-        );
+        if (retrieved?.user) {
+            return (
+                <div className="flex items-center gap-1">
+                    <div className="w-1 h-1 rounded-full bg-orange-1" />
+                    <MiniProfile data={retrieved.user} />
+                </div>
+            );
+        }
+
+        return null;
     }
 
-    // jsx selector
+    // jsx selector if already exists
     return (
         <div className="flex items-center gap-1">
             <div className="w-1 h-1 rounded-full bg-blue-1" />
@@ -70,6 +87,8 @@ export const ConversationToplineInfo = ({ data, retrieved }: Props) => {
                         );
                     }
                     default: {
+                        // url selector
+
                         return null;
                     }
                 }

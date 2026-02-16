@@ -120,7 +120,7 @@ export const Menu = ({ hideMenu }: Props) => {
 
                                     <LinkButton href="/messages/notes/board">
                                         <Image
-                                            src="/save.svg"
+                                            src="/pencil.svg"
                                             width={16}
                                             height={16}
                                             alt=""

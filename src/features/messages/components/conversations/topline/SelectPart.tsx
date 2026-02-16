@@ -76,9 +76,9 @@ export const SelectPart = ({ hr }: Props) => {
                                 <span className="flex items-center gap-1">
                                     <Image
                                         alt=""
-                                        width={12}
-                                        height={12}
-                                        src="/save.svg"
+                                        width={16}
+                                        height={16}
+                                        src="/pencil.svg"
                                     />
                                 </span>
                             </Tooltip>

@@ -1,6 +1,7 @@
 import { NoNotes } from "@/features/messages/components/errors/NoNotes";
 import { BoardDisplay } from "@/features/messages/components/noteboard/BoardDisplay";
 import { FullBoardDisplay } from "@/features/messages/components/noteboard/FullBoardDisplay";
+import { NoteboardTopline } from "@/features/messages/components/noteboard/NoteboardTopline";
 import { useQuery } from "@/query/core";
 import { useParams } from "next/navigation";
 import { useMemo } from "react";
@@ -18,34 +19,45 @@ export const NoteBoard = () => {
 
     // fallbacks
     if (isLoading) {
-        return <div className="loading w-full grow flex" />;
+        return <div className="loading w-full grow" />;
     }
 
     if (!data?.length) {
         return (
-            <div className="loading w-full grow flex items-center justify-center">
-                <NoNotes />
-            </div>
+            <>
+                <NoteboardTopline data={extraTab} />
+                <div className="loading w-full grow flex items-center justify-center">
+                    <NoNotes />
+                </div>
+            </>
         );
     }
 
     if (extra) {
         return (
-            <div className="flex w-full grow">
-                <FullBoardDisplay data={extraTab} />
-            </div>
+            <>
+                <NoteboardTopline data={extraTab} />
+
+                <div className="flex w-full grow">
+                    <FullBoardDisplay data={extraTab} />
+                </div>
+            </>
         );
     }
 
     return (
-        <div className="flex w-full grow">
-            <ul>
-                {data.map((d) => (
-                    <li key={d.id}>
-                        <BoardDisplay data={d} />
-                    </li>
-                ))}
-            </ul>
-        </div>
+        <>
+            <NoteboardTopline data={extraTab} />
+
+            <div className="flex w-full grow">
+                <ul>
+                    {data.map((d) => (
+                        <li key={d.id}>
+                            <BoardDisplay data={d} />
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        </>
     );
 };

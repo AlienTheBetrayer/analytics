@@ -41,14 +41,14 @@ export const Avatar = ({ data }: Props) => {
                         );
                     }
                     case "notes": {
-                        <div className="rounded-full w-12 h-12 loading aspect-square flex items-center justify-center">
+                        return <div className="rounded-full w-12 h-12 loading aspect-square flex items-center justify-center">
                             <Image
                                 alt=""
                                 width={16}
                                 height={16}
-                                src="/save.svg"
+                                src="/pencil.svg"
                             />
-                        </div>;
+                        </div>
                     }
                     case "channel": {
                     }

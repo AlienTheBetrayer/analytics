@@ -16,7 +16,7 @@ export const ContextMenu = ({ data }: Props) => {
                     alt=""
                     width={16}
                     height={16}
-                    src="/save.svg"
+                    src="/pencil.svg"
                 />
             </li>
 

@@ -45,7 +45,7 @@ export const CreateConversation = () => {
                         alt=""
                         width={16}
                         height={16}
-                        src="/save.svg"
+                        src="/pencil.svg"
                     />
                     <span>Notes</span>
                 </Button>

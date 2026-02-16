@@ -195,7 +195,7 @@ export const Desktop = ({ className }: Props) => {
                                     className="button-img"
                                 >
                                     <Image
-                                        src="/save.svg"
+                                        src="/pencil.svg"
                                         width={16}
                                         height={16}
                                         alt=""

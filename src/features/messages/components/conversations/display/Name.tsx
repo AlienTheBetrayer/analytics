@@ -50,7 +50,7 @@ export const Name = ({ data }: Props) => {
                         alt=""
                         width={16}
                         height={16}
-                        src="/save.svg"
+                        src="/pencil.svg"
                     />
                     <span>Notes</span>
                 </span>
