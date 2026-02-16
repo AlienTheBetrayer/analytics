@@ -116,3 +116,43 @@ export const __contact = async (type: "single" | "all", ids: string[]) => {
 
     return messages;
 };
+
+export const __requests = async (
+    type: "incoming" | "outcoming" | "friends",
+    args: unknown[],
+) => {
+    if (!args[0]) {
+        throw new Error("user_id is undefined");
+    }
+
+    const requests = (
+        await axios.get(
+            type === "outcoming"
+                ? "/api/get/requests_outcoming/"
+                : type === "incoming"
+                  ? "/api/get/requests_incoming"
+                  : "/api/get/friends",
+            {
+                params: { user_id: args[0] },
+            },
+        )
+    ).data.requests as string[];
+    const user_ids = requests.join(",");
+
+    if (user_ids.length) {
+        // caching and normalizing them all
+        const users = await axios.get("/api/get/users", {
+            params: { user_ids },
+        });
+
+        for (const user of users.data.users) {
+            queryMutate({ key: ["user", user.id], value: user });
+            queryMutate({
+                key: ["user__username", user.username],
+                value: user,
+            });
+        }
+    }
+
+    return requests;
+};
