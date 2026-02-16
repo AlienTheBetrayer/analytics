@@ -182,10 +182,7 @@ export const Desktop = ({ className }: Props) => {
                                             alt="msg"
                                         />
                                         <TabSelection
-                                            condition={
-                                                page === "messages" &&
-                                                secondary !== "notes"
-                                            }
+                                            condition={page === "messages"}
                                         />
                                     </LinkButton>
                                 </Tooltip>
@@ -193,7 +190,7 @@ export const Desktop = ({ className }: Props) => {
 
                             <li>
                                 <LinkButton
-                                    href="/messages/notes"
+                                    href="/messages/notes/board"
                                     styles="link"
                                     className="button-img"
                                 >

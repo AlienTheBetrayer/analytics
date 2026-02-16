@@ -4,6 +4,8 @@ import { MessageInput } from "@/features/messages/components/message/MessageInpu
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { useQuery } from "@/query/core";
 import { MessagesTopline } from "@/features/messages/components/message/topline/MessagesTopline";
+import { useAppStore } from "@/zustand/store";
+import { NoteBoard } from "@/features/messages/components/noteboard/NoteBoard";
 
 type Props = {
     retrieved?: CacheAPIProtocol["conversation_retrieve"]["data"];
@@ -13,6 +15,7 @@ export const MessageView = ({ retrieved }: Props) => {
     const { data, isLoading } = useQuery({
         key: ["messages", retrieved?.conversation_id ?? undefined],
     });
+    const selectDisplay = useAppStore((state) => state.selectDisplay);
 
     // fallbacks
     if (isLoading) {
@@ -28,8 +31,20 @@ export const MessageView = ({ retrieved }: Props) => {
         );
     }
 
+    if (selectDisplay === "noteboard") {
+        return (
+            <article className="flex flex-col bg-bg-2! grow p-4! gap-2 rounded-4xl">
+                <MessagesTopline
+                    data={data}
+                    retrieved={retrieved}
+                />
+                <NoteBoard />
+            </article>
+        );
+    }
+
     return (
-        <article className="flex flex-col bg-bg-2! grow p-4! gap-4 rounded-4xl">
+        <article className="flex flex-col bg-bg-2! grow p-4! gap-2 rounded-4xl">
             <MessagesTopline
                 data={data}
                 retrieved={retrieved}

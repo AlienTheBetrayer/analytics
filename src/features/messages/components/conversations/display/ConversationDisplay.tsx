@@ -60,8 +60,8 @@ export const ConversationDisplay = ({ data }: Props) => {
                     <Button className="min-w-6! min-h-6! h-6! w-6! p-0!">
                         <Image
                             alt=""
-                            width={12}
-                            height={12}
+                            width={13}
+                            height={13}
                             src="/menu.svg"
                         />
                     </Button>

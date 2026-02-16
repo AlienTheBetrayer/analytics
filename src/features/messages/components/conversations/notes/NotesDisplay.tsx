@@ -59,7 +59,19 @@ export const NotesDisplay = ({ data }: Props) => {
                 )}
             </LinkButton>
 
-            <div className="absolute right-4 bottom-2">
+            <div className="flex items-center gap-1 absolute right-4 bottom-2">
+                <LinkButton
+                    href="/messages/notes/board"
+                    className="w-6! h-6! p-0! min-w-6! min-h-6!"
+                >
+                    <Image
+                        alt=""
+                        width={13}
+                        height={13}
+                        src="/dashboard.svg"
+                    />
+                </LinkButton>
+
                 <Modal
                     element={() => <ContextMenu data={data} />}
                     direction="right"
@@ -67,8 +79,8 @@ export const NotesDisplay = ({ data }: Props) => {
                     <Button className="min-w-6! min-h-6! h-6! w-6! p-0!">
                         <Image
                             alt=""
-                            width={12}
-                            height={12}
+                            width={13}
+                            height={13}
                             src="/menu.svg"
                         />
                     </Button>

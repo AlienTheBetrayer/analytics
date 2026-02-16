@@ -7,7 +7,12 @@ import { WrongURL } from "@/features/messages/components/errors/WrongURL";
 import { useAppStore } from "@/zustand/store";
 import { useEffect, useMemo } from "react";
 
-export type MessagesSelectResult = "url" | "fetch" | "notselected" | "wrong";
+export type MessagesSelectResult =
+    | "url"
+    | "fetch"
+    | "notselected"
+    | "wrong"
+    | "noteboard";
 export type MessagesTab = "u" | "c" | "notes" | "none";
 
 export const Select = () => {
@@ -21,10 +26,6 @@ export const Select = () => {
 
     // retrieving conversation_id from url if: present id & tab is not already "c"
     const { data: status } = useQuery({ key: ["status"] });
-    const { data: retrievedConversation } = useQuery({
-        key: ["conversation_retrieve", tab, status?.id, id ?? null],
-        trigger: !!((tab !== "c" && id) || tab === "notes"),
-    });
 
     let result: MessagesSelectResult = "notselected";
 
@@ -48,6 +49,10 @@ export const Select = () => {
             break;
         }
         case "notes": {
+            if (id === "board") {
+                result = "noteboard";
+                break;
+            }
             result = "fetch";
             break;
         }
@@ -56,6 +61,11 @@ export const Select = () => {
             break;
         }
     }
+
+    const { data: retrievedConversation } = useQuery({
+        key: ["conversation_retrieve", tab, status?.id, id ?? null],
+        trigger: result === "fetch",
+    });
 
     const retrieved = useMemo(() => {
         return tab === "c"

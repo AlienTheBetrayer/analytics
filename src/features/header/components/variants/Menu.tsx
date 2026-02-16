@@ -114,14 +114,11 @@ export const Menu = ({ hideMenu }: Props) => {
                                         <span>Messages</span>
                                         <TabSelection
                                             className="right-4! top-2!"
-                                            condition={
-                                                page === "messages" &&
-                                                secondary !== "notes"
-                                            }
+                                            condition={page === "messages"}
                                         />
                                     </LinkButton>
 
-                                    <LinkButton href="/messages/notes">
+                                    <LinkButton href="/messages/notes/board">
                                         <Image
                                             src="/save.svg"
                                             width={16}

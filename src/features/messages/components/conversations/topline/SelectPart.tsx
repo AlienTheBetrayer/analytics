@@ -67,6 +67,23 @@ export const SelectPart = ({ hr }: Props) => {
                             </Tooltip>
                         );
                     }
+                    case "noteboard": {
+                        return (
+                            <Tooltip
+                                direction="top"
+                                text="Subsection of notes"
+                            >
+                                <span className="flex items-center gap-1">
+                                    <Image
+                                        alt=""
+                                        width={12}
+                                        height={12}
+                                        src="/save.svg"
+                                    />
+                                </span>
+                            </Tooltip>
+                        );
+                    }
                 }
             })()}
         </>
