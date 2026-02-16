@@ -4,8 +4,7 @@ import { useLocalStore } from "@/zustand/localStore";
 import Image from "next/image";
 
 export const DisplayFormat = () => {
-    // local store
-    const format = useLocalStore((state) => state.display.view.contactMessages);
+    const display = useLocalStore((state) => state.display);
     const updateDisplay = useLocalStore((state) => state.updateDisplay);
 
     return (
@@ -17,18 +16,18 @@ export const DisplayFormat = () => {
                     height={16}
                     src="/cubes.svg"
                 />
-                Messages format
+                Notes format
             </span>
 
             <hr />
 
-            <ul className="grid grid-flow-col auto-cols-fr gap-4">
+            <ul className="grid grid-cols-2 gap-2">
                 <li className="flex flex-col gap-1 items-center">
                     <Checkbox
-                        value={format === "compact"}
+                        value={display?.messages?.noteboard?.view === "compact"}
                         onToggle={() =>
                             updateDisplay({
-                                view: { contactMessages: "compact" },
+                                messages: { noteboard: { view: "compact" } },
                             })
                         }
                     >
@@ -38,7 +37,7 @@ export const DisplayFormat = () => {
                         className="flex-col! w-full rounded-md! h-full items-center!"
                         onClick={() => {
                             updateDisplay({
-                                view: { contactMessages: "compact" },
+                                messages: { noteboard: { view: "compact" } },
                             });
                         }}
                     >
@@ -50,38 +49,28 @@ export const DisplayFormat = () => {
 
                 <li className="flex flex-col gap-1 items-center">
                     <Checkbox
-                        value={format === "expanded"}
+                        value={
+                            display?.messages?.noteboard?.view === "expanded"
+                        }
                         onToggle={() =>
                             updateDisplay({
-                                view: { contactMessages: "expanded" },
+                                messages: { noteboard: { view: "expanded" } },
                             })
                         }
                     >
                         Expanded
                     </Checkbox>
                     <Button
-                        className="flex-col! w-full rounded-md! h-full! items-start!"
+                        className="flex-col! w-full rounded-md! h-full items-center!"
                         onClick={() => {
                             updateDisplay({
-                                view: { contactMessages: "expanded" },
+                                messages: { noteboard: { view: "expanded" } },
                             });
                         }}
                     >
                         <div className="w-full h-4 loading" />
-
-                        <div className="grid grid-cols-[2rem_1fr_1fr] gap-2 w-full items-center">
-                            <div className="w-full aspect-square rounded-full! loading" />
-
-                            <div className="flex flex-col gap-2">
-                                <div className="h-4 loading" />
-                                <div className="h-4 loading" />
-                            </div>
-
-                            <div className="flex flex-col gap-2">
-                                <div className="h-4 loading" />
-                                <div className="h-4 loading" />
-                            </div>
-                        </div>
+                        <div className="w-full h-4 loading" />
+                        <div className="w-full h-4 loading" />
                     </Button>
                 </li>
             </ul>

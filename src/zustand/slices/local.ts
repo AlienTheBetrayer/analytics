@@ -20,6 +20,9 @@ export const LocalSlice: SliceFunction<LocalStore, LocalStore> = (set) => {
                     collapsed: false,
                     movedToMenu: false,
                 },
+                noteboard: {
+                    view: "expanded"
+                }
             },
         },
         theme: "dark",

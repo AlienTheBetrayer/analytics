@@ -22,6 +22,9 @@ export type Display = {
             collapsed: boolean;
             movedToMenu: boolean;
         };
+        noteboard: {
+            view: "compact" | "expanded";
+        };
     };
 };
 

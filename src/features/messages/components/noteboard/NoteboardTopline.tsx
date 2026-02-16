@@ -1,5 +1,8 @@
+import { CreateBoard } from "@/features/messages/components/noteboard/CreateBoard";
+import { DisplayFormat } from "@/features/messages/components/noteboard/DisplayFormat";
 import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
+import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { PromiseState } from "@/promises/components/PromiseState";
 import { wrapPromise } from "@/promises/core";
@@ -46,16 +49,65 @@ export const NoteboardTopline = ({ data }: Props) => {
             )}
 
             <li className="ml-auto!">
-                <LinkButton
-                    href={!extra ? "/messages/notes" : "/messages/notes/board"}
+                <Tooltip
+                    direction="top"
+                    text="Back"
                 >
-                    <Image
-                        alt="back"
-                        width={16}
-                        height={16}
-                        src="/back.svg"
-                    />
-                </LinkButton>
+                    <LinkButton
+                        href={
+                            !extra ? "/messages/notes" : "/messages/notes/board"
+                        }
+                    >
+                        <Image
+                            alt="back"
+                            width={16}
+                            height={16}
+                            src="/back.svg"
+                        />
+                    </LinkButton>
+                </Tooltip>
+            </li>
+
+            <li>
+                <Modal
+                    element={() => <CreateBoard />}
+                    direction="bottom-left"
+                >
+                    <Tooltip
+                        direction="top"
+                        text="Create"
+                    >
+                        <Button>
+                            <Image
+                                alt=""
+                                width={16}
+                                height={16}
+                                src="/cubeadd.svg"
+                            />
+                        </Button>
+                    </Tooltip>
+                </Modal>
+            </li>
+
+            <li>
+                <Modal
+                    element={() => <DisplayFormat />}
+                    direction="bottom-left"
+                >
+                    <Tooltip
+                        direction="top"
+                        text="Display Format"
+                    >
+                        <Button>
+                            <Image
+                                alt=""
+                                width={16}
+                                height={16}
+                                src="/cubes.svg"
+                            />
+                        </Button>
+                    </Tooltip>
+                </Modal>
             </li>
 
             <li>

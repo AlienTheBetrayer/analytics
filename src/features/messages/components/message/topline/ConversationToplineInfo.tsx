@@ -12,7 +12,7 @@ type Props = {
 export const ConversationToplineInfo = ({ data, retrieved }: Props) => {
     // fetching
     const { data: status } = useQuery({ key: ["status"] });
-    const { tab, id } = useParams<{ tab?: string; id?: string }>();
+    const { tab } = useParams<{ tab?: string; id?: string }>();
 
     if (!data) {
         if (tab === "notes") {
@@ -87,8 +87,6 @@ export const ConversationToplineInfo = ({ data, retrieved }: Props) => {
                         );
                     }
                     default: {
-                        // url selector
-
                         return null;
                     }
                 }

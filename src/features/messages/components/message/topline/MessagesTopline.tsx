@@ -35,14 +35,19 @@ export const MessagesTopline = ({ data, retrieved }: Props) => {
                 <ul className="flex items-center gap-1">
                     {tab === "notes" && id !== "board" && (
                         <li>
-                            <LinkButton href="/messages/notes/board">
-                                <Image
-                                    alt="board"
-                                    width={16}
-                                    height={16}
-                                    src="/dashboard.svg"
-                                />
-                            </LinkButton>
+                            <Tooltip
+                                direction="top"
+                                text="To noteboard"
+                            >
+                                <LinkButton href="/messages/notes/board">
+                                    <Image
+                                        alt="board"
+                                        width={16}
+                                        height={16}
+                                        src="/dashboard.svg"
+                                    />
+                                </LinkButton>
+                            </Tooltip>
                         </li>
                     )}
 
