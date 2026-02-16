@@ -5,6 +5,7 @@ export const upsertNoteboard = async (
         | { type: "create"; title: string; description?: string }
         | {
               type: "edit";
+              noteboard_id: string;
               title?: string;
               description?: string;
               pinned?: boolean;
@@ -17,6 +18,9 @@ export const upsertNoteboard = async (
         body: {
             type: options.type,
             user_id: options.user_id,
+            ...("noteboard_id" in options && {
+                noteboard_id: options.noteboard_id,
+            }),
             ...("title" in options && { title: options.title }),
             ...("description" in options && {
                 description: options.description,
@@ -37,6 +41,33 @@ export const deleteNoteboard = async (options: {
         method: "POST",
         body: {
             ...options,
+        },
+    });
+
+    return res;
+};
+
+export const upsertNote = async (
+    options: (
+        | { type: "create"; title: string; checked?: boolean }
+        | {
+              type: "edit";
+              element_id: string;
+              title?: string;
+              pinned?: boolean;
+              checked?: boolean;
+          }
+    ) & { user_id: string },
+) => {
+    const res = await refreshedRequest({
+        route: "/api/update/note",
+        method: "POST",
+        body: {
+            type: options.type,
+            user_id: options.user_id,
+            title: options.title,
+            ...("pinned" in options && { pinned: options.pinned }),
+            ...("checked" in options && { checked: options.checked }),
         },
     });
 
