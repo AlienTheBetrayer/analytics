@@ -1,5 +1,6 @@
 import { ConversationToplineInfo } from "@/features/messages/components/message/topline/ConversationToplineInfo";
 import { Button } from "@/features/ui/button/components/Button";
+import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { PromiseState } from "@/promises/components/PromiseState";
 import { wrapPromise } from "@/promises/core";
@@ -16,7 +17,7 @@ type Props = {
 
 export const MessagesTopline = ({ data, retrieved }: Props) => {
     const { data: status } = useQuery({ key: ["status"] });
-    const { tab, id } = useParams<{ tab?: string; id?: string }>();
+    const { tab, id, extra } = useParams<{ tab?: string; id?: string; extra?: string }>();
     const isBoard = tab === "notes" && id === "board";
 
     return (
@@ -29,6 +30,19 @@ export const MessagesTopline = ({ data, retrieved }: Props) => {
             </li>
 
             <li className="ml-auto!">
+                <LinkButton
+                    href={(isBoard && !extra) ? "/messages/notes" : "/messages/notes/board"}
+                >
+                    <Image
+                        alt={isBoard ? "back" : "board"}
+                        width={16}
+                        height={16}
+                        src={isBoard ? "/back.svg" : "/dashboard.svg"}
+                    />
+                </LinkButton>
+            </li>
+
+            <li>
                 <Tooltip
                     direction="top"
                     text={`Re-fetch ${isBoard ? "boards" : "messages"}`}

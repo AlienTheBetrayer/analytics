@@ -16,7 +16,11 @@ export const Title = ({ data }: Props) => {
 
     // sources
     const messagesDisplay = useAppStore((state) => state.messagesDisplay);
-    const { tab, id } = useParams<{ tab?: string; id?: string }>();
+    const { tab, id, extra } = useParams<{
+        tab?: string;
+        id?: string;
+        extra?: string;
+    }>();
 
     // conversation absence
     if (!data?.length) {
@@ -44,7 +48,7 @@ export const Title = ({ data }: Props) => {
             if (id === "board") {
                 color = "var(--blue-1)";
                 image = "/dashboard.svg";
-                text = "Note Board";
+                text = extra ? "Note" : "Note Board";
             } else {
                 color = "var(--blue-1)";
                 image = "/pencil.svg";

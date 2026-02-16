@@ -32,7 +32,7 @@ export const ArchivedDisplay = ({ data }: Props) => {
                     ${isCollapsed ? "h-10! items-center!" : "h-20! items-start!"}`}
                 >
                     <div
-                        className={`relative rounded-full transition-all duration-300 flex items-center justify-center bg-linear-to-b from-bg-3 to-bg-5 shrink-0
+                        className={`relative rounded-full transition-all duration-300 flex items-center justify-center bg-linear-to-bl from-bg-3 to-bg-5 shrink-0
                         ${isCollapsed ? "w-fit h-fit" : "w-12 h-12"}`}
                         style={{
                             interpolateSize: "allow-keywords",

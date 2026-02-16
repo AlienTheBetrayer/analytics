@@ -1,6 +1,7 @@
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import "../../message/ContextMenu.css";
 import Image from "next/image";
+import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 
 type Props = {
     data?: CacheAPIProtocol["conversations"]["data"][number];
@@ -17,6 +18,18 @@ export const ContextMenu = ({ data }: Props) => {
                     height={16}
                     src="/save.svg"
                 />
+            </li>
+
+            <li>
+                <LinkButton href="/messages/notes/board">
+                    <Image
+                        alt=""
+                        width={16}
+                        height={16}
+                        src="/dashboard.svg"
+                    />
+                    Board
+                </LinkButton>
             </li>
         </ul>
     );
