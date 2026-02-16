@@ -1,7 +1,12 @@
+import { CacheAPIProtocol } from "@/query-api/protocol";
 import "../../message/ContextMenu.css";
 import Image from "next/image";
 
-export const ContextMenu = () => {
+type Props = {
+    data?: CacheAPIProtocol["conversations"]["data"][number];
+}
+
+export const ContextMenu = ({ data }: Props) => {
     return (
         <ul className="box acrylic p-4! rounded-2xl! gap-1! **:border-0! w-screen max-w-64 message-ctx">
             <li className="flex items-center gap-1 mb-6! self-center">
@@ -10,7 +15,7 @@ export const ContextMenu = () => {
                     alt=""
                     width={16}
                     height={16}
-                    src="/archive.svg"
+                    src="/save.svg"
                 />
             </li>
         </ul>

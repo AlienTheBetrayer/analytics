@@ -1,5 +1,6 @@
 import { ArchivedDisplay } from "@/features/messages/components/conversations/archived/ArchivedDisplay";
 import { ConversationDisplay } from "@/features/messages/components/conversations/display/ConversationDisplay";
+import { NotesDisplay } from "@/features/messages/components/conversations/notes/NotesDisplay";
 import { FilterNothing } from "@/features/messages/components/errors/FilterNothing";
 import { NoConversations } from "@/features/messages/components/errors/NoConversations";
 import { sortConversations } from "@/features/messages/utils/sort";
@@ -51,6 +52,11 @@ export const List = ({ isLoading, conversations }: Props) => {
     // splitting conversations into archived / nonarchived
     const conversationTypes = conversations.reduce(
         (acc, val) => {
+            if (val.type === "notes") {
+                acc.notes = val;
+                return acc;
+            }
+
             if (val.conversation_meta?.archived) {
                 acc.archived.push(val);
             } else {
@@ -60,8 +66,9 @@ export const List = ({ isLoading, conversations }: Props) => {
             return acc;
         },
         {
-            archived: Array<(typeof conversations)[number]>(),
-            regular: Array<(typeof conversations)[number]>(),
+            archived: [] as (typeof conversations)[number][],
+            regular: [] as (typeof conversations)[number][],
+            notes: undefined as (typeof conversations)[number] | undefined,
         },
     );
 
@@ -103,11 +110,13 @@ export const List = ({ isLoading, conversations }: Props) => {
                             </li>
                         )}
 
+                        <li>
+                            <NotesDisplay data={conversationTypes.notes} />
+                        </li>
+
                         {regular.map((c) => (
                             <li key={c.id}>
-                                <ConversationDisplay
-                                    data={c}
-                                />
+                                <ConversationDisplay data={c} />
                             </li>
                         ))}
                     </>
@@ -130,9 +139,7 @@ export const List = ({ isLoading, conversations }: Props) => {
                 {archived.length ? (
                     archived.map((c) => (
                         <li key={c.id}>
-                            <ConversationDisplay
-                                data={c}
-                            />
+                            <ConversationDisplay data={c} />
                         </li>
                     ))
                 ) : (

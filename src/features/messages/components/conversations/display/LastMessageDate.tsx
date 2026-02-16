@@ -3,12 +3,12 @@ import { exactTime } from "@/utils/other/relativeTime";
 import Image from "next/image";
 
 type Props = {
-    data: CacheAPIProtocol["conversations"]["data"][number];
+    data?: CacheAPIProtocol["conversations"]["data"][number];
 };
 
 export const LastMessageDate = ({ data }: Props) => {
     return (
-        data.last_message && (
+        data?.last_message && (
             <span className="flex items-center gap-1 ml-auto! whitespace-nowrap">
                 <Image
                     alt=""

@@ -1,39 +1,51 @@
-import { ContextMenu } from "@/features/messages/components/conversations/ContextMenu";
-import { Avatar } from "@/features/messages/components/conversations/display/Avatar";
 import { LastMessage } from "@/features/messages/components/conversations/display/LastMessage";
 import { LastMessageDate } from "@/features/messages/components/conversations/display/LastMessageDate";
-import { Name } from "@/features/messages/components/conversations/display/Name";
+import { ContextMenu } from "@/features/messages/components/conversations/notes/ContextMenu";
 import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import Image from "next/image";
+import { useParams } from "next/navigation";
 
 type Props = {
-    isSelected?: boolean;
-    data: CacheAPIProtocol["conversations"]["data"][number];
+    data?: CacheAPIProtocol["conversations"]["data"][number];
 };
 
-export const ConversationDisplay = ({ isSelected, data }: Props) => {
+export const NotesDisplay = ({ data }: Props) => {
+    const { tab } = useParams<{ tab?: string }>();
+    const isSelected = tab === "notes";
+
     return (
         <div className="relative">
             <LinkButton
                 className={`box p-4! flex-row! h-20! rounded-4xl! justify-start! items-start! gap-4!
                 ${isSelected ? "not-hover:bg-bg-4! hover:border-bg-5!" : "not-hover:bg-bg-1!"}`}
-                href={isSelected ? "/messages/" : `/messages/c/${data.id}`}
+                href={isSelected ? "/messages/" : `/messages/notes`}
             >
-                <Avatar data={data} />
+                <div
+                    className="relative rounded-full w-12 h-12 flex items-center justify-center bg-bg-3 shrink-0 
+                    bg-linear-to-br from-[#5367ff] to-[#222e86]"
+                >
+                    <Image
+                        alt="notes"
+                        src="/save.svg"
+                        width={24}
+                        height={24}
+                        className="w-6! h-6! invert-90!"
+                    />
+                </div>
 
                 <div className="flex flex-col gap-1 w-full overflow-hidden">
                     <div className="grid grid-cols-[auto_25%]">
-                        <Name data={data} />
+                        <span>Notes</span>
                         <LastMessageDate data={data} />
                     </div>
 
                     <LastMessage data={data} />
                 </div>
 
-                {data.conversation_meta?.pinned && (
+                {data?.conversation_meta?.pinned && (
                     <div className="absolute right-4 top-2">
                         <small>
                             <Image
