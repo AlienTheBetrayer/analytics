@@ -68,48 +68,52 @@ export const NoteboardTopline = ({ data }: Props) => {
                 </Tooltip>
             </li>
 
-            <li>
-                <Modal
-                    element={() => <CreateBoard />}
-                    direction="bottom-left"
-                >
-                    <Tooltip
-                        direction="top"
-                        text="Create"
-                    >
-                        <Button>
-                            <Image
-                                alt=""
-                                width={16}
-                                height={16}
-                                src="/cubeadd.svg"
-                            />
-                        </Button>
-                    </Tooltip>
-                </Modal>
-            </li>
+            {!extra && (
+                <>
+                    <li>
+                        <Modal
+                            element={() => <CreateBoard />}
+                            direction="bottom-left"
+                        >
+                            <Tooltip
+                                direction="top"
+                                text="Create"
+                            >
+                                <Button>
+                                    <Image
+                                        alt=""
+                                        width={16}
+                                        height={16}
+                                        src="/cubeadd.svg"
+                                    />
+                                </Button>
+                            </Tooltip>
+                        </Modal>
+                    </li>
 
-            <li>
-                <Modal
-                    element={() => <DisplayFormat />}
-                    direction="bottom-left"
-                >
-                    <Tooltip
-                        direction="top"
-                        text="Display Format"
-                    >
-                        <Button>
-                            <Image
-                                alt=""
-                                width={16}
-                                height={16}
-                                src="/cubes.svg"
-                            />
-                        </Button>
-                    </Tooltip>
-                </Modal>
-            </li>
-
+                    <li>
+                        <Modal
+                            element={() => <DisplayFormat />}
+                            direction="bottom-left"
+                        >
+                            <Tooltip
+                                direction="top"
+                                text="Display Format"
+                            >
+                                <Button>
+                                    <Image
+                                        alt=""
+                                        width={16}
+                                        height={16}
+                                        src="/cubes.svg"
+                                    />
+                                </Button>
+                            </Tooltip>
+                        </Modal>
+                    </li>
+                </>
+            )}
+            
             <li>
                 <Tooltip
                     direction="top"

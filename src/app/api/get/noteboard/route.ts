@@ -15,7 +15,7 @@ export const GET = async (request: NextRequest) => {
             .from("noteboards")
             .select(
                 `
-                    id, title, description, pinned, pinned_at, edited_at, created_at
+                    id, title, description, pinned, pinned_at, edited_at, created_at,
                     elements:noteboard_elements(id, title, checked, pinned, pinned_at, edited_at, created_at)
                 `,
             )
