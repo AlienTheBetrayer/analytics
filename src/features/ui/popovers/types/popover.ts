@@ -7,4 +7,5 @@ export type PopoverDirection =
     | "bottom-left"
     | "top-right"
     | "top-left"
-    | "middle";
+    | "middle"
+    | "screen-middle";

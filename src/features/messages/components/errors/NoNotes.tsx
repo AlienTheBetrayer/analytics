@@ -1,5 +1,7 @@
+import { CreateBoard } from "@/features/messages/components/noteboard/CreateBoard";
 import { AbsentData } from "@/features/ui/absentdata/components/AbsentData";
 import { Button } from "@/features/ui/button/components/Button";
+import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 import Image from "next/image";
 
 export const NoNotes = () => {
@@ -18,15 +20,21 @@ export const NoNotes = () => {
                 </>
             }
         >
-            <Button className="w-full max-w-64">
-                <Image
-                    alt=""
-                    width={16}
-                    height={16}
-                    src="/imageadd.svg"
-                />
-                Create
-            </Button>
+            <Modal
+                className="w-full max-w-64"
+                element={() => <CreateBoard />}
+                direction="top"
+            >
+                <Button className="w-full">
+                    <Image
+                        alt=""
+                        width={16}
+                        height={16}
+                        src="/imageadd.svg"
+                    />
+                    Create
+                </Button>
+            </Modal>
         </AbsentData>
     );
 };

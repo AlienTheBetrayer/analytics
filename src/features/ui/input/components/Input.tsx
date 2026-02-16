@@ -96,7 +96,7 @@ export const Input = forwardRef<HTMLInputElement, Props>(
                 <AnimatePresence>
                     {inputValue !== "" && (
                         <Button
-                            className={`absolute! right-2 top-1/2 min-w-6! min-h-6! w-6 h-6 p-0!
+                            className={`absolute! right-2 top-1/2 min-w-6! min-h-6! w-6! h-6! flex! items-center! justify-center! p-0!
                             `}
                             initial={{ opacity: 0, y: 1 }}
                             animate={{ opacity: 1, y: `-50%` }}

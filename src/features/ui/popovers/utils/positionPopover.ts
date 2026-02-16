@@ -87,6 +87,12 @@ export const positionPopover = (
                 elementBounds.top +
                 elementBounds.height / 2 -
                 tooltipBounds.height / 2;
+            break;
+        }
+        case "screen-middle": {
+            left = window.innerWidth / 2 - tooltipBounds.width / 2;
+            top = window.innerHeight / 2 - tooltipBounds.height / 2;
+            break;
         }
     }
 
