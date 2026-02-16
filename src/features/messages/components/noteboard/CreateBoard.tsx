@@ -1,9 +1,14 @@
 import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
+import { PromiseState } from "@/promises/components/PromiseState";
+import { wrapPromise } from "@/promises/core";
+import { upsertNoteboard } from "@/query-api/calls/notes";
+import { useQuery } from "@/query/core";
 import Image from "next/image";
 import { useState } from "react";
 
 export const CreateBoard = () => {
+    const { data: status } = useQuery({ key: ["status"] });
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
 
@@ -24,6 +29,19 @@ export const CreateBoard = () => {
                 className="flex flex-col"
                 onSubmit={(e) => {
                     e.preventDefault();
+
+                    if (!status) {
+                        return;
+                    }
+
+                    wrapPromise("createNoteboard", () => {
+                        return upsertNoteboard({
+                            type: "create",
+                            user_id: status.id,
+                            title: title,
+                            ...(description && { description }),
+                        });
+                    });
                 }}
             >
                 <ul className="flex flex-col gap-2">
@@ -50,6 +68,7 @@ export const CreateBoard = () => {
                             type="submit"
                             className="w-full"
                         >
+                            <PromiseState state="createNoteboard" />
                             <Image
                                 alt=""
                                 width={16}

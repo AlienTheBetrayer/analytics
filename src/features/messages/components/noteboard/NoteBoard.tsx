@@ -1,4 +1,5 @@
 import { NoNotes } from "@/features/messages/components/errors/NoNotes";
+import { BoardDisplay } from "@/features/messages/components/noteboard/BoardDisplay";
 import { useQuery } from "@/query/core";
 
 export const NoteBoard = () => {
@@ -10,7 +11,7 @@ export const NoteBoard = () => {
         return <div className="loading w-full grow flex" />;
     }
 
-    if (data && !data.length) {
+    if (!data?.length) {
         return (
             <div className="loading w-full grow flex items-center justify-center">
                 <NoNotes />
@@ -20,7 +21,14 @@ export const NoteBoard = () => {
 
     return (
         <div className="flex w-full grow">
-            <span>loaded</span>
+            <ul>
+
+            {data.map(d => (
+                <li key={d.id}>
+                    <BoardDisplay data={d}/>
+                </li>
+            ))}
+            </ul>
         </div>
     );
 };

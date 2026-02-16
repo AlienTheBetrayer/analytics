@@ -5,7 +5,9 @@ import { PromiseState } from "@/promises/components/PromiseState";
 import { wrapPromise } from "@/promises/core";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { queryInvalidate } from "@/query/auxiliary";
+import { useQuery } from "@/query/core";
 import Image from "next/image";
+import { useParams } from "next/navigation";
 
 type Props = {
     data: CacheAPIProtocol["messages"]["data"] | null;
@@ -13,6 +15,10 @@ type Props = {
 };
 
 export const MessagesTopline = ({ data, retrieved }: Props) => {
+    const { data: status } = useQuery({ key: ["status"] });
+    const { tab, id } = useParams<{ tab?: string; id?: string }>();
+    const isBoard = tab === "notes" && id === "board";
+
     return (
         <ul className="box min-h-10! h-10! gap-1! p-0! items-center! flex-row!">
             <li className="ml-4!">
@@ -25,26 +31,39 @@ export const MessagesTopline = ({ data, retrieved }: Props) => {
             <li className="ml-auto!">
                 <Tooltip
                     direction="top"
-                    text="Re-fetch messages"
+                    text={`Re-fetch ${isBoard ? "boards" : "messages"}`}
                 >
                     <Button
                         onClick={() => {
-                            if (!retrieved?.conversation_id) {
+                            if (!status) {
                                 return;
                             }
 
-                            wrapPromise("reloadMessages", async () => {
-                                return queryInvalidate({
-                                    key: [
-                                        "messages",
-                                        retrieved.conversation_id,
-                                    ],
-                                    silent: false,
+                            if (isBoard) {
+                                wrapPromise("reload", async () => {
+                                    return queryInvalidate({
+                                        key: ["noteboards", status.id],
+                                        silent: false,
+                                    });
                                 });
-                            });
+                            } else {
+                                if (!retrieved?.conversation_id) {
+                                    return;
+                                }
+
+                                wrapPromise("reload", async () => {
+                                    return queryInvalidate({
+                                        key: [
+                                            "messages",
+                                            retrieved.conversation_id,
+                                        ],
+                                        silent: false,
+                                    });
+                                });
+                            }
                         }}
                     >
-                        <PromiseState state="reloadMessages" />
+                        <PromiseState state="reload" />
                         <Image
                             alt=""
                             width={14}
