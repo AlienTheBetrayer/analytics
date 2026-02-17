@@ -41,7 +41,7 @@ export const POST = async (request: NextRequest) => {
         }
 
         // detecting token substitution
-        if (refreshTokensData.length === 0) {
+        if (!refreshTokensData.length) {
             throw "no token found";
         }
 
@@ -58,7 +58,7 @@ export const POST = async (request: NextRequest) => {
             throw userError;
         }
 
-        if (userData.length === 0) {
+        if (!userData.length) {
             throw "user does not exist";
         }
 
@@ -73,7 +73,7 @@ export const POST = async (request: NextRequest) => {
                 username: userData[0].username,
             },
             process.env.ACCESS_SECRET as string,
-            { expiresIn: "15m" },
+            { expiresIn: "1h" },
         );
 
         const newRefreshToken = jwt.sign(
@@ -119,7 +119,7 @@ export const POST = async (request: NextRequest) => {
             value: accessToken,
             httpOnly: true,
             path: "/",
-            maxAge: 15 * 60,
+            maxAge: 1 * 60 * 60,
         });
 
         response.cookies.set({

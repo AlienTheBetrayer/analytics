@@ -27,26 +27,27 @@ export const POST = async (request: NextRequest) => {
                     throw "title and noteboard_id are undefined";
                 }
 
-                const { error } = await supabaseServer
+                const { data, error } = await supabaseServer
                     .from("noteboard_elements")
                     .insert({
                         noteboard_id,
-                        user_id,
                         title,
-                    });
+                    })
+                    .select()
+                    .single();
 
                 if (error) {
                     throw error;
                 }
 
-                return nextResponse({ success: true }, 200);
+                return nextResponse({ success: true, note: data }, 200);
             }
             case "edit": {
                 if (!element_id) {
-                    throw "element_is is undefined";
+                    throw "element_id is undefined";
                 }
 
-                const { error } = await supabaseServer
+                const { data, error } = await supabaseServer
                     .from("noteboard_elements")
                     .update({
                         title,
@@ -57,13 +58,15 @@ export const POST = async (request: NextRequest) => {
                             pinned_at: new Date().toISOString(),
                         }),
                     })
-                    .eq("id", element_id);
+                    .eq("id", element_id)
+                    .select()
+                    .single();
 
                 if (error) {
                     throw error;
                 }
 
-                return nextResponse({ success: true }, 200);
+                return nextResponse({ success: true, note: data }, 200);
             }
             default: {
                 throw "type is invalid. available: create/edit";

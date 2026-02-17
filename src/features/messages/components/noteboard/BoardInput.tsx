@@ -1,11 +1,19 @@
 import { Button } from "@/features/ui/button/components/Button";
 import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
 import { Input } from "@/features/ui/input/components/Input";
+import { PromiseState } from "@/promises/components/PromiseState";
+import { wrapPromise } from "@/promises/core";
+import { upsertNote } from "@/query-api/calls/notes";
+import { CacheAPIProtocol } from "@/query-api/protocol";
 import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
 
-export const BoardInput = () => {
+type Props = {
+    data: CacheAPIProtocol["noteboards"]["data"][number];
+};
+
+export const BoardInput = ({ data }: Props) => {
     // react states
     const [title, setTitle] = useState<string>("");
     const [checked, setChecked] = useState<boolean>(false);
@@ -26,8 +34,21 @@ export const BoardInput = () => {
             className="flex items-center gap-1 w-full"
             onSubmit={(e) => {
                 e.preventDefault();
-                setChecked(false);
-                setTitle("");
+
+                wrapPromise("upsertNote", () => {
+                    const promise = upsertNote({
+                        type: "create",
+                        title,
+                        checked,
+                        noteboard_id: data.id,
+                        user_id: data.user_id,
+                    });
+
+                    setTitle("");
+                    setChecked(false);
+
+                    return promise;
+                });
             }}
         >
             <Checkbox
@@ -38,7 +59,7 @@ export const BoardInput = () => {
             <Input
                 required
                 minLength={4}
-                placeholder="Enter..."
+                placeholder="Add..."
                 className="w-full"
                 value={title}
                 onChange={(value) => setTitle(value)}

@@ -54,7 +54,7 @@ export const POST = async (request: NextRequest) => {
                 username: userData[0].username,
             },
             process.env.ACCESS_SECRET as string,
-            { expiresIn: "15m" },
+            { expiresIn: "1h" },
         );
 
         const refreshToken = jwt.sign(
@@ -79,7 +79,7 @@ export const POST = async (request: NextRequest) => {
             value: accessToken,
             httpOnly: true,
             path: "/",
-            maxAge: 15 * 60,
+            maxAge: 1 * 60 * 60,
         });
 
         res.cookies.set({
