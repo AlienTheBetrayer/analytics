@@ -1,3 +1,4 @@
+import "./MessageBox.css";
 import { AnimatePresence, motion } from "motion/react";
 import { Button } from "@/features/ui/button/components/Button";
 import Image from "next/image";
@@ -116,18 +117,21 @@ export const MessageBox = ({ visibility, children, onSelect }: Props) => {
                                 scale: 1,
                             }}
                             exit={{ opacity: 0, scale: 0.85 }}
-                            className="relative box acrylic justify-between w-screen max-w-92 gap-4! aspect-video backdrop-blur-xl!"
+                            className="relative box msg-box acrylic justify-between w-screen max-w-92 gap-4! aspect-video backdrop-blur-xl!"
                         >
                             <CloseButton hide={() => onSelect?.("no")} />
 
                             <div className="flex flex-col gap-1 items-center">
-                                <Image
-                                    alt=""
-                                    width={16}
-                                    height={16}
-                                    src="/type.svg"
-                                />
-                                <span className="text-center text-5!">
+                                <span className="flex items-center gap-1">
+                                    <div className="msg-circle" />
+                                    <Image
+                                        alt=""
+                                        width={16}
+                                        height={16}
+                                        src="/type.svg"
+                                    />
+                                </span>
+                                <span className="flex items-center gap-1 text-center text-5!">
                                     Are you <u>sure?</u>
                                 </span>
                             </div>
@@ -141,8 +145,9 @@ export const MessageBox = ({ visibility, children, onSelect }: Props) => {
                                     <Button
                                         ref={yesRef}
                                         onClick={() => onSelect?.("yes")}
-                                        className="w-full gap-2!"
+                                        className="w-full gap-2! yes-button"
                                     >
+                                        <div className="yes-circle" />
                                         <Image
                                             alt=""
                                             width={16}
@@ -156,8 +161,9 @@ export const MessageBox = ({ visibility, children, onSelect }: Props) => {
                                 <li>
                                     <Button
                                         onClick={() => onSelect?.("no")}
-                                        className="w-full gap-2"
+                                        className="w-full gap-2 no-button"
                                     >
+                                        <div className="no-circle" />
                                         <Image
                                             alt=""
                                             width={16}
