@@ -1,3 +1,4 @@
+import { Pin } from "@/features/messages/components/noteboard/expanded/Pin";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { useLocalStore } from "@/zustand/localStore";
 import Image from "next/image";
@@ -17,7 +18,7 @@ export const Element = ({ data }: Props) => {
         ${data.checked ? "" : "loading"}`}
         >
             <div
-                className={`flex items-center justify-center rounded-md p-[0.1rem] aspect-square w-4 outline-2 transition-all
+                className={`flex shrink-0 items-center justify-center rounded-md p-[0.1rem] aspect-square w-4 outline-2 transition-all
                 ${data.checked ? "outline-blue-1" : "outline-bg-5"}
                 ${isCompact ? "mr-1" : "mr-3"}`}
             >
@@ -28,7 +29,10 @@ export const Element = ({ data }: Props) => {
                     src={data.checked ? "/checkmark.svg" : "/cross.svg"}
                 />
             </div>
-            <span className="truncate">{data.title}</span>
+            <span className="flex items-center truncate w-full">
+                {data.title}
+                <Pin data={data}/>
+            </span>
         </div>
     );
 };

@@ -1,9 +1,8 @@
+import { Pin } from "@/features/messages/components/noteboard/expanded/Pin";
 import { Button } from "@/features/ui/button/components/Button";
 import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
 import { Input } from "@/features/ui/input/components/Input";
-import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { CacheAPIProtocol } from "@/query-api/protocol";
-import { relativeTime } from "@/utils/other/relativeTime";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 
@@ -79,24 +78,7 @@ export const Element = ({ data, onCheck, onEdit, onDelete, onPin }: Props) => {
                     onClick={() => setEditing(true)}
                 >
                     <span>{data.title}</span>
-                    {data.pinned && (
-                        <Tooltip
-                            element={
-                                <div className="box p-4!">
-                                    {relativeTime(data.pinned_at)}
-                                </div>
-                            }
-                            direction="top"
-                            className="ml-auto!"
-                        >
-                            <Image
-                                alt="pinned"
-                                width={13}
-                                height={13}
-                                src="/pin.svg"
-                            />
-                        </Tooltip>
-                    )}
+                    <Pin data={data} />
                 </Button>
             )}
 
