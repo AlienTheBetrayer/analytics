@@ -36,3 +36,19 @@ export const sortConversations = (options: {
 
     return elements;
 };
+
+export const sortNotes = (options: {
+    notes: CacheAPIProtocol["noteboards"]["data"][number]["elements"];
+}) => {
+    const elements = [...options.notes].sort((a, b) => {
+        return (
+            Number(b.pinned) - Number(a.pinned) ||
+            (a.pinned && b.pinned
+                ? (b.pinned_at || "")?.localeCompare(a.pinned_at || "")
+                : 0) ||
+            a.title.localeCompare(b.title)
+        );
+    });
+
+    return elements;
+};

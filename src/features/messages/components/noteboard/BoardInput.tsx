@@ -1,7 +1,6 @@
 import { Button } from "@/features/ui/button/components/Button";
 import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
 import { Input } from "@/features/ui/input/components/Input";
-import { PromiseState } from "@/promises/components/PromiseState";
 import { wrapPromise } from "@/promises/core";
 import { upsertNote } from "@/query-api/calls/notes";
 import { CacheAPIProtocol } from "@/query-api/protocol";
@@ -35,17 +34,19 @@ export const BoardInput = ({ data }: Props) => {
             onSubmit={(e) => {
                 e.preventDefault();
 
+                if(title.trim().length < 4) {
+                    return;
+                }
+                
                 wrapPromise("upsertNote", () => {
                     const promise = upsertNote({
                         type: "create",
                         title,
-                        checked,
                         noteboard_id: data.id,
                         user_id: data.user_id,
                     });
 
                     setTitle("");
-                    setChecked(false);
 
                     return promise;
                 });
@@ -53,6 +54,7 @@ export const BoardInput = ({ data }: Props) => {
         >
             <Checkbox
                 className="w-fit!"
+                type="button"
                 value={checked}
                 onToggle={(flag) => setChecked(flag)}
             />
