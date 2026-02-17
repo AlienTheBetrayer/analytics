@@ -169,7 +169,7 @@ export const Modal = React.memo(function ModalFunction({
                                 className="fixed"
                             >
                                 <motion.div
-                                    className="backdrop-blur-lg rounded-4xl modal-element"
+                                    className="backdrop-blur-sm rounded-4xl modal-element"
                                     initial={{
                                         opacity: 0,
                                         scale: 0.9,

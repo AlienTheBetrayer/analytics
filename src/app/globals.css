@@ -5,7 +5,7 @@
     /* color variables */
     --h: 250;
     --s: 8%;
-    --a: 0.5;
+    --a: 0.3;
     --l-0: 0%;
     --l-1: 3%;
     --l-2: 6%;
@@ -420,19 +420,19 @@ img {
 
 .acrylic {
     background: var(--bg-a-0);
-    backdrop-filter: blur(1rem);
+    backdrop-filter: blur(8px);
 }
 
 .acrylic button,
 .acrylic input,
 .acrylic a {
     background: var(--bg-a-0);
-    backdrop-filter: blur(1rem);
+    backdrop-filter: blur(8px);
 }
 
 .acrylic hr {
     border-color: var(--bg-2);
-    backdrop-filter: blur(1rem);
+    backdrop-filter: blur(8px);
 }
 
 .button {
@@ -447,8 +447,7 @@ img {
     border-radius: 200rem;
     background: var(--bg-2);
     border: 1px solid var(--bg-3);
-    backdrop-filter: blur(1rem);
-    transition: 0.4s all;
+    transition: 0.3s all;
     outline: 2px solid transparent;
 }
 
@@ -465,7 +464,7 @@ img {
     overflow: hidden;
     isolation: isolate;
     --ripple-color: var(--bg-5);
-    --ripple-speed: 0.55s;
+    --ripple-speed: 0.5s;
 }
 
 .ripple-container {
@@ -528,7 +527,7 @@ img {
     justify-content: center;
     border-radius: 1000;
     cursor: pointer;
-    transition: 0.4s all;
+    transition: 0.3s all;
     border: 0;
     outline: 2px solid transparent;
 }
