@@ -131,7 +131,7 @@ export const NoteboardTopline = ({ data }: Props) => {
                                         alt=""
                                         width={16}
                                         height={16}
-                                        src="/cubeadd.svg"
+                                        src="/plus.svg"
                                     />
                                 </Button>
                             </Tooltip>

@@ -25,7 +25,7 @@ export const NotesDisplay = ({ data }: Props) => {
             >
                 <div
                     className="relative rounded-full w-12 h-12 flex items-center justify-center bg-bg-3 shrink-0 
-                    bg-linear-to-br from-[#5367ff] to-[#222e86]"
+                    bg-linear-to-tr from-[#5161d5] to-[#101857]"
                 >
                     <Image
                         alt="notes"
