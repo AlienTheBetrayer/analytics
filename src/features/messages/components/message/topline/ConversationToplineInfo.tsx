@@ -12,20 +12,20 @@ type Props = {
 export const ConversationToplineInfo = ({ data, retrieved }: Props) => {
     // fetching
     const { data: status } = useQuery({ key: ["status"] });
-    const { tab } = useParams<{ tab?: string; id?: string }>();
+    const { tab, id } = useParams<{ tab?: string; id?: string }>();
 
     if (!data) {
         if (tab === "notes") {
             return (
                 <div className="flex items-center gap-1">
-                    <div className="w-1 h-1 rounded-full bg-orange-1" />
+                    <div className="w-1 h-1 rounded-full bg-blue-1" />
                     <Image
                         alt=""
                         width={16}
                         height={16}
-                        src="/pencil.svg"
+                        src={id === "board" ? "/dashboard.svg" : "/pencil.svg"}
                     />
-                    <span>Notes</span>
+                    <span> {id === "board" ? "Board" : "Notes"}</span>
                 </div>
             );
         }
@@ -82,7 +82,9 @@ export const ConversationToplineInfo = ({ data, retrieved }: Props) => {
                                     height={16}
                                     src="/save.svg"
                                 />
-                                {data.title ?? "Notes"}
+                                {id === "board"
+                                    ? "Board"
+                                    : (data.title ?? "Notes")}
                             </span>
                         );
                     }

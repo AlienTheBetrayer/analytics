@@ -6,7 +6,6 @@ import { useQuery } from "@/query/core";
 import { MessagesTopline } from "@/features/messages/components/message/topline/MessagesTopline";
 import { useAppStore } from "@/zustand/store";
 import { NoteBoard } from "@/features/messages/components/noteboard/NoteBoard";
-import { useParams } from "next/navigation";
 
 type Props = {
     retrieved?: CacheAPIProtocol["conversation_retrieve"]["data"];
@@ -17,7 +16,6 @@ export const MessageView = ({ retrieved }: Props) => {
         key: ["messages", retrieved?.conversation_id ?? undefined],
     });
     const selectDisplay = useAppStore((state) => state.selectDisplay);
-    const { id } = useParams<{ id?: string }>();
 
     // fallbacks
     if (isLoading) {
@@ -36,12 +34,10 @@ export const MessageView = ({ retrieved }: Props) => {
     if (selectDisplay === "noteboard") {
         return (
             <article className="flex flex-col bg-bg-2! grow p-4! gap-2 rounded-4xl">
-                {id !== "board" && (
-                    <MessagesTopline
-                        data={data}
-                        retrieved={retrieved}
-                    />
-                )}
+                <MessagesTopline
+                    data={data}
+                    retrieved={retrieved}
+                />
                 <NoteBoard />
             </article>
         );

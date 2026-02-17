@@ -54,8 +54,7 @@ export const MessagesTopline = ({ data, retrieved }: Props) => {
                     <li>
                         <Tooltip
                             direction="top"
-                            text="Re-fetch messages"
-                            isEnabled={!!retrieved?.conversation_id}
+                            text={`Re-fetch ${id === "board" ? "noteboards" : "messages"}`}
                         >
                             <Button
                                 onClick={() => {
@@ -63,19 +62,28 @@ export const MessagesTopline = ({ data, retrieved }: Props) => {
                                         return;
                                     }
 
-                                    if (!retrieved?.conversation_id) {
-                                        return;
-                                    }
-
-                                    wrapPromise("reload", async () => {
-                                        return queryInvalidate({
-                                            key: [
-                                                "messages",
-                                                retrieved.conversation_id,
-                                            ],
-                                            silent: false,
+                                    if (id == "board") {
+                                        wrapPromise("reload", async () => {
+                                            return queryInvalidate({
+                                                key: ["noteboards", status.id],
+                                                silent: false,
+                                            });
                                         });
-                                    });
+                                    } else {
+                                        if (!retrieved?.conversation_id) {
+                                            return;
+                                        }
+
+                                        wrapPromise("reload", async () => {
+                                            return queryInvalidate({
+                                                key: [
+                                                    "messages",
+                                                    retrieved.conversation_id,
+                                                ],
+                                                silent: false,
+                                            });
+                                        });
+                                    }
                                 }}
                             >
                                 <PromiseState state="reload" />

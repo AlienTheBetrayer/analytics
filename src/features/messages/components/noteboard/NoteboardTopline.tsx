@@ -6,12 +6,8 @@ import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { useMessageBox } from "@/features/ui/messagebox/hooks/useMessageBox";
 import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
-import { PromiseState } from "@/promises/components/PromiseState";
-import { wrapPromise } from "@/promises/core";
 import { deleteNoteboard, upsertNoteboard } from "@/query-api/calls/notes";
 import { CacheAPIProtocol } from "@/query-api/protocol";
-import { queryInvalidate } from "@/query/auxiliary";
-import { useQuery } from "@/query/core";
 import { TabSelection } from "@/utils/other/TabSelection";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
@@ -22,7 +18,6 @@ type Props = {
 };
 
 export const NoteboardTopline = ({ data }: Props) => {
-    const { data: status } = useQuery({ key: ["status"] });
     const { extra } = useParams<{
         extra?: string;
     }>();
@@ -51,49 +46,8 @@ export const NoteboardTopline = ({ data }: Props) => {
                 },
             })}
 
-            {data ? (
-                <li className="flex items-center gap-1 ml-4!">
-                    <div className="bg-blue-1 rounded-full w-1 h-1" />
-                    <Image
-                        alt=""
-                        width={16}
-                        height={16}
-                        src="/dashboard.svg"
-                    />
-                    <span>{data.title}</span>
-                </li>
-            ) : (
-                <li className="flex items-center gap-1 ml-4!">
-                    <div className="bg-blue-1 rounded-full w-1 h-1" />
-                    <Image
-                        alt=""
-                        width={16}
-                        height={16}
-                        src="/dashboard.svg"
-                    />
-                    <span>Board</span>
-                </li>
-            )}
-
             {!extra && (
                 <>
-                    <li>
-                        <hr className="w-px! h-4!" />
-                    </li>
-                    <li>
-                        <Tooltip
-                            direction="top"
-                            text="Filter by title"
-                        >
-                            <Input
-                                placeholder="Filter..."
-                                value={notesSorting.filter}
-                                onChange={(value) =>
-                                    updateNotesSorting({ filter: value })
-                                }
-                            />
-                        </Tooltip>
-                    </li>
                     <li>
                         <Tooltip
                             direction="top"
@@ -122,6 +76,20 @@ export const NoteboardTopline = ({ data }: Props) => {
                                     }
                                 />
                             </Button>
+                        </Tooltip>
+                    </li>
+                    <li>
+                        <Tooltip
+                            direction="top"
+                            text="Filter by title"
+                        >
+                            <Input
+                                placeholder="Filter..."
+                                value={notesSorting.filter}
+                                onChange={(value) =>
+                                    updateNotesSorting({ filter: value })
+                                }
+                            />
                         </Tooltip>
                     </li>
                 </>
@@ -269,36 +237,6 @@ export const NoteboardTopline = ({ data }: Props) => {
                     </li>
                 </>
             )}
-
-            <li>
-                <Tooltip
-                    direction="top"
-                    text="Re-fetch notes"
-                >
-                    <Button
-                        onClick={() => {
-                            if (!status) {
-                                return;
-                            }
-
-                            wrapPromise("reload", async () => {
-                                return queryInvalidate({
-                                    key: ["noteboards", status.id],
-                                    silent: false,
-                                });
-                            });
-                        }}
-                    >
-                        <PromiseState state="reload" />
-                        <Image
-                            alt=""
-                            width={14}
-                            height={14}
-                            src="/reload.svg"
-                        />
-                    </Button>
-                </Tooltip>
-            </li>
         </ul>
     );
 };

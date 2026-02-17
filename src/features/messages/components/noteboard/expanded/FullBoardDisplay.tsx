@@ -53,7 +53,7 @@ export const FullBoardDisplay = ({ data }: Props) => {
 
     // jsx
     return (
-        <article className="box rounded-2xl! p-4! items-center! justify-start! not-hover:bg-bg-1! w-full">
+        <article className="box p-0! overflow-hidden rounded-2xl! items-center! justify-start! not-hover:bg-bg-1! w-full">
             <div className="box h-10! p-0! w-full flex-row! items-center!">
                 <span className="flex items-center gap-1 absolute left-1/2 top-1/2 -translate-1/2">
                     <div className="w-1 h-1 rounded-full bg-blue-1" />
@@ -95,7 +95,7 @@ export const FullBoardDisplay = ({ data }: Props) => {
                 </Button>
             </div>
 
-            <ul className="flex flex-col gap-2 w-full grow">
+            <ul className="flex flex-col gap-2 w-full grow p-4!">
                 {checked.length || unchecked.length ? (
 
                     (tab === "checked" ? checked : unchecked).map((e) => (
