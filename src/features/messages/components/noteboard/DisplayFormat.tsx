@@ -61,16 +61,26 @@ export const DisplayFormat = () => {
                         Expanded
                     </Checkbox>
                     <Button
-                        className="flex-col! w-full rounded-md! h-full items-center!"
+                        className="grid! grid-cols-4 gap-2! w-full rounded-md! h-full items-center!"
                         onClick={() => {
                             updateDisplay({
                                 messages: { noteboard: { view: "expanded" } },
                             });
                         }}
                     >
-                        <div className="w-full h-4 loading" />
-                        <div className="w-full h-4 loading" />
-                        <div className="w-full h-4 loading" />
+                        {Array.from({ length: 4 }, (_, k) => (
+                            <div
+                                className="box flex-col! p-2! rounded-md! loading aspect-square"
+                                key={k}
+                            >
+                                {Array.from({ length: 2 }, (_, k) => (
+                                    <div
+                                        className="w-full h-8 loading"
+                                        key={k}
+                                    />
+                                ))}
+                            </div>
+                        ))}
                     </Button>
                 </li>
             </ul>

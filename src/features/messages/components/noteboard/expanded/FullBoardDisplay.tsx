@@ -1,6 +1,6 @@
 import { NoBoard } from "@/features/messages/components/errors/NoBoard";
-import { BoardInput } from "@/features/messages/components/noteboard/element/BoardInput";
-import { Element } from "@/features/messages/components/noteboard/element/Element";
+import { BoardInput } from "@/features/messages/components/noteboard/expanded/BoardInput";
+import { Element } from "@/features/messages/components/noteboard/expanded/Element";
 import { sortNotes } from "@/features/messages/utils/sort";
 import { Button } from "@/features/ui/button/components/Button";
 import { PromiseState } from "@/promises/components/PromiseState";
