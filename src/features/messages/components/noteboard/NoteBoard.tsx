@@ -1,6 +1,6 @@
 import { NoNotes } from "@/features/messages/components/errors/NoNotes";
 import { BoardDisplay } from "@/features/messages/components/noteboard/BoardDisplay";
-import { FullBoardDisplay } from "@/features/messages/components/noteboard/FullBoardDisplay";
+import { FullBoardDisplay } from "@/features/messages/components/noteboard/element/FullBoardDisplay";
 import { NoteboardTopline } from "@/features/messages/components/noteboard/NoteboardTopline";
 import { useQuery } from "@/query/core";
 import { useParams } from "next/navigation";
