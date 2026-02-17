@@ -1,6 +1,7 @@
 import { CreateBoard } from "@/features/messages/components/noteboard/CreateBoard";
 import { DisplayFormat } from "@/features/messages/components/noteboard/DisplayFormat";
 import { Button } from "@/features/ui/button/components/Button";
+import { Input } from "@/features/ui/input/components/Input";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { useMessageBox } from "@/features/ui/messagebox/hooks/useMessageBox";
 import { Modal } from "@/features/ui/popovers/components/modal/Modal";
@@ -11,6 +12,8 @@ import { deleteNoteboard, upsertNoteboard } from "@/query-api/calls/notes";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { queryInvalidate } from "@/query/auxiliary";
 import { useQuery } from "@/query/core";
+import { TabSelection } from "@/utils/other/TabSelection";
+import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import { redirect, useParams } from "next/navigation";
 
@@ -25,6 +28,8 @@ export const NoteboardTopline = ({ data }: Props) => {
     }>();
 
     const deleteBox = useMessageBox();
+    const notesSorting = useAppStore((state) => state.notesSorting);
+    const updateNotesSorting = useAppStore((state) => state.updateNotesSorting);
 
     return (
         <ul className="box min-h-10! h-10! gap-1! p-0! items-center! flex-row!">
@@ -68,6 +73,58 @@ export const NoteboardTopline = ({ data }: Props) => {
                     />
                     <span>Board</span>
                 </li>
+            )}
+
+            {!extra && (
+                <>
+                    <li>
+                        <hr className="w-px! h-4!" />
+                    </li>
+                    <li>
+                        <Tooltip
+                            direction="top"
+                            text="Filter by title"
+                        >
+                            <Input
+                                placeholder="Filter..."
+                                value={notesSorting.filter}
+                                onChange={(value) =>
+                                    updateNotesSorting({ filter: value })
+                                }
+                            />
+                        </Tooltip>
+                    </li>
+                    <li>
+                        <Tooltip
+                            direction="top"
+                            text="Sorting direction"
+                        >
+                            <Button
+                                onClick={() =>
+                                    updateNotesSorting({
+                                        reversed: !notesSorting.reversed,
+                                    })
+                                }
+                            >
+                                <Image
+                                    alt=""
+                                    width={16}
+                                    height={16}
+                                    src="/sort.svg"
+                                    className={`${notesSorting.reversed ? "rotate-180" : ""} duration-500!`}
+                                />
+                                <TabSelection
+                                    condition={true}
+                                    color={
+                                        notesSorting.reversed
+                                            ? "var(--orange-1)"
+                                            : "var(--blue-1)"
+                                    }
+                                />
+                            </Button>
+                        </Tooltip>
+                    </li>
+                </>
             )}
 
             <li className="ml-auto!">

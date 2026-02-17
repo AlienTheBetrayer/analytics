@@ -41,8 +41,10 @@ export const sortNotes = <
     T extends { title: string; pinned?: boolean; pinned_at?: string },
 >(options: {
     notes: T[];
+    filter?: string;
+    reversed?: boolean;
 }) => {
-    const elements = [...options.notes].sort((a, b) => {
+    let elements = [...options.notes].sort((a, b) => {
         return (
             Number(b.pinned) - Number(a.pinned) ||
             (a.pinned && b.pinned
@@ -51,6 +53,19 @@ export const sortNotes = <
             a.title.localeCompare(b.title)
         );
     });
+
+    if (options.filter) {
+        elements = elements.filter((e) =>
+            e.title
+                .toLowerCase()
+                .trim()
+                .includes(options.filter?.toLowerCase().trim() ?? ""),
+        );
+    }
+
+    if(options.reversed) {
+        elements.reverse();
+    }
 
     return elements;
 };

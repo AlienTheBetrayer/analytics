@@ -121,7 +121,7 @@ export const List = ({ isLoading, conversations }: Props) => {
                         ))}
                     </>
                 ) : (
-                    <FilterNothing />
+                    <FilterNothing type="conversations" />
                 )}
             </motion.ul>
 
@@ -143,7 +143,7 @@ export const List = ({ isLoading, conversations }: Props) => {
                         </li>
                     ))
                 ) : (
-                    <FilterNothing />
+                    <FilterNothing type="conversations" />
                 )}
             </motion.ul>
         </div>

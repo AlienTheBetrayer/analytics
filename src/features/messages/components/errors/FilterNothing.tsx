@@ -3,10 +3,15 @@ import { Button } from "@/features/ui/button/components/Button";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 
-export const FilterNothing = () => {
+type Props = {
+    type: "conversations" | "notes";
+};
+
+export const FilterNothing = ({ type }: Props) => {
     const updateConversationsSorting = useAppStore(
         (state) => state.updateConversationsSorting,
     );
+    const updateNotesSorting = useAppStore((state) => state.updateNotesSorting);
 
     return (
         <AbsentData
@@ -16,13 +21,15 @@ export const FilterNothing = () => {
                     <u>Nothing</u> found after filter
                 </>
             }
-            description={
-                <>The filter you applied has resulted in no conversations</>
-            }
+            description={<>The filter you applied has resulted in no data</>}
         >
             <Button
                 className="w-full not-hover:bg-bg-1!"
-                onClick={() => updateConversationsSorting({ filter: "" })}
+                onClick={() =>
+                    type === "conversations"
+                        ? updateConversationsSorting({ filter: "" })
+                        : updateNotesSorting({ filter: "" })
+                }
             >
                 <Image
                     alt=""

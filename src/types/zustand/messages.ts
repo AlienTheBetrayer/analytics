@@ -11,20 +11,22 @@ type MessagesDisplay = {
     };
 };
 
-type ConversationsSorting = {
-    reversed: boolean;
-    filter: string;
-};
-
 export type MessagesStore = {
     messagesDisplay: MessagesDisplay;
     selectDisplay: MessagesSelectResult;
-    conversationsSorting: ConversationsSorting;
+    conversationsSorting: {
+        filter: string;
+        reversed: boolean;
+    };
+    notesSorting: {
+        filter: string;
+        reversed: boolean;
+    };
     selectedConversation: string | null;
 
     /**
      * sets the selected conversation id
-     * @param id a new id or null 
+     * @param id a new id or null
      */
     updateSelectedConversation: (id: string | null) => void;
 
@@ -45,6 +47,14 @@ export type MessagesStore = {
      * @param sorting partial sorting object
      */
     updateConversationsSorting: (
-        sorting: Partial<ConversationsSorting>,
+        sorting: Partial<MessagesStore["conversationsSorting"]>,
+    ) => void;
+
+    /**
+     * updates the notes sorting parameters
+     * @param sorting partial sorting object
+     */
+    updateNotesSorting: (
+        sorting: Partial<MessagesStore["notesSorting"]>,
     ) => void;
 };

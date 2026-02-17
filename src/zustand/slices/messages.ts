@@ -18,6 +18,10 @@ export const MessagesSlice: SliceFunction<MessagesStore> = (set) => {
             filter: "",
             reversed: false,
         },
+        notesSorting: {
+            filter: "",
+            reversed: false,
+        },
         selectedConversation: null,
 
         updateSelectedConversation: (id) => {
@@ -40,6 +44,16 @@ export const MessagesSlice: SliceFunction<MessagesStore> = (set) => {
                 ...state,
                 conversationsSorting: {
                     ...state.conversationsSorting,
+                    ...sorting,
+                },
+            }));
+        },
+
+        updateNotesSorting: (sorting) => {
+            set((state) => ({
+                ...state,
+                notesSorting: {
+                    ...state.notesSorting,
                     ...sorting,
                 },
             }));
