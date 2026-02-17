@@ -123,7 +123,7 @@ export const Tooltip = React.memo(function TooltipFunction({
                                         scale: 0.7,
                                     }}
                                     transition={{ delay: 0.1 }}
-                                    className={`backdrop-blur-lg rounded-4xl ${element ? "" : "box py-1.5! px-3! rounded-full!"}`}
+                                    className={`backdrop-blur-sm rounded-4xl ${element ? "" : "box py-1.5! px-3! rounded-full!"}`}
                                 >
                                     {element ?? (
                                         <small className="flex flex-col items-center">
