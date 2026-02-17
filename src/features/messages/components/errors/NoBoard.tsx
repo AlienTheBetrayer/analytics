@@ -5,7 +5,6 @@ import Image from "next/image";
 export const NoBoard = () => {
     return (
         <AbsentData
-            className="absolute left-1/2 top-1/2 -translate-1/2"
             title={
                 <>
                     This board is <u>absent</u>
@@ -28,6 +27,7 @@ export const NoBoard = () => {
                     height={16}
                     src="/back.svg"
                 />
+                Go back
             </LinkButton>
         </AbsentData>
     );

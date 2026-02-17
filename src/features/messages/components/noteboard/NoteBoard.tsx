@@ -1,7 +1,8 @@
-import { NoNotes } from "@/features/messages/components/errors/NoNotes";
+import { NoNoteboards } from "@/features/messages/components/errors/NoNoteboards";
 import { BoardDisplay } from "@/features/messages/components/noteboard/compact/BoardDisplay";
 import { FullBoardDisplay } from "@/features/messages/components/noteboard/expanded/FullBoardDisplay";
 import { NoteboardTopline } from "@/features/messages/components/noteboard/NoteboardTopline";
+import { sortNotes } from "@/features/messages/utils/sort";
 import { useQuery } from "@/query/core";
 import { useLocalStore } from "@/zustand/localStore";
 import { useParams } from "next/navigation";
@@ -30,7 +31,7 @@ export const NoteBoard = () => {
             <>
                 <NoteboardTopline data={extraTab} />
                 <div className="loading w-full grow flex items-center justify-center">
-                    <NoNotes />
+                    <NoNoteboards />
                 </div>
             </>
         );
@@ -54,13 +55,13 @@ export const NoteBoard = () => {
 
             <div className="flex w-full grow">
                 <ul
-                    className={`grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4 w-full
-                    ${isCompact ? "flex! flex-col" : ""}`}
+                    className={`grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] w-full
+                    ${isCompact ? "flex! flex-col gap-2" : "gap-4"}`}
                 >
-                    {data.map((d) => (
+                    {sortNotes({ notes: data }).map((d) => (
                         <li
-                            key={d.id}
                             className="w-full"
+                            key={d.id}
                         >
                             <BoardDisplay data={d} />
                         </li>

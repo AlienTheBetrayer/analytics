@@ -7,7 +7,7 @@ export type Noteboard = {
     title: string;
     description?: string;
     pinned: boolean;
-    pinned_at?: boolean;
+    pinned_at?: string;
     edited_at?: string;
     created_at: string;
 }

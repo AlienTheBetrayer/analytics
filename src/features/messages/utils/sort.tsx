@@ -37,8 +37,10 @@ export const sortConversations = (options: {
     return elements;
 };
 
-export const sortNotes = (options: {
-    notes: CacheAPIProtocol["noteboards"]["data"][number]["elements"];
+export const sortNotes = <
+    T extends { title: string; pinned?: boolean; pinned_at?: string },
+>(options: {
+    notes: T[];
 }) => {
     const elements = [...options.notes].sort((a, b) => {
         return (

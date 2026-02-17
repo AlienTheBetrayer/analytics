@@ -16,22 +16,24 @@ export const POST = async (request: NextRequest) => {
 
         switch (type) {
             case "create": {
-                const { error } = await supabaseServer
+                const { data, error } = await supabaseServer
                     .from("noteboards")
-                    .insert({ user_id, title, description });
+                    .insert({ user_id, title, description })
+                    .select()
+                    .single();
 
                 if (error) {
                     throw error;
                 }
 
-                return nextResponse({ success: true }, 200);
+                return nextResponse({ success: true, noteboard: data }, 200);
             }
             case "edit": {
                 if (!noteboard_id) {
                     throw "noteboard_id is undefined";
                 }
 
-                const { error } = await supabaseServer
+                const { data, error } = await supabaseServer
                     .from("noteboards")
                     .update({
                         ...(typeof title === "string" && { title }),
@@ -42,13 +44,15 @@ export const POST = async (request: NextRequest) => {
                         }),
                         edited_at: new Date().toISOString(),
                     })
-                    .eq("id", noteboard_id);
+                    .eq("id", noteboard_id)
+                    .select()
+                    .single();
 
                 if (error) {
                     throw error;
                 }
 
-                return nextResponse({ success: true }, 200);
+                return nextResponse({ success: true, noteboard: data }, 200);
             }
             default: {
                 throw "type is invalid. available: create/edit";

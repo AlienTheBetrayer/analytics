@@ -1,5 +1,5 @@
 import { queryMutate } from "@/query/auxiliary";
-import { NoteboardElement } from "@/types/tables/notes";
+import { Noteboard, NoteboardElement } from "@/types/tables/notes";
 import { refreshedRequest } from "@/utils/auth/refreshedRequest";
 
 export const upsertNoteboard = async (
@@ -14,6 +14,30 @@ export const upsertNoteboard = async (
           }
     ) & { user_id: string },
 ) => {
+    if (options.type === "edit") {
+        queryMutate({
+            key: ["noteboards", options.user_id],
+            value: (state) =>
+                state.map((n) =>
+                    n.id === options.noteboard_id
+                        ? {
+                              ...n,
+                              ...("title" in options && {
+                                  title: options.title,
+                              }),
+                              ...("description" in options && {
+                                  description: options.description,
+                              }),
+                              ...("pinned" in options && {
+                                  pinned: options.pinned,
+                                  pinned_at: new Date().toISOString(),
+                              }),
+                          }
+                        : n,
+                ),
+        });
+    }
+
     const res = await refreshedRequest({
         route: "/api/update/noteboard",
         method: "POST",
@@ -30,6 +54,15 @@ export const upsertNoteboard = async (
             ...("pinned" in options && { pinned: options.pinned }),
         },
     });
+    const data = res.data.noteboard as Noteboard;
+
+    if (data && options.type === "create") {
+        queryMutate({
+            key: ["noteboards", options.user_id],
+            value: (state) => [...state, { ...data, elements: [] }],
+        });
+    }
+
 
     return res;
 };
@@ -38,6 +71,11 @@ export const deleteNoteboard = async (options: {
     user_id: string;
     noteboard_id: string;
 }) => {
+    queryMutate({
+        key: ["noteboards", options.user_id],
+        value: (state) => state.filter((n) => n.id !== options.noteboard_id),
+    });
+
     const res = await refreshedRequest({
         route: "/api/delete/noteboard",
         method: "POST",
