@@ -8,7 +8,7 @@ export const Messages = () => {
         <>
             <Topline />
 
-            <div className="box w-full max-w-400 mx-auto min-h-140 p-4! overflow-hidden">
+            <div className="box w-full max-w-400 min-h-140 p-4!">
                 <Select />
             </div>
         </>

@@ -1,6 +1,7 @@
 import { Button } from "@/features/ui/button/components/Button";
 import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
 import { Input } from "@/features/ui/input/components/Input";
+import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { wrapPromise } from "@/promises/core";
 import { upsertNote } from "@/query-api/calls/notes";
 import { CacheAPIProtocol } from "@/query-api/protocol";
@@ -34,10 +35,10 @@ export const BoardInput = ({ data }: Props) => {
             onSubmit={(e) => {
                 e.preventDefault();
 
-                if(title.trim().length < 4) {
+                if (title.trim().length < 4) {
                     return;
                 }
-                
+
                 wrapPromise("upsertNote", () => {
                     const promise = upsertNote({
                         type: "create",
@@ -67,54 +68,59 @@ export const BoardInput = ({ data }: Props) => {
                 onChange={(value) => setTitle(value)}
             />
 
-            <Button
-                type="submit"
-                isEnabled={isSendable}
+            <Tooltip
+                direction="top"
+                text="Add a row"
             >
-                <AnimatePresence>
-                    {isSendable ? (
-                        <motion.div
-                            key="sendable"
-                            className="absolute"
-                            initial={{
-                                x: -20,
-                                opacity: 0,
-                                scale: 0,
-                            }}
-                            animate={{ x: 0, opacity: 1, scale: 1 }}
-                            exit={{ x: -20, opacity: 0, scale: 0 }}
-                            transition={{ duration: 0.2 }}
-                        >
-                            <Image
-                                alt=""
-                                width={16}
-                                height={16}
-                                src="/plus.svg"
-                            />
-                        </motion.div>
-                    ) : (
-                        <motion.div
-                            key="notsendable"
-                            className="absolute"
-                            initial={{
-                                x: 20,
-                                opacity: 0,
-                                scale: 0,
-                            }}
-                            animate={{ x: 0, opacity: 1, scale: 1 }}
-                            exit={{ x: 20, opacity: 0, scale: 0 }}
-                            transition={{ duration: 0.2 }}
-                        >
-                            <Image
-                                alt=""
-                                width={16}
-                                height={16}
-                                src="/cross.svg"
-                            />
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-            </Button>
+                <Button
+                    type="submit"
+                    isEnabled={isSendable}
+                >
+                    <AnimatePresence>
+                        {isSendable ? (
+                            <motion.div
+                                key="sendable"
+                                className="absolute"
+                                initial={{
+                                    x: -20,
+                                    opacity: 0,
+                                    scale: 0,
+                                }}
+                                animate={{ x: 0, opacity: 1, scale: 1 }}
+                                exit={{ x: -20, opacity: 0, scale: 0 }}
+                                transition={{ duration: 0.2 }}
+                            >
+                                <Image
+                                    alt=""
+                                    width={16}
+                                    height={16}
+                                    src="/plus.svg"
+                                />
+                            </motion.div>
+                        ) : (
+                            <motion.div
+                                key="notsendable"
+                                className="absolute"
+                                initial={{
+                                    x: 20,
+                                    opacity: 0,
+                                    scale: 0,
+                                }}
+                                animate={{ x: 0, opacity: 1, scale: 1 }}
+                                exit={{ x: 20, opacity: 0, scale: 0 }}
+                                transition={{ duration: 0.2 }}
+                            >
+                                <Image
+                                    alt=""
+                                    width={16}
+                                    height={16}
+                                    src="/cross.svg"
+                                />
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </Button>
+            </Tooltip>
         </form>
     );
 };

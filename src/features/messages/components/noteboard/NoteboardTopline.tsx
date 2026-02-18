@@ -50,7 +50,7 @@ export const NoteboardTopline = ({ data }: Props) => {
                 <>
                     <li>
                         <Tooltip
-                            direction="top"
+                            direction="bottom"
                             text="Sorting direction"
                         >
                             <Button
@@ -80,7 +80,7 @@ export const NoteboardTopline = ({ data }: Props) => {
                     </li>
                     <li>
                         <Tooltip
-                            direction="top"
+                            direction="bottom"
                             text="Filter by title"
                         >
                             <Input
@@ -97,7 +97,7 @@ export const NoteboardTopline = ({ data }: Props) => {
 
             <li className="ml-auto!">
                 <Tooltip
-                    direction="top"
+                    direction="bottom"
                     text="Back"
                 >
                     <LinkButton
@@ -123,7 +123,7 @@ export const NoteboardTopline = ({ data }: Props) => {
                             direction="bottom-left"
                         >
                             <Tooltip
-                                direction="top"
+                                direction="bottom"
                                 text="Create"
                             >
                                 <Button>
@@ -144,7 +144,7 @@ export const NoteboardTopline = ({ data }: Props) => {
                             direction="bottom-left"
                         >
                             <Tooltip
-                                direction="top"
+                                direction="bottom"
                                 text="Display Format"
                             >
                                 <Button>
@@ -174,7 +174,7 @@ export const NoteboardTopline = ({ data }: Props) => {
                             )}
                         >
                             <Tooltip
-                                direction="top"
+                                direction="bottom"
                                 text="Edit board"
                             >
                                 <Button>
@@ -191,7 +191,7 @@ export const NoteboardTopline = ({ data }: Props) => {
 
                     <li>
                         <Tooltip
-                            direction="top"
+                            direction="bottom"
                             text="Delete board"
                         >
                             <Button onClick={deleteBox.show}>
@@ -207,7 +207,7 @@ export const NoteboardTopline = ({ data }: Props) => {
 
                     <li>
                         <Tooltip
-                            direction="top"
+                            direction="bottom"
                             text={data?.pinned ? "Unpin" : "Pin"}
                             isEnabled={!!data}
                         >

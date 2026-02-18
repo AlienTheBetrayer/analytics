@@ -2,8 +2,6 @@ import { MessageView } from "@/features/messages/components/message/MessageView"
 import { useParams } from "next/navigation";
 import { useQuery } from "@/query/core";
 import { Conversations } from "@/features/messages/components/conversations/Conversations";
-import { NotSelected } from "@/features/messages/components/errors/NotSelected";
-import { WrongURL } from "@/features/messages/components/errors/WrongURL";
 import { useAppStore } from "@/zustand/store";
 import { useEffect, useMemo } from "react";
 
@@ -17,6 +15,7 @@ export type MessagesTab = "u" | "c" | "notes" | "none";
 
 export const Select = () => {
     const { id, tab } = useParams<{ tab?: string; id?: string }>();
+
     const updateSelectDisplay = useAppStore(
         (state) => state.updateSelectDisplay,
     );
@@ -84,23 +83,21 @@ export const Select = () => {
         updateSelectedConversation(retrieved?.conversation_id ?? null);
     }, [retrieved, updateSelectedConversation]);
 
-    // wrong result
-    if (result === "notselected" || result === "wrong") {
-        return (
-            <div className="grid grid-cols-[30%_1fr] grow gap-4">
-                <Conversations />
-
-                <div className="flex items-center justify-center relative grow loading">
-                    {result === "notselected" ? <NotSelected /> : <WrongURL />}
-                </div>
-            </div>
-        );
-    }
+    const isSelected = !!tab;
 
     return (
-        <div className="grid grid-cols-[30%_1fr] grow gap-4">
+        <div className="w-full flex lg:grid lg:grid-cols-[40%_1fr] xl:grid-cols-[30%_1fr] grow gap-4 relative">
             <Conversations />
-            <MessageView retrieved={retrieved} />
+
+            {isSelected && (
+                <div className="lg:hidden flex flex-col grow absolute inset-0 pointer-events-none *:pointer-events-auto z-2 bg-bg-1">
+                    <MessageView retrieved={retrieved} />
+                </div>
+            )}
+
+            <div className="hidden lg:flex flex-col grow">
+                <MessageView retrieved={retrieved} />
+            </div>
         </div>
     );
 };

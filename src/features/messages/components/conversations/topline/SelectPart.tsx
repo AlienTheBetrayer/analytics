@@ -19,7 +19,7 @@ export const SelectPart = ({ hr }: Props) => {
                     case "fetch": {
                         return (
                             <Tooltip
-                                direction="top"
+                                direction="bottom"
                                 text="In a conversation"
                             >
                                 <span className="flex items-center gap-1">
@@ -36,7 +36,7 @@ export const SelectPart = ({ hr }: Props) => {
                     case "notselected": {
                         return (
                             <Tooltip
-                                direction="top"
+                                direction="bottom"
                                 text="No chat selected"
                             >
                                 <span className="flex items-center gap-1">
@@ -53,7 +53,7 @@ export const SelectPart = ({ hr }: Props) => {
                     case "wrong": {
                         return (
                             <Tooltip
-                                direction="top"
+                                direction="bottom"
                                 text="Invalid URL"
                             >
                                 <span className="flex items-center gap-1">
@@ -70,7 +70,7 @@ export const SelectPart = ({ hr }: Props) => {
                     case "noteboard": {
                         return (
                             <Tooltip
-                                direction="top"
+                                direction="bottom"
                                 text="Subsection of notes"
                             >
                                 <span className="flex items-center gap-1">

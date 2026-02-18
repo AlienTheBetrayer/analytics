@@ -13,7 +13,6 @@ type MessagesDisplay = {
 
 export type MessagesStore = {
     messagesDisplay: MessagesDisplay;
-    selectDisplay: MessagesSelectResult;
     conversationsSorting: {
         filter: string;
         reversed: boolean;
@@ -22,6 +21,8 @@ export type MessagesStore = {
         filter: string;
         reversed: boolean;
     };
+
+    selectDisplay: MessagesSelectResult;
     selectedConversation: string | null;
 
     /**

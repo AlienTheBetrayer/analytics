@@ -7,6 +7,7 @@ import { wrapPromise } from "@/promises/core";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { queryInvalidate } from "@/query/auxiliary";
 import { useQuery } from "@/query/core";
+import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 
@@ -24,7 +25,26 @@ export const MessagesTopline = ({ data, retrieved }: Props) => {
 
     return (
         <ul className="box min-h-10! h-10! gap-1! p-0! items-center! flex-row!">
-            <li className="ml-4!">
+            <li className="flex items-center gap-1 ml-4! self-stretch">
+                <Tooltip
+                    direction="bottom"
+                    text="Back to chats"
+                    className="self-stretch h-full flex lg:hidden -ml-4 mr-2"
+                >
+                    <LinkButton
+                        className="h-full aspect-square!"
+                        href="/messages/"
+                    >
+                        <div className="w-1 h-1 rounded-full bg-orange-1"/>
+                        <Image
+                            alt=""
+                            width={16}
+                            height={16}
+                            src="/back.svg"
+                        />
+                    </LinkButton>
+                </Tooltip>
+
                 <ConversationToplineInfo
                     data={data}
                     retrieved={retrieved}
@@ -36,7 +56,7 @@ export const MessagesTopline = ({ data, retrieved }: Props) => {
                     {tab === "notes" && id !== "board" && (
                         <li>
                             <Tooltip
-                                direction="top"
+                                direction="bottom"
                                 text="To noteboard"
                             >
                                 <LinkButton href="/messages/notes/board">
@@ -53,7 +73,7 @@ export const MessagesTopline = ({ data, retrieved }: Props) => {
 
                     <li>
                         <Tooltip
-                            direction="top"
+                            direction="bottom"
                             text={`Re-fetch ${id === "board" ? "noteboards" : "messages"}`}
                         >
                             <Button

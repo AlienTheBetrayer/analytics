@@ -1,5 +1,6 @@
 import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
+import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { useQuery } from "@/query/core";
 import { AnimatePresence, motion } from "motion/react";
@@ -59,47 +60,52 @@ export const MessageInput = ({ data }: Props) => {
                 }}
             />
 
-            <Button
-                className="not-hover:bg-bg-1! h-full! aspect-square overflow-hidden"
-                onClick={send}
-                isEnabled={isSendable}
+            <Tooltip
+                direction="top"
+                text="Send a message"
             >
-                <AnimatePresence>
-                    {isSendable ? (
-                        <motion.div
-                            key="sendable"
-                            className="absolute"
-                            initial={{ x: -20, opacity: 0, scale: 0 }}
-                            animate={{ x: 0, opacity: 1, scale: 1 }}
-                            exit={{ x: -20, opacity: 0, scale: 0 }}
-                            transition={{ duration: 0.2 }}
-                        >
-                            <Image
-                                alt=""
-                                width={16}
-                                height={16}
-                                src="/send.svg"
-                            />
-                        </motion.div>
-                    ) : (
-                        <motion.div
-                            key="notsendable"
-                            className="absolute"
-                            initial={{ x: 20, opacity: 0, scale: 0 }}
-                            animate={{ x: 0, opacity: 1, scale: 1 }}
-                            exit={{ x: 20, opacity: 0, scale: 0 }}
-                            transition={{ duration: 0.2 }}
-                        >
-                            <Image
-                                alt=""
-                                width={16}
-                                height={16}
-                                src="/cross.svg"
-                            />
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-            </Button>
+                <Button
+                    className="not-hover:bg-bg-1! h-full! aspect-square overflow-hidden"
+                    onClick={send}
+                    isEnabled={isSendable}
+                >
+                    <AnimatePresence>
+                        {isSendable ? (
+                            <motion.div
+                                key="sendable"
+                                className="absolute"
+                                initial={{ x: -20, opacity: 0, scale: 0 }}
+                                animate={{ x: 0, opacity: 1, scale: 1 }}
+                                exit={{ x: -20, opacity: 0, scale: 0 }}
+                                transition={{ duration: 0.2 }}
+                            >
+                                <Image
+                                    alt=""
+                                    width={16}
+                                    height={16}
+                                    src="/send.svg"
+                                />
+                            </motion.div>
+                        ) : (
+                            <motion.div
+                                key="notsendable"
+                                className="absolute"
+                                initial={{ x: 20, opacity: 0, scale: 0 }}
+                                animate={{ x: 0, opacity: 1, scale: 1 }}
+                                exit={{ x: 20, opacity: 0, scale: 0 }}
+                                transition={{ duration: 0.2 }}
+                            >
+                                <Image
+                                    alt=""
+                                    width={16}
+                                    height={16}
+                                    src="/cross.svg"
+                                />
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </Button>
+            </Tooltip>
         </div>
     );
 };

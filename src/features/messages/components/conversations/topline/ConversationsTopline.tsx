@@ -34,7 +34,7 @@ export const ConversationsTopline = ({ data }: Props) => {
     return (
         <div className="flex flex-col gap-2">
             <ul className="box h-10! gap-1! p-0! items-center! flex-row!">
-                <li className="absolute left-1/2 top-1/2 -translate-1/2">
+                <li className="flex items-center justify-center w-full">
                     <Title data={data} />
                 </li>
             </ul>

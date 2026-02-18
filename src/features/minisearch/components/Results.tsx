@@ -30,8 +30,8 @@ export const Results = ({
 
     if (search.isLoading) {
         return (
-            <div className="flex flex-col gap-2">
-                {Array.from({ length: 4 }, (_, k) => (
+            <div className="flex flex-col gap-2 justify-between grow">
+                {Array.from({ length: 5 }, (_, k) => (
                     <div
                         className="w-full h-8 loading"
                         key={k}
@@ -42,7 +42,19 @@ export const Results = ({
     }
 
     if (!search.data) {
-        return null;
+        return (
+            <span className="flex flex-col gap-1 m-auto items-center">
+                <Image
+                    alt=""
+                    width={16}
+                    height={16}
+                    src="/type.svg"
+                />
+                <span>
+                    <mark>Results</mark> will appear here
+                </span>
+            </span>
+        );
     }
 
     if (!search.data.length) {

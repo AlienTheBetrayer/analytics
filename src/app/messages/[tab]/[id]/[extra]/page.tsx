@@ -1,7 +1,3 @@
-import { Messages } from "@/features/messages/components/Messages";
-
-const MessagesPage = () => {
-    return <Messages />;
-};
-
-export default MessagesPage;
+export default function MessagesPage() {
+    return null;
+}

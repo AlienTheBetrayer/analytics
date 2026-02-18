@@ -6,6 +6,8 @@ import { useQuery } from "@/query/core";
 import { MessagesTopline } from "@/features/messages/components/message/topline/MessagesTopline";
 import { useAppStore } from "@/zustand/store";
 import { NoteBoard } from "@/features/messages/components/noteboard/NoteBoard";
+import { WrongURL } from "@/features/messages/components/errors/WrongURL";
+import { NotSelected } from "@/features/messages/components/errors/NotSelected";
 
 type Props = {
     retrieved?: CacheAPIProtocol["conversation_retrieve"]["data"];
@@ -31,16 +33,32 @@ export const MessageView = ({ retrieved }: Props) => {
         );
     }
 
-    if (selectDisplay === "noteboard") {
-        return (
-            <article className="flex flex-col bg-bg-2! grow p-4! gap-2 rounded-4xl">
-                <MessagesTopline
-                    data={data}
-                    retrieved={retrieved}
-                />
-                <NoteBoard />
-            </article>
-        );
+    switch (selectDisplay) {
+        case "notselected": {
+            return (
+                <div className="flex items-center justify-center relative grow loading">
+                    <NotSelected />
+                </div>
+            );
+        }
+        case "wrong": {
+            return (
+                <div className="flex items-center justify-center relative grow loading">
+                    <WrongURL />
+                </div>
+            );
+        }
+        case "noteboard": {
+            return (
+                <article className="flex flex-col bg-bg-2! grow p-4! gap-2 rounded-4xl">
+                    <MessagesTopline
+                        data={data}
+                        retrieved={retrieved}
+                    />
+                    <NoteBoard />
+                </article>
+            );
+        }
     }
 
     return (
