@@ -5,9 +5,9 @@ import { NextRequest } from "next/server";
 
 export const POST = async (request: NextRequest) => {
     try {
-        const { user_id, conversation_id, type } = await request.json();
+        const { type, user_id, conversation_id } = await request.json();
 
-        if (!user_id || !conversation_id || !type) {
+        if (!type || !user_id || !conversation_id) {
             throw "user_id and conversation_id and type are undefined";
         }
 

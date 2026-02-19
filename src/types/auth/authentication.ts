@@ -1,4 +1,4 @@
-import { Profile } from "@/types/tables/account";
+import { Profile, User } from "@/types/tables/account";
 
 /**
  * currently available roles (each role has its own permissions)
@@ -14,4 +14,5 @@ export type AuthenticationToken = {
     username: string;
     role: AuthenticationRole;
     profile: Profile;
+    user: Omit<User, "password">;
 };

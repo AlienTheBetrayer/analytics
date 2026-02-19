@@ -68,7 +68,7 @@ export const MessageView = ({ retrieved }: Props) => {
                 retrieved={retrieved}
             />
 
-            <ul className="flex flex-col-reverse gap-4 grow relative">
+            <ul className="flex flex-col-reverse gap-0.5 grow relative">
                 {data?.messages?.length ? (
                     data.messages.map((message) => (
                         <li key={message.id}>
@@ -82,7 +82,10 @@ export const MessageView = ({ retrieved }: Props) => {
                 )}
             </ul>
 
-            <MessageInput data={data} />
+            <MessageInput
+                data={data}
+                retrieved={retrieved}
+            />
         </article>
     );
 };

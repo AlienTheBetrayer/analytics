@@ -1,17 +1,20 @@
 import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
+import { upsertMessage } from "@/query-api/calls/messages";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { useQuery } from "@/query/core";
 import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
+import { redirect } from "next/navigation";
 import { useRef, useEffect, useCallback, useState } from "react";
 
 type Props = {
+    retrieved?: CacheAPIProtocol["conversation_retrieve"]["data"];
     data: CacheAPIProtocol["messages"]["data"] | null;
 };
 
-export const MessageInput = ({ data }: Props) => {
+export const MessageInput = ({ retrieved, data }: Props) => {
     // fetching
     const { data: status } = useQuery({ key: ["status"] });
 
@@ -33,18 +36,37 @@ export const MessageInput = ({ data }: Props) => {
             return;
         }
 
-        // sendMessage({
-        //     type: "send",
-        //     from_id: status.id,
-        //     id,
-        //     message,
-        // });
+        const cid = data?.id ?? retrieved?.conversation_id;
+
+        if (cid) {
+            upsertMessage({
+                type: "send",
+                user: status,
+                conversation_id: cid,
+                message,
+            });
+        } else {
+            if (!retrieved?.user) {
+                return;
+            }
+
+            upsertMessage({
+                type: "start_dm",
+                user: status,
+                to_id: retrieved.user.id,
+                message,
+            }).then((message) => {
+                redirect(`/messages/c/${message.conversation_id}`);
+            });
+        }
+
         setMessage("");
-    }, [message, setMessage, status]);
+    }, [message, status, retrieved, data, setMessage]);
 
     return (
         <div className="flex items-center gap-1">
             <Input
+                isEnabled={!!(retrieved || data)}
                 ref={inputRef}
                 className="bg-bg-1!"
                 placeholder={`Write...`}
@@ -63,11 +85,11 @@ export const MessageInput = ({ data }: Props) => {
             <Tooltip
                 direction="top"
                 text="Send a message"
+                isEnabled={isSendable}
             >
                 <Button
                     className="not-hover:bg-bg-1! h-full! aspect-square overflow-hidden"
                     onClick={send}
-                    isEnabled={isSendable}
                 >
                     <AnimatePresence>
                         {isSendable ? (

@@ -57,6 +57,7 @@ export const useQuery = <T extends CacheKey>(config: QueryConfig<T>) => {
 
         // undefined keys prevention
         if (keyRef.current.some((k) => typeof k === "undefined")) {
+            setData(null);
             setIsLoading(false);
             return;
         }

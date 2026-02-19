@@ -37,6 +37,11 @@ export const sortConversations = (options: {
     return elements;
 };
 
+/**
+ * sorts notes on a copied object
+ * @param options options
+ * @returns copied object
+ */
 export const sortNotes = <
     T extends { title: string; pinned?: boolean; pinned_at?: string },
 >(options: {
@@ -63,7 +68,7 @@ export const sortNotes = <
         );
     }
 
-    if(options.reversed) {
+    if (options.reversed) {
         elements.reverse();
     }
 

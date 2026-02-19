@@ -61,6 +61,7 @@ export const Select = () => {
         }
     }
 
+    // fetching
     const { data: retrievedConversation } = useQuery({
         key: ["conversation_retrieve", tab, status?.id, id ?? null],
         trigger: result === "fetch",
@@ -75,6 +76,7 @@ export const Select = () => {
             : (retrievedConversation ?? undefined);
     }, [id, retrievedConversation, tab]);
 
+    // syncing
     useEffect(() => {
         updateSelectDisplay(result);
     }, [result, updateSelectDisplay]);
@@ -83,19 +85,13 @@ export const Select = () => {
         updateSelectedConversation(retrieved?.conversation_id ?? null);
     }, [retrieved, updateSelectedConversation]);
 
-    const isSelected = !!tab;
-
     return (
         <div className="w-full flex lg:grid lg:grid-cols-[40%_1fr] xl:grid-cols-[30%_1fr] grow gap-4 relative">
             <Conversations />
 
-            {isSelected && (
-                <div className="lg:hidden flex flex-col grow absolute inset-0 pointer-events-none *:pointer-events-auto z-2 bg-bg-1">
-                    <MessageView retrieved={retrieved} />
-                </div>
-            )}
-
-            <div className="hidden lg:flex flex-col grow">
+            <div
+                className={`flex flex-col grow bg-bg-1 ${tab ? "absolute lg:static inset-0 z-2" : ""}`}
+            >
                 <MessageView retrieved={retrieved} />
             </div>
         </div>

@@ -1,4 +1,5 @@
 import { CreateConversation } from "@/features/messages/components/conversations/CreateConversation";
+import { LeftMenu } from "@/features/messages/components/conversations/leftmenu/LeftMenu";
 import { Title } from "@/features/messages/components/conversations/topline/Title";
 import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
@@ -34,7 +35,34 @@ export const ConversationsTopline = ({ data }: Props) => {
     return (
         <div className="flex flex-col gap-2">
             <ul className="box h-10! gap-1! p-0! items-center! flex-row!">
-                <li className="flex items-center justify-center w-full">
+                <li>
+                    <Modal
+                        direction="bottom-right"
+                        element={() => <LeftMenu />}
+                    >
+                        <Tooltip
+                            direction="top"
+                            text="Open menu"
+                        >
+                            <Button
+                                onClick={() => {
+                                    updateMessagesDisplay({
+                                        menus: { left: true },
+                                    });
+                                }}
+                            >
+                                <Image
+                                    alt="menu"
+                                    width={16}
+                                    height={16}
+                                    src="/description.svg"
+                                />
+                            </Button>
+                        </Tooltip>
+                    </Modal>
+                </li>
+
+                <li className="flex items-center justify-center absolute left-1/2 top-1/2 -translate-1/2">
                     <Title data={data} />
                 </li>
             </ul>
@@ -51,7 +79,7 @@ export const ConversationsTopline = ({ data }: Props) => {
                     className="overflow-hidden p-0! shrink-0"
                 >
                     <Tooltip
-                        direction="top"
+                        direction="bottom"
                         text="Back to conversations"
                     >
                         <Button
@@ -79,7 +107,7 @@ export const ConversationsTopline = ({ data }: Props) => {
 
                 <li>
                     <Tooltip
-                        direction="top"
+                        direction="bottom"
                         text="Sorting direction"
                     >
                         <Button
@@ -123,7 +151,7 @@ export const ConversationsTopline = ({ data }: Props) => {
 
                 <li className="ml-auto!">
                     <Tooltip
-                        direction="top"
+                        direction="bottom"
                         text="Create a conversation"
                     >
                         <Modal
@@ -145,7 +173,7 @@ export const ConversationsTopline = ({ data }: Props) => {
 
                 <li className="shrink-0">
                     <Tooltip
-                        direction="top"
+                        direction="bottom"
                         text="Re-fetch list"
                     >
                         <Button

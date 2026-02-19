@@ -22,21 +22,27 @@ export const GET = async (request: NextRequest) => {
                 last_seen_at: new Date().toISOString(),
             })
             .eq("id", refreshToken.id)
-            .select("id, role, username, profile:profiles(*)")) as {
-            data: (User & { profile: Profile })[];
+            .select(
+                "id, username, role, created_at, last_seen_at, profile:profiles(*)",
+            )
+            .single()) as {
+            data: User & { profile: Profile };
             error: PostgrestError | null;
         };
+
+        const { profile, ...user } = userData;
 
         if (userError) {
             throw userError;
         }
 
         const data: AuthenticationToken = {
-            id: userData[0].id,
-            role: userData[0].role,
-            username: userData[0].username,
+            id: userData.id,
+            role: userData.role,
+            username: userData.username,
             session_id: refreshToken.session_id,
-            profile: userData[0].profile,
+            profile,
+            user,
         };
 
         return nextResponse({ success: true, status: data }, 200);

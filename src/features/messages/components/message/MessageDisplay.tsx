@@ -1,6 +1,7 @@
 import { ContextMenu } from "@/features/messages/components/message/ContextMenu";
 import { Button } from "@/features/ui/button/components/Button";
 import { Modal } from "@/features/ui/popovers/components/modal/Modal";
+import { Spinner } from "@/features/ui/spinner/components/Spinner";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { useQuery } from "@/query/core";
 import { exactTime } from "@/utils/other/relativeTime";
@@ -22,7 +23,13 @@ export const MessageDisplay = ({ data }: Props) => {
             <Button
                 className={`box not-hover:bg-bg-1! p-1.5! px-5! w-fit! flex-row!`}
             >
-                <div className="p-1">
+                {data.type === "loading" && (
+                    <div className="absolute right-3 top-1.25">
+                        <Spinner className="w-3! h-3!"/>
+                    </div>
+                )}
+
+                <div className="flex items-center gap-1 p-1">
                     <span>{data.message}</span>
                 </div>
 

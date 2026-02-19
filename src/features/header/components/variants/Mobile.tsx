@@ -53,7 +53,7 @@ export const Mobile = ({ className, showMenu }: Props) => {
                     <Image
                         width={18}
                         height={18}
-                        src="/menu.svg"
+                        src="/description.svg"
                         alt="menu"
                     />
                     <TabSelection condition={!!(page && page !== "home")} />

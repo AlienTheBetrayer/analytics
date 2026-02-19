@@ -10,7 +10,7 @@ export const Conversations = () => {
     });
 
     return (
-        <div className="w-full flex flex-col bg-bg-2! grow p-4! gap-2 rounded-4xl">
+        <div className="w-full flex flex-col bg-bg-2! grow p-4! gap-2 rounded-4xl relative">
             <ConversationsTopline data={conversations} />
             <List
                 isLoading={isLoading}
