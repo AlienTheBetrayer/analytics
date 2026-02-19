@@ -87,7 +87,7 @@ export const MessagesTopline = ({ data, retrieved }: Props) => {
                                             return;
                                         }
 
-                                        if (id == "board") {
+                                        if (id === "board") {
                                             wrapPromise("reload", async () => {
                                                 return queryInvalidate({
                                                     key: [

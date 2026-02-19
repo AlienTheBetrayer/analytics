@@ -16,22 +16,10 @@ export const upsertMessage = async (
           }
     ) & { user: CacheAPIProtocol["status"]["data"] },
 ) => {
-    // query
-    switch (options.type) {
-        case "send":
-        case "start_dm": {
-            break;
-        }
-        case "edit": {
-            break;
-        }
-    }
-
     // request
-    let message:
-        | (Message & {
-              conversation: Conversation;
-          });
+    let message: Message & {
+        conversation: Conversation;
+    };
 
     switch (options.type) {
         case "start_dm": {
@@ -163,16 +151,15 @@ export const upsertMessage = async (
         }
     }
 
-    // query
-    switch (options.type) {
-        case "send":
-        case "start_dm": {
-            break;
-        }
-        case "edit": {
-            break;
-        }
-    }
+    queryMutate({
+        key: ["conversations", options.user.id],
+        value: (state) =>
+            state.map((c) =>
+                c.id === message.conversation_id
+                    ? { ...c, last_message: message }
+                    : c,
+            ),
+    });
 
     return message;
 };

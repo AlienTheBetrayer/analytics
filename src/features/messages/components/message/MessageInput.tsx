@@ -6,7 +6,7 @@ import { CacheAPIProtocol } from "@/query-api/protocol";
 import { useQuery } from "@/query/core";
 import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
-import { redirect } from "next/navigation";
+import { redirect, useParams } from "next/navigation";
 import { useRef, useEffect, useCallback, useState } from "react";
 
 type Props = {
@@ -15,8 +15,8 @@ type Props = {
 };
 
 export const MessageInput = ({ retrieved, data }: Props) => {
-    // fetching
     const { data: status } = useQuery({ key: ["status"] });
+    const { tab } = useParams<{ tab?: string }>();
 
     // react states
     const [message, setMessage] = useState<string>("");
@@ -46,22 +46,28 @@ export const MessageInput = ({ retrieved, data }: Props) => {
                 message,
             });
         } else {
-            if (!retrieved?.user) {
+            const to_id = tab === "notes" ? "notes" : retrieved?.user?.id;
+
+            if (!to_id) {
                 return;
             }
 
             upsertMessage({
                 type: "start_dm",
                 user: status,
-                to_id: retrieved.user.id,
+                to_id,
                 message,
             }).then((message) => {
+                if (tab === "notes") {
+                    return;
+                }
+
                 redirect(`/messages/c/${message.conversation_id}`);
             });
         }
 
         setMessage("");
-    }, [message, status, retrieved, data, setMessage]);
+    }, [message, status, retrieved, data, setMessage, tab]);
 
     return (
         <div className="flex items-center gap-1">

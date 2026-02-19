@@ -36,8 +36,11 @@ export const POST = async (request: NextRequest) => {
                                         conversation_members!inner(user_id)
                                     `,
                         )
-                        .eq("type", "dm")
-                        .in("conversation_members.user_id", [from_id, to_id]);
+                        .eq("type", to_id === "notes" ? "notes" : "dm")
+                        .in(
+                            "conversation_members.user_id",
+                            to_id === "notes" ? [from_id] : [from_id, to_id],
+                        );
 
                     if (error) {
                         throw error;
@@ -45,10 +48,12 @@ export const POST = async (request: NextRequest) => {
 
                     cid = data?.[0]?.id;
 
-                    if (data?.length < 2) {
+                    if (data?.length < (to_id === "notes" ? 1 : 2)) {
                         const { data: newId, error } = await supabaseServer
                             .from("conversations")
-                            .insert({ type: "dm" })
+                            .insert({
+                                type: to_id === "notes" ? "notes" : "dm",
+                            })
                             .select("id")
                             .single();
 
@@ -62,7 +67,9 @@ export const POST = async (request: NextRequest) => {
                             .from("conversation_members")
                             .insert([
                                 { conversation_id: cid, user_id: from_id },
-                                { conversation_id: cid, user_id: to_id },
+                                ...(to_id !== "notes"
+                                    ? [{ conversation_id: cid, user_id: to_id }]
+                                    : []),
                             ]);
 
                         if (memberError) {
