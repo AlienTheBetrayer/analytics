@@ -166,7 +166,7 @@ export const Modal = React.memo(function ModalFunction({
                                 }}
                                 ref={modalRef}
                                 onClick={(e) => e.stopPropagation()}
-                                className="fixed"
+                                className="fixed z-1000"
                             >
                                 <motion.div
                                     className="backdrop-blur-sm rounded-4xl modal-element"

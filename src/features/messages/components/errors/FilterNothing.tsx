@@ -4,18 +4,14 @@ import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 
 type Props = {
-    type: "conversations" | "notes";
+    type: "conversations" | "notes" | "messages";
 };
 
 export const FilterNothing = ({ type }: Props) => {
-    const updateConversationsSorting = useAppStore(
-        (state) => state.updateConversationsSorting,
-    );
-    const updateNotesSorting = useAppStore((state) => state.updateNotesSorting);
+    const updateDisplay = useAppStore((state) => state.updateDisplay);
 
     return (
         <AbsentData
-            className="absolute left-1/2 top-1/2 -translate-1/2"
             title={
                 <>
                     <u>Nothing</u> found after filter
@@ -25,11 +21,7 @@ export const FilterNothing = ({ type }: Props) => {
         >
             <Button
                 className="w-full not-hover:bg-bg-1!"
-                onClick={() =>
-                    type === "conversations"
-                        ? updateConversationsSorting({ filter: "" })
-                        : updateNotesSorting({ filter: "" })
-                }
+                onClick={() => updateDisplay({ [type]: { filter: "" } })}
             >
                 <Image
                     alt=""

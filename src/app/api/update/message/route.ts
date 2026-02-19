@@ -112,6 +112,6 @@ export const POST = async (request: NextRequest) => {
         }
     } catch (error) {
         console.error(error);
-        return nextResponse({ success: true }, 200);
+        return nextResponse({ success: false }, 400);
     }
 };

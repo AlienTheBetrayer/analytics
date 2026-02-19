@@ -15,7 +15,7 @@ export const Title = ({ data }: Props) => {
     let text = "";
 
     // sources
-    const messagesDisplay = useAppStore((state) => state.messagesDisplay);
+    const display = useAppStore((state) => state.display.conversations);
     const { tab, id, extra } = useParams<{
         tab?: string;
         id?: string;
@@ -34,7 +34,7 @@ export const Title = ({ data }: Props) => {
     }
 
     // conversation tab
-    switch (messagesDisplay.tabs.conversations) {
+    switch (display.tab) {
         case "archive": {
             color = "var(--orange-1)";
             image = "/archive.svg";

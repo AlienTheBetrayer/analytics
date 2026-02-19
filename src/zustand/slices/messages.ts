@@ -4,24 +4,26 @@ import { deepMerge } from "@/utils/other/merge";
 
 export const MessagesSlice: SliceFunction<MessagesStore> = (set) => {
     return {
-        messagesDisplay: {
+        display: {
             menus: {
                 left: false,
                 right: false,
             },
-            tabs: {
-                conversations: "conversations",
+            conversations: {
+                filter: "",
+                reversed: false,
+                tab: "conversations",
+            },
+            messages: {
+                filter: "",
+                reversed: false,
+            },
+            notes: {
+                filter: "",
+                reversed: false,
             },
         },
         selectDisplay: "notselected",
-        conversationsSorting: {
-            filter: "",
-            reversed: false,
-        },
-        notesSorting: {
-            filter: "",
-            reversed: false,
-        },
         selectedConversation: null,
 
         updateSelectedConversation: (id) => {
@@ -32,30 +34,10 @@ export const MessagesSlice: SliceFunction<MessagesStore> = (set) => {
             set((state) => ({ ...state, selectDisplay: display }));
         },
 
-        updateMessagesDisplay: (display) => {
+        updateDisplay: (display) => {
             set((state) => ({
                 ...state,
-                messagesDisplay: deepMerge(state.messagesDisplay, display),
-            }));
-        },
-
-        updateConversationsSorting: (sorting) => {
-            set((state) => ({
-                ...state,
-                conversationsSorting: {
-                    ...state.conversationsSorting,
-                    ...sorting,
-                },
-            }));
-        },
-
-        updateNotesSorting: (sorting) => {
-            set((state) => ({
-                ...state,
-                notesSorting: {
-                    ...state.notesSorting,
-                    ...sorting,
-                },
+                display: deepMerge(state.display, display),
             }));
         },
     };

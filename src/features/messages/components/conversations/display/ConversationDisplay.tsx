@@ -39,15 +39,13 @@ export const ConversationDisplay = ({ data }: Props) => {
                 </div>
 
                 {data.conversation_meta?.pinned && (
-                    <div className="absolute right-4 top-2">
-                        <small>
-                            <Image
-                                alt="pin"
-                                width={16}
-                                height={16}
-                                src="/pin.svg"
-                            />
-                        </small>
+                    <div className="absolute right-4 top-1">
+                        <Image
+                            alt="pin"
+                            width={13}
+                            height={13}
+                            src="/pin.svg"
+                        />
                     </div>
                 )}
             </LinkButton>

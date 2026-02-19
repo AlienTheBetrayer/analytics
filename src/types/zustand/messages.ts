@@ -1,26 +1,28 @@
 import { MessagesSelectResult } from "@/features/messages/components/Select";
 import { DeepPartial } from "@/utils/other/merge";
 
-type MessagesDisplay = {
-    tabs: {
-        conversations: "conversations" | "archive";
-    };
+export type Display = {
     menus: {
         left: boolean;
         right: boolean;
     };
+    conversations: {
+        filter: string;
+        reversed: boolean;
+        tab: "conversations" | "archive";
+    };
+    notes: {
+        filter: string;
+        reversed: boolean;
+    };
+    messages: {
+        filter: string;
+        reversed: boolean;
+    };
 };
 
 export type MessagesStore = {
-    messagesDisplay: MessagesDisplay;
-    conversationsSorting: {
-        filter: string;
-        reversed: boolean;
-    };
-    notesSorting: {
-        filter: string;
-        reversed: boolean;
-    };
+    display: Display;
 
     selectDisplay: MessagesSelectResult;
     selectedConversation: string | null;
@@ -38,24 +40,8 @@ export type MessagesStore = {
     updateSelectDisplay: (display: MessagesSelectResult) => void;
 
     /**
-     * updates the message display object
+     * updates the display object
      * @param display deep partial display object
      */
-    updateMessagesDisplay: (display: DeepPartial<MessagesDisplay>) => void;
-
-    /**
-     * updates the convesations sorting parameters
-     * @param sorting partial sorting object
-     */
-    updateConversationsSorting: (
-        sorting: Partial<MessagesStore["conversationsSorting"]>,
-    ) => void;
-
-    /**
-     * updates the notes sorting parameters
-     * @param sorting partial sorting object
-     */
-    updateNotesSorting: (
-        sorting: Partial<MessagesStore["notesSorting"]>,
-    ) => void;
+    updateDisplay: (display: DeepPartial<MessagesStore["display"]>) => void;
 };

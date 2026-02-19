@@ -21,7 +21,7 @@ export const NoteBoard = () => {
         return data?.find((d) => d.id === extra);
     }, [extra, data]);
     const display = useLocalStore((state) => state.display);
-    const notesSorting = useAppStore((state) => state.notesSorting);
+    const notesDisplay = useAppStore((state) => state.display.notes);
     const isCompact = display?.messages?.noteboard?.view === "compact";
 
     // fallbacks
@@ -54,8 +54,8 @@ export const NoteBoard = () => {
 
     const sorted = sortNotes({
         notes: data,
-        filter: notesSorting.filter,
-        reversed: notesSorting.reversed,
+        filter: notesDisplay.filter,
+        reversed: notesDisplay.reversed,
     });
 
     return (
@@ -78,9 +78,9 @@ export const NoteBoard = () => {
                         ))}
                     </ul>
                 ) : (
-                    <div className="flex items-center justify-center w-full  relative">
+                    <li className="flex items-center justify-center grow">
                         <FilterNothing type="notes" />
-                    </div>
+                    </li>
                 )}
             </div>
         </>

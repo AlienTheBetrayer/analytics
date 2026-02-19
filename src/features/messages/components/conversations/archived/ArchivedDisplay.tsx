@@ -15,17 +15,15 @@ type Props = {
 export const ArchivedDisplay = ({ data }: Props) => {
     const display = useLocalStore((state) => state.display.messages);
     const isCollapsed = display?.archive?.collapsed === true;
-    const updateMessagesDisplay = useAppStore(
-        (state) => state.updateMessagesDisplay,
-    );
+    const updateDisplay = useAppStore((state) => state.updateDisplay);
 
     return (
         display?.archive?.movedToMenu === false && (
             <div className="relative">
                 <Button
                     onClick={() => {
-                        updateMessagesDisplay({
-                            tabs: { conversations: "archive" },
+                        updateDisplay({
+                            conversations: { tab: "archive" },
                         });
                     }}
                     className={`box not-hover:bg-bg-1! w-full p-4! flex-row! rounded-4xl! duration-300! justify-start! gap-4!

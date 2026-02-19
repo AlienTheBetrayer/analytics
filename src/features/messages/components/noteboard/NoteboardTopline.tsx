@@ -23,8 +23,8 @@ export const NoteboardTopline = ({ data }: Props) => {
     }>();
 
     const deleteBox = useMessageBox();
-    const notesSorting = useAppStore((state) => state.notesSorting);
-    const updateNotesSorting = useAppStore((state) => state.updateNotesSorting);
+    const display = useAppStore((state) => state.display.notes);
+    const updateDisplay = useAppStore((state) => state.updateDisplay);
 
     return (
         <ul className="box min-h-10! h-10! gap-1! p-0! items-center! flex-row!">
@@ -55,8 +55,8 @@ export const NoteboardTopline = ({ data }: Props) => {
                         >
                             <Button
                                 onClick={() =>
-                                    updateNotesSorting({
-                                        reversed: !notesSorting.reversed,
+                                    updateDisplay({
+                                        notes: { reversed: !display.reversed },
                                     })
                                 }
                             >
@@ -65,12 +65,12 @@ export const NoteboardTopline = ({ data }: Props) => {
                                     width={16}
                                     height={16}
                                     src="/sort.svg"
-                                    className={`${notesSorting.reversed ? "rotate-180" : ""} duration-500!`}
+                                    className={`${display.reversed ? "rotate-180" : ""} duration-500!`}
                                 />
                                 <TabSelection
                                     condition={true}
                                     color={
-                                        notesSorting.reversed
+                                        display.reversed
                                             ? "var(--orange-1)"
                                             : "var(--blue-1)"
                                     }
@@ -85,9 +85,9 @@ export const NoteboardTopline = ({ data }: Props) => {
                         >
                             <Input
                                 placeholder="Filter..."
-                                value={notesSorting.filter}
+                                value={display.filter}
                                 onChange={(value) =>
-                                    updateNotesSorting({ filter: value })
+                                    updateDisplay({ notes: { filter: value } })
                                 }
                             />
                         </Tooltip>

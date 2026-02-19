@@ -15,10 +15,7 @@ type Props = {
 };
 export const List = ({ isLoading, conversations }: Props) => {
     const { data: status } = useQuery({ key: ["status"] });
-    const conversationsSorting = useAppStore(
-        (state) => state.conversationsSorting,
-    );
-    const messagesDisplay = useAppStore((state) => state.messagesDisplay);
+    const display = useAppStore((state) => state.display.conversations);
 
     if (isLoading || !conversations) {
         return (
@@ -75,13 +72,13 @@ export const List = ({ isLoading, conversations }: Props) => {
     // sorting + filtering + reversing
     const archived = sortConversations({
         conversations: conversationTypes.archived,
-        reversed: conversationsSorting.reversed,
-        filter: conversationsSorting.filter,
+        reversed: display.reversed,
+        filter: display.filter,
     });
     const regular = sortConversations({
         conversations: conversationTypes.regular,
-        reversed: conversationsSorting.reversed,
-        filter: conversationsSorting.filter,
+        reversed: display.reversed,
+        filter: display.filter,
     });
 
     // jsx
@@ -90,16 +87,13 @@ export const List = ({ isLoading, conversations }: Props) => {
             <motion.ul
                 className="flex flex-col gap-1 relative grow"
                 animate={{
-                    x:
-                        messagesDisplay.tabs.conversations !== "conversations"
-                            ? "-50%"
-                            : 0,
+                    x: display.tab !== "conversations" ? "-50%" : 0,
                 }}
                 transition={{ ease: "easeInOut", duration: 0.3 }}
             >
-                <div
+                <li
                     className={`absolute inset-0 bg-bg-2 z-1 pointer-events-none transition-all duration-500
-                        ${messagesDisplay.tabs.conversations !== "conversations" ? "opacity-100" : "opacity-0"}`}
+                        ${display.tab !== "conversations" ? "opacity-100" : "opacity-0"}`}
                 />
 
                 {regular.length ? (
@@ -121,7 +115,9 @@ export const List = ({ isLoading, conversations }: Props) => {
                         ))}
                     </>
                 ) : (
-                    <FilterNothing type="conversations" />
+                    <li className="flex items-center justify-center grow">
+                        <FilterNothing type="conversations" />
+                    </li>
                 )}
             </motion.ul>
 
@@ -129,10 +125,7 @@ export const List = ({ isLoading, conversations }: Props) => {
                 className="flex flex-col gap-1 absolute inset-0 grow bg-bg-2 z-2"
                 initial={false}
                 animate={{
-                    x:
-                        messagesDisplay.tabs.conversations === "archive"
-                            ? "0%"
-                            : "100%",
+                    x: display.tab === "archive" ? "0%" : "100%",
                 }}
                 transition={{ ease: "easeInOut", duration: 0.3 }}
             >
@@ -143,7 +136,9 @@ export const List = ({ isLoading, conversations }: Props) => {
                         </li>
                     ))
                 ) : (
-                    <FilterNothing type="conversations" />
+                    <li className="flex items-center justify-center grow">
+                        <FilterNothing type="conversations" />
+                    </li>
                 )}
             </motion.ul>
         </div>

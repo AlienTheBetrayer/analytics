@@ -21,16 +21,8 @@ type Props = {
 
 export const ConversationsTopline = ({ data }: Props) => {
     const { data: status } = useQuery({ key: ["status"] });
-    const conversationsSorting = useAppStore(
-        (state) => state.conversationsSorting,
-    );
-    const updateConversationsSorting = useAppStore(
-        (state) => state.updateConversationsSorting,
-    );
-    const messagesDisplay = useAppStore((state) => state.messagesDisplay);
-    const updateMessagesDisplay = useAppStore(
-        (state) => state.updateMessagesDisplay,
-    );
+    const display = useAppStore((state) => state.display.conversations);
+    const updateDisplay = useAppStore((state) => state.updateDisplay);
 
     return (
         <div className="flex flex-col gap-2">
@@ -46,7 +38,7 @@ export const ConversationsTopline = ({ data }: Props) => {
                         >
                             <Button
                                 onClick={() => {
-                                    updateMessagesDisplay({
+                                    updateDisplay({
                                         menus: { left: true },
                                     });
                                 }}
@@ -70,11 +62,7 @@ export const ConversationsTopline = ({ data }: Props) => {
             <ul className="box h-10! gap-0.5! p-0! items-center! flex-row!">
                 <motion.li
                     animate={{
-                        width:
-                            messagesDisplay.tabs.conversations !==
-                            "conversations"
-                                ? "auto"
-                                : 0,
+                        width: display.tab !== "conversations" ? "auto" : 0,
                     }}
                     className="overflow-hidden p-0! shrink-0"
                 >
@@ -84,9 +72,9 @@ export const ConversationsTopline = ({ data }: Props) => {
                     >
                         <Button
                             onClick={() =>
-                                updateMessagesDisplay({
-                                    tabs: {
-                                        conversations: "conversations",
+                                updateDisplay({
+                                    conversations: {
+                                        tab: "conversations",
                                     },
                                 })
                             }
@@ -112,8 +100,10 @@ export const ConversationsTopline = ({ data }: Props) => {
                     >
                         <Button
                             onClick={() =>
-                                updateConversationsSorting({
-                                    reversed: !conversationsSorting.reversed,
+                                updateDisplay({
+                                    conversations: {
+                                        reversed: !display.reversed,
+                                    },
                                 })
                             }
                         >
@@ -122,12 +112,12 @@ export const ConversationsTopline = ({ data }: Props) => {
                                 width={16}
                                 height={16}
                                 src="/sort.svg"
-                                className={`${conversationsSorting.reversed ? "rotate-180" : ""} duration-500!`}
+                                className={`${display.reversed ? "rotate-180" : ""} duration-500!`}
                             />
                             <TabSelection
                                 condition={true}
                                 color={
-                                    conversationsSorting.reversed
+                                    display.reversed
                                         ? "var(--orange-1)"
                                         : "var(--blue-1)"
                                 }
@@ -140,10 +130,12 @@ export const ConversationsTopline = ({ data }: Props) => {
                     <Input
                         isEnabled={!!data?.length}
                         placeholder="Filter..."
-                        value={conversationsSorting.filter}
+                        value={display.filter}
                         onChange={(value) =>
-                            updateConversationsSorting({
-                                filter: value,
+                            updateDisplay({
+                                conversations: {
+                                    filter: value,
+                                },
                             })
                         }
                     />
