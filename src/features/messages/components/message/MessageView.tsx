@@ -10,19 +10,19 @@ import { WrongURL } from "@/features/messages/components/errors/WrongURL";
 import { NotSelected } from "@/features/messages/components/errors/NotSelected";
 import { sortMessages } from "@/features/messages/utils/sort";
 import { FilterNothing } from "@/features/messages/components/errors/FilterNothing";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 type Props = {
     retrieved?: CacheAPIProtocol["conversation_retrieve"]["data"];
 };
 export const MessageView = ({ retrieved }: Props) => {
-    // won't load if we have no conversation_id
-    const { data, isLoading } = useQuery({
-        key: ["messages", retrieved?.conversation_id ?? undefined],
-    });
     const selectDisplay = useAppStore((state) => state.selectDisplay);
     const display = useAppStore((state) => state.display.messages);
 
+    // fetching + sorting
+    const { data, isLoading } = useQuery({
+        key: ["messages", retrieved?.conversation_id ?? undefined],
+    });
     const sorted = useMemo(() => {
         if (!data) {
             return [];
@@ -34,6 +34,12 @@ export const MessageView = ({ retrieved }: Props) => {
             reversed: display.reversed,
         });
     }, [data, display]);
+
+    // editing + auto-focusing
+    const [editing, setEditing] = useState<boolean>(false);
+    const [editingMessage, setEditingMessage] = useState<
+        CacheAPIProtocol["messages"]["data"]["messages"][number] | undefined
+    >(undefined);
 
     // fallbacks
     if (isLoading) {
@@ -96,15 +102,26 @@ export const MessageView = ({ retrieved }: Props) => {
                 <ul className="flex flex-col-reverse gap-0.5 grow relative">
                     {sorted.map((message) => (
                         <li key={message.id}>
-                            <MessageDisplay data={message} />
+                            <MessageDisplay
+                                data={message}
+                                onEdit={() => {
+                                    setEditingMessage(message);
+                                    setEditing((prev) => !prev);
+                                }}
+                            />
                         </li>
                     ))}
                 </ul>
             )}
 
             <MessageInput
+                onCancel={() => {
+                    setEditing(false);
+                }}
                 data={data}
                 retrieved={retrieved}
+                type={editing ? "edit" : "send"}
+                editingMessage={editingMessage}
             />
         </article>
     );

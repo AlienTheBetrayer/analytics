@@ -163,3 +163,47 @@ export const upsertMessage = async (
 
     return message;
 };
+
+export const deleteMessage = async (options: {
+    message: CacheAPIProtocol["messages"]["data"]["messages"][number];
+}) => {
+    let lastMessage:
+        | CacheAPIProtocol["messages"]["data"]["messages"][number]
+        | undefined = undefined;
+
+    queryMutate({
+        key: ["messages", options.message.conversation_id],
+        value: (state) => ({
+            ...state,
+            messages: state.messages.filter((m, idx, arr) => {
+                const is = m.id !== options.message.id;
+                if (!is && idx > 0) {
+                    lastMessage = arr[idx - 1];
+                }
+
+                return is;
+            }),
+        }),
+    });
+
+    queryMutate({
+        key: ["conversations", options.message.user.id],
+        value: (state) =>
+            state.map((c) =>
+                c.id === options.message.conversation_id
+                    ? { ...c, last_message: lastMessage }
+                    : c,
+            ),
+    });
+
+    const res = await refreshedRequest({
+        method: "POST",
+        route: "/api/delete/message",
+        body: {
+            message_id: options.message.id,
+            user_id: options.message.user.id,
+        },
+    });
+
+    return res;
+};

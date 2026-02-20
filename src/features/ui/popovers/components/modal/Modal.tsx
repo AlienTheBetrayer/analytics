@@ -9,7 +9,7 @@ import { DragButton } from "@/features/ui/draggable/components/DragButton";
 import { CloseButton } from "@/features/ui/closebutton/components/CloseButton";
 
 type Props = {
-    element?: (hide?: () => void) => React.ReactNode;
+    element?: (hide: () => void) => React.ReactNode;
     direction?: PopoverDirection;
     contextMenu?: boolean;
     className?: string;

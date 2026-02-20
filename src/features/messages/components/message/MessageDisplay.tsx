@@ -9,23 +9,30 @@ import Image from "next/image";
 
 type Props = {
     data: CacheAPIProtocol["messages"]["data"]["messages"][number];
+    onEdit: () => void;
 };
 
-export const MessageDisplay = ({ data }: Props) => {
+export const MessageDisplay = ({ data, onEdit }: Props) => {
     const { data: status } = useQuery({ key: ["status"] });
 
     return (
         <Modal
             direction="top"
             className={`w-fit! ${data.user_id === status?.id ? "ml-auto!" : ""}`}
-            element={() => <ContextMenu />}
+            element={(hide) => (
+                <ContextMenu
+                    hide={hide}
+                    data={data}
+                    onEdit={onEdit}
+                />
+            )}
         >
             <Button
                 className={`box not-hover:bg-bg-1! p-1.5! px-5! w-fit! flex-row!`}
             >
                 {data.type === "loading" && (
                     <div className="absolute right-3 top-1.25">
-                        <Spinner className="w-3! h-3!"/>
+                        <Spinner className="w-3! h-3!" />
                     </div>
                 )}
 

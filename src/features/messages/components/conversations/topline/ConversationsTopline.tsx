@@ -12,7 +12,6 @@ import { queryInvalidate } from "@/query/auxiliary";
 import { useQuery } from "@/query/core";
 import { TabSelection } from "@/utils/other/TabSelection";
 import { useAppStore } from "@/zustand/store";
-import { motion } from "motion/react";
 import Image from "next/image";
 
 type Props = {
@@ -60,11 +59,13 @@ export const ConversationsTopline = ({ data }: Props) => {
             </ul>
 
             <ul className="box h-10! gap-0.5! p-0! items-center! flex-row!">
-                <motion.li
-                    animate={{
+                <li
+                    style={{
+                        interpolateSize: "allow-keywords",
                         width: display.tab !== "conversations" ? "auto" : 0,
                     }}
-                    className="overflow-hidden p-0! shrink-0"
+                    inert={display.tab === "conversations"}
+                    className="overflow-hidden p-0! shrink-0 transition-all duration-300"
                 >
                     <Tooltip
                         direction="bottom"
@@ -91,7 +92,7 @@ export const ConversationsTopline = ({ data }: Props) => {
                             />
                         </Button>
                     </Tooltip>
-                </motion.li>
+                </li>
 
                 <li>
                     <Tooltip

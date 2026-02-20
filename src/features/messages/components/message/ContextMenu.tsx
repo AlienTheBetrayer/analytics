@@ -1,8 +1,18 @@
+import { PromiseState } from "@/promises/components/PromiseState";
 import "./ContextMenu.css";
 import { Button } from "@/features/ui/button/components/Button";
+import { wrapPromise } from "@/promises/core";
+import { CacheAPIProtocol } from "@/query-api/protocol";
 import Image from "next/image";
+import { deleteMessage } from "@/query-api/calls/messages";
 
-export const ContextMenu = () => {
+type Props = {
+    hide: () => void;
+    onEdit: () => void;
+    data: CacheAPIProtocol["messages"]["data"]["messages"][number];
+};
+
+export const ContextMenu = ({ hide, data, onEdit }: Props) => {
     return (
         <ul className="box acrylic p-4! rounded-2xl! gap-1! **:border-0! w-screen max-w-64 message-ctx">
             <li className="flex items-center gap-1 mb-6! self-center">
@@ -28,7 +38,12 @@ export const ContextMenu = () => {
             </li>
 
             <li>
-                <Button>
+                <Button
+                    onClick={() => {
+                        hide();
+                        onEdit();
+                    }}
+                >
                     <Image
                         alt=""
                         width={16}
@@ -52,14 +67,23 @@ export const ContextMenu = () => {
             </li>
 
             <li>
-                <Button>
+                <Button
+                    onClick={() => {
+                        wrapPromise("saveClipboard", () => {
+                            return navigator.clipboard.writeText(data.message);
+                        });
+                    }}
+                >
                     <Image
                         alt=""
                         width={16}
                         height={16}
                         src="/copy.svg"
                     />
-                    <span>Copy</span>
+                    <span className="flex items-center gap-1">
+                        <PromiseState state="saveClipboard" />
+                        <span>Copy</span>
+                    </span>
                 </Button>
             </li>
 
@@ -89,7 +113,11 @@ export const ContextMenu = () => {
             </li>
 
             <li>
-                <Button>
+                <Button
+                    onClick={() => {
+                        deleteMessage({ message: data });
+                    }}
+                >
                     <Image
                         alt=""
                         width={16}
