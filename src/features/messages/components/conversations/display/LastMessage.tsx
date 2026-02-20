@@ -11,9 +11,9 @@ export const LastMessage = ({ data }: Props) => {
 
     if (draft) {
         return (
-            <span className="flex items-center gap-1 truncate">
+            <span className="flex items-center gap-1">
                 <span className="text-blue-2!">Draft:</span>
-                <small>{draft}</small>
+                <small className="truncate">{draft}</small>
             </span>
         );
     }

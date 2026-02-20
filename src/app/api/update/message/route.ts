@@ -96,13 +96,18 @@ export const POST = async (request: NextRequest) => {
                 return nextResponse({ success: true, message: data }, 200);
             }
             case "edit": {
-                if (!message_id) {
-                    throw "message_id is undefined";
+                if (!message_id || !message) {
+                    throw "message_id and message are undefined";
                 }
 
                 const { data, error } = await supabaseServer
                     .from("messages")
-                    .update({ message })
+                    .update({
+                        ...(message && {
+                            message,
+                            edited_at: new Date().toISOString(),
+                        }),
+                    })
                     .eq("id", message_id)
                     .select("*, conversation:conversations(*)")
                     .single();

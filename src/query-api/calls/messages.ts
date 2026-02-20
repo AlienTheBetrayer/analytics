@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { queryInvalidate, queryMutate } from "@/query/auxiliary";
+import { queryCache } from "@/query/init";
 import { Conversation, Message } from "@/types/tables/messages";
 import { refreshedRequest } from "@/utils/auth/refreshedRequest";
 
@@ -10,9 +11,8 @@ export const upsertMessage = async (
         | { type: "send"; conversation_id: string; message: string }
         | {
               type: "edit";
-              conversation_id: string;
-              message_id: string;
-              message?: string;
+              message: CacheAPIProtocol["messages"]["data"]["messages"][number];
+              content?: string;
           }
     ) & { user: CacheAPIProtocol["status"]["data"] },
 ) => {
@@ -119,15 +119,15 @@ export const upsertMessage = async (
         }
         case "edit": {
             queryMutate({
-                key: ["messages", options.conversation_id],
+                key: ["messages", options.message.conversation_id],
                 value: (state) => ({
                     ...state,
                     messages: state.messages.map((m) =>
-                        m.id === options.message_id
+                        m.id === options.message.id
                             ? {
                                   ...m,
-                                  ...("message" in options && {
-                                      message: options.message,
+                                  ...("content" in options && {
+                                      message: options.content,
                                       edited_at: new Date().toISOString(),
                                   }),
                               }
@@ -142,7 +142,8 @@ export const upsertMessage = async (
                 body: {
                     type: "edit",
                     from_id: options.user.id,
-                    message_id: options.message_id,
+                    message_id: options.message.id,
+                    message: options.content
                 },
             });
 
@@ -167,22 +168,11 @@ export const upsertMessage = async (
 export const deleteMessage = async (options: {
     message: CacheAPIProtocol["messages"]["data"]["messages"][number];
 }) => {
-    let lastMessage:
-        | CacheAPIProtocol["messages"]["data"]["messages"][number]
-        | undefined = undefined;
-
     queryMutate({
         key: ["messages", options.message.conversation_id],
         value: (state) => ({
             ...state,
-            messages: state.messages.filter((m, idx, arr) => {
-                const is = m.id !== options.message.id;
-                if (!is && idx > 0) {
-                    lastMessage = arr[idx - 1];
-                }
-
-                return is;
-            }),
+            messages: state.messages.filter((m) => m.id !== options.message.id),
         }),
     });
 
@@ -191,7 +181,17 @@ export const deleteMessage = async (options: {
         value: (state) =>
             state.map((c) =>
                 c.id === options.message.conversation_id
-                    ? { ...c, last_message: lastMessage }
+                    ? {
+                          ...c,
+                          last_message: (
+                              queryCache.get({
+                                  key: [
+                                      "messages",
+                                      options.message.conversation_id,
+                                  ],
+                              }) as CacheAPIProtocol["messages"]["data"]
+                          )?.messages?.at(-1),
+                      }
                     : c,
             ),
     });

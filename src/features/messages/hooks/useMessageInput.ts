@@ -1,5 +1,5 @@
 import { MessageInputProps } from "@/features/messages/components/message/MessageInput";
-import { upsertMessage } from "@/query-api/calls/messages";
+import { deleteMessage, upsertMessage } from "@/query-api/calls/messages";
 import { useQuery } from "@/query/core";
 import { useLocalStore } from "@/zustand/localStore";
 import { redirect, useParams } from "next/navigation";
@@ -16,6 +16,7 @@ export const useMessageInput = ({
     retrieved,
     data,
     ref,
+    onCancel,
     type,
     editingMessage,
 }: MessageInputProps) => {
@@ -35,7 +36,9 @@ export const useMessageInput = ({
             : retrieved?.conversation_id
               ? messages[retrieved.conversation_id]
               : "") ?? "";
-    const isSendable = !!currentMessage.trim().length;
+    const isSendable = !!(type === "edit"
+        ? edit.trim().length
+        : currentMessage.trim().length);
 
     // refs
     const inputRef = useRef<HTMLInputElement>(null);
@@ -62,50 +65,87 @@ export const useMessageInput = ({
     }, [type, editingMessage]);
 
     // User functions
-    const send = useCallback(() => {
+    const updateMessage = useCallback(() => {
         if (!status) {
             return;
         }
 
         const cid = data?.id ?? retrieved?.conversation_id;
 
-        if (cid) {
-            if (!currentMessage) {
-                return;
-            }
+        switch (type) {
+            case "edit": {
+                onCancel();
+                setEdit("");
 
-            upsertMessage({
-                type: "send",
-                user: status,
-                conversation_id: cid,
-                message: currentMessage,
-            });
-        } else {
-            const to_id = tab === "notes" ? "notes" : retrieved?.user?.id;
-
-            if (!to_id) {
-                return;
-            }
-
-            upsertMessage({
-                type: "start_dm",
-                user: status,
-                to_id,
-                message: currentMessage,
-            }).then((message) => {
-                if (tab === "notes") {
+                if (!cid || !editingMessage) {
                     return;
                 }
 
-                redirect(`/messages/c/${message.conversation_id}`);
-            });
-        }
+                if (edit === "") {
+                    deleteMessage({ message: editingMessage });
+                } else {
+                    upsertMessage({
+                        type: "edit",
+                        message: editingMessage,
+                        content: edit,
+                        user: status,
+                    });
+                }
+                break;
+            }
+            case "send": {
+                if (cid) {
+                    if (!currentMessage) {
+                        return;
+                    }
 
-        if (currentId) {
-            setMessages(currentId, "");
-            setEdit("");
+                    upsertMessage({
+                        type: "send",
+                        conversation_id: cid,
+                        message: currentMessage,
+                        user: status,
+                    });
+                } else {
+                    const to_id =
+                        tab === "notes" ? "notes" : retrieved?.user?.id;
+
+                    if (!to_id) {
+                        return;
+                    }
+
+                    upsertMessage({
+                        type: "start_dm",
+                        user: status,
+                        to_id,
+                        message: currentMessage,
+                    }).then((message) => {
+                        if (tab === "notes") {
+                            return;
+                        }
+
+                        redirect(`/messages/c/${message.conversation_id}`);
+                    });
+                }
+
+                if (currentId) {
+                    setMessages(currentId, "");
+                }
+                break;
+            }
         }
-    }, [status, retrieved, data, setMessages, tab, currentMessage, currentId]);
+    }, [
+        setMessages,
+        onCancel,
+        status,
+        tab,
+        edit,
+        currentMessage,
+        currentId,
+        retrieved,
+        data,
+        type,
+        editingMessage,
+    ]);
 
     const setMessage = useCallback(
         (value: string) => {
@@ -130,11 +170,11 @@ export const useMessageInput = ({
     return useMemo(() => {
         return {
             setMessage,
-            send,
+            updateMessage,
             inputRef,
             message: currentMessage,
             edit,
             isSendable,
         };
-    }, [send, setMessage, currentMessage, edit, isSendable]);
+    }, [updateMessage, setMessage, currentMessage, edit, isSendable]);
 };

@@ -22,7 +22,7 @@ export const MessageInput = ({
     editingMessage,
     onCancel,
 }: MessageInputProps) => {
-    const { send, setMessage, inputRef, message, edit, isSendable } =
+    const { updateMessage, setMessage, inputRef, message, edit, isSendable } =
         useMessageInput({
             retrieved,
             data,
@@ -44,7 +44,11 @@ export const MessageInput = ({
                 onKeyDown={(e: React.KeyboardEvent) => {
                     switch (e.code) {
                         case "Enter": {
-                            send();
+                            updateMessage();
+                            break;
+                        }
+                        case "Escape": {
+                            onCancel();
                             break;
                         }
                     }
@@ -58,7 +62,7 @@ export const MessageInput = ({
             >
                 <Button
                     className="not-hover:bg-bg-1! h-full! aspect-square overflow-hidden"
-                    onClick={send}
+                    onClick={updateMessage}
                 >
                     <AnimatePresence>
                         {isSendable ? (
