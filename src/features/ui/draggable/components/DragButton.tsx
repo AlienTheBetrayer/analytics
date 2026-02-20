@@ -92,7 +92,8 @@ export const DragButton = ({ ref, className, ...rest }: Props) => {
                 width={24}
                 height={24}
                 src="/drag.svg"
-                className={`${grabbing ? "rotate-360" : "rotate-180"} duration-500! group-active:animate-pulse`}
+                className={`${grabbing ? "rotate-360" : "rotate-180"} duration-500! group-active:animate-pulse select-none`}
+                draggable={false}
             />
         </Button>
     );

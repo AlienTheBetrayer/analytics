@@ -111,11 +111,8 @@ export const MessageInput = ({
             </Tooltip>
 
             <div
-                className="overflow-hidden transition-all duration-300 shrink-0"
-                style={{
-                    interpolateSize: "allow-keywords",
-                    width: type === "edit" ? "auto" : 0,
-                }}
+                className={`overflow-hidden transition-all duration-300 shrink-0 
+                    ${type === "edit" ? "max-w-8" : "max-w-0"}`}
                 inert={type !== "edit"}
             >
                 <Tooltip

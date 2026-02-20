@@ -61,12 +61,9 @@ export const PreviewButton = ({
                         ? `/contact/send/`
                         : `/contact/view/${data.id}`
                 }
-                className={`flex flex-col p-4! w-full h-fit
-                 justify-start! items-stretch! rounded-4xl! 
-                 ${expanded ? "h-full! max-h-full" : "max-h-96 md:max-h-32"} ${className ?? ""}`}
-                style={{
-                    interpolateSize: "allow-keywords",
-                }}
+                className={`flex flex-col p-4! w-full 
+                 justify-start! items-stretch! rounded-4xl! h-full!
+                 ${expanded ? "max-h-100 md:max-h-150" : "max-h-64 md:max-h-32"} ${className ?? ""}`}
             >
                 {type === "message" && (
                     <ul className="z-1 absolute right-4 top-2 flex items-center gap-1 whitespace-nowrap">

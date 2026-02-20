@@ -70,13 +70,10 @@ export const ProfileOverview = ({
             </ul>
 
             <div
-                className="overflow-hidden transition-all duration-500"
-                style={{
-                    interpolateSize: "allow-keywords",
-                    height: collapsed === "profile" ? "0rem" : "auto",
-                }}
+                className={`grid overflow-hidden transition-all duration-500 
+                    ${collapsed === "profile" ? "grid-rows-[0fr]" : "grid-rows-[1fr]"}`}
             >
-                <ul className="flex flex-col w-full gap-4 grow items-center">
+                <ul className="flex flex-col w-full gap-4 grow items-center overflow-hidden">
                     <li className="flex flex-col items-center">
                         <span className="text-4! text-foreground-3!">
                             {data.profile.name}

@@ -18,7 +18,7 @@ export const ArchivedDisplay = ({ data }: Props) => {
     const updateDisplay = useAppStore((state) => state.updateDisplay);
 
     return (
-        display?.archive?.movedToMenu === false && (
+        !!display?.archive?.movedToMenu === false && (
             <div className="relative">
                 <Button
                     onClick={() => {

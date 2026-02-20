@@ -91,22 +91,21 @@ const ListItemsSelect = ({
     }
 
     return (
-        <ul
-            className="flex flex-col gap-4 overflow-hidden transition-all duration-500"
-            style={{
-                height: collapsed ? "0" : "auto",
-                interpolateSize: "allow-keywords",
-            }}
+        <div
+            className={`grid! gap-4 overflow-hidden transition-all duration-500 
+                ${collapsed ? "grid-rows-[0fr]" : "grid-rows-[1fr]"}`}
         >
-            {(reversed ? [...data].reverse() : data).map((id) => (
-                <li key={id}>
-                    <Item
-                        className="rounded-t-none!"
-                        filter={filter}
-                        id={id}
-                    />
-                </li>
-            ))}
-        </ul>
+            <ul className="flex flex-col gap-4 overflow-hidden">
+                {(reversed ? [...data].reverse() : data).map((id) => (
+                    <li key={id}>
+                        <Item
+                            className="rounded-t-none!"
+                            filter={filter}
+                            id={id}
+                        />
+                    </li>
+                ))}
+            </ul>
+        </div>
     );
 };

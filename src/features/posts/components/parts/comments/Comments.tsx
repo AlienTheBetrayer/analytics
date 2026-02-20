@@ -117,17 +117,15 @@ export const Comments = ({ id }: Props) => {
             </li>
 
             <li
-                className="duration-500 transition-all overflow-hidden"
-                style={{
-                    interpolateSize: "allow-keywords",
-                    height: collapsed ? "0" : "auto",
-                }}
+                className={`grid duration-500 transition-all overflow-hidden ${collapsed ? "grid-rows-[0fr]" : "grid-rows-[1fr]"}`}
             >
-                <CommentsDisplay
-                    isLoading={isLoading}
-                    comments={comments}
-                    filter={filter}
-                />
+                <div className="overflow-hidden">
+                    <CommentsDisplay
+                        isLoading={isLoading}
+                        comments={comments}
+                        filter={filter}
+                    />
+                </div>
             </li>
         </ul>
     );

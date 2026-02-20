@@ -88,13 +88,10 @@ export const PostsOverview = ({
             </ul>
 
             <div
-                className="overflow-hidden transition-all duration-500"
-                style={{
-                    interpolateSize: "allow-keywords",
-                    height: collapsed === "posts" ? "0rem" : "auto",
-                }}
+                className={`grid overflow-hidden transition-all duration-500 
+                    ${collapsed === "posts" ? "grid-rows-[0fr]" : "grid-rows-[1fr]"}`}
             >
-                <ul className="flex flex-col gap-4 w-full justify-center relative">
+                <ul className="flex flex-col gap-4 w-full justify-center relative overflow-hidden">
                     {Array.from({ length: 3 }, (_, k) => (
                         <li
                             key={k}

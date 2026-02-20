@@ -96,9 +96,9 @@ export const List = ({ isLoading, conversations }: Props) => {
                         ${display.tab !== "conversations" ? "opacity-100" : "opacity-0"}`}
                 />
 
-                {regular.length ? (
+                {!!!display.filter && (
                     <>
-                        {archived.length && (
+                        {!!archived.length && (
                             <li>
                                 <ArchivedDisplay data={archived} />
                             </li>
@@ -107,7 +107,11 @@ export const List = ({ isLoading, conversations }: Props) => {
                         <li>
                             <NotesDisplay data={conversationTypes.notes} />
                         </li>
+                    </>
+                )}
 
+                {regular.length ? (
+                    <>
                         {regular.map((c) => (
                             <li key={c.id}>
                                 <ConversationDisplay data={c} />
@@ -115,9 +119,11 @@ export const List = ({ isLoading, conversations }: Props) => {
                         ))}
                     </>
                 ) : (
-                    <li className="flex items-center justify-center grow">
-                        <FilterNothing type="conversations" />
-                    </li>
+                    !!display.filter && (
+                        <li className="flex items-center justify-center grow">
+                            <FilterNothing type="conversations" />
+                        </li>
+                    )
                 )}
             </motion.ul>
 
@@ -129,17 +135,17 @@ export const List = ({ isLoading, conversations }: Props) => {
                 }}
                 transition={{ ease: "easeInOut", duration: 0.3 }}
             >
-                {archived.length ? (
-                    archived.map((c) => (
-                        <li key={c.id}>
-                            <ConversationDisplay data={c} />
-                        </li>
-                    ))
-                ) : (
-                    <li className="flex items-center justify-center grow">
-                        <FilterNothing type="conversations" />
-                    </li>
-                )}
+                {archived.length
+                    ? archived.map((c) => (
+                          <li key={c.id}>
+                              <ConversationDisplay data={c} />
+                          </li>
+                      ))
+                    : !!display.filter && (
+                          <li className="flex items-center justify-center grow">
+                              <FilterNothing type="conversations" />
+                          </li>
+                      )}
             </motion.ul>
         </div>
     );

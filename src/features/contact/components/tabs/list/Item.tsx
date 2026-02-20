@@ -127,11 +127,7 @@ export const Item = ({ className, id, filter }: Props) => {
             </ul>
 
             <div
-                className="transition-all duration-500 overflow-hidden"
-                style={{
-                    height: display === "compact" ? "0" : "auto",
-                    interpolateSize: "allow-keywords",
-                }}
+                className={`transition-all duration-500 overflow-hidden ${display === "compact" ? "max-h-0" : "max-h-32"}`}
             >
                 <PreviewButton
                     className={className}

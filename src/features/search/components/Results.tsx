@@ -117,13 +117,9 @@ export const Results = () => {
             </li>
 
             <li
-                className="overflow-hidden transition-all duration-500"
-                style={{
-                    interpolateSize: "allow-keywords",
-                    height: collapsed ? "0" : "auto",
-                }}
+                className={`grid overflow-hidden transition-all duration-500 ${collapsed ? "grid-rows-[0fr]" : "grid-rows-[1fr]"}`}
             >
-                <ul className="flex flex-col gap-8">
+                <ul className="flex flex-col gap-8 overflow-hidden">
                     {Array.from({ length: page + 1 }, (_, k) => (
                         <Page
                             filter={filter}

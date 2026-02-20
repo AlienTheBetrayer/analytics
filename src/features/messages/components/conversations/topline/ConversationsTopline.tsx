@@ -60,12 +60,8 @@ export const ConversationsTopline = ({ data }: Props) => {
 
             <ul className="box h-10! gap-0.5! p-0! items-center! flex-row!">
                 <li
-                    style={{
-                        interpolateSize: "allow-keywords",
-                        width: display.tab !== "conversations" ? "auto" : 0,
-                    }}
+                    className={`${display.tab !== "conversations" ? "max-w-8" : "max-w-0"} overflow-hidden! p-0! shrink-0 transition-all duration-300`}
                     inert={display.tab === "conversations"}
-                    className="overflow-hidden p-0! shrink-0 transition-all duration-300"
                 >
                     <Tooltip
                         direction="bottom"

@@ -29,39 +29,40 @@ export const TabDisplay = ({ tab }: Props) => {
     const paginatedFiltered = filtered?.slice(0, 4 * (pagination + 1));
 
     return (
-        <ul
-            className="flex flex-col gap-8 transition-all duration-500 overflow-hidden"
-            style={{
-                height: expandedTab ? "auto" : "0px",
-                interpolateSize: "allow-keywords",
-            }}
+        <div
+            className={`grid transition-all duration-500 
+                ${!expandedTab ? "grid-rows-[0fr]" : "grid-rows-[1fr]"}`}
         >
-            {paginatedFiltered?.map(
-                (notification) =>
-                    notification && (
-                        <li key={notification.id}>
-                            <NotificationCompact notification={notification} />
-                        </li>
-                    ),
-            )}
-
-            <li className="w-full">
-                {(filtered?.length ?? 0) > 4 * (pagination + 1) && (
-                    <Button
-                        className="w-full"
-                        onClick={() => {
-                            setPagination((prev) => prev + 1);
-                        }}
-                    >
-                        <Image
-                            alt=""
-                            width={16}
-                            height={16}
-                            src="/download.svg"
-                        />
-                    </Button>
+            <ul className="flex flex-col gap-8 overflow-hidden">
+                {paginatedFiltered?.map(
+                    (notification) =>
+                        notification && (
+                            <li key={notification.id}>
+                                <NotificationCompact
+                                    notification={notification}
+                                />
+                            </li>
+                        ),
                 )}
-            </li>
-        </ul>
+
+                <li className="w-full">
+                    {(filtered?.length ?? 0) > 4 * (pagination + 1) && (
+                        <Button
+                            className="w-full"
+                            onClick={() => {
+                                setPagination((prev) => prev + 1);
+                            }}
+                        >
+                            <Image
+                                alt=""
+                                width={16}
+                                height={16}
+                                src="/download.svg"
+                            />
+                        </Button>
+                    )}
+                </li>
+            </ul>
+        </div>
     );
 };
