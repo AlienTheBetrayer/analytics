@@ -21,11 +21,26 @@ export const LocalSlice: SliceFunction<LocalStore, LocalStore> = (set) => {
                     movedToMenu: false,
                 },
                 noteboard: {
-                    view: "expanded"
-                }
+                    view: "expanded",
+                },
             },
         },
         theme: "dark",
+        messageInputs: {},
+
+        updateMessageInput: (id, value) => {
+            set((state) => {
+                const messageInputs = { ...state.messageInputs };
+
+                if (!value.trim().length) {
+                    delete messageInputs[id];
+                } else {
+                    messageInputs[id] = value;
+                }
+
+                return { ...state, messageInputs };
+            });
+        },
 
         updateDisplay: (display) => {
             set((state) => ({

@@ -23,9 +23,9 @@ export type Display = {
 
 export type MessagesStore = {
     display: Display;
-
     selectDisplay: MessagesSelectResult;
     selectedConversation: string | null;
+
 
     /**
      * sets the selected conversation id

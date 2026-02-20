@@ -1,6 +1,7 @@
 import { MessageInputProps } from "@/features/messages/components/message/MessageInput";
 import { upsertMessage } from "@/query-api/calls/messages";
 import { useQuery } from "@/query/core";
+import { useLocalStore } from "@/zustand/localStore";
 import { redirect, useParams } from "next/navigation";
 import {
     useState,
@@ -21,11 +22,20 @@ export const useMessageInput = ({
     const { data: status } = useQuery({ key: ["status"] });
     const { tab } = useParams<{ tab?: string }>();
 
-    // states + derived
-    const [message, setMessage] = useState<string>(""); // recordify
+    // states
+    const messages = useLocalStore((state) => state.messageInputs);
+    const setMessages = useLocalStore((state) => state.updateMessageInput);
     const [edit, setEdit] = useState<string>("");
-    const isSendable = !!message.trim().length;
-    const lastConversation = useRef<string | null>(null);
+
+    // derived states
+    const currentId = (data?.id || retrieved?.conversation_id) ?? null;
+    const currentMessage =
+        (data?.id
+            ? messages[data.id]
+            : retrieved?.conversation_id
+              ? messages[retrieved.conversation_id]
+              : "") ?? "";
+    const isSendable = !!currentMessage.trim().length;
 
     // refs
     const inputRef = useRef<HTMLInputElement>(null);
@@ -51,36 +61,24 @@ export const useMessageInput = ({
         });
     }, [type, editingMessage]);
 
-    // clearing input on chat switch
-    useEffect(() => {
-        if (!data) {
-            return;
-        }
-
-        if (lastConversation.current !== data.id) {
-            requestAnimationFrame(() => {
-                setMessage("");
-                setEdit("");
-            });
-        }
-
-        lastConversation.current = data.id;
-    }, [data]);
-
     // User functions
     const send = useCallback(() => {
-        if (!message.trim() || !status) {
+        if (!status) {
             return;
         }
 
         const cid = data?.id ?? retrieved?.conversation_id;
 
         if (cid) {
+            if (!currentMessage) {
+                return;
+            }
+
             upsertMessage({
                 type: "send",
                 user: status,
                 conversation_id: cid,
-                message,
+                message: currentMessage,
             });
         } else {
             const to_id = tab === "notes" ? "notes" : retrieved?.user?.id;
@@ -93,7 +91,7 @@ export const useMessageInput = ({
                 type: "start_dm",
                 user: status,
                 to_id,
-                message,
+                message: currentMessage,
             }).then((message) => {
                 if (tab === "notes") {
                     return;
@@ -103,10 +101,40 @@ export const useMessageInput = ({
             });
         }
 
-        setMessage("");
-    }, [message, status, retrieved, data, setMessage, tab]);
+        if (currentId) {
+            setMessages(currentId, "");
+            setEdit("");
+        }
+    }, [status, retrieved, data, setMessages, tab, currentMessage, currentId]);
+
+    const setMessage = useCallback(
+        (value: string) => {
+            if (!currentId) {
+                return;
+            }
+
+            switch (type) {
+                case "edit": {
+                    setEdit(value);
+                    break;
+                }
+                case "send": {
+                    setMessages(currentId, value);
+                    break;
+                }
+            }
+        },
+        [setMessages, currentId, type],
+    );
 
     return useMemo(() => {
-        return { setMessage, send, inputRef, message, edit, isSendable };
-    }, [send, setMessage, message, edit, isSendable]);
+        return {
+            setMessage,
+            send,
+            inputRef,
+            message: currentMessage,
+            edit,
+            isSendable,
+        };
+    }, [send, setMessage, currentMessage, edit, isSendable]);
 };
