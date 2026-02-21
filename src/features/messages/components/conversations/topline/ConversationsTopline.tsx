@@ -29,7 +29,7 @@ export const ConversationsTopline = ({ data }: Props) => {
                 <li>
                     <Modal
                         direction="bottom-right"
-                        element={() => <LeftMenu />}
+                        element={(hide) => <LeftMenu hide={hide} />}
                     >
                         <Tooltip
                             direction="top"

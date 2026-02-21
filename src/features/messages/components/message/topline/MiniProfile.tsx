@@ -11,7 +11,7 @@ type Props = {
 export const MiniProfile = ({ data }: Props) => {
     return (
         <Tooltip
-            direction="bottom"
+            direction="top"
             text="Go to profile"
         >
             <LinkButton

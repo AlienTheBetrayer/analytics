@@ -30,11 +30,9 @@ export const ArchivedDisplay = ({ data }: Props) => {
                     ${isCollapsed ? "h-10! items-center!" : "h-20! items-start!"}`}
                 >
                     <div
-                        className={`relative rounded-full transition-all duration-300 flex items-center justify-center bg-linear-to-bl from-bg-3 to-bg-5 shrink-0
-                        ${isCollapsed ? "w-fit h-fit" : "w-12 h-12"}`}
-                        style={{
-                            interpolateSize: "allow-keywords",
-                        }}
+                        className={`relative rounded-full w-full h-full transition-all duration-300 flex items-center justify-center 
+                            bg-linear-to-bl from-bg-3 to-bg-5 shrink-0 max-w-12 max-h-12
+                        ${isCollapsed ? "from-transparent to-transparent!" : ""}`}
                     >
                         <Image
                             alt="archive"
@@ -51,10 +49,7 @@ export const ArchivedDisplay = ({ data }: Props) => {
                         <span>Archived chats</span>
 
                         <span
-                            className={`transition-all duration-300 ${isCollapsed ? "h-0" : "h-fit"}`}
-                            style={{
-                                interpolateSize: "allow-keywords",
-                            }}
+                            className={`transition-all duration-300 ${isCollapsed ? "max-h-0" : "max-h-24"}`}
                         >
                             <small className="flex items-center">
                                 {data.slice(0, 3).map((c, k, arr) => (

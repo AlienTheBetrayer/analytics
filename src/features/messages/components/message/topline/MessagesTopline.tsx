@@ -32,7 +32,7 @@ export const MessagesTopline = ({ data, retrieved }: Props) => {
             <ul className="box min-h-10! h-10! gap-1! p-0! items-center! flex-row!">
                 <li className="flex items-center gap-1 ml-4! self-stretch">
                     <Tooltip
-                        direction="bottom"
+                        direction="top"
                         text="Back to chats"
                         className="self-stretch h-full flex lg:hidden -ml-4 mr-2"
                     >
@@ -61,7 +61,7 @@ export const MessagesTopline = ({ data, retrieved }: Props) => {
                         {tab === "notes" && id !== "board" && (
                             <li>
                                 <Tooltip
-                                    direction="bottom"
+                                    direction="top"
                                     text="To noteboard"
                                 >
                                     <LinkButton href="/messages/notes/board">
@@ -78,7 +78,7 @@ export const MessagesTopline = ({ data, retrieved }: Props) => {
 
                         <li>
                             <Tooltip
-                                direction="bottom"
+                                direction="top"
                                 text={`Re-fetch ${id === "board" ? "noteboards" : "messages"}`}
                             >
                                 <Button

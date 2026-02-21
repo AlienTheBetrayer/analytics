@@ -55,7 +55,7 @@ export type LocalStore = {
      * updates the display data
      * @param display a deep partial display object
      */
-    updateDisplay: (display: DeepPartial<Display>) => void;
+    updateDisplay: (display: DeepPartial<LocalStore["display"]>) => void;
 
     /**
      * toggles the sorting metadata
