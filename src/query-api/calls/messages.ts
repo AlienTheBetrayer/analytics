@@ -42,9 +42,22 @@ export const upsertMessage = async (
 
             const { conversation, ...msg } = message;
 
-            queryInvalidate({ key: ["conversations", options.user.id] });
+            if (conversation.type === "notes") {
+                queryMutate({
+                    key: [
+                        "conversation_retrieve",
+                        "notes",
+                        options.user.id,
+                        null,
+                    ],
+                    value: (state) => ({
+                        ...state,
+                        conversation_id: msg.conversation_id,
+                    }),
+                });
+            }
             queryMutate({
-                key: ["messages", message.conversation.id],
+                key: ["messages", msg.conversation_id],
                 value: (state) => ({
                     ...state,
                     messages: [
@@ -59,6 +72,7 @@ export const upsertMessage = async (
                     ],
                 }),
             });
+            queryInvalidate({ key: ["conversations", options.user.id] });
             break;
         }
         case "send": {
@@ -143,7 +157,7 @@ export const upsertMessage = async (
                     type: "edit",
                     from_id: options.user.id,
                     message_id: options.message.id,
-                    message: options.content
+                    message: options.content,
                 },
             });
 
@@ -155,7 +169,7 @@ export const upsertMessage = async (
     queryMutate({
         key: ["conversations", options.user.id],
         value: (state) =>
-            state.map((c) =>
+            state?.map((c) =>
                 c.id === message.conversation_id
                     ? { ...c, last_message: message }
                     : c,

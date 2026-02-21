@@ -66,6 +66,7 @@ export const Select = () => {
         key: ["conversation_retrieve", tab, status?.id, id ?? null],
         trigger: result === "fetch",
     });
+    console.log(["conversation_retrieve", tab, status?.id, id ?? null]);
 
     const retrieved = useMemo(() => {
         return tab === "c"

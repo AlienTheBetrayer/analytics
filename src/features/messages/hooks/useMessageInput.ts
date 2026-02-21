@@ -27,18 +27,24 @@ export const useMessageInput = ({
     const messages = useLocalStore((state) => state.messageInputs);
     const setMessages = useLocalStore((state) => state.updateMessageInput);
     const [edit, setEdit] = useState<string>("");
+    const [temp, setTemp] = useState<string>("");
+    console.log(messages);
 
     // derived states
     const currentId = (data?.id || retrieved?.conversation_id) ?? null;
     const currentMessage =
-        (data?.id
-            ? messages[data.id]
-            : retrieved?.conversation_id
-              ? messages[retrieved.conversation_id]
-              : "") ?? "";
-    const isSendable = !!(type === "edit"
-        ? edit.trim().length
-        : currentMessage.trim().length);
+        (temp
+            ? temp
+            : data?.id
+              ? messages[data.id]
+              : retrieved?.conversation_id
+                ? messages[retrieved.conversation_id]
+                : "") ?? "";
+    const isSendable = !!(temp
+        ? temp.trim().length
+        : type === "edit"
+          ? edit.trim().length
+          : currentMessage.trim().length);
 
     // refs
     const inputRef = useRef<HTMLInputElement>(null);
@@ -106,6 +112,7 @@ export const useMessageInput = ({
                         user: status,
                     });
                 } else {
+                    setTemp("");
                     const to_id =
                         tab === "notes" ? "notes" : retrieved?.user?.id;
 
@@ -149,17 +156,17 @@ export const useMessageInput = ({
 
     const setMessage = useCallback(
         (value: string) => {
-            if (!currentId) {
-                return;
-            }
-
             switch (type) {
                 case "edit": {
                     setEdit(value);
                     break;
                 }
                 case "send": {
-                    setMessages(currentId, value);
+                    if (currentId) {
+                        setMessages(currentId, value);
+                    } else {
+                        setTemp(value);
+                    }
                     break;
                 }
             }
