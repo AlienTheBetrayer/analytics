@@ -14,6 +14,8 @@ type Props = {
     search: ReturnType<typeof useMiniSearch>;
     promiseState?: string;
     isEnabled?: boolean;
+    required?: boolean;
+    text?: string;
 };
 
 export const Results = ({
@@ -22,6 +24,8 @@ export const Results = ({
     onSelect,
     search,
     isEnabled,
+    required,
+    text,
     promiseState,
 }: Props) => {
     // view = select only
@@ -102,7 +106,8 @@ export const Results = ({
                         <Button
                             className="w-full"
                             isEnabled={
-                                !!selectedToggled.length && isEnabled !== false
+                                isEnabled !== false &&
+                                (!required ? true : !!selectedToggled.length)
                             }
                             onClick={() => onSelect?.(selectedToggled)}
                         >
@@ -115,10 +120,12 @@ export const Results = ({
                                 height={16}
                                 src="/imageadd.svg"
                             />
-                            Add
-                            <small className="ml-1">
-                                ({selectedToggled.length})
-                            </small>
+                            {text ?? "Add"}
+                            {!!selectedToggled.length && (
+                                <small className="ml-1">
+                                    ({selectedToggled.length})
+                                </small>
+                            )}
                         </Button>
                     </li>
                 </>

@@ -8,52 +8,7 @@ import Image from "next/image";
 import { useCallback } from "react";
 
 export const CreateConversation = () => {
-    const { data: status } = useQuery({ key: ["status"] });
 
-    const create = useCallback(
-        (
-            options:
-                | { type: "dm" | "channel" | "group"; ids: string[] }
-                | { type: "notes" },
-        ) => {
-            if (!status) {
-                return;
-            }
-
-            switch (options.type) {
-                case "notes": {
-                    wrapPromise("createConversation", async () => {
-                        return upsertConversation({
-                            type: "create",
-                            conversation_type: "notes",
-                            user: status,
-                            member_ids: [],
-                        });
-                    });
-                    break;
-                }
-                default: {
-                    if (
-                        !options.ids.length ||
-                        options.ids.some((id) => id === status.id)
-                    ) {
-                        return;
-                    }
-
-                    wrapPromise("createConversation", async () => {
-                        return upsertConversation({
-                            type: "create",
-                            conversation_type: "group",
-                            user: status,
-                            member_ids: options.ids,
-                        });
-                    });
-                    break;
-                }
-            }
-        },
-        [status],
-    );
 
     return (
         <ul className="box acrylic p-4! rounded-2xl! gap-1! **:border-0! w-screen max-w-64 message-ctx">
@@ -72,7 +27,9 @@ export const CreateConversation = () => {
                     direction="right"
                     className="w-full"
                 >
-                    <Button onClick={() => create({ type: "notes" })}>
+                    <Button onClick={() => {
+                        alert("make this work");
+                    }}>
                         <Image
                             alt=""
                             width={16}
@@ -90,8 +47,8 @@ export const CreateConversation = () => {
                     direction="right"
                     element={() => (
                         <CreateType
+                            category="dm"
                             type="both"
-                            onSelect={(ids) => create({ type: "dm", ids })}
                         />
                     )}
                 >
@@ -113,8 +70,8 @@ export const CreateConversation = () => {
                     direction="right"
                     element={() => (
                         <CreateType
+                            category="group"
                             type="friends"
-                            onSelect={(ids) => create({ type: "group", ids })}
                         />
                     )}
                 >
@@ -136,8 +93,8 @@ export const CreateConversation = () => {
                     direction="right"
                     element={() => (
                         <CreateType
+                            category="channel"
                             type="friends"
-                            onSelect={(ids) => create({ type: "channel", ids })}
                         />
                     )}
                 >

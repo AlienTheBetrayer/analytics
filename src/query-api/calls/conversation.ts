@@ -24,7 +24,7 @@ export const upsertConversation = async (
     switch (options.type) {
         case "create": {
             const res = await refreshedRequest({
-                route: "/api/update/conversation-create",
+                route: "/api/update/conversation",
                 method: "POST",
                 body: {
                     user_id: options.user.id,
@@ -34,6 +34,7 @@ export const upsertConversation = async (
                     ...("description" in options && {
                         description: options.description,
                     }),
+                    conversation_type: options.conversation_type,
                 },
             });
 

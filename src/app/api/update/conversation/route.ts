@@ -50,20 +50,18 @@ export const POST = async (request: NextRequest) => {
                         break;
                     }
                     case "group": {
-                        if (typeof member_ids !== "string" || !type) {
-                            throw "member_ids and type are undefined";
-                        }
-
-                        user_ids = [user_id, ...member_ids.split(",")];
+                        user_ids = [
+                            user_id,
+                            ...(member_ids ? member_ids.split(",") : []),
+                        ];
                         initialMessage = "Group created";
                         break;
                     }
                     case "channel": {
-                        if (typeof member_ids !== "string" || !type) {
-                            throw "member_ids is undefined";
-                        }
-
-                        user_ids = [user_id, ...member_ids.split(",")];
+                        user_ids = [
+                            user_id,
+                            ...(member_ids ? member_ids.split(",") : []),
+                        ];
                         initialMessage = "Channel created";
                         break;
                     }
@@ -75,7 +73,11 @@ export const POST = async (request: NextRequest) => {
                 // conversation
                 const { data, error } = (await supabaseServer
                     .from("conversations")
-                    .insert({ type: conversation_type, title, description })
+                    .insert({
+                        type: conversation_type,
+                        ...(title && { title }),
+                        ...(description && { description }),
+                    })
                     .select()
                     .single()) as {
                     data: Conversation;
@@ -108,6 +110,7 @@ export const POST = async (request: NextRequest) => {
                         .from("messages")
                         .insert({
                             message: initialMessage,
+                            type: "system",
                             conversation_id,
                             user_id: null,
                         });

@@ -15,7 +15,11 @@ export const Name = ({ data }: Props) => {
                 (m) => m.user_id !== status?.id,
             )?.user;
 
-            return <span className="truncate">{otherUser?.username}</span>;
+            return (
+                <span className="truncate">
+                    {data.title || otherUser?.username}
+                </span>
+            );
         }
         case "group": {
             return (
@@ -26,7 +30,7 @@ export const Name = ({ data }: Props) => {
                         height={16}
                         src="/friends.svg"
                     />
-                    <span>Group</span>
+                    <span>{data.title || "Group"}</span>
                 </span>
             );
         }
@@ -39,7 +43,7 @@ export const Name = ({ data }: Props) => {
                         height={16}
                         src="/menu.svg"
                     />
-                    <span>Channel</span>
+                    <span>{data.title || "Channel"}</span>
                 </span>
             );
         }
@@ -52,7 +56,7 @@ export const Name = ({ data }: Props) => {
                         height={16}
                         src="/pencil.svg"
                     />
-                    <span>Notes</span>
+                    <span>{data.title || "Notes"}</span>
                 </span>
             );
         }

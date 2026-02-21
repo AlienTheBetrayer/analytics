@@ -1,20 +1,24 @@
+import { useCreateConversation } from "@/features/messages/hooks/useCreateConversation";
 import { MiniSearch } from "@/features/minisearch/components/MiniSearch";
 import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
+import { Conversation } from "@/types/tables/messages";
 import { motion } from "motion/react";
 import Image from "next/image";
 import { useState } from "react";
 
 type Props = {
+    category: Conversation["type"];
     type: "friends" | "users" | "both";
-    onSelect: (ids: string[], title: string, description?: string) => void;
 };
 
-export const CreateType = ({ type, onSelect }: Props) => {
-    const [selected, setSelected] = useState<Props["type"]>(type);
+export const CreateType = ({ type, category }: Props) => {
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
+    const [selected, setSelected] = useState<Props["type"]>(type);
     const [validity, setValidity] = useState<boolean>(false);
+
+    const { create } = useCreateConversation();
 
     return (
         <motion.div
@@ -92,12 +96,19 @@ export const CreateType = ({ type, onSelect }: Props) => {
                     case "users": {
                         return (
                             <MiniSearch
+                                required={category === "dm"}
+                                text="Create"
                                 isEnabled={validity}
                                 type="users"
                                 view="select"
-                                onSelect={(ids) =>
-                                    onSelect(ids, title, description)
-                                }
+                                onSelect={(ids) => {
+                                    create({
+                                        type: category,
+                                        ids,
+                                        title,
+                                        description,
+                                    });
+                                }}
                                 promiseState="createConversation"
                             />
                         );
@@ -105,11 +116,18 @@ export const CreateType = ({ type, onSelect }: Props) => {
                     case "friends": {
                         return (
                             <MiniSearch
+                                required={category === "dm"}
+                                text="Create"
                                 isEnabled={validity}
                                 type="friends"
                                 view="select"
                                 onSelect={(ids) =>
-                                    onSelect(ids, title, description)
+                                    create({
+                                        type: category,
+                                        ids,
+                                        title,
+                                        description,
+                                    })
                                 }
                                 promiseState="createConversation"
                             />

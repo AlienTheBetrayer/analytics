@@ -11,6 +11,7 @@ import { NotSelected } from "@/features/messages/components/errors/NotSelected";
 import { sortMessages } from "@/features/messages/utils/sort";
 import { FilterNothing } from "@/features/messages/components/errors/FilterNothing";
 import { useMemo, useState } from "react";
+import { LoadingMessages } from "@/features/messages/components/errors/LoadingMessages";
 
 type Props = {
     retrieved?: CacheAPIProtocol["conversation_retrieve"]["data"];
@@ -23,7 +24,7 @@ export const MessageView = ({ retrieved }: Props) => {
     const { data, isLoading } = useQuery({
         key: ["messages", retrieved?.conversation_id ?? undefined],
     });
-    console.log(retrieved?.conversation_id);
+
     const sorted = useMemo(() => {
         if (!data) {
             return [];
@@ -43,47 +44,69 @@ export const MessageView = ({ retrieved }: Props) => {
     >(undefined);
 
     // fallbacks
-    if (isLoading) {
+    const code = (() => {
+        if (isLoading) {
+            return "loading";
+        }
+
+        if (retrieved?.conversation_id && !retrieved?.user && !data) {
+            return "wrong-url";
+        }
+
+        switch (selectDisplay) {
+            case "notselected": {
+                return "not-selected";
+            }
+            case "wrong": {
+                return "wrong-url";
+            }
+        }
+    })();
+
+    if (code) {
         return (
-            <div className="flex flex-col justify-between gap-2 grow">
-                {Array.from({ length: 8 }, (_, k) => (
-                    <div
-                        key={k}
-                        className="w-full h-14 loading"
-                    />
-                ))}
-            </div>
+            <article className="flex flex-col bg-bg-2! grow p-4! gap-2 rounded-4xl">
+                <MessagesTopline
+                    data={data}
+                    retrieved={retrieved}
+                />
+                <div className="flex items-center justify-center loading grow">
+                    {(() => {
+                        switch (code) {
+                            case "loading": {
+                                return (
+                                    <div className="p-4 loading">
+                                        <LoadingMessages />
+                                    </div>
+                                );
+                            }
+                            case "wrong-url": {
+                                return <WrongURL />;
+                            }
+                            case "not-selected": {
+                                return <NotSelected />;
+                            }
+                        }
+                    })()}
+                </div>
+            </article>
         );
     }
 
-    switch (selectDisplay) {
-        case "notselected": {
-            return (
-                <div className="flex items-center justify-center relative grow loading">
-                    <NotSelected />
-                </div>
-            );
-        }
-        case "wrong": {
-            return (
-                <div className="flex items-center justify-center relative grow loading">
-                    <WrongURL />
-                </div>
-            );
-        }
-        case "noteboard": {
-            return (
-                <article className="flex flex-col bg-bg-2! grow p-4! gap-2 rounded-4xl">
-                    <MessagesTopline
-                        data={data}
-                        retrieved={retrieved}
-                    />
-                    <NoteBoard />
-                </article>
-            );
-        }
+    // noteboard jsx
+    if (selectDisplay === "noteboard") {
+        return (
+            <article className="flex flex-col bg-bg-2! grow p-4! gap-2 rounded-4xl">
+                <MessagesTopline
+                    data={data}
+                    retrieved={retrieved}
+                />
+                <NoteBoard />
+            </article>
+        );
     }
 
+    // main jsx
     return (
         <article className="flex flex-col bg-bg-2! grow p-4! gap-2 rounded-4xl">
             <MessagesTopline

@@ -10,10 +10,20 @@ type Props = {
     view: "list" | "select";
     onSelect?: (ids: string[]) => void;
     promiseState?: string;
+    text?: string;
+    required?: boolean;
     isEnabled?: boolean;
 };
 
-export const MiniSearch = ({ type, view, onSelect, isEnabled, promiseState }: Props) => {
+export const MiniSearch = ({
+    type,
+    view,
+    text,
+    onSelect,
+    isEnabled,
+    required,
+    promiseState,
+}: Props) => {
     const { data: status } = useQuery({ key: ["status"] });
     const { data, isLoading, fetch } = useMiniSearch();
 
@@ -36,8 +46,9 @@ export const MiniSearch = ({ type, view, onSelect, isEnabled, promiseState }: Pr
                     alt=""
                     width={16}
                     height={16}
-                    src={type === "users" ? "/account.svg" : "/friends.svg"}
+                    src={type === "users" ? "/download.svg" : "/friends.svg"}
                 />
+                <span>{type === "friends" ? "Friends" : "Search"}</span>
             </span>
 
             {type === "users" && (
@@ -52,9 +63,11 @@ export const MiniSearch = ({ type, view, onSelect, isEnabled, promiseState }: Pr
             )}
 
             <Results
+                required={required}
                 search={{ data, isLoading, fetch }}
                 type={type}
                 view={view}
+                text={text}
                 onSelect={onSelect}
                 promiseState={promiseState}
                 isEnabled={isEnabled}

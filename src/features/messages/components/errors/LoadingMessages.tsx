@@ -1,17 +1,17 @@
 import { AbsentData } from "@/features/ui/absentdata/components/AbsentData";
 
-export const WrongURL = () => {
+export const LoadingMessages = () => {
     return (
         <AbsentData
             title={
                 <>
-                    The URL is <u>wrong</u>
+                    Messages are <mark>loading</mark>...
                 </>
             }
             description={
                 <>
-                    Re-enter the URL or click on a <mark>conversation</mark> to
-                    restore the URL to its original state
+                    Please wait while your messages in this conversations are
+                    loading!
                 </>
             }
         />
