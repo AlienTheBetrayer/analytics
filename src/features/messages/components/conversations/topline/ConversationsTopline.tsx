@@ -1,4 +1,4 @@
-import { CreateConversation } from "@/features/messages/components/conversations/CreateConversation";
+import { CreateConversation } from "@/features/messages/components/conversations/create/CreateConversation";
 import { LeftMenu } from "@/features/messages/components/conversations/leftmenu/LeftMenu";
 import { Title } from "@/features/messages/components/conversations/topline/Title";
 import { Button } from "@/features/ui/button/components/Button";
@@ -153,7 +153,7 @@ export const ConversationsTopline = ({ data }: Props) => {
                                     alt=""
                                     width={16}
                                     height={16}
-                                    src="/cubeadd.svg"
+                                    src="/plus.svg"
                                 />
                             </Button>
                         </Modal>

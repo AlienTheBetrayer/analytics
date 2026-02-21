@@ -10,9 +10,10 @@ type Props = {
     view: "list" | "select";
     onSelect?: (ids: string[]) => void;
     promiseState?: string;
+    isEnabled?: boolean;
 };
 
-export const MiniSearch = ({ type, view, onSelect, promiseState }: Props) => {
+export const MiniSearch = ({ type, view, onSelect, isEnabled, promiseState }: Props) => {
     const { data: status } = useQuery({ key: ["status"] });
     const { data, isLoading, fetch } = useMiniSearch();
 
@@ -56,6 +57,7 @@ export const MiniSearch = ({ type, view, onSelect, promiseState }: Props) => {
                 view={view}
                 onSelect={onSelect}
                 promiseState={promiseState}
+                isEnabled={isEnabled}
             />
         </div>
     );

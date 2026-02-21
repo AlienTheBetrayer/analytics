@@ -13,6 +13,7 @@ type Props = {
     onSelect?: (ids: string[]) => void;
     search: ReturnType<typeof useMiniSearch>;
     promiseState?: string;
+    isEnabled?: boolean;
 };
 
 export const Results = ({
@@ -20,6 +21,7 @@ export const Results = ({
     view,
     onSelect,
     search,
+    isEnabled,
     promiseState,
 }: Props) => {
     // view = select only
@@ -99,7 +101,9 @@ export const Results = ({
                     <li className="w-full">
                         <Button
                             className="w-full"
-                            isEnabled={!!selectedToggled.length}
+                            isEnabled={
+                                !!selectedToggled.length && isEnabled !== false
+                            }
                             onClick={() => onSelect?.(selectedToggled)}
                         >
                             {promiseState && (

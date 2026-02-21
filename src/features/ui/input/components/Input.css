@@ -1,0 +1,14 @@
+@keyframes invalidInput {
+    0% {
+        border-color: transparent;
+        background-color: var(--bg-0);
+    }
+    100% {
+        border-color: var(--bg-4);
+        background-color: var(--bg-3);
+    }
+}
+
+.input:invalid {
+    animation: 0.6s invalidInput infinite alternate;
+}

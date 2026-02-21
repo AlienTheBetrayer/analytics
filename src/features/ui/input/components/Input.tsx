@@ -1,3 +1,4 @@
+import './Input.css';
 import { AnimatePresence } from "motion/react";
 import {
     type ComponentPropsWithoutRef,

@@ -1,30 +1,89 @@
+import { CacheAPIProtocol } from "@/query-api/protocol";
 import { queryInvalidate, queryMutate } from "@/query/auxiliary";
 import { refreshedRequest } from "@/utils/auth/refreshedRequest";
 
-export const createConversation = async (options: {
-    user_id: string;
-    type: "notes" | "dm" | "group" | "channel";
-    member_ids: string[];
-    title?: string;
-    description?: string;
-}) => {
-    const res = await refreshedRequest({
-        route: "/api/update/conversation-create",
-        method: "POST",
-        body: {
-            user_id: options.user_id,
-            type: options.type,
-            member_ids: options.member_ids.join(","),
-            ...("title" in options && { title: options.title }),
-            ...("description" in options && {
-                description: options.description,
-            }),
-        },
-    });
+export const upsertConversation = async (
+    options: (
+        | {
+              type: "create";
+              conversation_type: string;
+              member_ids: string[];
+              title?: string;
+              description?: string;
+          }
+        | {
+              type: "edit";
+              conversation_id: string;
+              pinned?: boolean;
+              archived?: boolean;
+              title?: string;
+              description?: string;
+          }
+    ) & { user: CacheAPIProtocol["status"]["data"] },
+) => {
+    switch (options.type) {
+        case "create": {
+            const res = await refreshedRequest({
+                route: "/api/update/conversation-create",
+                method: "POST",
+                body: {
+                    user_id: options.user.id,
+                    type: options.type,
+                    member_ids: options.member_ids.join(","),
+                    ...("title" in options && { title: options.title }),
+                    ...("description" in options && {
+                        description: options.description,
+                    }),
+                },
+            });
 
-    queryInvalidate({ key: ["conversations", options.user_id] });
+            queryInvalidate({ key: ["conversations", options.user.id] });
 
-    return res;
+            return res;
+        }
+        case "edit": {
+            queryMutate({
+                key: ["conversations", options.user.id],
+                value: (state) =>
+                    state.map((s) =>
+                        s.id === options.conversation_id
+                            ? {
+                                  ...s,
+                                  ...(typeof options.title === "string" && {
+                                      title: options.title,
+                                  }),
+                                  ...(typeof options.description ===
+                                      "string" && {
+                                      description: options.description,
+                                  }),
+                                  conversation_meta: {
+                                      ...s.conversation_meta,
+                                      ...(typeof options.pinned ===
+                                          "boolean" && {
+                                          pinned: options.pinned,
+                                          pinned_at: new Date().toISOString(),
+                                      }),
+                                      ...(typeof options.archived ===
+                                          "boolean" && {
+                                          archived: options.archived,
+                                      }),
+                                  },
+                              }
+                            : s,
+                    ),
+            });
+
+            const res = await refreshedRequest({
+                route: "/api/update/conversation",
+                method: "POST",
+                body: {
+                    ...options,
+                },
+            });
+
+            return res;
+        }
+    }
 };
 
 export const deleteConversation = async (options: {
@@ -41,53 +100,6 @@ export const deleteConversation = async (options: {
     });
 
     queryInvalidate({ key: ["conversations", options.user_id] });
-
-    return res;
-};
-
-export const updateConversation = async (options: {
-    conversation_id: string;
-    user_id: string;
-    title?: string;
-    description?: string;
-    pinned?: boolean;
-    archived?: boolean;
-}) => {
-    queryMutate({
-        key: ["conversations", options.user_id],
-        value: (state) =>
-            state.map((s) =>
-                s.id === options.conversation_id
-                    ? {
-                          ...s,
-                          ...(typeof options.title === "string" && {
-                              title: options.title,
-                          }),
-                          ...(typeof options.description === "string" && {
-                              description: options.description,
-                          }),
-                          conversation_meta: {
-                              ...s.conversation_meta,
-                              ...(typeof options.pinned === "boolean" && {
-                                  pinned: options.pinned,
-                                  pinned_at: new Date().toISOString(),
-                              }),
-                              ...(typeof options.archived === "boolean" && {
-                                  archived: options.archived,
-                              }),
-                          },
-                      }
-                    : s,
-            ),
-    });
-
-    const res = await refreshedRequest({
-        route: "/api/update/conversation",
-        method: "POST",
-        body: {
-            ...options,
-        },
-    });
 
     return res;
 };

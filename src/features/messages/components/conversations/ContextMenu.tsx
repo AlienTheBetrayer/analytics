@@ -6,7 +6,7 @@ import { PromiseState } from "@/promises/components/PromiseState";
 import { wrapPromise } from "@/promises/core";
 import {
     deleteConversation,
-    updateConversation,
+    upsertConversation,
 } from "@/query-api/calls/conversation";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { useQuery } from "@/query/core";
@@ -99,9 +99,10 @@ export const ContextMenu = ({ data }: Props) => {
                             }
 
                             wrapPromise("archive", () => {
-                                return updateConversation({
+                                return upsertConversation({
+                                    type: "edit",
                                     conversation_id: data.id,
-                                    user_id: status.id,
+                                    user: status,
                                     archived: !data.conversation_meta?.archived,
                                 });
                             });
@@ -132,9 +133,10 @@ export const ContextMenu = ({ data }: Props) => {
                             }
 
                             wrapPromise("pin", () => {
-                                return updateConversation({
+                                return upsertConversation({
+                                    type: "edit",
                                     conversation_id: data.id,
-                                    user_id: status.id,
+                                    user: status,
                                     pinned: !data.conversation_meta?.pinned,
                                 });
                             });

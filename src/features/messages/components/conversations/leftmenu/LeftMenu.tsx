@@ -1,6 +1,8 @@
+import { CreateConversation } from "@/features/messages/components/conversations/create/CreateConversation";
 import { ProfileImage } from "@/features/profile/components/ProfileImage";
 import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
+import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { useQuery } from "@/query/core";
 import { useLocalStore } from "@/zustand/localStore";
@@ -40,10 +42,6 @@ export const LeftMenu = ({ hide }: Props) => {
                     />
                     <span>{status?.username}</span>
                 </LinkButton>
-            </li>
-
-            <li className="my-4!">
-                <hr />
             </li>
 
             {localDisplay?.messages?.archive?.movedToMenu && (
@@ -92,6 +90,24 @@ export const LeftMenu = ({ hide }: Props) => {
                         )}
                 </li>
             )}
+
+            <li className="w-full">
+                <Modal
+                    className="w-full"
+                    direction="right"
+                    element={() => <CreateConversation />}
+                >
+                    <Button>
+                        <Image
+                            alt=""
+                            width={16}
+                            height={16}
+                            src="/plus.svg"
+                        />
+                        <span>Create</span>
+                    </Button>
+                </Modal>
+            </li>
 
             <li>
                 <LinkButton href="/messages/notes">
