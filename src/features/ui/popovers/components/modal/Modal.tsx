@@ -41,6 +41,25 @@ export const Modal = React.memo(function ModalFunction({
     // refs
     const elementRef = useRef<HTMLDivElement | null>(null);
     const modalRef = useRef<HTMLDialogElement | null>(null);
+    const modalElementRef = useRef<HTMLDivElement | null>(null);
+
+    // observer
+    useEffect(() => {
+        if (!modalElementRef.current || !isShown) {
+            return;
+        }
+
+        const observer = new ResizeObserver(() => {
+            if (!modalElementRef.current || !isShown) {
+                return;
+            }
+
+            positionPopover(modalRef, elementRef, direction);
+        });
+
+        observer.observe(modalElementRef.current);
+        return () => observer.disconnect();
+    }, [isShown, direction]);
 
     // dialog closing
     useEffect(() => {
@@ -179,6 +198,7 @@ export const Modal = React.memo(function ModalFunction({
                                         opacity: 0,
                                         scale: 0.9,
                                     }}
+                                    ref={modalElementRef}
                                 >
                                     <DragButton
                                         ref={modalRef}
