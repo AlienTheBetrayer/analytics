@@ -17,11 +17,13 @@ import { CacheKey } from "@/query/types/types";
  */
 export const queryFetch = async <T extends CacheKey>({
     key,
+    ignoreCache,
 }: {
     key: QueryConfig<T>["key"];
+    ignoreCache?: boolean;
 }) => {
     // deduplication & optimized caching
-    if (queryCache.has({ key })) {
+    if (queryCache.has({ key }) && ignoreCache !== true) {
         return Promise.resolve(queryCache.get({ key }));
     }
 

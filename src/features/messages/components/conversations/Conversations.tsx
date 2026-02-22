@@ -7,6 +7,7 @@ export const Conversations = () => {
     const { data: status } = useQuery({ key: ["status"] });
     const { data: conversations, isLoading } = useQuery({
         key: ["conversations", status?.id],
+        revalidate: true,
     });
 
     return (

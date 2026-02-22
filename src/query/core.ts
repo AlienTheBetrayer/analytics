@@ -9,7 +9,6 @@ import {
 } from "@/query/types/types";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { convertKey } from "@/query/utils/other";
-import { queryInvalidate } from "@/query/auxiliary";
 
 /**
  * performs an optimized, safe, cached query
@@ -38,20 +37,17 @@ export const useQuery = <T extends CacheKey>(config: QueryConfig<T>) => {
         keyRef.current = config.key;
     });
 
-    // revalidating
-    useEffect(() => {
-        if(hasRevalidated.current || !config.revalidate) {
-            return;
-        }  
-
-        queryInvalidate({ key: keyRef.current });
-        hasRevalidated.current = true;
-    }, []);
-
     // initial fetching
     useEffect(() => {
         // trigger
         if ("trigger" in config && !config.trigger) {
+            setIsLoading(false);
+            return;
+        }
+
+        // undefined keys prevention
+        if (keyRef.current.some((k) => typeof k === "undefined")) {
+            setData(null);
             setIsLoading(false);
             return;
         }
@@ -63,13 +59,6 @@ export const useQuery = <T extends CacheKey>(config: QueryConfig<T>) => {
                     key: keyRef.current,
                 }) as CacheAPIValue<T>["data"],
             );
-            setIsLoading(false);
-            return;
-        }
-
-        // undefined keys prevention
-        if (keyRef.current.some((k) => typeof k === "undefined")) {
-            setData(null);
             setIsLoading(false);
             return;
         }
@@ -86,6 +75,36 @@ export const useQuery = <T extends CacheKey>(config: QueryConfig<T>) => {
                 setIsLoading(false);
             });
     }, [hashKey, config.trigger]);
+
+    // revalidating
+    useEffect(() => {
+        if (hasRevalidated.current || !config.revalidate) {
+            return;
+        }
+
+        // trigger
+        if ("trigger" in config && !config.trigger) {
+            return;
+        }
+
+        // undefined keys prevention
+        if (keyRef.current.some((k) => typeof k === "undefined")) {
+            return;
+        }
+
+        queryFetch({
+            key: keyRef.current,
+            ignoreCache: true,
+        })
+            .catch((error) => {
+                setError(error);
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
+
+        hasRevalidated.current = true;
+    }, []);
 
     // listeners
     useEffect(() => {

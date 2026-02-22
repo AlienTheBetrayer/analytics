@@ -13,7 +13,10 @@ import { useMemo } from "react";
 export const NoteBoard = () => {
     // fetching
     const { data: status } = useQuery({ key: ["status"] });
-    const { data, isLoading } = useQuery({ key: ["noteboards", status?.id] });
+    const { data, isLoading } = useQuery({
+        key: ["noteboards", status?.id],
+        revalidate: true,
+    });
     const { extra } = useParams<{ extra?: string }>();
 
     // ui states
