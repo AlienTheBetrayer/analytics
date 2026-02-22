@@ -23,6 +23,7 @@ export const MessageView = ({ retrieved }: Props) => {
     // fetching + sorting
     const { data, isLoading } = useQuery({
         key: ["messages", retrieved?.conversation_id ?? undefined],
+        revalidate: true,
     });
 
     const sorted = useMemo(() => {

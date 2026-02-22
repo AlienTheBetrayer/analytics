@@ -19,4 +19,10 @@ export type QueryConfig<T extends CacheKey> = {
      * convert any data object with !! and feed into this)
      */
     trigger?: boolean;
+
+    /**
+     * every single time a component mounts after being unmounted, it will silently revalidate data
+     * SWR (stale while revalidate) pattern
+     */
+    revalidate?: boolean;
 };

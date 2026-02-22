@@ -28,7 +28,6 @@ export const useMessageInput = ({
     const setMessages = useLocalStore((state) => state.updateMessageInput);
     const [edit, setEdit] = useState<string>("");
     const [temp, setTemp] = useState<string>("");
-    console.log(messages);
 
     // derived states
     const currentId = (data?.id || retrieved?.conversation_id) ?? null;

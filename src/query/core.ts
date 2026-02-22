@@ -7,8 +7,9 @@ import {
     CacheKey,
     CacheListenerOptions,
 } from "@/query/types/types";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { convertKey } from "@/query/utils/other";
+import { queryInvalidate } from "@/query/auxiliary";
 
 /**
  * performs an optimized, safe, cached query
@@ -27,6 +28,7 @@ export const useQuery = <T extends CacheKey>(config: QueryConfig<T>) => {
             !("trigger" in config && !config.trigger),
     );
     const [error, setError] = useState<Error | null>(null);
+    const hasRevalidated = useRef<boolean>(false);
 
     // hashing
     const hashKey = convertKey(config.key);
@@ -35,6 +37,16 @@ export const useQuery = <T extends CacheKey>(config: QueryConfig<T>) => {
     useEffect(() => {
         keyRef.current = config.key;
     });
+
+    // revalidating
+    useEffect(() => {
+        if(hasRevalidated.current || !config.revalidate) {
+            return;
+        }  
+
+        queryInvalidate({ key: keyRef.current });
+        hasRevalidated.current = true;
+    }, []);
 
     // initial fetching
     useEffect(() => {
@@ -109,5 +121,7 @@ export const useQuery = <T extends CacheKey>(config: QueryConfig<T>) => {
     }, [hashKey]);
 
     // returned
-    return { data, isLoading, error };
+    return useMemo(() => {
+        return { data, isLoading, error };
+    }, [data, isLoading, error]);
 };
