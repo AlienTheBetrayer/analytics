@@ -13,7 +13,6 @@ export const MessagesSlice: SliceFunction<MessagesStore> = (set) => {
             messages: {
                 filter: "",
                 reversed: false,
-                tab: "messages",
             },
             notes: {
                 filter: "",

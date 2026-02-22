@@ -1,7 +1,9 @@
+import { EditingMenu } from "@/features/messages/components/message/editing/EditingMenu";
 import { ConversationToplineInfo } from "@/features/messages/components/message/topline/ConversationToplineInfo";
 import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
+import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { PromiseState } from "@/promises/components/PromiseState";
 import { wrapPromise } from "@/promises/core";
@@ -58,27 +60,26 @@ export const MessagesTopline = ({ data, retrieved }: Props) => {
 
                 <li className="ml-auto!">
                     <ul className="flex items-center gap-1">
-                        {id !== "board" && (
+                        {id !== "board" && data && (
                             <li>
-                                <Tooltip
-                                    direction="top"
-                                    text="Edit conversation"
+                                <Modal
+                                    direction="bottom-left"
+                                    element={() => <EditingMenu data={data} />}
                                 >
-                                    <Button
-                                        onClick={() => {
-                                            updateDisplay({
-                                                messages: { tab: "editing" },
-                                            });
-                                        }}
+                                    <Tooltip
+                                        direction="top"
+                                        text="Edit conversation"
                                     >
-                                        <Image
-                                            alt=""
-                                            width={16}
-                                            height={16}
-                                            src="/pencil.svg"
-                                        />
-                                    </Button>
-                                </Tooltip>
+                                        <Button>
+                                            <Image
+                                                alt=""
+                                                width={16}
+                                                height={16}
+                                                src="/pencil.svg"
+                                            />
+                                        </Button>
+                                    </Tooltip>
+                                </Modal>
                             </li>
                         )}
 

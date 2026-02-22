@@ -29,11 +29,11 @@ export const upsertConversation = async (
                 body: {
                     user_id: options.user.id,
                     type: options.type,
-                    member_ids: options.member_ids.join(","),
                     ...("title" in options && { title: options.title }),
                     ...("description" in options && {
                         description: options.description,
                     }),
+                    member_ids: options.member_ids.join(","),
                     conversation_type: options.conversation_type,
                 },
             });
@@ -74,11 +74,23 @@ export const upsertConversation = async (
                     ),
             });
 
+            queryMutate({ key: ["messages", options.conversation_id], value: state => ({ ...state, })})
+
             const res = await refreshedRequest({
                 route: "/api/update/conversation",
                 method: "POST",
                 body: {
-                    ...options,
+                    user_id: options.user.id,
+                    conversation_id: options.conversation_id,
+                    type: options.type,
+                    ...("title" in options && { title: options.title }),
+                    ...("description" in options && {
+                        description: options.description,
+                    }),
+                    ...("pinned" in options && { pinned: options.pinned }),
+                    ...("archived" in options && {
+                        archived: options.archived,
+                    }),
                 },
             });
 

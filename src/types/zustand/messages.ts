@@ -10,7 +10,6 @@ export type Display = {
     messages: {
         filter: string;
         reversed: boolean;
-        tab: "messages" | "editing";
     };
     notes: {
         filter: string;

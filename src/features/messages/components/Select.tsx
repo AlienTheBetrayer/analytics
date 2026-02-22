@@ -4,8 +4,6 @@ import { useQuery } from "@/query/core";
 import { Conversations } from "@/features/messages/components/conversations/Conversations";
 import { useAppStore } from "@/zustand/store";
 import { useEffect, useMemo } from "react";
-import { AnimatePresence } from "motion/react";
-import { EditingMenu } from "@/features/messages/components/message/editing/EditingMenu";
 
 export type MessagesSelectResult =
     | "url"
@@ -18,7 +16,6 @@ export type MessagesTab = "u" | "c" | "notes" | "none";
 export const Select = () => {
     const { id, tab } = useParams<{ tab?: string; id?: string }>();
 
-    const display = useAppStore((state) => state.display);
     const updateSelectDisplay = useAppStore(
         (state) => state.updateSelectDisplay,
     );
@@ -96,10 +93,6 @@ export const Select = () => {
                 className={`flex flex-col overflow-hidden grow bg-bg-1 ${tab ? "absolute lg:relative inset-0 z-2" : "relative hidden lg:flex"}`}
             >
                 <MessageView retrieved={retrieved} />
-
-                <AnimatePresence>
-                    {display.messages.tab === "editing" && <EditingMenu />}
-                </AnimatePresence>
             </div>
         </div>
     );
