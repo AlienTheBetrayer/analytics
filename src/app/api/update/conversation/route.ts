@@ -111,7 +111,7 @@ export const POST = async (request: NextRequest) => {
                         .insert({
                             message: initialMessage,
                             type: "system",
-                            conversation_id,
+                            conversation_id: data.id,
                             user_id: null,
                         });
 

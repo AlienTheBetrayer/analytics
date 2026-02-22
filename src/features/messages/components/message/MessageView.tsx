@@ -1,5 +1,5 @@
 import { NoMessages } from "@/features/messages/components/errors/NoMessages";
-import { MessageDisplay } from "@/features/messages/components/message/MessageDisplay";
+import { MessageDisplay } from "@/features/messages/components/message/display/MessageDisplay";
 import { MessageInput } from "@/features/messages/components/message/MessageInput";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { useQuery } from "@/query/core";

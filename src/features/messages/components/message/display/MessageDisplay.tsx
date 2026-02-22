@@ -1,4 +1,5 @@
-import { ContextMenu } from "@/features/messages/components/message/ContextMenu";
+import { ContextMenu } from "@/features/messages/components/message/display/ContextMenu";
+import { SystemDisplay } from "@/features/messages/components/message/display/system/SystemDisplay";
 import { EditedAt } from "@/features/messages/components/message/parts/EditedAt";
 import { Button } from "@/features/ui/button/components/Button";
 import { Modal } from "@/features/ui/popovers/components/modal/Modal";
@@ -14,6 +15,10 @@ type Props = {
 
 export const MessageDisplay = ({ data, onEdit }: Props) => {
     const { data: status } = useQuery({ key: ["status"] });
+
+    if (data.type === "system") {
+        return <SystemDisplay data={data} />;
+    }
 
     return (
         <Modal

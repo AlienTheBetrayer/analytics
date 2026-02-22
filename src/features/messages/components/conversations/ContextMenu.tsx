@@ -11,6 +11,7 @@ import {
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { useQuery } from "@/query/core";
 import Image from "next/image";
+import { redirect, useParams } from "next/navigation";
 
 type Props = {
     data: CacheAPIProtocol["conversations"]["data"][number];
@@ -18,6 +19,7 @@ type Props = {
 
 export const ContextMenu = ({ data }: Props) => {
     const { data: status } = useQuery({ key: ["status"] });
+    const { id } = useParams<{ id?: string }>();
 
     const deleteBox = useMessageBox();
     const leaveBox = useMessageBox();
@@ -40,6 +42,10 @@ export const ContextMenu = ({ data }: Props) => {
                                 type: "delete-all",
                             });
                         });
+
+                        if (id === data.id) {
+                            redirect("/messages/");
+                        }
                     }
                 },
             })}
@@ -60,6 +66,10 @@ export const ContextMenu = ({ data }: Props) => {
                                 type: "leave",
                             });
                         });
+
+                        if (id === data.id) {
+                            redirect("/messages/");
+                        }
                     }
                 },
             })}
