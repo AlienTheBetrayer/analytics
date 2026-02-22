@@ -14,5 +14,5 @@ export type AuthenticationToken = {
     username: string;
     role: AuthenticationRole;
     profile: Profile;
-    user: Omit<User, "password">;
+    user: User;
 };

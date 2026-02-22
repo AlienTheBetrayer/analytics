@@ -18,7 +18,7 @@ export const GET = async (request: NextRequest) => {
                     *, 
                     membership:conversation_members!inner(user_id),
                     conversation_members:conversation_members(user_id, created_at, user:users(id, username, role, created_at, last_seen_at, profile:profiles(*))),
-                    last_message:messages(message, created_at, edited_at, seen_at),
+                    last_message:messages(*, user:users(*, profile:profiles(*))),
                     conversation_meta:conversation_meta(pinned, archived, pinned_at)
                 `,
             )

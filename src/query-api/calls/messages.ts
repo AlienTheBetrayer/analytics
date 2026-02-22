@@ -171,7 +171,16 @@ export const upsertMessage = async (
         value: (state) =>
             state?.map((c) =>
                 c.id === message.conversation_id
-                    ? { ...c, last_message: message }
+                    ? {
+                          ...c,
+                          last_message: {
+                              ...message,
+                              user: {
+                                  ...options.user.user,
+                                  profile: options.user.profile,
+                              },
+                          },
+                      }
                     : c,
             ),
     });
