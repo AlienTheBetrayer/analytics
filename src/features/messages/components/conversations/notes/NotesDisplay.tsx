@@ -13,15 +13,21 @@ type Props = {
 };
 
 export const NotesDisplay = ({ data }: Props) => {
-    const { tab } = useParams<{ tab?: string }>();
-    const isSelected = tab === "notes";
+    const { tab, id } = useParams<{ tab?: string; id?: string }>();
+    const isSelected = tab === "notes" || id === data?.id;
 
     return (
         <div className="relative">
             <LinkButton
                 className={`box p-4! flex-row! h-20! rounded-4xl! justify-start! items-start! gap-4!
                 ${isSelected ? "not-hover:bg-bg-4! hover:border-bg-5!" : "not-hover:bg-bg-1!"}`}
-                href={isSelected ? "/messages/" : `/messages/notes`}
+                href={
+                    isSelected
+                        ? "/messages/"
+                        : data
+                          ? `/messages/c/${data.id}`
+                          : "/messages/notes/"
+                }
             >
                 <div
                     className="relative rounded-full w-12 h-12 flex items-center justify-center bg-bg-3 shrink-0 

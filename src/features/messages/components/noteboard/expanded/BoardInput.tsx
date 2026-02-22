@@ -35,10 +35,6 @@ export const BoardInput = ({ data }: Props) => {
             onSubmit={(e) => {
                 e.preventDefault();
 
-                if (title.trim().length < 4) {
-                    return;
-                }
-
                 wrapPromise("upsertNote", () => {
                     const promise = upsertNote({
                         type: "create",
@@ -61,7 +57,6 @@ export const BoardInput = ({ data }: Props) => {
             />
             <Input
                 required
-                minLength={4}
                 placeholder="Add..."
                 className="w-full"
                 value={title}

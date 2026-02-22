@@ -30,11 +30,11 @@ export const MessagesTopline = ({ data, retrieved }: Props) => {
     return (
         <div className="flex flex-col gap-2">
             <ul className="box min-h-10! h-10! gap-1! p-0! items-center! flex-row!">
-                <li className="flex items-center gap-1 ml-4! self-stretch">
+                <li className="flex items-center gap-1 self-stretch">
                     <Tooltip
                         direction="top"
                         text="Back to chats"
-                        className="self-stretch h-full flex lg:hidden -ml-4 mr-2"
+                        className="self-stretch h-full flex lg:hidden "
                     >
                         <LinkButton
                             className="h-full aspect-square!"
@@ -58,24 +58,6 @@ export const MessagesTopline = ({ data, retrieved }: Props) => {
 
                 <li className="ml-auto!">
                     <ul className="flex items-center gap-1">
-                        {tab === "notes" && id !== "board" && (
-                            <li>
-                                <Tooltip
-                                    direction="top"
-                                    text="To noteboard"
-                                >
-                                    <LinkButton href="/messages/notes/board">
-                                        <Image
-                                            alt="board"
-                                            width={16}
-                                            height={16}
-                                            src="/dashboard.svg"
-                                        />
-                                    </LinkButton>
-                                </Tooltip>
-                            </li>
-                        )}
-
                         <li>
                             <Tooltip
                                 direction="top"

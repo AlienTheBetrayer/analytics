@@ -90,7 +90,7 @@ export const Select = () => {
             <Conversations />
 
             <div
-                className={`flex flex-col grow bg-bg-1 ${tab ? "absolute lg:static inset-0 z-2" : ""}`}
+                className={`flex flex-col grow bg-bg-1 ${tab ? "absolute lg:static inset-0 z-2" : "hidden lg:flex"}`}
             >
                 <MessageView retrieved={retrieved} />
             </div>

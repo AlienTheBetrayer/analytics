@@ -1,5 +1,6 @@
 import { NoBoard } from "@/features/messages/components/errors/NoBoard";
 import { NoNotes } from "@/features/messages/components/errors/NoNotes";
+import { NoteboardTabEmpty } from "@/features/messages/components/errors/NoteboardTabEmpty";
 import { BoardInput } from "@/features/messages/components/noteboard/expanded/BoardInput";
 import { Element } from "@/features/messages/components/noteboard/expanded/Element";
 import { sortNotes } from "@/features/messages/utils/sort";
@@ -29,9 +30,11 @@ export const FullBoardDisplay = ({ data }: Props) => {
 
     // fallbacks
     if (!data) {
-        return <div className="flex items-center justify-center grow w-full">
-            <NoBoard/>
-        </div>
+        return (
+            <div className="flex items-center justify-center grow w-full">
+                <NoBoard />
+            </div>
+        );
     }
 
     // splitting
@@ -50,6 +53,8 @@ export const FullBoardDisplay = ({ data }: Props) => {
             unchecked: [] as NoteboardElement[],
         },
     );
+
+    const currentTab = tab === "checked" ? checked : unchecked;
 
     // jsx
     return (
@@ -97,53 +102,58 @@ export const FullBoardDisplay = ({ data }: Props) => {
 
             <ul className="flex flex-col gap-2 w-full grow p-4!">
                 {checked.length || unchecked.length ? (
-
-                    (tab === "checked" ? checked : unchecked).map((e) => (
-                        <li
-                            key={e.id}
-                            className="flex"
-                        >
-                            <Element
-                                data={e}
-                                onCheck={(flag) => {
-                                    upsertNote({
-                                        type: "edit",
-                                        noteboard_id: data.id,
-                                        user_id: data.user_id,
-                                        element_id: e.id,
-                                        checked: flag,
-                                    });
-                                }}
-                                onEdit={(value) => {
-                                    upsertNote({
-                                        type: "edit",
-                                        noteboard_id: data.id,
-                                        user_id: data.user_id,
-                                        element_id: e.id,
-                                        title: value,
-                                    });
-                                }}
-                                onPin={() => {
-                                    upsertNote({
-                                        type: "edit",
-                                        noteboard_id: data.id,
-                                        user_id: data.user_id,
-                                        element_id: e.id,
-                                        pinned: !e.pinned,
-                                    });
-                                }}
-                                onDelete={() => {
-                                    deleteNote({
-                                        noteboard_id: data.id,
-                                        user_id: data.user_id,
-                                        element_id: e.id,
-                                    });
-                                }}
-                            />
+                    !currentTab.length ? (
+                        <li className="flex items-center justify-center grow">
+                            <NoteboardTabEmpty type={tab} />
                         </li>
-                    ))
+                    ) : (
+                        currentTab.map((e) => (
+                            <li
+                                key={e.id}
+                                className="flex"
+                            >
+                                <Element
+                                    data={e}
+                                    onCheck={(flag) => {
+                                        upsertNote({
+                                            type: "edit",
+                                            noteboard_id: data.id,
+                                            user_id: data.user_id,
+                                            element_id: e.id,
+                                            checked: flag,
+                                        });
+                                    }}
+                                    onEdit={(value) => {
+                                        upsertNote({
+                                            type: "edit",
+                                            noteboard_id: data.id,
+                                            user_id: data.user_id,
+                                            element_id: e.id,
+                                            title: value,
+                                        });
+                                    }}
+                                    onPin={() => {
+                                        upsertNote({
+                                            type: "edit",
+                                            noteboard_id: data.id,
+                                            user_id: data.user_id,
+                                            element_id: e.id,
+                                            pinned: !e.pinned,
+                                        });
+                                    }}
+                                    onDelete={() => {
+                                        deleteNote({
+                                            noteboard_id: data.id,
+                                            user_id: data.user_id,
+                                            element_id: e.id,
+                                        });
+                                    }}
+                                />
+                            </li>
+                        ))
+                    )
                 ) : (
-                    <NoNotes/>
+                    <NoNotes />
                 )}
 
                 {tab === "unchecked" && (

@@ -1,6 +1,9 @@
 import { MiniProfile } from "@/features/messages/components/message/topline/MiniProfile";
+import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
+import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { useQuery } from "@/query/core";
+import { TabSelection } from "@/utils/other/TabSelection";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 
@@ -14,22 +17,47 @@ export const ConversationToplineInfo = ({ data, retrieved }: Props) => {
     const { data: status } = useQuery({ key: ["status"] });
     const { tab, id } = useParams<{ tab?: string; id?: string }>();
 
-    if (!data) {
-        if (tab === "notes") {
-            return (
-                <div className="flex items-center gap-1">
-                    <div className="w-1 h-1 rounded-full bg-blue-1" />
-                    <Image
-                        alt=""
-                        width={16}
-                        height={16}
-                        src={id === "board" ? "/dashboard.svg" : "/pencil.svg"}
-                    />
-                    <span> {id === "board" ? "Board" : "Notes"}</span>
-                </div>
-            );
-        }
+    if (tab === "notes" || data?.type === "notes") {
+        return (
+            <ul className="flex items-center gap-1">
+                <li className="flex items-center gap-1">
+                    <Tooltip
+                        direction="top"
+                        text="Note messages"
+                    >
+                        <LinkButton href="/messages/notes">
+                            <Image
+                                alt=""
+                                width={16}
+                                height={16}
+                                src="/save.svg"
+                            />
+                            <TabSelection condition={id !== "board"} />
+                        </LinkButton>
+                    </Tooltip>
+                </li>
 
+                <li className="flex items-center gap-1">
+                    <Tooltip
+                        direction="top"
+                        text="Note board"
+                    >
+                        <LinkButton href="/messages/notes/board">
+                            <Image
+                                alt=""
+                                width={16}
+                                height={16}
+                                src="/dashboard.svg"
+                            />
+                            <TabSelection condition={id === "board"} />
+                        </LinkButton>
+                    </Tooltip>
+                </li>
+            </ul>
+        );
+    }
+
+    if (!data) {
         if (retrieved?.user) {
             return (
                 <div className="flex items-center gap-1">
@@ -42,7 +70,7 @@ export const ConversationToplineInfo = ({ data, retrieved }: Props) => {
         return null;
     }
 
-    // jsx selector if already exists
+    // jsx selector if data exists
     return (
         <div className="flex items-center gap-1">
             <div className="w-1 h-1 rounded-full bg-blue-1" />
@@ -70,21 +98,6 @@ export const ConversationToplineInfo = ({ data, retrieved }: Props) => {
                                     src="/friends.svg"
                                 />
                                 {data.title ?? "Group"}
-                            </span>
-                        );
-                    }
-                    case "notes": {
-                        return (
-                            <span className="flex items-center gap-1">
-                                <Image
-                                    alt=""
-                                    width={16}
-                                    height={16}
-                                    src="/save.svg"
-                                />
-                                {id === "board"
-                                    ? "Board"
-                                    : (data.title ?? "Notes")}
                             </span>
                         );
                     }
