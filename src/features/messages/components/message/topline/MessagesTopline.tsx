@@ -58,6 +58,30 @@ export const MessagesTopline = ({ data, retrieved }: Props) => {
 
                 <li className="ml-auto!">
                     <ul className="flex items-center gap-1">
+                        {id !== "board" && (
+                            <li>
+                                <Tooltip
+                                    direction="top"
+                                    text="Edit conversation"
+                                >
+                                    <Button
+                                        onClick={() => {
+                                            updateDisplay({
+                                                messages: { tab: "editing" },
+                                            });
+                                        }}
+                                    >
+                                        <Image
+                                            alt=""
+                                            width={16}
+                                            height={16}
+                                            src="/pencil.svg"
+                                        />
+                                    </Button>
+                                </Tooltip>
+                            </li>
+                        )}
+
                         <li>
                             <Tooltip
                                 direction="top"

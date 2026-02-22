@@ -5,10 +5,6 @@ import { deepMerge } from "@/utils/other/merge";
 export const MessagesSlice: SliceFunction<MessagesStore> = (set) => {
     return {
         display: {
-            menus: {
-                left: false,
-                right: false,
-            },
             conversations: {
                 filter: "",
                 reversed: false,
@@ -17,6 +13,7 @@ export const MessagesSlice: SliceFunction<MessagesStore> = (set) => {
             messages: {
                 filter: "",
                 reversed: false,
+                tab: "messages",
             },
             notes: {
                 filter: "",

@@ -87,9 +87,9 @@ export const List = ({ isLoading, conversations }: Props) => {
             <motion.ul
                 className="flex flex-col gap-1 relative grow"
                 animate={{
-                    x: display.tab !== "conversations" ? "-50%" : 0,
+                    x: display.tab !== "conversations" ? "-50%" : "0%",
                 }}
-                transition={{ ease: "easeInOut", duration: 0.3 }}
+                transition={{ type: "spring", bounce: 0 }}
             >
                 <li
                     className={`absolute inset-0 bg-bg-2 z-1 pointer-events-none transition-all duration-500
@@ -133,7 +133,7 @@ export const List = ({ isLoading, conversations }: Props) => {
                 animate={{
                     x: display.tab === "archive" ? "0%" : "100%",
                 }}
-                transition={{ ease: "easeInOut", duration: 0.3 }}
+                transition={{ type: "spring", bounce: 0 }}
             >
                 {archived.length
                     ? archived.map((c) => (

@@ -2,20 +2,17 @@ import { MessagesSelectResult } from "@/features/messages/components/Select";
 import { DeepPartial } from "@/utils/other/merge";
 
 export type Display = {
-    menus: {
-        left: boolean;
-        right: boolean;
-    };
     conversations: {
         filter: string;
         reversed: boolean;
         tab: "conversations" | "archive";
     };
-    notes: {
+    messages: {
         filter: string;
         reversed: boolean;
+        tab: "messages" | "editing";
     };
-    messages: {
+    notes: {
         filter: string;
         reversed: boolean;
     };
