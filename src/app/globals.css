@@ -420,19 +420,19 @@ img {
 
 .acrylic {
     background: var(--bg-a-0);
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(12px);
 }
 
 .acrylic button,
 .acrylic input,
 .acrylic a {
     background: var(--bg-a-0);
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(12px);
 }
 
 .acrylic hr {
     border-color: var(--bg-2);
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(12px);
 }
 
 .button {

@@ -153,7 +153,7 @@ export const ConversationsTopline = ({ data }: Props) => {
                                     alt=""
                                     width={16}
                                     height={16}
-                                    src="/plus.svg"
+                                    src="/cubeadd.svg"
                                 />
                             </Button>
                         </Modal>

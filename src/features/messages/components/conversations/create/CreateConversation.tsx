@@ -16,29 +16,14 @@ export const CreateConversation = () => {
                 />
             </li>
 
-            <li className="w-full">
-                <Modal
-                    className="w-full"
-                    direction="right"
-                    element={() => (
-                        <CreateType
-                            category="dm"
-                            type="both"
-                        />
-                    )}
-                >
-                    <Button>
-                        <Image
-                            alt=""
-                            width={16}
-                            height={16}
-                            src="/account.svg"
-                        />
-                        <span>DM</span>
-                    </Button>
-                </Modal>
-            </li>
+            <CreateConversationElements />
+        </ul>
+    );
+};
 
+export const CreateConversationElements = () => {
+    return (
+        <>
             <li className="w-full">
                 <Modal
                     className="w-full"
@@ -84,6 +69,6 @@ export const CreateConversation = () => {
                     </Button>
                 </Modal>
             </li>
-        </ul>
+        </>
     );
 };

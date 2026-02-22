@@ -40,7 +40,7 @@ export const ConversationToplineInfo = ({ data, retrieved }: Props) => {
                 <li className="flex items-center gap-1">
                     <Tooltip
                         direction="top"
-                        text="Note board"
+                        text="Noteboard"
                     >
                         <LinkButton href="/messages/notes/board">
                             <Image

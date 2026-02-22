@@ -48,7 +48,7 @@ export const Title = ({ data }: Props) => {
             if (id === "board") {
                 color = "var(--blue-1)";
                 image = "/dashboard.svg";
-                text = extra ? "Note" : "Note Board";
+                text = extra ? "Note" : "Noteboard";
             } else {
                 color = "var(--blue-1)";
                 image = "/pencil.svg";
