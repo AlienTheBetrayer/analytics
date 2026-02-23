@@ -44,7 +44,7 @@ export const NotesDisplay = ({ data }: Props) => {
 
                 <div className="flex flex-col gap-1 w-full overflow-hidden">
                     <div className="grid grid-cols-[auto_25%]">
-                        <span>Notes</span>
+                        <span>{data?.title || "Notes"}</span>
                         <LastMessageDate data={data} />
                     </div>
 

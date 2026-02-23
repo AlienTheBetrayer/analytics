@@ -27,8 +27,7 @@ export const MessagesTopline = ({
     retrieved,
 }: Props) => {
     const { data: status } = useQuery({ key: ["status"] });
-    const { tab, id } = useParams<{
-        tab?: string;
+    const { id } = useParams<{
         id?: string;
     }>();
     const display = useAppStore((state) => state.display.messages);
@@ -59,7 +58,6 @@ export const MessagesTopline = ({
 
                     <ConversationToplineInfo
                         conversationData={conversationData}
-                        data={data}
                         retrieved={retrieved}
                     />
                 </li>
@@ -153,7 +151,7 @@ export const MessagesTopline = ({
                     inert={!!!data?.length}
                 >
                     {!data?.length && (
-                        <li className="absolute left-1/2 top-1/2 -translate-1/2">
+                        <li className="absolute left-1/2 top-1/2 -translate-1/2 z-1">
                             <span className="flex items-center gap-1">
                                 <div className="bg-blue-1 rounded-full w-1 h-1" />
                                 <span>

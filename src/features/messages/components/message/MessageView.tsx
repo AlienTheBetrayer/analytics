@@ -85,11 +85,7 @@ export const MessageView = ({ retrieved }: Props) => {
                     {(() => {
                         switch (code) {
                             case "loading": {
-                                return (
-                                    <div className="p-4 loading">
-                                        <LoadingMessages />
-                                    </div>
-                                );
+                                return <LoadingMessages />;
                             }
                             case "wrong-url": {
                                 return <WrongURL />;
