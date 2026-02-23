@@ -20,7 +20,7 @@ export const Date = <T,>({ data }: Props<T>) => {
                 ? [
                       {
                           color: "var(--blue-1)",
-                          image: "/commentadd.svg",
+                          image: "/send.svg",
                           timestamp: data.last_message.created_at,
                       },
                   ]

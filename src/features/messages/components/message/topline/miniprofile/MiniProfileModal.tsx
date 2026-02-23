@@ -15,8 +15,6 @@ export const MiniProfileModal = (props: MiniProfileProps) => {
     const { data: status } = useQuery({ key: ["status"] });
     const { id } = useParams<{ id?: string }>();
 
-
-
     switch (props.type) {
         case "conversation": {
             return (
@@ -107,7 +105,38 @@ export const MiniProfileModal = (props: MiniProfileProps) => {
                                 );
                             }
                             default: {
-                                return <></>;
+                                return (
+                                    <>
+                                        <span className="flex items-center gap-1">
+                                            <Image
+                                                alt=""
+                                                width={16}
+                                                height={16}
+                                                src="/type.svg"
+                                            />
+                                            <span>
+                                                {props.data.title ||
+                                                    (props.data.type === "group"
+                                                        ? "Group"
+                                                        : "Notes")}
+                                            </span>
+                                        </span>
+
+                                        {props.data.description && (
+                                            <small className="flex items-center gap-1">
+                                                <Image
+                                                    alt=""
+                                                    width={16}
+                                                    height={16}
+                                                    src="/description.svg"
+                                                />
+                                                <span>
+                                                    {props.data.description}
+                                                </span>
+                                            </small>
+                                        )}
+                                    </>
+                                );
                             }
                         }
                     })()}
@@ -244,7 +273,7 @@ export const MiniProfileModal = (props: MiniProfileProps) => {
             );
         }
         case "unknown": {
-                return (
+            return (
                 <div className="box acrylic p-4! w-screen max-w-96 min-h-48 justify-center loading rounded-3xl!">
                     <UnknownConversation />
                 </div>
