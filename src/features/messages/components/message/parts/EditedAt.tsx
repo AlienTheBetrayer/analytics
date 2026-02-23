@@ -4,7 +4,7 @@ import { relativeTime } from "@/utils/other/relativeTime";
 import Image from "next/image";
 
 type Props = {
-    data: CacheAPIProtocol["messages"]["data"]["messages"][number];
+    data: CacheAPIProtocol["messages"]["data"][number];
 };
 
 export const EditedAt = ({ data }: Props) => {

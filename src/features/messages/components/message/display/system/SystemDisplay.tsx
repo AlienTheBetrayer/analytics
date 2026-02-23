@@ -5,7 +5,7 @@ import { CacheAPIProtocol } from "@/query-api/protocol";
 import Image from "next/image";
 
 type Props = {
-    data: CacheAPIProtocol["messages"]["data"]["messages"][number];
+    data: CacheAPIProtocol["messages"]["data"][number];
 };
 
 export const SystemDisplay = ({ data }: Props) => {

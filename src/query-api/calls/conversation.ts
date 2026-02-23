@@ -74,8 +74,6 @@ export const upsertConversation = async (
                     ),
             });
 
-            queryMutate({ key: ["messages", options.conversation_id], value: state => ({ ...state, })})
-
             const res = await refreshedRequest({
                 route: "/api/update/conversation",
                 method: "POST",

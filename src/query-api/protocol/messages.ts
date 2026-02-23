@@ -40,15 +40,7 @@ export type CacheAPIProtocolMessages = {
 
     messages: {
         key: ["messages", string];
-        data: Conversation & {
-            messages: (Message & { user: User & { profile: Profile } })[];
-            conversation_members: (Pick<
-                ConversationMember,
-                "user_id" | "created_at"
-            > & {
-                user: User & { profile: Profile };
-            })[];
-        };
+        data: (Message & { user: User & { profile: Profile } })[];
     };
 };
 

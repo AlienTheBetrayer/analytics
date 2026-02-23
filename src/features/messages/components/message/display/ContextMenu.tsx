@@ -9,7 +9,7 @@ import { deleteMessage } from "@/query-api/calls/messages";
 type Props = {
     hide?: () => void;
     onEdit?: () => void;
-    data: CacheAPIProtocol["messages"]["data"]["messages"][number];
+    data: CacheAPIProtocol["messages"]["data"][number];
 };
 
 export const ContextMenu = ({ hide, data, onEdit }: Props) => {

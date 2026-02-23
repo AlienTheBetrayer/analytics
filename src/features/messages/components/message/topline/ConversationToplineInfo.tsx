@@ -9,15 +9,20 @@ import { useParams } from "next/navigation";
 
 type Props = {
     data: CacheAPIProtocol["messages"]["data"] | null;
+    conversationData?: CacheAPIProtocol["conversations"]["data"][number];
     retrieved?: CacheAPIProtocol["conversation_retrieve"]["data"];
 };
 
-export const ConversationToplineInfo = ({ data, retrieved }: Props) => {
+export const ConversationToplineInfo = ({
+    data,
+    conversationData,
+    retrieved,
+}: Props) => {
     // fetching
     const { data: status } = useQuery({ key: ["status"] });
     const { tab, id } = useParams<{ tab?: string; id?: string }>();
 
-    if (tab === "notes" || data?.type === "notes") {
+    if (tab === "notes" || conversationData?.type === "notes") {
         return (
             <ul className="flex items-center gap-1">
                 <li className="flex items-center gap-1">
@@ -76,11 +81,12 @@ export const ConversationToplineInfo = ({ data, retrieved }: Props) => {
             <div className="w-1 h-1 rounded-full bg-blue-1" />
 
             {(() => {
-                switch (data.type) {
+                switch (conversationData?.type) {
                     case "dm": {
-                        const user = data.conversation_members.find(
-                            (m) => m.user_id !== status?.id,
-                        )?.user;
+                        const user =
+                            conversationData?.conversation_members.find(
+                                (m) => m.user_id !== status?.id,
+                            )?.user;
 
                         if (!user) {
                             return null;
@@ -97,7 +103,7 @@ export const ConversationToplineInfo = ({ data, retrieved }: Props) => {
                                     height={16}
                                     src="/friends.svg"
                                 />
-                                {data.title ?? "Group"}
+                                {conversationData.title ?? "Group"}
                             </span>
                         );
                     }

@@ -30,12 +30,12 @@ export const useMessageInput = ({
     const [temp, setTemp] = useState<string>("");
 
     // derived states
-    const currentId = (data?.id || retrieved?.conversation_id) ?? null;
+    const currentId = (data?.[0].conversation_id || retrieved?.conversation_id) ?? null;
     const currentMessage =
         (temp
             ? temp
-            : data?.id
-              ? messages[data.id]
+            : data?.[0].conversation_id
+              ? messages[data?.[0].conversation_id]
               : retrieved?.conversation_id
                 ? messages[retrieved.conversation_id]
                 : "") ?? "";
@@ -75,7 +75,7 @@ export const useMessageInput = ({
             return;
         }
 
-        const cid = data?.id ?? retrieved?.conversation_id;
+        const cid = data?.[0].conversation_id ?? retrieved?.conversation_id;
 
         switch (type) {
             case "edit": {

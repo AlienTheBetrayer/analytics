@@ -11,7 +11,7 @@ export const upsertMessage = async (
         | { type: "send"; conversation_id: string; message: string }
         | {
               type: "edit";
-              message: CacheAPIProtocol["messages"]["data"]["messages"][number];
+              message: CacheAPIProtocol["messages"]["data"][number];
               content?: string;
           }
     ) & { user: CacheAPIProtocol["status"]["data"] },
@@ -56,22 +56,21 @@ export const upsertMessage = async (
                     }),
                 });
             }
+
             queryMutate({
                 key: ["messages", msg.conversation_id],
-                value: (state) => ({
-                    ...state,
-                    messages: [
-                        ...(state?.messages ?? []),
-                        {
-                            ...msg,
-                            user: {
-                                ...options.user.user,
-                                profile: options.user.profile,
-                            },
+                value: (state) => [
+                    ...(state ?? []),
+                    {
+                        ...msg,
+                        user: {
+                            ...options.user.user,
+                            profile: options.user.profile,
                         },
-                    ],
-                }),
+                    },
+                ],
             });
+
             queryInvalidate({ key: ["conversations", options.user.id] });
             break;
         }
@@ -79,24 +78,21 @@ export const upsertMessage = async (
             const temp = crypto.randomUUID();
             queryMutate({
                 key: ["messages", options.conversation_id],
-                value: (state) => ({
-                    ...state,
-                    messages: [
-                        ...(state?.messages ?? []),
-                        {
-                            conversation_id: options.conversation_id,
-                            user_id: options.user.id,
-                            created_at: new Date().toISOString(),
-                            message: options.message,
-                            id: `temp${temp}`,
-                            type: "loading",
-                            user: {
-                                ...options.user.user,
-                                profile: options.user.profile,
-                            },
+                value: (state) => [
+                    ...(state ?? []),
+                    {
+                        conversation_id: options.conversation_id,
+                        user_id: options.user.id,
+                        created_at: new Date().toISOString(),
+                        message: options.message,
+                        id: `temp${temp}`,
+                        type: "loading",
+                        user: {
+                            ...options.user.user,
+                            profile: options.user.profile,
                         },
-                    ],
-                }),
+                    },
+                ],
             });
 
             const res = await refreshedRequest({
@@ -120,23 +116,20 @@ export const upsertMessage = async (
 
             queryMutate({
                 key: ["messages", message.conversation.id],
-                value: (state) => ({
-                    ...state,
-                    messages: state.messages.map((m) =>
+                value: (state) =>
+                    state.map((m) =>
                         m.id === `temp${temp}`
                             ? { ...m, id: msg.id, type: "msg" }
                             : m,
                     ),
-                }),
             });
             break;
         }
         case "edit": {
             queryMutate({
                 key: ["messages", options.message.conversation_id],
-                value: (state) => ({
-                    ...state,
-                    messages: state.messages.map((m) =>
+                value: (state) =>
+                    state.map((m) =>
                         m.id === options.message.id
                             ? {
                                   ...m,
@@ -147,7 +140,6 @@ export const upsertMessage = async (
                               }
                             : m,
                     ),
-                }),
             });
 
             const res = await refreshedRequest({
@@ -189,13 +181,13 @@ export const upsertMessage = async (
 };
 
 export const deleteMessage = async (options: {
-    message: CacheAPIProtocol["messages"]["data"]["messages"][number];
+    message: CacheAPIProtocol["messages"]["data"][number];
 }) => {
     queryMutate({
         key: ["messages", options.message.conversation_id],
         value: (state) => ({
             ...state,
-            messages: state.messages.filter((m) => m.id !== options.message.id),
+            messages: state.filter((m) => m.id !== options.message.id),
         }),
     });
 
@@ -213,7 +205,7 @@ export const deleteMessage = async (options: {
                                       options.message.conversation_id,
                                   ],
                               }) as CacheAPIProtocol["messages"]["data"]
-                          )?.messages?.at(-1),
+                          )?.at(-1),
                       }
                     : c,
             ),

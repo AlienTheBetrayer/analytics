@@ -139,6 +139,7 @@ export const POST = async (request: NextRequest) => {
                             ...(typeof description === "string" && {
                                 description,
                             }),
+                            edited_at: new Date().toISOString(),
                         })
                         .eq("id", conversation_id);
 

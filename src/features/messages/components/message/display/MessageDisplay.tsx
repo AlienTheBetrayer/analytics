@@ -9,7 +9,7 @@ import { useQuery } from "@/query/core";
 import { exactTime } from "@/utils/other/relativeTime";
 
 type Props = {
-    data: CacheAPIProtocol["messages"]["data"]["messages"][number];
+    data: CacheAPIProtocol["messages"]["data"][number];
     onEdit: () => void;
 };
 

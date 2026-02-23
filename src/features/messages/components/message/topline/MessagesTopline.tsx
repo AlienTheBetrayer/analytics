@@ -17,10 +17,15 @@ import { useParams } from "next/navigation";
 
 type Props = {
     data: CacheAPIProtocol["messages"]["data"] | null;
+    conversationData?: CacheAPIProtocol["conversations"]["data"][number];
     retrieved?: CacheAPIProtocol["conversation_retrieve"]["data"];
 };
 
-export const MessagesTopline = ({ data, retrieved }: Props) => {
+export const MessagesTopline = ({
+    conversationData,
+    data,
+    retrieved,
+}: Props) => {
     const { data: status } = useQuery({ key: ["status"] });
     const { tab, id } = useParams<{
         tab?: string;
@@ -53,6 +58,7 @@ export const MessagesTopline = ({ data, retrieved }: Props) => {
                     </Tooltip>
 
                     <ConversationToplineInfo
+                        conversationData={conversationData}
                         data={data}
                         retrieved={retrieved}
                     />
@@ -60,11 +66,16 @@ export const MessagesTopline = ({ data, retrieved }: Props) => {
 
                 <li className="ml-auto!">
                     <ul className="flex items-center gap-1">
-                        {id !== "board" && data && (
+                        {id !== "board" && data && conversationData && (
                             <li>
                                 <Modal
                                     direction="bottom-left"
-                                    element={() => <EditingMenu data={data} />}
+                                    element={() => (
+                                        <EditingMenu
+                                            data={data}
+                                            conversationData={conversationData}
+                                        />
+                                    )}
                                 >
                                     <Tooltip
                                         direction="top"
@@ -138,10 +149,10 @@ export const MessagesTopline = ({ data, retrieved }: Props) => {
             {id !== "board" && (
                 <ul
                     className={`box min-h-10! h-10! gap-1! p-0! items-center! flex-row!
-                    ${!data?.messages.length ? "opacity-30" : ""}`}
-                    inert={!!!data?.messages.length}
+                    ${!data?.length ? "opacity-30" : ""}`}
+                    inert={!!!data?.length}
                 >
-                    {!data?.messages.length && (
+                    {!data?.length && (
                         <li className="absolute left-1/2 top-1/2 -translate-1/2">
                             <span className="flex items-center gap-1">
                                 <div className="bg-blue-1 rounded-full w-1 h-1" />

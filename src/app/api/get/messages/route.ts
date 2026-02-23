@@ -12,19 +12,15 @@ export const GET = async (request: NextRequest) => {
         }
 
         const { data, error } = await supabaseServer
-            .from("conversations")
-            .select(
-                `*, 
-                messages:messages(*, user:users(id, username, role, created_at, last_seen_at, profile:profiles(*))), 
-                conversation_members:conversation_members(user_id, created_at, user:users(id, username, role, created_at, last_seen_at, profile:profiles(*)))`,
-            )
-            .eq("id", conversation_id);
+            .from("messages")
+            .select("*, user:users(*, profile:profiles(*))")
+            .eq("conversation_id", conversation_id);
 
         if (error) {
             throw error;
         }
 
-        return nextResponse({ success: true, messages: data?.[0] }, 200);
+        return nextResponse({ success: true, messages: data }, 200);
     } catch (error) {
         console.error(error);
         return nextResponse({ success: false }, 400);

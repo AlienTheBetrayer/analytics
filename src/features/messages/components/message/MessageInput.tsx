@@ -10,7 +10,7 @@ export type MessageInputProps = {
     retrieved?: CacheAPIProtocol["conversation_retrieve"]["data"];
     data: CacheAPIProtocol["messages"]["data"] | null;
     ref?: React.Ref<HTMLInputElement | null>;
-    editingMessage?: CacheAPIProtocol["messages"]["data"]["messages"][number];
+    editingMessage?: CacheAPIProtocol["messages"]["data"][number];
     type: "send" | "edit";
     onCancel: () => void;
 };

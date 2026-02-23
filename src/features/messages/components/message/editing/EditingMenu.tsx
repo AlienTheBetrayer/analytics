@@ -9,15 +9,18 @@ import Image from "next/image";
 import { useState } from "react";
 
 type Props = {
+    conversationData: CacheAPIProtocol["conversations"]["data"][number];
     data: CacheAPIProtocol["messages"]["data"];
 };
 
-export const EditingMenu = ({ data }: Props) => {
+export const EditingMenu = ({ conversationData, data }: Props) => {
     const { data: status } = useQuery({ key: ["status"] });
 
     // states
-    const [title, setTitle] = useState<string>(data.title ?? "");
-    const [description, setDescription] = useState<string>(data.description ?? "");
+    const [title, setTitle] = useState<string>(conversationData.title ?? "");
+    const [description, setDescription] = useState<string>(
+        conversationData.description ?? "",
+    );
 
     return (
         <div className="box p-4! acrylic w-screen max-w-96">
@@ -44,9 +47,9 @@ export const EditingMenu = ({ data }: Props) => {
                         return upsertConversation({
                             type: "edit",
                             user: status,
-                            conversation_id: data?.id,
-                            ...(title && { title }),
-                            ...(description && { description }),
+                            conversation_id: conversationData.id,
+                            title,
+                            description,
                         });
                     });
                 }}
@@ -77,7 +80,7 @@ export const EditingMenu = ({ data }: Props) => {
                             type="submit"
                             className="w-full"
                         >
-                            <PromiseState state="updateConversation"/>
+                            <PromiseState state="updateConversation" />
                             <Image
                                 alt=""
                                 width={16}

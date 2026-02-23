@@ -20,19 +20,28 @@ export const MessageView = ({ retrieved }: Props) => {
     const selectDisplay = useAppStore((state) => state.selectDisplay);
     const display = useAppStore((state) => state.display.messages);
 
-    // fetching + sorting
+    // fetching
+    const { data: status } = useQuery({ key: ["status"] });
     const { data, isLoading } = useQuery({
         key: ["messages", retrieved?.conversation_id ?? undefined],
         revalidate: true,
     });
+    const { data: conversations } = useQuery({
+        key: ["conversations", status?.id],
+    });
+    const conversation = useMemo(() => {
+        return conversations?.find((c) => c.id === retrieved?.conversation_id);
+    }, [conversations, retrieved?.conversation_id]);
 
+    // sorting
     const sorted = useMemo(() => {
-        if (!data) {
+        if (!data?.length) {
             return [];
         }
+        console.log(data);
 
         return sortMessages({
-            messages: data.messages,
+            messages: data,
             filter: display.filter,
             reversed: display.reversed,
         });
@@ -41,7 +50,7 @@ export const MessageView = ({ retrieved }: Props) => {
     // editing + auto-focusing
     const [editing, setEditing] = useState<boolean>(false);
     const [editingMessage, setEditingMessage] = useState<
-        CacheAPIProtocol["messages"]["data"]["messages"][number] | undefined
+        CacheAPIProtocol["messages"]["data"][number] | undefined
     >(undefined);
 
     // fallbacks
@@ -68,6 +77,7 @@ export const MessageView = ({ retrieved }: Props) => {
         return (
             <article className="flex flex-col bg-bg-2! grow p-4! gap-2 rounded-4xl">
                 <MessagesTopline
+                    conversationData={conversation}
                     data={data}
                     retrieved={retrieved}
                 />
@@ -99,6 +109,7 @@ export const MessageView = ({ retrieved }: Props) => {
         return (
             <article className="flex flex-col bg-bg-2! grow p-4! gap-2 rounded-4xl">
                 <MessagesTopline
+                    conversationData={conversation}
                     data={data}
                     retrieved={retrieved}
                 />
@@ -111,11 +122,12 @@ export const MessageView = ({ retrieved }: Props) => {
     return (
         <article className="flex flex-col bg-bg-2! grow p-4! gap-2 rounded-4xl">
             <MessagesTopline
+                conversationData={conversation}
                 data={data}
                 retrieved={retrieved}
             />
 
-            {!data?.messages.length ? (
+            {!data?.length ? (
                 <div className="flex items-center justify-center grow">
                     <NoMessages />
                 </div>
