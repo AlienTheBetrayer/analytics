@@ -13,6 +13,7 @@ type Props = {
     direction?: PopoverDirection;
     contextMenu?: boolean;
     className?: string;
+    blur?: boolean;
     isEnabled?: boolean;
     children: React.ReactNode;
 };
@@ -21,6 +22,7 @@ export const Modal = React.memo(function ModalFunction({
     element,
     direction = "bottom",
     className = "",
+    blur = false,
     contextMenu = false,
     isEnabled = true,
     children,
@@ -166,48 +168,59 @@ export const Modal = React.memo(function ModalFunction({
                 {createPortal(
                     <AnimatePresence>
                         {isShown && (
-                            <dialog
-                                onCancel={(e) => {
-                                    e.stopPropagation();
-                                    e.preventDefault();
-                                    setIsShown(false);
-                                }}
-                                onKeyDown={(e) => {
-                                    switch (e.key) {
-                                        case " ": {
-                                            e.stopPropagation();
-                                            break;
-                                        }
-                                    }
-                                }}
-                                onFocus={(e) => {
-                                    e.stopPropagation();
-                                }}
-                                ref={modalRef}
-                                onClick={(e) => e.stopPropagation()}
-                                className="fixed z-1000"
-                            >
-                                <motion.div
-                                    className="backdrop-blur-md rounded-4xl modal-element"
-                                    initial={{
-                                        opacity: 0,
-                                        scale: 0.9,
-                                    }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    exit={{
-                                        opacity: 0,
-                                        scale: 0.9,
-                                    }}
-                                    ref={modalElementRef}
-                                >
-                                    <DragButton
-                                        ref={modalRef}
-                                        className="z-1"
+                            <>
+                                {blur && (
+                                    <motion.div
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0 }}
+                                        className="fixed inset-0 z-999 backdrop-blur-xs"
                                     />
-                                    <CloseButton hide={hide} />
-                                    {element?.(hide)}
-                                </motion.div>
-                            </dialog>
+                                )}
+
+                                <dialog
+                                    onCancel={(e) => {
+                                        e.stopPropagation();
+                                        e.preventDefault();
+                                        setIsShown(false);
+                                    }}
+                                    onKeyDown={(e) => {
+                                        switch (e.key) {
+                                            case " ": {
+                                                e.stopPropagation();
+                                                break;
+                                            }
+                                        }
+                                    }}
+                                    onFocus={(e) => {
+                                        e.stopPropagation();
+                                    }}
+                                    ref={modalRef}
+                                    onClick={(e) => e.stopPropagation()}
+                                    className="fixed z-1000"
+                                >
+                                    <motion.div
+                                        className="backdrop-blur-md rounded-4xl modal-element"
+                                        initial={{
+                                            opacity: 0,
+                                            scale: 0.9,
+                                        }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        exit={{
+                                            opacity: 0,
+                                            scale: 0.9,
+                                        }}
+                                        ref={modalElementRef}
+                                    >
+                                        <DragButton
+                                            ref={modalRef}
+                                            className="z-1"
+                                        />
+                                        <CloseButton hide={hide} />
+                                        {element?.(hide)}
+                                    </motion.div>
+                                </dialog>
+                            </>
                         )}
                     </AnimatePresence>,
                     document.body,

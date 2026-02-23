@@ -1,4 +1,5 @@
 import { Button } from "@/features/ui/button/components/Button";
+import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
 import { Input } from "@/features/ui/input/components/Input";
 import { PromiseState } from "@/promises/components/PromiseState";
 import { wrapPromise } from "@/promises/core";
@@ -9,17 +10,24 @@ import Image from "next/image";
 import { useState } from "react";
 
 type Props = {
+    hide: () => void;
     conversationData: CacheAPIProtocol["conversations"]["data"][number];
     data: CacheAPIProtocol["messages"]["data"];
 };
 
-export const EditingMenu = ({ conversationData, data }: Props) => {
+export const EditingMenu = ({ conversationData, data, hide }: Props) => {
     const { data: status } = useQuery({ key: ["status"] });
 
     // states
     const [title, setTitle] = useState<string>(conversationData.title ?? "");
     const [description, setDescription] = useState<string>(
         conversationData.description ?? "",
+    );
+    const [pinned, setPinned] = useState<boolean>(
+        conversationData.conversation_meta?.pinned ?? false,
+    );
+    const [archived, setArchived] = useState<boolean>(
+        conversationData.conversation_meta?.archived ?? false,
     );
 
     return (
@@ -50,14 +58,18 @@ export const EditingMenu = ({ conversationData, data }: Props) => {
                             conversation_id: conversationData.id,
                             title,
                             description,
+                            pinned,
+                            archived,
                         });
+                    }).then(() => {
+                        hide();
                     });
                 }}
             >
                 <ul className="flex flex-col items-center gap-2 w-full *:w-full">
                     <li>
                         <Input
-                            placeholder="title..."
+                            placeholder="Title..."
                             value={title}
                             onChange={(value) => setTitle(value)}
                         />
@@ -65,10 +77,32 @@ export const EditingMenu = ({ conversationData, data }: Props) => {
 
                     <li>
                         <Input
-                            placeholder="description..."
+                            placeholder="Description..."
                             value={description}
                             onChange={(value) => setDescription(value)}
                         />
+                    </li>
+
+                    <li className="my-1!">
+                        <hr />
+                    </li>
+
+                    <li>
+                        <Checkbox
+                            value={pinned}
+                            onToggle={(value) => setPinned(value)}
+                        >
+                            Pinned
+                        </Checkbox>
+                    </li>
+
+                    <li>
+                        <Checkbox
+                            value={archived}
+                            onToggle={(value) => setArchived(value)}
+                        >
+                            Archived
+                        </Checkbox>
                     </li>
 
                     <li className="my-1!">

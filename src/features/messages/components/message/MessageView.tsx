@@ -10,7 +10,7 @@ import { WrongURL } from "@/features/messages/components/errors/WrongURL";
 import { NotSelected } from "@/features/messages/components/errors/NotSelected";
 import { sortMessages } from "@/features/messages/utils/sort";
 import { FilterNothing } from "@/features/messages/components/errors/FilterNothing";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { LoadingMessages } from "@/features/messages/components/errors/LoadingMessages";
 
 type Props = {
@@ -18,6 +18,7 @@ type Props = {
 };
 export const MessageView = ({ retrieved }: Props) => {
     const selectDisplay = useAppStore((state) => state.selectDisplay);
+    const updateDisplay = useAppStore((state) => state.updateDisplay);
     const display = useAppStore((state) => state.display.messages);
 
     // fetching
@@ -32,6 +33,17 @@ export const MessageView = ({ retrieved }: Props) => {
     const conversation = useMemo(() => {
         return conversations?.find((c) => c.id === retrieved?.conversation_id);
     }, [conversations, retrieved?.conversation_id]);
+
+    // moving back out of archived page
+    useEffect(() => {
+        updateDisplay({
+            conversations: {
+                tab: conversation?.conversation_meta?.archived
+                    ? "archive"
+                    : "conversations",
+            },
+        });
+    }, [conversation?.conversation_meta?.archived, updateDisplay]);
 
     // sorting
     const sorted = useMemo(() => {

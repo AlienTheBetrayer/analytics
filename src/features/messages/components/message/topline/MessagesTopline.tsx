@@ -67,9 +67,11 @@ export const MessagesTopline = ({
                         {id !== "board" && data && conversationData && (
                             <li>
                                 <Modal
-                                    direction="bottom-left"
-                                    element={() => (
+                                    direction="screen-middle"
+                                    blur
+                                    element={(hide) => (
                                         <EditingMenu
+                                            hide={hide}
                                             data={data}
                                             conversationData={conversationData}
                                         />
