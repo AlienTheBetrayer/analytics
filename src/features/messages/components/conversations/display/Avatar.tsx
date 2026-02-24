@@ -11,49 +11,65 @@ export const Avatar = ({ data }: Props) => {
     const { data: status } = useQuery({ key: ["status"] });
 
     return (
-        <div className="shrink-0">
-            {(() => {
-                switch (data.type) {
-                    case "dm": {
-                        const otherUser = data.conversation_members.find(
-                            (m) => m.user_id !== status?.id,
-                        )?.user;
+        <div className="relative shrink-0 rounded-full! w-12 h-12 loading aspect-square flex items-center justify-center">
+            {data.image_url ? (
+                <Image
+                    alt=""
+                    fill
+                    style={{ objectFit: "cover" }}
+                    src={data.image_url}
+                    className="invert-0!"
+                />
+            ) : (
+                (() => {
+                    switch (data.type) {
+                        case "dm": {
+                            const otherUser = data.conversation_members.find(
+                                (m) => m.user_id !== status?.id,
+                            )?.user;
 
-                        return (
-                            <ProfileImage
-                                profile={otherUser?.profile}
-                                width={256}
-                                height={256}
-                                className="w-12! h-12!"
-                            />
-                        );
-                    }
-                    case "group": {
-                        return (
-                            <div className="rounded-full w-12 h-12 loading aspect-square flex items-center justify-center">
+                            return (
+                                <ProfileImage
+                                    profile={otherUser?.profile}
+                                    width={256}
+                                    height={256}
+                                    className="w-12! h-12!"
+                                />
+                            );
+                        }
+                        case "channel": {
+                            return (
                                 <Image
                                     alt=""
                                     width={16}
                                     height={16}
                                     src="/friends.svg"
                                 />
-                            </div>
-                        );
+                            );
+                        }
+                        case "group": {
+                            return (
+                                <Image
+                                    alt=""
+                                    width={16}
+                                    height={16}
+                                    src="/friends.svg"
+                                />
+                            );
+                        }
+                        case "notes": {
+                            return (
+                                <Image
+                                    alt=""
+                                    width={16}
+                                    height={16}
+                                    src="/save.svg"
+                                />
+                            );
+                        }
                     }
-                    case "notes": {
-                        return <div className="rounded-full w-12 h-12 loading aspect-square flex items-center justify-center">
-                            <Image
-                                alt=""
-                                width={16}
-                                height={16}
-                                src="/pencil.svg"
-                            />
-                        </div>
-                    }
-                    case "channel": {
-                    }
-                }
-            })()}
+                })()
+            )}
         </div>
     );
 };

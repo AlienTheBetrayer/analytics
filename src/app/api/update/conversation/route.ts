@@ -1,6 +1,7 @@
 import { supabaseServer } from "@/server/private/supabase";
 import { Conversation } from "@/types/tables/messages";
 import { nextResponse } from "@/utils/api/response";
+import { handleImage } from "@/utils/api/upload";
 import { tokenVerify } from "@/utils/auth/tokenVerify";
 import { PostgrestError } from "@supabase/supabase-js";
 import { NextRequest } from "next/server";
@@ -9,14 +10,17 @@ export const POST = async (request: NextRequest) => {
     try {
         const {
             type,
-            conversation_type,
             conversation_id,
             user_id,
             member_ids,
+            conversation_type,
             title,
             description,
             pinned,
             archived,
+            image,
+            image_name,
+            image_type,
         } = await request.json();
 
         if (!type || !user_id) {
@@ -127,10 +131,35 @@ export const POST = async (request: NextRequest) => {
                     throw "conversation_id is undefined";
                 }
 
-                // meta data
+                // image
+                let url: string | undefined | null = undefined;
+
+                if (image || image === null) {
+                    const { data, error } = await supabaseServer
+                        .from("conversations")
+                        .select("image_url")
+                        .eq("id", conversation_id)
+                        .single();
+
+                    if (error) {
+                        throw error;
+                    }
+
+                    url = await handleImage({
+                        user_id,
+                        image_base64: image,
+                        existing_url: data.image_url,
+                        image_name,
+                        image_type,
+                        folder: "convesation",
+                    });
+                }
+
+                // conversation data
                 if (
                     typeof title === "string" ||
-                    typeof description === "string"
+                    typeof description === "string" ||
+                    url !== undefined
                 ) {
                     const { error } = await supabaseServer
                         .from("conversations")
@@ -138,6 +167,9 @@ export const POST = async (request: NextRequest) => {
                             ...(typeof title === "string" && { title }),
                             ...(typeof description === "string" && {
                                 description,
+                            }),
+                            ...((url || url === null) && {
+                                image_url: url,
                             }),
                             edited_at: new Date().toISOString(),
                         })
@@ -148,7 +180,7 @@ export const POST = async (request: NextRequest) => {
                     }
                 }
 
-                // conversation data
+                // meta data
                 if (
                     typeof pinned === "boolean" ||
                     typeof archived === "boolean"

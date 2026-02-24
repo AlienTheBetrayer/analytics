@@ -1,3 +1,4 @@
+import { fileToBase64 } from "@/features/profile/utils/fileToBase64";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { queryInvalidate, queryMutate } from "@/query/auxiliary";
 import { refreshedRequest } from "@/utils/auth/refreshedRequest";
@@ -16,6 +17,7 @@ export const upsertConversation = async (
               conversation_id: string;
               pinned?: boolean;
               archived?: boolean;
+              image?: File | null;
               title?: string;
               description?: string;
           }
@@ -43,6 +45,10 @@ export const upsertConversation = async (
             return res;
         }
         case "edit": {
+            const base64 = options.image
+                ? await fileToBase64(options.image)
+                : null;
+
             queryMutate({
                 key: ["conversations", options.user.id],
                 value: (state) =>
@@ -56,6 +62,11 @@ export const upsertConversation = async (
                                   ...(typeof options.description ===
                                       "string" && {
                                       description: options.description,
+                                  }),
+                                  ...("image" in options && {
+                                      image_url: options.image
+                                          ? URL.createObjectURL(options.image)
+                                          : undefined,
                                   }),
                                   conversation_meta: {
                                       ...s.conversation_meta,
@@ -81,6 +92,11 @@ export const upsertConversation = async (
                     user_id: options.user.id,
                     conversation_id: options.conversation_id,
                     type: options.type,
+                    ...("image" in options && {
+                        image: base64,
+                        image_name: options.image?.name,
+                        image_type: options.image?.type,
+                    }),
                     ...("title" in options && { title: options.title }),
                     ...("description" in options && {
                         description: options.description,

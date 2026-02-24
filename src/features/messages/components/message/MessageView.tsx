@@ -50,7 +50,6 @@ export const MessageView = ({ retrieved }: Props) => {
         if (!data?.length) {
             return [];
         }
-        console.log(data);
 
         return sortMessages({
             messages: data,

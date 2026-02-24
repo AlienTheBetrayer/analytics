@@ -74,7 +74,8 @@ export const ImageSelectCircle = ({
             />
 
             <Button
-                className={`p-0! group ${className ?? ""} outline-2 hover:outline-blue-1! duration-400! not-hover:rounded-[6rem]! hover:rounded-[5rem]!`}
+                className={`p-0! group  outline-2 hover:outline-blue-1! duration-400! not-hover:rounded-[6rem]! hover:rounded-[5rem]!
+                    ${className ?? ""}`}
                 onClick={() => {
                     inputRef.current?.click();
                 }}
@@ -118,6 +119,7 @@ export const ImageSelectCircle = ({
                                 src="/imageadd.svg"
                                 className="duration-500! group-hover:scale-150! group-focus-visible:scale-150!"
                             />
+                            <div className="absolute inset-0 loading z-2"/>
                         </motion.div>
                     )}
                 </AnimatePresence>

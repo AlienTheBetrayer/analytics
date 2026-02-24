@@ -33,6 +33,9 @@ export const EditingMenu = ({ conversationData, data, hide }: Props) => {
     const [image, setImage] = useState<string>(
         conversationData.image_url ?? "",
     );
+    const [changedImage, setChangedImage] = useState<File | undefined | null>(
+        undefined,
+    );
 
     return (
         <div className="box p-4! acrylic w-screen max-w-lg">
@@ -55,13 +58,16 @@ export const EditingMenu = ({ conversationData, data, hide }: Props) => {
                         return;
                     }
 
-                    wrapPromise("updateConversation", () => {
+                    wrapPromise("updateConversation", async () => {
                         return upsertConversation({
                             type: "edit",
                             user: status,
                             conversation_id: conversationData.id,
                             title,
                             description,
+                            ...(changedImage !== undefined && {
+                                image: changedImage,
+                            }),
                             pinned,
                             archived,
                         });
@@ -76,6 +82,7 @@ export const EditingMenu = ({ conversationData, data, hide }: Props) => {
                             value={image}
                             onChange={(file) => {
                                 setImage(file ? URL.createObjectURL(file) : "");
+                                setChangedImage(file);
                             }}
                             className="w-screen max-w-48 aspect-square"
                         />
