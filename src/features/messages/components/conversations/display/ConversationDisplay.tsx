@@ -1,14 +1,12 @@
-import { ContextMenu } from "@/features/messages/components/conversations/ContextMenu";
-import { Avatar } from "@/features/messages/components/conversations/display/Avatar";
-import { LastMessage } from "@/features/messages/components/conversations/display/LastMessage";
-import { LastMessageDate } from "@/features/messages/components/conversations/display/LastMessageDate";
-import { Name } from "@/features/messages/components/conversations/display/Name";
-import { Button } from "@/features/ui/button/components/Button";
+import { Avatar } from "@/features/messages/components/conversations/display/parts/Avatar";
+import { BottomButtons } from "@/features/messages/components/conversations/display/parts/BottomButtons";
+import { LastMessage } from "@/features/messages/components/conversations/display/parts/LastMessage";
+import { LastMessageDate } from "@/features/messages/components/conversations/display/parts/LastMessageDate";
+import { Name } from "@/features/messages/components/conversations/display/parts/Name";
+import { Pinned } from "@/features/messages/components/conversations/display/parts/Pinned";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
-import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { useAppStore } from "@/zustand/store";
-import Image from "next/image";
 
 type Props = {
     data: CacheAPIProtocol["conversations"]["data"][number];
@@ -28,6 +26,7 @@ export const ConversationDisplay = ({ data }: Props) => {
                 href={isSelected ? "/messages/" : `/messages/c/${data.id}`}
             >
                 <Avatar data={data} />
+                <Pinned data={data} />
 
                 <div className="flex flex-col gap-1 w-full overflow-hidden">
                     <div className="grid grid-cols-[auto_25%]">
@@ -37,34 +36,12 @@ export const ConversationDisplay = ({ data }: Props) => {
 
                     <LastMessage data={data} />
                 </div>
-
-                {data.conversation_meta?.pinned && (
-                    <div className="absolute right-4 top-1">
-                        <Image
-                            alt="pin"
-                            width={13}
-                            height={13}
-                            src="/pin.svg"
-                        />
-                    </div>
-                )}
             </LinkButton>
 
-            <div className="absolute right-4 bottom-2">
-                <Modal
-                    element={() => <ContextMenu data={data} />}
-                    direction="right"
-                >
-                    <Button className="min-w-6! min-h-6! h-6! w-6! p-0!">
-                        <Image
-                            alt=""
-                            width={13}
-                            height={13}
-                            src="/menu.svg"
-                        />
-                    </Button>
-                </Modal>
-            </div>
+            <BottomButtons
+                type="regular"
+                data={data}
+            />
         </div>
     );
 };

@@ -3,7 +3,7 @@ import { Button } from "@/features/ui/button/components/Button";
 import { useLocalStore } from "@/zustand/localStore";
 import Image from "next/image";
 
-export const ContextMenu = () => {
+export const ArchivedContextMenu = () => {
     const display = useLocalStore((state) => state.display.messages);
     const updateDisplay = useLocalStore((state) => state.updateDisplay);
 

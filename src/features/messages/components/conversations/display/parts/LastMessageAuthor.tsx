@@ -17,7 +17,7 @@ export const LastMessageAuthor = ({ data }: Props) => {
                 profile={data.last_message.user.profile}
                 width={256}
                 height={256}
-                className="w-4.5! h-4.5!"
+                className="w-5! h-5!"
             />
         );
     }

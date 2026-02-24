@@ -11,7 +11,7 @@ export const Avatar = ({ data }: Props) => {
     const { data: status } = useQuery({ key: ["status"] });
 
     return (
-        <div className="relative shrink-0 rounded-full! w-12 h-12 loading aspect-square flex items-center justify-center">
+        <div className="relative shrink-0 overflow-hidden rounded-full transition-all duration-300 w-12 h-12 loading aspect-square flex items-center justify-center">
             {data.image_url ? (
                 <Image
                     alt=""

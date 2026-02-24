@@ -1,9 +1,8 @@
-import { LastMessage } from "@/features/messages/components/conversations/display/LastMessage";
-import { LastMessageDate } from "@/features/messages/components/conversations/display/LastMessageDate";
-import { ContextMenu } from "@/features/messages/components/conversations/notes/ContextMenu";
-import { Button } from "@/features/ui/button/components/Button";
+import { BottomButtons } from "@/features/messages/components/conversations/display/parts/BottomButtons";
+import { LastMessage } from "@/features/messages/components/conversations/display/parts/LastMessage";
+import { LastMessageDate } from "@/features/messages/components/conversations/display/parts/LastMessageDate";
+import { Pinned } from "@/features/messages/components/conversations/display/parts/Pinned";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
-import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import Image from "next/image";
 import { useParams } from "next/navigation";
@@ -61,47 +60,13 @@ export const NotesDisplay = ({ data }: Props) => {
                     <LastMessage data={data} />
                 </div>
 
-                {data?.conversation_meta?.pinned && (
-                    <div className="absolute right-4 top-2">
-                        <small>
-                            <Image
-                                alt="pin"
-                                width={16}
-                                height={16}
-                                src="/pin.svg"
-                            />
-                        </small>
-                    </div>
-                )}
+                <Pinned data={data} />
             </LinkButton>
 
-            <div className="flex items-center gap-1 absolute right-4 bottom-2">
-                <LinkButton
-                    href="/messages/notes/board"
-                    className="w-6! h-6! p-0! min-w-6! min-h-6!"
-                >
-                    <Image
-                        alt=""
-                        width={13}
-                        height={13}
-                        src="/dashboard.svg"
-                    />
-                </LinkButton>
-
-                <Modal
-                    element={() => <ContextMenu data={data} />}
-                    direction="right"
-                >
-                    <Button className="min-w-6! min-h-6! h-6! w-6! p-0!">
-                        <Image
-                            alt=""
-                            width={13}
-                            height={13}
-                            src="/menu.svg"
-                        />
-                    </Button>
-                </Modal>
-            </div>
+            <BottomButtons
+                data={data}
+                type="notes"
+            />
         </div>
     );
 };

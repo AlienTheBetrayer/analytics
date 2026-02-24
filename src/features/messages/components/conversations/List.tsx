@@ -89,7 +89,7 @@ export const List = ({ isLoading, conversations }: Props) => {
                 animate={{
                     x: display.tab !== "conversations" ? "-50%" : "0%",
                 }}
-                transition={{ type: "spring", bounce: 0 }}
+                transition={{ ease: [0.4, 0, 0.2, 1], duration: 0.3 }}
             >
                 <li
                     className={`absolute inset-0 bg-bg-2 z-1 pointer-events-none transition-all duration-500
@@ -133,7 +133,7 @@ export const List = ({ isLoading, conversations }: Props) => {
                 animate={{
                     x: display.tab === "archive" ? "0%" : "100%",
                 }}
-                transition={{ type: "spring", bounce: 0 }}
+                transition={{ ease: [0.4, 0, 0.2, 1], duration: 0.3 }}
             >
                 {archived.length
                     ? archived.map((c) => (

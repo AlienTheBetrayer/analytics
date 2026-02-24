@@ -1,7 +1,6 @@
-import { ContextMenu } from "@/features/messages/components/conversations/archived/ContextMenu";
-import { Name } from "@/features/messages/components/conversations/display/Name";
+import { BottomButtons } from "@/features/messages/components/conversations/display/parts/BottomButtons";
+import { Name } from "@/features/messages/components/conversations/display/parts/Name";
 import { Button } from "@/features/ui/button/components/Button";
-import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { useLocalStore } from "@/zustand/localStore";
 import { useAppStore } from "@/zustand/store";
@@ -30,7 +29,7 @@ export const ArchivedDisplay = ({ data }: Props) => {
                     ${isCollapsed ? "h-10! items-center!" : "h-20! items-start!"}`}
                 >
                     <div
-                        className={`relative rounded-full w-full h-full transition-all duration-300 flex items-center justify-center 
+                        className={`relative rounded-2xl w-full h-full transition-all duration-300 flex items-center justify-center 
                             bg-linear-to-bl from-bg-3 to-bg-5 shrink-0 max-w-12 max-h-12
                         ${isCollapsed ? "from-transparent to-transparent!" : ""}`}
                     >
@@ -65,24 +64,10 @@ export const ArchivedDisplay = ({ data }: Props) => {
                     </div>
                 </Button>
 
-                <div
-                    className={`absolute right-4 bottom-2 translate-y-0 transition-all duration-300
-                    ${isCollapsed ? "translate-y-1/2! bottom-1/2!" : ""}`}
-                >
-                    <Modal
-                        element={() => <ContextMenu />}
-                        direction="right"
-                    >
-                        <Button className="min-w-6! min-h-6! h-6! w-6! p-0!">
-                            <Image
-                                alt=""
-                                width={13}
-                                height={13}
-                                src="/menu.svg"
-                            />
-                        </Button>
-                    </Modal>
-                </div>
+                <BottomButtons
+                    isCollapsed={isCollapsed}
+                    type="archived"
+                />
             </div>
         )
     );

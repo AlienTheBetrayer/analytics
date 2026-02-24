@@ -1,4 +1,4 @@
-import { LastMessageAuthor } from "@/features/messages/components/conversations/display/LastMessageAuthor";
+import { LastMessageAuthor } from "@/features/messages/components/conversations/display/parts/LastMessageAuthor";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { useLocalStore } from "@/zustand/localStore";
 

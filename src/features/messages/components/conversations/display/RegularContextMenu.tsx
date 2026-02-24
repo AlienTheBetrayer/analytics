@@ -1,4 +1,4 @@
-import "../message/ContextMenu.css";
+import "../../message/ContextMenu.css";
 import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { useMessageBox } from "@/features/ui/messagebox/hooks/useMessageBox";
@@ -14,15 +14,19 @@ import Image from "next/image";
 import { redirect, useParams } from "next/navigation";
 
 type Props = {
-    data: CacheAPIProtocol["conversations"]["data"][number];
+    data?: CacheAPIProtocol["conversations"]["data"][number];
 };
 
-export const ContextMenu = ({ data }: Props) => {
+export const RegularContextMenu = ({ data }: Props) => {
     const { data: status } = useQuery({ key: ["status"] });
     const { id } = useParams<{ id?: string }>();
 
     const deleteBox = useMessageBox();
     const leaveBox = useMessageBox();
+
+    if (!data) {
+        return null;
+    }
 
     return (
         <>

@@ -1,10 +1,7 @@
-import { LeftMenu } from "@/features/messages/components/conversations/leftmenu/LeftMenu";
 import { Time } from "@/features/messages/components/topline/Time";
 import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
-import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
-import { useQuery } from "@/query/core";
 import { TabSelection } from "@/utils/other/TabSelection";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
@@ -15,37 +12,9 @@ export const AdditionalTopline = () => {
     const updateDisplay = useAppStore((state) => state.updateDisplay);
     const { tab } = useParams<{ tab?: string }>();
 
-    const { data: status } = useQuery({ key: ["status"] });
-    const { data } = useQuery({ key: ["conversations", status?.id] });
-
     return (
         <ul className="box h-10! p-0! bg-bg-2! flex-row! items-center!">
             {/* left */}
-            <li>
-                <Modal
-                    direction="bottom-right"
-                    element={(hide) => (
-                        <LeftMenu
-                            hide={hide}
-                            data={data}
-                        />
-                    )}
-                >
-                    <Tooltip
-                        direction="top"
-                        text="Open menu"
-                    >
-                        <Button>
-                            <Image
-                                alt="menu"
-                                width={16}
-                                height={16}
-                                src="/description.svg"
-                            />
-                        </Button>
-                    </Tooltip>
-                </Modal>
-            </li>
 
             {/* center */}
             <li className="absolute left-1/2 top-1/2 -translate-1/2">

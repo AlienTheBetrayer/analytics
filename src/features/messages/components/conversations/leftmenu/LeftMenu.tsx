@@ -52,13 +52,15 @@ export const LeftMenu = ({ data, hide }: Props) => {
             <li className="w-full">
                 <ul className="flex flex-col items-center gap-1 *:w-full">
                     <li className="flex items-center justify-center gap-1">
-                        <Image
-                            alt=""
-                            width={16}
-                            height={16}
-                            src="/plus.svg"
-                        />
-                        <span>Create</span>
+                        <small className="flex items-center gap-1">
+                            <Image
+                                alt=""
+                                width={16}
+                                height={16}
+                                src="/plus.svg"
+                            />
+                            <span>Create</span>
+                        </small>
                     </li>
 
                     <CreateConversationElements />
@@ -68,13 +70,15 @@ export const LeftMenu = ({ data, hide }: Props) => {
             <li>
                 <ul className="flex flex-col items-center gap-1 *:w-full">
                     <li className="flex items-center justify-center gap-1">
-                        <Image
-                            alt=""
-                            width={16}
-                            height={16}
-                            src="/arrow.svg"
-                        />
-                        <span>Navigation</span>
+                        <small className="flex items-center gap-1">
+                            <Image
+                                alt=""
+                                width={16}
+                                height={16}
+                                src="/arrow.svg"
+                            />
+                            <span>Navigation</span>
+                        </small>
                     </li>
 
                     <li>
