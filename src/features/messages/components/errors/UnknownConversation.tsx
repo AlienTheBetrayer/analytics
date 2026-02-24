@@ -10,7 +10,7 @@ export const UnknownConversation = () => {
             }
             description={
                 <>
-                    Something went wrong... Try to <mark>reload</mark> this page
+                    You either have not loaded the conversation or something went wrong. Try to <mark>reload</mark> this page
                 </>
             }
         />

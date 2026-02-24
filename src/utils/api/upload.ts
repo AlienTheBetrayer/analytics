@@ -85,7 +85,6 @@ export const handleImage = async (options: {
 }) => {
     // image has not been requested for a change
     if (options.image_base64 === undefined || options.image_base64 === "") {
-        console.warn("skipped");
         return;
     }
 
@@ -95,8 +94,6 @@ export const handleImage = async (options: {
     }
 
     if (options.existing_url) {
-        console.warn("deleting");
-
         await deleteImage({
             user_id: options.user_id,
             url: options.existing_url,
@@ -105,7 +102,6 @@ export const handleImage = async (options: {
     }
 
     if (options.image_base64 === null) {
-        console.warn("deletion skipped");
         return null;
     }
 
@@ -114,8 +110,6 @@ export const handleImage = async (options: {
     }
 
     // uploading + returning url
-    console.warn("uploading");
-
     return await uploadImage({
         user_id: options.user_id,
         base64: options.image_base64,
