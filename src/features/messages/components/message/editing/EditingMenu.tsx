@@ -1,5 +1,6 @@
 import { Button } from "@/features/ui/button/components/Button";
 import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
+import { ImageSelectCircle } from "@/features/ui/imageselectcircle/components/ImageSelectCircle";
 import { Input } from "@/features/ui/input/components/Input";
 import { PromiseState } from "@/promises/components/PromiseState";
 import { wrapPromise } from "@/promises/core";
@@ -29,9 +30,12 @@ export const EditingMenu = ({ conversationData, data, hide }: Props) => {
     const [archived, setArchived] = useState<boolean>(
         conversationData.conversation_meta?.archived ?? false,
     );
+    const [image, setImage] = useState<string>(
+        conversationData.image_url ?? "",
+    );
 
     return (
-        <div className="box p-4! acrylic w-screen max-w-96">
+        <div className="box p-4! acrylic w-screen max-w-lg">
             <span className="flex items-center justify-center gap-1 mb-6!">
                 <div className="w-1 h-1 rounded-full bg-blue-1" />
                 <Image
@@ -67,6 +71,20 @@ export const EditingMenu = ({ conversationData, data, hide }: Props) => {
                 }}
             >
                 <ul className="flex flex-col items-center gap-2 w-full *:w-full">
+                    <li className="flex items-center justify-center">
+                        <ImageSelectCircle
+                            value={image}
+                            onChange={(file) => {
+                                setImage(file ? URL.createObjectURL(file) : "");
+                            }}
+                            className="w-screen max-w-48 aspect-square"
+                        />
+                    </li>
+
+                    <li>
+                        <hr />
+                    </li>
+
                     <li>
                         <Input
                             placeholder="Title..."

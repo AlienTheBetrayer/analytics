@@ -26,9 +26,10 @@ export type ConversationMeta = {
  */
 export type Conversation = {
     id: string;
+    type: "dm" | "group" | "notes" | "channel";
     title?: string;
     description?: string;
-    type: "dm" | "group" | "notes" | "channel";
+    image_url?: string;
     created_at: string;
     edited_at?: string;
 };
