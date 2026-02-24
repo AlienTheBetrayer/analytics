@@ -34,6 +34,7 @@ export const GET = async (request: NextRequest) => {
                 throw "lacking permissions.";
             }
         }
+        
         const { data, error } = await supabaseServer
             .from("messages")
             .select("*, user:users(*, profile:profiles(*))")

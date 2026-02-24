@@ -2,7 +2,7 @@ import { supabaseServer } from "@/server/private/supabase";
 import { Conversation } from "@/types/tables/messages";
 import { nextResponse } from "@/utils/api/response";
 import { deleteImage } from "@/utils/api/upload";
-import { tokenVerify } from "@/utils/auth/tokenVerify";
+import { tokenPayload } from "@/utils/auth/tokenPayload";
 import { PostgrestError } from "@supabase/supabase-js";
 import { NextRequest } from "next/server";
 
@@ -14,25 +14,27 @@ export const POST = async (request: NextRequest) => {
             throw "user_id and conversation_id and type are undefined";
         }
 
-        // permissions & whether we're a member of that conversation
-        tokenVerify({ request, id: [user_id] });
+        // permissions
+        {
+            const token = tokenPayload(request)?.accessToken;
 
-        const { data: conversation, error } = await supabaseServer
-            .from("conversations")
-            .select("id, conversation_members:conversation_members(user_id)")
-            .eq("id", conversation_id)
-            .single();
+            if (!token) {
+                throw "unauthenticated.";
+            }
 
-        if (error) {
-            throw error;
-        }
+            const { count, error } = await supabaseServer
+                .from("conversation_members")
+                .select("*", { head: true, count: "exact" })
+                .eq("conversation_id", conversation_id)
+                .eq("user_id", token?.id);
 
-        if (
-            !conversation.conversation_members.some(
-                (m) => m.user_id === user_id,
-            )
-        ) {
-            throw "lacking permissions";
+            if (error) {
+                throw error;
+            }
+
+            if (!count) {
+                throw "lacking permissions.";
+            }
         }
 
         switch (type) {
