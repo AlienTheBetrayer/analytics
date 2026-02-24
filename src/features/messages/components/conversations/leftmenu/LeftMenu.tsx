@@ -3,20 +3,27 @@ import { ProfileImage } from "@/features/profile/components/ProfileImage";
 import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
+import { CacheAPIProtocol } from "@/query-api/protocol";
 import { useQuery } from "@/query/core";
 import { useLocalStore } from "@/zustand/localStore";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
+import { useMemo } from "react";
 
 type Props = {
+    data: CacheAPIProtocol["conversations"]["data"] | null;
     hide: () => void;
 };
 
-export const LeftMenu = ({ hide }: Props) => {
+export const LeftMenu = ({ data, hide }: Props) => {
     const { data: status } = useQuery({ key: ["status"] });
     const localDisplay = useLocalStore((state) => state.display);
     const updateDisplay = useAppStore((state) => state.updateDisplay);
     const updateLocalDisplay = useLocalStore((state) => state.updateDisplay);
+
+    const notesConversation = useMemo(() => {
+        return data?.find((c) => c.type === "notes");
+    }, [data]);
 
     return (
         <ul className="box acrylic p-4! rounded-2xl! gap-4! **:border-0! w-screen max-w-64 message-ctx">
@@ -72,13 +79,26 @@ export const LeftMenu = ({ hide }: Props) => {
 
                     <li>
                         <LinkButton href="/messages/notes">
-                            <Image
-                                alt=""
-                                width={16}
-                                height={16}
-                                src="/save.svg"
-                            />
-                            <span>Notes</span>
+                            <div>
+                                {notesConversation?.image_url ? (
+                                    <Image
+                                        alt=""
+                                        fill
+                                        style={{ objectFit: "cover" }}
+                                        src={notesConversation.image_url}
+                                        className="invert-0!"
+                                    />
+                                ) : (
+                                    <Image
+                                        alt=""
+                                        src="/save.svg"
+                                        width={16}
+                                        height={16}
+                                    />
+                                )}
+                            </div>
+
+                            <span className="z-1">Notes</span>
                         </LinkButton>
                     </li>
 

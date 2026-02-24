@@ -30,16 +30,26 @@ export const NotesDisplay = ({ data }: Props) => {
                 }
             >
                 <div
-                    className="relative rounded-full w-12 h-12 flex items-center justify-center bg-bg-3 shrink-0 
+                    className="relative rounded-full overflow-hidden w-12 h-12 flex items-center justify-center bg-bg-3 shrink-0 
                     bg-linear-to-tr from-[#5161d5] to-[#101857]"
                 >
-                    <Image
-                        alt="notes"
-                        src="/save.svg"
-                        width={24}
-                        height={24}
-                        className="w-6! h-6! invert-90!"
-                    />
+                    {data?.image_url ? (
+                        <Image
+                            alt=""
+                            fill
+                            style={{ objectFit: "cover" }}
+                            src={data.image_url}
+                            className="invert-0!"
+                        />
+                    ) : (
+                        <Image
+                            alt="notes"
+                            src="/save.svg"
+                            width={24}
+                            height={24}
+                            className="w-6! h-6! invert-90!"
+                        />
+                    )}
                 </div>
 
                 <div className="flex flex-col gap-1 w-full overflow-hidden">

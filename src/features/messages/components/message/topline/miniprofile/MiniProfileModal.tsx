@@ -21,7 +21,6 @@ export const MiniProfileModal = (props: MiniProfileProps) => {
                 <div className="box items-center! acrylic p-4! w-screen max-w-96 rounded-3xl!">
                     <Tooltip
                         direction="top"
-                        pointerEvents
                         element={<Date data={props.data} />}
                         className="absolute top-2 right-11 p-0!"
                     >
@@ -50,18 +49,14 @@ export const MiniProfileModal = (props: MiniProfileProps) => {
                                                 alt=""
                                                 width={16}
                                                 height={16}
-                                                src="/type.svg"
+                                                src="/account.svg"
                                             />
-                                            <span>
-                                                {props.data.title || "DM"}
-                                            </span>
+                                            <div className="w-1 h-1 rounded-full bg-blue-1" />
+
+                                            <span>{user?.username}</span>
                                         </span>
 
                                         <div className="flex flex-col items-center w-full">
-                                            <span className="flex items-center gap-1">
-                                                <div className="w-1 h-1 rounded-full bg-blue-1" />
-                                                {user?.username}
-                                            </span>
                                             <LinkButton
                                                 href={`/profile/${user?.username}`}
                                                 className="not-hover:bg-transparent! border-0! w-full rounded-2xl!"
@@ -112,15 +107,41 @@ export const MiniProfileModal = (props: MiniProfileProps) => {
                                                 alt=""
                                                 width={16}
                                                 height={16}
-                                                src="/type.svg"
+                                                src="/friends.svg"
                                             />
+                                            <div className="w-1 h-1 rounded-full bg-blue-1" />
                                             <span>
                                                 {props.data.title ||
                                                     (props.data.type === "group"
                                                         ? "Group"
-                                                        : "Notes")}
+                                                        : "Channel")}
                                             </span>
                                         </span>
+
+                                        <div className="rounded-full! overflow-hidden w-24 aspect-square relative loading">
+                                            {props.data.image_url ? (
+                                                <Image
+                                                    alt=""
+                                                    fill
+                                                    style={{
+                                                        objectFit: "cover",
+                                                    }}
+                                                    className="invert-0!"
+                                                    src={props.data.image_url}
+                                                />
+                                            ) : (
+                                                <Image
+                                                    alt={
+                                                        props.data.type ===
+                                                        "group"
+                                                            ? "Group"
+                                                            : "Channel"
+                                                    }
+                                                    src="/friends.svg"
+                                                    fill
+                                                />
+                                            )}
+                                        </div>
 
                                         {props.data.description && (
                                             <small className="flex items-center gap-1">
@@ -180,13 +201,24 @@ export const MiniProfileModal = (props: MiniProfileProps) => {
                             href="/messages/notes"
                             className="loading aspect-square flex-col!"
                         >
-                            <Image
-                                alt="notes"
-                                width={32}
-                                height={32}
-                                src="/save.svg"
-                            />
-                            <span className="flex items-center gap-1">
+                            {props.data?.image_url ? (
+                                <Image
+                                    alt=""
+                                    fill
+                                    style={{ objectFit: "cover" }}
+                                    src={props.data.image_url}
+                                    className="invert-0!"
+                                />
+                            ) : (
+                                <Image
+                                    alt=""
+                                    src="/save.svg"
+                                    width={32}
+                                    height={32}
+                                />
+                            )}
+
+                            <span className="flex items-center gap-1 z-1">
                                 Messages
                                 <TabSelection
                                     condition={id !== "board"}

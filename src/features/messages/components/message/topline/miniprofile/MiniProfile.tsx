@@ -79,12 +79,22 @@ export const MiniProfileView = (props: MiniProfileProps) => {
                     return (
                         <span className="flex items-center gap-1 self-stretch px-2!">
                             <div className="w-1 h-1 rounded-full bg-blue-1" />
-                            <Image
-                                alt=""
-                                width={16}
-                                height={16}
-                                src="/friends.svg"
-                            />
+                            {props.data.image_url ? (
+                                <Image
+                                    alt=""
+                                    width={24}
+                                    height={24}
+                                    src={props.data.image_url}
+                                    className="rounded-full! invert-0!"
+                                />
+                            ) : (
+                                <Image
+                                    alt=""
+                                    width={16}
+                                    height={16}
+                                    src="/friends.svg"
+                                />
+                            )}
                             Channel
                         </span>
                     );
@@ -93,12 +103,22 @@ export const MiniProfileView = (props: MiniProfileProps) => {
                     return (
                         <span className="flex items-center gap-1 self-stretch px-2!">
                             <div className="w-1 h-1 rounded-full bg-blue-1" />
-                            <Image
-                                alt=""
-                                width={16}
-                                height={16}
-                                src="/friends.svg"
-                            />
+                            {props.data.image_url ? (
+                                <Image
+                                    alt=""
+                                    width={24}
+                                    height={24}
+                                    src={props.data.image_url}
+                                    className="rounded-full! invert-0!"
+                                />
+                            ) : (
+                                <Image
+                                    alt=""
+                                    width={16}
+                                    height={16}
+                                    src="/friends.svg"
+                                />
+                            )}
                             Group
                         </span>
                     );
@@ -109,18 +129,28 @@ export const MiniProfileView = (props: MiniProfileProps) => {
             return (
                 <span className="flex items-center gap-1 self-stretch px-2!">
                     <div className="w-1 h-1 rounded-full bg-blue-1" />
-                    <Image
-                        alt=""
-                        width={16}
-                        height={16}
-                        src={
-                            extra
-                                ? "/cube.svg"
-                                : id === "board"
-                                  ? "/dashboard.svg"
-                                  : "/save.svg"
-                        }
-                    />
+                    {props.data?.image_url ? (
+                        <Image
+                            alt="notes"
+                            width={24}
+                            height={24}
+                            src={props.data.image_url}
+                            className="invert-0! rounded-full"
+                        />
+                    ) : (
+                        <Image
+                            alt=""
+                            width={16}
+                            height={16}
+                            src={
+                                extra
+                                    ? "/cube.svg"
+                                    : id === "board"
+                                      ? "/dashboard.svg"
+                                      : "/save.svg"
+                            }
+                        />
+                    )}
 
                     {extra ? "Note" : id === "board" ? "Noteboard" : "Notes"}
                 </span>

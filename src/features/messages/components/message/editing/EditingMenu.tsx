@@ -77,16 +77,20 @@ export const EditingMenu = ({ conversationData, data, hide }: Props) => {
                 }}
             >
                 <ul className="flex flex-col items-center gap-2 w-full *:w-full">
-                    <li className="flex items-center justify-center">
-                        <ImageSelectCircle
-                            value={image}
-                            onChange={(file) => {
-                                setImage(file ? URL.createObjectURL(file) : "");
-                                setChangedImage(file);
-                            }}
-                            className="w-screen max-w-48 aspect-square"
-                        />
-                    </li>
+                    {conversationData.type !== "dm" && (
+                        <li className="flex items-center justify-center">
+                            <ImageSelectCircle
+                                value={image}
+                                onChange={(file) => {
+                                    setImage(
+                                        file ? URL.createObjectURL(file) : "",
+                                    );
+                                    setChangedImage(file);
+                                }}
+                                className="w-screen max-w-48 aspect-square"
+                            />
+                        </li>
+                    )}
 
                     <li>
                         <hr />

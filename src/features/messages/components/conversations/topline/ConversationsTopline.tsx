@@ -29,19 +29,18 @@ export const ConversationsTopline = ({ data }: Props) => {
                 <li>
                     <Modal
                         direction="bottom-right"
-                        element={(hide) => <LeftMenu hide={hide} />}
+                        element={(hide) => (
+                            <LeftMenu
+                                hide={hide}
+                                data={data}
+                            />
+                        )}
                     >
                         <Tooltip
                             direction="top"
                             text="Open menu"
                         >
-                            <Button
-                                onClick={() => {
-                                    updateDisplay({
-                                        menus: { left: true },
-                                    });
-                                }}
-                            >
+                            <Button>
                                 <Image
                                     alt="menu"
                                     width={16}

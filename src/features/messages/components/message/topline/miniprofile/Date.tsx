@@ -43,7 +43,7 @@ export const Date = <T,>({ data }: Props<T>) => {
     }, [data]);
 
     return (
-        <ul className="box acrylic py-2! px-4! rounded-3xl!">
+        <ul className="box acrylic p-4! rounded-3xl!">
             {items.map((item) => (
                 <li key={item.image}>
                     <div className="grid grid-cols-[8rem_auto] gap-1">
