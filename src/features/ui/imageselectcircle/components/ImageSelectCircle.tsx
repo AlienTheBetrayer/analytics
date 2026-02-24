@@ -74,7 +74,8 @@ export const ImageSelectCircle = ({
             />
 
             <Button
-                className={`p-0! group  outline-2 hover:outline-blue-1! duration-400! not-hover:rounded-[6rem]! hover:rounded-[5rem]!
+                className={`p-0! group outline-2 hover:outline-blue-1! duration-400! 
+                    not-hover:rounded-[6rem]! hover:rounded-[5rem]! focus-visible:rounded-[5rem]!
                     ${className ?? ""}`}
                 onClick={() => {
                     inputRef.current?.click();

@@ -100,7 +100,7 @@ export const handleImage = async (options: {
         await deleteImage({
             user_id: options.user_id,
             url: options.existing_url,
-            folder: "conversation",
+            folder: options.folder,
         });
     }
 
@@ -121,6 +121,6 @@ export const handleImage = async (options: {
         base64: options.image_base64,
         name: options.image_name,
         type: options.image_type,
-        folder: "conversation",
+        folder: options.folder,
     });
 };

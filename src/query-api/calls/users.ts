@@ -1,3 +1,4 @@
+import { fileToBase64 } from "@/features/profile/utils/fileToBase64";
 import { notificationListeners } from "@/notifications/data/init";
 import { queryInvalidate } from "@/query/auxiliary";
 import { AuthenticationRole } from "@/types/auth/authentication";
@@ -54,20 +55,27 @@ export const updateUser = async (options: {
         colors?: { slot: number; color: string }[];
         color?: string;
         gender?: ProfileGender;
-        avatar_url?: string | null;
-        avatar_name?: string;
-        avatar_type?: string;
+        image?: File | null;
         role?: AuthenticationRole;
         password?: string;
         username?: string;
     };
 }) => {
+    const base64 = options.data.image
+        ? await fileToBase64(options.data.image)
+        : null;
+
     const res = await refreshedRequest({
         route: "/api/update/user",
         method: "POST",
         body: {
             user_id: options.id,
             ...options.data,
+            ...("image" in options.data && {
+                image: base64,
+                image_name: options.data.image?.name,
+                image_type: options.data.image?.type,
+            }),
         },
     });
 
@@ -78,7 +86,7 @@ export const updateUser = async (options: {
         options.data.role ||
         options.data.username ||
         options.data.color ||
-        "avatar_url" in options.data
+        "image" in options.data
     ) {
         queryInvalidate({ key: ["status"] });
     }

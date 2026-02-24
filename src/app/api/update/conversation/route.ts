@@ -151,7 +151,7 @@ export const POST = async (request: NextRequest) => {
                         existing_url: data.image_url,
                         image_name,
                         image_type,
-                        folder: "convesation",
+                        folder: "conversation",
                     });
                 }
 

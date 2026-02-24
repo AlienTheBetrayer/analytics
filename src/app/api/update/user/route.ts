@@ -1,14 +1,14 @@
 import type { NextRequest } from "next/server";
 import { tokenVerify } from "@/utils/auth/tokenVerify";
 import {
-    deleteAvatar,
     updateProfile,
     updateColors,
     updateUser,
     updateUserData,
 } from "@/utils/api/profile";
 import { nextResponse } from "@/utils/api/response";
-import { uploadImage } from "@/utils/api/upload";
+import { handleImage } from "@/utils/api/upload";
+import { supabaseServer } from "@/server/private/supabase";
 
 export const POST = async (request: NextRequest) => {
     try {
@@ -20,34 +20,29 @@ export const POST = async (request: NextRequest) => {
 
         tokenVerify({ request, id: [user_id] });
 
-        if ("avatar_url" in rest) {
-            if (rest.avatar_url === null) {
-                // delete
-                await deleteAvatar(user_id);
-            } else if (
-                typeof rest.avatar_url === "string" &&
-                rest.avatar_url.startsWith("data:image") &&
-                rest.avatar_name &&
-                rest.avatar_type
-            ) {
-                // update
-                await deleteAvatar(user_id);
+        if ("image" in rest) {
+            const { data, error } = await supabaseServer
+                .from("profiles")
+                .select("avatar_url")
+                .eq("user_id", user_id)
+                .single();
 
-                const url = await uploadImage({
-                    base64: rest.avatar_url,
-                    name: rest.avatar_name,
-                    type: rest.avatar_type,
-                    user_id,
-                    folder: "avatars",
-                });
-                delete rest.avatar_name;
-                delete rest.avatar_type;
-
-                rest.avatar_url = url;
-            } else {
-                // unknown avatar format
-                delete rest.avatar_url;
+            if (error) {
+                throw error;
             }
+
+            rest.avatar_url = await handleImage({
+                user_id,
+                image_base64: rest.image,
+                existing_url: data.avatar_url,
+                image_name: rest?.image_name,
+                image_type: rest?.image_type,
+                folder: "avatars",
+            });
+
+            delete rest.image;
+            delete rest.image_name;
+            delete rest.image_type;
         }
 
         if (rest.colors) {
