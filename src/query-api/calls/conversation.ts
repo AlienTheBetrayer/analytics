@@ -16,6 +16,11 @@ export const upsertConversation = async (
               pinned?: boolean;
               archived?: boolean;
           }
+        | {
+              type: "add_members";
+              conversation_id: string;
+              ids: string[];
+          }
     ) & {
         user: CacheAPIProtocol["status"]["data"];
         title?: string;
@@ -108,6 +113,20 @@ export const upsertConversation = async (
                     ...("archived" in options && {
                         archived: options.archived,
                     }),
+                },
+            });
+
+            return res;
+        }
+        case "add_members": {
+            const res = await refreshedRequest({
+                route: "/api/update/conversation",
+                method: "POST",
+                body: {
+                    user_id: options.user.id,
+                    conversation_id: options.conversation_id,
+                    type: options.type,
+                    ids: options.ids,
                 },
             });
 

@@ -1,5 +1,6 @@
 import { EditingMenu } from "@/features/messages/components/message/editing/EditingMenu";
 import { ConversationToplineInfo } from "@/features/messages/components/message/topline/ConversationToplineInfo";
+import { MiniSearch } from "@/features/minisearch/components/MiniSearch";
 import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
@@ -7,6 +8,7 @@ import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { PromiseState } from "@/promises/components/PromiseState";
 import { wrapPromise } from "@/promises/core";
+import { upsertConversation } from "@/query-api/calls/conversation";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { queryInvalidate } from "@/query/auxiliary";
 import { useQuery } from "@/query/core";
@@ -65,33 +67,87 @@ export const MessagesTopline = ({
                 <li className="ml-auto!">
                     <ul className="flex items-center gap-1">
                         {id !== "board" && data && conversationData && (
-                            <li>
-                                <Modal
-                                    direction="screen-middle"
-                                    blur
-                                    element={(hide) => (
-                                        <EditingMenu
-                                            hide={hide}
-                                            data={data}
-                                            conversationData={conversationData}
-                                        />
-                                    )}
-                                >
-                                    <Tooltip
-                                        direction="top"
-                                        text="Edit conversation"
-                                    >
-                                        <Button>
-                                            <Image
-                                                alt=""
-                                                width={16}
-                                                height={16}
-                                                src="/pencil.svg"
+                            <>
+                                <li>
+                                    <Modal
+                                        direction="screen-middle"
+                                        blur
+                                        element={() => (
+                                            <MiniSearch
+                                                required
+                                                text="Add"
+                                                type="friends"
+                                                view="select"
+                                                onSelect={(ids) => {
+                                                    if (!status) {
+                                                        return;
+                                                    }
+
+                                                    wrapPromise(
+                                                        "addMembers",
+                                                        () => {
+                                                            return upsertConversation(
+                                                                {
+                                                                    type: "add_members",
+                                                                    user: status,
+                                                                    conversation_id:
+                                                                        conversationData.id,
+                                                                    ids,
+                                                                },
+                                                            );
+                                                        },
+                                                    );
+                                                }}
+                                                promiseState="addMembers"
                                             />
-                                        </Button>
-                                    </Tooltip>
-                                </Modal>
-                            </li>
+                                        )}
+                                    >
+                                        <Tooltip
+                                            direction="top"
+                                            text="Add friends"
+                                        >
+                                            <Button>
+                                                <Image
+                                                    alt=""
+                                                    width={16}
+                                                    height={16}
+                                                    src="/cubeadd.svg"
+                                                />
+                                            </Button>
+                                        </Tooltip>
+                                    </Modal>
+                                </li>
+
+                                <li>
+                                    <Modal
+                                        direction="screen-middle"
+                                        blur
+                                        element={(hide) => (
+                                            <EditingMenu
+                                                hide={hide}
+                                                data={data}
+                                                conversationData={
+                                                    conversationData
+                                                }
+                                            />
+                                        )}
+                                    >
+                                        <Tooltip
+                                            direction="top"
+                                            text="Edit conversation"
+                                        >
+                                            <Button>
+                                                <Image
+                                                    alt=""
+                                                    width={16}
+                                                    height={16}
+                                                    src="/pencil.svg"
+                                                />
+                                            </Button>
+                                        </Tooltip>
+                                    </Modal>
+                                </li>
+                            </>
                         )}
 
                         <li>

@@ -21,6 +21,7 @@ export const POST = async (request: NextRequest) => {
             image,
             image_name,
             image_type,
+            ids,
         } = await request.json();
 
         if (!type || !user_id) {
@@ -225,6 +226,26 @@ export const POST = async (request: NextRequest) => {
                     if (error) {
                         throw error;
                     }
+                }
+
+                return nextResponse({ success: true }, 200);
+            }
+            case "add_members": {
+                if (!ids?.length || !conversation_id) {
+                    throw "ids and conversation_id are undefined";
+                }
+
+                const { error } = await supabaseServer
+                    .from("conversation_members")
+                    .insert(
+                        (ids as string[]).map((user_id) => ({
+                            conversation_id,
+                            user_id,
+                        })),
+                    );
+
+                if (error) {
+                    throw error;
                 }
 
                 return nextResponse({ success: true }, 200);
