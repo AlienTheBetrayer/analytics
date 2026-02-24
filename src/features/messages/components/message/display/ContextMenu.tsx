@@ -5,6 +5,7 @@ import { wrapPromise } from "@/promises/core";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import Image from "next/image";
 import { deleteMessage } from "@/query-api/calls/messages";
+import { useQuery } from "@/query/core";
 
 type Props = {
     hide?: () => void;
@@ -13,6 +14,10 @@ type Props = {
 };
 
 export const ContextMenu = ({ hide, data, onEdit }: Props) => {
+    const { data: status } = useQuery({ key: ["status"] });
+
+    const isOurs = data.user_id === status?.id;
+
     return (
         <ul className="box acrylic p-4! rounded-2xl! gap-1! **:border-0! w-screen max-w-64 message-ctx">
             <li className="flex items-center gap-1 mb-6! self-center">
@@ -39,22 +44,24 @@ export const ContextMenu = ({ hide, data, onEdit }: Props) => {
                         </Button>
                     </li>
 
-                    <li>
-                        <Button
-                            onClick={() => {
-                                hide?.();
-                                onEdit?.();
-                            }}
-                        >
-                            <Image
-                                alt=""
-                                width={16}
-                                height={16}
-                                src="/pencil.svg"
-                            />
-                            <span>Edit</span>
-                        </Button>
-                    </li>
+                    {isOurs && (
+                        <li>
+                            <Button
+                                onClick={() => {
+                                    hide?.();
+                                    onEdit?.();
+                                }}
+                            >
+                                <Image
+                                    alt=""
+                                    width={16}
+                                    height={16}
+                                    src="/pencil.svg"
+                                />
+                                <span>Edit</span>
+                            </Button>
+                        </li>
+                    )}
 
                     <li>
                         <Button>
@@ -120,23 +127,25 @@ export const ContextMenu = ({ hide, data, onEdit }: Props) => {
                 </>
             )}
 
-            <li>
-                <Button
-                    onClick={() => {
-                        deleteMessage({ message: data });
-                    }}
-                >
-                    <Image
-                        alt=""
-                        width={16}
-                        height={16}
-                        src="/delete.svg"
-                    />
-                    <span>
-                        <u>Delete</u>
-                    </span>
-                </Button>
-            </li>
+            {isOurs && (
+                <li>
+                    <Button
+                        onClick={() => {
+                            deleteMessage({ message: data });
+                        }}
+                    >
+                        <Image
+                            alt=""
+                            width={16}
+                            height={16}
+                            src="/delete.svg"
+                        />
+                        <span>
+                            <u>Delete</u>
+                        </span>
+                    </Button>
+                </li>
+            )}
         </ul>
     );
 };

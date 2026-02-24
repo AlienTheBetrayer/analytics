@@ -147,6 +147,7 @@ export const MessageView = ({ retrieved }: Props) => {
                     {sorted.map((message) => (
                         <li key={message.id}>
                             <MessageDisplay
+                                conversationData={conversation}
                                 data={message}
                                 onEdit={() => {
                                     setEditingMessage(message);
