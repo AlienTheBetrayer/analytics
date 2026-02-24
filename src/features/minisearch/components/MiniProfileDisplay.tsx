@@ -37,7 +37,7 @@ export const MiniProfileDisplay = ({ data, ...props }: Props) => {
                     className="w-6! h-6!"
                 />
                 <span className="truncate">{data.username}</span>
-                <span className="ml-auto! flex items-center gap-1">
+                <span className="ml-auto! flex items-center gap-1 shrink-0">
                     <small>
                         <Image
                             alt=""
