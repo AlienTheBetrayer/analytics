@@ -1,6 +1,9 @@
 import { supabaseServer } from "@/server/private/supabase";
+import { Conversation } from "@/types/tables/messages";
 import { nextResponse } from "@/utils/api/response";
+import { deleteImage } from "@/utils/api/upload";
 import { tokenVerify } from "@/utils/auth/tokenVerify";
+import { PostgrestError } from "@supabase/supabase-js";
 import { NextRequest } from "next/server";
 
 export const POST = async (request: NextRequest) => {
@@ -47,13 +50,26 @@ export const POST = async (request: NextRequest) => {
                 return nextResponse({ success: true }, 200);
             }
             case "delete-all": {
-                const { error } = await supabaseServer
+                const { data, error } = (await supabaseServer
                     .from("conversations")
                     .delete()
-                    .eq("id", conversation_id);
+                    .eq("id", conversation_id)
+                    .select()
+                    .single()) as {
+                    data: Conversation;
+                    error: PostgrestError | null;
+                };
 
                 if (error) {
                     throw error;
+                }
+
+                if (data.image_url) {
+                    await deleteImage({
+                        user_id,
+                        folder: "conversation",
+                        url: data.image_url,
+                    });
                 }
 
                 return nextResponse({ success: true }, 200);

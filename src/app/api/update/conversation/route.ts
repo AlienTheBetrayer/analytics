@@ -92,6 +92,27 @@ export const POST = async (request: NextRequest) => {
                     throw error;
                 }
 
+                // image
+                if (image) {
+                    const url = await handleImage({
+                        user_id,
+                        image_base64: image,
+                        existing_url: data.image_url,
+                        image_name,
+                        image_type,
+                        folder: "conversation",
+                    });
+
+                    const { error } = await supabaseServer
+                        .from("conversations")
+                        .update({ image_url: url })
+                        .eq("id", data.id);
+
+                    if (error) {
+                        throw error;
+                    }
+                }
+
                 // members
                 {
                     const { error } = await supabaseServer
@@ -133,7 +154,6 @@ export const POST = async (request: NextRequest) => {
 
                 // image
                 let url: string | undefined | null = undefined;
-
                 if (image || image === null) {
                     const { data, error } = await supabaseServer
                         .from("conversations")

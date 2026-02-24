@@ -14,7 +14,7 @@ export const useCreateConversation = () => {
                       ids: string[];
                   }
                 | { type: "notes" }
-            ) & { title?: string; description?: string },
+            ) & { title?: string; description?: string; image?: File },
         ) => {
             if (!status) {
                 return;
@@ -30,6 +30,7 @@ export const useCreateConversation = () => {
                             ...(options.description && {
                                 description: options.description,
                             }),
+                            ...(options.image && { image: options.image }),
                             user: status,
                             member_ids: [],
                         });
@@ -47,6 +48,7 @@ export const useCreateConversation = () => {
                             conversation_type: "group",
                             user: status,
                             member_ids: options.ids,
+                            ...(options.image && { image: options.image }),
                             ...(options.title && { title: options.title }),
                             ...(options.description && {
                                 description: options.description,

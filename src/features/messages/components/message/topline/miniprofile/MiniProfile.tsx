@@ -85,7 +85,7 @@ export const MiniProfileView = (props: MiniProfileProps) => {
                                     width={24}
                                     height={24}
                                     src={props.data.image_url}
-                                    className="rounded-full! invert-0!"
+                            className="invert-0! rounded-full w-6! h-6!"
                                 />
                             ) : (
                                 <Image
@@ -109,7 +109,7 @@ export const MiniProfileView = (props: MiniProfileProps) => {
                                     width={24}
                                     height={24}
                                     src={props.data.image_url}
-                                    className="rounded-full! invert-0!"
+                            className="invert-0! rounded-full w-6! h-6!"
                                 />
                             ) : (
                                 <Image
@@ -135,7 +135,7 @@ export const MiniProfileView = (props: MiniProfileProps) => {
                             width={24}
                             height={24}
                             src={props.data.image_url}
-                            className="invert-0! rounded-full"
+                            className="invert-0! rounded-full w-6! h-6!"
                         />
                     ) : (
                         <Image

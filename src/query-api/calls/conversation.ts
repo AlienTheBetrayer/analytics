@@ -9,20 +9,22 @@ export const upsertConversation = async (
               type: "create";
               conversation_type: string;
               member_ids: string[];
-              title?: string;
-              description?: string;
           }
         | {
               type: "edit";
               conversation_id: string;
               pinned?: boolean;
               archived?: boolean;
-              image?: File | null;
-              title?: string;
-              description?: string;
           }
-    ) & { user: CacheAPIProtocol["status"]["data"] },
+    ) & {
+        user: CacheAPIProtocol["status"]["data"];
+        title?: string;
+        description?: string;
+        image?: File | null;
+    },
 ) => {
+    const base64 = options.image ? await fileToBase64(options.image) : null;
+
     switch (options.type) {
         case "create": {
             const res = await refreshedRequest({
@@ -35,6 +37,11 @@ export const upsertConversation = async (
                     ...("description" in options && {
                         description: options.description,
                     }),
+                    ...("image" in options && {
+                        image: base64,
+                        image_name: options.image?.name,
+                        image_type: options.image?.type,
+                    }),
                     member_ids: options.member_ids.join(","),
                     conversation_type: options.conversation_type,
                 },
@@ -45,10 +52,6 @@ export const upsertConversation = async (
             return res;
         }
         case "edit": {
-            const base64 = options.image
-                ? await fileToBase64(options.image)
-                : null;
-
             queryMutate({
                 key: ["conversations", options.user.id],
                 value: (state) =>

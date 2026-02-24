@@ -1,6 +1,7 @@
 import { useCreateConversation } from "@/features/messages/hooks/useCreateConversation";
 import { MiniSearch } from "@/features/minisearch/components/MiniSearch";
 import { Button } from "@/features/ui/button/components/Button";
+import { ImageSelectCircle } from "@/features/ui/imageselectcircle/components/ImageSelectCircle";
 import { Input } from "@/features/ui/input/components/Input";
 import { Conversation } from "@/types/tables/messages";
 import { motion } from "motion/react";
@@ -16,6 +17,7 @@ export const CreateType = ({ type, category }: Props) => {
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
     const [selected, setSelected] = useState<Props["type"]>(type);
+    const [image, setImage] = useState<File | undefined>(undefined);
     const [validity, setValidity] = useState<boolean>(false);
 
     const { create } = useCreateConversation();
@@ -51,6 +53,20 @@ export const CreateType = ({ type, category }: Props) => {
                             }}
                         >
                             <ul className="flex flex-col gap-2">
+                                <li className="flex items-center justify-center">
+                                    <ImageSelectCircle
+                                        value={
+                                            image
+                                                ? URL.createObjectURL(image)
+                                                : ""
+                                        }
+                                        onChange={(file) => {
+                                            setImage(file ?? undefined);
+                                        }}
+                                        className="w-screen max-w-32 aspect-square"
+                                    />
+                                </li>
+
                                 <li className="w-full">
                                     <Input
                                         required
@@ -107,6 +123,7 @@ export const CreateType = ({ type, category }: Props) => {
                                         ids,
                                         title,
                                         description,
+                                        image,
                                     });
                                 }}
                                 promiseState="createConversation"
@@ -127,6 +144,7 @@ export const CreateType = ({ type, category }: Props) => {
                                         ids,
                                         title,
                                         description,
+                                        image,
                                     })
                                 }
                                 promiseState="createConversation"

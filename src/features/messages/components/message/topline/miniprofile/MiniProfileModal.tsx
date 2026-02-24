@@ -65,7 +65,7 @@ export const MiniProfileModal = (props: MiniProfileProps) => {
                                                     profile={user?.profile}
                                                     width={256}
                                                     height={256}
-                                                    className="w-24! h-24!"
+                                                    className="w-32! h-32!"
                                                 />
                                             </LinkButton>
                                         </div>
@@ -118,7 +118,7 @@ export const MiniProfileModal = (props: MiniProfileProps) => {
                                             </span>
                                         </span>
 
-                                        <div className="rounded-full! overflow-hidden w-24 aspect-square relative loading">
+                                        <div className="rounded-full! overflow-hidden w-32 aspect-square relative loading">
                                             {props.data.image_url ? (
                                                 <Image
                                                     alt=""
@@ -294,7 +294,7 @@ export const MiniProfileModal = (props: MiniProfileProps) => {
                             profile={props.data.user?.profile}
                             width={256}
                             height={256}
-                            className="w-24! h-24!"
+                            className="w-32! h-32!"
                         />
                     </LinkButton>
 
