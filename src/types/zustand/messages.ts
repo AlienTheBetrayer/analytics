@@ -15,6 +15,7 @@ export type Display = {
         filter: string;
         reversed: boolean;
     };
+    maximized: boolean;
 };
 
 export type MessagesStore = {

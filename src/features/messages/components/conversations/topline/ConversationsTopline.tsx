@@ -1,5 +1,4 @@
 import { CreateConversation } from "@/features/messages/components/conversations/create/CreateConversation";
-import { LeftMenu } from "@/features/messages/components/conversations/leftmenu/LeftMenu";
 import { Title } from "@/features/messages/components/conversations/topline/Title";
 import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
@@ -26,32 +25,6 @@ export const ConversationsTopline = ({ data }: Props) => {
     return (
         <div className="flex flex-col gap-2">
             <ul className="box h-10! gap-1! p-0! items-center! flex-row!">
-                <li>
-                    <Modal
-                        direction="bottom-right"
-                        element={(hide) => (
-                            <LeftMenu
-                                hide={hide}
-                                data={data}
-                            />
-                        )}
-                    >
-                        <Tooltip
-                            direction="top"
-                            text="Open menu"
-                        >
-                            <Button>
-                                <Image
-                                    alt="menu"
-                                    width={16}
-                                    height={16}
-                                    src="/description.svg"
-                                />
-                            </Button>
-                        </Tooltip>
-                    </Modal>
-                </li>
-
                 <li className="flex items-center justify-center absolute left-1/2 top-1/2 -translate-1/2">
                     <Title data={data} />
                 </li>

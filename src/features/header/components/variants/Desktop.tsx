@@ -136,10 +136,7 @@ export const Desktop = ({ className }: Props) => {
                                             alt="posts"
                                         />
                                         <TabSelection
-                                            condition={
-                                                page === "posts" ||
-                                                page === "post"
-                                            }
+                                            condition={page === "profile"}
                                         />
                                     </LinkButton>
                                 </Tooltip>

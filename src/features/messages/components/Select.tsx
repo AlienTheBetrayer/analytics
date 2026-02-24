@@ -4,6 +4,7 @@ import { useQuery } from "@/query/core";
 import { Conversations } from "@/features/messages/components/conversations/Conversations";
 import { useAppStore } from "@/zustand/store";
 import { useEffect, useMemo } from "react";
+import { AdditionalTopline } from "@/features/messages/components/topline/AdditionalTopline";
 
 export type MessagesSelectResult =
     | "url"
@@ -86,13 +87,17 @@ export const Select = () => {
     }, [retrieved, updateSelectedConversation]);
 
     return (
-        <div className="w-full flex lg:grid lg:grid-cols-[40%_1fr] xl:grid-cols-[30%_1fr] grow gap-4 relative">
-            <Conversations />
+        <div className="flex flex-col gap-4 grow">
+            <AdditionalTopline />
 
-            <div
-                className={`flex flex-col overflow-hidden grow bg-bg-1 ${tab ? "absolute lg:relative inset-0 z-2" : "relative hidden lg:flex"}`}
-            >
-                <MessageView retrieved={retrieved} />
+            <div className="w-full flex lg:grid lg:grid-cols-[40%_1fr] xl:grid-cols-[30%_1fr] grow gap-4 relative">
+                <Conversations />
+
+                <div
+                    className={`flex flex-col overflow-hidden grow bg-bg-1 ${tab ? "absolute lg:relative inset-0 z-2" : "relative hidden lg:flex"}`}
+                >
+                    <MessageView retrieved={retrieved} />
+                </div>
             </div>
         </div>
     );

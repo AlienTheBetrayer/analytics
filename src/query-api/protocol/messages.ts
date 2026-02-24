@@ -7,7 +7,6 @@ import {
     ConversationMeta,
 } from "@/types/tables/messages";
 import { refreshedRequest } from "@/utils/auth/refreshedRequest";
-import axios from "axios";
 
 /**
  * state
@@ -55,8 +54,12 @@ export const CacheAPIFunctionsMessages: CacheAPIFunctions<CacheAPIProtocolMessag
             }
 
             return (
-                await axios.get("/api/get/messages", {
-                    params: { conversation_id: args[0] },
+                await refreshedRequest({
+                    route: "/api/get/messages",
+                    method: "GET",
+                    config: {
+                        params: { conversation_id: args[0] },
+                    },
                 })
             ).data.messages;
         },

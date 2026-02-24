@@ -18,6 +18,7 @@ export const MessagesSlice: SliceFunction<MessagesStore> = (set) => {
                 filter: "",
                 reversed: false,
             },
+            maximized: false,
         },
         selectDisplay: "notselected",
         selectedConversation: null,
