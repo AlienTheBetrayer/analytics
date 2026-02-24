@@ -6,11 +6,11 @@ export const useTime = () => {
 
     useEffect(() => {
         const handle = () => {
-            setTime(format(new Date(), "hh:mm:ss a"));
+            setTime(format(new Date(), "hh:mm a"));
         };
         handle();
 
-        const interval = setInterval(handle, 1000);
+        const interval = setInterval(handle, 20000);
         return () => clearInterval(interval);
     }, []);
 
