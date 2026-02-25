@@ -1,5 +1,5 @@
 import { MessageInputProps } from "@/features/messages/components/message/input/MessageInput";
-import { deleteMessage, upsertMessage } from "@/query-api/calls/messages";
+import { upsertMessage } from "@/query-api/calls/messages";
 import { useQuery } from "@/query/core";
 import { useLocalStore } from "@/zustand/localStore";
 import { redirect, useParams } from "next/navigation";
@@ -19,7 +19,8 @@ export const useMessageInput = ({
     onCancel,
     type,
     actionMessage,
-}: MessageInputProps) => {
+    onDelete,
+}: MessageInputProps & { onDelete: () => void }) => {
     const { data: status } = useQuery({ key: ["status"] });
     const { tab } = useParams<{ tab?: string }>();
 
@@ -56,11 +57,18 @@ export const useMessageInput = ({
     }, []);
 
     useEffect(() => {
-        if (type !== "edit") {
+        if (type !== "edit" && type !== "reply") {
             return;
         }
 
         inputRef.current?.focus();
+    }, [type]);
+
+    useEffect(() => {
+        if (type !== "edit") {
+            return;
+        }
+
         requestAnimationFrame(() => {
             if (!actionMessage) {
                 return;
@@ -78,10 +86,10 @@ export const useMessageInput = ({
 
         const cid = data?.[0]?.conversation_id ?? retrieved?.conversation_id;
 
+        // clearing
         if (currentId) {
             setMessages(currentId, "");
         }
-        onCancel();
         setEdit("");
         setTemp("");
 
@@ -92,7 +100,7 @@ export const useMessageInput = ({
                 }
 
                 if (edit === "") {
-                    deleteMessage({ message: actionMessage });
+                    onDelete();
                 } else {
                     upsertMessage({
                         type: "edit",
@@ -100,10 +108,13 @@ export const useMessageInput = ({
                         content: edit,
                         user: status,
                     });
+                    onCancel();
                 }
                 break;
             }
             case "send": {
+                onCancel();
+
                 if (cid) {
                     if (!currentMessage) {
                         return;
@@ -141,6 +152,8 @@ export const useMessageInput = ({
                 break;
             }
             case "reply": {
+                onCancel();
+
                 if (!currentId || !cid || !currentMessage) {
                     break;
                 }
@@ -158,6 +171,7 @@ export const useMessageInput = ({
     }, [
         setMessages,
         onCancel,
+        onDelete,
         status,
         tab,
         edit,

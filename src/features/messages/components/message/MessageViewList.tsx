@@ -115,7 +115,7 @@ export const MessageViewList = ({
 
             <MessageInput
                 onCancel={() => {
-                    setActionMessage(undefined);
+                    // setActionMessage(undefined);
                     setActionType("send");
                 }}
                 data={data}
