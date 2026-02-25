@@ -1,9 +1,3 @@
-import { NoMessages } from "@/features/messages/components/errors/NoMessages";
-import { MessageDisplay } from "@/features/messages/components/message/display/MessageDisplay";
-import {
-    MessageInput,
-    MessageInputProps,
-} from "@/features/messages/components/message/input/MessageInput";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { useQuery } from "@/query/core";
 import { MessagesTopline } from "@/features/messages/components/message/topline/MessagesTopline";
@@ -11,10 +5,9 @@ import { useAppStore } from "@/zustand/store";
 import { NoteBoard } from "@/features/messages/components/noteboard/NoteBoard";
 import { WrongURL } from "@/features/messages/components/errors/WrongURL";
 import { NotSelected } from "@/features/messages/components/errors/NotSelected";
-import { sortMessages } from "@/features/messages/utils/sort";
-import { FilterNothing } from "@/features/messages/components/errors/FilterNothing";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { LoadingMessages } from "@/features/messages/components/errors/LoadingMessages";
+import { MessageViewList } from "@/features/messages/components/message/MessageViewList";
 
 type Props = {
     retrieved?: CacheAPIProtocol["conversation_retrieve"]["data"];
@@ -22,7 +15,6 @@ type Props = {
 export const MessageView = ({ retrieved }: Props) => {
     const selectDisplay = useAppStore((state) => state.selectDisplay);
     const updateDisplay = useAppStore((state) => state.updateDisplay);
-    const display = useAppStore((state) => state.display.messages);
 
     // fetching
     const { data: status } = useQuery({ key: ["status"] });
@@ -47,26 +39,6 @@ export const MessageView = ({ retrieved }: Props) => {
             },
         });
     }, [conversation?.conversation_meta?.archived, updateDisplay]);
-
-    // sorting
-    const sorted = useMemo(() => {
-        if (!data?.length) {
-            return [];
-        }
-
-        return sortMessages({
-            messages: data,
-            filter: display.filter,
-            reversed: display.reversed,
-        });
-    }, [data, display]);
-
-    // editing + auto-focusing
-    const [actionType, setActionType] =
-        useState<MessageInputProps["type"]>("send");
-    const [actionMessage, setActionMessage] = useState<
-        CacheAPIProtocol["messages"]["data"][number] | undefined
-    >(undefined);
 
     // fallbacks
     const code = (() => {
@@ -129,59 +101,12 @@ export const MessageView = ({ retrieved }: Props) => {
         );
     }
 
-    // main jsx
+    // MAIN jsx
     return (
-        <article className="flex flex-col bg-bg-2! grow p-4! gap-2 rounded-4xl">
-            <MessagesTopline
-                conversationData={conversation}
-                data={data}
-                retrieved={retrieved}
-            />
-
-            {!data?.length ? (
-                <div className="flex items-center justify-center grow">
-                    <NoMessages />
-                </div>
-            ) : !sorted.length ? (
-                <div className="flex items-center justify-center grow">
-                    <FilterNothing type="messages" />
-                </div>
-            ) : (
-                <ul
-                    className="flex flex-col-reverse gap-0.5 grow relative h-100 scheme-dark overflow-y-auto pt-24!"
-                    style={{
-                        scrollbarWidth: "thin",
-                    }}
-                >
-                    {sorted.map((message) => (
-                        <li key={message.id}>
-                            <MessageDisplay
-                                conversationData={conversation}
-                                data={message}
-                                onEdit={() => {
-                                    setActionType("edit");
-                                    setActionMessage(message);
-                                }}
-                                onReply={() => {
-                                    setActionType("reply");
-                                    setActionMessage(message);
-                                }}
-                            />
-                        </li>
-                    ))}
-                </ul>
-            )}
-
-            <MessageInput
-                onCancel={() => {
-                    setActionMessage(undefined);
-                    setActionType("send");
-                }}
-                data={data}
-                retrieved={retrieved}
-                type={actionType}
-                actionMessage={actionMessage}
-            />
-        </article>
+        <MessageViewList
+            conversationData={conversation}
+            data={data}
+            retrieved={retrieved}
+        />
     );
 };

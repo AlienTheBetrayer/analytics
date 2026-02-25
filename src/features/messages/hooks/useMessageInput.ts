@@ -78,11 +78,15 @@ export const useMessageInput = ({
 
         const cid = data?.[0]?.conversation_id ?? retrieved?.conversation_id;
 
+        if (currentId) {
+            setMessages(currentId, "");
+        }
+        onCancel();
+        setEdit("");
+        setTemp("");
+
         switch (type) {
             case "edit": {
-                onCancel();
-                setEdit("");
-
                 if (!cid || !actionMessage) {
                     return;
                 }
@@ -113,7 +117,6 @@ export const useMessageInput = ({
                         user: status,
                     });
                 } else {
-                    setTemp("");
                     const to_id =
                         tab === "notes" ? "notes" : retrieved?.user?.id;
 
@@ -135,9 +138,6 @@ export const useMessageInput = ({
                     });
                 }
 
-                if (currentId) {
-                    setMessages(currentId, "");
-                }
                 break;
             }
             case "reply": {
@@ -152,7 +152,6 @@ export const useMessageInput = ({
                     reply: actionMessage,
                     user: status,
                 });
-                setMessages(currentId, "");
                 break;
             }
         }

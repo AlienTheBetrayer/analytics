@@ -1,18 +1,24 @@
 import { ProfileImage } from "@/features/profile/components/ProfileImage";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { useQuery } from "@/query/core";
+import { Conversation } from "@/types/tables/messages";
 import Image from "next/image";
 
 type Props = {
-    data: CacheAPIProtocol["conversations"]["data"][number];
+    type?: Conversation["type"];
+    data?: CacheAPIProtocol["conversations"]["data"][number];
+    className?: string;
 };
 
-export const Avatar = ({ data }: Props) => {
+export const Avatar = ({ type, data, className }: Props) => {
     const { data: status } = useQuery({ key: ["status"] });
 
     return (
-        <div className="relative shrink-0 overflow-hidden rounded-full transition-all duration-300 w-12 h-12 loading aspect-square flex items-center justify-center">
-            {data.image_url ? (
+        <div
+            className={`relative shrink-0 overflow-hidden rounded-full transition-all duration-300 w-12 h-12 loading aspect-square flex items-center justify-center
+            ${className ?? ""}`}
+        >
+            {data?.image_url ? (
                 <Image
                     alt=""
                     fill
@@ -22,9 +28,9 @@ export const Avatar = ({ data }: Props) => {
                 />
             ) : (
                 (() => {
-                    switch (data.type) {
+                    switch (type || data?.type) {
                         case "dm": {
-                            const otherUser = data.conversation_members.find(
+                            const otherUser = data?.conversation_members.find(
                                 (m) => m.user_id !== status?.id,
                             )?.user;
 
@@ -33,7 +39,7 @@ export const Avatar = ({ data }: Props) => {
                                     profile={otherUser?.profile}
                                     width={256}
                                     height={256}
-                                    className="w-12! h-12!"
+                                    className="w-full! h-full!"
                                 />
                             );
                         }
@@ -59,12 +65,15 @@ export const Avatar = ({ data }: Props) => {
                         }
                         case "notes": {
                             return (
-                                <Image
-                                    alt=""
-                                    width={16}
-                                    height={16}
-                                    src="/save.svg"
-                                />
+                                <div className="bg-linear-to-tr from-[#5161d5] to-[#101857] w-full h-full rounded-full flex items-center justify-center">
+                                    <Image
+                                        alt="notes"
+                                        src="/save.svg"
+                                        width={24}
+                                        height={24}
+                                        className="w-1/2! h-1/2! invert-90!"
+                                    />
+                                </div>
                             );
                         }
                     }

@@ -12,7 +12,7 @@ export type MessageInputProps = {
     data: CacheAPIProtocol["messages"]["data"] | null;
     ref?: React.Ref<HTMLInputElement | null>;
     actionMessage?: CacheAPIProtocol["messages"]["data"][number];
-    type: "send" | "edit" | "reply";
+    type: "send" | "edit" | "reply" | "forward";
     onCancel: () => void;
 };
 export const MessageInput = ({

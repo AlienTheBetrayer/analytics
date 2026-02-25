@@ -4,10 +4,11 @@ import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 
 type Props = {
-    type: "conversations" | "notes" | "messages";
+    type?: "conversations" | "notes" | "messages";
+    onClear?: () => void;
 };
 
-export const FilterNothing = ({ type }: Props) => {
+export const FilterNothing = ({ type, onClear }: Props) => {
     const updateDisplay = useAppStore((state) => state.updateDisplay);
 
     return (
@@ -21,7 +22,13 @@ export const FilterNothing = ({ type }: Props) => {
         >
             <Button
                 className="w-full not-hover:bg-bg-1!"
-                onClick={() => updateDisplay({ [type]: { filter: "" } })}
+                onClick={() => {
+                    if (type) {
+                        updateDisplay({ [type]: { filter: "" } });
+                    } else if (onClear) {
+                        onClear();
+                    }
+                }}
             >
                 <Image
                     alt=""

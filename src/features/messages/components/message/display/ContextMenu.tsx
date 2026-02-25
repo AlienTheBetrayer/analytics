@@ -6,15 +6,17 @@ import { CacheAPIProtocol } from "@/query-api/protocol";
 import Image from "next/image";
 import { deleteMessage } from "@/query-api/calls/messages";
 import { useQuery } from "@/query/core";
+import { Modal } from "@/features/ui/popovers/components/modal/Modal";
+import { Forwarding } from "@/features/messages/components/message/display/Forwarding";
+import { MessageDisplayProps } from "@/features/messages/components/message/display/MessageDisplay";
 
 type Props = {
     hide?: () => void;
-    onEdit?: () => void;
-    onReply?: () => void;
+    onAction?: MessageDisplayProps["onAction"];
     data: CacheAPIProtocol["messages"]["data"][number];
 };
 
-export const ContextMenu = ({ hide, data, onEdit, onReply }: Props) => {
+export const ContextMenu = ({ data, hide, onAction }: Props) => {
     const { data: status } = useQuery({ key: ["status"] });
 
     const isOurs = data.user_id === status?.id;
@@ -36,8 +38,8 @@ export const ContextMenu = ({ hide, data, onEdit, onReply }: Props) => {
                     <li>
                         <Button
                             onClick={() => {
+                                onAction?.("reply");
                                 hide?.();
-                                onReply?.();
                             }}
                         >
                             <Image
@@ -54,8 +56,8 @@ export const ContextMenu = ({ hide, data, onEdit, onReply }: Props) => {
                         <li>
                             <Button
                                 onClick={() => {
+                                    onAction?.("edit");
                                     hide?.();
-                                    onEdit?.();
                                 }}
                             >
                                 <Image
@@ -107,16 +109,31 @@ export const ContextMenu = ({ hide, data, onEdit, onReply }: Props) => {
             {data.type !== "system" && (
                 <>
                     <li>
-                        <Button>
-                            <Image
-                                alt=""
-                                width={16}
-                                height={16}
-                                src="/back.svg"
-                                className="-scale-x-100"
-                            />
-                            <span>Forward</span>
-                        </Button>
+                        <Modal
+                            blur
+                            direction="screen-middle"
+                            className="w-full"
+                            element={(hide2) => (
+                                <Forwarding
+                                    onAction={(conversation) => {
+                                        onAction?.("forward", { conversation });
+                                        hide?.();
+                                        hide2();
+                                    }}
+                                />
+                            )}
+                        >
+                            <Button>
+                                <Image
+                                    alt=""
+                                    width={16}
+                                    height={16}
+                                    src="/back.svg"
+                                    className="-scale-x-100"
+                                />
+                                <span>Forward</span>
+                            </Button>
+                        </Modal>
                     </li>
 
                     <li>

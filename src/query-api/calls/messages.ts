@@ -14,6 +14,7 @@ export const upsertMessage = async (
               message: string;
               message_type?: Message["type"];
               reply?: CacheAPIProtocol["messages"]["data"][number];
+              forward?: CacheAPIProtocol["messages"]["data"][number];
           }
         | {
               type: "edit";
@@ -101,6 +102,9 @@ export const upsertMessage = async (
                         ...(options.reply && {
                             reply: options.reply,
                         }),
+                        ...(options.forward && {
+                            forward: options.forward,
+                        }),
                     },
                 ],
             });
@@ -113,7 +117,11 @@ export const upsertMessage = async (
                     from_id: options.user.id,
                     conversation_id: options.conversation_id,
                     message: options.message,
+                    ...(options.message_type && {
+                        message_type: options.message_type,
+                    }),
                     ...(options.reply && { reply: options.reply }),
+                    ...(options.forward && { forward: options.forward }),
                 },
             });
 
@@ -137,6 +145,9 @@ export const upsertMessage = async (
                                   type: msg.type,
                                   ...(options.reply && {
                                       reply: options.reply,
+                                  }),
+                                  ...(options.forward && {
+                                      forward: options.forward,
                                   }),
                               }
                             : m,

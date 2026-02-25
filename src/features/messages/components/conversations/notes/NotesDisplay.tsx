@@ -1,10 +1,10 @@
+import { Avatar } from "@/features/messages/components/conversations/display/parts/Avatar";
 import { BottomButtons } from "@/features/messages/components/conversations/display/parts/BottomButtons";
 import { LastMessage } from "@/features/messages/components/conversations/display/parts/LastMessage";
 import { LastMessageDate } from "@/features/messages/components/conversations/display/parts/LastMessageDate";
 import { Pinned } from "@/features/messages/components/conversations/display/parts/Pinned";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { CacheAPIProtocol } from "@/query-api/protocol";
-import Image from "next/image";
 import { useParams } from "next/navigation";
 
 type Props = {
@@ -28,28 +28,10 @@ export const NotesDisplay = ({ data }: Props) => {
                           : "/messages/notes/"
                 }
             >
-                <div
-                    className="relative rounded-full overflow-hidden w-12 h-12 flex items-center justify-center bg-bg-3 shrink-0 
-                    bg-linear-to-tr from-[#5161d5] to-[#101857]"
-                >
-                    {data?.image_url ? (
-                        <Image
-                            alt=""
-                            fill
-                            style={{ objectFit: "cover" }}
-                            src={data.image_url}
-                            className="invert-0!"
-                        />
-                    ) : (
-                        <Image
-                            alt="notes"
-                            src="/save.svg"
-                            width={24}
-                            height={24}
-                            className="w-6! h-6! invert-90!"
-                        />
-                    )}
-                </div>
+                <Avatar
+                    type="notes"
+                    data={data}
+                />
 
                 <div className="flex flex-col gap-1 w-full overflow-hidden">
                     <div className="grid grid-cols-[auto_25%]">

@@ -11,8 +11,10 @@ export const POST = async (request: NextRequest) => {
             from_id,
             to_id,
             message,
+            message_type,
             conversation_id,
             message_id,
+            forward,
             reply,
         } = await request.json();
 
@@ -104,6 +106,9 @@ export const POST = async (request: NextRequest) => {
                 const replyMessage = reply as
                     | CacheAPIProtocol["messages"]["data"][number]
                     | undefined;
+                const forwardMessage = forward as
+                    | CacheAPIProtocol["messages"]["data"][number]
+                    | undefined;
 
                 const { data, error } = await supabaseServer
                     .from("messages")
@@ -111,10 +116,14 @@ export const POST = async (request: NextRequest) => {
                         user_id: from_id,
                         conversation_id: cid,
                         message,
-                        type: "message",
+                        type: message_type || "message",
                         ...(replyMessage && {
                             type: "reply",
                             reply_id: replyMessage.id,
+                        }),
+                        ...(forwardMessage && {
+                            type: "forward",
+                            forward_id: forwardMessage.id,
                         }),
                     })
                     .select("*, conversation:conversations(*)")
