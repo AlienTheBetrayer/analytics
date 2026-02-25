@@ -1,3 +1,4 @@
+import { CacheAPIProtocol } from "@/query-api/protocol";
 import { supabaseServer } from "@/server/private/supabase";
 import { nextResponse } from "@/utils/api/response";
 import { tokenVerify } from "@/utils/auth/tokenVerify";
@@ -5,8 +6,15 @@ import { NextRequest } from "next/server";
 
 export const POST = async (request: NextRequest) => {
     try {
-        const { type, from_id, to_id, message, conversation_id, message_id } =
-            await request.json();
+        const {
+            type,
+            from_id,
+            to_id,
+            message,
+            conversation_id,
+            message_id,
+            reply,
+        } = await request.json();
 
         if (!type || !from_id) {
             throw "type and from_id are undefined";
@@ -78,6 +86,10 @@ export const POST = async (request: NextRequest) => {
                     }
                 }
 
+                const replyMessage = reply as
+                    | CacheAPIProtocol["messages"]["data"][number]
+                    | undefined;
+
                 const { data, error } = await supabaseServer
                     .from("messages")
                     .insert({
@@ -85,6 +97,10 @@ export const POST = async (request: NextRequest) => {
                         conversation_id: cid,
                         message,
                         type: "message",
+                        ...(replyMessage && {
+                            type: "reply",
+                            reply_id: replyMessage.id,
+                        }),
                     })
                     .select("*, conversation:conversations(*)")
                     .single();

@@ -13,14 +13,15 @@ type Props = {
     data: CacheAPIProtocol["messages"]["data"][number];
     conversationData?: CacheAPIProtocol["conversations"]["data"][number];
     onEdit: () => void;
+    onReply: () => void;
 };
 
-export const MessageDisplay = ({ data, conversationData, onEdit }: Props) => {
+export const MessageDisplay = ({ data, conversationData, onEdit, onReply }: Props) => {
     const { data: status } = useQuery({ key: ["status"] });
 
     if (data.type === "system") {
         return <SystemDisplay data={data} />;
-    }
+    }   
 
     const isOurs = data.user_id === status?.id;
 
@@ -33,6 +34,7 @@ export const MessageDisplay = ({ data, conversationData, onEdit }: Props) => {
                     hide={hide}
                     data={data}
                     onEdit={onEdit}
+                    onReply={onReply}
                 />
             )}
         >

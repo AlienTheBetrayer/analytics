@@ -8,7 +8,13 @@ import { refreshedRequest } from "@/utils/auth/refreshedRequest";
 export const upsertMessage = async (
     options: (
         | { type: "start_dm"; to_id: string; message: string }
-        | { type: "send"; conversation_id: string; message: string }
+        | {
+              type: "send";
+              conversation_id: string;
+              message: string;
+              message_type?: Message["type"];
+              reply?: CacheAPIProtocol["messages"]["data"][number];
+          }
         | {
               type: "edit";
               message: CacheAPIProtocol["messages"]["data"][number];
@@ -75,6 +81,7 @@ export const upsertMessage = async (
             break;
         }
         case "send": {
+            // temp message
             const temp = crypto.randomUUID();
             queryMutate({
                 key: ["messages", options.conversation_id],
@@ -103,6 +110,7 @@ export const upsertMessage = async (
                     from_id: options.user.id,
                     conversation_id: options.conversation_id,
                     message: options.message,
+                    ...(options.reply && { reply: options.reply }),
                 },
             });
 
@@ -114,12 +122,13 @@ export const upsertMessage = async (
 
             const { conversation, ...msg } = message;
 
+            // replacing temp message
             queryMutate({
                 key: ["messages", message.conversation.id],
                 value: (state) =>
                     state.map((m) =>
                         m.id === `temp${temp}`
-                            ? { ...m, id: msg.id, type: "msg" }
+                            ? { ...m, id: msg.id, type: msg.type }
                             : m,
                     ),
             });
@@ -158,6 +167,7 @@ export const upsertMessage = async (
         }
     }
 
+    // last message
     queryMutate({
         key: ["conversations", options.user.id],
         value: (state) =>
@@ -185,10 +195,7 @@ export const deleteMessage = async (options: {
 }) => {
     queryMutate({
         key: ["messages", options.message.conversation_id],
-        value: (state) => ({
-            ...state,
-            messages: state.filter((m) => m.id !== options.message.id),
-        }),
+        value: (state) => state.filter((m) => m.id !== options.message.id),
     });
 
     queryMutate({

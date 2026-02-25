@@ -18,7 +18,7 @@ export const useMessageInput = ({
     ref,
     onCancel,
     type,
-    editingMessage,
+    actionMessage,
 }: MessageInputProps) => {
     const { data: status } = useQuery({ key: ["status"] });
     const { tab } = useParams<{ tab?: string }>();
@@ -30,7 +30,8 @@ export const useMessageInput = ({
     const [temp, setTemp] = useState<string>("");
 
     // derived states
-    const currentId = (data?.[0]?.conversation_id || retrieved?.conversation_id) ?? null;
+    const currentId =
+        (data?.[0]?.conversation_id || retrieved?.conversation_id) ?? null;
     const currentMessage =
         (temp
             ? temp
@@ -61,13 +62,13 @@ export const useMessageInput = ({
 
         inputRef.current?.focus();
         requestAnimationFrame(() => {
-            if (!editingMessage) {
+            if (!actionMessage) {
                 return;
             }
 
-            setEdit(editingMessage.message);
+            setEdit(actionMessage.message);
         });
-    }, [type, editingMessage]);
+    }, [type, actionMessage]);
 
     // User functions
     const updateMessage = useCallback(() => {
@@ -82,16 +83,16 @@ export const useMessageInput = ({
                 onCancel();
                 setEdit("");
 
-                if (!cid || !editingMessage) {
+                if (!cid || !actionMessage) {
                     return;
                 }
 
                 if (edit === "") {
-                    deleteMessage({ message: editingMessage });
+                    deleteMessage({ message: actionMessage });
                 } else {
                     upsertMessage({
                         type: "edit",
-                        message: editingMessage,
+                        message: actionMessage,
                         content: edit,
                         user: status,
                     });
@@ -108,6 +109,7 @@ export const useMessageInput = ({
                         type: "send",
                         conversation_id: cid,
                         message: currentMessage,
+                        reply: actionMessage,
                         user: status,
                     });
                 } else {
@@ -138,6 +140,21 @@ export const useMessageInput = ({
                 }
                 break;
             }
+            case "reply": {
+                if (!currentId || !cid || !currentMessage) {
+                    break;
+                }
+
+                upsertMessage({
+                    type: "send",
+                    conversation_id: cid,
+                    message: currentMessage,
+                    reply: actionMessage,
+                    user: status,
+                });
+                setMessages(currentId, "");
+                break;
+            }
         }
     }, [
         setMessages,
@@ -150,7 +167,7 @@ export const useMessageInput = ({
         retrieved,
         data,
         type,
-        editingMessage,
+        actionMessage,
     ]);
 
     const setMessage = useCallback(
@@ -160,7 +177,7 @@ export const useMessageInput = ({
                     setEdit(value);
                     break;
                 }
-                case "send": {
+                default: {
                     if (currentId) {
                         setMessages(currentId, value);
                     } else {

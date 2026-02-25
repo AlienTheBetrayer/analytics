@@ -10,10 +10,11 @@ import { useQuery } from "@/query/core";
 type Props = {
     hide?: () => void;
     onEdit?: () => void;
+    onReply?: () => void;
     data: CacheAPIProtocol["messages"]["data"][number];
 };
 
-export const ContextMenu = ({ hide, data, onEdit }: Props) => {
+export const ContextMenu = ({ hide, data, onEdit, onReply }: Props) => {
     const { data: status } = useQuery({ key: ["status"] });
 
     const isOurs = data.user_id === status?.id;
@@ -33,7 +34,12 @@ export const ContextMenu = ({ hide, data, onEdit }: Props) => {
             {data.type !== "system" && (
                 <>
                     <li>
-                        <Button>
+                        <Button
+                            onClick={() => {
+                                hide?.();
+                                onReply?.();
+                            }}
+                        >
                             <Image
                                 alt=""
                                 width={16}

@@ -10,8 +10,8 @@ export type MessageInputProps = {
     retrieved?: CacheAPIProtocol["conversation_retrieve"]["data"];
     data: CacheAPIProtocol["messages"]["data"] | null;
     ref?: React.Ref<HTMLInputElement | null>;
-    editingMessage?: CacheAPIProtocol["messages"]["data"][number];
-    type: "send" | "edit";
+    actionMessage?: CacheAPIProtocol["messages"]["data"][number];
+    type: "send" | "edit" | "reply";
     onCancel: () => void;
 };
 export const MessageInput = ({
@@ -19,7 +19,7 @@ export const MessageInput = ({
     data,
     ref,
     type,
-    editingMessage,
+    actionMessage,
     onCancel,
 }: MessageInputProps) => {
     const { updateMessage, setMessage, inputRef, message, edit, isSendable } =
@@ -28,7 +28,7 @@ export const MessageInput = ({
             data,
             ref,
             type,
-            editingMessage,
+            actionMessage,
             onCancel,
         });
 
@@ -38,7 +38,13 @@ export const MessageInput = ({
                 isEnabled={!!(retrieved || data)}
                 ref={inputRef}
                 className="bg-bg-1!"
-                placeholder={type === "edit" ? "Edit..." : "Write..."}
+                placeholder={
+                    type === "edit"
+                        ? "Edit..."
+                        : type === "reply"
+                          ? "Reply..."
+                          : "Write..."
+                }
                 value={type === "edit" ? edit : message}
                 onChange={(value) => setMessage(value)}
                 onKeyDown={(e: React.KeyboardEvent) => {
@@ -54,6 +60,31 @@ export const MessageInput = ({
                     }
                 }}
             />
+
+            <div
+                className={`overflow-hidden transition-all duration-300 shrink-0 
+                    ${type !== "send" ? "max-w-8" : "max-w-0"}`}
+                inert={type === "send"}
+            >
+                <Tooltip
+                    direction="top"
+                    text="Cancel"
+                >
+                    <Button
+                        className="not-hover:bg-bg-1!"
+                        onClick={() => {
+                            onCancel?.();
+                        }}
+                    >
+                        <Image
+                            alt=""
+                            width={16}
+                            height={16}
+                            src="/back.svg"
+                        />
+                    </Button>
+                </Tooltip>
+            </div>
 
             <Tooltip
                 direction="top"
@@ -109,31 +140,6 @@ export const MessageInput = ({
                     </AnimatePresence>
                 </Button>
             </Tooltip>
-
-            <div
-                className={`overflow-hidden transition-all duration-300 shrink-0 
-                    ${type === "edit" ? "max-w-8" : "max-w-0"}`}
-                inert={type !== "edit"}
-            >
-                <Tooltip
-                    direction="top"
-                    text="Cancel"
-                >
-                    <Button
-                        className="not-hover:bg-bg-1!"
-                        onClick={() => {
-                            onCancel?.();
-                        }}
-                    >
-                        <Image
-                            alt=""
-                            width={16}
-                            height={16}
-                            src="/back.svg"
-                        />
-                    </Button>
-                </Tooltip>
-            </div>
         </div>
     );
 };

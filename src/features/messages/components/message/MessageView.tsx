@@ -60,7 +60,8 @@ export const MessageView = ({ retrieved }: Props) => {
 
     // editing + auto-focusing
     const [editing, setEditing] = useState<boolean>(false);
-    const [editingMessage, setEditingMessage] = useState<
+    const [replying, setReplying] = useState<boolean>(false);
+    const [actionMessage, setActionMessage] = useState<
         CacheAPIProtocol["messages"]["data"][number] | undefined
     >(undefined);
 
@@ -150,8 +151,12 @@ export const MessageView = ({ retrieved }: Props) => {
                                 conversationData={conversation}
                                 data={message}
                                 onEdit={() => {
-                                    setEditingMessage(message);
+                                    setActionMessage(message);
                                     setEditing((prev) => !prev);
+                                }}
+                                onReply={() => {
+                                    setActionMessage(message);
+                                    setReplying((prev) => !prev);
                                 }}
                             />
                         </li>
@@ -161,12 +166,14 @@ export const MessageView = ({ retrieved }: Props) => {
 
             <MessageInput
                 onCancel={() => {
+                    setActionMessage(undefined);
                     setEditing(false);
+                    setReplying(false);
                 }}
                 data={data}
                 retrieved={retrieved}
-                type={editing ? "edit" : "send"}
-                editingMessage={editingMessage}
+                type={replying ? "reply" : editing ? "edit" : "send"}
+                actionMessage={actionMessage}
             />
         </article>
     );

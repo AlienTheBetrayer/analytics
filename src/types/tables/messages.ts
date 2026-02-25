@@ -45,5 +45,6 @@ export type Message = {
     created_at: string;
     edited_at?: string;
     seen_at?: string;
-    type: "msg" | "forward" | "loading" | "system" | "reply";
+    reply_id?: string;
+    type: "message" | "forward" | "loading" | "system" | "reply";
 };
