@@ -144,7 +144,12 @@ export const MessageView = ({ retrieved }: Props) => {
                     <FilterNothing type="messages" />
                 </div>
             ) : (
-                <ul className="flex flex-col-reverse gap-0.5 grow relative">
+                <ul
+                    className="flex flex-col-reverse gap-0.5 grow relative h-100 scheme-dark overflow-y-auto"
+                    style={{
+                        scrollbarWidth: "thin",
+                    }}
+                >
                     {sorted.map((message) => (
                         <li key={message.id}>
                             <MessageDisplay
