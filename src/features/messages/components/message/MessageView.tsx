@@ -1,6 +1,9 @@
 import { NoMessages } from "@/features/messages/components/errors/NoMessages";
 import { MessageDisplay } from "@/features/messages/components/message/display/MessageDisplay";
-import { MessageInput } from "@/features/messages/components/message/MessageInput";
+import {
+    MessageInput,
+    MessageInputProps,
+} from "@/features/messages/components/message/input/MessageInput";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { useQuery } from "@/query/core";
 import { MessagesTopline } from "@/features/messages/components/message/topline/MessagesTopline";
@@ -59,8 +62,8 @@ export const MessageView = ({ retrieved }: Props) => {
     }, [data, display]);
 
     // editing + auto-focusing
-    const [editing, setEditing] = useState<boolean>(false);
-    const [replying, setReplying] = useState<boolean>(false);
+    const [actionType, setActionType] =
+        useState<MessageInputProps["type"]>("send");
     const [actionMessage, setActionMessage] = useState<
         CacheAPIProtocol["messages"]["data"][number] | undefined
     >(undefined);
@@ -145,7 +148,7 @@ export const MessageView = ({ retrieved }: Props) => {
                 </div>
             ) : (
                 <ul
-                    className="flex flex-col-reverse gap-0.5 grow relative h-100 scheme-dark overflow-y-auto"
+                    className="flex flex-col-reverse gap-0.5 grow relative h-100 scheme-dark overflow-y-auto pt-24!"
                     style={{
                         scrollbarWidth: "thin",
                     }}
@@ -156,12 +159,12 @@ export const MessageView = ({ retrieved }: Props) => {
                                 conversationData={conversation}
                                 data={message}
                                 onEdit={() => {
+                                    setActionType("edit");
                                     setActionMessage(message);
-                                    setEditing((prev) => !prev);
                                 }}
                                 onReply={() => {
+                                    setActionType("reply");
                                     setActionMessage(message);
-                                    setReplying((prev) => !prev);
                                 }}
                             />
                         </li>
@@ -172,12 +175,11 @@ export const MessageView = ({ retrieved }: Props) => {
             <MessageInput
                 onCancel={() => {
                     setActionMessage(undefined);
-                    setEditing(false);
-                    setReplying(false);
+                    setActionType("send");
                 }}
                 data={data}
                 retrieved={retrieved}
-                type={replying ? "reply" : editing ? "edit" : "send"}
+                type={actionType}
                 actionMessage={actionMessage}
             />
         </article>

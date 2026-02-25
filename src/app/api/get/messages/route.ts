@@ -41,7 +41,7 @@ export const GET = async (request: NextRequest) => {
                 `*, 
                 user:users(id, username, last_seen_at, 
                 profile:profiles(avatar_url, color)),
-                reply:reply_id(*)`
+                reply:reply_id(*, user:users(id, username, last_seen_at, profile:profiles(avatar_url, color)))`,
             )
             .eq("conversation_id", conversation_id);
 

@@ -83,6 +83,21 @@ export const POST = async (request: NextRequest) => {
                         if (memberError) {
                             throw memberError;
                         }
+
+                        {
+                            const { error } = await supabaseServer
+                                .from("messages")
+                                .insert({
+                                    message: "Conversation created",
+                                    type: "system",
+                                    conversation_id: cid,
+                                    user_id: null,
+                                });
+
+                            if (error) {
+                                throw error;
+                            }
+                        }
                     }
                 }
 

@@ -49,7 +49,7 @@ export type CacheAPIProtocolMessages = {
             user: Pick<User, "username" | "id" | "last_seen_at"> & {
                 profile: Pick<Profile, "avatar_url" | "color">;
             };
-        } & { reply?: Message })[];
+        } & { reply?: Omit<CacheAPIProtocol["messages"]["data"][number], "reply"> })[];
     };
 };
 

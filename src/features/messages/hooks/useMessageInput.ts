@@ -1,4 +1,4 @@
-import { MessageInputProps } from "@/features/messages/components/message/MessageInput";
+import { MessageInputProps } from "@/features/messages/components/message/input/MessageInput";
 import { deleteMessage, upsertMessage } from "@/query-api/calls/messages";
 import { useQuery } from "@/query/core";
 import { useLocalStore } from "@/zustand/localStore";

@@ -98,6 +98,9 @@ export const upsertMessage = async (
                             ...options.user.user,
                             profile: options.user.profile,
                         },
+                        ...(options.reply && {
+                            reply: options.reply,
+                        }),
                     },
                 ],
             });
@@ -128,7 +131,14 @@ export const upsertMessage = async (
                 value: (state) =>
                     state.map((m) =>
                         m.id === `temp${temp}`
-                            ? { ...m, id: msg.id, type: msg.type }
+                            ? {
+                                  ...m,
+                                  id: msg.id,
+                                  type: msg.type,
+                                  ...(options.reply && {
+                                      reply: options.reply,
+                                  }),
+                              }
                             : m,
                     ),
             });
