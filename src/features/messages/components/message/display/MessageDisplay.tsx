@@ -26,7 +26,7 @@ export const MessageDisplay = ({
     onAction,
 }: MessageDisplayProps) => {
     const { data: status } = useQuery({ key: ["status"] });
-    console.log(data.forward);
+
     switch (data.type) {
         case "system": {
             return <SystemDisplay data={data} />;

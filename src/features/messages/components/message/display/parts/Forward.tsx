@@ -19,17 +19,18 @@ export const Forward = ({ data }: Props) => {
             pointerEvents
             element={<ForwardTooltip data={data} />}
         >
-            <div className="flex items-center p-2 gap-2 bg-bg-2 h-8 rounded-md w-full max-w-48">
-                <span className="flex items-center gap-1">
-                    <div className="w-1 h-1 rounded-full bg-blue-3" />
+            <div className="flex items-center p-2 gap-1.5 bg-bg-2 h-8 rounded-md w-full max-w-48">
+                <span className="box flex-row! items-center justify-center gap-0! p-1! rounded-lg! bg-bg-1!">
                     <Image
                         alt=""
-                        width={16}
-                        height={16}
+                        width={14}
+                        height={14}
                         src="/arrow.svg"
                     />
-                    from
                 </span>
+
+                <span>from</span>
+
                 <ProfileImage
                     profile={data.forward.user.profile}
                     width={256}

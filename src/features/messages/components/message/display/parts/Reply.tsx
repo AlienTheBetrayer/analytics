@@ -12,14 +12,16 @@ export const Reply = ({ data }: Props) => {
     }
 
     return (
-        <div className="flex items-center p-2 gap-2 bg-bg-2 h-8 rounded-md w-full max-w-48">
-            <div className="w-1 h-1 rounded-full bg-blue-1" />
-            <Image
-                alt=""
-                width={14}
-                height={14}
-                src="/back.svg"
-            />
+        <div className="flex items-center p-2 gap-1.5 bg-bg-2 h-8 rounded-md w-full max-w-48">
+            <span className="box flex-row! items-center justify-center gap-0! p-1! rounded-lg! bg-bg-1!">
+                <Image
+                    alt=""
+                    width={14}
+                    height={14}
+                    src="/back.svg"
+                />
+            </span>
+
             <ProfileImage
                 profile={data.reply.user.profile}
                 width={256}

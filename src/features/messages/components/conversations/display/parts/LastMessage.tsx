@@ -21,10 +21,10 @@ export const LastMessage = ({ data }: Props) => {
 
     return (
         data?.last_message && (
-            <small className="flex items-center gap-1 truncate">
+            <span className="flex items-center gap-1 truncate opacity-75">
                 <LastMessageAuthor data={data} />
                 <span>{data.last_message.message}</span>
-            </small>
+            </span>
         )
     );
 };
