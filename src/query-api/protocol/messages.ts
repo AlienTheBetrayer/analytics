@@ -16,20 +16,26 @@ export type CacheAPIProtocolMessages = {
         key: ["conversation_retrieve", string, string, string];
         data: {
             conversation_id: string | null | undefined;
-            user: (User & { profile: Profile }) | undefined;
+            user:
+                | CacheAPIProtocol["messages"]["data"][number]["user"]
+                | undefined;
         };
     };
 
     conversations: {
         key: ["conversations", string];
         data: (Conversation & {
-            last_message?: Message & { user: User & { profile: Profile } };
+            last_message?: Message & {
+                user: CacheAPIProtocol["messages"]["data"][number]["user"];
+            };
+
             conversation_members: (Pick<
                 ConversationMember,
                 "user_id" | "created_at"
             > & {
-                user: User & { profile: Profile };
+                user: CacheAPIProtocol["messages"]["data"][number]["user"];
             })[];
+
             conversation_meta?: Pick<
                 ConversationMeta,
                 "archived" | "pinned" | "pinned_at"
@@ -39,7 +45,11 @@ export type CacheAPIProtocolMessages = {
 
     messages: {
         key: ["messages", string];
-        data: (Message & { user: User & { profile: Profile } })[];
+        data: (Message & {
+            user: Pick<User, "username" | "id" | "last_seen_at"> & {
+                profile: Pick<Profile, "avatar_url" | "color">;
+            };
+        } & { reply?: Message })[];
     };
 };
 

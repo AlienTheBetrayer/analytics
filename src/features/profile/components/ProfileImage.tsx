@@ -1,9 +1,8 @@
 import Image from "next/image";
-import { Profile } from "@/types/tables/account";
 import { CSSProperties } from "react";
 
-type Props = {
-    profile?: Profile;
+type Props<T> = {
+    profile?: T extends { avatar_url?: string; color?: string } ? T : never;
     src?: string;
     width?: number;
     height?: number;
@@ -11,7 +10,7 @@ type Props = {
     style?: CSSProperties;
 };
 
-export const ProfileImage = ({
+export const ProfileImage = <T,>({
     profile,
     src,
     width,
@@ -19,7 +18,7 @@ export const ProfileImage = ({
     style,
     className,
     ...rest
-}: Props) => {
+}: Props<T>) => {
     // ui derived states
     const url = src ?? profile?.avatar_url;
 
