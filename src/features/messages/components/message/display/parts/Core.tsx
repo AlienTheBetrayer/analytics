@@ -27,7 +27,7 @@ export const Core = ({ data, conversationData }: Props) => {
             )}
 
             {data.type === "loading" && (
-                <div className="absolute right-3 top-1.25">
+                <div className="absolute right-0 top-0">
                     <Spinner className="w-3! h-3!" />
                 </div>
             )}

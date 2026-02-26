@@ -89,6 +89,7 @@ export const upsertMessage = async (
                 value: (state) => [
                     ...(state ?? []),
                     {
+                        cid: temp,
                         conversation_id: options.conversation_id,
                         user_id: options.user.id,
                         created_at: new Date().toISOString(),
@@ -143,12 +144,6 @@ export const upsertMessage = async (
                                   ...m,
                                   id: msg.id,
                                   type: msg.type,
-                                  ...(options.reply && {
-                                      reply: options.reply,
-                                  }),
-                                  ...(options.forward && {
-                                      forward: options.forward,
-                                  }),
                               }
                             : m,
                     ),

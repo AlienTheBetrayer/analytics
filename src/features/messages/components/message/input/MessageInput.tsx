@@ -17,6 +17,7 @@ export type MessageInputProps = {
     actionMessage?: CacheAPIProtocol["messages"]["data"][number];
     type: "send" | "edit" | "reply" | "forward";
     onCancel: () => void;
+    onAction: () => void;
 };
 export const MessageInput = ({
     retrieved,
@@ -25,6 +26,7 @@ export const MessageInput = ({
     type,
     actionMessage,
     onCancel,
+    onAction,
 }: MessageInputProps) => {
     const deleteBox = useMessageBox();
 
@@ -36,6 +38,7 @@ export const MessageInput = ({
             type,
             actionMessage,
             onCancel,
+            onAction,
             onDelete: deleteBox.show,
         });
 
@@ -51,6 +54,7 @@ export const MessageInput = ({
 
                     if (response === "yes") {
                         deleteMessage({ message: actionMessage });
+                        onAction();
                     }
                 },
             })}
@@ -124,6 +128,7 @@ export const MessageInput = ({
                         switch (e.code) {
                             case "Enter": {
                                 updateMessage();
+                                onAction();
                                 break;
                             }
                             case "Escape": {
@@ -174,7 +179,10 @@ export const MessageInput = ({
                 >
                     <Button
                         className="not-hover:bg-bg-1! h-full! aspect-square overflow-hidden"
-                        onClick={updateMessage}
+                        onClick={() => {
+                            updateMessage();
+                            onAction();
+                        }}
                     >
                         <AnimatePresence>
                             {isSendable ? (

@@ -46,12 +46,19 @@ export type CacheAPIProtocolMessages = {
     messages: {
         key: ["messages", string];
         data: (Message & {
+            cid?: string;
             user: Pick<User, "username" | "id" | "last_seen_at"> & {
                 profile: Pick<Profile, "avatar_url" | "color">;
             };
         } & {
-            reply?: Omit<CacheAPIProtocol["messages"]["data"][number], "reply" | "forward">;
-            forward?: Omit<CacheAPIProtocol["messages"]["data"][number], "reply" | "forward">;
+            reply?: Omit<
+                CacheAPIProtocol["messages"]["data"][number],
+                "reply" | "forward"
+            >;
+            forward?: Omit<
+                CacheAPIProtocol["messages"]["data"][number],
+                "reply" | "forward"
+            >;
         })[];
     };
 };

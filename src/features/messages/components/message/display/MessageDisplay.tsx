@@ -27,6 +27,7 @@ export const MessageDisplay = ({
 }: MessageDisplayProps) => {
     const { data: status } = useQuery({ key: ["status"] });
 
+    // fallbacks
     switch (data.type) {
         case "system": {
             return <SystemDisplay data={data} />;

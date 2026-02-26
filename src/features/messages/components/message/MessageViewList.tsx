@@ -12,7 +12,7 @@ import { CacheAPIProtocol } from "@/query-api/protocol";
 import { useQuery } from "@/query/core";
 import { useAppStore } from "@/zustand/store";
 import { redirect } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
 type Props = {
     data: CacheAPIProtocol["messages"]["data"] | null;
@@ -26,6 +26,7 @@ export const MessageViewList = ({
 }: Props) => {
     const { data: status } = useQuery({ key: ["status"] });
     const display = useAppStore((state) => state.display.messages);
+    const listRef = useRef<HTMLUListElement | null>(null);
 
     // sorting
     const sorted = useMemo(() => {
@@ -69,9 +70,10 @@ export const MessageViewList = ({
                     style={{
                         scrollbarWidth: "thin",
                     }}
+                    ref={listRef}
                 >
                     {sorted.map((message) => (
-                        <li key={message.id}>
+                        <li key={message.cid || message.id}>
                             <MessageDisplay
                                 conversationData={conversationData}
                                 data={message}
@@ -115,8 +117,16 @@ export const MessageViewList = ({
 
             <MessageInput
                 onCancel={() => {
-                    // setActionMessage(undefined);
+                    setActionMessage(undefined);
                     setActionType("send");
+                }}
+                onAction={() => {
+                    setTimeout(() => {
+                        listRef.current?.scrollTo({
+                            top: listRef.current.scrollHeight,
+                            behavior: "smooth",
+                        });
+                    }, 50);
                 }}
                 data={data}
                 retrieved={retrieved}
