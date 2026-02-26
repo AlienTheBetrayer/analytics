@@ -25,4 +25,9 @@ export type QueryConfig<T extends CacheKey> = {
      * SWR (stale while revalidate) pattern
      */
     revalidate?: boolean;
+
+    /**
+     * dependencies for revalidating (when some of these change -> SWR)
+     */
+    deps?: string[];
 };

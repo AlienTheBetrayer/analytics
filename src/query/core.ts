@@ -7,7 +7,7 @@ import {
     CacheKey,
     CacheListenerOptions,
 } from "@/query/types/types";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { convertKey } from "@/query/utils/other";
 
 /**
@@ -37,74 +37,100 @@ export const useQuery = <T extends CacheKey>(config: QueryConfig<T>) => {
         keyRef.current = config.key;
     });
 
+    const refetch = useCallback(
+        (options: {
+            trigger?: boolean;
+            keysUndefined?: boolean;
+            cache?: boolean;
+            ignoreCache?: boolean;
+            setLoading?: boolean;
+        }) => {
+            // trigger
+            if (options.trigger && "trigger" in config && !config.trigger) {
+                setIsLoading(false);
+                return;
+            }
+
+            // undefined keys prevention
+            if (
+                options.keysUndefined &&
+                keyRef.current.some((k) => typeof k === "undefined")
+            ) {
+                setData(null);
+                setIsLoading(false);
+                return;
+            }
+
+            // deduplication
+            if (options.cache && queryCache.has({ key: keyRef.current })) {
+                setData(
+                    queryCache.get({
+                        key: keyRef.current,
+                    }) as CacheAPIValue<T>["data"],
+                );
+                setIsLoading(false);
+                return;
+            }
+
+            // fetch
+            if (options.setLoading) {
+                setIsLoading(true);
+            }
+            queryFetch({
+                key: keyRef.current,
+                ignoreCache: options.ignoreCache,
+            })
+                .catch((error) => {
+                    setError(error);
+                })
+                .finally(() => {
+                    setIsLoading(false);
+                });
+        },
+        [hashKey, config.trigger],
+    );
+
     // initial fetching
     useEffect(() => {
-        // trigger
-        if ("trigger" in config && !config.trigger) {
-            setIsLoading(false);
-            return;
-        }
-
-        // undefined keys prevention
-        if (keyRef.current.some((k) => typeof k === "undefined")) {
-            setData(null);
-            setIsLoading(false);
-            return;
-        }
-
-        // deduplication
-        if (queryCache.has({ key: keyRef.current })) {
-            setData(
-                queryCache.get({
-                    key: keyRef.current,
-                }) as CacheAPIValue<T>["data"],
-            );
-            setIsLoading(false);
-            return;
-        }
-
-        // fetch
-        setIsLoading(true);
-        queryFetch({
-            key: keyRef.current,
-        })
-            .catch((error) => {
-                setError(error);
-            })
-            .finally(() => {
-                setIsLoading(false);
-            });
+        refetch({
+            trigger: true,
+            keysUndefined: true,
+            cache: true,
+            setLoading: true,
+        });
     }, [hashKey, config.trigger]);
 
-    // revalidating
+    // mount revalidating
     useEffect(() => {
         if (hasRevalidated.current || !config.revalidate) {
             return;
         }
 
-        // trigger
-        if ("trigger" in config && !config.trigger) {
-            return;
-        }
-
-        // undefined keys prevention
-        if (keyRef.current.some((k) => typeof k === "undefined")) {
-            return;
-        }
-
-        queryFetch({
-            key: keyRef.current,
+        refetch({
+            trigger: true,
+            keysUndefined: true,
             ignoreCache: true,
-        })
-            .catch((error) => {
-                setError(error);
-            })
-            .finally(() => {
-                setIsLoading(false);
-            });
+        });
 
         hasRevalidated.current = true;
     }, []);
+
+    const lastHashKey = useRef<string>(hashKey);
+
+    // deps revalidating
+    useEffect(() => {
+        if (hashKey === lastHashKey.current) {
+            return;
+        }
+
+        lastHashKey.current = hashKey;
+
+        refetch({
+            trigger: true,
+            keysUndefined: true,
+            ignoreCache: true,
+        });
+    }, [hashKey]);
 
     // listeners
     useEffect(() => {
@@ -116,15 +142,9 @@ export const useQuery = <T extends CacheKey>(config: QueryConfig<T>) => {
                     }
 
                     // fetch
-                    queryFetch({
-                        key: keyRef.current,
-                    })
-                        .catch((error) => {
-                            setError(error);
-                        })
-                        .finally(() => {
-                            setIsLoading(false);
-                        });
+                    refetch({
+                        keysUndefined: true,
+                    });
                     break;
                 }
                 default: {
