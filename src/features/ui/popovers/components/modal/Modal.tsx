@@ -15,6 +15,7 @@ type Props = {
     className?: string;
     blur?: boolean;
     isEnabled?: boolean;
+    isActive?: boolean;
     children: React.ReactNode;
 };
 
@@ -25,6 +26,7 @@ export const Modal = React.memo(function ModalFunction({
     blur = false,
     contextMenu = false,
     isEnabled = true,
+    isActive = true,
     children,
 }: Props) {
     // mounted fix
@@ -147,16 +149,20 @@ export const Modal = React.memo(function ModalFunction({
                 <div
                     ref={elementRef}
                     onClick={() => {
-                        if (!contextMenu) {
-                            setIsShown((prev) => !prev);
+                        if (contextMenu || !isActive) {
+                            return;
                         }
+
+                        setIsShown((prev) => !prev);
                     }}
                     onContextMenu={(e) => {
-                        if (contextMenu) {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            setIsShown((prev) => !prev);
+                        if (!contextMenu || !isActive) {
+                            return;
                         }
+
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setIsShown((prev) => !prev);
                     }}
                     inert={!isEnabled}
                     className={`w-fit h-fit ${!isEnabled ? "opacity-30" : ""} ${className ?? ""}`}

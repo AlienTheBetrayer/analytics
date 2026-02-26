@@ -20,21 +20,52 @@ export const deepMerge = <T extends object>(
     target: T,
     source: DeepPartial<T>,
 ): T => {
+    // If source is null or not an object, it can't be merged
+    if (!source || typeof source !== "object") {
+        return source as T;
+    }
+
     const output = { ...target };
 
     for (const key in source) {
         const sourceValue = source[key];
-        const targetValue = target[key];
+        const targetValue = (target as any)[key];
 
+        // sets
+        if (sourceValue instanceof Set) {
+            (output as any)[key] = new Set(sourceValue);
+            continue;
+        }
+
+        // maps
+        if (sourceValue instanceof Map) {
+            (output as any)[key] = new Map(sourceValue);
+            continue;
+        }
+
+        // dates
+        if (sourceValue instanceof Date) {
+            (output as any)[key] = new Date(sourceValue.getTime());
+            continue;
+        }
+
+        // plain objects
         if (
             sourceValue &&
             typeof sourceValue === "object" &&
             !Array.isArray(sourceValue) &&
             targetValue &&
-            typeof targetValue === "object"
+            typeof targetValue === "object" &&
+            !(
+                targetValue instanceof Set ||
+                targetValue instanceof Map ||
+                targetValue instanceof Date
+            )
         ) {
             (output as any)[key] = deepMerge(targetValue, sourceValue);
-        } else if (sourceValue !== undefined) {
+        }
+        // arrays / other
+        else if (sourceValue !== undefined) {
             (output as any)[key] = sourceValue;
         }
     }

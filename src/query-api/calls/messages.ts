@@ -2,6 +2,7 @@
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { queryInvalidate, queryMutate } from "@/query/auxiliary";
 import { queryCache } from "@/query/init";
+import { AuthenticationToken } from "@/types/auth/authentication";
 import { Conversation, Message } from "@/types/tables/messages";
 import { refreshedRequest } from "@/utils/auth/refreshedRequest";
 
@@ -207,25 +208,35 @@ export const upsertMessage = async (
 };
 
 export const deleteMessage = async (options: {
-    message: CacheAPIProtocol["messages"]["data"][number];
+    message: CacheAPIProtocol["messages"]["data"][number][];
+    user: AuthenticationToken;
 }) => {
+    const messages = options.message.filter(
+        (m) => m.user_id === options.user.id,
+    );
+
+    if (!messages.length) {
+        return;
+    }
+
     queryMutate({
-        key: ["messages", options.message.conversation_id],
-        value: (state) => state.filter((m) => m.id !== options.message.id),
+        key: ["messages", messages[0].conversation_id],
+        value: (state) =>
+            state.filter((m) => !messages.find((msg) => msg.id === m.id)),
     });
 
     queryMutate({
-        key: ["conversations", options.message.user.id],
+        key: ["conversations", messages[0].user.id],
         value: (state) =>
             state.map((c) =>
-                c.id === options.message.conversation_id
+                c.id === messages[0].conversation_id
                     ? {
                           ...c,
                           last_message: (
                               queryCache.get({
                                   key: [
                                       "messages",
-                                      options.message.conversation_id,
+                                      messages[0].conversation_id,
                                   ],
                               }) as CacheAPIProtocol["messages"]["data"]
                           )?.at(-1),
@@ -236,10 +247,10 @@ export const deleteMessage = async (options: {
 
     const res = await refreshedRequest({
         method: "POST",
-        route: "/api/delete/message",
+        route: "/api/delete/messages",
         body: {
-            message_id: options.message.id,
-            user_id: options.message.user.id,
+            message_ids: messages.map((m) => m.id),
+            user_id: options.user.id,
         },
     });
 

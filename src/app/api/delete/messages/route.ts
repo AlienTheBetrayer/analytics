@@ -5,10 +5,10 @@ import { NextRequest } from "next/server";
 
 export const POST = async (request: NextRequest) => {
     try {
-        const { message_id, user_id } = await request.json();
+        const { message_ids, user_id } = await request.json();
 
-        if (!message_id || !user_id) {
-            throw "message_id and user_id are undefined";
+        if (!message_ids || !user_id) {
+            throw "message_ids and user_id are undefined";
         }
 
         tokenVerify({ request, id: [user_id] });
@@ -16,7 +16,7 @@ export const POST = async (request: NextRequest) => {
         const { error } = await supabaseServer
             .from("messages")
             .delete()
-            .eq("id", message_id)
+            .in("id", message_ids)
             .eq("user_id", user_id);
 
         if (error) {

@@ -7,6 +7,7 @@ import { useMessageBox } from "@/features/ui/messagebox/hooks/useMessageBox";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { deleteMessage } from "@/query-api/calls/messages";
 import { CacheAPIProtocol } from "@/query-api/protocol";
+import { useQuery } from "@/query/core";
 import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
 
@@ -28,6 +29,7 @@ export const MessageInput = ({
     onCancel,
     onAction,
 }: MessageInputProps) => {
+    const { data: status } = useQuery({ key: ["status"] });
     const deleteBox = useMessageBox();
 
     const { updateMessage, setMessage, inputRef, message, edit, isSendable } =
@@ -48,12 +50,15 @@ export const MessageInput = ({
                 children: "This message will be deleted!",
                 onSelect(response) {
                     onCancel();
-                    if (!actionMessage) {
+                    if (!actionMessage || !status) {
                         return;
                     }
 
                     if (response === "yes") {
-                        deleteMessage({ message: actionMessage });
+                        deleteMessage({
+                            message: [actionMessage],
+                            user: status,
+                        });
                         onAction();
                     }
                 },

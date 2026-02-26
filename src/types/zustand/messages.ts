@@ -1,4 +1,5 @@
 import { MessagesSelectResult } from "@/features/messages/components/Select";
+import { CacheAPIProtocol } from "@/query-api/protocol";
 import { DeepPartial } from "@/utils/other/merge";
 
 export type Display = {
@@ -10,6 +11,7 @@ export type Display = {
     messages: {
         filter: string;
         reversed: boolean;
+        selecting: Map<string, CacheAPIProtocol["messages"]["data"][number]>;
     };
     notes: {
         filter: string;
@@ -22,7 +24,6 @@ export type MessagesStore = {
     display: Display;
     selectDisplay: MessagesSelectResult;
     selectedConversation: string | null;
-
 
     /**
      * sets the selected conversation id

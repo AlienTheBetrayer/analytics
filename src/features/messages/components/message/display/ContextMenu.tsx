@@ -10,6 +10,7 @@ import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 import { Forwarding } from "@/features/messages/components/message/display/Forwarding";
 import { MessageDisplayProps } from "@/features/messages/components/message/display/MessageDisplay";
 import { useMessageBox } from "@/features/ui/messagebox/hooks/useMessageBox";
+import { useAppStore } from "@/zustand/store";
 
 type Props = {
     hide?: () => void;
@@ -19,9 +20,9 @@ type Props = {
 
 export const ContextMenu = ({ data, hide, onAction }: Props) => {
     const { data: status } = useQuery({ key: ["status"] });
+    const updateDisplay = useAppStore((state) => state.updateDisplay);
 
     const isOurs = data.user_id === status?.id;
-
     const deleteBox = useMessageBox();
 
     return (
@@ -29,8 +30,12 @@ export const ContextMenu = ({ data, hide, onAction }: Props) => {
             {deleteBox.render({
                 children: "This message will be deleted!",
                 onSelect(response) {
+                    if (!status) {
+                        return;
+                    }
+
                     if (response === "yes") {
-                        deleteMessage({ message: data });
+                        deleteMessage({ message: [data], user: status });
                     }
                     hide?.();
                 },
@@ -146,8 +151,7 @@ export const ContextMenu = ({ data, hide, onAction }: Props) => {
                                         alt=""
                                         width={16}
                                         height={16}
-                                        src="/back.svg"
-                                        className="-scale-x-100"
+                                        src="/arrow.svg"
                                     />
                                     <span>Forward</span>
                                 </Button>
@@ -155,7 +159,18 @@ export const ContextMenu = ({ data, hide, onAction }: Props) => {
                         </li>
 
                         <li>
-                            <Button>
+                            <Button
+                                onClick={() => {
+                                    updateDisplay({
+                                        messages: {
+                                            selecting: new Map([
+                                                [data.id, data],
+                                            ]),
+                                        },
+                                    });
+                                    hide?.();
+                                }}
+                            >
                                 <Image
                                     alt=""
                                     width={16}
