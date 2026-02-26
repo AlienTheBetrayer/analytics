@@ -27,13 +27,23 @@ export const Forwarding = ({ onAction }: Props) => {
             return [];
         }
 
-        if (!filter.trim()) {
-            return data;
-        }
+        return (
+            !filter.trim()
+                ? data
+                : [
+                      ...data.filter((c) =>
+                          c.title
+                              ?.trim()
+                              .toLowerCase()
+                              .includes(filter.trim().toLowerCase()),
+                      ),
+                  ]
+        ).sort((a, b) => {
+            const timeA = a.last_message?.created_at || a.created_at;
+            const timeB = b.last_message?.created_at || b.created_at;
 
-        return data.filter((c) =>
-            c.title?.trim().toLowerCase().includes(filter.trim().toLowerCase()),
-        );
+            return timeB.localeCompare(timeA);
+        });
     }, [filter, data]);
 
     if (isLoading || !data) {
@@ -79,7 +89,11 @@ export const Forwarding = ({ onAction }: Props) => {
                                     className="w-8! h-8!"
                                 />
                                 <span className="truncate">
-                                    {c.title || c.type}
+                                    {c.title ? (
+                                        c.title
+                                    ) : (
+                                        <small>No title</small>
+                                    )}
                                 </span>
 
                                 {c.last_message ? (
@@ -92,7 +106,7 @@ export const Forwarding = ({ onAction }: Props) => {
                                         />
                                         <span>
                                             {relativeTime(
-                                                c.last_message?.created_at,
+                                                c.last_message.created_at,
                                             )}
                                         </span>
                                     </small>
