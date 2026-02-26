@@ -32,7 +32,10 @@ export const Selectable = () => {
                     if (response === "yes") {
                         deleteMessage({ message: messages, user: status });
                         updateDisplay({
-                            messages: { selecting: new Map() },
+                            messages: {
+                                selecting: new Map(),
+                                selectingMode: false,
+                            },
                         });
                     }
                 },
@@ -89,7 +92,10 @@ export const Selectable = () => {
                         <Button
                             onClick={() => {
                                 updateDisplay({
-                                    messages: { selecting: new Map() },
+                                    messages: {
+                                        selecting: new Map([]),
+                                        selectingMode: false,
+                                    },
                                 });
                             }}
                         >

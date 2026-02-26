@@ -2,14 +2,16 @@ import { ForwardTooltip } from "@/features/messages/components/message/display/F
 import { ProfileImage } from "@/features/profile/components/ProfileImage";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { CacheAPIProtocol } from "@/query-api/protocol";
+import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 
 type Props = {
     data: CacheAPIProtocol["messages"]["data"][number];
-    isActive?: boolean;
 };
 
-export const Forward = ({ data, isActive }: Props) => {
+export const Forward = ({ data }: Props) => {
+    const display = useAppStore((state) => state.display.messages);
+
     if (!data.forward) {
         return null;
     }
@@ -18,7 +20,7 @@ export const Forward = ({ data, isActive }: Props) => {
         <Tooltip
             direction="left"
             pointerEvents
-            isActive={isActive !== false}
+            isActive={!display.selectingMode}
             element={<ForwardTooltip data={data} />}
         >
             <div className="flex items-center p-2 gap-1.5 bg-bg-2 h-8 rounded-md w-full max-w-48">

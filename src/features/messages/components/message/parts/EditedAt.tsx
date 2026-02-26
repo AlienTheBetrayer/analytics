@@ -1,6 +1,7 @@
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { relativeTime } from "@/utils/other/relativeTime";
+import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 
 type Props = {
@@ -8,6 +9,8 @@ type Props = {
 };
 
 export const EditedAt = ({ data }: Props) => {
+    const display = useAppStore((state) => state.display.messages);
+
     if (!data.edited_at) {
         return null;
     }
@@ -15,6 +18,7 @@ export const EditedAt = ({ data }: Props) => {
     return (
         <Tooltip
             direction="top"
+            isActive={!display.selectingMode}
             element={
                 <div className="box flex-row! px-4! py-2! acrylic">
                     <span className="flex items-center gap-1">

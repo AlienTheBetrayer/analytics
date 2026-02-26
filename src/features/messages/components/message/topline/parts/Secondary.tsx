@@ -28,7 +28,7 @@ export const Secondary = ({ data }: Props) => {
     return (
         <div className="relative">
             <AnimatePresence>
-                {display.selecting.size && <Selectable />}
+                {display.selectingMode && <Selectable />}
             </AnimatePresence>
 
             <ul
@@ -91,6 +91,25 @@ export const Secondary = ({ data }: Props) => {
                                 })
                             }
                         />
+                    </Tooltip>
+                </li>
+
+                <li className="ml-auto!">
+                    <Tooltip text="Enter selection mode">
+                        <Button
+                            onClick={() => {
+                                updateDisplay({
+                                    messages: { selectingMode: true },
+                                });
+                            }}
+                        >
+                            <Image
+                                alt=""
+                                width={13}
+                                height={13}
+                                src="/select.svg"
+                            />
+                        </Button>
                     </Tooltip>
                 </li>
             </ul>

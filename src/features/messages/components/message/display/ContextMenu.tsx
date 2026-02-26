@@ -163,6 +163,7 @@ export const ContextMenu = ({ data, hide, onAction }: Props) => {
                                 onClick={() => {
                                     updateDisplay({
                                         messages: {
+                                            selectingMode: true,
                                             selecting: new Map([
                                                 [data.id, data],
                                             ]),

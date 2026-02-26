@@ -11,6 +11,7 @@ export type Display = {
     messages: {
         filter: string;
         reversed: boolean;
+        selectingMode: boolean;
         selecting: Map<string, CacheAPIProtocol["messages"]["data"][number]>;
     };
     notes: {

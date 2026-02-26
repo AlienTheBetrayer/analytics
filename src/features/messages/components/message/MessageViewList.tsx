@@ -66,7 +66,7 @@ export const MessageViewList = ({
                 </div>
             ) : (
                 <ul
-                    className="flex flex-col-reverse gap-0.5 grow relative h-100 scheme-dark overflow-y-auto pt-24!"
+                    className="flex flex-col-reverse grow relative h-100 scheme-dark overflow-y-auto pt-24!"
                     style={{
                         scrollbarWidth: "thin",
                     }}
