@@ -65,22 +65,6 @@ export const Selectable = () => {
 
                 <li>
                     <Tooltip
-                        text="Forward"
-                        isEnabled={display.selecting.size > 0}
-                    >
-                        <Button>
-                            <Image
-                                alt=""
-                                width={16}
-                                height={16}
-                                src="/arrow.svg"
-                            />
-                        </Button>
-                    </Tooltip>
-                </li>
-
-                <li>
-                    <Tooltip
                         text="Delete"
                         isEnabled={display.selecting.size > 0}
                     >
