@@ -9,6 +9,7 @@ import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { useQuery } from "@/query/core";
 import { useAppStore } from "@/zustand/store";
+import { useCallback } from "react";
 
 export type MessageDisplayProps = {
     data: CacheAPIProtocol["messages"]["data"][number];
@@ -30,14 +31,48 @@ export const MessageDisplay = ({
     const selecting = useAppStore((state) => state.display.messages.selecting);
     const updateDisplay = useAppStore((state) => state.updateDisplay);
 
+    const isOurs = data.user_id === status?.id;
+
+    const invertDisplay = useCallback(
+        (direction?: "on" | "off") => {
+            updateDisplay({
+                messages: {
+                    selecting: (() => {
+                        const map = new Map(selecting);
+
+                        switch (direction) {
+                            case "on": {
+                                map.set(data.id, data);
+                                break;
+                            }
+                            case "off": {
+                                map.delete(data.id);
+                                break;
+                            }
+                            default: {
+                                if (map.has(data.id)) {
+                                    map.delete(data.id);
+                                } else {
+                                    map.set(data.id, data);
+                                }
+                                break;
+                            }
+                        }
+
+                        return map;
+                    })(),
+                },
+            });
+        },
+        [data, selecting, updateDisplay],
+    );
+
     // fallbacks
     switch (data.type) {
         case "system": {
             return <SystemDisplay data={data} />;
         }
     }
-
-    const isOurs = data.user_id === status?.id;
 
     return (
         <Modal
@@ -53,32 +88,35 @@ export const MessageDisplay = ({
             )}
         >
             <Button
-                className={`box p-1.75! px-4! w-fit! flex-col! rounded-3xl!
-                    ${selecting.has(data.id) ? "not-hover:bg-bg-4! hover:bg-bg-5!" : "not-hover:bg-bg-1!"}`}
+                className={`box p-1.75! px-4! w-fit! flex-col! rounded-3xl! select-none
+                    ${selecting.has(data.id) ? "not-hover:bg-bg-5! hover:bg-bg-6!" : "not-hover:bg-bg-1!"}`}
                 onClick={() => {
                     if (!selecting.size) {
                         return;
                     }
 
-                    updateDisplay({
-                        messages: {
-                            selecting: (() => {
-                                const map = new Map(selecting);
+                    invertDisplay();
+                }}
+                onPointerEnter={(e) => {
+                    if (!(e.buttons & 1) || !selecting.size) {
+                        return;
+                    }
 
-                                if (map.has(data.id)) {
-                                    map.delete(data.id);
-                                } else {
-                                    map.set(data.id, data);
-                                }
+                    invertDisplay("on");
+                }}
+                onPointerLeave={(e) => {
+                    if (!(e.buttons & 1) || !selecting.size) {
+                        return;
+                    }
 
-                                return map;
-                            })(),
-                        },
-                    });
+                    invertDisplay("on");
                 }}
             >
                 <Reply data={data} />
-                <Forward data={data} />
+                <Forward
+                    data={data}
+                    isActive={selecting.size === 0}
+                />
 
                 <Core
                     data={data}

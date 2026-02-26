@@ -6,9 +6,10 @@ import Image from "next/image";
 
 type Props = {
     data: CacheAPIProtocol["messages"]["data"][number];
+    isActive?: boolean;
 };
 
-export const Forward = ({ data }: Props) => {
+export const Forward = ({ data, isActive }: Props) => {
     if (!data.forward) {
         return null;
     }
@@ -17,6 +18,7 @@ export const Forward = ({ data }: Props) => {
         <Tooltip
             direction="left"
             pointerEvents
+            isActive={isActive !== false}
             element={<ForwardTooltip data={data} />}
         >
             <div className="flex items-center p-2 gap-1.5 bg-bg-2 h-8 rounded-md w-full max-w-48">

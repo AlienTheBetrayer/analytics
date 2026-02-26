@@ -13,6 +13,7 @@ type Props = {
     pointerEvents?: boolean;
     className?: string;
     isEnabled?: boolean;
+    isActive?: boolean;
     children: React.ReactNode;
 };
 
@@ -23,6 +24,7 @@ export const Tooltip = React.memo(function TooltipFunction({
     className = "",
     element,
     pointerEvents = false,
+    isActive = true,
     isEnabled = true,
     children,
 }: Props) {
@@ -79,9 +81,21 @@ export const Tooltip = React.memo(function TooltipFunction({
             {/* trigger element */}
             <div
                 ref={elementRef}
-                onPointerEnter={() => setIsShown(true)}
+                onPointerEnter={() => {
+                    if (!isActive) {
+                        return;
+                    }
+
+                    setIsShown(true);
+                }}
                 onPointerLeave={() => setIsShown(false)}
-                onFocus={() => setIsShown(true)}
+                onFocus={() => {
+                    if (!isActive) {
+                        return;
+                    }
+
+                    setIsShown(true);
+                }}
                 onBlur={() => setIsShown(false)}
                 inert={!isEnabled}
                 className={`w-fit h-fit ${!isEnabled ? "opacity-30" : ""} ${className ?? ""}`}

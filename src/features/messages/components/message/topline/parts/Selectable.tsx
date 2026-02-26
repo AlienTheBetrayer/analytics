@@ -31,6 +31,9 @@ export const Selectable = () => {
 
                     if (response === "yes") {
                         deleteMessage({ message: messages, user: status });
+                        updateDisplay({
+                            messages: { selecting: new Map() },
+                        });
                     }
                 },
             })}
@@ -86,7 +89,7 @@ export const Selectable = () => {
                         <Button
                             onClick={() => {
                                 updateDisplay({
-                                    messages: { selecting: new Set() },
+                                    messages: { selecting: new Map() },
                                 });
                             }}
                         >
