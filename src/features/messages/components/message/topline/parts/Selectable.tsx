@@ -1,6 +1,8 @@
 import { Button } from "@/features/ui/button/components/Button";
 import { useMessageBox } from "@/features/ui/messagebox/hooks/useMessageBox";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
+import { PromiseState } from "@/promises/components/PromiseState";
+import { wrapPromise } from "@/promises/core";
 import { deleteMessage } from "@/query-api/calls/messages";
 import { useQuery } from "@/query/core";
 import { useAppStore } from "@/zustand/store";
@@ -62,7 +64,10 @@ export const Selectable = () => {
                 </li>
 
                 <li>
-                    <Tooltip text="Forward">
+                    <Tooltip
+                        text="Forward"
+                        isEnabled={display.selecting.size > 0}
+                    >
                         <Button>
                             <Image
                                 alt=""
@@ -75,13 +80,45 @@ export const Selectable = () => {
                 </li>
 
                 <li>
-                    <Tooltip text="Delete">
+                    <Tooltip
+                        text="Delete"
+                        isEnabled={display.selecting.size > 0}
+                    >
                         <Button onClick={deleteBox.show}>
                             <Image
                                 alt=""
                                 width={16}
                                 height={16}
                                 src="/delete.svg"
+                            />
+                        </Button>
+                    </Tooltip>
+                </li>
+
+                <li>
+                    <Tooltip
+                        text="Copy"
+                        isEnabled={display.selecting.size > 0}
+                    >
+                        <Button
+                            onClick={() => {
+                                wrapPromise("copySelected", () => {
+                                    const messages = Array.from(
+                                        display.selecting.values(),
+                                    ).map((m) => m.message);
+
+                                    return navigator.clipboard.writeText(
+                                        messages.join("\n"),
+                                    );
+                                });
+                            }}
+                        >
+                            <PromiseState state="copySelected" />
+                            <Image
+                                alt=""
+                                width={16}
+                                height={16}
+                                src="/copy.svg"
                             />
                         </Button>
                     </Tooltip>
