@@ -4,6 +4,7 @@ import { ThreeContainer } from "@/features/threecontainer/components/ThreeContai
 import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { CacheAPIProtocol } from "@/query-api/protocol";
+import { useQuery } from "@/query/core";
 import Image from "next/image";
 
 type Props = {
@@ -11,6 +12,8 @@ type Props = {
 };
 
 export const JoinDisplay = ({ data }: Props) => {
+    const { data: status } = useQuery({ key: ["status"] });
+
     return (
         <article className="box p-4! gap-4! w-full grow">
             <span className="flex items-center gap-1 mx-auto">
@@ -66,7 +69,10 @@ export const JoinDisplay = ({ data }: Props) => {
                         View
                     </LinkButton>
                 ) : (
-                    <Button>
+                    <Button
+                        onClick={() => {}}
+                        isEnabled={!!status}
+                    >
                         <div className="w-1 h-1 rounded-full bg-orange-1" />
                         <Image
                             alt=""
