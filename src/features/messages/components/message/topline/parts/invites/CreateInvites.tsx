@@ -17,7 +17,7 @@ export const CreateInvites = ({ conversationData }: Props) => {
     const [tab, setTab] = useState<InvitesTab>("list");
 
     return (
-        <div className="box acrylic p-4! gap-4! items-center w-screen max-w-96 min-h-72">
+        <div className="box acrylic p-4! gap-4! items-center w-screen max-w-lg min-h-72">
             <Tooltip
                 className="absolute! right-11 top-1.75"
                 direction="top"

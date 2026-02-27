@@ -13,7 +13,7 @@ export const AddFriends = ({ conversationData }: Props) => {
     const { data: status } = useQuery({ key: ["status"] });
 
     return (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 w-screen max-w-lg">
             <div className="box acrylic p-3! items-center">
                 <span className="flex items-center gap-1">
                     <div className="w-1 h-1 bg-blue-1 rounded-full" />
@@ -30,6 +30,7 @@ export const AddFriends = ({ conversationData }: Props) => {
             </div>
 
             <MiniSearch
+                className="max-w-lg!"
                 required
                 text="Add"
                 type="friends"

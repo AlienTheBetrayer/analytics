@@ -28,8 +28,8 @@ export const Topline = ({ data }: Props) => {
                 <span className="flex gap-1 items-center">
                     <div className="rounded-full w-1 h-1 bg-blue-1" />
                     <Image
-                        width={18}
-                        height={18}
+                        width={16}
+                        height={16}
                         alt="Profile"
                         src="/account.svg"
                     />

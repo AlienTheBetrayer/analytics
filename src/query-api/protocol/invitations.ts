@@ -1,11 +1,16 @@
 import { CacheAPIFunctions } from "@/query-api/protocol";
+import { Profile, User } from "@/types/tables/account";
 import { Invitation } from "@/types/tables/invitations";
 import axios from "axios";
 
 export type CacheAPIProtocolInvitations = {
     invitations: {
         key: ["invitations", string];
-        data: Invitation[];
+        data: (Invitation & {
+            user: Pick<User, "username"> & {
+                profile: Pick<Profile, "avatar_url" | "color">;
+            };
+        })[];
     };
 };
 
@@ -15,7 +20,7 @@ export const CacheAPIProtocolInvitations: CacheAPIFunctions<CacheAPIProtocolInvi
             if (!args[0]) {
                 throw new Error("conversation_id is undefined");
             }
-            
+
             return (
                 await axios.get("/api/get/invitations", {
                     params: {

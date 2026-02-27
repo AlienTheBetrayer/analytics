@@ -126,8 +126,8 @@ export const Security = ({ data }: Props) => {
                                     />
                                     <Image
                                         src="/account.svg"
-                                        width={13}
-                                        height={13}
+                                        width={16}
+                                        height={16}
                                         alt=""
                                     />
                                     Delete

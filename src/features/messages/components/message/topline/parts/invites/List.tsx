@@ -36,9 +36,17 @@ export const List = ({ conversationData, onNavigate }: Props) => {
     }
 
     return (
-        <ul className="flex flex-col items-center gap-2">
+        <ul
+            className="flex flex-col items-center gap-2 max-h-64 overflow-y-auto scheme-dark"
+            style={{
+                scrollbarWidth: "thin",
+            }}
+        >
             {data.map((i) => (
-                <li key={i.id} className="w-full">
+                <li
+                    key={i.id}
+                    className="w-full"
+                >
                     <InviteDisplay data={i} />
                 </li>
             ))}

@@ -13,7 +13,12 @@ export const GET = async (request: NextRequest) => {
 
         const { data, error } = await supabaseServer
             .from("invitations")
-            .select()
+            .select(
+                `
+                *, 
+                user:users(username, 
+                    profile:profiles(avatar_url, color))`,
+            )
             .eq("conversation_id", conversation_id);
 
         if (error) {

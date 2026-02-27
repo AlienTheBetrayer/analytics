@@ -13,6 +13,7 @@ type Props = {
     text?: string;
     required?: boolean;
     isEnabled?: boolean;
+    className?: string;
 };
 
 export const MiniSearch = ({
@@ -23,6 +24,7 @@ export const MiniSearch = ({
     isEnabled,
     required,
     promiseState,
+    className,
 }: Props) => {
     const { data: status } = useQuery({ key: ["status"] });
     const { data, isLoading, fetch } = useMiniSearch();
@@ -39,7 +41,9 @@ export const MiniSearch = ({
     }, [fetch, type, status]);
 
     return (
-        <div className="acrylic box p-4! gap-2! w-screen max-w-81 min-h-64">
+        <div
+            className={`acrylic box p-4! gap-2! w-screen max-w-81 min-h-64 ${className ?? ""}`}
+        >
             <span className="flex items-center gap-1 mx-auto">
                 <div className="w-1 h-1 rounded-full bg-blue-1" />
                 <Image

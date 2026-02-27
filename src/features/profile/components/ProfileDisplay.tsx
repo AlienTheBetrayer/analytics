@@ -44,8 +44,8 @@ export const ProfileDisplay = ({ id }: Props) => {
                         <span className="flex items-center gap-1">
                             <Image
                                 alt=""
-                                width={12}
-                                height={12}
+                                width={16}
+                                height={16}
                                 src="/account.svg"
                             />
                             <span>{data.username}</span>

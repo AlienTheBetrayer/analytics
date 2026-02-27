@@ -130,8 +130,8 @@ export const Desktop = ({ className }: Props) => {
                                         className="button-img"
                                     >
                                         <Image
-                                            width={14}
-                                            height={14}
+                                            width={18}
+                                            height={18}
                                             src="/account.svg"
                                             alt="posts"
                                         />
