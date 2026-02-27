@@ -1,5 +1,6 @@
 import { CacheAPIProtocolContact } from "@/query-api/protocol/contact";
 import { CacheAPIProtocolDashboard } from "@/query-api/protocol/dashboard";
+import { CacheAPIProtocolInvitations } from "@/query-api/protocol/invitations";
 import { CacheAPIProtocolMessages } from "@/query-api/protocol/messages";
 import { CacheAPIProtocolNoteboard } from "@/query-api/protocol/noteboard";
 import { CacheAPIProtocolPosts } from "@/query-api/protocol/posts";
@@ -27,4 +28,5 @@ export type CacheAPIProtocol = CacheAPIProtocolContact &
     CacheAPIProtocolSearch &
     CacheAPIProtocolUser &
     CacheAPIProtocolStatus &
-    CacheAPIProtocolNoteboard;
+    CacheAPIProtocolNoteboard &
+    CacheAPIProtocolInvitations;

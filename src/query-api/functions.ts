@@ -1,5 +1,6 @@
 import { CacheAPIFunctionsContact } from "@/query-api/protocol/contact";
 import { CacheAPIFunctionsDashboard } from "@/query-api/protocol/dashboard";
+import { CacheAPIProtocolInvitations } from "@/query-api/protocol/invitations";
 import { CacheAPIFunctionsMessages } from "@/query-api/protocol/messages";
 import { CacheAPIFunctionsNoteboard } from "@/query-api/protocol/noteboard";
 import { CacheAPIFunctionsPosts } from "@/query-api/protocol/posts";
@@ -20,6 +21,7 @@ export const CacheAPIFunctions: Record<
     ...CacheAPIFunctionsPosts,
     ...CacheAPIFunctionsSearch,
     ...CacheAPIFunctionsStatus,
+    ...CacheAPIProtocolInvitations,
 };
 
 /**

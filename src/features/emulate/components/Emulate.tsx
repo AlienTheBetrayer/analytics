@@ -116,7 +116,7 @@ export const Emulate = () => {
                                     width={16}
                                     height={16}
                                     alt=""
-                                    src="/link.svg"
+                                    src="/cube.svg"
                                 />
                                 <span className="text-5!">
                                     Project selection
