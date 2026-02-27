@@ -3,9 +3,13 @@ import { NotAMember } from "@/features/join/components/errors/NotAMember";
 import { ThreeContainer } from "@/features/threecontainer/components/ThreeContainer";
 import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
+import { PromiseState } from "@/promises/components/PromiseState";
+import { wrapPromise } from "@/promises/core";
+import { upsertConversation } from "@/query-api/calls/conversation";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { useQuery } from "@/query/core";
 import Image from "next/image";
+import { redirect } from "next/navigation";
 
 type Props = {
     data: CacheAPIProtocol["invitation"]["data"];
@@ -70,9 +74,25 @@ export const JoinDisplay = ({ data }: Props) => {
                     </LinkButton>
                 ) : (
                     <Button
-                        onClick={() => {}}
+                        onClick={() => {
+                            if (!status) {
+                                return null;
+                            }
+
+                            wrapPromise("addMembers", () => {
+                                return upsertConversation({
+                                    type: "add_members",
+                                    conversation_id: data.conversation_id,
+                                    user: status,
+                                    ids: [status.id],
+                                });
+                            }).then(() => {
+                                redirect(`/messages/c/${data.conversation_id}`);
+                            });
+                        }}
                         isEnabled={!!status}
                     >
+                        <PromiseState state="addMembers" />
                         <div className="w-1 h-1 rounded-full bg-orange-1" />
                         <Image
                             alt=""

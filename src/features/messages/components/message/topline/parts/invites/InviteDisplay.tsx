@@ -84,7 +84,7 @@ export const InviteDisplay = ({ data }: Props) => {
                                     height={16}
                                     src="/description.svg"
                                 />
-                                Desc.
+                                Description
                             </small>
                         </span>
                         <span className="truncate">{data.description}</span>

@@ -9,12 +9,18 @@ export const upsertConversation = async (
               type: "create";
               conversation_type: string;
               member_ids: string[];
+              title?: string;
+              description?: string;
+              image?: File | null;
           }
         | {
               type: "edit";
               conversation_id: string;
               pinned?: boolean;
               archived?: boolean;
+              title?: string;
+              description?: string;
+              image?: File | null;
           }
         | {
               type: "add_members";
@@ -23,12 +29,12 @@ export const upsertConversation = async (
           }
     ) & {
         user: CacheAPIProtocol["status"]["data"];
-        title?: string;
-        description?: string;
-        image?: File | null;
     },
 ) => {
-    const base64 = options.image ? await fileToBase64(options.image) : null;
+    const base64 =
+        "image" in options && options.image
+            ? await fileToBase64(options.image)
+            : null;
 
     switch (options.type) {
         case "create": {
