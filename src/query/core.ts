@@ -117,7 +117,7 @@ export const useQuery = <T extends CacheKey>(config: QueryConfig<T>) => {
 
     const lastHashKey = useRef<string>(hashKey);
 
-    // deps revalidating
+    // key revalidating
     useEffect(() => {
         if (hashKey === lastHashKey.current) {
             return;

@@ -57,7 +57,7 @@ export const CreateInvites = ({ conversationData }: Props) => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    transition={{ ease: [0.4, 0, 0.2, 1], duration: 0.2 }}
+                    transition={{ ease: [0.4, 0, 0.2, 1], duration: 0.15 }}
                     className="flex flex-col grow *:grow w-full"
                 >
                     {tab === "create" ? (

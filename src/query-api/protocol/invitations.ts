@@ -12,6 +12,11 @@ export type CacheAPIProtocolInvitations = {
             };
         })[];
     };
+
+    invitation: {
+        key: ["invitation", string, string | null];
+        data: Invitation & { isMember: boolean };
+    };
 };
 
 export const CacheAPIProtocolInvitations: CacheAPIFunctions<CacheAPIProtocolInvitations> =
@@ -28,5 +33,17 @@ export const CacheAPIProtocolInvitations: CacheAPIFunctions<CacheAPIProtocolInvi
                     },
                 })
             ).data.invitations;
+        },
+
+        invitation: async (args: unknown[]) => {
+            if (!args[0]) {
+                throw new Error("invitation_id is undefined");
+            }
+
+            return (
+                await axios.get("/api/get/invitation", {
+                    params: { invitation_id: args[0], user_id: args[1] },
+                })
+            ).data.invitation;
         },
     };

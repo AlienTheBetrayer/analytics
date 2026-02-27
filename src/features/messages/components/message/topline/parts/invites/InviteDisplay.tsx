@@ -21,7 +21,7 @@ export const InviteDisplay = ({ data }: Props) => {
 
     return (
         <article
-            className={`box p-2! min-h-20 rounded-4xl! overflow-hidden items-center! flex-row!
+            className={`box p-1.5! min-h-20 rounded-4xl! overflow-hidden items-center! flex-row!
         ${data.image_url ? "" : "loading"}`}
         >
             {deleteBox.render({
@@ -51,7 +51,7 @@ export const InviteDisplay = ({ data }: Props) => {
                 />
             )}
 
-            <div className="w-full h-full gap-4 z-1 flex rounded-4xl bg-bg-a-2 backdrop-blur-md p-2">
+            <div className="w-full h-full gap-4 z-1 flex rounded-3xl bg-bg-a-2 backdrop-blur-md p-2">
                 <div className="flex flex-col items-center shrink-0">
                     <span>
                         <small className="flex items-center gap-1">
@@ -115,14 +115,14 @@ export const InviteDisplay = ({ data }: Props) => {
                     >
                         <Button
                             onClick={() => {
-                                wrapPromise("inviteCopy", () => {
+                                wrapPromise(`inviteCopy_${data.id}`, () => {
                                     return navigator.clipboard.writeText(
-                                        `/join/${data.id}`,
+                                        `${window.location.origin}/join/${data.id}`,
                                     );
                                 });
                             }}
                         >
-                            <PromiseState state="inviteCopy" />
+                            <PromiseState state={`inviteCopy_${data.id}`} />
                             <Image
                                 alt=""
                                 width={16}
