@@ -6,8 +6,8 @@ import { NoteBoard } from "@/features/messages/components/noteboard/NoteBoard";
 import { WrongURL } from "@/features/messages/components/errors/WrongURL";
 import { NotSelected } from "@/features/messages/components/errors/NotSelected";
 import { useEffect, useMemo } from "react";
-import { LoadingMessages } from "@/features/messages/components/errors/LoadingMessages";
 import { MessageViewList } from "@/features/messages/components/message/MessageViewList";
+import { Spinner } from "@/features/ui/spinner/components/Spinner";
 
 type Props = {
     retrieved?: CacheAPIProtocol["conversation_retrieve"]["data"];
@@ -72,7 +72,7 @@ export const MessageView = ({ retrieved }: Props) => {
                     {(() => {
                         switch (code) {
                             case "loading": {
-                                return <LoadingMessages />;
+                                return <Spinner />;
                             }
                             case "wrong-url": {
                                 return <WrongURL />;

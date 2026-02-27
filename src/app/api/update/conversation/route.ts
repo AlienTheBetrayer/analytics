@@ -235,17 +235,49 @@ export const POST = async (request: NextRequest) => {
                     throw "ids and conversation_id are undefined";
                 }
 
-                const { error } = await supabaseServer
-                    .from("conversation_members")
-                    .insert(
-                        (ids as string[]).map((user_id) => ({
-                            conversation_id,
-                            user_id,
-                        })),
-                    );
+                // get usernames for a system message
+                const { data: usernames, error } = await supabaseServer
+                    .from("users")
+                    .select("username")
+                    .in("id", ids);
 
                 if (error) {
                     throw error;
+                }
+
+                // the actual members
+                {
+                    const { error } = await supabaseServer
+                        .from("conversation_members")
+                        .insert(
+                            (ids as string[]).map((user_id) => ({
+                                conversation_id,
+                                user_id,
+                            })),
+                        );
+
+                    if (error) {
+                        throw error;
+                    }
+                }
+
+                // system message
+                {
+                    const { error } = await supabaseServer
+                        .from("messages")
+                        .insert({
+                            message:
+                                ids.length > 10
+                                    ? `${ids.length} users have joined!`
+                                    : `${usernames.map((u) => u.username).join(", ")} ${ids.length > 1 ? "have" : "has"} joined!`,
+                            type: "system",
+                            conversation_id,
+                            user_id: null,
+                        });
+
+                    if (error) {
+                        throw error;
+                    }
                 }
 
                 return nextResponse({ success: true }, 200);
