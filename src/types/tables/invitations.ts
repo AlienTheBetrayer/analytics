@@ -6,6 +6,6 @@ export type Invitation = {
     inviter_id: string;
     conversation_id: string;
     description?: string;
+    image_url?: string;
     created_at: string;
-    edited_at?: string;
 };

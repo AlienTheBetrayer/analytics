@@ -38,7 +38,7 @@ export const List = ({ conversationData, onNavigate }: Props) => {
     return (
         <ul className="flex flex-col items-center gap-2">
             {data.map((i) => (
-                <li key={i.id}>
+                <li key={i.id} className="w-full">
                     <InviteDisplay data={i} />
                 </li>
             ))}

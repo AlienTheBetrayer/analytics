@@ -3,7 +3,6 @@ import { List } from "@/features/messages/components/message/topline/parts/invit
 import { Button } from "@/features/ui/button/components/Button";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { CacheAPIProtocol } from "@/query-api/protocol";
-import { useQuery } from "@/query/core";
 import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
 import { useState } from "react";
@@ -15,11 +14,10 @@ type Props = {
 export type InvitesTab = "list" | "create";
 
 export const CreateInvites = ({ conversationData }: Props) => {
-    const { data: status } = useQuery({ key: ["status"] });
     const [tab, setTab] = useState<InvitesTab>("list");
 
     return (
-        <div className="box acrylic p-4! gap-4! items-center w-screen max-w-96 min-h-64">
+        <div className="box acrylic p-4! gap-4! items-center w-screen max-w-96 min-h-72">
             <Tooltip
                 className="absolute! right-11 top-1.75"
                 direction="top"
