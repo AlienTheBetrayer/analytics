@@ -1,111 +1,51 @@
-/**
- * type of the pointer event
- */
-type RipplePointerType = "down" | "enter" | "hover";
-
-/**
- * state for the ripple effect map
- */
-type RippleState = {
-    scheduledDisable: boolean;
-    hasAnimationFinished: boolean;
-    timeout: NodeJS.Timeout;
-};
-
-/**
- * state map containing all the buttons and their ripple status
- */
-const rippleState = new WeakMap<HTMLElement, RippleState>();
-
-/**
- * safely returns the ripple state for the button and defaults it if it hadn't been initialized
- * @param el the element of the button
- * @returns state object for the ripple button
- */
-const rippleStateDefault = (el: HTMLElement) => {
-    let state = rippleState.get(el);
-    if (!state) {
-        state = {
-            hasAnimationFinished: false,
-            scheduledDisable: false,
-            timeout: null!,
-        };
-        rippleState.set(el, state);
-    }
-
-    return state;
-};
-
-/**
- * enables the ripple effect on a given button based on its event
- * @param e the event
- * @param type down will always enable it, enter will enable only if left button is pressed
- */
 export const rippleEnable = <T extends HTMLElement>(
     e: React.PointerEvent<T>,
-    type: RipplePointerType = "down",
 ) => {
-    const el = e.currentTarget as HTMLElement;
-
-    if (!el) {
-        console.log("!el");
-        return;
-    }
-
-    if (type === "enter" && e.buttons !== 1) {
-        console.log("buttons");
-        return;
-    }
-
-    // ripple status
-    const state = rippleStateDefault(el) satisfies RippleState;
-    const speed =
-        parseFloat(
-            getComputedStyle(el).getPropertyValue("--ripple-speed").trim(),
-        ) * 1000;
-
-    // variable setting
+    const el = e.currentTarget;
     const rect = el.getBoundingClientRect();
-    el.style.setProperty("--x", `${e.clientX - rect.left}px`);
-    el.style.setProperty("--y", `${e.clientY - rect.top}px`);
-    el.dataset.ripple = "on";
 
-    // scheduling / animation
-    state.hasAnimationFinished = false;
+    // creating
+    const ripple = document.createElement("span");
+    ripple.classList.add("ripple-element");
 
-    clearTimeout(state.timeout);
-    state.timeout = setTimeout(() => {
-        state.hasAnimationFinished = true;
+    const size = Math.max(rect.width, rect.height) * 2.5;
+    ripple.style.width = ripple.style.height = `${size}px`;
+    ripple.style.left = `${e.clientX - rect.left}px`;
+    ripple.style.top = `${e.clientY - rect.top}px`;
 
-        if (state.scheduledDisable) {
-            el.dataset.ripple = "off";
-            state.scheduledDisable = false;
-        }
-    }, speed * 0.8);
-};
+    el.appendChild(ripple);
 
-/**
- * disables the ripple effect on a given button based on its event
- * @param e the event
- */
-export const rippleDisable = <T extends HTMLElement>(
-    e: React.PointerEvent<T>,
-) => {
-    const el = e.currentTarget as HTMLElement;
+    // animation
+    ripple.animate(
+        [
+            { transform: "translate(-50%, -50%) scale(0)", opacity: 1 },
+            { transform: "translate(-50%, -50%) scale(1)", opacity: 1 },
+        ],
+        {
+            duration: Math.max(500, Math.min(size, 900)),
+            easing: "cubic-bezier(0.27,0.75,1.00,0.62)",
+            fill: "forwards",
+        },
+    );
 
-    if (!el) {
-        return;
-    }
+    // handler
+    const handle = () => {
+        const fade = ripple.animate([{ opacity: 1 }, { opacity: 0 }], {
+            duration: 750,
+            easing: "ease-out",
+            fill: "forwards",
+        });
 
-    const state = rippleState.get(el);
+        fade.onfinish = () => ripple.remove();
 
-    if (!state || el.dataset.ripple !== "on") {
-        return;
-    }
+        // Clean up listeners
+        window.removeEventListener("pointerup", handle);
+        window.removeEventListener("pointercancel", handle);
+        el.removeEventListener("pointerleave", handle);
+    };
 
-    if (state.hasAnimationFinished) {
-        el.dataset.ripple = "off";
-    } else {
-        state.scheduledDisable = true;
-    }
+    // adding listeners
+    window.addEventListener("pointerup", handle);
+    window.addEventListener("pointercancel", handle);
+    el.addEventListener("pointerleave", handle);
 };

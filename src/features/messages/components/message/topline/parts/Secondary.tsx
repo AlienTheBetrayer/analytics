@@ -34,7 +34,7 @@ export const Secondary = ({ data }: Props) => {
             <ul
                 className={`box min-h-10! h-10! gap-1! p-0! items-center! flex-row!
                     ${!data?.length ? "opacity-30" : ""}`}
-                inert={data?.length === 0 || display.selecting.size > 0}
+                inert={!data?.length || display.selectingMode}
             >
                 {!data?.length && (
                     <li className="absolute left-1/2 top-1/2 -translate-1/2 z-1">

@@ -1,4 +1,4 @@
-import { rippleEnable, rippleDisable } from "@/features/ui/ripple/utils/ripple";
+import { rippleEnable } from "@/features/ui/ripple/utils/ripple";
 import type { Url } from "next/dist/shared/lib/router/router";
 import Link from "next/link";
 import { type CSSProperties, forwardRef } from "react";
@@ -46,13 +46,9 @@ export const LinkButton = forwardRef<HTMLAnchorElement, Props>(
                     rippleEnable(e);
                 }}
                 onPointerEnter={(e) => {
-                    rippleEnable(e, "enter");
-                }}
-                onPointerLeave={(e) => {
-                    rippleDisable(e);
-                }}
-                onPointerUp={(e) => {
-                    rippleDisable(e);
+                    if (e.buttons & 1) {
+                        rippleEnable(e);
+                    }
                 }}
             >
                 {children}

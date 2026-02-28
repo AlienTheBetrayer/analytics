@@ -1,4 +1,4 @@
-import { rippleDisable, rippleEnable } from "@/features/ui/ripple/utils/ripple";
+import { rippleEnable } from "@/features/ui/ripple/utils/ripple";
 import { type HTMLMotionProps, motion } from "motion/react";
 
 type Props = {
@@ -12,8 +12,6 @@ export const Button = ({
     isEnabled = true,
     onPointerDown,
     onPointerEnter,
-    onPointerLeave,
-    onPointerUp,
     className,
     styles = "button",
     ...rest
@@ -29,16 +27,10 @@ export const Button = ({
                 onPointerDown?.(e);
             }}
             onPointerEnter={(e) => {
-                rippleEnable(e, "enter");
+                if (e.buttons & 1) {
+                    rippleEnable(e);
+                }
                 onPointerEnter?.(e);
-            }}
-            onPointerLeave={(e) => {
-                rippleDisable(e);
-                onPointerLeave?.(e);
-            }}
-            onPointerUp={(e) => {
-                rippleDisable(e);
-                onPointerUp?.(e);
             }}
             className={`group ripple
                 ${styles} 

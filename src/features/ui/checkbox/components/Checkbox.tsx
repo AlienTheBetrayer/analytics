@@ -2,6 +2,7 @@
 import Image from "next/image";
 import type { ComponentPropsWithoutRef } from "react";
 import { useCheckbox } from "../hooks/useCheckbox";
+import { rippleEnable } from "@/features/ui/ripple/utils/ripple";
 
 type Props = {
     onToggle?: (flag: boolean) => void;
@@ -26,7 +27,15 @@ export const Checkbox = ({
             aria-label={typeof children === "string" ? children : undefined}
             onClick={controller.toggle}
             onKeyDown={controller.keyDown}
-            className={`button flex justify-center! w-full gap-2! h-8 focus-within:outline-blue-1! ${className ?? ""}`}
+            onPointerDown={(e) => {
+                rippleEnable(e);
+            }}
+            onPointerEnter={(e) => {
+                if (e.buttons & 1) {
+                    rippleEnable(e);
+                }
+            }}
+            className={`button ripple flex justify-center! w-full gap-2! h-8 focus-within:outline-blue-1! ${className ?? ""}`}
             {...rest}
         >
             <div

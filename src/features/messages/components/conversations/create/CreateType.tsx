@@ -27,7 +27,7 @@ export const CreateType = ({ type, category }: Props) => {
             key={selected}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="flex flex-col gap-2 relative w-full"
+            className="flex flex-col gap-2 relative w-full *:w-full"
         >
             {selected !== "both" && (
                 <ul className="box acrylic w-full p-4! flex flex-col items-center gap-2">

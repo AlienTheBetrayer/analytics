@@ -117,7 +117,7 @@ export const List = () => {
                 <ul
                     className={`box bg-bg-2! sticky! top-16 p-0! h-10! flex-row! w-full items-center
             ${!message_ids?.length ? "opacity-30" : ""}`}
-                    inert={!!!message_ids?.length}
+                    inert={!message_ids?.length}
                 >
                     {!message_ids?.length && (
                         <li className="absolute left-1/2 top-1/2 -translate-1/2 whitespace-nowrap">

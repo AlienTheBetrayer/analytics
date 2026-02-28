@@ -71,7 +71,7 @@ export const Avatar = ({ type, data, className }: Props) => {
                                         src="/save.svg"
                                         width={24}
                                         height={24}
-                                        className="w-1/2! h-1/2! invert-90!"
+                                        className="w-1/2! h-1/2! invert-90! grayscale-100"
                                     />
                                 </div>
                             );
