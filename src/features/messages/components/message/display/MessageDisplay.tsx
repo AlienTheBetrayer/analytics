@@ -65,7 +65,8 @@ export const MessageDisplay = ({
                 >
                     <Button
                         className={`box p-1.75! px-4! w-fit! flex-col! rounded-3xl!
-                    ${isSelected && selectingMode ? "not-hover:bg-bg-5! hover:bg-bg-6! select-none" : "not-hover:bg-bg-1!"}`}
+                    ${isSelected && selectingMode ? "not-hover:bg-bg-5! hover:bg-bg-6! select-none" : "not-hover:bg-bg-1!"}
+                    `}
                         onClick={() => {
                             if (!selectingMode) {
                                 return;

@@ -10,6 +10,10 @@ export const Button = ({
     children,
     onClick,
     isEnabled = true,
+    onPointerDown,
+    onPointerEnter,
+    onPointerLeave,
+    onPointerUp,
     className,
     styles = "button",
     ...rest
@@ -22,15 +26,19 @@ export const Button = ({
             disabled={!isEnabled}
             onPointerDown={(e) => {
                 rippleEnable(e);
+                onPointerDown?.(e);
             }}
             onPointerEnter={(e) => {
                 rippleEnable(e, "enter");
+                onPointerEnter?.(e);
             }}
             onPointerLeave={(e) => {
                 rippleDisable(e);
+                onPointerLeave?.(e);
             }}
             onPointerUp={(e) => {
                 rippleDisable(e);
+                onPointerUp?.(e);
             }}
             className={`group ripple
                 ${styles} 

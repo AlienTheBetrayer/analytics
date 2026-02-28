@@ -48,10 +48,12 @@ export const rippleEnable = <T extends HTMLElement>(
     const el = e.currentTarget as HTMLElement;
 
     if (!el) {
+        console.log("!el");
         return;
     }
 
     if (type === "enter" && e.buttons !== 1) {
+        console.log("buttons");
         return;
     }
 

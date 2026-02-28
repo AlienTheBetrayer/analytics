@@ -72,10 +72,6 @@ export const Tooltip = React.memo(function TooltipFunction({
         };
     }, [isShown, direction]);
 
-    if (!mounted) {
-        return null;
-    }
-
     return (
         <>
             {/* trigger element */}
@@ -104,62 +100,65 @@ export const Tooltip = React.memo(function TooltipFunction({
             </div>
 
             {/* tooltip portal */}
-            {createPortal(
-                <AnimatePresence>
-                    {isShown && (
-                        <div
-                            popover="auto"
-                            onPointerEnter={() => {
-                                if (pointerEvents) {
-                                    setIsShown(true);
-                                }
-                            }}
-                            onPointerLeave={() => {
-                                if (pointerEvents) {
-                                    setIsShown(false);
-                                }
-                            }}
-                            onToggle={(e) => {
-                                e.stopPropagation();
-                                if (e.newState === "closed") {
-                                    setIsShown(false);
-                                }
-                            }}
-                            ref={tooltipRef}
-                            className="bg-transparent overflow-hidden whitespace-nowrap p-1 z-1000"
-                            style={{
-                                pointerEvents: pointerEvents ? "all" : "none",
-                            }}
-                        >
-                            <motion.div
-                                initial={{
-                                    opacity: 0,
-                                    scale: 0.7,
+            {mounted &&
+                createPortal(
+                    <AnimatePresence>
+                        {isShown && (
+                            <div
+                                popover="auto"
+                                onPointerEnter={() => {
+                                    if (pointerEvents) {
+                                        setIsShown(true);
+                                    }
                                 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                exit={{
-                                    opacity: 0,
-                                    scale: 0.7,
+                                onPointerLeave={() => {
+                                    if (pointerEvents) {
+                                        setIsShown(false);
+                                    }
                                 }}
-                                transition={{ delay: 0.1 }}
-                                className={`backdrop-blur-md rounded-4xl ${element ? "" : "box py-1.5! px-3! rounded-full!"}`}
+                                onToggle={(e) => {
+                                    e.stopPropagation();
+                                    if (e.newState === "closed") {
+                                        setIsShown(false);
+                                    }
+                                }}
+                                ref={tooltipRef}
+                                className="bg-transparent overflow-hidden whitespace-nowrap p-1 z-1000"
+                                style={{
+                                    pointerEvents: pointerEvents
+                                        ? "all"
+                                        : "none",
+                                }}
                             >
-                                {element ?? (
-                                    <small className="flex flex-col items-center">
-                                        {title && <span>{title}</span>}
-                                        {text && (
-                                            <span>
-                                                <small>{text}</small>
-                                            </span>
-                                        )}
-                                    </small>
-                                )}
-                            </motion.div>
-                        </div>
-                    )}
-                </AnimatePresence>,
-                document.body,
-            )}
+                                <motion.div
+                                    initial={{
+                                        opacity: 0,
+                                        scale: 0.7,
+                                    }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    exit={{
+                                        opacity: 0,
+                                        scale: 0.7,
+                                    }}
+                                    transition={{ delay: 0.1 }}
+                                    className={`backdrop-blur-md rounded-4xl ${element ? "" : "box py-1.5! px-3! rounded-full!"}`}
+                                >
+                                    {element ?? (
+                                        <small className="flex flex-col items-center">
+                                            {title && <span>{title}</span>}
+                                            {text && (
+                                                <span>
+                                                    <small>{text}</small>
+                                                </span>
+                                            )}
+                                        </small>
+                                    )}
+                                </motion.div>
+                            </div>
+                        )}
+                    </AnimatePresence>,
+                    document.body,
+                )}
         </>
     );
 });

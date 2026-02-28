@@ -143,35 +143,35 @@ export const Modal = React.memo(function ModalFunction({
     }, []);
 
     return (
-        mounted && (
-            <>
-                {/* trigger element */}
-                <div
-                    ref={elementRef}
-                    onClick={() => {
-                        if (contextMenu || !isActive) {
-                            return;
-                        }
+        <>
+            {/* trigger element */}
+            <div
+                ref={elementRef}
+                onClick={() => {
+                    if (contextMenu || !isActive) {
+                        return;
+                    }
 
-                        setIsShown((prev) => !prev);
-                    }}
-                    onContextMenu={(e) => {
-                        if (!contextMenu || !isActive) {
-                            return;
-                        }
+                    setIsShown((prev) => !prev);
+                }}
+                onContextMenu={(e) => {
+                    if (!contextMenu || !isActive) {
+                        return;
+                    }
 
-                        e.preventDefault();
-                        e.stopPropagation();
-                        setIsShown((prev) => !prev);
-                    }}
-                    inert={!isEnabled}
-                    className={`w-fit h-fit ${!isEnabled ? "opacity-30" : ""} ${className ?? ""}`}
-                >
-                    {children}
-                </div>
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setIsShown((prev) => !prev);
+                }}
+                inert={!isEnabled}
+                className={`w-fit h-fit ${!isEnabled ? "opacity-30" : ""} ${className ?? ""}`}
+            >
+                {children}
+            </div>
 
-                {/* modal portal */}
-                {createPortal(
+            {/* modal portal */}
+            {mounted &&
+                createPortal(
                     <AnimatePresence>
                         {isShown && (
                             <>
@@ -231,7 +231,6 @@ export const Modal = React.memo(function ModalFunction({
                     </AnimatePresence>,
                     document.body,
                 )}
-            </>
-        )
+        </>
     );
 });
