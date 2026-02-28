@@ -28,6 +28,7 @@ export const ConversationsTopline = ({ data }: Props) => {
             <ul className="box h-10! gap-1! p-0! items-center! flex-row!">
                 <li>
                     <Modal
+                        tooltipClassName="w-screen max-w-64"
                         direction="bottom-right"
                         element={(hide) => (
                             <LeftMenu
@@ -143,6 +144,7 @@ export const ConversationsTopline = ({ data }: Props) => {
                         text="Create a conversation"
                     >
                         <Modal
+                            tooltipClassName="w-screen max-w-64"
                             element={() => <CreateConversation />}
                             direction="bottom"
                         >

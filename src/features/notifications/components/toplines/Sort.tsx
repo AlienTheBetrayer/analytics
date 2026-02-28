@@ -17,7 +17,7 @@ export const Sort = ({ tab }: Props) => {
     );
 
     return (
-        <div className="relative box p-4! gap-4! acrylic min-w-92">
+        <div className="relative box p-4! gap-4! acrylic w-full">
             <span className="flex flex-col items-center">
                 <Image
                     alt="filter"

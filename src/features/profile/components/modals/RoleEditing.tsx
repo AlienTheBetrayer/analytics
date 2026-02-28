@@ -18,7 +18,7 @@ export const RoleEditing = ({ data }: Props) => {
     const [role, setRole] = useState<AuthenticationRole>(data.role ?? "user");
 
     return (
-        <ul className="relative box h-full gap-4! acrylic min-h-80">
+        <ul className="relative box h-full gap-4! acrylic w-full">
             <li className="flex flex-col gap-1 items-center text-center">
                 <div className="relative flex gap-1">
                     <Image

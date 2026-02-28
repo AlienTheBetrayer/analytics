@@ -151,6 +151,7 @@ export const ToplineCompact = ({ data, className, type, onDelete }: Props) => {
                             <li>
                                 <Tooltip text="Privacy configurations">
                                     <Modal
+                                        tooltipClassName="w-screen max-w-92"
                                         element={() => (
                                             <Configurations data={data} />
                                         )}

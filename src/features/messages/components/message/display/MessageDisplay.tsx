@@ -52,6 +52,7 @@ export const MessageDisplay = ({
         <div className="relative flex items-center">
             <div className="w-full">
                 <Modal
+                    tooltipClassName="w-screen max-w-64"
                     direction={isOurs ? "left" : "right"}
                     className={`relative w-fit! ${isOurs ? "ml-auto!" : ""}`}
                     isActive={!selectingMode}

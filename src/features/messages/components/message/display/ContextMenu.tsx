@@ -41,7 +41,7 @@ export const ContextMenu = ({ data, hide, onAction }: Props) => {
                 },
             })}
 
-            <ul className="box acrylic p-4! rounded-2xl! gap-1! **:border-0! w-screen max-w-64 message-ctx">
+            <ul className="box acrylic p-4! rounded-2xl! gap-1! **:border-0! w-full message-ctx">
                 <li className="flex items-center gap-1 mb-6! self-center">
                     <div className="w-1 h-1 rounded-full bg-blue-1" />
                     <Image
@@ -132,6 +132,7 @@ export const ContextMenu = ({ data, hide, onAction }: Props) => {
                         <li>
                             <Modal
                                 blur
+                                tooltipClassName="w-screen max-w-96"
                                 direction="screen-middle"
                                 className="w-full"
                                 element={(hide2) => (

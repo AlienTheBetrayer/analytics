@@ -51,7 +51,7 @@ export const Forwarding = ({ onAction }: Props) => {
     }
 
     return (
-        <article className="box p-4! gap-4! acrylic items-center w-screen max-w-96">
+        <article className="box p-4! gap-4! acrylic items-center w-full">
             <span className="flex items-center gap-1">
                 <div className="w-1 h-1 rounded-full bg-blue-1" />
                 <Image

@@ -21,6 +21,7 @@ export const NoNoteboards = () => {
             }
         >
             <Modal
+                tooltipClassName="w-screen max-w-96"
                 className="w-full max-w-64"
                 element={() => <CreateBoard type="create" />}
                 direction="top"

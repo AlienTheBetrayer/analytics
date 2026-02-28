@@ -23,7 +23,7 @@ export const ProjectManipulation = () => {
     const { data } = useQuery({ key: ["projects"] });
 
     return (
-        <div className="relative flex flex-col box acrylic w-screen max-w-lg gap-8!">
+        <div className="relative flex flex-col box acrylic w-full gap-8!">
             {deleteProjectsBox.render({
                 children:
                     "You will delete every single data entry about this project, including events!",

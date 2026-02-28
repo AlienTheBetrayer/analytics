@@ -23,6 +23,7 @@ export const AuthButton = () => {
             <nav className="flex items-center justify-center">
                 <Tooltip text="Sign up / Log in">
                     <Modal
+                        tooltipClassName="w-screen max-w-100"
                         direction="bottom-left"
                         element={() => <AuthElements />}
                     >
@@ -42,6 +43,7 @@ export const AuthButton = () => {
                 className="auth-button-tooltip p-0.5!"
             >
                 <Modal
+                    tooltipClassName="w-screen max-w-100"
                     direction="bottom-left"
                     element={() => <AuthElements />}
                 >

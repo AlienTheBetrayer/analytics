@@ -29,7 +29,7 @@ export const Filter = ({ tab }: Props) => {
     const [filterTab, setFilterTab] = useState<FilterTabType>("Status");
 
     return (
-        <div className="relative box p-4! gap-4! acrylic w-screen max-w-lg">
+        <div className="relative box p-4! gap-4! acrylic w-full">
             <span className="flex flex-col items-center">
                 <Image
                     alt="filter"

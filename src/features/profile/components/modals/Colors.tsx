@@ -18,7 +18,7 @@ export const Colors = ({ data }: Props) => {
     const controller = useColorModal(data);
 
     return (
-        <div className="relative box acrylic gap-4!">
+        <div className="relative box acrylic gap-4! w-full">
             <ul className="box h-10! p-0! flex-row! w-full items-center!">
                 <li className="absolute left-1/2 top-1/2 -translate-1/2">
                     <span className="flex items-center w-full gap-1">
@@ -48,7 +48,7 @@ export const Colors = ({ data }: Props) => {
 
             <div className="flex flex-col md:flex-row gap-4">
                 <ul
-                    className="grid gap-1 w-screen max-w-48 self-center"
+                    className="grid gap-1 w-full max-w-48 self-center"
                     style={{
                         gridTemplateColumns: `repeat(${COLORS_GRID_SIZE}, minmax(0, 1fr))`,
                     }}
@@ -73,7 +73,7 @@ export const Colors = ({ data }: Props) => {
                     ))}
                 </ul>
 
-                <ul className="flex flex-col gap-2 w-screen max-w-64 min-w-0">
+                <ul className="flex flex-col gap-2 w-full min-w-0">
                     <li className="flex flex-col items-center">
                         <span className="flex items-center gap-1">
                             <Image

@@ -45,6 +45,7 @@ export const EventTopline = () => {
 
             <li>
                 <Modal
+                    tooltipClassName="w-screen max-w-lg"
                     element={() =>
                         selectedProjectId ? (
                             <Filtering project_id={selectedProjectId} />
@@ -72,7 +73,10 @@ export const EventTopline = () => {
             </li>
 
             <li>
-                <Modal element={() => <Sorting />}>
+                <Modal
+                    tooltipClassName="w-screen max-w-92"
+                    element={() => <Sorting />}
+                >
                     <Tooltip text="Sort events">
                         <Button className="aspect-square">
                             <Image

@@ -75,6 +75,7 @@ export const ListTopline = ({ data }: Props) => {
             <li>
                 <Tooltip text="Filtering">
                     <Modal
+                        tooltipClassName="w-screen max-w-92"
                         element={() => <Filtering />}
                         direction="bottom-right"
                     >
@@ -116,6 +117,7 @@ export const ListTopline = ({ data }: Props) => {
             <li className="ml-auto!">
                 <Tooltip text="Display format">
                     <Modal
+                        tooltipClassName="w-screen max-w-92"
                         element={() => <DisplayFormat />}
                         direction="bottom-left"
                     >

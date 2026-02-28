@@ -40,6 +40,7 @@ export const BottomButtons = (props: Props) => {
             )}
 
             <Modal
+                tooltipClassName="w-screen max-w-64"
                 element={() =>
                     props.type === "regular" ? (
                         <RegularContextMenu data={props.data} />

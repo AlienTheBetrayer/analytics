@@ -38,7 +38,7 @@ export const EditingMenu = ({ conversationData, data, hide }: Props) => {
     );
 
     return (
-        <div className="box p-4! acrylic w-screen max-w-2xl">
+        <div className="box p-4! acrylic w-full">
             <span className="flex items-center justify-center gap-1 mb-6!">
                 <div className="w-1 h-1 rounded-full bg-blue-1" />
                 <Image

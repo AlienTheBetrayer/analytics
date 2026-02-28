@@ -16,7 +16,7 @@ export const Sorting = () => {
     }
 
     return (
-        <div className="relative box p-4! gap-4! acrylic w-screen max-w-92">
+        <div className="relative box p-4! gap-4! acrylic w-full">
             <span className="flex flex-col items-center">
                 <Image
                     alt="filter"

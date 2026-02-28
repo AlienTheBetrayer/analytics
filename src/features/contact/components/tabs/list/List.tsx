@@ -198,6 +198,7 @@ export const List = () => {
                     <li className="ml-auto!">
                         <Tooltip text="Display format">
                             <Modal
+                                tooltipClassName="w-screen max-w-lg"
                                 direction="bottom-left"
                                 element={() => <DisplayFormat />}
                             >

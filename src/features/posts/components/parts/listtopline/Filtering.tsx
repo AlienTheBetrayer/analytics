@@ -12,7 +12,7 @@ export const Filtering = () => {
     );
 
     return (
-        <div className="relative box p-4! gap-4! w-screen max-w-92 acrylic">
+        <div className="relative box p-4! gap-4! w-full acrylic">
             <span className="flex flex-col items-center">
                 <Image
                     alt="filter"

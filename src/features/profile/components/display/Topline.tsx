@@ -57,6 +57,7 @@ export const Topline = ({ data }: Props) => {
                 <li>
                     <Tooltip text="Administrator panel">
                         <Modal
+                            tooltipClassName="w-screen max-w-82"
                             direction="bottom-right"
                             element={() => <RoleEditing data={data} />}
                         >

@@ -23,7 +23,7 @@ export const CreateBoard = ({ type, data }: Props) => {
     );
 
     return (
-        <div className="box acrylic p-4! rounded-2xl! gap-1! w-screen max-w-96">
+        <div className="box acrylic p-4! rounded-2xl! gap-1! w-full">
             <div className="flex items-center gap-1 mb-6! self-center">
                 <div className="w-1 h-1 rounded-full bg-blue-1" />
                 <Image

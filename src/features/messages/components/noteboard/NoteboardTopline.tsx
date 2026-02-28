@@ -119,6 +119,7 @@ export const NoteboardTopline = ({ data }: Props) => {
                 <>
                     <li>
                         <Modal
+                            tooltipClassName="w-screen max-w-96"
                             element={() => <CreateBoard type="create" />}
                             direction="bottom-left"
                         >
@@ -140,6 +141,7 @@ export const NoteboardTopline = ({ data }: Props) => {
 
                     <li>
                         <Modal
+                            tooltipClassName="w-screen max-w-lg"
                             element={() => <DisplayFormat />}
                             direction="bottom-left"
                         >
@@ -165,6 +167,7 @@ export const NoteboardTopline = ({ data }: Props) => {
                 <>
                     <li>
                         <Modal
+                            tooltipClassName="w-screen max-w-96"
                             direction="bottom-left"
                             element={() => (
                                 <CreateBoard

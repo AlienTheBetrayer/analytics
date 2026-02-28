@@ -29,6 +29,7 @@ export type MiniProfileProps =
 export const MiniProfile = (props: MiniProfileProps) => {
     return (
         <Modal
+            tooltipClassName="w-screen max-w-96"
             direction="bottom-right"
             element={() => <MiniProfileModal {...props} />}
         >

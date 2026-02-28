@@ -51,42 +51,6 @@ export const Topline = ({ type }: Props) => {
                 <hr className="w-px! h-1/3!" />
             </li>
 
-            <li>
-                <Tooltip text="Push synthetic notifications">
-                    <LinkButton href={`/notifications/emulate`}>
-                        <Image
-                            width={16}
-                            height={16}
-                            alt="emulate"
-                            src="/emulate.svg"
-                        />
-
-                        <TabSelection
-                            condition={tab === "emulate"}
-                            color="var(--blue-1)"
-                        />
-                    </LinkButton>
-                </Tooltip>
-            </li>
-
-            <li>
-                <Tooltip text="Notifications preferences">
-                    <LinkButton href="/notifications/preferences">
-                        <Image
-                            width={16}
-                            height={16}
-                            alt="preferences"
-                            src="/settings.svg"
-                        />
-
-                        <TabSelection
-                            condition={tab === "preferences"}
-                            color="var(--blue-1)"
-                        />
-                    </LinkButton>
-                </Tooltip>
-            </li>
-
             {((lastNotificationId && !id) || type === "specific") && (
                 <li className="self-stretch flex items-center">
                     <hr className="w-px! h-1/3!" />
@@ -184,6 +148,42 @@ export const Topline = ({ type }: Props) => {
                         <TabSelection
                             condition={unreadTabs.Account}
                             color="var(--orange-1)"
+                        />
+                    </LinkButton>
+                </Tooltip>
+            </li>
+
+            <li>
+                <Tooltip text="Push synthetic notifications">
+                    <LinkButton href={`/notifications/emulate`}>
+                        <Image
+                            width={16}
+                            height={16}
+                            alt="emulate"
+                            src="/emulate.svg"
+                        />
+
+                        <TabSelection
+                            condition={tab === "emulate"}
+                            color="var(--blue-1)"
+                        />
+                    </LinkButton>
+                </Tooltip>
+            </li>
+
+            <li>
+                <Tooltip text="Notifications preferences">
+                    <LinkButton href="/notifications/preferences">
+                        <Image
+                            width={16}
+                            height={16}
+                            alt="preferences"
+                            src="/settings.svg"
+                        />
+
+                        <TabSelection
+                            condition={tab === "preferences"}
+                            color="var(--blue-1)"
                         />
                     </LinkButton>
                 </Tooltip>

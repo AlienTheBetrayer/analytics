@@ -48,7 +48,7 @@ export const Filtering = ({ project_id }: Props) => {
     }, [data]);
 
     return (
-        <div className="relative box p-4! w-screen max-w-lg gap-4! acrylic">
+        <div className="relative box p-4! w-full gap-4! acrylic">
             <span className="flex flex-col items-center">
                 <Image
                     alt="filter"

@@ -52,6 +52,7 @@ export const ImageSelect = forwardRef<HTMLInputElement, Props>(
                 text={`${fileValue ? "Open an image editor" : "Prompt a file explorer"}`}
             >
                 <Modal
+                    tooltipClassName="w-screen max-w-82"
                     className="w-full"
                     direction="top"
                     element={(hide) => (

@@ -88,7 +88,9 @@ export const Edit = ({ data }: Props) => {
                             className="w-screen max-w-48 aspect-square"
                             value={avatar}
                             onChange={(file) => {
-                                setAvatar(file ? URL.createObjectURL(file) : "");
+                                setAvatar(
+                                    file ? URL.createObjectURL(file) : "",
+                                );
                                 setAvatarFile(file);
                             }}
                         />
@@ -101,6 +103,7 @@ export const Edit = ({ data }: Props) => {
                             direction="top"
                         >
                             <Modal
+                                tooltipClassName="w-screen max-w-lg"
                                 direction="top"
                                 element={() => <Colors data={data} />}
                                 className="w-full"

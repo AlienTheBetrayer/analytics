@@ -35,6 +35,7 @@ export const ProjectTopline = () => {
 
             <li>
                 <Modal
+                    tooltipClassName="w-screen max-w-92"
                     direction="bottom-right"
                     element={() => <Sorting />}
                 >

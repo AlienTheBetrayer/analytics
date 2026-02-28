@@ -90,26 +90,28 @@ export const positionPopover = (
             break;
         }
         case "screen-middle": {
-            left = document.documentElement.clientWidth / 2 - tooltipBounds.width / 2;
+            left =
+                document.documentElement.clientWidth / 2 -
+                tooltipBounds.width / 2;
             top = window.innerHeight / 2 - tooltipBounds.height / 2;
             break;
         }
-    }
-
-    if (left < 0) {
-        left = 0;
     }
 
     if (left + tooltipBounds.width > document.documentElement.clientWidth) {
         left = document.documentElement.clientWidth - tooltipBounds.width;
     }
 
-    if (top < 0) {
-        top = 0;
+    if (left < 0) {
+        left = 0;
     }
 
     if (top + tooltipBounds.height > document.documentElement.clientHeight) {
         top = document.documentElement.clientHeight - tooltipBounds.height;
+    }
+
+    if (top < 0) {
+        top = 0;
     }
 
     // setting the initial positions

@@ -62,6 +62,7 @@ export const Main = ({ data, conversationData, retrieved }: Props) => {
                                 <>
                                     <li>
                                         <Modal
+                                            tooltipClassName="w-screen max-w-lg"
                                             direction="screen-middle"
                                             blur
                                             element={() => (
@@ -89,6 +90,7 @@ export const Main = ({ data, conversationData, retrieved }: Props) => {
                                     </li>
                                     <li>
                                         <Modal
+                                            tooltipClassName="w-screen max-w-lg"
                                             direction="screen-middle"
                                             blur
                                             element={() => (
@@ -120,6 +122,7 @@ export const Main = ({ data, conversationData, retrieved }: Props) => {
                             <li>
                                 <Modal
                                     direction="screen-middle"
+                                    tooltipClassName="w-screen max-w-2xl"
                                     blur
                                     element={(hide) => (
                                         <EditingMenu

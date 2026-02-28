@@ -18,7 +18,7 @@ export const MiniProfileModal = (props: MiniProfileProps) => {
     switch (props.type) {
         case "conversation": {
             return (
-                <div className="box items-center! acrylic p-4! w-screen max-w-96 rounded-3xl!">
+                <div className="box items-center! acrylic p-4! w-full rounded-3xl!">
                     <Tooltip
                         direction="top"
                         element={<Date data={props.data} />}

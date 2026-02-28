@@ -12,7 +12,7 @@ export const Edit = ({ file, onDelete, onEdit }: Props) => {
     const image = file && URL.createObjectURL(file);
 
     return (
-        <ul className="relative box py-0! px-2! w-screen max-w-81 overflow-hidden border-0! aspect-video group duration-500!">
+        <ul className="relative box py-0! px-2! w-full overflow-hidden border-0! aspect-video group duration-500!">
             {image && (
                 <li>
                     <Image

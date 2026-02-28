@@ -9,7 +9,7 @@ export const DisplayFormat = () => {
     const updateDisplay = useLocalStore((state) => state.updateDisplay);
 
     return (
-        <div className="box items-stretch! w-screen max-w-lg p-4! gap-4! acrylic">
+        <div className="box items-stretch! w-full p-4! gap-4! acrylic">
             <span className="flex flex-col gap-1 items-center">
                 <Image
                     alt=""

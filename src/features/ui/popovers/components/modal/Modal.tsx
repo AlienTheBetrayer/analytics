@@ -13,6 +13,7 @@ type Props = {
     direction?: PopoverDirection;
     contextMenu?: boolean;
     className?: string;
+    tooltipClassName?: string;
     blur?: boolean;
     isEnabled?: boolean;
     isActive?: boolean;
@@ -23,6 +24,7 @@ export const Modal = React.memo(function ModalFunction({
     element,
     direction = "bottom",
     className = "",
+    tooltipClassName = "",
     blur = false,
     contextMenu = false,
     isEnabled = true,
@@ -206,7 +208,7 @@ export const Modal = React.memo(function ModalFunction({
                                     className="fixed z-1000"
                                 >
                                     <motion.div
-                                        className="backdrop-blur-md rounded-4xl modal-element"
+                                        className={`backdrop-blur-md rounded-4xl modal-element ${tooltipClassName ?? ""}`}
                                         initial={{
                                             opacity: 0,
                                             scale: 0.9,

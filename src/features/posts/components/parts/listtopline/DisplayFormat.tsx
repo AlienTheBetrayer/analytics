@@ -13,7 +13,7 @@ export const DisplayFormat = () => {
     const isMobile = useMediaQuery("(max-width:640px)");
 
     return (
-        <div className="box w-screen max-w-102 p-4! gap-4! acrylic">
+        <div className="box w-full p-4! gap-4! acrylic">
             <div className="flex flex-col gap-1 items-center">
                 <Image
                     alt=""

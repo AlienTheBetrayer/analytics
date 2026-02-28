@@ -25,7 +25,7 @@ export const Configurations = ({ data }: Props) => {
     const [likes, setLikes] = useState<boolean>(post_privacy?.likes ?? true);
 
     return (
-        <div className="box w-screen max-w-91">
+        <div className="box w-full">
             <div className="flex flex-col items-center">
                 <Image
                     alt=""

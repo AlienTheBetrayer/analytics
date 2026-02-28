@@ -16,7 +16,7 @@ export const AuthElements = () => {
     const [logoutEnabled, setLogoutEnabled] = useState<boolean>(false);
 
     return (
-        <div className="relative box gap-4! acrylic h-full w-screen max-w-100">
+        <div className="relative box gap-4! acrylic h-full w-full">
             <div className="flex flex-col gap-1 items-center">
                 <div className="relative flex gap-1">
                     <Image
