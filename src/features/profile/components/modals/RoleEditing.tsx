@@ -48,7 +48,7 @@ export const RoleEditing = ({ data }: Props) => {
                     htmlFor="role-select"
                 >
                     <span>Role</span>
-                    <small className="ml-auto text-ellipsis-left">
+                    <small className="ml-auto truncate-left">
                         (different roles have different permissions)
                     </small>
                 </label>

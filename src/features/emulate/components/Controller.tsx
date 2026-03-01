@@ -83,7 +83,7 @@ export const Controller = ({ data }: Props) => {
                                     className="flex whitespace-nowrap"
                                 >
                                     Custom project&apos;s name
-                                    <small className="text-ellipsis-left ml-auto">
+                                    <small className="truncate-left ml-auto">
                                         (since you didn&apos;t select any)
                                     </small>
                                 </label>
@@ -105,7 +105,7 @@ export const Controller = ({ data }: Props) => {
                                 className="flex whitespace-nowrap"
                             >
                                 Event type
-                                <small className="text-ellipsis-left ml-auto">
+                                <small className="truncate-left ml-auto">
                                     (page_view, effect_click, other)
                                 </small>
                             </label>
@@ -126,7 +126,7 @@ export const Controller = ({ data }: Props) => {
                                 className="flex whitespace-nowrap"
                             >
                                 Description
-                                <small className="text-ellipsis-left ml-auto">
+                                <small className="truncate-left ml-auto">
                                     (optional)
                                 </small>
                             </label>

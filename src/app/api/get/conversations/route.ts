@@ -16,7 +16,7 @@ export const GET = async (request: NextRequest) => {
             .select(
                 `
                     *, 
-                    membership:conversation_members!inner(user_id),
+                    membership:conversation_members!inner(*),
 
                     last_message:messages(*, 
                         user:users(id, username, last_seen_at,
@@ -50,6 +50,7 @@ export const GET = async (request: NextRequest) => {
                 conversations: data.map((entry) => ({
                     ...entry,
                     last_message: entry.last_message?.[0],
+                    membership: entry.membership?.[0],
                     conversation_meta: entry.conversation_meta?.[0],
                     peer: entry.peer?.[0]?.user,
                 })),

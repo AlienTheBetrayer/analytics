@@ -18,7 +18,7 @@ export const Preferences = () => {
                 className="flex whitespace-nowrap"
             >
                 <span>Popups&apos; visiblity</span>
-                <small className="ml-auto text-ellipsis-left">
+                <small className="ml-auto truncate-left">
                     (whether to show them when they occur)
                 </small>
             </label>

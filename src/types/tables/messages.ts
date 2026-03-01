@@ -6,6 +6,11 @@ export type ConversationMember = {
     conversation_id: string;
     user_id: string;
     created_at: string;
+    is_founder?: boolean;
+    can_delete_messages?: boolean;
+    can_kick?: boolean;
+    can_read?: boolean;
+    can_invite?: boolean;
 };
 
 /**

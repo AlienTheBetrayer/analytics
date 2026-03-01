@@ -97,7 +97,7 @@ export const Sessions = ({ data }: Props) => {
 
                 <span>Sessions</span>
 
-                <small className="ml-auto text-ellipsis-left">
+                <small className="ml-auto truncate-left">
                     (all your logged in accounts)
                 </small>
             </span>

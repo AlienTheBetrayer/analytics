@@ -41,7 +41,7 @@ export const ProjectList = ({ data }: Props) => {
 
                             <span>{project.name}</span>
 
-                            <small className="ml-auto text-ellipsis-left">
+                            <small className="ml-auto truncate-left">
                                 updated {relativeTime(project.last_event_at)}
                             </small>
                         </LinkButton>

@@ -66,7 +66,7 @@ export const MessageDisplay = ({
                 >
                     <Button
                         className={`box p-1.75! px-4! w-fit! flex-col! rounded-3xl!
-                    ${isSelected && selectingMode ? "not-hover:bg-bg-5! hover:bg-bg-6! select-none" : "not-hover:bg-bg-1!"}
+                        ${isSelected && selectingMode ? "not-hover:bg-bg-5! hover:bg-bg-6! select-none" : "not-hover:bg-bg-1!"}
                     `}
                         onClick={() => {
                             if (!selectingMode) {
@@ -74,18 +74,16 @@ export const MessageDisplay = ({
                             }
                             invertDisplay();
                         }}
-                        onPointerEnter={(e) => {
-                            if (!(e.buttons & 1) || !selectingMode) {
-                                return;
-                            }
-                            invertDisplay("on");
-                        }}
-                        onPointerLeave={(e) => {
-                            if (!(e.buttons & 1) || !selectingMode) {
-                                return;
-                            }
-                            invertDisplay("on");
-                        }}
+                        onPointerMove={
+                            selectingMode
+                                ? (e) => {
+                                      if (!(e.buttons & 1)) {
+                                          return;
+                                      }
+                                      invertDisplay("on");
+                                  }
+                                : undefined
+                        }
                     >
                         <Reply data={data} />
                         <Forward data={data} />

@@ -143,7 +143,7 @@ export const Edit = ({ data }: Props) => {
                                         src="/pencil.svg"
                                     />
                                     Name
-                                    <small className="ml-auto text-ellipsis-left">
+                                    <small className="ml-auto truncate-left">
                                         (your name, can be fictional)
                                     </small>
                                 </label>
@@ -168,7 +168,7 @@ export const Edit = ({ data }: Props) => {
                                         src="/type.svg"
                                     />
                                     Title
-                                    <small className="ml-auto text-ellipsis-left">
+                                    <small className="ml-auto truncate-left">
                                         (a short phrase that feels yours)
                                     </small>
                                 </label>
@@ -196,7 +196,7 @@ export const Edit = ({ data }: Props) => {
                                 src="/menu.svg"
                             />
                             Status
-                            <small className="ml-auto text-ellipsis-left">
+                            <small className="ml-auto truncate-left">
                                 (a short text capturing your mood)
                             </small>
                         </label>
@@ -221,7 +221,7 @@ export const Edit = ({ data }: Props) => {
                                 src="/book.svg"
                             />
                             Bio
-                            <small className="ml-auto text-ellipsis-left">
+                            <small className="ml-auto truncate-left">
                                 (a long piece of text, describe yourself)
                             </small>
                         </label>
@@ -246,7 +246,7 @@ export const Edit = ({ data }: Props) => {
                                 src="/account.svg"
                             />
                             Gender
-                            <small className="ml-auto text-ellipsis-left">
+                            <small className="ml-auto truncate-left">
                                 (the way you identify yourself)
                             </small>
                         </label>

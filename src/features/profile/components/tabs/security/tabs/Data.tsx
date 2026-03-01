@@ -57,7 +57,7 @@ export const Data = ({ data }: Props) => {
                             src="/pencil.svg"
                         />
                         <span>Username</span>
-                        <small className="ml-auto text-ellipsis-left">
+                        <small className="ml-auto truncate-left">
                             (a new username)
                         </small>
                     </label>
@@ -98,7 +98,7 @@ export const Data = ({ data }: Props) => {
                             src="/security.svg"
                         />
                         <span>Password</span>
-                        <small className="ml-auto text-ellipsis-left">
+                        <small className="ml-auto truncate-left">
                             (a new strong password)
                         </small>
                     </label>

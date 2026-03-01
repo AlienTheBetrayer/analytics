@@ -418,7 +418,7 @@ img {
     text-decoration: underline wavy var(--blue-1) 1px;
 }
 
-.text-ellipsis-left {
+.truncate-left {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

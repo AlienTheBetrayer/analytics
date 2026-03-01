@@ -15,7 +15,7 @@ export const Members = ({ conversationData }: Props) => {
     const [tab, setTab] = useState<"list" | "add">("list");
 
     return (
-        <div className="box p-4! gap-4! items-center">
+        <div className="box p-4! gap-4! items-center acrylic">
             <Tooltip
                 className="absolute! right-11 top-1.75"
                 direction="top"
