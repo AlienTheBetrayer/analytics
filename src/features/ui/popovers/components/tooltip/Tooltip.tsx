@@ -140,7 +140,10 @@ export const Tooltip = React.memo(function TooltipFunction({
                                         opacity: 0,
                                         scale: 0.7,
                                     }}
-                                    transition={{ delay: 0.1 }}
+                                    transition={{
+                                        ease: [0.4, 0, 0.2, 1],
+                                        duration: 0.3,
+                                    }}
                                     className={`backdrop-blur-md rounded-4xl ${element ? "" : "box py-1.5! px-3! rounded-full!"}`}
                                 >
                                     {element ?? (

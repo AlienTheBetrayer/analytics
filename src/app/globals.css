@@ -83,6 +83,7 @@
     --brightness-b: 1.3;
     --dotted: var(--background-2);
     --loading: var(--background-4);
+    --backdrop: rgba(0, 0, 0, 0.4);
 
     --invert-1: 0.1;
     --invert-2: 0.2;
@@ -143,6 +144,7 @@
     --brightness-b: 0.3;
     --dotted: var(--background-10);
     --loading: var(--background-7);
+    --backdrop: rgba(0, 0, 0, 0.2);
 
     --invert-1: 0.9;
     --invert-2: 0.8;
@@ -355,6 +357,29 @@ dialog {
     outline: 0;
     background: transparent;
     overflow: visible;
+}
+
+dialog {
+    transition:
+        opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        display 0.3s cubic-bezier(0.4, 0, 0.2, 1) allow-discrete,
+        overlay 0.3s cubic-bezier(0.4, 0, 0.2, 1) allow-discrete;
+}
+
+dialog::backdrop {
+    background: var(--backdrop);
+    opacity: 0;
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+dialog[open]::backdrop {
+    opacity: 1;
+}
+
+@starting-style {
+    dialog[open]::backdrop {
+        opacity: 0;
+    }
 }
 
 input[list]::-webkit-calendar-picker-indicator {

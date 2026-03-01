@@ -21,7 +21,6 @@ export const POST = async (request: NextRequest) => {
             image,
             image_name,
             image_type,
-            ids,
         } = await request.json();
 
         if (!type || !user_id) {
@@ -222,58 +221,6 @@ export const POST = async (request: NextRequest) => {
                             },
                             { onConflict: "user_id,conversation_id" },
                         );
-
-                    if (error) {
-                        throw error;
-                    }
-                }
-
-                return nextResponse({ success: true }, 200);
-            }
-            case "add_members": {
-                if (!ids?.length || !conversation_id) {
-                    throw "ids and conversation_id are undefined";
-                }
-
-                // get usernames for a system message
-                const { data: usernames, error } = await supabaseServer
-                    .from("users")
-                    .select("username")
-                    .in("id", ids);
-
-                if (error) {
-                    throw error;
-                }
-
-                // the actual members
-                {
-                    const { error } = await supabaseServer
-                        .from("conversation_members")
-                        .insert(
-                            (ids as string[]).map((user_id) => ({
-                                conversation_id,
-                                user_id,
-                            })),
-                        );
-
-                    if (error) {
-                        throw error;
-                    }
-                }
-
-                // system message
-                {
-                    const { error } = await supabaseServer
-                        .from("messages")
-                        .insert({
-                            message:
-                                ids.length > 10
-                                    ? `${ids.length} users have joined!`
-                                    : `${usernames.map((u) => u.username).join(", ")} ${ids.length > 1 ? "have" : "has"} joined!`,
-                            type: "system",
-                            conversation_id,
-                            user_id: null,
-                        });
 
                     if (error) {
                         throw error;

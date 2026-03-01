@@ -218,6 +218,10 @@ export const Modal = React.memo(function ModalFunction({
                                             opacity: 0,
                                             scale: 0.9,
                                         }}
+                                        transition={{
+                                            ease: [0.4, 0, 0.2, 1],
+                                            duration: 0.3,
+                                        }}
                                         ref={modalElementRef}
                                     >
                                         <DragButton

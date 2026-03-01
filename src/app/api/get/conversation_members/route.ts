@@ -14,11 +14,17 @@ export const GET = async (request: NextRequest) => {
         const { data, error } = await supabaseServer
             .from("conversation_members")
             .select(
-            `created_at, 
+                `conversation_id, created_at, 
                         user:users(id, username, last_seen_at, 
                         profile:profiles(avatar_url, color))`,
             )
-            .eq("conversation_id", conversation_id);
+            .eq("conversation_id", conversation_id)
+            .order("user(last_seen_at)", {
+                ascending: false,
+                nullsFirst: false,
+            });
+
+        console.log(data);
 
         if (error) {
             throw error;

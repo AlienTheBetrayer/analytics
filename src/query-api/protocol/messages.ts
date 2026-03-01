@@ -42,7 +42,7 @@ export type CacheAPIProtocolMessages = {
 
     conversation_members: {
         key: ["conversation_members", string];
-        data: (Pick<ConversationMember, "created_at"> & {
+        data: (Pick<ConversationMember, "created_at" | "conversation_id"> & {
             user: Pick<User, "username" | "id" | "last_seen_at"> & {
                 profile: Pick<Profile, "avatar_url" | "color">;
             };

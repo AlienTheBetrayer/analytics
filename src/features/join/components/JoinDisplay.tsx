@@ -5,7 +5,7 @@ import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { PromiseState } from "@/promises/components/PromiseState";
 import { wrapPromise } from "@/promises/core";
-import { upsertConversation } from "@/query-api/calls/conversation";
+import { updateConversationMembers } from "@/query-api/calls/conversation_members";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { useQuery } from "@/query/core";
 import Image from "next/image";
@@ -80,11 +80,11 @@ export const JoinDisplay = ({ data }: Props) => {
                             }
 
                             wrapPromise("addMembers", () => {
-                                return upsertConversation({
-                                    type: "add_members",
+                                return updateConversationMembers({
+                                    type: "add",
                                     conversation_id: data.conversation_id,
                                     user: status,
-                                    ids: [status.id],
+                                    user_ids: [status.id],
                                 });
                             }).then(() => {
                                 redirect(`/messages/c/${data.conversation_id}`);

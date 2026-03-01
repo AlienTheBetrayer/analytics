@@ -1,6 +1,6 @@
 import { MiniSearch } from "@/features/minisearch/components/MiniSearch";
 import { wrapPromise } from "@/promises/core";
-import { upsertConversation } from "@/query-api/calls/conversation";
+import { updateConversationMembers } from "@/query-api/calls/conversation_members";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { useQuery } from "@/query/core";
 
@@ -17,17 +17,17 @@ export const AddFriends = ({ conversationData }: Props) => {
             text="Add"
             type="friends"
             view="select"
-            onSelect={(ids) => {
+            onSelect={(user_ids) => {
                 if (!status) {
                     return;
                 }
 
                 wrapPromise("addMembers", () => {
-                    return upsertConversation({
-                        type: "add_members",
+                    return updateConversationMembers({
+                        type: "add",
                         user: status,
                         conversation_id: conversationData.id,
-                        ids,
+                        user_ids,
                     });
                 });
             }}
