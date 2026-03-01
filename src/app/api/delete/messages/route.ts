@@ -16,8 +16,7 @@ export const POST = async (request: NextRequest) => {
         const { error } = await supabaseServer
             .from("messages")
             .delete()
-            .in("id", message_ids)
-            .eq("user_id", user_id);
+            .in("id", message_ids);
 
         if (error) {
             throw error;

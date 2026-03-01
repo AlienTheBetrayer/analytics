@@ -24,7 +24,6 @@ export const GET = async (request: NextRequest) => {
                 nullsFirst: false,
             });
 
-        console.log(data);
 
         if (error) {
             throw error;

@@ -10,8 +10,6 @@ type Props = {
 };
 
 export const Avatar = ({ type, data, className }: Props) => {
-    console.log(data);
-
     return (
         <div
             className={`relative shrink-0 overflow-hidden rounded-full transition-all duration-300 w-12 h-12 loading aspect-square flex items-center justify-center

@@ -13,7 +13,7 @@ export const SystemDisplay = ({ data }: Props) => {
         <Modal
             tooltipClassName="w-screen max-w-64"
             direction="left"
-            className="w-fit mx-auto my-4"
+            className="w-fit mx-auto my-1"
             element={() => <ContextMenu data={data} />}
         >
             <Button

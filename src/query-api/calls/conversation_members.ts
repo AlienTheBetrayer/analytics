@@ -23,7 +23,7 @@ export const updateConversationMembers = async (options: {
 
     // query
     const res = await refreshedRequest({
-        route: "/api/update/conversation",
+        route: "/api/update/conversation_members",
         method: "POST",
         body: {
             user_id: options.user.id,

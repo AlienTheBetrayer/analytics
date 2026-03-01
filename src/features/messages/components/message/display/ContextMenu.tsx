@@ -185,7 +185,7 @@ export const ContextMenu = ({ data, hide, onAction }: Props) => {
                     </>
                 )}
 
-                {isOurs && (
+                {(isOurs || data.type === "system") && (
                     <li>
                         <Button onClick={deleteBox.show}>
                             <Image

@@ -212,7 +212,7 @@ export const deleteMessage = async (options: {
     user: AuthenticationToken;
 }) => {
     const messages = options.message.filter(
-        (m) => m.user_id === options.user.id,
+        (m) => m.user_id === options.user.id || m.type === "system",
     );
 
     if (!messages.length) {
@@ -225,25 +225,27 @@ export const deleteMessage = async (options: {
             state.filter((m) => !messages.find((msg) => msg.id === m.id)),
     });
 
-    queryMutate({
-        key: ["conversations", messages[0].user.id],
-        value: (state) =>
-            state.map((c) =>
-                c.id === messages[0].conversation_id
-                    ? {
-                          ...c,
-                          last_message: (
-                              queryCache.get({
-                                  key: [
-                                      "messages",
-                                      messages[0].conversation_id,
-                                  ],
-                              }) as CacheAPIProtocol["messages"]["data"]
-                          )?.at(-1),
-                      }
-                    : c,
-            ),
-    });
+    if (messages[0]?.user?.id) {
+        queryMutate({
+            key: ["conversations", messages[0].user.id],
+            value: (state) =>
+                state.map((c) =>
+                    c.id === messages[0].conversation_id
+                        ? {
+                              ...c,
+                              last_message: (
+                                  queryCache.get({
+                                      key: [
+                                          "messages",
+                                          messages[0].conversation_id,
+                                      ],
+                                  }) as CacheAPIProtocol["messages"]["data"]
+                              )?.at(-1),
+                          }
+                        : c,
+                ),
+        });
+    }
 
     const res = await refreshedRequest({
         method: "POST",
