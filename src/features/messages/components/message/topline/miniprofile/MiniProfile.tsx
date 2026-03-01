@@ -4,7 +4,6 @@ import { Button } from "@/features/ui/button/components/Button";
 import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { CacheAPIProtocol } from "@/query-api/protocol";
-import { useQuery } from "@/query/core";
 import { relativeTime } from "@/utils/other/relativeTime";
 import Image from "next/image";
 import { useParams } from "next/navigation";
@@ -46,30 +45,27 @@ export const MiniProfile = (props: MiniProfileProps) => {
 };
 
 export const MiniProfileView = (props: MiniProfileProps) => {
-    const { data: status } = useQuery({ key: ["status"] });
     const { id, extra } = useParams<{ id?: string; extra?: string }>();
 
     switch (props.type) {
         case "conversation": {
             switch (props.data.type) {
                 case "dm": {
-                    const user = props.data.conversation_members.find(
-                        (m) => m.user_id !== status?.id,
-                    )?.user;
-
                     return (
                         <span className="flex items-center gap-1 self-stretch px-2!">
                             <div className="w-1 h-1 rounded-full bg-blue-1" />
                             <ProfileImage
-                                profile={user?.profile}
+                                profile={props.data.peer?.profile}
                                 width={256}
                                 height={256}
                                 className="w-5! h-5!"
                             />
-                            <span>{user?.username}</span>
+                            <span>{props.data.peer?.username}</span>
                             <span>
                                 <small>
-                                    {relativeTime(user?.last_seen_at)}
+                                    {relativeTime(
+                                        props.data.peer?.last_seen_at,
+                                    )}
                                 </small>
                             </span>
                         </span>
@@ -86,7 +82,7 @@ export const MiniProfileView = (props: MiniProfileProps) => {
                                     width={24}
                                     height={24}
                                     src={props.data.image_url}
-                            className="invert-0! rounded-full w-6! h-6!"
+                                    className="invert-0! rounded-full w-6! h-6!"
                                 />
                             ) : (
                                 <Image
@@ -110,7 +106,7 @@ export const MiniProfileView = (props: MiniProfileProps) => {
                                     width={24}
                                     height={24}
                                     src={props.data.image_url}
-                            className="invert-0! rounded-full w-6! h-6!"
+                                    className="invert-0! rounded-full w-6! h-6!"
                                 />
                             ) : (
                                 <Image

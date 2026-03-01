@@ -1,5 +1,4 @@
 import { CacheAPIProtocol } from "@/query-api/protocol";
-import { useQuery } from "@/query/core";
 import Image from "next/image";
 
 type Props = {
@@ -7,17 +6,11 @@ type Props = {
 };
 
 export const Name = ({ data }: Props) => {
-    const { data: status } = useQuery({ key: ["status"] });
-
     switch (data.type) {
         case "dm": {
-            const otherUser = data.conversation_members.find(
-                (m) => m.user_id !== status?.id,
-            )?.user;
-
             return (
                 <span className="truncate">
-                    {data.title || otherUser?.username}
+                    {data.title || data.peer?.username}
                 </span>
             );
         }

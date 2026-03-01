@@ -91,9 +91,7 @@ export const RegularContextMenu = ({ data }: Props) => {
 
                 {data.type === "dm" && (
                     <li>
-                        <LinkButton
-                            href={`/profile/${data.conversation_members.find((m) => m.user_id !== status?.id)?.user.username}`}
-                        >
+                        <LinkButton href={`/profile/${data.peer?.username}`}>
                             <Image
                                 alt=""
                                 width={16}

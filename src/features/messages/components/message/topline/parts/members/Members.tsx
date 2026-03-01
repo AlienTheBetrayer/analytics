@@ -1,5 +1,5 @@
-import { Create } from "@/features/messages/components/message/topline/parts/invites/Create";
-import { List } from "@/features/messages/components/message/topline/parts/invites/List";
+import { AddFriends } from "@/features/messages/components/message/topline/parts/members/AddFriends";
+import { MembersList } from "@/features/messages/components/message/topline/parts/members/MembersList";
 import { Button } from "@/features/ui/button/components/Button";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { CacheAPIProtocol } from "@/query-api/protocol";
@@ -11,22 +11,20 @@ type Props = {
     conversationData: CacheAPIProtocol["conversations"]["data"][number];
 };
 
-export type InvitesTab = "list" | "create";
-
-export const CreateInvites = ({ conversationData }: Props) => {
-    const [tab, setTab] = useState<InvitesTab>("list");
+export const Members = ({ conversationData }: Props) => {
+    const [tab, setTab] = useState<"list" | "add">("list");
 
     return (
-        <div className="box acrylic p-4! gap-4! items-center w-full min-h-72">
+        <div className="box p-4! gap-4! items-center">
             <Tooltip
                 className="absolute! right-11 top-1.75"
                 direction="top"
-                text={tab === "list" ? "Create" : "List"}
+                text={tab === "add" ? "List" : "Add"}
             >
                 <Button
                     className="p-0! rounded-lg! w-6! h-6! min-h-6! min-w-6!"
                     onClick={() => {
-                        setTab((prev) => (prev === "list" ? "create" : "list"));
+                        setTab((prev) => (prev === "list" ? "add" : "list"));
                     }}
                 >
                     <Image
@@ -38,18 +36,16 @@ export const CreateInvites = ({ conversationData }: Props) => {
                 </Button>
             </Tooltip>
 
-            <div className="flex flex-col gap-2">
-                <span className="flex items-center gap-1">
-                    <div className="w-1 h-1 bg-blue-1 rounded-full" />
-                    <Image
-                        alt=""
-                        width={16}
-                        height={16}
-                        src="/link.svg"
-                    />
-                    <span>Invitations</span>
-                </span>
-            </div>
+            <span className="flex items-center gap-1">
+                <div className="w-1 h-1 rounded-full bg-blue-1" />
+                <Image
+                    alt=""
+                    width={16}
+                    height={16}
+                    src="/friends.svg"
+                />
+                Members
+            </span>
 
             <AnimatePresence mode="wait">
                 <motion.div
@@ -60,15 +56,10 @@ export const CreateInvites = ({ conversationData }: Props) => {
                     transition={{ ease: [0.4, 0, 0.2, 1], duration: 0.15 }}
                     className="flex flex-col grow *:grow w-full"
                 >
-                    {tab === "create" ? (
-                        <Create conversationData={conversationData} />
+                    {tab === "add" ? (
+                        <AddFriends conversationData={conversationData} />
                     ) : (
-                        <List
-                            conversationData={conversationData}
-                            onNavigate={() => {
-                                setTab("create");
-                            }}
-                        />
+                        <MembersList conversationData={conversationData} />
                     )}
                 </motion.div>
             </AnimatePresence>

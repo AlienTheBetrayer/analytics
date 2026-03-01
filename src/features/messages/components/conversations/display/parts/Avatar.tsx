@@ -1,6 +1,5 @@
 import { ProfileImage } from "@/features/profile/components/ProfileImage";
 import { CacheAPIProtocol } from "@/query-api/protocol";
-import { useQuery } from "@/query/core";
 import { Conversation } from "@/types/tables/messages";
 import Image from "next/image";
 
@@ -11,7 +10,7 @@ type Props = {
 };
 
 export const Avatar = ({ type, data, className }: Props) => {
-    const { data: status } = useQuery({ key: ["status"] });
+    console.log(data);
 
     return (
         <div
@@ -30,13 +29,9 @@ export const Avatar = ({ type, data, className }: Props) => {
                 (() => {
                     switch (type || data?.type) {
                         case "dm": {
-                            const otherUser = data?.conversation_members.find(
-                                (m) => m.user_id !== status?.id,
-                            )?.user;
-
                             return (
                                 <ProfileImage
-                                    profile={otherUser?.profile}
+                                    profile={data?.peer?.profile}
                                     width={256}
                                     height={256}
                                     className="w-full! h-full!"

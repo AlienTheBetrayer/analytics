@@ -26,11 +26,7 @@ export const filterConversation = (
     }
 
     // users matched
-    if (
-        data.conversation_members.some((m) =>
-            m.user.username.toLowerCase().includes(filter),
-        )
-    ) {
+    if (data.peer?.username.toLowerCase().trim().includes(filter)) {
         return true;
     }
 

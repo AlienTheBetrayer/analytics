@@ -1,6 +1,5 @@
 import { EditingMenu } from "@/features/messages/components/message/editing/EditingMenu";
 import { ConversationToplineInfo } from "@/features/messages/components/message/topline/ConversationToplineInfo";
-import { AddFriends } from "@/features/messages/components/message/topline/parts/addfriends/AddFriends";
 import { CreateInvites } from "@/features/messages/components/message/topline/parts/invites/CreateInvites";
 import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
@@ -13,6 +12,7 @@ import { queryInvalidate } from "@/query/auxiliary";
 import { useQuery } from "@/query/core";
 import Image from "next/image";
 import { useParams } from "next/navigation";
+import { Members } from "@/features/messages/components/message/topline/parts/members/Members";
 
 type Props = {
     data: CacheAPIProtocol["messages"]["data"] | null;
@@ -66,6 +66,35 @@ export const Main = ({ data, conversationData, retrieved }: Props) => {
                                             direction="screen-middle"
                                             blur
                                             element={() => (
+                                                <Members
+                                                    conversationData={
+                                                        conversationData
+                                                    }
+                                                />
+                                            )}
+                                        >
+                                            <Tooltip
+                                                direction="top"
+                                                text="Members"
+                                            >
+                                                <Button>
+                                                    <Image
+                                                        alt=""
+                                                        width={16}
+                                                        height={16}
+                                                        src="/friends.svg"
+                                                    />
+                                                </Button>
+                                            </Tooltip>
+                                        </Modal>
+                                    </li>
+
+                                    <li>
+                                        <Modal
+                                            tooltipClassName="w-screen max-w-lg"
+                                            direction="screen-middle"
+                                            blur
+                                            element={() => (
                                                 <CreateInvites
                                                     conversationData={
                                                         conversationData
@@ -83,34 +112,6 @@ export const Main = ({ data, conversationData, retrieved }: Props) => {
                                                         width={16}
                                                         height={16}
                                                         src="/link.svg"
-                                                    />
-                                                </Button>
-                                            </Tooltip>
-                                        </Modal>
-                                    </li>
-                                    <li>
-                                        <Modal
-                                            tooltipClassName="w-screen max-w-lg"
-                                            direction="screen-middle"
-                                            blur
-                                            element={() => (
-                                                <AddFriends
-                                                    conversationData={
-                                                        conversationData
-                                                    }
-                                                />
-                                            )}
-                                        >
-                                            <Tooltip
-                                                direction="top"
-                                                text="Add friends"
-                                            >
-                                                <Button>
-                                                    <Image
-                                                        alt=""
-                                                        width={16}
-                                                        height={16}
-                                                        src="/cubeadd.svg"
                                                     />
                                                 </Button>
                                             </Tooltip>

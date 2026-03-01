@@ -42,7 +42,7 @@ export const MiniSearch = ({
 
     return (
         <div
-            className={`acrylic box p-4! gap-2! w-screen max-w-81 min-h-64 ${className ?? ""}`}
+            className={`acrylic box p-4! gap-2! w-full min-h-64 ${className ?? ""}`}
         >
             <span className="flex items-center gap-1 mx-auto">
                 <div className="w-1 h-1 rounded-full bg-blue-1" />

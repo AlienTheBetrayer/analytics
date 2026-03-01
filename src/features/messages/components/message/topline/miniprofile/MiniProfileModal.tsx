@@ -4,7 +4,6 @@ import { ProfileImage } from "@/features/profile/components/ProfileImage";
 import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
-import { useQuery } from "@/query/core";
 import Image from "next/image";
 import { UnknownConversation } from "@/features/messages/components/errors/UnknownConversation";
 import { InfoRetrieved } from "@/features/messages/components/errors/InfoRetrieved";
@@ -12,7 +11,6 @@ import { useParams } from "next/navigation";
 import { TabSelection } from "@/utils/other/TabSelection";
 
 export const MiniProfileModal = (props: MiniProfileProps) => {
-    const { data: status } = useQuery({ key: ["status"] });
     const { id } = useParams<{ id?: string }>();
 
     switch (props.type) {
@@ -37,11 +35,6 @@ export const MiniProfileModal = (props: MiniProfileProps) => {
                     {(() => {
                         switch (props.data.type) {
                             case "dm": {
-                                const user =
-                                    props.data.conversation_members.find(
-                                        (m) => m.user_id !== status?.id,
-                                    )?.user;
-
                                 return (
                                     <>
                                         <span className="flex items-center gap-1">
@@ -53,16 +46,20 @@ export const MiniProfileModal = (props: MiniProfileProps) => {
                                             />
                                             <div className="w-1 h-1 rounded-full bg-blue-1" />
 
-                                            <span>{user?.username}</span>
+                                            <span>
+                                                {props.data.peer?.username}
+                                            </span>
                                         </span>
 
                                         <div className="flex flex-col items-center w-full">
                                             <LinkButton
-                                                href={`/profile/${user?.username}`}
+                                                href={`/profile/${props.data.peer?.username}`}
                                                 className="not-hover:bg-transparent! border-0! w-full rounded-2xl!"
                                             >
                                                 <ProfileImage
-                                                    profile={user?.profile}
+                                                    profile={
+                                                        props.data.peer?.profile
+                                                    }
                                                     width={256}
                                                     height={256}
                                                     className="w-32! h-32!"
@@ -85,7 +82,7 @@ export const MiniProfileModal = (props: MiniProfileProps) => {
                                         )}
 
                                         <LinkButton
-                                            href={`/profile/${user?.username}`}
+                                            href={`/profile/${props.data.peer?.username}`}
                                             className="w-full"
                                         >
                                             <Image

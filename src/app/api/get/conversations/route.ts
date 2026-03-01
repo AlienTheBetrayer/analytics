@@ -18,19 +18,18 @@ export const GET = async (request: NextRequest) => {
                     *, 
                     membership:conversation_members!inner(user_id),
 
-                    conversation_members:conversation_members(user_id, created_at, 
-                        user:users(id, username, last_seen_at, 
-                        profile:profiles(avatar_url, color))),
-
                     last_message:messages(*, 
                         user:users(id, username, last_seen_at,
                         profile:profiles(avatar_url, color))),
+
+                    peer:conversation_members(user:users(id, username, last_seen_at, profile:profiles(avatar_url, color))),
 
                     conversation_meta:conversation_meta(pinned, archived, pinned_at)
                 `,
             )
             .eq("membership.user_id", user_id)
             .eq("conversation_meta.user_id", user_id)
+            .neq("peer.user_id", user_id)
             .order("created_at", {
                 referencedTable: "last_message",
                 ascending: false,
@@ -38,7 +37,8 @@ export const GET = async (request: NextRequest) => {
             .order("created_at", {
                 ascending: false,
             })
-            .limit(1, { referencedTable: "last_message" });
+            .limit(1, { referencedTable: "last_message" })
+            .limit(1, { referencedTable: "peer" });
 
         if (error) {
             throw error;
@@ -51,6 +51,7 @@ export const GET = async (request: NextRequest) => {
                     ...entry,
                     last_message: entry.last_message?.[0],
                     conversation_meta: entry.conversation_meta?.[0],
+                    peer: entry.peer?.[0]?.user,
                 })),
             },
             200,

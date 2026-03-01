@@ -29,17 +29,23 @@ export type CacheAPIProtocolMessages = {
                 user: CacheAPIProtocol["messages"]["data"][number]["user"];
             };
 
-            conversation_members: (Pick<
-                ConversationMember,
-                "user_id" | "created_at"
-            > & {
-                user: CacheAPIProtocol["messages"]["data"][number]["user"];
-            })[];
-
             conversation_meta?: Pick<
                 ConversationMeta,
                 "archived" | "pinned" | "pinned_at"
             >;
+
+            peer?: Pick<User, "username" | "id" | "last_seen_at"> & {
+                profile: Pick<Profile, "avatar_url" | "color">;
+            };
+        })[];
+    };
+
+    conversation_members: {
+        key: ["conversation_members", string];
+        data: (Pick<ConversationMember, "created_at"> & {
+            user: Pick<User, "username" | "id" | "last_seen_at"> & {
+                profile: Pick<Profile, "avatar_url" | "color">;
+            };
         })[];
     };
 
@@ -99,6 +105,7 @@ export const CacheAPIFunctionsMessages: CacheAPIFunctions<CacheAPIProtocolMessag
 
             return data;
         },
+
         conversation_retrieve: async (args: unknown[]) => {
             if (!args[0] || !args[1]) {
                 throw new Error("status_id and type are undefined");
@@ -119,5 +126,23 @@ export const CacheAPIFunctionsMessages: CacheAPIFunctions<CacheAPIProtocolMessag
             ).data as CacheAPIProtocol["conversation_retrieve"]["data"];
 
             return data;
+        },
+
+        conversation_members: async (args: unknown[]) => {
+            if (!args[0]) {
+                throw new Error("conversation_id is undefined");
+            }
+
+            return (
+                await refreshedRequest({
+                    route: "/api/get/conversation_members",
+                    method: "GET",
+                    config: {
+                        params: {
+                            conversation_id: args[0],
+                        },
+                    },
+                })
+            ).data.members;
         },
     };
