@@ -2,35 +2,42 @@ import { PermissionBadges } from "@/features/messages/components/message/topline
 import { MemberSettings } from "@/features/messages/components/message/topline/parts/members/MemberSettings";
 import { ProfileImage } from "@/features/profile/components/ProfileImage";
 import { Button } from "@/features/ui/button/components/Button";
-import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { Modal } from "@/features/ui/popovers/components/modal/Modal";
-import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { relativeTime } from "@/utils/other/relativeTime";
 import Image from "next/image";
 
 type Props = {
     data: CacheAPIProtocol["conversation_members"]["data"][number];
+    conversationData: CacheAPIProtocol["conversations"]["data"][number];
 };
 
-export const MemberDisplay = ({ data }: Props) => {
+export const MemberDisplay = ({ data, conversationData }: Props) => {
     return (
-        <div className="flex items-center gap-1 w-full">
-            <LinkButton
-                href={`/profile/${data.user.username}`}
-                className="flex w-full justify-start! rounded-4xl! gap-2! p-2!"
-            >
+        <Modal
+            className="w-full"
+            direction="screen-middle"
+            tooltipClassName="w-screen max-w-96"
+            isEnabled={conversationData.membership.is_founder}
+            element={() => (
+                <MemberSettings
+                    data={data}
+                    conversationData={conversationData}
+                />
+            )}
+        >
+            <Button className="flex w-full justify-start! rounded-4xl! gap-2! p-2!">
                 <div className="flex items-center shrink-0">
                     <div className="flex items-center gap-2">
                         <ProfileImage
                             width={256}
                             height={256}
                             profile={data.user.profile}
-                            className="w-9! h-9!"
+                            className="w-10! h-10!"
                         />
 
                         <div className="flex flex-col">
-                            <span className="truncate mx-auto">
+                            <span className="flex items-center gap-1 truncate">
                                 {data.user.username}
                             </span>
 
@@ -50,24 +57,7 @@ export const MemberDisplay = ({ data }: Props) => {
                         {relativeTime(data.user.last_seen_at)}
                     </small>
                 </span>
-            </LinkButton>
-
-            <Modal
-                direction="screen-middle"
-                tooltipClassName="w-screen max-w-96"
-                element={() => <MemberSettings data={data} />}
-            >
-                <Tooltip text="Configure member">
-                    <Button>
-                        <Image
-                            alt=""
-                            width={16}
-                            height={16}
-                            src="/settings.svg"
-                        />
-                    </Button>
-                </Tooltip>
-            </Modal>
-        </div>
+            </Button>
+        </Modal>
     );
 };

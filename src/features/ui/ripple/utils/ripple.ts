@@ -22,7 +22,7 @@ export const rippleEnable = <T extends HTMLElement>(
             { transform: "translate(-50%, -50%) scale(1)", opacity: 1 },
         ],
         {
-            duration: Math.max(500, Math.min(size, 900)),
+            duration: Math.max(500, Math.min(size, 1000)) * 1.25,
             easing: "cubic-bezier(0.27,0.75,1.00,0.62)",
             fill: "forwards",
         },
@@ -31,7 +31,7 @@ export const rippleEnable = <T extends HTMLElement>(
     // handler
     const handle = () => {
         const fade = ripple.animate([{ opacity: 1 }, { opacity: 0 }], {
-            duration: 750,
+            duration: 800,
             easing: "ease-out",
             fill: "forwards",
         });

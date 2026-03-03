@@ -1,5 +1,7 @@
+import { ProfileImage } from "@/features/profile/components/ProfileImage";
 import { Button } from "@/features/ui/button/components/Button";
 import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
+import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { useMessageBox } from "@/features/ui/messagebox/hooks/useMessageBox";
 import { PromiseState } from "@/promises/components/PromiseState";
 import { wrapPromise } from "@/promises/core";
@@ -10,12 +12,13 @@ import Image from "next/image";
 import { useState } from "react";
 
 type Props = {
+    conversationData: CacheAPIProtocol["conversations"]["data"][number];
     data: CacheAPIProtocol["conversation_members"]["data"][number];
 };
 
-export const MemberSettings = ({ data }: Props) => {
-    const kickBox = useMessageBox();
+export const MemberSettings = ({ conversationData, data }: Props) => {
     const { data: status } = useQuery({ key: ["status"] });
+    const kickBox = useMessageBox();
     const isOurs = data.user.id === status?.id;
 
     // react states
@@ -52,110 +55,155 @@ export const MemberSettings = ({ data }: Props) => {
 
             <li>
                 <span className="flex items-center gap-1">
-                    <div className="w-1 h-1 rounded-full bg-orange-1" />
-                    <Image
-                        alt=""
-                        width={16}
-                        height={16}
-                        src="/settings.svg"
+                    <div className="w-1 h-1 rounded-full bg-blue-1" />
+
+                    <ProfileImage
+                        profile={data.user.profile}
+                        width={256}
+                        height={256}
+                        className="w-6! h-6!"
                     />
-                    Member settings
+                    <span>{data.user.username}&apos;s menu</span>
                 </span>
             </li>
 
             <li className="w-full">
-                <form
-                    onSubmit={(e) => {
-                        e.preventDefault();
-                        if (!status) {
-                            return;
-                        }
+                <ul className="flex flex-col gap-2 items-center">
+                    <li className="w-full">
+                        <Button
+                            className="w-full"
+                            onClick={kickBox.show}
+                        >
+                            <div className="w-1 h-1 rounded-full bg-red-1" />
+                            <Image
+                                alt=""
+                                width={16}
+                                height={16}
+                                src="/auth.svg"
+                            />
+                            {isOurs ? "Leave" : "Kick"}
+                        </Button>
+                    </li>
 
-                        wrapPromise("changePermissions", () => {
-                            return updateConversationMembers({
-                                type: "permissions",
-                                user: status,
-                                user_ids: [data.user_id],
-                                conversation_id: data.conversation_id,
-                                can_read: canRead,
-                                can_invite: canInvite,
-                                can_delete_messages: canDelete,
-                                can_kick: canKick,
-                            });
-                        });
-                    }}
-                >
-                    <ul className="flex flex-col gap-2 w-full">
-                        <li>
-                            <Checkbox
-                                value={canRead}
-                                onToggle={(flag) => setCanRead(flag)}
-                            >
-                                Read messages
-                            </Checkbox>
-                        </li>
+                    <li className="w-full">
+                        <LinkButton
+                            className="w-full"
+                            href={`/profile/${data.user.username}`}
+                        >
+                            <Image
+                                alt=""
+                                width={16}
+                                height={16}
+                                src="/account.svg"
+                            />
+                            Profile
+                        </LinkButton>
+                    </li>
 
-                        <li>
-                            <Checkbox
-                                value={canKick}
-                                onToggle={(flag) => setCanKick(flag)}
-                            >
-                                Kick others
-                            </Checkbox>
-                        </li>
-
-                        <li>
-                            <Checkbox
-                                value={canDelete}
-                                onToggle={(flag) => setCanDelete(flag)}
-                            >
-                                Delete other messages
-                            </Checkbox>
-                        </li>
-
-                        <li>
-                            <Checkbox
-                                value={canInvite}
-                                onToggle={(flag) => setCanInvite(flag)}
-                            >
-                                Create invites
-                            </Checkbox>
-                        </li>
-
-                        <li>
-                            <Button
+                    {status?.id !== data.user.id && (
+                        <li className="w-full">
+                            <LinkButton
                                 className="w-full"
-                                type="submit"
+                                href={`/messages/u/${data.user.username}`}
                             >
-                                <PromiseState state="changePermissions" />
                                 <Image
                                     alt=""
                                     width={16}
                                     height={16}
                                     src="/send.svg"
                                 />
-                                Apply
-                            </Button>
+                                Messages
+                            </LinkButton>
                         </li>
-                    </ul>
-                </form>
+                    )}
+                </ul>
             </li>
 
-            <li className="w-full">
-                <Button
-                    className="w-full"
-                    onClick={kickBox.show}
-                >
-                    <div className="w-1 h-1 rounded-full bg-red-1" />
-                    <Image
-                        alt=""
-                        width={16}
-                        height={16}
-                        src="/auth.svg"
-                    />
-                    {isOurs ? "Leave" : "Kick"}
-                </Button>
-            </li>
+            {conversationData.membership.is_founder && (
+                <>
+                    <li className="w-full">
+                        <hr />
+                    </li>
+
+                    <li className="w-full">
+                        <form
+                            onSubmit={(e) => {
+                                e.preventDefault();
+                                if (!status) {
+                                    return;
+                                }
+
+                                wrapPromise("changePermissions", () => {
+                                    return updateConversationMembers({
+                                        type: "permissions",
+                                        user: status,
+                                        user_ids: [data.user_id],
+                                        conversation_id: data.conversation_id,
+                                        can_read: canRead,
+                                        can_invite: canInvite,
+                                        can_delete_messages: canDelete,
+                                        can_kick: canKick,
+                                    });
+                                });
+                            }}
+                        >
+                            <ul className="flex flex-col gap-2 w-full">
+                                <li>
+                                    <Checkbox
+                                        value={canRead}
+                                        onToggle={(flag) => setCanRead(flag)}
+                                    >
+                                        Read messages
+                                    </Checkbox>
+                                </li>
+
+                                <li>
+                                    <Checkbox
+                                        value={canKick}
+                                        onToggle={(flag) => setCanKick(flag)}
+                                    >
+                                        Kick others
+                                    </Checkbox>
+                                </li>
+
+                                <li>
+                                    <Checkbox
+                                        value={canDelete}
+                                        onToggle={(flag) => setCanDelete(flag)}
+                                    >
+                                        Delete other messages
+                                    </Checkbox>
+                                </li>
+
+                                <li>
+                                    <Checkbox
+                                        value={canInvite}
+                                        onToggle={(flag) => setCanInvite(flag)}
+                                    >
+                                        Create invites
+                                    </Checkbox>
+                                </li>
+
+                                <li>
+                                    <Button
+                                        className="w-full"
+                                        type="submit"
+                                    >
+                                        <PromiseState state="changePermissions" />
+                                        <Image
+                                            alt=""
+                                            width={16}
+                                            height={16}
+                                            src="/settings.svg"
+                                        />
+                                        Apply
+                                    </Button>
+                                </li>
+                            </ul>
+                        </form>
+                    </li>
+                </>
+            )}
         </ul>
     );
 };

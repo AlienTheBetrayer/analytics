@@ -456,7 +456,7 @@ img {
 }
 
 .acrylic hr {
-    border-color: var(--bg-2);
+    border-color: var(--bg-3);
     backdrop-filter: blur(12px);
 }
 

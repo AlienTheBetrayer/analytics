@@ -35,7 +35,10 @@ export const MembersList = ({ conversationData }: Props) => {
                     key={m.user.id}
                     className="flex items-center gap-4 w-full!"
                 >
-                    <MemberDisplay data={m} />
+                    <MemberDisplay
+                        data={m}
+                        conversationData={conversationData}
+                    />
                 </li>
             ))}
         </ul>
