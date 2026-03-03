@@ -15,6 +15,13 @@ export const Controls = ({ data, conversationData }: MemberSettingsProps) => {
         return null;
     }
 
+    if (
+        !conversationData.membership.is_admin &&
+        !conversationData.membership.is_founder
+    ) {
+        return null;
+    }
+
     const isOurs = data.user.id === status?.id;
 
     return (

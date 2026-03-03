@@ -92,34 +92,37 @@ export const Main = ({ data, conversationData, retrieved }: Props) => {
                                         </Modal>
                                     </li>
 
-                                    <li>
-                                        <Modal
-                                            tooltipClassName="w-screen max-w-lg"
-                                            direction="screen-middle"
-                                            blur
-                                            element={() => (
-                                                <CreateInvites
-                                                    conversationData={
-                                                        conversationData
-                                                    }
-                                                />
-                                            )}
-                                        >
-                                            <Tooltip
-                                                direction="top"
-                                                text="Create an invitation"
-                                            >
-                                                <Button>
-                                                    <Image
-                                                        alt=""
-                                                        width={16}
-                                                        height={16}
-                                                        src="/link.svg"
+                                    {conversationData.membership.can_invite !==
+                                        false && (
+                                        <li>
+                                            <Modal
+                                                tooltipClassName="w-screen max-w-lg"
+                                                direction="screen-middle"
+                                                blur
+                                                element={() => (
+                                                    <CreateInvites
+                                                        conversationData={
+                                                            conversationData
+                                                        }
                                                     />
-                                                </Button>
-                                            </Tooltip>
-                                        </Modal>
-                                    </li>
+                                                )}
+                                            >
+                                                <Tooltip
+                                                    direction="top"
+                                                    text="Create an invitation"
+                                                >
+                                                    <Button>
+                                                        <Image
+                                                            alt=""
+                                                            width={16}
+                                                            height={16}
+                                                            src="/link.svg"
+                                                        />
+                                                    </Button>
+                                                </Tooltip>
+                                            </Modal>
+                                        </li>
+                                    )}
                                 </>
                             )}
 

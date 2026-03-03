@@ -3,6 +3,7 @@ import { BottomButtons } from "@/features/messages/components/conversations/disp
 import { LastMessage } from "@/features/messages/components/conversations/display/parts/LastMessage";
 import { LastMessageDate } from "@/features/messages/components/conversations/display/parts/LastMessageDate";
 import { Name } from "@/features/messages/components/conversations/display/parts/Name";
+import { PermissionStatus } from "@/features/messages/components/conversations/display/parts/PermissionStatus";
 import { Pinned } from "@/features/messages/components/conversations/display/parts/Pinned";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { CacheAPIProtocol } from "@/query-api/protocol";
@@ -25,11 +26,12 @@ export const ConversationDisplay = ({ data }: Props) => {
                 ${isSelected ? "not-hover:bg-bg-4! hover:border-bg-5!" : "not-hover:bg-bg-1!"}`}
                 href={isSelected ? "/messages/" : `/messages/c/${data.id}`}
             >
+                <PermissionStatus data={data} />
                 <Avatar data={data} />
                 <Pinned data={data} />
 
                 <div className="flex flex-col gap-1 w-full overflow-hidden">
-                    <div className="grid grid-cols-[auto_25%]">
+                    <div className="flex items-center">
                         <Name data={data} />
                         <LastMessageDate data={data} />
                     </div>
