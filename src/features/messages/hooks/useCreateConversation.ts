@@ -20,44 +20,26 @@ export const useCreateConversation = () => {
                 return;
             }
 
-            switch (options.type) {
-                case "notes": {
-                    wrapPromise("createConversation", async () => {
-                        return upsertConversation({
-                            type: "create",
-                            conversation_type: "notes",
-                            ...(options.title && { title: options.title }),
-                            ...(options.description && {
-                                description: options.description,
-                            }),
-                            ...(options.image && { image: options.image }),
-                            user: status,
-                            member_ids: [],
-                        });
-                    });
-                    break;
-                }
-                default: {
-                    if (options.ids.some((id) => id === status.id)) {
-                        return;
-                    }
-
-                    wrapPromise("createConversation", async () => {
-                        return upsertConversation({
-                            type: "create",
-                            conversation_type: "group",
-                            user: status,
-                            member_ids: options.ids,
-                            ...(options.image && { image: options.image }),
-                            ...(options.title && { title: options.title }),
-                            ...(options.description && {
-                                description: options.description,
-                            }),
-                        });
-                    });
-                    break;
-                }
+            if (
+                options.type !== "notes" &&
+                options.ids.some((id) => id === status.id)
+            ) {
+                return;
             }
+
+            wrapPromise("createConversation", async () => {
+                return upsertConversation({
+                    type: "create",
+                    conversation_type: options.type,
+                    ...(options.title && { title: options.title }),
+                    ...(options.description && {
+                        description: options.description,
+                    }),
+                    ...(options.image && { image: options.image }),
+                    user: status,
+                    member_ids: options.type === "notes" ? [] : options.ids,
+                });
+            });
         },
         [status],
     );

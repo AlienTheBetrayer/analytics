@@ -18,7 +18,7 @@ export const CreateType = ({ type, category }: Props) => {
     const [description, setDescription] = useState<string>("");
     const [selected, setSelected] = useState<Props["type"]>(type);
     const [image, setImage] = useState<File | undefined>(undefined);
-    const [validity, setValidity] = useState<boolean>(false);
+    const [validity, setValidity] = useState<boolean>(category === "dm");
 
     const { create } = useCreateConversation();
 
@@ -29,7 +29,7 @@ export const CreateType = ({ type, category }: Props) => {
             animate={{ opacity: 1 }}
             className="flex flex-col gap-2 relative w-full *:w-full"
         >
-            {selected !== "both" && (
+            {selected !== "both" && category !== "dm" && (
                 <ul className="box acrylic w-full p-4! flex flex-col items-center gap-2">
                     <li className="flex items-center">
                         <span className="flex items-center gap-1">
@@ -153,7 +153,7 @@ export const CreateType = ({ type, category }: Props) => {
                     }
                     case "both": {
                         return (
-                            <ul className="box acrylic p-4! rounded-2xl! gap-1! **:border-0! w-screen max-w-64 message-ctx">
+                            <ul className="box acrylic p-4! rounded-2xl! gap-1! **:border-0! w-full message-ctx">
                                 <li className="flex items-center gap-1 self-center mb-6!">
                                     <div className="w-1 h-1 rounded-full bg-blue-1" />
                                     <Image

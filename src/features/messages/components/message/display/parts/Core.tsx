@@ -22,7 +22,7 @@ export const Core = ({ data, conversationData }: Props) => {
                     profile={data.user.profile}
                     width={256}
                     height={256}
-                    className="w-6! h-6!"
+                    className="w-5! h-5!"
                 />
             )}
 

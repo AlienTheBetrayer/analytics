@@ -28,7 +28,31 @@ export const CreateConversationElements = () => {
                 <Modal
                     className="w-full"
                     direction="right"
-                    tooltipClassName="w-screen max-w-72"
+                    tooltipClassName="w-screen max-w-96"
+                    element={() => (
+                        <CreateType
+                            category="dm"
+                            type="both"
+                        />
+                    )}
+                >
+                    <Button>
+                        <Image
+                            alt=""
+                            width={16}
+                            height={16}
+                            src="/account.svg"
+                        />
+                        <span>DM</span>
+                    </Button>
+                </Modal>
+            </li>
+
+            <li className="w-full">
+                <Modal
+                    className="w-full"
+                    direction="right"
+                    tooltipClassName="w-screen max-w-96"
                     element={() => (
                         <CreateType
                             category="group"
@@ -44,30 +68,6 @@ export const CreateConversationElements = () => {
                             src="/friends.svg"
                         />
                         <span>Group</span>
-                    </Button>
-                </Modal>
-            </li>
-
-            <li className="w-full">
-                <Modal
-                    className="w-full"
-                    direction="right"
-                    tooltipClassName="w-screen max-w-72"
-                    element={() => (
-                        <CreateType
-                            category="channel"
-                            type="friends"
-                        />
-                    )}
-                >
-                    <Button>
-                        <Image
-                            alt=""
-                            width={16}
-                            height={16}
-                            src="/book.svg"
-                        />
-                        <span>Channel</span>
                     </Button>
                 </Modal>
             </li>

@@ -61,16 +61,8 @@ export const POST = async (request: NextRequest) => {
                         initialMessage = "Group created";
                         break;
                     }
-                    case "channel": {
-                        user_ids = [
-                            user_id,
-                            ...(member_ids ? member_ids.split(",") : []),
-                        ];
-                        initialMessage = "Channel created";
-                        break;
-                    }
                     default: {
-                        throw "invalid conversation_type. available: notes/dm/group/channel";
+                        throw "invalid conversation_type. available: notes/dm/group";
                     }
                 }
 
@@ -118,9 +110,10 @@ export const POST = async (request: NextRequest) => {
                     const { error } = await supabaseServer
                         .from("conversation_members")
                         .insert(
-                            user_ids.map((user_id) => ({
+                            user_ids.map((id) => ({
                                 conversation_id: data.id,
-                                user_id,
+                                user_id: id,
+                                ...(id === user_id && conversation_type !== "dm" && { is_founder: true }),
                             })),
                         );
 
