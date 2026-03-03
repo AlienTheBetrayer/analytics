@@ -27,6 +27,10 @@ export const useHeader = () => {
 
                 const diff = scroll - lastScroll.current;
 
+                if (document.body.style.overflowY === "scroll") {
+                    return;
+                }
+
                 if (diff > 42) {
                     headerRef.current.style.top = "-5rem";
                     headerRef.current.style.opacity = "0";
