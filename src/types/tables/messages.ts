@@ -7,6 +7,7 @@ export type ConversationMember = {
     user_id: string;
     created_at: string;
     is_founder?: boolean;
+    is_admin?: boolean;
     can_delete_messages?: boolean;
     can_kick?: boolean;
     can_read?: boolean;

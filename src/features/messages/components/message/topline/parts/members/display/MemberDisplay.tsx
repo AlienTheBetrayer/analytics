@@ -1,5 +1,5 @@
 import { PermissionBadges } from "@/features/messages/components/message/topline/parts/members/display/PermissionBadges";
-import { MemberSettings } from "@/features/messages/components/message/topline/parts/members/MemberSettings";
+import { MemberSettings } from "@/features/messages/components/message/topline/parts/members/settings/MemberSettings";
 import { ProfileImage } from "@/features/profile/components/ProfileImage";
 import { Button } from "@/features/ui/button/components/Button";
 import { Modal } from "@/features/ui/popovers/components/modal/Modal";
@@ -17,7 +17,7 @@ export const MemberDisplay = ({ data, conversationData }: Props) => {
         <Modal
             className="w-full"
             direction="screen-middle"
-            tooltipClassName="w-screen max-w-96"
+            tooltipClassName="w-screen max-w-lg"
             isEnabled={conversationData.membership.is_founder}
             element={() => (
                 <MemberSettings

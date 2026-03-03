@@ -67,7 +67,7 @@ export const ConversationsTopline = ({ data }: Props) => {
                     <li className="truncate absolute left-1/2 top-1/2 -translate-1/2 z-2">
                         <span className="flex items-center gap-1">
                             <div className="w-1 h-1 rounded-full bg-blue-1" />
-                            Start a <mark>conversation</mark> to unlock
+                            <mark>Converse</mark> to unlock
                         </span>
                     </li>
                 )}

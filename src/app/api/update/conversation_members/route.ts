@@ -8,10 +8,12 @@ export const POST = async (request: NextRequest) => {
             type,
             user_ids,
             conversation_id,
+
             can_read,
             can_delete_messages,
             can_kick,
             can_invite,
+            is_admin,
         } = await request.json();
 
         if (!type || !conversation_id || !user_ids) {
@@ -111,6 +113,7 @@ export const POST = async (request: NextRequest) => {
                             can_delete_messages,
                         }),
                         ...(typeof can_invite === "boolean" && { can_invite }),
+                        ...(typeof is_admin === "boolean" && { is_admin }),
                     })
                     .eq("conversation_id", conversation_id)
                     .in("user_id", user_ids);
@@ -122,7 +125,7 @@ export const POST = async (request: NextRequest) => {
                 return nextResponse({ success: true }, 200);
             }
             default: {
-                throw "type is invalid. available: add/kick";
+                throw "type is invalid. available: add/kick/permissions";
             }
         }
     } catch (error) {

@@ -27,6 +27,27 @@ export const PermissionBadges = ({ data }: Props) => {
         );
     }
 
+    if(data.is_admin){ 
+        return (
+            <ul className="flex gap-1 items-center">
+                <PermissionBadge>
+                    <span className="flex items-center gap-1 mx-2">
+                        <div className="w-1 h-1 rounded-full bg-red-1" />
+                        <span>Admin</span>
+                        <small className="ml-1">
+                            <Image
+                                alt=""
+                                width={16}
+                                height={16}
+                                src="/server.svg"
+                            />
+                        </small>
+                    </span>
+                </PermissionBadge>
+            </ul>
+        );
+    }
+
     return (
         <ul className="flex gap-1 items-center">
             {data.can_kick && <PermissionBadge src="/auth.svg" />}

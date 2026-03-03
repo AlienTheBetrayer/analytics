@@ -13,6 +13,7 @@ export const updateConversationMembers = async (
               can_kick?: boolean;
               can_delete_messages?: boolean;
               can_invite?: boolean;
+              is_admin?: boolean;
           }
     ) & {
         user: CacheAPIProtocol["status"]["data"];
@@ -33,8 +34,13 @@ export const updateConversationMembers = async (
             break;
         }
         case "permissions": {
-            const { can_read, can_kick, can_delete_messages, can_invite } =
-                options;
+            const {
+                can_read,
+                can_kick,
+                can_delete_messages,
+                can_invite,
+                is_admin,
+            } = options;
 
             queryMutate({
                 key: ["conversation_members", options.conversation_id],
@@ -47,6 +53,7 @@ export const updateConversationMembers = async (
                                   can_kick,
                                   can_delete_messages,
                                   can_invite,
+                                  is_admin,
                               }
                             : m,
                     ),
@@ -70,6 +77,7 @@ export const updateConversationMembers = async (
             ...("can_delete_messages" in options && {
                 can_delete_messages: options.can_delete_messages,
             }),
+            ...("is_admin" in options && { is_admin: options.is_admin }),
         },
     });
 
