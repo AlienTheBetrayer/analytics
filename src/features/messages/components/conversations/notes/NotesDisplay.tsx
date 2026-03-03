@@ -13,7 +13,7 @@ type Props = {
 
 export const NotesDisplay = ({ data }: Props) => {
     const { tab, id } = useParams<{ tab?: string; id?: string }>();
-    const isSelected = tab === "notes" || id === data?.id;
+    const isSelected = tab === "notes" || (data && id === data.id);
 
     return (
         <div className="relative">

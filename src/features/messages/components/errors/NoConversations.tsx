@@ -1,5 +1,7 @@
+import { CreateConversation } from "@/features/messages/components/conversations/create/CreateConversation";
 import { AbsentData } from "@/features/ui/absentdata/components/AbsentData";
-import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
+import { Button } from "@/features/ui/button/components/Button";
+import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 import Image from "next/image";
 
 type Props = {
@@ -9,7 +11,6 @@ type Props = {
 export const NoConversations = ({ username }: Props) => {
     return (
         <AbsentData
-            className="absolute left-1/2 top-1/2 -translate-1/2"
             title={
                 <>
                     Conversations are <u>absent</u>
@@ -23,24 +24,29 @@ export const NoConversations = ({ username }: Props) => {
             }
         >
             {username && (
-                <LinkButton
-                    href={`/profile/${username}/friends`}
-                    className="w-full"
+                <Modal
+                    element={() => <CreateConversation />}
+                    direction="top"
+                    tooltipClassName="w-screen max-w-64"
+                    className="w-full max-w-48"
                 >
-                    <Image
-                        alt=""
-                        width={16}
-                        height={16}
-                        src="/launch.svg"
-                    />
-                    <Image
-                        alt=""
-                        width={16}
-                        height={16}
-                        src="/friends.svg"
-                    />
-                    Friends
-                </LinkButton>
+                    <Button className="w-full">
+                        <div className="w-1 h-1 rounded-full bg-blue-1" />
+                        <Image
+                            alt=""
+                            width={16}
+                            height={16}
+                            src="/launch.svg"
+                        />
+                        <Image
+                            alt=""
+                            width={16}
+                            height={16}
+                            src="/friends.svg"
+                        />
+                        Create
+                    </Button>
+                </Modal>
             )}
         </AbsentData>
     );

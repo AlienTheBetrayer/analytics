@@ -22,31 +22,34 @@ type Props = {
 
 export const Main = ({ data, conversationData, retrieved }: Props) => {
     const { data: status } = useQuery({ key: ["status"] });
-    const { id } = useParams<{
+    const { id, tab } = useParams<{
         id?: string;
+        tab?: string;
     }>();
 
     return (
         <ul className="box min-h-10! h-10! gap-1! p-0! items-center! flex-row!">
-            <li className="flex items-center gap-1 self-stretch">
-                <Tooltip
-                    direction="top"
-                    text="Back to chats"
-                    className="self-stretch h-full flex lg:hidden "
-                >
-                    <LinkButton
-                        className="h-full aspect-square!"
-                        href="/messages/"
+            <li className="flex items-center gap-1">
+                {tab && (
+                    <Tooltip
+                        direction="top"
+                        text="Back to chats"
+                        className="flex"
                     >
-                        <div className="w-1 h-1 rounded-full bg-orange-1" />
-                        <Image
-                            alt=""
-                            width={16}
-                            height={16}
-                            src="/back.svg"
-                        />
-                    </LinkButton>
-                </Tooltip>
+                        <LinkButton
+                            className="aspect-square!"
+                            href="/messages/"
+                        >
+                            <div className="w-1 h-1 rounded-full bg-orange-1" />
+                            <Image
+                                alt=""
+                                width={16}
+                                height={16}
+                                src="/back.svg"
+                            />
+                        </LinkButton>
+                    </Tooltip>
+                )}
 
                 <ConversationToplineInfo
                     conversationData={conversationData}

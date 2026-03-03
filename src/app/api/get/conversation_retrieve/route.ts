@@ -25,7 +25,8 @@ export const GET = async (request: NextRequest) => {
                 const { data: user, error: idError } = await supabaseServer
                     .from("users")
                     .select("*, profile:profiles(*)")
-                    .eq("username", what);
+                    .eq("username", what)
+                    .single();
 
                 if (idError) {
                     throw idError;
@@ -33,8 +34,11 @@ export const GET = async (request: NextRequest) => {
 
                 const { data, error } = await supabaseServer
                     .from("conversation_members")
-                    .select("conversation_id, user_id")
-                    .in("user_id", [status_id, user[0].id]);
+                    .select(
+                        "conversation_id, user_id, conversation:conversations!inner(type)",
+                    )
+                    .in("user_id", [status_id, user?.id])
+                    .eq("conversation.type", "dm");
 
                 if (error) {
                     throw error;
@@ -44,9 +48,9 @@ export const GET = async (request: NextRequest) => {
                     {
                         success: true,
                         conversation_id:
-                            data.find((d) => d.user_id === user[0]?.id)
+                            data.find((d) => d.user_id === user?.id)
                                 ?.conversation_id ?? null,
-                        user: user[0],
+                        user,
                     },
                     200,
                 );

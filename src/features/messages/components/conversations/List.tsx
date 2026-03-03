@@ -30,22 +30,6 @@ export const List = ({ isLoading, conversations }: Props) => {
         );
     }
 
-    // fallbacks
-    if (conversations && !conversations.length) {
-        return (
-            <div className="flex flex-col gap-2 relative">
-                {Array.from({ length: 8 }, (_, k) => (
-                    <div
-                        key={k}
-                        className="w-full h-12 loading"
-                    />
-                ))}
-
-                <NoConversations username={status?.username} />
-            </div>
-        );
-    }
-
     // splitting conversations into archived / nonarchived
     const conversationTypes = conversations.reduce(
         (acc, val) => {
@@ -85,7 +69,7 @@ export const List = ({ isLoading, conversations }: Props) => {
     return (
         <div className="flex flex-col relative grow overflow-hidden">
             <motion.ul
-                className="flex flex-col gap-1 relative grow h-100 scheme-dark overflow-y-auto"
+                className="flex flex-col gap-1 relative grow scheme-dark h-100 overflow-y-auto"
                 style={{
                     scrollbarWidth: "thin",
                 }}
@@ -128,8 +112,17 @@ export const List = ({ isLoading, conversations }: Props) => {
                         </li>
                     )
                 )}
+
+                {!conversations?.length && (
+                    <li className="flex grow mt-2!">
+                        <div className="flex flex-col gap-2 p-4 relative items-center justify-center loading grow">
+                            <NoConversations username={status?.username} />
+                        </div>
+                    </li>
+                )}
             </motion.ul>
 
+            {/* archived */}
             <motion.ul
                 className="flex flex-col gap-1 absolute inset-0 grow bg-bg-2 z-2"
                 initial={false}

@@ -58,7 +58,20 @@ export const ConversationsTopline = ({ data }: Props) => {
                 </li>
             </ul>
 
-            <ul className="box h-10! gap-0.5! p-0! items-center! flex-row!">
+            <ul
+                className={`box h-10! gap-0.5! p-0! items-center! flex-row!
+            ${data?.length ? "" : "opacity-30"}`}
+                inert={!data?.length}
+            >
+                {!data?.length && (
+                    <li className="truncate absolute left-1/2 top-1/2 -translate-1/2 z-2">
+                        <span className="flex items-center gap-1">
+                            <div className="w-1 h-1 rounded-full bg-blue-1" />
+                            Start a <mark>conversation</mark> to unlock
+                        </span>
+                    </li>
+                )}
+
                 <li
                     className={`${display.tab !== "conversations" ? "max-w-8" : "max-w-0"} overflow-hidden! p-0! shrink-0 transition-all duration-300`}
                     inert={display.tab === "conversations"}
@@ -125,7 +138,6 @@ export const ConversationsTopline = ({ data }: Props) => {
 
                 <li className="w-full">
                     <Input
-                        isEnabled={!!data?.length}
                         placeholder="Filter..."
                         value={display.filter}
                         onChange={(value) =>
