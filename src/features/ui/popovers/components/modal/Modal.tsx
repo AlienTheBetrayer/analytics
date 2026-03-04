@@ -109,27 +109,22 @@ export const Modal = React.memo(function ModalFunction({
         }
 
         const handle = (e: PointerEvent) => {
-            if (!modalRef.current) {
+            if (!modalElementRef.current) {
                 return;
             }
 
-            const { x, y } = { x: e.clientX, y: e.clientY };
-
-            const bounds = modalRef.current.getBoundingClientRect();
-
-            if (
-                x > bounds.left &&
-                x < bounds.right &&
-                y > bounds.top &&
-                y < bounds.bottom
-            ) {
+            if (modalElementRef.current.contains(e.target as Node)) {
                 return;
             }
 
-            if ((e.target as Element).closest(".modal-element")) {
+            const allModals = Array.from(
+                document.querySelectorAll(".modal-element"),
+            );
+            const topModal = allModals[allModals.length - 1];
+
+            if (allModals.length > 1 && modalElementRef.current !== topModal) {
                 return;
             }
-
             setIsShown(false);
         };
 

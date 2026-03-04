@@ -117,7 +117,7 @@ export const useInputSelect = (
                             animate={{ height: "auto" }}
                             exit={{ height: "0px" }}
                             data-tooltip
-                            className="flex flex-col overflow-hidden rounded-xl border-2 border-bg-3!"
+                            className="flex flex-col overflow-hidden rounded-xl border-2 border-bg-3! modal-element"
                         >
                             {items.map((item) => (
                                 <li key={item}>
