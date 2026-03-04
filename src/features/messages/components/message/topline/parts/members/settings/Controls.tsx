@@ -6,6 +6,7 @@ import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 import { wrapPromise } from "@/promises/core";
 import { updateConversationMembers } from "@/query-api/calls/conversation_members";
 import { useQuery } from "@/query/core";
+import { relativeTime } from "@/utils/other/relativeTime";
 import Image from "next/image";
 
 export const Controls = ({ data, conversationData }: MemberSettingsProps) => {
@@ -26,6 +27,7 @@ export const Controls = ({ data, conversationData }: MemberSettingsProps) => {
     }
 
     const isOurs = data.user.id === status?.id;
+    const isMuted = data.muted_until ? new Date(data.muted_until) > new Date() : false;
 
     return (
         <>
@@ -119,7 +121,7 @@ export const Controls = ({ data, conversationData }: MemberSettingsProps) => {
                                     className="w-full"
                                     direction="screen-middle"
                                     tooltipClassName="w-screen max-w-64"
-                                    isActive={!data.muted_until}
+                                    isActive={!isMuted}
                                     element={() => (
                                         <Muting
                                             data={data}
@@ -130,20 +132,37 @@ export const Controls = ({ data, conversationData }: MemberSettingsProps) => {
                                     <Button
                                         className="w-full"
                                         onClick={() => {
-                                            if (!data.muted_until) {
+                                            if (!isMuted) {
                                                 return;
                                             }
 
                                             unmuteBox.show();
                                         }}
                                     >
+                                        <div
+                                            className="w-1 h-1 rounded-full"
+                                            style={{
+                                                background: isMuted
+                                                    ? "var(--blue-1)"
+                                                    : "var(--orange-1)",
+                                            }}
+                                        />
                                         <Image
                                             alt=""
                                             width={16}
                                             height={16}
                                             src="/auth.svg"
                                         />
-                                        {data.muted_until ? "Unmute" : "Mute"}
+                                        {isMuted ? "Unmute" : "Mute"}
+                                        {isMuted && (
+                                                <small className="truncate">
+                                                    (
+                                                    {relativeTime(
+                                                        data.muted_until,
+                                                    )}
+                                                    )
+                                                </small>
+                                            )}
                                     </Button>
                                 </Modal>
                             </li>

@@ -1,4 +1,5 @@
 import { MuteOptions } from "@/features/messages/components/message/topline/parts/members/settings/Muting";
+import { convertMuteTime } from "@/features/messages/utils/convertMuteTime";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { queryMutate } from "@/query/auxiliary";
 import { refreshedRequest } from "@/utils/auth/refreshedRequest";
@@ -66,6 +67,7 @@ export const updateConversationMembers = async (
             });
             break;
         }
+        case "mute":
         case "unmute": {
             queryMutate({
                 key: ["conversation_members", options.conversation_id],
@@ -74,7 +76,13 @@ export const updateConversationMembers = async (
                         options.user_ids.includes(m.user_id)
                             ? {
                                   ...m,
-                                  muted_until: undefined,
+                                  muted_until:
+                                      options.type === "mute"
+                                          ? convertMuteTime(
+                                                options.time,
+                                                options.option,
+                                            )
+                                          : undefined,
                               }
                             : m,
                     ),

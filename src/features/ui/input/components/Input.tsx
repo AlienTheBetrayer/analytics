@@ -64,7 +64,7 @@ export const Input = forwardRef<HTMLInputElement, Props>(
                     className={`input w-full h-full min-h-8 
                     outline-0!
                     bg-bg-2 border border-bg-3 p-2.5 rounded-full focus:border-blue-1! placeholder-bg-5!
-                    hover:border-bg-5 transition-colors duration-500  resize-y
+                    hover:border-bg-5 transition-colors duration-500  resize-y scheme-dark
                     ${isEnabled && (required || minLength || maxLength) ? "invalid:underline decoration-wavy decoration-red-1 placeholder-shown:no-underline! valid:border-blue-1!" : ""} 
                     ${className ?? ""}`}
                     value={inputValue}

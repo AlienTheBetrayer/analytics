@@ -2,6 +2,7 @@ import { Avatar } from "@/features/messages/components/conversations/display/par
 import { BottomButtons } from "@/features/messages/components/conversations/display/parts/BottomButtons";
 import { LastMessage } from "@/features/messages/components/conversations/display/parts/LastMessage";
 import { LastMessageDate } from "@/features/messages/components/conversations/display/parts/LastMessageDate";
+import { MutedStatus } from "@/features/messages/components/conversations/display/parts/Muted";
 import { Name } from "@/features/messages/components/conversations/display/parts/Name";
 import { PermissionStatus } from "@/features/messages/components/conversations/display/parts/PermissionStatus";
 import { Pinned } from "@/features/messages/components/conversations/display/parts/Pinned";
@@ -18,13 +19,18 @@ export const ConversationDisplay = ({ data }: Props) => {
         (state) => state.selectedConversation,
     );
     const isSelected = selectedConversation === data.id;
+    const isMuted = data.membership.muted_until
+        ? new Date(data.membership.muted_until) > new Date()
+        : false;
 
     return (
         <div className="relative">
+            <MutedStatus data={data} />
             <LinkButton
                 className={`box p-4! flex-row! h-20! rounded-4xl! justify-start! items-start! gap-4!
                 ${isSelected ? "not-hover:bg-bg-4! hover:border-bg-5!" : "not-hover:bg-bg-1!"}`}
                 href={isSelected ? "/messages/" : `/messages/c/${data.id}`}
+                isEnabled={!isMuted}
             >
                 <PermissionStatus data={data} />
                 <Avatar data={data} />

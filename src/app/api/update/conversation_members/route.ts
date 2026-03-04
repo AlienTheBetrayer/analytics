@@ -1,4 +1,5 @@
 import { MuteOptions } from "@/features/messages/components/message/topline/parts/members/settings/Muting";
+import { convertMuteTime } from "@/features/messages/utils/convertMuteTime";
 import { supabaseServer } from "@/server/private/supabase";
 import { ConversationMember } from "@/types/tables/messages";
 import { nextResponse } from "@/utils/api/response";
@@ -278,21 +279,9 @@ const modifyMute = async (json: Record<string, unknown>) => {
         throw "time is not a number";
     }
 
-    const times: Record<(typeof MuteOptions)[number], number> = {
-        Seconds: 1,
-        Minutes: 60,
-        Hours: 60 * 60,
-        Days: 60 * 60 * 24,
-        Weeks: 60 * 60 * 24 * 7,
-        Months: 60 * 60 * 24 * 7 * 30,
-    };
-
-    const calculated = +time * times[option];
-    const date = new Date(Date.now() + calculated * 1000).toISOString();
-
     const { error } = await supabaseServer
         .from("conversation_members")
-        .update({ muted_until: date })
+        .update({ muted_until: convertMuteTime(time, option) })
         .in("user_id", [user_ids])
         .eq("conversation_id", conversation_id);
 
@@ -313,7 +302,7 @@ const modifyUnmute = async (json: Record<string, unknown>) => {
         .eq("conversation_id", conversation_id)
         .in("user_id", [user_ids]);
 
-    if(error) {
+    if (error) {
         throw error;
     }
 };
