@@ -1,3 +1,4 @@
+import { MuteOptions } from "@/features/messages/components/message/topline/parts/members/settings/Muting";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { queryMutate } from "@/query/auxiliary";
 import { refreshedRequest } from "@/utils/auth/refreshedRequest";
@@ -16,6 +17,8 @@ export const updateConversationMembers = async (
               can_send?: boolean;
               is_admin?: boolean;
           }
+        | { type: "mute"; time: string; option: (typeof MuteOptions)[number] }
+        | { type: "unmute" }
     ) & {
         user: CacheAPIProtocol["status"]["data"];
         user_ids: string[];
@@ -63,6 +66,21 @@ export const updateConversationMembers = async (
             });
             break;
         }
+        case "unmute": {
+            queryMutate({
+                key: ["conversation_members", options.conversation_id],
+                value: (state) =>
+                    state.map((m) =>
+                        options.user_ids.includes(m.user_id)
+                            ? {
+                                  ...m,
+                                  muted_until: undefined,
+                              }
+                            : m,
+                    ),
+            });
+            break;
+        }
     }
 
     // query
@@ -82,6 +100,8 @@ export const updateConversationMembers = async (
                 can_delete_messages: options.can_delete_messages,
             }),
             ...("is_admin" in options && { is_admin: options.is_admin }),
+            ...("time" in options && { time: options.time }),
+            ...("option" in options && { option: options.option }),
         },
     });
 

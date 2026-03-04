@@ -181,12 +181,18 @@ export const Main = ({ data, conversationData, retrieved }: Props) => {
                                         }
 
                                         wrapPromise("reload", async () => {
-                                            return queryInvalidate({
+                                            queryInvalidate({
                                                 key: [
                                                     "messages",
                                                     retrieved.conversation_id,
                                                 ],
                                                 silent: false,
+                                            });
+                                            return queryInvalidate({
+                                                key: [
+                                                    "conversations",
+                                                    status.id,
+                                                ],
                                             });
                                         });
                                     }

@@ -8,8 +8,9 @@ import { NotSelected } from "@/features/messages/components/errors/NotSelected";
 import { useEffect, useMemo } from "react";
 import { MessageViewList } from "@/features/messages/components/message/MessageViewList";
 import { Spinner } from "@/features/ui/spinner/components/Spinner";
-import { Muted } from "@/features/messages/components/errors/Muted";
 import { NoPermissions } from "@/features/messages/components/errors/NoPermissions";
+import { CantRead } from "@/features/messages/components/errors/CantRead";
+import { Muted } from "@/features/messages/components/errors/Muted";
 
 type Props = {
     retrieved?: CacheAPIProtocol["conversation_retrieve"]["data"];
@@ -86,8 +87,17 @@ export const MessageView = ({ retrieved }: Props) => {
                             case "not-selected": {
                                 return <NotSelected />;
                             }
+                            case "cant-read": {
+                                return <CantRead />;
+                            }
                             case "muted": {
-                                return <Muted />;
+                                return (
+                                    <Muted
+                                        muted_until={
+                                            conversation?.membership.muted_until
+                                        }
+                                    />
+                                );
                             }
                             case "not-allowed": {
                                 return <NoPermissions />;

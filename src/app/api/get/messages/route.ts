@@ -1,6 +1,8 @@
 import { supabaseServer } from "@/server/private/supabase";
+import { ConversationMember } from "@/types/tables/messages";
 import { nextResponse } from "@/utils/api/response";
 import { tokenPayload } from "@/utils/auth/tokenPayload";
+import { PostgrestError } from "@supabase/supabase-js";
 import { NextRequest } from "next/server";
 
 export const GET = async (request: NextRequest) => {
@@ -20,23 +22,46 @@ export const GET = async (request: NextRequest) => {
                 throw "unauthenticated.";
             }
 
-            const { data, error } = await supabaseServer
+            const { data, error } = (await supabaseServer
                 .from("conversation_members")
                 .select()
                 .eq("conversation_id", conversation_id)
                 .eq("user_id", token?.id)
-                .single();
+                .single()) as {
+                data: ConversationMember;
+                error: PostgrestError | null;
+            };
 
             if (error) {
                 throw error;
             }
 
+            // muted
+            if (data.muted_until && new Date(data.muted_until) > new Date()) {
+                throw "muted";
+            }
+
+            // unmuted (removing row)
+            if (data.muted_until && new Date(data.muted_until) < new Date()) {
+                const { error } = await supabaseServer
+                    .from("conversation_members")
+                    .update({ muted_until: null })
+                    .eq("conversation_id", conversation_id)
+                    .eq("user_id", data.user_id);
+
+                if (error) {
+                    throw error;
+                }
+            }
+
+            // not a member
             if (!data) {
                 throw "not-allowed";
             }
 
+            // can't read
             if (data.can_read === false) {
-                throw "muted";
+                throw "cant-read";
             }
         }
 

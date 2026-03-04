@@ -13,6 +13,7 @@ export type ConversationMember = {
     can_read?: boolean;
     can_send?: boolean;
     can_invite?: boolean;
+    muted_until?: string;
 };
 
 /**

@@ -1,3 +1,4 @@
+import { MuteOptions } from "@/features/messages/components/message/topline/parts/members/settings/Muting";
 import { supabaseServer } from "@/server/private/supabase";
 import { ConversationMember } from "@/types/tables/messages";
 import { nextResponse } from "@/utils/api/response";
@@ -25,18 +26,31 @@ export const POST = async (request: NextRequest) => {
 
         switch (type) {
             case "add": {
-                return await modifyAdd(json);
+                await modifyAdd(json);
+                break;
             }
             case "kick": {
-                return await modifyKick(json);
+                await modifyKick(json);
+                break;
             }
             case "permissions": {
-                return await modifyPermissions(json);
+                await modifyPermissions(json);
+                break;
+            }
+            case "mute": {
+                await modifyMute(json);
+                break;
+            }
+            case "unmute": {
+                await modifyUnmute(json);
+                break;
             }
             default: {
-                throw "type is invalid. available: add/kick/permissions";
+                throw "type is invalid. available: add/kick/permissions/mute/unmute";
             }
         }
+
+        return nextResponse({ success: true }, 200);
     } catch (error) {
         console.error(error);
         return nextResponse({ success: false }, 400);
@@ -153,8 +167,6 @@ const modifyPermissions = async (json: Record<string, unknown>) => {
     if (error) {
         throw error;
     }
-
-    return nextResponse({ success: true }, 200);
 };
 
 const modifyAdd = async (json: Record<string, unknown>) => {
@@ -204,8 +216,6 @@ const modifyAdd = async (json: Record<string, unknown>) => {
             throw error;
         }
     }
-
-    return nextResponse({ success: true }, 200);
 };
 
 const modifyKick = async (json: Record<string, unknown>) => {
@@ -251,6 +261,59 @@ const modifyKick = async (json: Record<string, unknown>) => {
             throw error;
         }
     }
+};
 
-    return nextResponse({ success: true }, 200);
+const modifyMute = async (json: Record<string, unknown>) => {
+    const { user_ids, conversation_id, time, option } = json as {
+        user_ids: string[];
+        option: (typeof MuteOptions)[number];
+    } & typeof json;
+
+    if (
+        !(
+            (typeof time === "string" && Number.isFinite(+time)) ||
+            typeof time === "number"
+        )
+    ) {
+        throw "time is not a number";
+    }
+
+    const times: Record<(typeof MuteOptions)[number], number> = {
+        Seconds: 1,
+        Minutes: 60,
+        Hours: 60 * 60,
+        Days: 60 * 60 * 24,
+        Weeks: 60 * 60 * 24 * 7,
+        Months: 60 * 60 * 24 * 7 * 30,
+    };
+
+    const calculated = +time * times[option];
+    const date = new Date(Date.now() + calculated * 1000).toISOString();
+
+    const { error } = await supabaseServer
+        .from("conversation_members")
+        .update({ muted_until: date })
+        .in("user_id", [user_ids])
+        .eq("conversation_id", conversation_id);
+
+    if (error) {
+        throw error;
+    }
+};
+
+const modifyUnmute = async (json: Record<string, unknown>) => {
+    const { user_ids, conversation_id } = json as {
+        user_ids: string[];
+        option: (typeof MuteOptions)[number];
+    } & typeof json;
+
+    const { error } = await supabaseServer
+        .from("conversation_members")
+        .update({ muted_until: null })
+        .eq("conversation_id", conversation_id)
+        .in("user_id", [user_ids]);
+
+    if(error) {
+        throw error;
+    }
 };
