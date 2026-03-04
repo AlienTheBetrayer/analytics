@@ -8,6 +8,8 @@ import { NotSelected } from "@/features/messages/components/errors/NotSelected";
 import { useEffect, useMemo } from "react";
 import { MessageViewList } from "@/features/messages/components/message/MessageViewList";
 import { Spinner } from "@/features/ui/spinner/components/Spinner";
+import { Muted } from "@/features/messages/components/errors/Muted";
+import { NoPermissions } from "@/features/messages/components/errors/NoPermissions";
 
 type Props = {
     retrieved?: CacheAPIProtocol["conversation_retrieve"]["data"];
@@ -18,7 +20,7 @@ export const MessageView = ({ retrieved }: Props) => {
 
     // fetching
     const { data: status } = useQuery({ key: ["status"] });
-    const { data, isLoading } = useQuery({
+    const { data, error, isLoading } = useQuery({
         key: ["messages", retrieved?.conversation_id ?? undefined],
         revalidate: true,
     });
@@ -42,6 +44,10 @@ export const MessageView = ({ retrieved }: Props) => {
 
     // fallbacks
     const code = (() => {
+        if (error && "error" in error && error.error) {
+            return error.error;
+        }
+
         if (isLoading) {
             return "loading";
         }
@@ -79,6 +85,12 @@ export const MessageView = ({ retrieved }: Props) => {
                             }
                             case "not-selected": {
                                 return <NotSelected />;
+                            }
+                            case "muted": {
+                                return <Muted />;
+                            }
+                            case "not-allowed": {
+                                return <NoPermissions />;
                             }
                         }
                     })()}

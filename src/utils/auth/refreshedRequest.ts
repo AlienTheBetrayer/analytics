@@ -38,7 +38,11 @@ export const refreshedRequest = async (config: {
         } catch (error) {
             // ultimately if it fails the second time we halt the connection
             console.error(error);
-            throw new Error("Not authenticated.");
+            if (axios.isAxiosError(error)) {
+                throw error.response?.data;
+            } else {
+                throw new Error("Not authenticated.");
+            }
         }
     }
 };

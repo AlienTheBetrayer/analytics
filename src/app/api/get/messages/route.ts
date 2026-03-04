@@ -20,18 +20,23 @@ export const GET = async (request: NextRequest) => {
                 throw "unauthenticated.";
             }
 
-            const { count, error } = await supabaseServer
+            const { data, error } = await supabaseServer
                 .from("conversation_members")
-                .select("*", { head: true, count: "exact" })
+                .select()
                 .eq("conversation_id", conversation_id)
-                .eq("user_id", token?.id);
+                .eq("user_id", token?.id)
+                .single();
 
             if (error) {
                 throw error;
             }
 
-            if (!count) {
-                throw "lacking permissions.";
+            if (!data) {
+                throw "not-allowed";
+            }
+
+            if (data.can_read === false) {
+                throw "muted";
             }
         }
 
@@ -52,6 +57,12 @@ export const GET = async (request: NextRequest) => {
         return nextResponse({ success: true, messages: data }, 200);
     } catch (error) {
         console.error(error);
-        return nextResponse({ success: false }, 400);
+        return nextResponse(
+            {
+                success: false,
+                ...(typeof error === "string" && { error }),
+            },
+            400,
+        );
     }
 };
