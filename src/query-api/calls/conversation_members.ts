@@ -13,6 +13,7 @@ export const updateConversationMembers = async (
               can_kick?: boolean;
               can_delete_messages?: boolean;
               can_invite?: boolean;
+              can_send?: boolean;
               is_admin?: boolean;
           }
     ) & {
@@ -36,6 +37,7 @@ export const updateConversationMembers = async (
         case "permissions": {
             const {
                 can_read,
+                can_send,
                 can_kick,
                 can_delete_messages,
                 can_invite,
@@ -50,6 +52,7 @@ export const updateConversationMembers = async (
                             ? {
                                   ...m,
                                   can_read,
+                                  can_send,
                                   can_kick,
                                   can_delete_messages,
                                   can_invite,
@@ -72,6 +75,7 @@ export const updateConversationMembers = async (
             type: options.type,
             user_ids: options.user_ids,
             ...("can_read" in options && { can_read: options.can_read }),
+            ...("can_send" in options && { can_send: options.can_send }),
             ...("can_kick" in options && { can_kick: options.can_kick }),
             ...("can_invite" in options && { can_invite: options.can_invite }),
             ...("can_delete_messages" in options && {

@@ -11,6 +11,7 @@ export type ConversationMember = {
     can_delete_messages?: boolean;
     can_kick?: boolean;
     can_read?: boolean;
+    can_send?: boolean;
     can_invite?: boolean;
 };
 

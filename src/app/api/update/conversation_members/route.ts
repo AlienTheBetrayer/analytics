@@ -10,6 +10,7 @@ export const POST = async (request: NextRequest) => {
             conversation_id,
 
             can_read,
+            can_send,
             can_delete_messages,
             can_kick,
             can_invite,
@@ -108,6 +109,7 @@ export const POST = async (request: NextRequest) => {
                     .from("conversation_members")
                     .update({
                         ...(typeof can_read === "boolean" && { can_read }),
+                        ...(typeof can_send === "boolean" && { can_send }),
                         ...(typeof can_kick === "boolean" && { can_kick }),
                         ...(typeof can_delete_messages === "boolean" && {
                             can_delete_messages,

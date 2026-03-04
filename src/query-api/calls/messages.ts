@@ -210,42 +210,43 @@ export const upsertMessage = async (
 export const deleteMessage = async (options: {
     message: CacheAPIProtocol["messages"]["data"][number][];
     user: AuthenticationToken;
+    force?: boolean;
 }) => {
-    const messages = options.message.filter(
-        (m) => m.user_id === options.user.id || m.type === "system",
-    );
+    const messages = options.force
+        ? options.message
+        : options.message.filter(
+              (m) => m.user_id === options.user.id || m.type === "system",
+          );
 
     if (!messages.length) {
         return;
     }
-
+    
     queryMutate({
-        key: ["messages", messages[0].conversation_id],
+        key: ["messages", messages[0]?.conversation_id],
         value: (state) =>
             state.filter((m) => !messages.find((msg) => msg.id === m.id)),
     });
 
-    if (messages[0]?.user?.id) {
-        queryMutate({
-            key: ["conversations", messages[0].user.id],
-            value: (state) =>
-                state.map((c) =>
-                    c.id === messages[0].conversation_id
-                        ? {
-                              ...c,
-                              last_message: (
-                                  queryCache.get({
-                                      key: [
-                                          "messages",
-                                          messages[0].conversation_id,
-                                      ],
-                                  }) as CacheAPIProtocol["messages"]["data"]
-                              )?.at(-1),
-                          }
-                        : c,
-                ),
-        });
-    }
+    queryMutate({
+        key: ["conversations", options.user.id],
+        value: (state) =>
+            state.map((c) =>
+                c.id === messages[0].conversation_id
+                    ? {
+                          ...c,
+                          last_message: (
+                              queryCache.get({
+                                  key: [
+                                      "messages",
+                                      messages[0].conversation_id,
+                                  ],
+                              }) as CacheAPIProtocol["messages"]["data"]
+                          )?.at(-1),
+                      }
+                    : c,
+            ),
+    });
 
     const res = await refreshedRequest({
         method: "POST",

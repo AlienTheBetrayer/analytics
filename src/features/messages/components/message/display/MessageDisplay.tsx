@@ -58,6 +58,7 @@ export const MessageDisplay = ({
                     isActive={!selectingMode}
                     element={(hide) => (
                         <ContextMenu
+                            conversationData={conversationData}
                             hide={hide}
                             data={data}
                             onAction={onAction}

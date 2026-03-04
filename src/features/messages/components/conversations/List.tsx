@@ -4,6 +4,7 @@ import { NotesDisplay } from "@/features/messages/components/conversations/notes
 import { FilterNothing } from "@/features/messages/components/errors/FilterNothing";
 import { NoConversations } from "@/features/messages/components/errors/NoConversations";
 import { sortConversations } from "@/features/messages/utils/sort";
+import { Spinner } from "@/features/ui/spinner/components/Spinner";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { useQuery } from "@/query/core";
 import { useAppStore } from "@/zustand/store";
@@ -19,13 +20,8 @@ export const List = ({ isLoading, conversations }: Props) => {
 
     if (isLoading || !conversations) {
         return (
-            <div className="flex flex-col gap-2 relative">
-                {Array.from({ length: 8 }, (_, k) => (
-                    <div
-                        key={k}
-                        className="w-full h-12 loading"
-                    />
-                ))}
+            <div className="flex items-center justify-center grow loading">
+                <Spinner />
             </div>
         );
     }

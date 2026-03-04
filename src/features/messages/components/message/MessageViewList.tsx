@@ -130,6 +130,7 @@ export const MessageViewList = ({
                 }}
                 data={data}
                 retrieved={retrieved}
+                conversationData={conversationData}
                 type={actionType}
                 actionMessage={actionMessage}
             />

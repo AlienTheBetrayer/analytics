@@ -1,18 +1,18 @@
 import { Editing } from "@/features/messages/components/message/input/Editing";
+import { InputControls } from "@/features/messages/components/message/input/InputControls";
+import { InputStatus } from "@/features/messages/components/message/input/InputStatus";
 import { Replying } from "@/features/messages/components/message/input/Replying";
 import { useMessageInput } from "@/features/messages/hooks/useMessageInput";
-import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
 import { useMessageBox } from "@/features/ui/messagebox/hooks/useMessageBox";
-import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { deleteMessage } from "@/query-api/calls/messages";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { useQuery } from "@/query/core";
-import { AnimatePresence, motion } from "motion/react";
-import Image from "next/image";
+import { useMemo } from "react";
 
 export type MessageInputProps = {
     retrieved?: CacheAPIProtocol["conversation_retrieve"]["data"];
+    conversationData?: CacheAPIProtocol["conversations"]["data"][number];
     data: CacheAPIProtocol["messages"]["data"] | null;
     ref?: React.Ref<HTMLInputElement | null>;
     actionMessage?: CacheAPIProtocol["messages"]["data"][number];
@@ -20,220 +20,97 @@ export type MessageInputProps = {
     onCancel: () => void;
     onAction: () => void;
 };
-export const MessageInput = ({
-    retrieved,
-    data,
-    ref,
-    type,
-    actionMessage,
-    onCancel,
-    onAction,
-}: MessageInputProps) => {
+export const MessageInput = (props: MessageInputProps) => {
     const { data: status } = useQuery({ key: ["status"] });
     const deleteBox = useMessageBox();
 
     const { updateMessage, setMessage, inputRef, message, edit, isSendable } =
         useMessageInput({
-            retrieved,
-            data,
-            ref,
-            type,
-            actionMessage,
-            onCancel,
-            onAction,
+            ...props,
             onDelete: deleteBox.show,
         });
 
+    const placeholder = useMemo(() => {
+        if (props.conversationData?.membership.can_send === false) {
+            return "Prohibited.";
+        }
+
+        switch (props.type) {
+            case "edit": {
+                return "Edit...";
+            }
+            case "reply": {
+                return "Reply...";
+            }
+            default: {
+                return "Send...";
+            }
+        }
+    }, [props.type, props.conversationData?.membership.can_send]);
+
     return (
-        <div className="flex flex-col gap-0.5">
+        <div
+            className={`flex relative flex-col gap-0.5 ${props.conversationData?.membership.can_send === false ? "opacity-30" : ""}`}
+            inert={props.conversationData?.membership.can_send === false}
+        >
             {deleteBox.render({
                 children: "This message will be deleted!",
                 onSelect(response) {
-                    onCancel();
-                    if (!actionMessage || !status) {
+                    props.onCancel();
+                    if (!props.actionMessage || !status) {
                         return;
                     }
 
                     if (response === "yes") {
                         deleteMessage({
-                            message: [actionMessage],
+                            message: [props.actionMessage],
                             user: status,
                         });
-                        onAction();
+                        props.onAction();
                     }
                 },
             })}
 
             <Editing
-                type={type}
-                actionMessage={actionMessage}
+                type={props.type}
+                actionMessage={props.actionMessage}
             />
 
             <Replying
-                type={type}
-                actionMessage={actionMessage}
+                type={props.type}
+                actionMessage={props.actionMessage}
             />
 
-            <div className="flex items-center gap-0.5">
-                <div className="box p-0! flex-row! gap-0! h-full items-center justify-center w-10">
-                    <AnimatePresence mode="wait">
-                        <motion.div
-                            className="flex items-center gap-0!"
-                            key={type}
-                            initial={{ x: 12, opacity: 0 }}
-                            animate={{ x: 0, opacity: 1 }}
-                            exit={{ x: -12, opacity: 0 }}
-                            transition={{
-                                ease: [0.4, 0, 0.2, 1],
-                                duration: 0.125,
-                            }}
-                        >
-                            <div
-                                className="w-1 h-1 rounded-full"
-                                style={{
-                                    background:
-                                        type === "edit"
-                                            ? "var(--orange-1)"
-                                            : type === "reply"
-                                              ? "var(--blue-3)"
-                                              : "var(--blue-1)",
-                                }}
-                            />
-
-                            <Image
-                                alt=""
-                                width={16}
-                                height={16}
-                                src={
-                                    type === "edit"
-                                        ? "/pencil.svg"
-                                        : type === "reply"
-                                          ? "/back.svg"
-                                          : "/send.svg"
-                                }
-                            />
-                        </motion.div>
-                    </AnimatePresence>
-                </div>
+            <div className="flex items-center gap-1">
+                <InputStatus {...props} />
 
                 <Input
-                    isEnabled={!!(retrieved || data)}
+                    isEnabled={!!(props.retrieved || props.data)}
                     ref={inputRef}
                     className="bg-bg-1! border-0! outline-1! outline-transparent hover:outline-blue-1 focus-visible:outline-blue-1"
-                    placeholder={
-                        type === "edit"
-                            ? "Edit..."
-                            : type === "reply"
-                              ? "Reply..."
-                              : "Write..."
-                    }
-                    value={type === "edit" ? edit : message}
+                    placeholder={placeholder}
+                    value={props.type === "edit" ? edit : message}
                     onChange={(value) => setMessage(value)}
                     onKeyDown={(e: React.KeyboardEvent) => {
                         switch (e.code) {
                             case "Enter": {
                                 updateMessage();
-                                onAction();
+                                props.onAction();
                                 break;
                             }
                             case "Escape": {
-                                onCancel();
+                                props.onCancel();
                                 break;
                             }
                         }
                     }}
                 />
 
-                <div
-                    className={`overflow-hidden transition-all duration-300 shrink-0 
-                    ${type !== "send" ? "max-w-8" : "max-w-0"}`}
-                    inert={type === "send"}
-                >
-                    <Tooltip
-                        direction="top"
-                        text="Cancel"
-                    >
-                        <Button
-                            className="not-hover:bg-bg-1!"
-                            onClick={() => {
-                                onCancel?.();
-                            }}
-                        >
-                            <Image
-                                alt=""
-                                width={16}
-                                height={16}
-                                src="/back.svg"
-                            />
-                        </Button>
-                    </Tooltip>
-                </div>
-
-                <Tooltip
-                    direction="top"
-                    text={
-                        type === "edit"
-                            ? "Edit a message"
-                            : type === "send"
-                              ? "Send a message"
-                              : type === "reply"
-                                ? "Reply"
-                                : ""
-                    }
-                    isEnabled={isSendable || type === "edit"}
-                >
-                    <Button
-                        className="not-hover:bg-bg-1! h-full! aspect-square overflow-hidden"
-                        onClick={() => {
-                            updateMessage();
-                            onAction();
-                        }}
-                    >
-                        <AnimatePresence>
-                            {isSendable ? (
-                                <motion.div
-                                    key="sendable"
-                                    className="absolute"
-                                    initial={{ x: -20, opacity: 0, scale: 0 }}
-                                    animate={{ x: 0, opacity: 1, scale: 1 }}
-                                    exit={{ x: -20, opacity: 0, scale: 0 }}
-                                    transition={{ duration: 0.2 }}
-                                >
-                                    <Image
-                                        alt=""
-                                        width={16}
-                                        height={16}
-                                        src={
-                                            type === "edit"
-                                                ? "/pencil.svg"
-                                                : "/send.svg"
-                                        }
-                                    />
-                                </motion.div>
-                            ) : (
-                                <motion.div
-                                    key="notsendable"
-                                    className="absolute"
-                                    initial={{ x: 20, opacity: 0, scale: 0 }}
-                                    animate={{ x: 0, opacity: 1, scale: 1 }}
-                                    exit={{ x: 20, opacity: 0, scale: 0 }}
-                                    transition={{ duration: 0.2 }}
-                                >
-                                    <Image
-                                        alt=""
-                                        width={16}
-                                        height={16}
-                                        src={
-                                            type === "edit"
-                                                ? "/delete.svg"
-                                                : "/cross.svg"
-                                        }
-                                    />
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
-                    </Button>
-                </Tooltip>
+                <InputControls
+                    {...props}
+                    isSendable={isSendable}
+                    updateMessage={updateMessage}
+                />
             </div>
         </div>
     );

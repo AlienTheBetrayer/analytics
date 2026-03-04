@@ -25,6 +25,7 @@ export const Permissions = ({
     const [canDelete, setCanDelete] = useState<boolean>(
         data.can_delete_messages ?? false,
     );
+    const [canSend, setCanSend] = useState<boolean>(data.can_send ?? true);
 
     if (
         !conversationData.membership.is_founder &&
@@ -68,6 +69,7 @@ export const Permissions = ({
                             user_ids: [data.user_id],
                             conversation_id: data.conversation_id,
                             can_read: canRead,
+                            can_send: canSend,
                             can_invite: canInvite,
                             can_delete_messages: canDelete,
                             can_kick: canKick,
@@ -82,6 +84,15 @@ export const Permissions = ({
                             onToggle={(flag) => setCanRead(flag)}
                         >
                             Read messages
+                        </Checkbox>
+                    </li>
+
+                    <li>
+                        <Checkbox
+                            value={canSend}
+                            onToggle={(flag) => setCanSend(flag)}
+                        >
+                            Send messages
                         </Checkbox>
                     </li>
 

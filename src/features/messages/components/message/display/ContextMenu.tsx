@@ -16,9 +16,15 @@ type Props = {
     hide?: () => void;
     onAction?: MessageDisplayProps["onAction"];
     data: CacheAPIProtocol["messages"]["data"][number];
+    conversationData?: CacheAPIProtocol["conversations"]["data"][number];
 };
 
-export const ContextMenu = ({ data, hide, onAction }: Props) => {
+export const ContextMenu = ({
+    data,
+    conversationData,
+    hide,
+    onAction,
+}: Props) => {
     const { data: status } = useQuery({ key: ["status"] });
     const updateDisplay = useAppStore((state) => state.updateDisplay);
 
@@ -33,9 +39,16 @@ export const ContextMenu = ({ data, hide, onAction }: Props) => {
                     if (!status) {
                         return;
                     }
-
                     if (response === "yes") {
-                        deleteMessage({ message: [data], user: status });
+                        deleteMessage({
+                            message: [data],
+                            user: status,
+                            force:
+                                conversationData?.membership
+                                    .can_delete_messages ||
+                                conversationData?.membership.is_admin ||
+                                conversationData?.membership.is_founder,
+                        });
                     }
                     hide?.();
                 },
@@ -56,6 +69,10 @@ export const ContextMenu = ({ data, hide, onAction }: Props) => {
                     <>
                         <li>
                             <Button
+                                isEnabled={
+                                    conversationData?.membership.can_send !==
+                                    false
+                                }
                                 onClick={() => {
                                     onAction?.("reply");
                                     hide?.();
@@ -74,6 +91,10 @@ export const ContextMenu = ({ data, hide, onAction }: Props) => {
                         {isOurs && (
                             <li>
                                 <Button
+                                    isEnabled={
+                                        conversationData?.membership
+                                            .can_send !== false
+                                    }
                                     onClick={() => {
                                         onAction?.("edit");
                                         hide?.();
@@ -185,7 +206,11 @@ export const ContextMenu = ({ data, hide, onAction }: Props) => {
                     </>
                 )}
 
-                {(isOurs || data.type === "system") && (
+                {(isOurs ||
+                    data.type === "system" ||
+                    conversationData?.membership.is_admin ||
+                    conversationData?.membership.is_founder ||
+                    conversationData?.membership.can_delete_messages) && (
                     <li>
                         <Button onClick={deleteBox.show}>
                             <Image
