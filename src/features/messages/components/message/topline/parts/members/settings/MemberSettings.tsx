@@ -14,7 +14,7 @@ export const MemberSettings = ({
     data,
 }: MemberSettingsProps) => {
     return (
-        <ul className="box p-4! gap-4! items-center acrylic *:w-full *:flex *:flex-col *:gap-4">
+        <ul className="box p-4! gap-4! items-center acrylic *:w-full *:flex *:flex-col *:gap-4 h-full">
             <li className="flex items-center justify-center">
                 <span className="flex items-center gap-1">
                     <div className="w-1 h-1 rounded-full bg-blue-1" />

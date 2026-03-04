@@ -18,7 +18,6 @@ export const MemberDisplay = ({ data, conversationData }: Props) => {
             className="w-full"
             direction="screen-middle"
             tooltipClassName="w-screen max-w-lg"
-            isEnabled={conversationData.membership.is_founder}
             element={() => (
                 <MemberSettings
                     data={data}

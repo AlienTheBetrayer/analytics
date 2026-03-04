@@ -27,6 +27,7 @@ export const Permissions = ({
     );
     const [canSend, setCanSend] = useState<boolean>(data.can_send ?? true);
 
+    // hide for regular users
     if (
         !conversationData.membership.is_founder &&
         !conversationData.membership.is_admin
@@ -34,6 +35,25 @@ export const Permissions = ({
         return null;
     }
 
+    // we're an admin and trying to edit other admin
+    if (
+        data.is_admin &&
+        conversationData.membership.is_admin &&
+        data.user_id !== status?.id
+    ) {
+        return null;
+    }
+
+    // we're a founder and trying to edit other founder
+    if (
+        data.is_founder &&
+        conversationData.membership.is_founder &&
+        data.user_id !== status?.id
+    ) {
+        return null;
+    }
+
+    // our own profile + we're a founder
     if (data.is_founder && conversationData.membership.is_founder) {
         return (
             <div className="flex items-center justify-center grow p-4! loading">
@@ -42,6 +62,7 @@ export const Permissions = ({
         );
     }
 
+    // our own profile + we're an admin
     if (data.is_admin && conversationData.membership.is_admin) {
         return (
             <div className="flex items-center justify-center grow p-4! loading">

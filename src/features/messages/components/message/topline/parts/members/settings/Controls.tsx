@@ -72,21 +72,23 @@ export const Controls = ({ data, conversationData }: MemberSettingsProps) => {
             <hr />
 
             <ul className="flex flex-col gap-2 items-center *:w-full">
-                <li>
-                    <Button
-                        className="w-full"
-                        onClick={kickBox.show}
-                    >
-                        <div className="w-1 h-1 rounded-full bg-red-1" />
-                        <Image
-                            alt=""
-                            width={16}
-                            height={16}
-                            src="/auth.svg"
-                        />
-                        Kick
-                    </Button>
-                </li>
+                {!data.is_admin && !data.is_founder && (
+                    <li>
+                        <Button
+                            className="w-full"
+                            onClick={kickBox.show}
+                        >
+                            <div className="w-1 h-1 rounded-full bg-red-1" />
+                            <Image
+                                alt=""
+                                width={16}
+                                height={16}
+                                src="/auth.svg"
+                            />
+                            Kick
+                        </Button>
+                    </li>
+                )}
 
                 {conversationData.membership.is_founder && (
                     <li>
