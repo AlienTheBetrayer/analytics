@@ -3,6 +3,7 @@ import { useParams } from "next/navigation";
 import { Conversations } from "@/features/messages/components/conversations/Conversations";
 import { AdditionalTopline } from "@/features/messages/components/topline/AdditionalTopline";
 import { useSelect } from "@/features/messages/hooks/useSelect";
+import { useRealtime } from "@/features/messages/hooks/useRealtime";
 
 export type MessagesSelectResult =
     | "url"
@@ -15,6 +16,7 @@ export type MessagesTab = "u" | "c" | "notes" | "none";
 export const Select = () => {
     const { tab } = useParams<{ tab?: string }>();
     const { retrieved } = useSelect();
+    useRealtime(retrieved?.conversation_id ?? undefined);
 
     return (
         <div className="flex flex-col gap-4 grow">
@@ -24,7 +26,7 @@ export const Select = () => {
                 <Conversations />
 
                 <div
-                    className={`flex flex-col overflow-hidden grow bg-bg-1 ${tab ? "absolute lg:relative inset-0 z-2" : "relative hidden lg:flex"}`}
+                    className={`flex flex-col grow bg-bg-1 ${tab ? "absolute lg:relative inset-0 z-2" : "relative hidden lg:flex"}`}
                 >
                     <MessageView retrieved={retrieved} />
                 </div>
