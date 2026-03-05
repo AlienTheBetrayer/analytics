@@ -8,7 +8,7 @@ import {
 } from "@/utils/api/profile";
 import { nextResponse } from "@/utils/api/response";
 import { handleImage } from "@/utils/api/upload";
-import { supabaseServer } from "@/server/private/supabase";
+import { supabaseServer } from "@/utils/server/private/supabase";
 
 export const POST = async (request: NextRequest) => {
     try {

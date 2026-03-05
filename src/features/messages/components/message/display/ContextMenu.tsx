@@ -107,18 +107,6 @@ export const ContextMenu = ({
                                 </Button>
                             </li>
                         )}
-
-                        <li>
-                            <Button>
-                                <Image
-                                    alt=""
-                                    width={16}
-                                    height={16}
-                                    src="/pin.svg"
-                                />
-                                <span>Pin</span>
-                            </Button>
-                        </li>
                     </>
                 )}
 

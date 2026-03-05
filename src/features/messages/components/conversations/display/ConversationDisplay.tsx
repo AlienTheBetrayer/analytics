@@ -5,7 +5,7 @@ import { LastMessageDate } from "@/features/messages/components/conversations/di
 import { MutedStatus } from "@/features/messages/components/conversations/display/parts/Muted";
 import { Name } from "@/features/messages/components/conversations/display/parts/Name";
 import { PermissionStatus } from "@/features/messages/components/conversations/display/parts/PermissionStatus";
-import { Pinned } from "@/features/messages/components/conversations/display/parts/Pinned";
+import { TopRightStatus } from "@/features/messages/components/conversations/display/parts/TopRightStatus";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { useAppStore } from "@/zustand/store";
@@ -34,7 +34,7 @@ export const ConversationDisplay = ({ data }: Props) => {
             >
                 <PermissionStatus data={data} />
                 <Avatar data={data} />
-                <Pinned data={data} />
+                <TopRightStatus data={data} />
 
                 <div className="flex flex-col gap-1 w-full overflow-hidden">
                     <div className="flex items-center">

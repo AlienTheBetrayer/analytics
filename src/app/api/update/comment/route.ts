@@ -1,4 +1,4 @@
-import { supabaseServer } from "@/server/private/supabase";
+import { supabaseServer } from "@/utils/server/private/supabase";
 import { Comment } from "@/types/tables/posts";
 import { nextResponse } from "@/utils/api/response";
 import { tokenVerify } from "@/utils/auth/tokenVerify";

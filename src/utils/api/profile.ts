@@ -1,5 +1,5 @@
 import "server-only";
-import { supabaseServer } from "@/server/private/supabase";
+import { supabaseServer } from "@/utils/server/private/supabase";
 import { Profile } from "@/types/tables/account";
 import { PostgrestError } from "@supabase/supabase-js";
 import { nextResponse } from "./response";

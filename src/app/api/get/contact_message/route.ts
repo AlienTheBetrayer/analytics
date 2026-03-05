@@ -1,4 +1,4 @@
-import { supabaseServer } from "@/server/private/supabase";
+import { supabaseServer } from "@/utils/server/private/supabase";
 import { ContactMessage } from "@/types/tables/contact";
 import { nextResponse } from "@/utils/api/response";
 import { PostgrestError } from "@supabase/supabase-js";

@@ -1,4 +1,4 @@
-import { supabaseServer } from "@/server/private/supabase";
+import { supabaseServer } from "@/utils/server/private/supabase";
 import { nextResponse } from "@/utils/api/response";
 import { NextRequest } from "next/server";
 
@@ -23,7 +23,6 @@ export const GET = async (request: NextRequest) => {
                 ascending: false,
                 nullsFirst: false,
             });
-
 
         if (error) {
             throw error;

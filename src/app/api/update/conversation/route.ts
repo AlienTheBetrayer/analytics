@@ -1,4 +1,4 @@
-import { supabaseServer } from "@/server/private/supabase";
+import { supabaseServer } from "@/utils/server/private/supabase";
 import { Conversation } from "@/types/tables/messages";
 import { nextResponse } from "@/utils/api/response";
 import { handleImage } from "@/utils/api/upload";
@@ -113,7 +113,10 @@ export const POST = async (request: NextRequest) => {
                             user_ids.map((id) => ({
                                 conversation_id: data.id,
                                 user_id: id,
-                                ...(id === user_id && conversation_type !== "dm" && { is_founder: true }),
+                                ...(id === user_id &&
+                                    conversation_type !== "dm" && {
+                                        is_founder: true,
+                                    }),
                             })),
                         );
 

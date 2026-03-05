@@ -1,4 +1,4 @@
-import { supabaseServer } from "@/server/private/supabase";
+import { supabaseServer } from "@/utils/server/private/supabase";
 import { nextResponse } from "@/utils/api/response";
 import { getPagination } from "@/utils/other/paginatePage";
 import { PostgrestError } from "@supabase/supabase-js";

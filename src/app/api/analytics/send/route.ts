@@ -1,7 +1,7 @@
 import type { PostgrestError } from "@supabase/supabase-js";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import { supabaseServer } from "@/server/private/supabase";
+import { supabaseServer } from "@/utils/server/private/supabase";
 import { Event, Project } from "@/types/tables/project";
 import { nextResponse } from "@/utils/api/response";
 

@@ -1,5 +1,5 @@
 import type { NextRequest } from "next/server";
-import { supabaseServer } from "@/server/private/supabase";
+import { supabaseServer } from "@/utils/server/private/supabase";
 import { tokenVerify } from "@/utils/auth/tokenVerify";
 import { nextResponse } from "@/utils/api/response";
 

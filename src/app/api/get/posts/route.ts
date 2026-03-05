@@ -1,4 +1,4 @@
-import { supabaseServer } from "@/server/private/supabase";
+import { supabaseServer } from "@/utils/server/private/supabase";
 import { Post } from "@/types/tables/posts";
 import { nextResponse } from "@/utils/api/response";
 import { tokenPayload } from "@/utils/auth/tokenPayload";

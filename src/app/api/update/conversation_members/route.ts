@@ -1,6 +1,6 @@
 import { MuteOptions } from "@/features/messages/components/message/topline/parts/members/settings/Muting";
 import { convertMuteTime } from "@/features/messages/utils/convertMuteTime";
-import { supabaseServer } from "@/server/private/supabase";
+import { supabaseServer } from "@/utils/server/private/supabase";
 import { ConversationMember } from "@/types/tables/messages";
 import { nextResponse } from "@/utils/api/response";
 import { tokenPayload } from "@/utils/auth/tokenPayload";

@@ -1,7 +1,7 @@
 import type { PostgrestError } from "@supabase/supabase-js";
 import bcrypt from "bcrypt";
 import type { NextRequest } from "next/server";
-import { supabaseServer } from "@/server/private/supabase";
+import { supabaseServer } from "@/utils/server/private/supabase";
 import { nextResponse } from "@/utils/api/response";
 import { User } from "@/types/tables/account";
 

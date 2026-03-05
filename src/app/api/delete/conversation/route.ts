@@ -1,4 +1,4 @@
-import { supabaseServer } from "@/server/private/supabase";
+import { supabaseServer } from "@/utils/server/private/supabase";
 import { Conversation } from "@/types/tables/messages";
 import { nextResponse } from "@/utils/api/response";
 import { deleteImage } from "@/utils/api/upload";

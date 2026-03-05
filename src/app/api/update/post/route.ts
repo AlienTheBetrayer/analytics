@@ -1,4 +1,4 @@
-import { supabaseServer } from "@/server/private/supabase";
+import { supabaseServer } from "@/utils/server/private/supabase";
 import { Post } from "@/types/tables/posts";
 import { nextResponse } from "@/utils/api/response";
 import { deleteImage, uploadImage } from "@/utils/api/upload";
@@ -79,7 +79,7 @@ export const POST = async (request: NextRequest) => {
                     throw "id is undefined";
                 }
 
-                if(!(image || image === null)) {
+                if (!(image || image === null)) {
                     break;
                 }
 

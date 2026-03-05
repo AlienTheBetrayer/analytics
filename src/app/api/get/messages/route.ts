@@ -1,4 +1,4 @@
-import { supabaseServer } from "@/server/private/supabase";
+import { supabaseServer } from "@/utils/server/private/supabase";
 import { ConversationMember } from "@/types/tables/messages";
 import { nextResponse } from "@/utils/api/response";
 import { tokenPayload } from "@/utils/auth/tokenPayload";
@@ -14,7 +14,7 @@ export const GET = async (request: NextRequest) => {
             throw "conversation_id is undefined";
         }
 
-        // permissions
+        // permissions & misc
         {
             const token = tokenPayload(request)?.accessToken;
 
@@ -41,17 +41,27 @@ export const GET = async (request: NextRequest) => {
                 throw "muted";
             }
 
-            // unmuted (removing row)
-            if (data.muted_until && new Date(data.muted_until) < new Date()) {
+            // unmuted removing + unread clearing
+            {
                 const { error } = await supabaseServer
                     .from("conversation_members")
-                    .update({ muted_until: null })
+                    .update({
+                        ...(data.muted_until &&
+                            new Date(data.muted_until) < new Date() && {
+                                muted_until: null,
+                            }),
+                        ...(data.unread_amount && { unread_amount: null }),
+                    })
                     .eq("conversation_id", conversation_id)
                     .eq("user_id", data.user_id);
 
                 if (error) {
                     throw error;
                 }
+            }
+
+            // unread (clearing)
+            if (data.unread_amount) {
             }
 
             // not a member

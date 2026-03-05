@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import { type NextRequest, NextResponse } from "next/server";
-import { supabaseServer } from "@/server/private/supabase";
+import { supabaseServer } from "@/utils/server/private/supabase";
 
 export const POST = async (request: NextRequest) => {
     try {

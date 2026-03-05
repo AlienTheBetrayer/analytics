@@ -1,6 +1,6 @@
 import "server-only";
 import { NextRequest } from "next/server";
-import { supabaseServer } from "@/server/private/supabase";
+import { supabaseServer } from "@/utils/server/private/supabase";
 import { tokenVerify } from "../auth/tokenVerify";
 import { nextResponse } from "./response";
 

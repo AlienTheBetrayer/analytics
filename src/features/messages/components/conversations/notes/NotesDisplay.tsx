@@ -2,7 +2,7 @@ import { Avatar } from "@/features/messages/components/conversations/display/par
 import { BottomButtons } from "@/features/messages/components/conversations/display/parts/BottomButtons";
 import { LastMessage } from "@/features/messages/components/conversations/display/parts/LastMessage";
 import { LastMessageDate } from "@/features/messages/components/conversations/display/parts/LastMessageDate";
-import { Pinned } from "@/features/messages/components/conversations/display/parts/Pinned";
+import { TopRightStatus } from "@/features/messages/components/conversations/display/parts/TopRightStatus";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { useParams } from "next/navigation";
@@ -42,7 +42,7 @@ export const NotesDisplay = ({ data }: Props) => {
                     <LastMessage data={data} />
                 </div>
 
-                <Pinned data={data} />
+                <TopRightStatus data={data} />
             </LinkButton>
 
             <BottomButtons

@@ -14,6 +14,7 @@ export type ConversationMember = {
     can_send?: boolean;
     can_invite?: boolean;
     muted_until?: string;
+    unread_amount?: number;
 };
 
 /**
