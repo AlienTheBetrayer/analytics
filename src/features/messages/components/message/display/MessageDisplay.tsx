@@ -44,7 +44,12 @@ export const MessageDisplay = ({
     // fallbacks
     switch (data.type) {
         case "system": {
-            return <SystemDisplay data={data} />;
+            return (
+                <SystemDisplay
+                    data={data}
+                    conversationData={conversationData}
+                />
+            );
         }
     }
 

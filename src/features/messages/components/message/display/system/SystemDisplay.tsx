@@ -6,15 +6,21 @@ import Image from "next/image";
 
 type Props = {
     data: CacheAPIProtocol["messages"]["data"][number];
+    conversationData?: CacheAPIProtocol["conversations"]["data"][number];
 };
 
-export const SystemDisplay = ({ data }: Props) => {
+export const SystemDisplay = ({ data, conversationData }: Props) => {
     return (
         <Modal
             tooltipClassName="w-screen max-w-64"
             direction="left"
             className="w-fit mx-auto my-1"
-            element={() => <ContextMenu data={data} />}
+            element={() => (
+                <ContextMenu
+                    data={data}
+                    conversationData={conversationData}
+                />
+            )}
         >
             <Button
                 className={`box not-hover:bg-bg-1! p-1.5! px-4! w-fit! flex-row!`}

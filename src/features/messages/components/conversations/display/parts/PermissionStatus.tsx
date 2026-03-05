@@ -1,5 +1,4 @@
 import { CacheAPIProtocol } from "@/query-api/protocol";
-import Image from "next/image";
 
 type Props = {
     data: CacheAPIProtocol["conversations"]["data"][number];
@@ -7,7 +6,7 @@ type Props = {
 
 export const PermissionStatus = ({ data }: Props) => {
     return (
-        <div className="flex items-center gap-1 absolute left-1 top-1">
+        <div className="flex items-center gap-1 absolute left-3 top-3">
             {data.membership.is_founder && (
                 <PermissionStatusBadge
                     src="/cube.svg"
@@ -29,18 +28,12 @@ type BadgeProps = {
     src: string;
     color: string;
 };
-const PermissionStatusBadge = ({ src, color }: BadgeProps) => {
+const PermissionStatusBadge = ({ color }: BadgeProps) => {
     return (
-        <div className="box p-0.75! flex-row! items-center gap-0! rounded-lg">
+        <div className="box p-1! flex-row! items-center gap-0! rounded-lg">
             <div
                 className="w-1 h-1 rounded-full"
                 style={{ background: color }}
-            />
-            <Image
-                alt=""
-                width={13}
-                height={13}
-                src={src}
             />
         </div>
     );

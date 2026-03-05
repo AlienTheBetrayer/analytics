@@ -2,7 +2,6 @@
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { queryInvalidate, queryMutate } from "@/query/auxiliary";
 import { queryCache } from "@/query/init";
-import { AuthenticationToken } from "@/types/auth/authentication";
 import { Conversation, Message } from "@/types/tables/messages";
 import { refreshedRequest } from "@/utils/auth/refreshedRequest";
 
@@ -209,21 +208,24 @@ export const upsertMessage = async (
 
 export const deleteMessage = async (options: {
     message: CacheAPIProtocol["messages"]["data"][number][];
-    user: AuthenticationToken;
-    force?: boolean;
+    conversation: CacheAPIProtocol["conversations"]["data"][number];
+    user: CacheAPIProtocol["status"]["data"];
 }) => {
-    const messages = options.force
-        ? options.message
-        : options.message.filter(
-              (m) => m.user_id === options.user.id || m.type === "system",
-          );
+    const messages =
+        options.conversation.membership.can_delete_messages ||
+        options.conversation.membership.is_admin ||
+        options.conversation.membership.is_founder
+            ? options.message
+            : options.message.filter(
+                  (m) => m.user_id === options.user.id || m.type === "system",
+              );
 
     if (!messages.length) {
         return;
     }
-    
+
     queryMutate({
-        key: ["messages", messages[0]?.conversation_id],
+        key: ["messages", options.conversation.id],
         value: (state) =>
             state.filter((m) => !messages.find((msg) => msg.id === m.id)),
     });
@@ -232,15 +234,12 @@ export const deleteMessage = async (options: {
         key: ["conversations", options.user.id],
         value: (state) =>
             state.map((c) =>
-                c.id === messages[0].conversation_id
+                c.id === options.conversation.id
                     ? {
                           ...c,
                           last_message: (
                               queryCache.get({
-                                  key: [
-                                      "messages",
-                                      messages[0].conversation_id,
-                                  ],
+                                  key: ["messages", options.conversation.id],
                               }) as CacheAPIProtocol["messages"]["data"]
                           )?.at(-1),
                       }

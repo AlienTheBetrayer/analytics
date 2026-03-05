@@ -20,7 +20,10 @@ export const MessagesTopline = ({
                 conversationData={conversationData}
                 retrieved={retrieved}
             />
-            <Secondary data={data} />
+            <Secondary
+                data={data}
+                conversationData={conversationData}
+            />
         </div>
     );
 };

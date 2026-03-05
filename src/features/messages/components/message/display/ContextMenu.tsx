@@ -36,18 +36,15 @@ export const ContextMenu = ({
             {deleteBox.render({
                 children: "This message will be deleted!",
                 onSelect(response) {
-                    if (!status) {
+                    if (!status || !conversationData) {
                         return;
                     }
+
                     if (response === "yes") {
                         deleteMessage({
                             message: [data],
                             user: status,
-                            force:
-                                conversationData?.membership
-                                    .can_delete_messages ||
-                                conversationData?.membership.is_admin ||
-                                conversationData?.membership.is_founder,
+                            conversation: conversationData,
                         });
                     }
                     hide?.();

@@ -11,9 +11,10 @@ import { useParams } from "next/navigation";
 
 type Props = {
     data: CacheAPIProtocol["messages"]["data"] | null;
+    conversationData?: CacheAPIProtocol["conversations"]["data"][number];
 };
 
-export const Secondary = ({ data }: Props) => {
+export const Secondary = ({ data, conversationData }: Props) => {
     const display = useAppStore((state) => state.display.messages);
     const updateDisplay = useAppStore((state) => state.updateDisplay);
 
@@ -28,12 +29,14 @@ export const Secondary = ({ data }: Props) => {
     return (
         <div className="relative">
             <AnimatePresence>
-                {display.selectingMode && <Selectable />}
+                {display.selectingMode && (
+                    <Selectable conversationData={conversationData} />
+                )}
             </AnimatePresence>
 
             <ul
-                className={`box min-h-10! h-10! gap-1! p-0! items-center! flex-row!
-                    ${!data?.length ? "opacity-30" : ""}`}
+                className={`box min-h-10! h-10! gap-1! p-0! items-center! flex-row! transition-all duration-75
+                    ${!data?.length || display.selectingMode ? "opacity-30" : "opacity-100"}`}
                 inert={!data?.length || display.selectingMode}
             >
                 {!data?.length && (

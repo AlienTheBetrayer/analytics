@@ -57,7 +57,11 @@ export const MessageInput = (props: MessageInputProps) => {
                 children: "This message will be deleted!",
                 onSelect(response) {
                     props.onCancel();
-                    if (!props.actionMessage || !status) {
+                    if (
+                        !props.actionMessage ||
+                        !status ||
+                        !props.conversationData
+                    ) {
                         return;
                     }
 
@@ -65,6 +69,7 @@ export const MessageInput = (props: MessageInputProps) => {
                         deleteMessage({
                             message: [props.actionMessage],
                             user: status,
+                            conversation: props.conversationData,
                         });
                         props.onAction();
                     }
