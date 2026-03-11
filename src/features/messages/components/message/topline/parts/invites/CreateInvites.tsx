@@ -1,21 +1,20 @@
+/** @format */
+
 import { Create } from "@/features/messages/components/message/topline/parts/invites/Create";
 import { List } from "@/features/messages/components/message/topline/parts/invites/List";
 import { Button } from "@/features/ui/button/components/Button";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
-import { CacheAPIProtocol } from "@/query-api/protocol";
 import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
 import { useState } from "react";
 
-type Props = {
-    conversationData: CacheAPIProtocol["conversations"]["data"][number];
-};
-
 export type InvitesTab = "list" | "create";
 
-export const CreateInvites = ({ conversationData }: Props) => {
+export const CreateInvites = () => {
+    // tab
     const [tab, setTab] = useState<InvitesTab>("list");
 
+    // jsx
     return (
         <div className="box acrylic p-4! gap-4! items-center w-full min-h-72">
             <Tooltip
@@ -60,16 +59,14 @@ export const CreateInvites = ({ conversationData }: Props) => {
                     transition={{ ease: [0.4, 0, 0.2, 1], duration: 0.15 }}
                     className="flex flex-col grow *:grow w-full"
                 >
-                    {tab === "create" ? (
-                        <Create conversationData={conversationData} />
-                    ) : (
-                        <List
-                            conversationData={conversationData}
+                    {tab === "create" ?
+                        <Create />
+                    :   <List
                             onNavigate={() => {
                                 setTab("create");
                             }}
                         />
-                    )}
+                    }
                 </motion.div>
             </AnimatePresence>
         </div>

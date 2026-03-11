@@ -1,51 +1,44 @@
+/** @format */
+
 import { Button } from "@/features/ui/button/components/Button";
 import { useMessageBox } from "@/features/ui/messagebox/hooks/useMessageBox";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { PromiseState } from "@/promises/components/PromiseState";
 import { wrapPromise } from "@/promises/core";
 import { deleteMessage } from "@/query-api/calls/messages";
-import { CacheAPIProtocol } from "@/query-api/protocol";
-import { useQuery } from "@/query/core";
 import { useAppStore } from "@/zustand/store";
 import { motion } from "motion/react";
 import Image from "next/image";
 
-type Props = {
-    conversationData?: CacheAPIProtocol["conversations"]["data"][number];
-};
-
-export const Selectable = ({ conversationData }: Props) => {
-    const { data: status } = useQuery({ key: ["status"] });
+export const Selectable = () => {
+    // zustand
     const display = useAppStore((state) => state.display.messages);
+    const messages = useAppStore((state) => state.messages);
+    const conversation = useAppStore((state) => state.conversation);
     const updateDisplay = useAppStore((state) => state.updateDisplay);
 
+    // message boxes
     const deleteBox = useMessageBox();
 
+    // jsx
     return (
         <>
             {deleteBox.render({
-                children:
-                    "Selected messages will be deleted! (allowed by permissions)",
+                children: "Selected messages will be deleted! (allowed by permissions)",
                 onSelect(response) {
-                    if (!status) {
-                        return;
-                    }
-
                     const messages = Array.from(display.selecting.values());
 
-                    if (!messages.length || !conversationData) {
+                    if (!messages.length || !conversation) {
                         return;
                     }
-
                     if (response === "yes") {
                         deleteMessage({
-                            message: messages,
-                            user: status,
-                            conversation: conversationData,
+                            messages,
+                            conversation_id: conversation.id,
                         });
                         updateDisplay({
                             messages: {
-                                selecting: new Map(),
+                                selecting: new Set(),
                                 selectingMode: false,
                             },
                         });
@@ -98,13 +91,15 @@ export const Selectable = ({ conversationData }: Props) => {
                             <Button
                                 onClick={() => {
                                     wrapPromise("copySelected", () => {
-                                        const messages = Array.from(
-                                            display.selecting.values(),
-                                        ).map((m) => m.message);
+                                        if (!messages?.messages.size) {
+                                            return Promise.reject();
+                                        }
 
-                                        return navigator.clipboard.writeText(
-                                            messages.join("\n"),
+                                        const text = Array.from(display.selecting.values()).map(
+                                            (id) => messages.messages.get(id)?.message ?? "",
                                         );
+
+                                        return navigator.clipboard.writeText(text.join("\n"));
                                     });
                                 }}
                             >

@@ -1,3 +1,5 @@
+/** @format */
+
 import { AbsentData } from "@/features/ui/absentdata/components/AbsentData";
 import { Button } from "@/features/ui/button/components/Button";
 import { useAppStore } from "@/zustand/store";
@@ -9,8 +11,10 @@ type Props = {
 };
 
 export const FilterNothing = ({ type, onClear }: Props) => {
+    // zustand
     const updateDisplay = useAppStore((state) => state.updateDisplay);
 
+    // jsx
     return (
         <AbsentData
             title={

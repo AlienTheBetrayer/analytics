@@ -1,3 +1,5 @@
+/** @format */
+
 import { CacheAPIProtocol } from "@/query-api/protocol";
 
 /**
@@ -6,10 +8,7 @@ import { CacheAPIProtocol } from "@/query-api/protocol";
  * @param filter_ filter string
  * @returns true if no filter and if filter passed, false if it didn't pass
  */
-export const filterConversation = (
-    data: CacheAPIProtocol["conversations"]["data"][number],
-    filter_?: string,
-) => {
+export const filterConversation = (conversation: CacheAPIProtocol["conversations"]["data"][number], filter_?: string) => {
     const filter = filter_?.trim().toLowerCase();
 
     // no filter
@@ -18,20 +17,17 @@ export const filterConversation = (
     }
 
     // title / description matched
-    if (
-        data.title?.toLowerCase().trim().includes(filter) ||
-        data.description?.toLowerCase().trim().includes(filter)
-    ) {
+    if (conversation.title?.toLowerCase().trim().includes(filter) || conversation.description?.toLowerCase().trim().includes(filter)) {
         return true;
     }
 
     // users matched
-    if (data.peer?.username.toLowerCase().trim().includes(filter)) {
+    if (conversation.peer?.username.toLowerCase().trim().includes(filter)) {
         return true;
     }
 
     // last message matched
-    if (data.last_message?.message.toLowerCase().trim().includes(filter)) {
+    if (conversation.last_message?.message.toLowerCase().trim().includes(filter)) {
         return true;
     }
 

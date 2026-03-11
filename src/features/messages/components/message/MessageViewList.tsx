@@ -1,119 +1,83 @@
+/** @format */
+
 import { FilterNothing } from "@/features/messages/components/errors/FilterNothing";
 import { NoMessages } from "@/features/messages/components/errors/NoMessages";
-import { MessageDisplay } from "@/features/messages/components/message/display/MessageDisplay";
-import {
-    MessageInputProps,
-    MessageInput,
-} from "@/features/messages/components/message/input/MessageInput";
+import { MessageDisplay, MessageDisplayProps } from "@/features/messages/components/message/display/MessageDisplay";
+import { MessageInput } from "@/features/messages/components/message/input/MessageInput";
 import { MessagesTopline } from "@/features/messages/components/message/topline/MessagesTopline";
-import { sortMessages } from "@/features/messages/utils/sort";
-import { upsertMessage } from "@/query-api/calls/messages";
-import { CacheAPIProtocol } from "@/query-api/protocol";
-import { useQuery } from "@/query/core";
+import { useMessageViewList } from "@/features/messages/components/message/useMessageViewList";
 import { useAppStore } from "@/zustand/store";
-import { redirect } from "next/navigation";
-import { useMemo, useRef, useState } from "react";
+import { useCallback, useEffect } from "react";
+import { List, RowComponentProps, useDynamicRowHeight, useListRef } from "react-window";
 
-type Props = {
-    data: CacheAPIProtocol["messages"]["data"] | null;
-    conversationData?: CacheAPIProtocol["conversations"]["data"][number];
-    retrieved?: CacheAPIProtocol["conversation_retrieve"]["data"];
-};
-export const MessageViewList = ({
-    data,
-    conversationData,
-    retrieved,
-}: Props) => {
-    const { data: status } = useQuery({ key: ["status"] });
-    const display = useAppStore((state) => state.display.messages);
-    const listRef = useRef<HTMLUListElement | null>(null);
+export const MessageViewList = () => {
+    // zustand
+    const filter = useAppStore((state) => state.display.messages.filter);
+    const reversed = useAppStore((state) => state.display.messages.reversed);
+    const selectionMode = useAppStore((state) => state.display.messages.selectingMode);
 
-    // sorting
-    const sorted = useMemo(() => {
-        if (!data?.length) {
-            return [];
-        }
+    // ui states
+    const trimmedFilter = filter.trim();
 
-        return sortMessages({
-            messages: data,
-            filter: display.filter,
-            reversed: display.reversed,
+    // messages(with filtering) + editing/actions
+    const { messageIds, actionMessage, actionType, setActionMessage, setActionType, onMessageAction } =
+        useMessageViewList();
+
+    // refs
+    const listRef = useListRef(null);
+
+    // scrolling
+    const scrollToBottom = useCallback(
+        (behavior: "smooth" | "instant") => {
+            if (!listRef.current?.element) {
+                return;
+            }
+
+            const { scrollHeight } = listRef.current.element;
+            listRef.current.element.scrollTo({ top: scrollHeight, behavior });
+        },
+        [listRef],
+    );
+
+    // bottom scrolling
+    useEffect(() => {
+        requestAnimationFrame(() => {
+            scrollToBottom("smooth");
         });
-    }, [data, display]);
+    }, [messageIds.length, scrollToBottom]);
 
-    // editing + auto-focusing
-    const [actionType, setActionType] =
-        useState<MessageInputProps["type"]>("send");
-    const [actionMessage, setActionMessage] = useState<
-        CacheAPIProtocol["messages"]["data"][number] | undefined
-    >(undefined);
+    // virtualized list
+    const rowHeight = useDynamicRowHeight({
+        defaultRowHeight: 40,
+    });
 
+    // jsx
     return (
         <article className="flex flex-col bg-bg-2! grow p-4! gap-2 rounded-4xl">
-            <MessagesTopline
-                conversationData={conversationData}
-                data={data}
-                retrieved={retrieved}
-            />
+            <MessagesTopline />
 
-            {!data?.length ? (
-                <div className="flex items-center justify-center grow">
-                    <NoMessages />
+            {messageIds.length ?
+                <div className="flex flex-col grow relative h-100">
+                    <List
+                        overscanCount={0}
+                        listRef={listRef}
+                        rowComponent={MessageDisplayRow}
+                        rowCount={messageIds.length}
+                        style={{ colorScheme: "dark", scrollbarWidth: "thin", overflowY: "scroll", height: "100%" }}
+                        rowHeight={rowHeight}
+                        rowProps={{
+                            messageIds: reversed ? [...messageIds].reverse() : messageIds,
+                            selectionMode,
+                            onAction: onMessageAction,
+                        }}
+                    />
                 </div>
-            ) : !sorted.length ? (
-                <div className="flex items-center justify-center grow">
-                    <FilterNothing type="messages" />
+            :   <div className="flex items-center justify-center grow">
+                    {trimmedFilter ?
+                        <FilterNothing type="messages" />
+                    :   <NoMessages />}
                 </div>
-            ) : (
-                <ul
-                    className="flex flex-col-reverse grow relative h-100 scheme-dark overflow-y-auto pt-24!"
-                    style={{
-                        scrollbarWidth: "thin",
-                    }}
-                    ref={listRef}
-                >
-                    {sorted.map((message) => (
-                        <li key={message.cid || message.id}>
-                            <MessageDisplay
-                                conversationData={conversationData}
-                                data={message}
-                                onAction={(type, response) => {
-                                    switch (type) {
-                                        case "forward": {
-                                            if (
-                                                !response?.conversation ||
-                                                !status
-                                            ) {
-                                                break;
-                                            }
-
-                                            upsertMessage({
-                                                type: "send",
-                                                message_type: "forward",
-                                                conversation_id:
-                                                    response.conversation.id,
-                                                message: message.message,
-                                                forward: message,
-                                                user: status,
-                                            }).then(() => {
-                                                redirect(
-                                                    `/messages/c/${response.conversation?.id}`,
-                                                );
-                                            });
-                                            break;
-                                        }
-                                        default: {
-                                            setActionType(type);
-                                            setActionMessage(message);
-                                            break;
-                                        }
-                                    }
-                                }}
-                            />
-                        </li>
-                    ))}
-                </ul>
-            )}
+            }
 
             <MessageInput
                 onCancel={() => {
@@ -121,19 +85,43 @@ export const MessageViewList = ({
                     setActionType("send");
                 }}
                 onAction={() => {
-                    setTimeout(() => {
-                        listRef.current?.scrollTo({
-                            top: listRef.current.scrollHeight,
-                            behavior: "smooth",
-                        });
-                    }, 50);
+                    requestAnimationFrame(() => {
+                        scrollToBottom("smooth");
+                    });
                 }}
-                data={data}
-                retrieved={retrieved}
-                conversationData={conversationData}
                 type={actionType}
                 actionMessage={actionMessage}
             />
         </article>
+    );
+};
+
+const MessageDisplayRow = ({
+    messageIds,
+    style,
+    onAction,
+    selectionMode,
+    index,
+}: RowComponentProps<
+    {
+        messageIds: string[];
+    } & Pick<MessageDisplayProps, "onAction" | "selectionMode">
+>) => {
+    const id = messageIds[index];
+    const isSelected = useAppStore((state) => state.display.messages.selecting.has(id));
+
+    if (!id) {
+        return null;
+    }
+
+    return (
+        <div style={style}>
+            <MessageDisplay
+                id={id}
+                onAction={onAction}
+                isSelected={isSelected}
+                selectionMode={selectionMode}
+            />
+        </div>
     );
 };

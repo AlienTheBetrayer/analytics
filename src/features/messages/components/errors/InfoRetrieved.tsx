@@ -1,3 +1,5 @@
+/** @format */
+
 import { AbsentData } from "@/features/ui/absentdata/components/AbsentData";
 
 export const InfoRetrieved = () => {
@@ -10,8 +12,7 @@ export const InfoRetrieved = () => {
             }
             description={
                 <>
-                    This modal will have <mark>more</mark> information once you
-                    initiate this conversation!
+                    This modal will have <mark>more</mark> information once you initiate this conversation!
                 </>
             }
         />

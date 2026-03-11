@@ -1,3 +1,5 @@
+/** @format */
+
 import { CreateBoard } from "@/features/messages/components/noteboard/CreateBoard";
 import { DisplayFormat } from "@/features/messages/components/noteboard/DisplayFormat";
 import { Button } from "@/features/ui/button/components/Button";
@@ -7,20 +9,16 @@ import { useMessageBox } from "@/features/ui/messagebox/hooks/useMessageBox";
 import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { deleteNoteboard, upsertNoteboard } from "@/query-api/calls/notes";
-import { CacheAPIProtocol } from "@/query-api/protocol";
 import { TabSelection } from "@/utils/other/TabSelection";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import { redirect, useParams } from "next/navigation";
 
-type Props = {
-    data?: CacheAPIProtocol["noteboards"]["data"][number] | null;
-};
-
-export const NoteboardTopline = ({ data }: Props) => {
+export const NoteboardTopline = () => {
     const { extra } = useParams<{
         extra?: string;
     }>();
+    const noteboard = useAppStore((state) => state.noteboard);
 
     const deleteBox = useMessageBox();
     const display = useAppStore((state) => state.display.notes);
@@ -29,17 +27,15 @@ export const NoteboardTopline = ({ data }: Props) => {
     return (
         <ul className="box min-h-10! h-10! gap-1! p-0! items-center! flex-row!">
             {deleteBox.render({
-                children:
-                    "This board will disappear forever along with its elements!",
+                children: "This board will disappear forever along with its elements!",
                 onSelect: (res) => {
-                    if (!data) {
+                    if (!noteboard) {
                         return;
                     }
 
                     if (res === "yes") {
                         deleteNoteboard({
-                            user_id: data?.user_id,
-                            noteboard_id: data.id,
+                            noteboard_id: noteboard.id,
                         });
                         redirect("/messages/notes/board");
                     }
@@ -69,11 +65,7 @@ export const NoteboardTopline = ({ data }: Props) => {
                                 />
                                 <TabSelection
                                     condition={true}
-                                    color={
-                                        display.reversed
-                                            ? "var(--orange-1)"
-                                            : "var(--blue-1)"
-                                    }
+                                    color={display.reversed ? "var(--orange-1)" : "var(--blue-1)"}
                                 />
                             </Button>
                         </Tooltip>
@@ -86,9 +78,7 @@ export const NoteboardTopline = ({ data }: Props) => {
                             <Input
                                 placeholder="Filter..."
                                 value={display.filter}
-                                onChange={(value) =>
-                                    updateDisplay({ notes: { filter: value } })
-                                }
+                                onChange={(value) => updateDisplay({ notes: { filter: value } })}
                             />
                         </Tooltip>
                     </li>
@@ -100,11 +90,7 @@ export const NoteboardTopline = ({ data }: Props) => {
                     direction="bottom"
                     text="Back"
                 >
-                    <LinkButton
-                        href={
-                            !extra ? "/messages/notes" : "/messages/notes/board"
-                        }
-                    >
+                    <LinkButton href={!extra ? "/messages/notes" : "/messages/notes/board"}>
                         <Image
                             alt="back"
                             width={16}
@@ -169,12 +155,7 @@ export const NoteboardTopline = ({ data }: Props) => {
                         <Modal
                             tooltipClassName="w-screen max-w-96"
                             direction="bottom-left"
-                            element={() => (
-                                <CreateBoard
-                                    type="edit"
-                                    data={data}
-                                />
-                            )}
+                            element={() => <CreateBoard type="edit" />}
                         >
                             <Tooltip
                                 direction="bottom"
@@ -211,20 +192,19 @@ export const NoteboardTopline = ({ data }: Props) => {
                     <li>
                         <Tooltip
                             direction="bottom"
-                            text={data?.pinned ? "Unpin" : "Pin"}
-                            isEnabled={!!data}
+                            text={noteboard?.pinned ? "Unpin" : "Pin"}
+                            isEnabled={!!noteboard}
                         >
                             <Button
                                 onClick={() => {
-                                    if (!data) {
+                                    if (!noteboard) {
                                         return;
                                     }
 
                                     upsertNoteboard({
                                         type: "edit",
-                                        user_id: data.user_id,
-                                        noteboard_id: data.id,
-                                        pinned: !data.pinned,
+                                        noteboard_id: noteboard.id,
+                                        pinned: !noteboard.pinned,
                                     });
                                 }}
                             >
@@ -233,7 +213,7 @@ export const NoteboardTopline = ({ data }: Props) => {
                                     width={14}
                                     height={14}
                                     src="/pin.svg"
-                                    className={data?.pinned ? "" : "opacity-30"}
+                                    className={noteboard?.pinned ? "" : "opacity-30"}
                                 />
                             </Button>
                         </Tooltip>

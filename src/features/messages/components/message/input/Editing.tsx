@@ -1,3 +1,5 @@
+/** @format */
+
 import { MessageInputProps } from "@/features/messages/components/message/input/MessageInput";
 import Image from "next/image";
 

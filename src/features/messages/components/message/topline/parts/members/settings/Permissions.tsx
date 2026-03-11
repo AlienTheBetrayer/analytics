@@ -1,3 +1,5 @@
+/** @format */
+
 import { YouAreAdmin } from "@/features/messages/components/errors/YouAreAdmin";
 import { YouAreFounder } from "@/features/messages/components/errors/YouAreFounder";
 import { MemberSettingsProps } from "@/features/messages/components/message/topline/parts/members/settings/MemberSettings";
@@ -7,54 +9,41 @@ import { PromiseState } from "@/promises/components/PromiseState";
 import { wrapPromise } from "@/promises/core";
 import { updateConversationMembers } from "@/query-api/calls/conversation_members";
 import { useQuery } from "@/query/core";
+import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import { useState } from "react";
 
-export const Permissions = ({
-    data,
-    conversationData,
-}: MemberSettingsProps) => {
+export const Permissions = ({ data }: MemberSettingsProps) => {
+    // status
     const { data: status } = useQuery({ key: ["status"] });
+
+    // zustand
+    const conversation = useAppStore((state) => state.conversation);
 
     // react states
     const [canRead, setCanRead] = useState<boolean>(data.can_read ?? true);
     const [canKick, setCanKick] = useState<boolean>(data.can_kick ?? false);
-    const [canInvite, setCanInvite] = useState<boolean>(
-        data.can_invite ?? false,
-    );
-    const [canDelete, setCanDelete] = useState<boolean>(
-        data.can_delete_messages ?? false,
-    );
+    const [canInvite, setCanInvite] = useState<boolean>(data.can_invite ?? false);
+    const [canDelete, setCanDelete] = useState<boolean>(data.can_delete_messages ?? false);
     const [canSend, setCanSend] = useState<boolean>(data.can_send ?? true);
 
+    // fallback
+    if (!conversation) {
+        return null;
+    }
+
     // hide for regular users
-    if (
-        !conversationData.membership.is_founder &&
-        !conversationData.membership.is_admin
-    ) {
+    if (!conversation.membership.is_founder && !conversation.membership.is_admin) {
         return null;
     }
 
     // we're an admin and trying to edit other admin
-    if (
-        data.is_admin &&
-        conversationData.membership.is_admin &&
-        data.user_id !== status?.id
-    ) {
-        return null;
-    }
-
-    // we're a founder and trying to edit other founder
-    if (
-        data.is_founder &&
-        conversationData.membership.is_founder &&
-        data.user_id !== status?.id
-    ) {
+    if (data.is_admin && conversation.membership.is_admin && data.user_id !== status?.id) {
         return null;
     }
 
     // our own profile + we're a founder
-    if (data.is_founder && conversationData.membership.is_founder) {
+    if (data.is_founder && conversation.membership.is_founder) {
         return (
             <div className="flex items-center justify-center grow p-4! loading">
                 <YouAreFounder />
@@ -62,8 +51,12 @@ export const Permissions = ({
         );
     }
 
+    if(data.is_founder) {
+        return null;
+    }
+
     // our own profile + we're an admin
-    if (data.is_admin && conversationData.membership.is_admin) {
+    if (data.is_admin && conversation.membership.is_admin) {
         return (
             <div className="flex items-center justify-center grow p-4! loading">
                 <YouAreAdmin />
@@ -79,14 +72,9 @@ export const Permissions = ({
                 className="w-full"
                 onSubmit={(e) => {
                     e.preventDefault();
-                    if (!status) {
-                        return;
-                    }
-
                     wrapPromise("changePermissions", () => {
                         return updateConversationMembers({
                             type: "permissions",
-                            user: status,
                             user_ids: [data.user_id],
                             conversation_id: data.conversation_id,
                             can_read: canRead,

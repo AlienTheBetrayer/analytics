@@ -1,3 +1,5 @@
+/** @format */
+
 import { MessagesStore } from "@/types/zustand/messages";
 import { SliceFunction } from "@/types/zustand/utils/sliceFunction";
 import { deepMerge } from "@/utils/other/merge";
@@ -14,7 +16,7 @@ export const MessagesSlice: SliceFunction<MessagesStore> = (set) => {
                 filter: "",
                 reversed: false,
                 selectingMode: false,
-                selecting: new Map(),
+                selecting: new Set(),
             },
             notes: {
                 filter: "",
@@ -23,10 +25,43 @@ export const MessagesSlice: SliceFunction<MessagesStore> = (set) => {
             maximized: false,
         },
         selectDisplay: "notselected",
-        selectedConversation: null,
 
-        updateSelectedConversation: (id) => {
-            set((state) => ({ ...state, selectedConversation: id }));
+        messages: {
+            messages: new Map(),
+            ids: [],
+            users: new Map(),
+        },
+        conversation: null,
+        retrieved: null,
+        noteboard: null,
+        conversations: {
+            conversations: new Map(),
+            ids: [],
+        },
+        conversationsIds: { archived: [], regular: [], notes: null },
+
+        updateConversationIds: (conversationsIds) => {
+            set((state) => ({ ...state, conversationsIds }));
+        },
+
+        updateConversations: (conversations) => {
+            set((state) => ({ ...state, conversations }));
+        },
+
+        updateNoteboard: (noteboard) => {
+            set((state) => ({ ...state, noteboard }));
+        },
+
+        updateRetrieved: (retrieved) => {
+            set((state) => ({ ...state, retrieved }));
+        },
+
+        updateConversation: (conversation) => {
+            set((state) => ({ ...state, conversation }));
+        },
+
+        updateMessages: (messages) => {
+            set((state) => ({ ...state, messages }));
         },
 
         updateSelectDisplay: (display) => {
@@ -37,6 +72,13 @@ export const MessagesSlice: SliceFunction<MessagesStore> = (set) => {
             set((state) => ({
                 ...state,
                 display: deepMerge(state.display, display),
+            }));
+        },
+
+        updateDisplayFn: (fn) => {
+            set((state) => ({
+                ...state,
+                display: deepMerge(state.display, fn(state.display)),
             }));
         },
     };

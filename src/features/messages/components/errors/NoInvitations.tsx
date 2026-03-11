@@ -1,3 +1,5 @@
+/** @format */
+
 import { AbsentData } from "@/features/ui/absentdata/components/AbsentData";
 import { Button } from "@/features/ui/button/components/Button";
 import Image from "next/image";
@@ -16,8 +18,7 @@ export const NoInvitations = ({ onNavigate }: Props) => {
             }
             description={
                 <>
-                    Although there are no available invitations to this
-                    conversaiton, you can <mark>create</mark> one!
+                    Although there are no available invitations to this conversaiton, you can <mark>create</mark> one!
                 </>
             }
         >

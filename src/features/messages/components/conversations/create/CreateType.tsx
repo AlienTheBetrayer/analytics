@@ -1,3 +1,5 @@
+/** @format */
+
 import { useCreateConversation } from "@/features/messages/hooks/useCreateConversation";
 import { MiniSearch } from "@/features/minisearch/components/MiniSearch";
 import { Button } from "@/features/ui/button/components/Button";
@@ -14,14 +16,17 @@ type Props = {
 };
 
 export const CreateType = ({ type, category }: Props) => {
+    // react states
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
     const [selected, setSelected] = useState<Props["type"]>(type);
     const [image, setImage] = useState<File | undefined>(undefined);
     const [validity, setValidity] = useState<boolean>(category === "dm");
 
+    // create function
     const { create } = useCreateConversation();
 
+    // jsx
     return (
         <motion.div
             key={selected}
@@ -55,11 +60,7 @@ export const CreateType = ({ type, category }: Props) => {
                             <ul className="flex flex-col gap-2">
                                 <li className="flex items-center justify-center">
                                     <ImageSelectCircle
-                                        value={
-                                            image
-                                                ? URL.createObjectURL(image)
-                                                : ""
-                                        }
+                                        value={image ? URL.createObjectURL(image) : ""}
                                         onChange={(file) => {
                                             setImage(file ?? undefined);
                                         }}
@@ -80,9 +81,7 @@ export const CreateType = ({ type, category }: Props) => {
                                     <Input
                                         placeholder="description..."
                                         value={description}
-                                        onChange={(value) =>
-                                            setDescription(value)
-                                        }
+                                        onChange={(value) => setDescription(value)}
                                     />
                                 </li>
                             </ul>
@@ -165,9 +164,7 @@ export const CreateType = ({ type, category }: Props) => {
                                 </li>
 
                                 <li>
-                                    <Button
-                                        onClick={() => setSelected("friends")}
-                                    >
+                                    <Button onClick={() => setSelected("friends")}>
                                         <Image
                                             alt=""
                                             width={16}
@@ -179,9 +176,7 @@ export const CreateType = ({ type, category }: Props) => {
                                 </li>
 
                                 <li>
-                                    <Button
-                                        onClick={() => setSelected("users")}
-                                    >
+                                    <Button onClick={() => setSelected("users")}>
                                         <Image
                                             alt=""
                                             width={16}

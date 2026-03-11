@@ -1,24 +1,24 @@
+/** @format */
+
 import { MessagesSelectResult } from "@/features/messages/components/Select";
 import { useQuery } from "@/query/core";
 import { useAppStore } from "@/zustand/store";
 import { useParams } from "next/navigation";
 import { useEffect, useMemo } from "react";
 
-export const useSelect = () => {
-    const { id, tab } = useParams<{ tab?: string; id?: string }>();
-
-    const updateSelectDisplay = useAppStore(
-        (state) => state.updateSelectDisplay,
-    );
-    const updateSelectedConversation = useAppStore(
-        (state) => state.updateSelectedConversation,
-    );
-
-    // retrieving conversation_id from url if: present id & tab is not already "c"
+export const useRetrieved = () => {
+    // status
     const { data: status } = useQuery({ key: ["status"] });
 
-    let result: MessagesSelectResult = "notselected";
+    // url
+    const { id, tab } = useParams<{ tab?: string; id?: string }>();
 
+    // zustand
+    const updateSelectDisplay = useAppStore((state) => state.updateSelectDisplay);
+    const updateRetrieved = useAppStore((state) => state.updateRetrieved);
+
+    // determining the outcome
+    let result: MessagesSelectResult = "notselected";
     switch (tab) {
         case "u": {
             if (!id) {
@@ -58,13 +58,14 @@ export const useSelect = () => {
         trigger: result === "fetch",
     });
 
+    // return state
     const retrieved = useMemo(() => {
-        return tab === "c"
-            ? {
-                  conversation_id: id,
-                  user: undefined,
-              }
-            : (retrievedConversation ?? undefined);
+        return tab === "c" ?
+                {
+                    conversation_id: id,
+                    user: undefined,
+                }
+            :   (retrievedConversation ?? undefined);
     }, [id, retrievedConversation, tab]);
 
     // syncing
@@ -73,9 +74,10 @@ export const useSelect = () => {
     }, [result, updateSelectDisplay]);
 
     useEffect(() => {
-        updateSelectedConversation(retrieved?.conversation_id ?? null);
-    }, [retrieved, updateSelectedConversation]);
+        updateRetrieved(retrieved ?? null);
+    }, [retrieved, updateRetrieved]);
 
+    // returning
     return useMemo(() => {
         return {
             retrieved,

@@ -1,3 +1,5 @@
+/** @format */
+
 import { AbsentData } from "@/features/ui/absentdata/components/AbsentData";
 
 export const NotSelected = () => {
@@ -11,8 +13,8 @@ export const NotSelected = () => {
             }
             description={
                 <>
-                    <mark>Messages</mark> will appear here when you select any
-                    conversation or go to someone&apos;s profile
+                    <mark>Messages</mark> will appear here when you select any conversation or go to someone&apos;s
+                    profile
                 </>
             }
         />

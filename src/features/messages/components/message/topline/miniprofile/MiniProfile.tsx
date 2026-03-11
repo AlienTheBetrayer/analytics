@@ -1,9 +1,12 @@
+/** @format */
+
 import { MiniProfileModal } from "@/features/messages/components/message/topline/miniprofile/MiniProfileModal";
 import { ProfileImage } from "@/features/profile/components/ProfileImage";
 import { Button } from "@/features/ui/button/components/Button";
 import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { CacheAPIProtocol } from "@/query-api/protocol";
+import { MapType } from "@/types/other/utils";
 import { relativeTime } from "@/utils/other/relativeTime";
 import Image from "next/image";
 import { useParams } from "next/navigation";
@@ -11,7 +14,7 @@ import { useParams } from "next/navigation";
 export type MiniProfileProps =
     | {
           type: "conversation";
-          data: CacheAPIProtocol["conversations"]["data"][number];
+          data: MapType<CacheAPIProtocol["conversations"]["data"]["conversations"]>;
       }
     | {
           type: "retrieved";
@@ -22,7 +25,7 @@ export type MiniProfileProps =
       }
     | {
           type: "notes";
-          data?: CacheAPIProtocol["conversations"]["data"][number];
+          data: MapType<CacheAPIProtocol["conversations"]["data"]["conversations"]> | null;
       };
 
 export const MiniProfile = (props: MiniProfileProps) => {
@@ -62,11 +65,7 @@ export const MiniProfileView = (props: MiniProfileProps) => {
                             />
                             <span>{props.data.peer?.username}</span>
                             <span>
-                                <small>
-                                    {relativeTime(
-                                        props.data.peer?.last_seen_at,
-                                    )}
-                                </small>
+                                <small>{relativeTime(props.data.peer?.last_seen_at)}</small>
                             </span>
                         </span>
                     );
@@ -76,7 +75,7 @@ export const MiniProfileView = (props: MiniProfileProps) => {
                     return (
                         <span className="flex items-center gap-1 self-stretch px-2!">
                             <div className="w-1 h-1 rounded-full bg-blue-1" />
-                            {props.data.image_url ? (
+                            {props.data.image_url ?
                                 <Image
                                     alt=""
                                     width={24}
@@ -84,14 +83,13 @@ export const MiniProfileView = (props: MiniProfileProps) => {
                                     src={props.data.image_url}
                                     className="invert-0! rounded-full w-6! h-6!"
                                 />
-                            ) : (
-                                <Image
+                            :   <Image
                                     alt=""
                                     width={16}
                                     height={16}
                                     src="/friends.svg"
                                 />
-                            )}
+                            }
                             Channel
                         </span>
                     );
@@ -100,7 +98,7 @@ export const MiniProfileView = (props: MiniProfileProps) => {
                     return (
                         <span className="flex items-center gap-1 self-stretch px-2!">
                             <div className="w-1 h-1 rounded-full bg-blue-1" />
-                            {props.data.image_url ? (
+                            {props.data.image_url ?
                                 <Image
                                     alt=""
                                     width={24}
@@ -108,14 +106,13 @@ export const MiniProfileView = (props: MiniProfileProps) => {
                                     src={props.data.image_url}
                                     className="invert-0! rounded-full w-6! h-6!"
                                 />
-                            ) : (
-                                <Image
+                            :   <Image
                                     alt=""
                                     width={16}
                                     height={16}
                                     src="/friends.svg"
                                 />
-                            )}
+                            }
                             Group
                         </span>
                     );
@@ -126,7 +123,7 @@ export const MiniProfileView = (props: MiniProfileProps) => {
             return (
                 <span className="flex items-center gap-1 self-stretch px-2!">
                     <div className="w-1 h-1 rounded-full bg-blue-1" />
-                    {props.data?.image_url ? (
+                    {props.data?.image_url ?
                         <Image
                             alt="notes"
                             width={24}
@@ -134,22 +131,24 @@ export const MiniProfileView = (props: MiniProfileProps) => {
                             src={props.data.image_url}
                             className="invert-0! rounded-full w-6! h-6!"
                         />
-                    ) : (
-                        <Image
+                    :   <Image
                             alt=""
                             width={16}
                             height={16}
                             src={
-                                extra
-                                    ? "/cube.svg"
-                                    : id === "board"
-                                      ? "/dashboard.svg"
-                                      : "/save.svg"
+                                extra ? "/cube.svg"
+                                : id === "board" ?
+                                    "/dashboard.svg"
+                                :   "/save.svg"
                             }
                         />
-                    )}
+                    }
 
-                    {extra ? "Note" : id === "board" ? "Noteboard" : "Notes"}
+                    {extra ?
+                        "Note"
+                    : id === "board" ?
+                        "Noteboard"
+                    :   "Notes"}
                 </span>
             );
         }
@@ -165,9 +164,7 @@ export const MiniProfileView = (props: MiniProfileProps) => {
                     />
                     <span>{props.data?.user?.username}</span>
                     <span>
-                        <small>
-                            {relativeTime(props.data?.user?.last_seen_at)}
-                        </small>
+                        <small>{relativeTime(props.data?.user?.last_seen_at)}</small>
                     </span>
                 </span>
             );

@@ -1,9 +1,6 @@
-import {
-    Filter,
-    NotificationTab,
-    Notification,
-    NotificationData,
-} from "../other/notifications";
+/** @format */
+
+import { Filter, NotificationTab, Notification, NotificationData } from "../other/notifications";
 
 export type NotificationStore = {
     // notifications

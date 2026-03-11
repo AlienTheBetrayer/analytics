@@ -1,19 +1,25 @@
+/** @format */
+
 import { NoInvitations } from "@/features/messages/components/errors/NoInvitations";
 import { InviteDisplay } from "@/features/messages/components/message/topline/parts/invites/InviteDisplay";
-import { CacheAPIProtocol } from "@/query-api/protocol";
 import { useQuery } from "@/query/core";
+import { useAppStore } from "@/zustand/store";
 
 type Props = {
-    conversationData: CacheAPIProtocol["conversations"]["data"][number];
     onNavigate: () => void;
 };
 
-export const List = ({ conversationData, onNavigate }: Props) => {
+export const List = ({ onNavigate }: Props) => {
+    // zustand
+    const conversation = useAppStore((state) => state.conversation);
+
+    // fetching
     const { data, isLoading } = useQuery({
-        key: ["invitations", conversationData.id],
+        key: ["invitations", conversation?.id],
         revalidate: true,
     });
 
+    // loading fallback
     if (isLoading) {
         return (
             <div className="flex flex-col gap-2 items-center grow">
@@ -27,6 +33,7 @@ export const List = ({ conversationData, onNavigate }: Props) => {
         );
     }
 
+    // empty fallback
     if (!data?.length) {
         return (
             <div className="flex items-center justify-center loading">
@@ -35,6 +42,7 @@ export const List = ({ conversationData, onNavigate }: Props) => {
         );
     }
 
+    // jsx
     return (
         <ul
             className="flex flex-col items-center gap-2 max-h-64 overflow-y-auto scheme-dark"

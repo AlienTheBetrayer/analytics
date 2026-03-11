@@ -1,18 +1,16 @@
-import { CacheAPIProtocol } from "@/query-api/protocol";
+/** @format */
+
+import { ExpandedConversation } from "@/query-api/protocol/messages";
 import Image from "next/image";
 
 type Props = {
-    data: CacheAPIProtocol["conversations"]["data"][number];
+    conversation: ExpandedConversation;
 };
 
-export const Name = ({ data }: Props) => {
-    switch (data.type) {
+export const Name = ({ conversation }: Props) => {
+    switch (conversation.type) {
         case "dm": {
-            return (
-                <span className="truncate">
-                    {data.title || data.peer?.username}
-                </span>
-            );
+            return <span className="truncate">{conversation.title || conversation.peer?.username}</span>;
         }
         case "group": {
             return (
@@ -23,7 +21,7 @@ export const Name = ({ data }: Props) => {
                         height={16}
                         src="/friends.svg"
                     />
-                    <span>{data.title || "Group"}</span>
+                    <span>{conversation.title || "Group"}</span>
                 </span>
             );
         }
@@ -36,7 +34,7 @@ export const Name = ({ data }: Props) => {
                         height={16}
                         src="/menu.svg"
                     />
-                    <span>{data.title || "Channel"}</span>
+                    <span>{conversation.title || "Channel"}</span>
                 </span>
             );
         }
@@ -49,7 +47,7 @@ export const Name = ({ data }: Props) => {
                         height={16}
                         src="/pencil.svg"
                     />
-                    <span>{data.title || "Notes"}</span>
+                    <span>{conversation.title || "Notes"}</span>
                 </span>
             );
         }

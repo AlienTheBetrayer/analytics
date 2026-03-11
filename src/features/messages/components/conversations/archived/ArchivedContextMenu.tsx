@@ -1,3 +1,5 @@
+/** @format */
+
 import "../../message/ContextMenu.css";
 import { Button } from "@/features/ui/button/components/Button";
 import { useLocalStore } from "@/zustand/localStore";
@@ -37,9 +39,7 @@ export const ArchivedContextMenu = () => {
                         height={20}
                         src="/collapse.svg"
                     />
-                    <span>
-                        {display?.archive?.collapsed ? "Expand" : "Collapse"}
-                    </span>
+                    <span>{display?.archive?.collapsed ? "Expand" : "Collapse"}</span>
                 </Button>
             </li>
 
@@ -61,12 +61,7 @@ export const ArchivedContextMenu = () => {
                         height={16}
                         src="/menu.svg"
                     />
-                    <span>
-                        Move to{" "}
-                        {display?.archive?.movedToMenu
-                            ? "conversations"
-                            : "main menu"}
-                    </span>
+                    <span>Move to {display?.archive?.movedToMenu ? "conversations" : "main menu"}</span>
                 </Button>
             </li>
         </ul>

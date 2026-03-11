@@ -1,12 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+/**
+ * @format
+ */
+
 import { queryCache, queryListeners } from "@/query/init";
 import { QueryConfig } from "@/query/types/config";
 import { queryFetch } from "@/query/utils/core";
-import {
-    CacheAPIValue,
-    CacheKey,
-    CacheListenerOptions,
-} from "@/query/types/types";
+import { CacheAPIValue, CacheKey, CacheListenerOptions } from "@/query/types/types";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { convertKey } from "@/query/utils/other";
 
@@ -18,13 +18,12 @@ import { convertKey } from "@/query/utils/other";
 export const useQuery = <T extends CacheKey>(config: QueryConfig<T>) => {
     // internal states
     const [data, setData] = useState<CacheAPIValue<T>["data"] | null>(
-        (queryCache.has({ key: config.key })
-            ? queryCache.get({ key: config.key })
-            : config.initial) as CacheAPIValue<T>["data"],
+        (queryCache.has({ key: config.key }) ?
+            queryCache.get({ key: config.key })
+        :   config.initial) as CacheAPIValue<T>["data"],
     );
     const [isLoading, setIsLoading] = useState<boolean>(
-        !queryCache.has({ key: config.key }) &&
-            !("trigger" in config && !config.trigger),
+        !queryCache.has({ key: config.key }) && !("trigger" in config && !config.trigger),
     );
     const [error, setError] = useState<Error | null>(null);
     const hasRevalidated = useRef<boolean>(false);
@@ -32,11 +31,11 @@ export const useQuery = <T extends CacheKey>(config: QueryConfig<T>) => {
     // hashing
     const hashKey = convertKey(config.key);
     const keyRef = useRef(config.key);
-
     useEffect(() => {
         keyRef.current = config.key;
     });
 
+    // fetch function
     const refetch = useCallback(
         (options: {
             trigger?: boolean;
@@ -44,18 +43,16 @@ export const useQuery = <T extends CacheKey>(config: QueryConfig<T>) => {
             cache?: boolean;
             ignoreCache?: boolean;
             setLoading?: boolean;
+            onFetch?: () => void;
         }) => {
             // trigger
-            if (options.trigger && "trigger" in config && !config.trigger) {
+            if (options.trigger && config.trigger === false) {
                 setIsLoading(false);
                 return;
             }
 
             // undefined keys prevention
-            if (
-                options.keysUndefined &&
-                keyRef.current.some((k) => typeof k === "undefined")
-            ) {
+            if (options.keysUndefined && keyRef.current.some((k) => typeof k === "undefined")) {
                 setData(null);
                 setIsLoading(false);
                 return;
@@ -76,10 +73,14 @@ export const useQuery = <T extends CacheKey>(config: QueryConfig<T>) => {
             if (options.setLoading) {
                 setIsLoading(true);
             }
+
             queryFetch({
                 key: keyRef.current,
                 ignoreCache: options.ignoreCache,
             })
+                .then(() => {
+                    options.onFetch?.();
+                })
                 .catch((error) => {
                     setError(error);
                 })
@@ -144,6 +145,9 @@ export const useQuery = <T extends CacheKey>(config: QueryConfig<T>) => {
                     // fetch
                     refetch({
                         keysUndefined: true,
+                        onFetch: () => {
+                            options.onInvalidate?.();
+                        },
                     });
                     break;
                 }
@@ -155,8 +159,7 @@ export const useQuery = <T extends CacheKey>(config: QueryConfig<T>) => {
         };
 
         queryListeners.attach({ key: keyRef.current, fn: attachFn });
-        return () =>
-            queryListeners.detach({ key: keyRef.current, fn: attachFn });
+        return () => queryListeners.detach({ key: keyRef.current, fn: attachFn });
     }, [hashKey]);
 
     // returned

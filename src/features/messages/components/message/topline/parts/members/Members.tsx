@@ -1,19 +1,18 @@
+/** @format */
+
 import { AddFriends } from "@/features/messages/components/message/topline/parts/members/AddFriends";
 import { MembersList } from "@/features/messages/components/message/topline/parts/members/MembersList";
 import { Button } from "@/features/ui/button/components/Button";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
-import { CacheAPIProtocol } from "@/query-api/protocol";
 import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
 import { useState } from "react";
 
-type Props = {
-    conversationData: CacheAPIProtocol["conversations"]["data"][number];
-};
-
-export const Members = ({ conversationData }: Props) => {
+export const Members = () => {
+    // tab
     const [tab, setTab] = useState<"list" | "add">("list");
 
+    // jsx
     return (
         <div className="box p-4! gap-4! items-center acrylic">
             <Tooltip
@@ -56,11 +55,9 @@ export const Members = ({ conversationData }: Props) => {
                     transition={{ ease: [0.4, 0, 0.2, 1], duration: 0.15 }}
                     className="flex flex-col grow *:grow w-full"
                 >
-                    {tab === "add" ? (
-                        <AddFriends conversationData={conversationData} />
-                    ) : (
-                        <MembersList conversationData={conversationData} />
-                    )}
+                    {tab === "add" ?
+                        <AddFriends />
+                    :   <MembersList />}
                 </motion.div>
             </AnimatePresence>
         </div>

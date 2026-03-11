@@ -1,3 +1,5 @@
+/** @format */
+
 import { NoNotes } from "@/features/messages/components/errors/NoNotes";
 import { Element } from "@/features/messages/components/noteboard/compact/Element";
 import { Button } from "@/features/ui/button/components/Button";
@@ -10,12 +12,11 @@ import Image from "next/image";
 import { useMemo } from "react";
 
 type Props = {
-    data: CacheAPIProtocol["noteboards"]["data"][number];
+    noteboard: CacheAPIProtocol["noteboards"]["data"][number];
 };
 
-export const BoardDisplay = ({ data }: Props) => {
-    const display = useLocalStore((state) => state.display)?.messages?.noteboard
-        ?.view;
+export const BoardDisplay = ({ noteboard }: Props) => {
+    const display = useLocalStore((state) => state.display)?.messages?.noteboard?.view;
     const isCompact = display === "compact";
 
     // splitting data
@@ -23,7 +24,7 @@ export const BoardDisplay = ({ data }: Props) => {
         const checked = [];
         const unchecked = [];
 
-        for (const element of data.elements) {
+        for (const element of noteboard.elements) {
             if (!element.checked && unchecked.length < 3) {
                 unchecked.push(element);
             }
@@ -34,7 +35,7 @@ export const BoardDisplay = ({ data }: Props) => {
         }
 
         return { checked, unchecked };
-    }, [data]);
+    }, [noteboard]);
 
     return (
         <div
@@ -43,7 +44,7 @@ export const BoardDisplay = ({ data }: Props) => {
         >
             <Tooltip
                 direction="top"
-                text={data.pinned ? "Unpin" : "Pin"}
+                text={noteboard.pinned ? "Unpin" : "Pin"}
                 className="absolute! right-2 top-2"
             >
                 <Button
@@ -51,9 +52,8 @@ export const BoardDisplay = ({ data }: Props) => {
                     onClick={() => {
                         upsertNoteboard({
                             type: "edit",
-                            user_id: data.user_id,
-                            noteboard_id: data.id,
-                            pinned: !data.pinned,
+                            noteboard_id: noteboard.id,
+                            pinned: !noteboard.pinned,
                         });
                     }}
                 >
@@ -62,7 +62,7 @@ export const BoardDisplay = ({ data }: Props) => {
                         width={12}
                         height={12}
                         src="/pin.svg"
-                        className={data.pinned ? "" : "opacity-30"}
+                        className={noteboard.pinned ? "" : "opacity-30"}
                     />
                 </Button>
             </Tooltip>
@@ -70,7 +70,7 @@ export const BoardDisplay = ({ data }: Props) => {
             <LinkButton
                 className={`box px-4! gap-2! items-center! not-hover:bg-bg-1! w-full justify-start!
                 ${isCompact ? "flex-row! rounded-[3rem]! py-2! h-12!" : "rounded-2xl! py-4! h-70!"}`}
-                href={`/messages/notes/board/${data.id}`}
+                href={`/messages/notes/board/${noteboard.id}`}
             >
                 <span className="flex flex-col items-center gap-1 shrink-0">
                     <span className="flex items-center gap-1">
@@ -81,23 +81,19 @@ export const BoardDisplay = ({ data }: Props) => {
                             height={16}
                             src="/cube.svg"
                         />
-                        <span
-                            className={`truncate ${isCompact ? "max-w-16" : "max-w-36"}`}
-                        >
-                            {data.title}
-                        </span>
+                        <span className={`truncate ${isCompact ? "max-w-16" : "max-w-36"}`}>{noteboard.title}</span>
                     </span>
 
-                    {data.description && !isCompact && (
+                    {noteboard.description && !isCompact && (
                         <p className="text-center">
-                            <small>{data.description}</small>
+                            <small>{noteboard.description}</small>
                         </p>
                     )}
                 </span>
 
                 {!isCompact && <hr />}
 
-                {elements.checked.length || elements.unchecked.length ? (
+                {elements.checked.length || elements.unchecked.length ?
                     <>
                         <ul
                             className={`flex flex-col gap-2 items-center w-full 
@@ -129,13 +125,11 @@ export const BoardDisplay = ({ data }: Props) => {
                             ))}
                         </ul>
                     </>
-                ) : isCompact ? (
+                : isCompact ?
                     <span className="mx-auto!">
                         No notes <u>yet</u>
                     </span>
-                ) : (
-                    <NoNotes />
-                )}
+                :   <NoNotes />}
             </LinkButton>
         </div>
     );

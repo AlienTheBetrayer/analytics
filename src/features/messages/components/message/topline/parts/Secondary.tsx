@@ -1,45 +1,42 @@
+/** @format */
+
 import { Selectable } from "@/features/messages/components/message/topline/parts/Selectable";
 import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
-import { CacheAPIProtocol } from "@/query-api/protocol";
 import { TabSelection } from "@/utils/other/TabSelection";
 import { useAppStore } from "@/zustand/store";
 import { AnimatePresence } from "motion/react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 
-type Props = {
-    data: CacheAPIProtocol["messages"]["data"] | null;
-    conversationData?: CacheAPIProtocol["conversations"]["data"][number];
-};
-
-export const Secondary = ({ data, conversationData }: Props) => {
-    const display = useAppStore((state) => state.display.messages);
-    const updateDisplay = useAppStore((state) => state.updateDisplay);
-
+export const Secondary = () => {
+    // url
     const { id } = useParams<{
         id?: string;
     }>();
 
+    // zustand
+    const messages = useAppStore((state) => state.messages);
+    const display = useAppStore((state) => state.display.messages);
+    const updateDisplay = useAppStore((state) => state.updateDisplay);
+
+    // fallback
     if (id === "board") {
         return null;
     }
 
+    // jsx
     return (
         <div className="relative">
-            <AnimatePresence>
-                {display.selectingMode && (
-                    <Selectable conversationData={conversationData} />
-                )}
-            </AnimatePresence>
+            <AnimatePresence>{display.selectingMode && <Selectable />}</AnimatePresence>
 
             <ul
                 className={`box min-h-10! h-10! gap-1! p-0! items-center! flex-row! transition-all duration-75
-                    ${!data?.length || display.selectingMode ? "opacity-30" : "opacity-100"}`}
-                inert={!data?.length || display.selectingMode}
+                    ${!messages?.messages?.size || display.selectingMode ? "opacity-30" : "opacity-100"}`}
+                inert={!messages?.messages?.size || display.selectingMode}
             >
-                {!data?.length && (
+                {!messages?.messages?.size && (
                     <li className="absolute left-1/2 top-1/2 -translate-1/2 z-1">
                         <span className="flex items-center gap-1">
                             <div className="bg-blue-1 rounded-full w-1 h-1" />
@@ -73,18 +70,14 @@ export const Secondary = ({ data, conversationData }: Props) => {
                             />
                             <TabSelection
                                 condition={true}
-                                color={
-                                    display.reversed
-                                        ? "var(--orange-1)"
-                                        : "var(--blue-1)"
-                                }
+                                color={display.reversed ? "var(--orange-1)" : "var(--blue-1)"}
                             />
                         </Button>
                     </Tooltip>
                 </li>
 
                 <li>
-                    <Tooltip text="Filter by title">
+                    <Tooltip text="Filter by message">
                         <Input
                             placeholder="Filter..."
                             value={display.filter}

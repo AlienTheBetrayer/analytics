@@ -1,3 +1,5 @@
+/** @format */
+
 import { NoInvitation } from "@/features/join/components/errors/NoInvitation";
 import { NotAuthenticated } from "@/features/join/components/errors/NotAuthenticated";
 import { WrongURL } from "@/features/join/components/errors/WrongURL";
@@ -15,7 +17,7 @@ export const JoinView = () => {
     const { data: status } = useQuery({
         key: ["status"],
     });
-    const { data, isLoading } = useQuery({
+    const { data: invitation, isLoading } = useQuery({
         key: ["invitation", id, status?.id ?? null],
     });
 
@@ -27,7 +29,7 @@ export const JoinView = () => {
         error = "id";
     } else if (!status) {
         error = "status";
-    } else if (!data) {
+    } else if (!invitation) {
         error = "data";
     }
 
@@ -67,13 +69,13 @@ export const JoinView = () => {
         );
     }
 
-    if (!data) {
+    if (!invitation) {
         return null;
     }
 
     return (
         <div className="flex flex-col items-center gap-4 grow">
-            <JoinDisplay data={data} />
+            <JoinDisplay invitation={invitation} />
         </div>
     );
 };

@@ -1,3 +1,5 @@
+/** @format */
+
 import { ProfileImage } from "@/features/profile/components/ProfileImage";
 import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
@@ -25,8 +27,7 @@ export const InviteDisplay = ({ data }: Props) => {
         ${data.image_url ? "" : "loading"}`}
         >
             {deleteBox.render({
-                children:
-                    "Revoking this invitation will disallow everyone to use it!",
+                children: "Revoking this invitation will disallow everyone to use it!",
                 onSelect: (res) => {
                     if (!status) {
                         return;
@@ -103,9 +104,7 @@ export const InviteDisplay = ({ data }: Props) => {
                             Created
                         </small>
                     </span>
-                    <span className="truncate">
-                        {relativeTime(data.created_at)}
-                    </span>
+                    <span className="truncate">{relativeTime(data.created_at)}</span>
                 </div>
 
                 <div className="flex flex-col items-center gap-1 h-full">
@@ -116,9 +115,7 @@ export const InviteDisplay = ({ data }: Props) => {
                         <Button
                             onClick={() => {
                                 wrapPromise(`inviteCopy_${data.id}`, () => {
-                                    return navigator.clipboard.writeText(
-                                        `${window.location.origin}/join/${data.id}`,
-                                    );
+                                    return navigator.clipboard.writeText(`${window.location.origin}/join/${data.id}`);
                                 });
                             }}
                         >

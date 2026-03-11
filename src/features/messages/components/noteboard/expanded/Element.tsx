@@ -1,3 +1,5 @@
+/** @format */
+
 import { Pin } from "@/features/messages/components/noteboard/expanded/Pin";
 import { Button } from "@/features/ui/button/components/Button";
 import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
@@ -42,7 +44,7 @@ export const Element = ({ data, onCheck, onEdit, onDelete, onPin }: Props) => {
                 onToggle={onCheck}
             />
 
-            {editing ? (
+            {editing ?
                 <form
                     className="w-full"
                     onSubmit={(e) => {
@@ -72,15 +74,14 @@ export const Element = ({ data, onCheck, onEdit, onDelete, onPin }: Props) => {
                         onChange={(value) => setTitle(value)}
                     />
                 </form>
-            ) : (
-                <Button
+            :   <Button
                     className="w-full justify-start!"
                     onClick={() => setEditing(true)}
                 >
                     <span>{data.title}</span>
                     <Pin data={data} />
                 </Button>
-            )}
+            }
 
             <Button onClick={onDelete}>
                 <Image

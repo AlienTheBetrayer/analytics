@@ -1,3 +1,5 @@
+/** @format */
+
 import { AbsentData } from "@/features/ui/absentdata/components/AbsentData";
 
 export const AlreadyMember = () => {
@@ -8,12 +10,7 @@ export const AlreadyMember = () => {
                     <mark>Already</mark> a member!
                 </>
             }
-            description={
-                <>
-                    The conversation that this invitation leads to already has
-                    you as a member!
-                </>
-            }
+            description={<>The conversation that this invitation leads to already has you as a member!</>}
         />
     );
 };

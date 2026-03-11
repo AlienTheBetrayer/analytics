@@ -1,15 +1,28 @@
+/** @format */
+
 import { LastMessageAuthor } from "@/features/messages/components/conversations/display/parts/LastMessageAuthor";
-import { CacheAPIProtocol } from "@/query-api/protocol";
+import { ExpandedConversation } from "@/query-api/protocol/messages";
 import { useLocalStore } from "@/zustand/localStore";
+import { useAppStore } from "@/zustand/store";
 
 type Props = {
-    data?: CacheAPIProtocol["conversations"]["data"][number];
+    conversation: ExpandedConversation | null;
 };
 
-export const LastMessage = ({ data }: Props) => {
-    const messageInputs = useLocalStore((state) => state.messageInputs);
-    const draft = data?.id && messageInputs[data.id];
+export const LastMessage = ({ conversation }: Props) => {
+    // zustand
+    const drafts = useLocalStore((state) => state.drafts);
+    const retrievedId = useAppStore((state) => state.retrieved?.conversation_id);
 
+    // ui states
+    const draft = conversation?.id && drafts[conversation.id];
+
+    // fallback
+    if (!conversation) {
+        return null;
+    }
+
+    // draft jsx
     if (draft) {
         return (
             <span className="flex items-center gap-1">
@@ -19,12 +32,21 @@ export const LastMessage = ({ data }: Props) => {
         );
     }
 
+    // jsx
     return (
-        data?.last_message && (
-            <span className="flex items-center gap-1 truncate opacity-75">
-                <LastMessageAuthor data={data} />
-                <span>{data.last_message.message}</span>
-            </span>
-        )
+        <span className="flex items-center gap-1 truncate opacity-75">
+            {!!conversation.last_message && (
+                <>
+                    <LastMessageAuthor conversation={conversation} />
+                    <span className="truncate">{conversation.last_message.message}</span>
+                </>
+            )}
+
+            {!!conversation.membership?.unread_amount && conversation.id !== retrievedId && (
+                <div className="flex items-center justify-center rounded-full w-5 h-5 bg-blue-2 ml-auto mr-4 shrink-0">
+                    <span className="text-[#f3f3f3]!">{conversation.membership.unread_amount}</span>
+                </div>
+            )}
+        </span>
     );
 };

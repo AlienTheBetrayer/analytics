@@ -1,20 +1,26 @@
+/** @format */
+
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { CacheAPIProtocol } from "@/query-api/protocol";
+import { MapType } from "@/types/other/utils";
 import { relativeTime } from "@/utils/other/relativeTime";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 
 type Props = {
-    data: CacheAPIProtocol["messages"]["data"][number];
+    message: MapType<CacheAPIProtocol["messages"]["data"]["messages"]>;
 };
 
-export const EditedAt = ({ data }: Props) => {
+export const EditedAt = ({ message }: Props) => {
+    // zustand
     const display = useAppStore((state) => state.display.messages);
 
-    if (!data.edited_at) {
+    // fallback
+    if (!message.edited_at) {
         return null;
     }
 
+    // jsx
     return (
         <Tooltip
             direction="top"
@@ -28,7 +34,7 @@ export const EditedAt = ({ data }: Props) => {
                             height={16}
                             src="/calendar.svg"
                         />
-                        <span>{relativeTime(data.edited_at)}</span>
+                        <span>{relativeTime(message.edited_at)}</span>
                     </span>
                 </div>
             }

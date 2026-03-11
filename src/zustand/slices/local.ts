@@ -1,3 +1,5 @@
+/** @format */
+
 import { LocalStore, PreferencesDefaults } from "@/types/zustand/local";
 import { SliceFunction } from "@/types/zustand/utils/sliceFunction";
 import { deepMerge } from "@/utils/other/merge";
@@ -26,19 +28,19 @@ export const LocalSlice: SliceFunction<LocalStore, LocalStore> = (set) => {
             },
         },
         theme: "dark",
-        messageInputs: {},
+        drafts: {},
 
-        updateMessageInput: (id, value) => {
+        updateDrafts: (id, value) => {
             set((state) => {
-                const messageInputs = { ...state.messageInputs };
+                const drafts = { ...state.drafts };
 
                 if (!value.trim().length) {
-                    delete messageInputs[id];
+                    delete drafts[id];
                 } else {
-                    messageInputs[id] = value;
+                    drafts[id] = value;
                 }
 
-                return { ...state, messageInputs };
+                return { ...state, drafts };
             });
         },
 
@@ -56,10 +58,7 @@ export const LocalSlice: SliceFunction<LocalStore, LocalStore> = (set) => {
                     ...state.display,
                     sorting: {
                         ...state.display.sorting,
-                        [key]:
-                            state.display.sorting[key] === "ascendant"
-                                ? "descendant"
-                                : "ascendant",
+                        [key]: state.display.sorting[key] === "ascendant" ? "descendant" : "ascendant",
                     },
                 },
             }));

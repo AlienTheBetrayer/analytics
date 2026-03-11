@@ -1,143 +1,86 @@
+/** @format */
+
 import { ArchivedDisplay } from "@/features/messages/components/conversations/archived/ArchivedDisplay";
 import { ConversationDisplay } from "@/features/messages/components/conversations/display/ConversationDisplay";
 import { NotesDisplay } from "@/features/messages/components/conversations/notes/NotesDisplay";
+import { useList } from "@/features/messages/components/conversations/useList";
 import { FilterNothing } from "@/features/messages/components/errors/FilterNothing";
 import { NoConversations } from "@/features/messages/components/errors/NoConversations";
-import { sortConversations } from "@/features/messages/utils/sort";
-import { Spinner } from "@/features/ui/spinner/components/Spinner";
-import { CacheAPIProtocol } from "@/query-api/protocol";
-import { useQuery } from "@/query/core";
 import { useAppStore } from "@/zustand/store";
 import { motion } from "motion/react";
 
-type Props = {
-    isLoading?: boolean;
-    conversations: CacheAPIProtocol["conversations"]["data"] | null;
-};
-export const List = ({ isLoading, conversations }: Props) => {
-    const { data: status } = useQuery({ key: ["status"] });
-    const display = useAppStore((state) => state.display.conversations);
+export const List = () => {
+    // zustand
+    const tab = useAppStore((state) => state.display.conversations.tab);
 
-    if (isLoading || !conversations) {
-        return (
-            <div className="flex items-center justify-center grow loading">
-                <Spinner />
-            </div>
-        );
-    }
+    // splitting + syncing
+    const {
+        ids: { archivedIds, regularIds, notesId },
+        trimmedFilter,
+    } = useList();
 
-    // splitting conversations into archived / nonarchived
-    const conversationTypes = conversations.reduce(
-        (acc, val) => {
-            if (val.type === "notes") {
-                acc.notes = val;
-                return acc;
-            }
-
-            if (val.conversation_meta?.archived) {
-                acc.archived.push(val);
-            } else {
-                acc.regular.push(val);
-            }
-
-            return acc;
-        },
-        {
-            archived: [] as (typeof conversations)[number][],
-            regular: [] as (typeof conversations)[number][],
-            notes: undefined as (typeof conversations)[number] | undefined,
-        },
-    );
-
-    // sorting + filtering + reversing
-    const archived = sortConversations({
-        conversations: conversationTypes.archived,
-        reversed: display.reversed,
-        filter: display.filter,
-    });
-    const regular = sortConversations({
-        conversations: conversationTypes.regular,
-        reversed: display.reversed,
-        filter: display.filter,
-    });
+    // ui states
+    const hasConversation = archivedIds.length || regularIds.length || notesId;
 
     // jsx
     return (
         <div className="flex flex-col relative grow overflow-hidden">
             <motion.ul
                 className="flex flex-col gap-1 relative grow scheme-dark h-100 overflow-y-auto"
-                style={{
-                    scrollbarWidth: "thin",
-                }}
-                animate={{
-                    x: display.tab !== "conversations" ? "-50%" : "0%",
-                }}
+                style={{ scrollbarWidth: "thin" }}
+                animate={{ x: tab !== "conversations" ? "-50%" : "0%" }}
                 transition={{ ease: [0.4, 0, 0.2, 1], duration: 0.3 }}
             >
-                <li
-                    className={`absolute inset-0 bg-bg-2 z-1 pointer-events-none transition-all duration-500
-                        ${display.tab !== "conversations" ? "opacity-100" : "opacity-0"}`}
-                />
-
-                {!!!display.filter && (
+                {!trimmedFilter && (
                     <>
-                        {!!archived.length && (
+                        {!!archivedIds.length && (
                             <li>
-                                <ArchivedDisplay data={archived} />
+                                <ArchivedDisplay archivedIds={archivedIds} />
                             </li>
                         )}
 
                         <li>
-                            <NotesDisplay data={conversationTypes.notes} />
+                            <NotesDisplay notesId={notesId} />
                         </li>
                     </>
                 )}
 
-                {regular.length ? (
-                    <>
-                        {regular.map((c) => (
-                            <li key={c.id}>
-                                <ConversationDisplay data={c} />
-                            </li>
-                        ))}
-                    </>
-                ) : (
-                    !!display.filter && (
-                        <li className="flex items-center justify-center grow">
+                {hasConversation ?
+                    regularIds.map((id) => (
+                        <li key={id}>
+                            <ConversationDisplay conversationId={id} />
+                        </li>
+                    ))
+                :   <li className="flex grow items-center justify-center loading">
+                        {trimmedFilter ?
                             <FilterNothing type="conversations" />
-                        </li>
-                    )
-                )}
-
-                {!conversations?.length && (
-                    <li className="flex grow mt-2!">
-                        <div className="flex flex-col gap-2 p-4 relative items-center justify-center loading grow">
-                            <NoConversations username={status?.username} />
-                        </div>
+                        :   <div className="flex flex-col gap-2 p-4 relative items-center justify-center grow">
+                                <NoConversations />
+                            </div>
+                        }
                     </li>
-                )}
+                }
             </motion.ul>
 
             {/* archived */}
             <motion.ul
                 className="flex flex-col gap-1 absolute inset-0 grow bg-bg-2 z-2"
                 initial={false}
-                animate={{
-                    x: display.tab === "archive" ? "0%" : "100%",
-                }}
+                animate={{ x: tab === "archive" ? "0%" : "100%" }}
                 transition={{ ease: [0.4, 0, 0.2, 1], duration: 0.3 }}
             >
-                {archived.length
-                    ? archived.map((c) => (
-                          <li key={c.id}>
-                              <ConversationDisplay data={c} />
-                          </li>
-                      ))
-                    : !!display.filter && (
-                          <li className="flex items-center justify-center grow">
-                              <FilterNothing type="conversations" />
-                          </li>
-                      )}
+                {archivedIds.length ?
+                    archivedIds.map((id) => (
+                        <li key={id}>
+                            <ConversationDisplay conversationId={id} />
+                        </li>
+                    ))
+                : !trimmedFilter ?
+                    null
+                :   <li className="flex items-center justify-center grow">
+                        <FilterNothing type="conversations" />
+                    </li>
+                }
             </motion.ul>
         </div>
     );

@@ -1,3 +1,5 @@
+/** @format */
+
 import { supabaseServer } from "@/utils/server/private/supabase";
 import { nextResponse } from "@/utils/api/response";
 import { NextRequest } from "next/server";

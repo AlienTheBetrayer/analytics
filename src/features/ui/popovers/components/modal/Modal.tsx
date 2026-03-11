@@ -1,3 +1,5 @@
+/** @format */
+
 "use client";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "motion/react";
@@ -117,9 +119,7 @@ export const Modal = React.memo(function ModalFunction({
                 return;
             }
 
-            const allModals = Array.from(
-                document.querySelectorAll(".modal-element"),
-            );
+            const allModals = Array.from(document.querySelectorAll(".modal-element"));
             const topModal = allModals[allModals.length - 1];
 
             if (allModals.length > 1 && modalElementRef.current !== topModal) {

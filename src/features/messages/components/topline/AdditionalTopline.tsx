@@ -1,3 +1,5 @@
+/** @format */
+
 import { Time } from "@/features/messages/components/topline/Time";
 import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
@@ -8,14 +10,15 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 
 export const AdditionalTopline = () => {
+    // url
+    const { tab } = useParams<{ tab?: string }>();
+
+    // zustand
     const isMaximized = useAppStore((state) => state.display.maximized);
     const updateDisplay = useAppStore((state) => state.updateDisplay);
-    const { tab } = useParams<{ tab?: string }>();
 
     return (
         <ul className="box h-10! p-0! bg-bg-2! flex-row! items-center!">
-            {/* left */}
-
             {/* center */}
             <li className="absolute left-1/2 top-1/2 -translate-1/2">
                 <span className="flex items-center gap-1">
@@ -63,11 +66,7 @@ export const AdditionalTopline = () => {
                                 />
                                 <TabSelection
                                     condition={true}
-                                    color={
-                                        !isMaximized
-                                            ? "var(--blue-1)"
-                                            : "var(--orange-1)"
-                                    }
+                                    color={!isMaximized ? "var(--blue-1)" : "var(--orange-1)"}
                                 />
                             </Button>
                         </Tooltip>

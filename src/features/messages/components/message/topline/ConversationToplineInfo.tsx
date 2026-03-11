@@ -1,36 +1,35 @@
+/** @format */
+
 import { MiniProfile } from "@/features/messages/components/message/topline/miniprofile/MiniProfile";
-import { CacheAPIProtocol } from "@/query-api/protocol";
+import { useAppStore } from "@/zustand/store";
 import { useParams } from "next/navigation";
 
-type Props = {
-    conversationData?: CacheAPIProtocol["conversations"]["data"][number];
-    retrieved?: CacheAPIProtocol["conversation_retrieve"]["data"];
-};
-
-export const ConversationToplineInfo = ({
-    conversationData,
-    retrieved,
-}: Props) => {
-    // fetching
+export const ConversationToplineInfo = () => {
+    // url
     const { tab } = useParams<{ tab?: string }>();
 
+    // zustand
+    const conversation = useAppStore((state) => state.conversation);
+    const retrieved = useAppStore((state) => state.retrieved);
+
+    // jsx fallbacks
     switch (tab) {
         case "notes": {
             // notes / board
             return (
                 <MiniProfile
                     type="notes"
-                    data={conversationData}
+                    data={conversation}
                 />
             );
         }
         case "u": {
-            if (conversationData) {
+            if (conversation) {
                 // already have an ongoing conversation
                 return (
                     <MiniProfile
                         type="conversation"
-                        data={conversationData}
+                        data={conversation}
                     />
                 );
             } else {
@@ -49,18 +48,18 @@ export const ConversationToplineInfo = ({
             }
         }
         case "c": {
-            if (!conversationData?.type) {
+            if (!conversation?.type) {
                 // conversation is invalid
                 return <MiniProfile type="unknown" />;
             }
 
             // already an ongoing conversation
-            switch (conversationData?.type) {
+            switch (conversation?.type) {
                 case "notes": {
                     return (
                         <MiniProfile
                             type="notes"
-                            data={conversationData}
+                            data={conversation}
                         />
                     );
                 }
@@ -68,7 +67,7 @@ export const ConversationToplineInfo = ({
                     return (
                         <MiniProfile
                             type="conversation"
-                            data={conversationData}
+                            data={conversation}
                         />
                     );
                 }

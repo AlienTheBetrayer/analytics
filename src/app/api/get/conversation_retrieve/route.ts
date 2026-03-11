@@ -1,3 +1,5 @@
+/** @format */
+
 import { supabaseServer } from "@/utils/server/private/supabase";
 import { nextResponse } from "@/utils/api/response";
 import { tokenVerify } from "@/utils/auth/tokenVerify";
@@ -24,7 +26,7 @@ export const GET = async (request: NextRequest) => {
 
                 const { data: user, error: idError } = await supabaseServer
                     .from("users")
-                    .select("*, profile:profiles(*)")
+                    .select("id, username, last_seen_at, profile:profiles(avatar_url, color)")
                     .eq("username", what)
                     .single();
 
@@ -34,9 +36,7 @@ export const GET = async (request: NextRequest) => {
 
                 const { data, error } = await supabaseServer
                     .from("conversation_members")
-                    .select(
-                        "conversation_id, user_id, conversation:conversations!inner(type)",
-                    )
+                    .select("conversation_id, user_id, conversation:conversations!inner(type)")
                     .in("user_id", [status_id, user?.id])
                     .eq("conversation.type", "dm");
 
@@ -47,9 +47,7 @@ export const GET = async (request: NextRequest) => {
                 return nextResponse(
                     {
                         success: true,
-                        conversation_id:
-                            data.find((d) => d.user_id === user?.id)
-                                ?.conversation_id ?? null,
+                        conversation_id: data.find((d) => d.user_id === user?.id)?.conversation_id ?? null,
                         user,
                     },
                     200,
@@ -58,9 +56,7 @@ export const GET = async (request: NextRequest) => {
             case "notes": {
                 const { data, error } = await supabaseServer
                     .from("conversations")
-                    .select(
-                        "id, conversation_members:conversation_members!inner(user_id)",
-                    )
+                    .select("id, conversation_members:conversation_members!inner(user_id)")
                     .eq("conversation_members.user_id", status_id)
                     .eq("type", "notes");
 

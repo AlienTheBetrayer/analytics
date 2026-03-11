@@ -1,3 +1,5 @@
+/** @format */
+
 import { AlreadyMember } from "@/features/join/components/errors/AlreadyMember";
 import { NotAMember } from "@/features/join/components/errors/NotAMember";
 import { ThreeContainer } from "@/features/threecontainer/components/ThreeContainer";
@@ -12,10 +14,10 @@ import Image from "next/image";
 import { redirect } from "next/navigation";
 
 type Props = {
-    data: CacheAPIProtocol["invitation"]["data"];
+    invitation: CacheAPIProtocol["invitation"]["data"];
 };
 
-export const JoinDisplay = ({ data }: Props) => {
+export const JoinDisplay = ({ invitation }: Props) => {
     const { data: status } = useQuery({ key: ["status"] });
 
     return (
@@ -32,23 +34,21 @@ export const JoinDisplay = ({ data }: Props) => {
             </span>
 
             <div className="flex rounded-4xl overflow-hidden h-64 relative">
-                {data.image_url ? (
+                {invitation.image_url ?
                     <Image
                         alt=""
                         fill
                         style={{ objectFit: "cover" }}
-                        src={data.image_url}
+                        src={invitation.image_url}
                         className="invert-0! hover:scale-105! duration-500!"
                     />
-                ) : (
-                    <ThreeContainer className="p-4! grow h-full" />
-                )}
+                :   <ThreeContainer className="p-4! grow h-full" />}
 
-                {data.description && (
+                {invitation.description && (
                     <div className="absolute bottom-2 left-4 right-4 flex items-center justify-center h-8 rounded-4xl bg-bg-2 z-300">
                         <span className="flex items-center gap-1">
                             <div className="w-1 h-1 rounded-full bg-blue-1" />
-                            {data.description}
+                            {invitation.description}
                         </span>
                     </div>
                 )}
@@ -56,13 +56,15 @@ export const JoinDisplay = ({ data }: Props) => {
 
             <div className="flex grow">
                 <div className="loading p-4">
-                    {data.isMember ? <AlreadyMember /> : <NotAMember />}
+                    {invitation.isMember ?
+                        <AlreadyMember />
+                    :   <NotAMember />}
                 </div>
             </div>
 
             <div className="flex flex-col items-center justify-center w-full *:w-full *:p-4! rounded-4xl">
-                {data.isMember ? (
-                    <LinkButton href={`/messages/c/${data.conversation_id}`}>
+                {invitation.isMember ?
+                    <LinkButton href={`/messages/c/${invitation.conversation_id}`}>
                         <div className="w-1 h-1 rounded-full bg-blue-1" />
                         <Image
                             alt=""
@@ -72,22 +74,20 @@ export const JoinDisplay = ({ data }: Props) => {
                         />
                         View
                     </LinkButton>
-                ) : (
-                    <Button
+                :   <Button
                         onClick={() => {
-                            if (!status) {
-                                return null;
-                            }
-
                             wrapPromise("addMembers", () => {
+                                if (!status) {
+                                    return Promise.reject();
+                                }
+
                                 return updateConversationMembers({
                                     type: "add",
-                                    conversation_id: data.conversation_id,
-                                    user: status,
+                                    conversation_id: invitation.conversation_id,
                                     user_ids: [status.id],
                                 });
                             }).then(() => {
-                                redirect(`/messages/c/${data.conversation_id}`);
+                                redirect(`/messages/c/${invitation.conversation_id}`);
                             });
                         }}
                         isEnabled={!!status}
@@ -102,7 +102,7 @@ export const JoinDisplay = ({ data }: Props) => {
                         />
                         Join & Redirect
                     </Button>
-                )}
+                }
             </div>
         </article>
     );

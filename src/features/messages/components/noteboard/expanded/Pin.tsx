@@ -1,3 +1,5 @@
+/** @format */
+
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { relativeTime } from "@/utils/other/relativeTime";
@@ -5,9 +7,7 @@ import Image from "next/image";
 
 type Props = {
     className?: string;
-    data:
-        | CacheAPIProtocol["noteboards"]["data"][number]["elements"][number]
-        | null;
+    data: CacheAPIProtocol["noteboards"]["data"][number]["elements"][number] | null;
 };
 
 export const Pin = ({ className, data }: Props) => {

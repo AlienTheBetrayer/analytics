@@ -1,3 +1,5 @@
+/** @format */
+
 import { Controls } from "@/features/messages/components/message/topline/parts/members/settings/Controls";
 import { Navigation } from "@/features/messages/components/message/topline/parts/members/settings/Navigation";
 import { Permissions } from "@/features/messages/components/message/topline/parts/members/settings/Permissions";
@@ -5,14 +7,10 @@ import { ProfileImage } from "@/features/profile/components/ProfileImage";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 
 export type MemberSettingsProps = {
-    conversationData: CacheAPIProtocol["conversations"]["data"][number];
     data: CacheAPIProtocol["conversation_members"]["data"][number];
 };
 
-export const MemberSettings = ({
-    conversationData,
-    data,
-}: MemberSettingsProps) => {
+export const MemberSettings = ({ data }: MemberSettingsProps) => {
     return (
         <ul className="box p-4! gap-4! items-center acrylic *:w-full *:flex *:flex-col *:gap-4 h-full">
             <li className="flex items-center justify-center">
@@ -30,24 +28,15 @@ export const MemberSettings = ({
             </li>
 
             <li>
-                <Navigation
-                    data={data}
-                    conversationData={conversationData}
-                />
+                <Navigation data={data} />
             </li>
 
             <li>
-                <Permissions
-                    data={data}
-                    conversationData={conversationData}
-                />
+                <Permissions data={data} />
             </li>
 
             <li>
-                <Controls
-                    data={data}
-                    conversationData={conversationData}
-                />
+                <Controls data={data} />
             </li>
         </ul>
     );

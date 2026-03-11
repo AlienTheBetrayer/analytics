@@ -1,20 +1,22 @@
-import { CacheAPIProtocol } from "@/query-api/protocol";
+/** @format */
+
+import { ExpandedConversation } from "@/query-api/protocol/messages";
 
 type Props = {
-    data: CacheAPIProtocol["conversations"]["data"][number];
+    conversation: ExpandedConversation;
 };
 
-export const PermissionStatus = ({ data }: Props) => {
+export const PermissionStatus = ({ conversation }: Props) => {
     return (
         <div className="flex items-center gap-1 absolute left-3 top-3">
-            {data.membership.is_founder && (
+            {conversation.membership.is_founder && (
                 <PermissionStatusBadge
                     src="/cube.svg"
                     color="var(--blue-1)"
                 />
             )}
 
-            {data.membership.is_admin && (
+            {conversation.membership.is_admin && (
                 <PermissionStatusBadge
                     src="/server.svg"
                     color="var(--red-1)"

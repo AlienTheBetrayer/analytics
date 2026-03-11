@@ -1,29 +1,32 @@
+/** @format */
+
 import { CreateConversationElements } from "@/features/messages/components/conversations/create/CreateConversation";
 import { ProfileImage } from "@/features/profile/components/ProfileImage";
 import { Button } from "@/features/ui/button/components/Button";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
-import { CacheAPIProtocol } from "@/query-api/protocol";
 import { useQuery } from "@/query/core";
 import { useLocalStore } from "@/zustand/localStore";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
-import { useMemo } from "react";
 
 type Props = {
-    data: CacheAPIProtocol["conversations"]["data"] | null;
     hide: () => void;
 };
 
-export const LeftMenu = ({ data, hide }: Props) => {
+export const LeftMenu = ({ hide }: Props) => {
+    // status
     const { data: status } = useQuery({ key: ["status"] });
+
+    // zustand
+    const conversationsIds = useAppStore((state) => state.conversationsIds);
+    const conversations = useAppStore((state) => state.conversations);
     const localDisplay = useLocalStore((state) => state.display);
     const updateDisplay = useAppStore((state) => state.updateDisplay);
     const updateLocalDisplay = useLocalStore((state) => state.updateDisplay);
 
-    const notesConversation = useMemo(() => {
-        return data?.find((c) => c.type === "notes");
-    }, [data]);
+    // ui states
+    const noteImageURL = conversationsIds.notes && conversations?.conversations.get(conversationsIds.notes)?.image_url;
 
     return (
         <ul className="box acrylic p-4! rounded-2xl! gap-4! **:border-0! w-full message-ctx">
@@ -84,22 +87,21 @@ export const LeftMenu = ({ data, hide }: Props) => {
                     <li>
                         <LinkButton href="/messages/notes">
                             <div>
-                                {notesConversation?.image_url ? (
+                                {noteImageURL ?
                                     <Image
                                         alt=""
                                         fill
                                         style={{ objectFit: "cover" }}
-                                        src={notesConversation.image_url}
+                                        src={noteImageURL}
                                         className="invert-0!"
                                     />
-                                ) : (
-                                    <Image
+                                :   <Image
                                         alt=""
                                         src="/save.svg"
                                         width={16}
                                         height={16}
                                     />
-                                )}
+                                }
                             </div>
 
                             <span className="z-1">Notes</span>

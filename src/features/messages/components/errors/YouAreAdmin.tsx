@@ -1,3 +1,5 @@
+/** @format */
+
 import { AbsentData } from "@/features/ui/absentdata/components/AbsentData";
 
 export const YouAreAdmin = () => {
@@ -8,9 +10,7 @@ export const YouAreAdmin = () => {
                     You are an <mark>admin</mark>
                 </>
             }
-            description={
-                <>Now you are able to administrate this conversation</>
-            }
+            description={<>Now you are able to administrate this conversation</>}
         />
     );
 };

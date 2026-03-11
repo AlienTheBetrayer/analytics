@@ -1,3 +1,5 @@
+/** @format */
+
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
@@ -7,8 +9,10 @@ type Props = {
 };
 
 export const SelectPart = ({ hr }: Props) => {
+    // zustand
     const selectDisplay = useAppStore((state) => state.selectDisplay);
 
+    // jsx
     return (
         <>
             {(hr ?? true) && <hr className="mx-1 w-px! h-4! border-bg-5!" />}

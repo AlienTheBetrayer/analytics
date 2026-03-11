@@ -1,3 +1,5 @@
+/** @format */
+
 import { Editing } from "@/features/messages/components/message/input/Editing";
 import { InputControls } from "@/features/messages/components/message/input/InputControls";
 import { InputStatus } from "@/features/messages/components/message/input/InputStatus";
@@ -7,69 +9,49 @@ import { Input } from "@/features/ui/input/components/Input";
 import { useMessageBox } from "@/features/ui/messagebox/hooks/useMessageBox";
 import { deleteMessage } from "@/query-api/calls/messages";
 import { CacheAPIProtocol } from "@/query-api/protocol";
-import { useQuery } from "@/query/core";
-import { useMemo } from "react";
+import { MapType } from "@/types/other/utils";
+import { useAppStore } from "@/zustand/store";
 
 export type MessageInputProps = {
-    retrieved?: CacheAPIProtocol["conversation_retrieve"]["data"];
-    conversationData?: CacheAPIProtocol["conversations"]["data"][number];
-    data: CacheAPIProtocol["messages"]["data"] | null;
     ref?: React.Ref<HTMLInputElement | null>;
-    actionMessage?: CacheAPIProtocol["messages"]["data"][number];
+    actionMessage?: MapType<CacheAPIProtocol["messages"]["data"]["messages"]>;
     type: "send" | "edit" | "reply" | "forward";
     onCancel: () => void;
     onAction: () => void;
 };
 export const MessageInput = (props: MessageInputProps) => {
-    const { data: status } = useQuery({ key: ["status"] });
+    // message boxes
     const deleteBox = useMessageBox();
 
-    const { updateMessage, setMessage, inputRef, message, edit, isSendable } =
-        useMessageInput({
-            ...props,
-            onDelete: deleteBox.show,
-        });
+    // functions / refs / states
+    const { updateMessage, setMessage, inputRef, message, edit, isSendable, placeholder } = useMessageInput({
+        ...props,
+        onDelete: deleteBox.show,
+    });
 
-    const placeholder = useMemo(() => {
-        if (props.conversationData?.membership.can_send === false) {
-            return "Prohibited.";
-        }
+    // zustand
+    const conversation = useAppStore((state) => state.conversation);
+    const messages = useAppStore((state) => state.messages);
+    const retrieved = useAppStore((state) => state.retrieved);
 
-        switch (props.type) {
-            case "edit": {
-                return "Edit...";
-            }
-            case "reply": {
-                return "Reply...";
-            }
-            default: {
-                return "Send...";
-            }
-        }
-    }, [props.type, props.conversationData?.membership.can_send]);
-
+    // jsx
     return (
         <div
-            className={`flex relative flex-col gap-0.5 ${props.conversationData?.membership.can_send === false ? "opacity-30" : ""}`}
-            inert={props.conversationData?.membership.can_send === false}
+            className={`flex relative flex-col gap-0.5 ${conversation?.membership.can_send === false ? "opacity-30" : ""}`}
+            inert={conversation?.membership.can_send === false}
         >
             {deleteBox.render({
                 children: "This message will be deleted!",
                 onSelect(response) {
                     props.onCancel();
-                    if (
-                        !props.actionMessage ||
-                        !status ||
-                        !props.conversationData
-                    ) {
+                    if (!props.actionMessage || !conversation) {
                         return;
                     }
 
                     if (response === "yes") {
                         deleteMessage({
-                            message: [props.actionMessage],
-                            user: status,
-                            conversation: props.conversationData,
+                            messages: [props.actionMessage.id],
+                            conversation_id: conversation.id,
                         });
                         props.onAction();
                     }
@@ -90,7 +72,7 @@ export const MessageInput = (props: MessageInputProps) => {
                 <InputStatus {...props} />
 
                 <Input
-                    isEnabled={!!(props.retrieved || props.data)}
+                    isEnabled={!!(retrieved || messages)}
                     ref={inputRef}
                     className="bg-bg-1! border-0! outline-1! outline-transparent hover:outline-blue-1 focus-visible:outline-blue-1"
                     placeholder={placeholder}

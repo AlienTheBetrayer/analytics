@@ -1,3 +1,5 @@
+/** @format */
+
 import { Date } from "@/features/messages/components/message/topline/miniprofile/Date";
 import { MiniProfileProps } from "@/features/messages/components/message/topline/miniprofile/MiniProfile";
 import { ProfileImage } from "@/features/profile/components/ProfileImage";
@@ -46,9 +48,7 @@ export const MiniProfileModal = (props: MiniProfileProps) => {
                                             />
                                             <div className="w-1 h-1 rounded-full bg-blue-1" />
 
-                                            <span>
-                                                {props.data.peer?.username}
-                                            </span>
+                                            <span>{props.data.peer?.username}</span>
                                         </span>
 
                                         <div className="flex flex-col items-center w-full">
@@ -57,9 +57,7 @@ export const MiniProfileModal = (props: MiniProfileProps) => {
                                                 className="not-hover:bg-transparent! border-0! w-full rounded-2xl!"
                                             >
                                                 <ProfileImage
-                                                    profile={
-                                                        props.data.peer?.profile
-                                                    }
+                                                    profile={props.data.peer?.profile}
                                                     width={256}
                                                     height={256}
                                                     className="w-32! h-32!"
@@ -75,9 +73,7 @@ export const MiniProfileModal = (props: MiniProfileProps) => {
                                                     height={16}
                                                     src="/description.svg"
                                                 />
-                                                <span>
-                                                    {props.data.description}
-                                                </span>
+                                                <span>{props.data.description}</span>
                                             </small>
                                         )}
 
@@ -109,14 +105,12 @@ export const MiniProfileModal = (props: MiniProfileProps) => {
                                             <div className="w-1 h-1 rounded-full bg-blue-1" />
                                             <span>
                                                 {props.data.title ||
-                                                    (props.data.type === "group"
-                                                        ? "Group"
-                                                        : "Channel")}
+                                                    (props.data.type === "group" ? "Group" : "Channel")}
                                             </span>
                                         </span>
 
                                         <div className="rounded-full! overflow-hidden w-32 aspect-square relative loading">
-                                            {props.data.image_url ? (
+                                            {props.data.image_url ?
                                                 <Image
                                                     alt=""
                                                     fill
@@ -126,18 +120,12 @@ export const MiniProfileModal = (props: MiniProfileProps) => {
                                                     className="invert-0!"
                                                     src={props.data.image_url}
                                                 />
-                                            ) : (
-                                                <Image
-                                                    alt={
-                                                        props.data.type ===
-                                                        "group"
-                                                            ? "Group"
-                                                            : "Channel"
-                                                    }
+                                            :   <Image
+                                                    alt={props.data.type === "group" ? "Group" : "Channel"}
                                                     src="/friends.svg"
                                                     fill
                                                 />
-                                            )}
+                                            }
                                         </div>
 
                                         {props.data.description && (
@@ -148,9 +136,7 @@ export const MiniProfileModal = (props: MiniProfileProps) => {
                                                     height={16}
                                                     src="/description.svg"
                                                 />
-                                                <span>
-                                                    {props.data.description}
-                                                </span>
+                                                <span>{props.data.description}</span>
                                             </small>
                                         )}
                                     </>
@@ -198,7 +184,7 @@ export const MiniProfileModal = (props: MiniProfileProps) => {
                             href="/messages/notes"
                             className="loading aspect-square flex-col!"
                         >
-                            {props.data?.image_url ? (
+                            {props.data?.image_url ?
                                 <Image
                                     alt=""
                                     fill
@@ -206,14 +192,13 @@ export const MiniProfileModal = (props: MiniProfileProps) => {
                                     src={props.data.image_url}
                                     className="invert-0!"
                                 />
-                            ) : (
-                                <Image
+                            :   <Image
                                     alt=""
                                     src="/save.svg"
                                     width={32}
                                     height={32}
                                 />
-                            )}
+                            }
 
                             <span className="flex items-center gap-1 z-1">
                                 Messages
@@ -234,9 +219,7 @@ export const MiniProfileModal = (props: MiniProfileProps) => {
                                 height={32}
                                 src="/dashboard.svg"
                             />
-                            <span className="flex items-center gap-1">
-                                Notes
-                            </span>
+                            <span className="flex items-center gap-1">Notes</span>
                             <TabSelection
                                 condition={id === "board"}
                                 className="right-3 top-3"

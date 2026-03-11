@@ -1,3 +1,5 @@
+/** @format */
+
 import { AbsentData } from "@/features/ui/absentdata/components/AbsentData";
 
 export const UnknownConversation = () => {
@@ -10,7 +12,8 @@ export const UnknownConversation = () => {
             }
             description={
                 <>
-                    You either have not loaded the conversation or something went wrong. Try to <mark>reload</mark> this page
+                    You either have not loaded the conversation or something went wrong. Try to <mark>reload</mark> this
+                    page
                 </>
             }
         />

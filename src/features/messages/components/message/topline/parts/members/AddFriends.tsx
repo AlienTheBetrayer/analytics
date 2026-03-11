@@ -1,16 +1,20 @@
+/** @format */
+
 import { MiniSearch } from "@/features/minisearch/components/MiniSearch";
 import { wrapPromise } from "@/promises/core";
 import { updateConversationMembers } from "@/query-api/calls/conversation_members";
-import { CacheAPIProtocol } from "@/query-api/protocol";
-import { useQuery } from "@/query/core";
+import { useAppStore } from "@/zustand/store";
 
-type Props = {
-    conversationData: CacheAPIProtocol["conversations"]["data"][number];
-};
+export const AddFriends = () => {
+    // zustand
+    const conversation = useAppStore((state) => state.conversation);
 
-export const AddFriends = ({ conversationData }: Props) => {
-    const { data: status } = useQuery({ key: ["status"] });
+    // fallback
+    if (!conversation) {
+        return null;
+    }
 
+    // jsx
     return (
         <MiniSearch
             required
@@ -18,15 +22,10 @@ export const AddFriends = ({ conversationData }: Props) => {
             type="friends"
             view="select"
             onSelect={(user_ids) => {
-                if (!status) {
-                    return;
-                }
-
                 wrapPromise("addMembers", () => {
                     return updateConversationMembers({
                         type: "add",
-                        user: status,
-                        conversation_id: conversationData.id,
+                        conversation_id: conversation.id,
                         user_ids,
                     });
                 });

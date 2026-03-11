@@ -1,7 +1,10 @@
+/** @format */
+
 import { MuteOptions } from "@/features/messages/components/message/topline/parts/members/settings/Muting";
 import { convertMuteTime } from "@/features/messages/utils/convertMuteTime";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { queryMutate } from "@/query/auxiliary";
+import { queryCache } from "@/query/init";
 import { refreshedRequest } from "@/utils/auth/refreshedRequest";
 
 export const updateConversationMembers = async (
@@ -21,48 +24,43 @@ export const updateConversationMembers = async (
         | { type: "mute"; time: string; option: (typeof MuteOptions)[number] }
         | { type: "unmute" }
     ) & {
-        user: CacheAPIProtocol["status"]["data"];
         user_ids: string[];
         conversation_id: string;
     },
 ) => {
+    const user = queryCache.get({ key: ["status"] }) as CacheAPIProtocol["status"]["data"];
+
+    if (!user) {
+        return Promise.reject();
+    }
+
     // optimistic updates
     switch (options.type) {
         case "kick": {
             queryMutate({
                 key: ["conversation_members", options.conversation_id],
-                value: (state) =>
-                    state.filter(
-                        (m) => !options.user_ids.some((u) => u === m.user.id),
-                    ),
+                value: (state) => state.filter((m) => !options.user_ids.some((u) => u === m.user.id)),
             });
             break;
         }
         case "permissions": {
-            const {
-                can_read,
-                can_send,
-                can_kick,
-                can_delete_messages,
-                can_invite,
-                is_admin,
-            } = options;
+            const { can_read, can_send, can_kick, can_delete_messages, can_invite, is_admin } = options;
 
             queryMutate({
                 key: ["conversation_members", options.conversation_id],
                 value: (state) =>
                     state.map((m) =>
-                        options.user_ids.includes(m.user_id)
-                            ? {
-                                  ...m,
-                                  can_read,
-                                  can_send,
-                                  can_kick,
-                                  can_delete_messages,
-                                  can_invite,
-                                  is_admin,
-                              }
-                            : m,
+                        options.user_ids.includes(m.user_id) ?
+                            {
+                                ...m,
+                                can_read,
+                                can_send,
+                                can_kick,
+                                can_delete_messages,
+                                can_invite,
+                                is_admin,
+                            }
+                        :   m,
                     ),
             });
             break;
@@ -73,18 +71,13 @@ export const updateConversationMembers = async (
                 key: ["conversation_members", options.conversation_id],
                 value: (state) =>
                     state.map((m) =>
-                        options.user_ids.includes(m.user_id)
-                            ? {
-                                  ...m,
-                                  muted_until:
-                                      options.type === "mute"
-                                          ? convertMuteTime(
-                                                options.time,
-                                                options.option,
-                                            )
-                                          : undefined,
-                              }
-                            : m,
+                        options.user_ids.includes(m.user_id) ?
+                            {
+                                ...m,
+                                muted_until:
+                                    options.type === "mute" ? convertMuteTime(options.time, options.option) : undefined,
+                            }
+                        :   m,
                     ),
             });
             break;
@@ -96,7 +89,7 @@ export const updateConversationMembers = async (
         route: "/api/update/conversation_members",
         method: "POST",
         body: {
-            user_id: options.user.id,
+            user_id: user.id,
             conversation_id: options.conversation_id,
             type: options.type,
             user_ids: options.user_ids,

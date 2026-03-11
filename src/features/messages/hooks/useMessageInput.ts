@@ -1,51 +1,42 @@
+/** @format */
+
 import { MessageInputProps } from "@/features/messages/components/message/input/MessageInput";
 import { upsertMessage } from "@/query-api/calls/messages";
-import { useQuery } from "@/query/core";
 import { useLocalStore } from "@/zustand/localStore";
+import { useAppStore } from "@/zustand/store";
 import { redirect, useParams } from "next/navigation";
-import {
-    useState,
-    useRef,
-    useImperativeHandle,
-    useEffect,
-    useCallback,
-    useMemo,
-} from "react";
+import { useState, useRef, useImperativeHandle, useEffect, useCallback, useMemo } from "react";
 
 export const useMessageInput = ({
-    retrieved,
-    data,
     ref,
     onCancel,
     type,
     actionMessage,
     onDelete,
 }: MessageInputProps & { onDelete: () => void }) => {
-    const { data: status } = useQuery({ key: ["status"] });
+    // url
     const { tab } = useParams<{ tab?: string }>();
 
+    // zustand
+    const conversation = useAppStore((state) => state.conversation);
+    const retrieved = useAppStore((state) => state.retrieved);
+    const drafts = useLocalStore((state) => state.drafts);
+    const updateDrafts = useLocalStore((state) => state.updateDrafts);
+
     // states
-    const messages = useLocalStore((state) => state.messageInputs);
-    const setMessages = useLocalStore((state) => state.updateMessageInput);
     const [edit, setEdit] = useState<string>("");
     const [temp, setTemp] = useState<string>("");
 
     // derived states
-    const currentId =
-        (data?.[0]?.conversation_id || retrieved?.conversation_id) ?? null;
+    const currentId = (conversation || retrieved?.conversation_id) ?? null;
     const currentMessage =
-        (temp
-            ? temp
-            : data?.[0]?.conversation_id
-              ? messages[data[0].conversation_id]
-              : retrieved?.conversation_id
-                ? messages[retrieved.conversation_id]
-                : "") ?? "";
-    const isSendable = !!(temp
-        ? temp.trim().length
-        : type === "edit"
-          ? edit.trim().length
-          : currentMessage.trim().length);
+        (temp ? temp
+        : conversation ? drafts[conversation.id]
+        : retrieved?.conversation_id ? drafts[retrieved.conversation_id]
+        : "") ?? "";
+    const isSendable = !!(temp ? temp.trim().length
+    : type === "edit" ? edit.trim().length
+    : currentMessage.trim().length);
 
     // refs
     const inputRef = useRef<HTMLInputElement>(null);
@@ -80,15 +71,11 @@ export const useMessageInput = ({
 
     // User functions
     const updateMessage = useCallback(() => {
-        if (!status) {
-            return;
-        }
-
-        const cid = data?.[0]?.conversation_id ?? retrieved?.conversation_id;
+        const cid = conversation?.id ?? retrieved?.conversation_id;
 
         // clearing
-        if (currentId) {
-            setMessages(currentId, "");
+        if (retrieved?.conversation_id) {
+            updateDrafts(retrieved.conversation_id, "");
         }
         setEdit("");
         setTemp("");
@@ -106,7 +93,6 @@ export const useMessageInput = ({
                         type: "edit",
                         message: actionMessage,
                         content: edit,
-                        user: status,
                     });
                     onCancel();
                 }
@@ -125,11 +111,9 @@ export const useMessageInput = ({
                         conversation_id: cid,
                         message: currentMessage,
                         reply: actionMessage,
-                        user: status,
                     });
                 } else {
-                    const to_id =
-                        tab === "notes" ? "notes" : retrieved?.user?.id;
+                    const to_id = tab === "notes" ? "notes" : retrieved?.user?.id;
 
                     if (!to_id) {
                         return;
@@ -137,11 +121,10 @@ export const useMessageInput = ({
 
                     upsertMessage({
                         type: "start_dm",
-                        user: status,
                         to_id,
                         message: currentMessage,
                     }).then((message) => {
-                        if (tab === "notes") {
+                        if (tab === "notes" || !message) {
                             return;
                         }
 
@@ -163,22 +146,20 @@ export const useMessageInput = ({
                     conversation_id: cid,
                     message: currentMessage,
                     reply: actionMessage,
-                    user: status,
                 });
                 break;
             }
         }
     }, [
-        setMessages,
+        updateDrafts,
         onCancel,
         onDelete,
-        status,
         tab,
         edit,
         currentMessage,
         currentId,
         retrieved,
-        data,
+        conversation,
         type,
         actionMessage,
     ]);
@@ -191,8 +172,8 @@ export const useMessageInput = ({
                     break;
                 }
                 default: {
-                    if (currentId) {
-                        setMessages(currentId, value);
+                    if (retrieved?.conversation_id) {
+                        updateDrafts(retrieved.conversation_id, value);
                     } else {
                         setTemp(value);
                     }
@@ -200,8 +181,26 @@ export const useMessageInput = ({
                 }
             }
         },
-        [setMessages, currentId, type],
+        [updateDrafts, retrieved, type],
     );
+
+    const placeholder = useMemo(() => {
+        if (conversation?.membership.can_send === false) {
+            return "Prohibited.";
+        }
+
+        switch (type) {
+            case "edit": {
+                return "Edit...";
+            }
+            case "reply": {
+                return "Reply...";
+            }
+            default: {
+                return "Send...";
+            }
+        }
+    }, [type, conversation?.membership.can_send]);
 
     return useMemo(() => {
         return {
@@ -210,7 +209,8 @@ export const useMessageInput = ({
             inputRef,
             message: currentMessage,
             edit,
+            placeholder,
             isSendable,
         };
-    }, [updateMessage, setMessage, currentMessage, edit, isSendable]);
+    }, [updateMessage, setMessage, currentMessage, edit, isSendable, placeholder]);
 };

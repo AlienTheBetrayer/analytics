@@ -1,3 +1,5 @@
+/** @format */
+
 import { PromiseState } from "@/promises/components/PromiseState";
 import "../ContextMenu.css";
 import { Button } from "@/features/ui/button/components/Button";
@@ -11,40 +13,42 @@ import { Forwarding } from "@/features/messages/components/message/display/Forwa
 import { MessageDisplayProps } from "@/features/messages/components/message/display/MessageDisplay";
 import { useMessageBox } from "@/features/ui/messagebox/hooks/useMessageBox";
 import { useAppStore } from "@/zustand/store";
+import { MapType } from "@/types/other/utils";
 
 type Props = {
     hide?: () => void;
     onAction?: MessageDisplayProps["onAction"];
-    data: CacheAPIProtocol["messages"]["data"][number];
-    conversationData?: CacheAPIProtocol["conversations"]["data"][number];
+    message: MapType<CacheAPIProtocol["messages"]["data"]["messages"]>;
 };
 
-export const ContextMenu = ({
-    data,
-    conversationData,
-    hide,
-    onAction,
-}: Props) => {
+export const ContextMenu = ({ message, hide, onAction }: Props) => {
+    // status
     const { data: status } = useQuery({ key: ["status"] });
-    const updateDisplay = useAppStore((state) => state.updateDisplay);
 
-    const isOurs = data.user_id === status?.id;
+    // zustand
+    const updateDisplay = useAppStore((state) => state.updateDisplay);
+    const conversation = useAppStore((state) => state.conversation);
+
+    // message boxes
     const deleteBox = useMessageBox();
 
+    // ui states
+    const isOurs = message.user_id === status?.id;
+
+    // jsx
     return (
         <>
             {deleteBox.render({
                 children: "This message will be deleted!",
                 onSelect(response) {
-                    if (!status || !conversationData) {
+                    if (!conversation) {
                         return;
                     }
 
                     if (response === "yes") {
                         deleteMessage({
-                            message: [data],
-                            user: status,
-                            conversation: conversationData,
+                            messages: [message.id],
+                            conversation_id: conversation.id,
                         });
                     }
                     hide?.();
@@ -62,16 +66,13 @@ export const ContextMenu = ({
                     />
                 </li>
 
-                {data.type !== "system" && (
+                {message.type !== "system" && (
                     <>
                         <li>
                             <Button
-                                isEnabled={
-                                    conversationData?.membership.can_send !==
-                                    false
-                                }
+                                isEnabled={conversation?.membership.can_send !== false}
                                 onClick={() => {
-                                    onAction?.("reply");
+                                    onAction?.(message, "reply");
                                     hide?.();
                                 }}
                             >
@@ -88,12 +89,9 @@ export const ContextMenu = ({
                         {isOurs && (
                             <li>
                                 <Button
-                                    isEnabled={
-                                        conversationData?.membership
-                                            .can_send !== false
-                                    }
+                                    isEnabled={conversation?.membership.can_send !== false}
                                     onClick={() => {
-                                        onAction?.("edit");
+                                        onAction?.(message, "edit");
                                         hide?.();
                                     }}
                                 >
@@ -114,9 +112,7 @@ export const ContextMenu = ({
                     <Button
                         onClick={() => {
                             wrapPromise("saveClipboard", () => {
-                                return navigator.clipboard.writeText(
-                                    data.message,
-                                );
+                                return navigator.clipboard.writeText(message.message);
                             });
                         }}
                     >
@@ -133,7 +129,7 @@ export const ContextMenu = ({
                     </Button>
                 </li>
 
-                {data.type !== "system" && (
+                {message.type !== "system" && (
                     <>
                         <li>
                             <Modal
@@ -144,9 +140,7 @@ export const ContextMenu = ({
                                 element={(hide2) => (
                                     <Forwarding
                                         onAction={(conversation) => {
-                                            onAction?.("forward", {
-                                                conversation,
-                                            });
+                                            onAction?.(message, "forward", conversation);
                                             hide?.();
                                             hide2();
                                         }}
@@ -171,9 +165,7 @@ export const ContextMenu = ({
                                     updateDisplay({
                                         messages: {
                                             selectingMode: true,
-                                            selecting: new Map([
-                                                [data.id, data],
-                                            ]),
+                                            selecting: new Set([message.id]),
                                         },
                                     });
                                     hide?.();
@@ -192,10 +184,10 @@ export const ContextMenu = ({
                 )}
 
                 {(isOurs ||
-                    data.type === "system" ||
-                    conversationData?.membership.is_admin ||
-                    conversationData?.membership.is_founder ||
-                    conversationData?.membership.can_delete_messages) && (
+                    message.type === "system" ||
+                    conversation?.membership.is_admin ||
+                    conversation?.membership.is_founder ||
+                    conversation?.membership.can_delete_messages) && (
                     <li>
                         <Button onClick={deleteBox.show}>
                             <Image

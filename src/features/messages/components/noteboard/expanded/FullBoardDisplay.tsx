@@ -1,3 +1,5 @@
+/** @format */
+
 import { NoBoard } from "@/features/messages/components/errors/NoBoard";
 import { NoNotes } from "@/features/messages/components/errors/NoNotes";
 import { NoteboardTabEmpty } from "@/features/messages/components/errors/NoteboardTabEmpty";
@@ -7,29 +9,27 @@ import { sortNotes } from "@/features/messages/utils/sort";
 import { Button } from "@/features/ui/button/components/Button";
 import { PromiseState } from "@/promises/components/PromiseState";
 import { deleteNote, upsertNote } from "@/query-api/calls/notes";
-import { CacheAPIProtocol } from "@/query-api/protocol";
 import { NoteboardElement } from "@/types/tables/notes";
 import { TabSelection } from "@/utils/other/TabSelection";
+import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import { useMemo, useState } from "react";
 
-type Props = {
-    data?: CacheAPIProtocol["noteboards"]["data"][number] | null;
-};
+export const FullBoardDisplay = () => {
+    const noteboard = useAppStore((state) => state.noteboard);
 
-export const FullBoardDisplay = ({ data }: Props) => {
     // states
     const sorted = useMemo(() => {
-        if (!data) {
+        if (!noteboard) {
             return [];
         }
 
-        return sortNotes({ notes: data.elements });
-    }, [data]);
+        return sortNotes({ notes: noteboard.elements });
+    }, [noteboard]);
     const [tab, setTab] = useState<"checked" | "unchecked">("unchecked");
 
     // fallbacks
-    if (!data) {
+    if (!noteboard) {
         return (
             <div className="flex items-center justify-center grow w-full">
                 <NoBoard />
@@ -68,7 +68,7 @@ export const FullBoardDisplay = ({ data }: Props) => {
                         height={16}
                         src="/cube.svg"
                     />
-                    <span>{data.title}</span>
+                    <span>{noteboard.title}</span>
                     <PromiseState state="upsertNote" />
                 </span>
 
@@ -101,13 +101,12 @@ export const FullBoardDisplay = ({ data }: Props) => {
             </div>
 
             <ul className="flex flex-col gap-2 w-full grow p-4!">
-                {checked.length || unchecked.length ? (
-                    !currentTab.length ? (
+                {checked.length || unchecked.length ?
+                    !currentTab.length ?
                         <li className="flex items-center justify-center grow">
                             <NoteboardTabEmpty type={tab} />
                         </li>
-                    ) : (
-                        currentTab.map((e) => (
+                    :   currentTab.map((e) => (
                             <li
                                 key={e.id}
                                 className="flex"
@@ -117,8 +116,7 @@ export const FullBoardDisplay = ({ data }: Props) => {
                                     onCheck={(flag) => {
                                         upsertNote({
                                             type: "edit",
-                                            noteboard_id: data.id,
-                                            user_id: data.user_id,
+                                            noteboard_id: noteboard.id,
                                             element_id: e.id,
                                             checked: flag,
                                         });
@@ -126,8 +124,7 @@ export const FullBoardDisplay = ({ data }: Props) => {
                                     onEdit={(value) => {
                                         upsertNote({
                                             type: "edit",
-                                            noteboard_id: data.id,
-                                            user_id: data.user_id,
+                                            noteboard_id: noteboard.id,
                                             element_id: e.id,
                                             title: value,
                                         });
@@ -135,26 +132,22 @@ export const FullBoardDisplay = ({ data }: Props) => {
                                     onPin={() => {
                                         upsertNote({
                                             type: "edit",
-                                            noteboard_id: data.id,
-                                            user_id: data.user_id,
+                                            noteboard_id: noteboard.id,
                                             element_id: e.id,
                                             pinned: !e.pinned,
                                         });
                                     }}
                                     onDelete={() => {
                                         deleteNote({
-                                            noteboard_id: data.id,
-                                            user_id: data.user_id,
+                                            noteboard_id: noteboard.id,
                                             element_id: e.id,
                                         });
                                     }}
                                 />
                             </li>
                         ))
-                    )
-                ) : (
-                    <NoNotes />
-                )}
+
+                :   <NoNotes />}
 
                 {tab === "unchecked" && (
                     <>
@@ -163,7 +156,7 @@ export const FullBoardDisplay = ({ data }: Props) => {
                         </li>
 
                         <li className="flex w-full">
-                            <BoardInput data={data} />
+                            <BoardInput />
                         </li>
                     </>
                 )}

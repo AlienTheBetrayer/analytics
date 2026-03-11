@@ -1,3 +1,5 @@
+/** @format */
+
 import { AbsentData } from "@/features/ui/absentdata/components/AbsentData";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import Image from "next/image";
@@ -12,8 +14,7 @@ export const NoBoard = () => {
             }
             description={
                 <>
-                    The board you have selected (at the URL) does <u>not</u>{" "}
-                    exist, re-check the URL
+                    The board you have selected (at the URL) does <u>not</u> exist, re-check the URL
                 </>
             }
         >

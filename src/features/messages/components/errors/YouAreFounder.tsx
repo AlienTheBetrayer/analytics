@@ -1,3 +1,5 @@
+/** @format */
+
 import { AbsentData } from "@/features/ui/absentdata/components/AbsentData";
 
 export const YouAreFounder = () => {
@@ -9,10 +11,7 @@ export const YouAreFounder = () => {
                 </>
             }
             description={
-                <>
-                    You are able to assign other users roles, mute them, kick,
-                    change their permissions, anything!
-                </>
+                <>You are able to assign other users roles, mute them, kick, change their permissions, anything!</>
             }
         />
     );

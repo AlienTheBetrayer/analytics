@@ -1,3 +1,5 @@
+/** @format */
+
 import { MemberSettingsProps } from "@/features/messages/components/message/topline/parts/members/settings/MemberSettings";
 import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
@@ -5,25 +7,21 @@ import { Select } from "@/features/ui/select/components/Select";
 import { PromiseState } from "@/promises/components/PromiseState";
 import { wrapPromise } from "@/promises/core";
 import { updateConversationMembers } from "@/query-api/calls/conversation_members";
-import { useQuery } from "@/query/core";
+import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import { useState } from "react";
 
-export const MuteOptions = [
-    "Seconds",
-    "Minutes",
-    "Hours",
-    "Days",
-    "Weeks",
-    "Months",
-] as const;
+export const MuteOptions = ["Seconds", "Minutes", "Hours", "Days", "Weeks", "Months"] as const;
 
-export const Muting = ({ data, conversationData }: MemberSettingsProps) => {
-    const { data: status } = useQuery({ key: ["status"] });
+export const Muting = ({ data }: MemberSettingsProps) => {
+    // zustand
+    const conversation = useAppStore((state) => state.conversation);
+
+    // react states
     const [time, setTime] = useState<string>("");
-    const [option, setOption] =
-        useState<(typeof MuteOptions)[number]>("Minutes");
+    const [option, setOption] = useState<(typeof MuteOptions)[number]>("Minutes");
 
+    // jsx
     return (
         <div className="box p-4! gap-4! items-center w-full acrylic">
             <span className="flex items-center gap-1">
@@ -41,17 +39,16 @@ export const Muting = ({ data, conversationData }: MemberSettingsProps) => {
                 onSubmit={(e) => {
                     e.preventDefault();
 
-                    if (!status) {
+                    if (!conversation) {
                         return;
                     }
 
                     wrapPromise("muteMember", () => {
                         return updateConversationMembers({
                             type: "mute",
-                            time,
+                            time: String(Math.ceil(+time)),
                             option,
-                            conversation_id: conversationData.id,
-                            user: status,
+                            conversation_id: conversation.id,
                             user_ids: [data.user_id],
                         });
                     });
@@ -72,9 +69,7 @@ export const Muting = ({ data, conversationData }: MemberSettingsProps) => {
                         <Select
                             items={[...MuteOptions]}
                             value={option}
-                            onChange={(item) =>
-                                setOption(item as (typeof MuteOptions)[number])
-                            }
+                            onChange={(item) => setOption(item as (typeof MuteOptions)[number])}
                         />
                     </li>
 

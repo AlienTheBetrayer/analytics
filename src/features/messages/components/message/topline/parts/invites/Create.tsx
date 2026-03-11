@@ -1,24 +1,30 @@
+/** @format */
+
 import { Button } from "@/features/ui/button/components/Button";
 import { ImageSelectCircle } from "@/features/ui/imageselectcircle/components/ImageSelectCircle";
 import { Input } from "@/features/ui/input/components/Input";
 import { PromiseState } from "@/promises/components/PromiseState";
 import { wrapPromise } from "@/promises/core";
 import { createInvitation } from "@/query-api/calls/invitations";
-import { CacheAPIProtocol } from "@/query-api/protocol";
-import { useQuery } from "@/query/core";
+import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 import { useState } from "react";
 
-type Props = {
-    conversationData: CacheAPIProtocol["conversations"]["data"][number];
-};
-
-export const Create = ({ conversationData }: Props) => {
+export const Create = () => {
+    // states
     const [description, setDescription] = useState<string>("");
     const [imageURL, setImageURL] = useState<string>("");
     const [image, setImage] = useState<File>();
-    const { data: status } = useQuery({ key: ["status"] });
 
+    // zustand
+    const conversation = useAppStore((state) => state.conversation);
+
+    // fallback
+    if (!conversation) {
+        return null;
+    }
+
+    // jsx
     return (
         <div className="flex flex-col gap-2 items-center">
             <ImageSelectCircle
@@ -42,16 +48,11 @@ export const Create = ({ conversationData }: Props) => {
             <Button
                 className="w-full"
                 onClick={() => {
-                    if (!status) {
-                        return;
-                    }
-
                     wrapPromise("createInvitation", () => {
                         return createInvitation({
                             description,
                             image,
-                            user: status,
-                            conversation_id: conversationData.id,
+                            conversation_id: conversation.id,
                         });
                     });
                 }}

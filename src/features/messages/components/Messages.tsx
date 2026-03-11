@@ -1,3 +1,5 @@
+/** @format */
+
 "use client";
 
 import { Select } from "@/features/messages/components/Select";
@@ -5,8 +7,10 @@ import { Topline } from "@/features/messages/components/Topline";
 import { useAppStore } from "@/zustand/store";
 
 export const Messages = () => {
+    // zustand
     const isMaximized = useAppStore((state) => state.display.maximized);
 
+    // jsx
     return (
         <>
             <Topline />

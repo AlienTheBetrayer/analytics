@@ -1,3 +1,5 @@
+/** @format */
+
 import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
 import { PromiseState } from "@/promises/components/PromiseState";
@@ -15,9 +17,7 @@ type Props = {
 
 export const CreateBoard = ({ type, data }: Props) => {
     const { data: status } = useQuery({ key: ["status"] });
-    const [title, setTitle] = useState<string>(
-        type === "edit" && data ? data.title : "",
-    );
+    const [title, setTitle] = useState<string>(type === "edit" && data ? data.title : "");
     const [description, setDescription] = useState<string>(
         type === "edit" && data?.description ? data.description : "",
     );

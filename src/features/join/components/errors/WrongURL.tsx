@@ -1,3 +1,5 @@
+/** @format */
+
 import { AbsentData } from "@/features/ui/absentdata/components/AbsentData";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import Image from "next/image";
@@ -12,8 +14,7 @@ export const WrongURL = () => {
             }
             description={
                 <>
-                    There is no ID in the URL. Re-enter the <mark>URL</mark> and
-                    the error will be gone
+                    There is no ID in the URL. Re-enter the <mark>URL</mark> and the error will be gone
                 </>
             }
         >

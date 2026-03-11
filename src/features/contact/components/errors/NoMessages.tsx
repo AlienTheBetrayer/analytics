@@ -1,3 +1,5 @@
+/** @format */
+
 import { AbsentData } from "@/features/ui/absentdata/components/AbsentData";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
@@ -13,8 +15,7 @@ export const NoMessages = () => {
             }
             description={
                 <>
-                    You have not sent a <u>single</u> message yet and there are
-                    no visible messages in the database
+                    You have not sent a <u>single</u> message yet and there are no visible messages in the database
                 </>
             }
         >

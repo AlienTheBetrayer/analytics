@@ -1,3 +1,5 @@
+/** @format */
+
 import { ContextMenu } from "@/features/messages/components/message/display/ContextMenu";
 import { Forward } from "@/features/messages/components/message/display/parts/Forward";
 import { Core } from "@/features/messages/components/message/display/parts/Core";
@@ -12,99 +14,99 @@ import { useAppStore } from "@/zustand/store";
 import { useMessageDisplay } from "@/features/messages/hooks/useMessageDisplay";
 import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
 import { AnimatePresence, motion } from "motion/react";
+import { MapType } from "@/types/other/utils";
+import React from "react";
+import { ExpandedMessage } from "@/query-api/protocol/messages";
 
 export type MessageDisplayProps = {
-    data: CacheAPIProtocol["messages"]["data"][number];
-    conversationData?: CacheAPIProtocol["conversations"]["data"][number];
+    id: string;
     onAction: (
+        message: ExpandedMessage,
         type: MessageInputProps["type"],
-        response?: {
-            conversation?: CacheAPIProtocol["conversations"]["data"][number];
-        },
+        response?: MapType<CacheAPIProtocol["conversations"]["data"]["conversations"]>,
     ) => void;
+    isSelected: boolean;
+    selectionMode: boolean;
 };
 
-export const MessageDisplay = ({
-    data,
-    conversationData,
+export const MessageDisplay = React.memo(function MessageDisplayComponent({
+    id,
     onAction,
-}: MessageDisplayProps) => {
+    isSelected,
+    selectionMode,
+}: MessageDisplayProps) {
+    // status
     const { data: status } = useQuery({ key: ["status"] });
-    const isSelected = useAppStore((state) =>
-        state.display.messages.selecting.has(data.id),
-    );
-    const selectingMode = useAppStore(
-        (state) => state.display.messages.selectingMode,
-    );
 
-    const isOurs = data.user_id === status?.id;
+    // zustand (message object)
+    const message = useAppStore((state) => state.messages?.messages.get(id));
 
-    const { invertDisplay } = useMessageDisplay({ data });
+    // selection inversion
+    const { invertDisplay } = useMessageDisplay({ message });
 
     // fallbacks
-    switch (data.type) {
+    if (!message) {
+        return null;
+    }
+
+    // system message
+    switch (message.type) {
         case "system": {
-            return (
-                <SystemDisplay
-                    data={data}
-                    conversationData={conversationData}
-                />
-            );
+            return <SystemDisplay message={message} />;
         }
     }
 
+    // ui states
+    const isOurs = message.user_id === status?.id;
+
     return (
-        <div className="relative flex items-center">
+        <div className="relative flex items-center min-h-11">
             <div className="w-full">
                 <Modal
                     tooltipClassName="w-screen max-w-64"
                     direction={isOurs ? "left" : "right"}
                     className={`relative w-fit! ${isOurs ? "ml-auto!" : ""}`}
-                    isActive={!selectingMode}
+                    isActive={!selectionMode}
                     element={(hide) => (
                         <ContextMenu
-                            conversationData={conversationData}
                             hide={hide}
-                            data={data}
+                            message={message}
                             onAction={onAction}
                         />
                     )}
                 >
                     <Button
                         className={`box p-1.75! px-4! w-fit! flex-col! rounded-3xl!
-                        ${isSelected && selectingMode ? "not-hover:bg-bg-5! hover:bg-bg-6! select-none" : "not-hover:bg-bg-1!"}
+                        ${isSelected && selectionMode ? "not-hover:bg-bg-5! hover:bg-bg-6! select-none" : "not-hover:bg-bg-1!"}
                     `}
                         onClick={() => {
-                            if (!selectingMode) {
+                            if (!selectionMode) {
                                 return;
                             }
                             invertDisplay();
                         }}
                         onPointerMove={
-                            selectingMode
-                                ? (e) => {
-                                      if (!(e.buttons & 1)) {
-                                          return;
-                                      }
-                                      invertDisplay("on");
-                                  }
-                                : undefined
+                            selectionMode ?
+                                (e) => {
+                                    if (!(e.buttons & 1)) {
+                                        return;
+                                    }
+                                    invertDisplay("on");
+                                }
+                            :   undefined
                         }
                     >
-                        <Reply data={data} />
-                        <Forward data={data} />
-
-                        <Core
-                            data={data}
-                            conversationData={conversationData}
-                        />
+                        <Reply message={message} />
+                        <Forward message={message} />
+                        <Core message={message} />
                     </Button>
                 </Modal>
             </div>
 
             <AnimatePresence>
-                {selectingMode && (
+                {selectionMode && (
                     <motion.div
+                        key={`checkbox_${id}`}
                         initial={{ width: 0, scale: 0 }}
                         animate={{ width: "auto", scale: 1 }}
                         exit={{ width: "0", scale: 0 }}
@@ -123,4 +125,4 @@ export const MessageDisplay = ({
             </AnimatePresence>
         </div>
     );
-};
+});

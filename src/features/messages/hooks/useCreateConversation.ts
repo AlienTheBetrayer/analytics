@@ -1,11 +1,15 @@
+/** @format */
+
 import { wrapPromise } from "@/promises/core";
 import { upsertConversation } from "@/query-api/calls/conversation";
 import { useQuery } from "@/query/core";
 import { useCallback, useMemo } from "react";
 
 export const useCreateConversation = () => {
+    // status
     const { data: status } = useQuery({ key: ["status"] });
 
+    // function
     const create = useCallback(
         (
             options: (
@@ -16,18 +20,11 @@ export const useCreateConversation = () => {
                 | { type: "notes" }
             ) & { title?: string; description?: string; image?: File },
         ) => {
-            if (!status) {
-                return;
-            }
-
-            if (
-                options.type !== "notes" &&
-                options.ids.some((id) => id === status.id)
-            ) {
-                return;
-            }
-
             wrapPromise("createConversation", async () => {
+                if (options.type !== "notes" && options.ids.some((id) => id === status?.id)) {
+                    return Promise.reject();
+                }
+
                 return upsertConversation({
                     type: "create",
                     conversation_type: options.type,
@@ -36,7 +33,6 @@ export const useCreateConversation = () => {
                         description: options.description,
                     }),
                     ...(options.image && { image: options.image }),
-                    user: status,
                     member_ids: options.type === "notes" ? [] : options.ids,
                 });
             });
@@ -44,6 +40,7 @@ export const useCreateConversation = () => {
         [status],
     );
 
+    // returning
     return useMemo(() => {
         return {
             create,

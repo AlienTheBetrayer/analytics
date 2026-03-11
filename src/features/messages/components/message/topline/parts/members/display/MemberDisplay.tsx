@@ -1,3 +1,5 @@
+/** @format */
+
 import { PermissionBadges } from "@/features/messages/components/message/topline/parts/members/display/PermissionBadges";
 import { MemberSettings } from "@/features/messages/components/message/topline/parts/members/settings/MemberSettings";
 import { ProfileImage } from "@/features/profile/components/ProfileImage";
@@ -9,21 +11,15 @@ import Image from "next/image";
 
 type Props = {
     data: CacheAPIProtocol["conversation_members"]["data"][number];
-    conversationData: CacheAPIProtocol["conversations"]["data"][number];
 };
 
-export const MemberDisplay = ({ data, conversationData }: Props) => {
+export const MemberDisplay = ({ data }: Props) => {
     return (
         <Modal
             className="w-full"
             direction="screen-middle"
             tooltipClassName="w-screen max-w-lg"
-            element={() => (
-                <MemberSettings
-                    data={data}
-                    conversationData={conversationData}
-                />
-            )}
+            element={() => <MemberSettings data={data} />}
         >
             <Button className="flex w-full justify-start! rounded-4xl! gap-2! p-2!">
                 <div className="flex items-center shrink-0">
@@ -36,9 +32,7 @@ export const MemberDisplay = ({ data, conversationData }: Props) => {
                         />
 
                         <div className="flex flex-col">
-                            <span className="flex items-center gap-1 truncate">
-                                {data.user.username}
-                            </span>
+                            <span className="flex items-center gap-1 truncate">{data.user.username}</span>
 
                             <PermissionBadges data={data} />
                         </div>

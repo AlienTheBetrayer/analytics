@@ -1,35 +1,36 @@
+/** @format */
+
 import { ProfileImage } from "@/features/profile/components/ProfileImage";
-import { CacheAPIProtocol } from "@/query-api/protocol";
+import { ExpandedConversation } from "@/query-api/protocol/messages";
 import { Conversation } from "@/types/tables/messages";
 import Image from "next/image";
 
 type Props = {
     type?: Conversation["type"];
-    data?: CacheAPIProtocol["conversations"]["data"][number];
+    conversation: ExpandedConversation | null;
     className?: string;
 };
 
-export const Avatar = ({ type, data, className }: Props) => {
+export const Avatar = ({ type, conversation, className }: Props) => {
     return (
         <div
             className={`relative shrink-0 overflow-hidden rounded-full transition-all duration-300 w-12 h-12 loading aspect-square flex items-center justify-center
             ${className ?? ""}`}
         >
-            {data?.image_url ? (
+            {conversation?.image_url ?
                 <Image
                     alt=""
                     fill
                     style={{ objectFit: "cover" }}
-                    src={data.image_url}
+                    src={conversation.image_url}
                     className="invert-0!"
                 />
-            ) : (
-                (() => {
-                    switch (type || data?.type) {
+            :   (() => {
+                    switch (type || conversation?.type) {
                         case "dm": {
                             return (
                                 <ProfileImage
-                                    profile={data?.peer?.profile}
+                                    profile={conversation?.peer?.profile}
                                     width={256}
                                     height={256}
                                     className="w-full! h-full!"
@@ -71,7 +72,7 @@ export const Avatar = ({ type, data, className }: Props) => {
                         }
                     }
                 })()
-            )}
+            }
         </div>
     );
 };

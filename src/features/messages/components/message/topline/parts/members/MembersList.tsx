@@ -1,18 +1,21 @@
+/** @format */
+
 import { MemberDisplay } from "@/features/messages/components/message/topline/parts/members/display/MemberDisplay";
 import { Spinner } from "@/features/ui/spinner/components/Spinner";
-import { CacheAPIProtocol } from "@/query-api/protocol";
 import { useQuery } from "@/query/core";
+import { useAppStore } from "@/zustand/store";
 
-type Props = {
-    conversationData: CacheAPIProtocol["conversations"]["data"][number];
-};
+export const MembersList = () => {
+    // zustand
+    const conversation = useAppStore((state) => state.conversation);
 
-export const MembersList = ({ conversationData }: Props) => {
+    // fetching
     const { data, isLoading } = useQuery({
-        key: ["conversation_members", conversationData.id],
+        key: ["conversation_members", conversation?.id],
         revalidate: true,
     });
 
+    // fallback
     if (isLoading || !data) {
         return (
             <div className="flex flex-col gap-2 justify-between relative">
@@ -28,6 +31,7 @@ export const MembersList = ({ conversationData }: Props) => {
         );
     }
 
+    // jsx
     return (
         <ul className="flex flex-col gap-2 items-center">
             {data.map((m) => (
@@ -35,10 +39,7 @@ export const MembersList = ({ conversationData }: Props) => {
                     key={m.user.id}
                     className="flex items-center gap-4 w-full!"
                 >
-                    <MemberDisplay
-                        data={m}
-                        conversationData={conversationData}
-                    />
+                    <MemberDisplay data={m} />
                 </li>
             ))}
         </ul>

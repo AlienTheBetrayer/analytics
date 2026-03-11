@@ -1,3 +1,5 @@
+/** @format */
+
 import { MessageInputProps } from "@/features/messages/components/message/input/MessageInput";
 import { useMessageInput } from "@/features/messages/hooks/useMessageInput";
 import { Button } from "@/features/ui/button/components/Button";
@@ -6,11 +8,7 @@ import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
 
 export const InputControls = (
-    props: MessageInputProps &
-        Pick<
-            ReturnType<typeof useMessageInput>,
-            "updateMessage" | "isSendable"
-        >,
+    props: MessageInputProps & Pick<ReturnType<typeof useMessageInput>, "updateMessage" | "isSendable">,
 ) => {
     return (
         <>
@@ -42,13 +40,12 @@ export const InputControls = (
             <Tooltip
                 direction="top"
                 text={
-                    props.type === "edit"
-                        ? "Edit a message"
-                        : props.type === "send"
-                          ? "Send a message"
-                          : props.type === "reply"
-                            ? "Reply"
-                            : ""
+                    props.type === "edit" ? "Edit a message"
+                    : props.type === "send" ?
+                        "Send a message"
+                    : props.type === "reply" ?
+                        "Reply"
+                    :   ""
                 }
                 isEnabled={props.isSendable || props.type === "edit"}
             >
@@ -60,7 +57,7 @@ export const InputControls = (
                     }}
                 >
                     <AnimatePresence>
-                        {props.isSendable ? (
+                        {props.isSendable ?
                             <motion.div
                                 key="sendable"
                                 className="absolute"
@@ -73,15 +70,10 @@ export const InputControls = (
                                     alt=""
                                     width={16}
                                     height={16}
-                                    src={
-                                        props.type === "edit"
-                                            ? "/pencil.svg"
-                                            : "/send.svg"
-                                    }
+                                    src={props.type === "edit" ? "/pencil.svg" : "/send.svg"}
                                 />
                             </motion.div>
-                        ) : (
-                            <motion.div
+                        :   <motion.div
                                 key="notsendable"
                                 className="absolute"
                                 initial={{ x: 20, opacity: 0, scale: 0 }}
@@ -93,14 +85,10 @@ export const InputControls = (
                                     alt=""
                                     width={16}
                                     height={16}
-                                    src={
-                                        props.type === "edit"
-                                            ? "/delete.svg"
-                                            : "/cross.svg"
-                                    }
+                                    src={props.type === "edit" ? "/delete.svg" : "/cross.svg"}
                                 />
                             </motion.div>
-                        )}
+                        }
                     </AnimatePresence>
                 </Button>
             </Tooltip>

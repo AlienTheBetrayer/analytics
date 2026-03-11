@@ -1,3 +1,5 @@
+/** @format */
+
 import { AbsentData } from "@/features/ui/absentdata/components/AbsentData";
 
 export const NoMessages = () => {
@@ -10,8 +12,7 @@ export const NoMessages = () => {
             }
             description={
                 <>
-                    Be the first one to send the <mark>message</mark> and start
-                    an interesting conversation!
+                    Be the first one to send the <mark>message</mark> and start an interesting conversation!
                 </>
             }
         />

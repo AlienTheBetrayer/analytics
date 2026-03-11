@@ -1,8 +1,6 @@
-import {
-    CacheKey,
-    CacheListener,
-    CacheListenerOptions,
-} from "@/query/types/types";
+/** @format */
+
+import { CacheKey, CacheListener, CacheListenerOptions } from "@/query/types/types";
 import { convertKey } from "@/query/utils/other";
 
 /**
@@ -56,7 +54,7 @@ export class QueryListeners {
         this._data[convertKey(options.key)]?.forEach((fn) => {
             switch (options.type) {
                 case "refetch": {
-                    fn({ type: options.type, silent: options.silent });
+                    fn({ type: options.type, silent: options.silent, onInvalidate: options.onInvalidate });
                     break;
                 }
                 case "update": {

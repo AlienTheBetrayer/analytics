@@ -1,18 +1,20 @@
+/** @format */
+
 import { ProfileImage } from "@/features/profile/components/ProfileImage";
 import { Spinner } from "@/features/ui/spinner/components/Spinner";
-import { CacheAPIProtocol } from "@/query-api/protocol";
+import { ExpandedConversation } from "@/query-api/protocol/messages";
 import Image from "next/image";
 
 type Props = {
-    data?: CacheAPIProtocol["conversations"]["data"][number];
+    conversation: ExpandedConversation | null;
 };
 
-export const LastMessageAuthor = ({ data }: Props) => {
-    if (!data?.last_message) {
+export const LastMessageAuthor = ({ conversation }: Props) => {
+    if (!conversation?.last_message) {
         return null;
     }
 
-    if (data.last_message.type === "system") {
+    if (conversation.last_message.type === "system") {
         return (
             <Image
                 alt=""
@@ -23,14 +25,10 @@ export const LastMessageAuthor = ({ data }: Props) => {
         );
     }
 
-    if (!data.last_message.user) {
-        return null;
-    }
-
     return (
         <div className="flex items-center gap-1">
             {(() => {
-                switch (data.last_message.type) {
+                switch (conversation.last_message.type) {
                     case "forward": {
                         return (
                             <span className="box flex-row! items-center justify-center gap-0! w-5.25! h-5.25! p-0! rounded-lg! bg-bg-3!">
@@ -62,7 +60,7 @@ export const LastMessageAuthor = ({ data }: Props) => {
             })()}
 
             <ProfileImage
-                profile={data.last_message.user.profile}
+                profile={conversation.last_message.user.profile}
                 width={256}
                 height={256}
                 className="w-5! h-5!"

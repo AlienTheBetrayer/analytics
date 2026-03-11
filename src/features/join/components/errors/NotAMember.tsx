@@ -1,3 +1,5 @@
+/** @format */
+
 import { AbsentData } from "@/features/ui/absentdata/components/AbsentData";
 
 export const NotAMember = () => {
@@ -10,8 +12,8 @@ export const NotAMember = () => {
             }
             description={
                 <>
-                    You are not in the conversation yet. However, you can click
-                    the button below and you will automatically join it.
+                    You are not in the conversation yet. However, you can click the button below and you will
+                    automatically join it.
                 </>
             }
         />

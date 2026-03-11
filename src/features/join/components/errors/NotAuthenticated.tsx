@@ -1,3 +1,5 @@
+/** @format */
+
 import { AbsentData } from "@/features/ui/absentdata/components/AbsentData";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import Image from "next/image";
@@ -10,11 +12,7 @@ export const NotAuthenticated = () => {
                     Not <u>authenticated</u>
                 </>
             }
-            description={
-                <>
-                    In order to join this conversation you have to be logged in.
-                </>
-            }
+            description={<>In order to join this conversation you have to be logged in.</>}
         >
             <ul className="grid grid-cols-2 w-full max-w-64 gap-2">
                 <li>

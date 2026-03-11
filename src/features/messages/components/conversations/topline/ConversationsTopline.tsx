@@ -1,3 +1,5 @@
+/** @format */
+
 import { CreateConversation } from "@/features/messages/components/conversations/create/CreateConversation";
 import { LeftMenu } from "@/features/messages/components/conversations/leftmenu/LeftMenu";
 import { Title } from "@/features/messages/components/conversations/topline/Title";
@@ -7,19 +9,18 @@ import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { PromiseState } from "@/promises/components/PromiseState";
 import { wrapPromise } from "@/promises/core";
-import { CacheAPIProtocol } from "@/query-api/protocol";
 import { queryInvalidate } from "@/query/auxiliary";
 import { useQuery } from "@/query/core";
 import { TabSelection } from "@/utils/other/TabSelection";
 import { useAppStore } from "@/zustand/store";
 import Image from "next/image";
 
-type Props = {
-    data: CacheAPIProtocol["conversations"]["data"] | null;
-};
-
-export const ConversationsTopline = ({ data }: Props) => {
+export const ConversationsTopline = () => {
+    // status
     const { data: status } = useQuery({ key: ["status"] });
+
+    // zustand
+    const hasConversation = useAppStore((state) => !!state.conversations?.ids.length);
     const display = useAppStore((state) => state.display.conversations);
     const updateDisplay = useAppStore((state) => state.updateDisplay);
 
@@ -30,12 +31,7 @@ export const ConversationsTopline = ({ data }: Props) => {
                     <Modal
                         tooltipClassName="w-screen max-w-64"
                         direction="bottom-right"
-                        element={(hide) => (
-                            <LeftMenu
-                                hide={hide}
-                                data={data}
-                            />
-                        )}
+                        element={(hide) => <LeftMenu hide={hide} />}
                     >
                         <Tooltip
                             direction="top"
@@ -54,16 +50,16 @@ export const ConversationsTopline = ({ data }: Props) => {
                 </li>
 
                 <li className="flex items-center justify-center absolute left-1/2 top-1/2 -translate-1/2">
-                    <Title data={data} />
+                    <Title />
                 </li>
             </ul>
 
             <ul
                 className={`box h-10! gap-0.5! p-0! items-center! flex-row!
-            ${data?.length ? "" : "opacity-30"}`}
-                inert={!data?.length}
+            ${hasConversation ? "" : "opacity-30"}`}
+                inert={!hasConversation}
             >
-                {!data?.length && (
+                {hasConversation ? null : (
                     <li className="truncate absolute left-1/2 top-1/2 -translate-1/2 z-2">
                         <span className="flex items-center gap-1">
                             <div className="w-1 h-1 rounded-full bg-blue-1" />
@@ -126,11 +122,7 @@ export const ConversationsTopline = ({ data }: Props) => {
                             />
                             <TabSelection
                                 condition={true}
-                                color={
-                                    display.reversed
-                                        ? "var(--orange-1)"
-                                        : "var(--blue-1)"
-                                }
+                                color={display.reversed ? "var(--orange-1)" : "var(--blue-1)"}
                             />
                         </Button>
                     </Tooltip>

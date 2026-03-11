@@ -1,19 +1,19 @@
+/** @format */
+
 import { Button } from "@/features/ui/button/components/Button";
 import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
 import { Input } from "@/features/ui/input/components/Input";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { wrapPromise } from "@/promises/core";
 import { upsertNote } from "@/query-api/calls/notes";
-import { CacheAPIProtocol } from "@/query-api/protocol";
+import { useAppStore } from "@/zustand/store";
 import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
 
-type Props = {
-    data: CacheAPIProtocol["noteboards"]["data"][number];
-};
+export const BoardInput = () => {
+    const noteboard = useAppStore((state) => state.noteboard);
 
-export const BoardInput = ({ data }: Props) => {
     // react states
     const [title, setTitle] = useState<string>("");
     const [checked, setChecked] = useState<boolean>(false);
@@ -36,11 +36,14 @@ export const BoardInput = ({ data }: Props) => {
                 e.preventDefault();
 
                 wrapPromise("upsertNote", () => {
+                    if (!noteboard) {
+                        return Promise.reject();
+                    }
+
                     const promise = upsertNote({
                         type: "create",
                         title,
-                        noteboard_id: data.id,
-                        user_id: data.user_id,
+                        noteboard_id: noteboard.id,
                     });
 
                     setTitle("");
@@ -72,7 +75,7 @@ export const BoardInput = ({ data }: Props) => {
                     isEnabled={isSendable}
                 >
                     <AnimatePresence>
-                        {isSendable ? (
+                        {isSendable ?
                             <motion.div
                                 key="sendable"
                                 className="absolute"
@@ -92,8 +95,7 @@ export const BoardInput = ({ data }: Props) => {
                                     src="/plus.svg"
                                 />
                             </motion.div>
-                        ) : (
-                            <motion.div
+                        :   <motion.div
                                 key="notsendable"
                                 className="absolute"
                                 initial={{
@@ -112,7 +114,7 @@ export const BoardInput = ({ data }: Props) => {
                                     src="/cross.svg"
                                 />
                             </motion.div>
-                        )}
+                        }
                     </AnimatePresence>
                 </Button>
             </Tooltip>

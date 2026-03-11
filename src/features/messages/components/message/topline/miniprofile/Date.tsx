@@ -1,39 +1,44 @@
+/** @format */
+
 import { CacheAPIProtocol } from "@/query-api/protocol";
+import { MapType } from "@/types/other/utils";
 import { exactTime, relativeTime } from "@/utils/other/relativeTime";
 import Image from "next/image";
 import { useMemo } from "react";
 
 type Props<T> = {
-    data: T extends {
-        created_at: string;
-        edited_at?: string;
-        last_message?: CacheAPIProtocol["conversations"]["data"][number]["last_message"];
-    }
-        ? T
-        : never;
+    data: T extends (
+        {
+            created_at: string;
+            edited_at?: string;
+            last_message?: MapType<CacheAPIProtocol["conversations"]["data"]["conversations"]>["last_message"];
+        }
+    ) ?
+        T
+    :   never;
 };
 
 export const Date = <T,>({ data }: Props<T>) => {
     const items = useMemo(() => {
         return [
-            ...(data.last_message?.created_at
-                ? [
-                      {
-                          color: "var(--blue-1)",
-                          image: "/send.svg",
-                          timestamp: data.last_message.created_at,
-                      },
-                  ]
-                : []),
-            ...(data.edited_at
-                ? [
-                      {
-                          color: "var(--orange-1)",
-                          image: "/pencil.svg",
-                          timestamp: data.edited_at,
-                      },
-                  ]
-                : []),
+            ...(data.last_message?.created_at ?
+                [
+                    {
+                        color: "var(--blue-1)",
+                        image: "/send.svg",
+                        timestamp: data.last_message.created_at,
+                    },
+                ]
+            :   []),
+            ...(data.edited_at ?
+                [
+                    {
+                        color: "var(--orange-1)",
+                        image: "/pencil.svg",
+                        timestamp: data.edited_at,
+                    },
+                ]
+            :   []),
             {
                 color: "var(--blue-3)",
                 image: "/plus.svg",
@@ -60,9 +65,7 @@ export const Date = <T,>({ data }: Props<T>) => {
                                 height={16}
                                 src={item.image}
                             />
-                            <span className="truncate">
-                                {relativeTime(item.timestamp)}
-                            </span>
+                            <span className="truncate">{relativeTime(item.timestamp)}</span>
                         </span>
                         <span className="ml-auto">
                             <small>{exactTime(item.timestamp)}</small>

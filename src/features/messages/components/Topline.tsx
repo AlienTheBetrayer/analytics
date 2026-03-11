@@ -1,10 +1,14 @@
+/** @format */
+
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 
 export const Topline = () => {
+    // url
     const { tab } = useParams<{ tab?: string }>();
 
+    // jsx
     return (
         <ul className="box my-4! items-center! p-0! h-10! flex-row! w-full gap-1! max-w-400 mx-auto!">
             <li className="flex items-center gap-1 absolute left-1/2 top-1/2 -translate-1/2">

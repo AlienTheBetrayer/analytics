@@ -1,3 +1,5 @@
+/** @format */
+
 import { MuteOptions } from "@/features/messages/components/message/topline/parts/members/settings/Muting";
 
 /**
@@ -6,10 +8,7 @@ import { MuteOptions } from "@/features/messages/components/message/topline/part
  * @param option time option
  * @returns ISO date object
  */
-export const convertMuteTime = (
-    time: string | number,
-    option: (typeof MuteOptions)[number],
-) => {
+export const convertMuteTime = (time: string | number, option: (typeof MuteOptions)[number]) => {
     const times: Record<(typeof MuteOptions)[number], number> = {
         Seconds: 1,
         Minutes: 60,

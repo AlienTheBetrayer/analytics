@@ -1,21 +1,19 @@
-import { CacheAPIProtocol } from "@/query-api/protocol";
-import { relativeTime } from "@/utils/other/relativeTime";
+/** @format */
+
+import { useMutedStopwatch } from "@/features/messages/hooks/useMutedStopwatch";
 import Image from "next/image";
 
 type Props = {
-    data: CacheAPIProtocol["conversations"]["data"][number];
+    stopwatch: ReturnType<typeof useMutedStopwatch>;
 };
 
-export const MutedStatus = ({ data }: Props) => {
-    if (
-        !data.membership.muted_until ||
-        new Date(data.membership.muted_until) < new Date()
-    ) {
+export const MutedStatus = ({ stopwatch }: Props) => {
+    if (!stopwatch.isMuted) {
         return null;
     }
 
     return (
-        <div className="flex items-center gap-1 absolute left-1/2 top-1/2 -translate-1/2 truncate">
+        <div className="flex items-center gap-1 absolute left-1/2 top-1/2 -translate-1/2 truncate shrink-0">
             <Image
                 alt=""
                 width={16}
@@ -24,9 +22,7 @@ export const MutedStatus = ({ data }: Props) => {
             />
             <span>Muted</span>
             <span>
-                <small>
-                    (unmuted {relativeTime(data.membership.muted_until)})
-                </small>
+                <small>(unmuted {stopwatch.relativeTime})</small>
             </span>
         </div>
     );

@@ -1,3 +1,5 @@
+/** @format */
+
 import { CreateBoard } from "@/features/messages/components/noteboard/CreateBoard";
 import { AbsentData } from "@/features/ui/absentdata/components/AbsentData";
 import { Button } from "@/features/ui/button/components/Button";
@@ -15,8 +17,7 @@ export const NoNoteboards = () => {
             }
             description={
                 <>
-                    Create your own notes with <mark>checklists</mark> so you
-                    always remember everything!
+                    Create your own notes with <mark>checklists</mark> so you always remember everything!
                 </>
             }
         >

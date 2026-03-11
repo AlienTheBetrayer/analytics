@@ -1,3 +1,5 @@
+/** @format */
+
 import { DeepPartial } from "@/utils/other/merge";
 
 // preferences
@@ -37,14 +39,14 @@ export type LocalStore = {
 
     // display
     display: Display;
-    messageInputs: Record<string, string>;
+    drafts: Record<string, string>;
 
     /**
      *
      * @param id conversation_id
      * @param value typed value
      */
-    updateMessageInput: (id: string, value: string) => void;
+    updateDrafts: (id: string, value: string) => void;
 
     /**
      * toggles the theme (goes from dark to light to dark)

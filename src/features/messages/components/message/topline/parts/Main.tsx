@@ -1,3 +1,5 @@
+/** @format */
+
 import { EditingMenu } from "@/features/messages/components/message/editing/EditingMenu";
 import { ConversationToplineInfo } from "@/features/messages/components/message/topline/ConversationToplineInfo";
 import { CreateInvites } from "@/features/messages/components/message/topline/parts/invites/CreateInvites";
@@ -7,26 +9,29 @@ import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { PromiseState } from "@/promises/components/PromiseState";
 import { wrapPromise } from "@/promises/core";
-import { CacheAPIProtocol } from "@/query-api/protocol";
 import { queryInvalidate } from "@/query/auxiliary";
 import { useQuery } from "@/query/core";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { Members } from "@/features/messages/components/message/topline/parts/members/Members";
+import { useAppStore } from "@/zustand/store";
 
-type Props = {
-    data: CacheAPIProtocol["messages"]["data"] | null;
-    conversationData?: CacheAPIProtocol["conversations"]["data"][number];
-    retrieved?: CacheAPIProtocol["conversation_retrieve"]["data"];
-};
-
-export const Main = ({ data, conversationData, retrieved }: Props) => {
+export const Main = () => {
+    // status
     const { data: status } = useQuery({ key: ["status"] });
+
+    // url
     const { id, tab } = useParams<{
         id?: string;
         tab?: string;
     }>();
 
+    // zustand
+    const conversation = useAppStore((state) => state.conversation);
+    const messages = useAppStore((state) => state.messages);
+    const retrieved = useAppStore((state) => state.retrieved);
+
+    // jsx
     return (
         <ul className="box min-h-10! h-10! gap-1! p-0! items-center! flex-row!">
             <li className="flex items-center gap-1">
@@ -51,30 +56,21 @@ export const Main = ({ data, conversationData, retrieved }: Props) => {
                     </Tooltip>
                 )}
 
-                <ConversationToplineInfo
-                    conversationData={conversationData}
-                    retrieved={retrieved}
-                />
+                <ConversationToplineInfo />
             </li>
 
             <li className="ml-auto!">
                 <ul className="flex items-center gap-1">
-                    {id !== "board" && data && conversationData && (
+                    {id !== "board" && messages && conversation && (
                         <>
-                            {conversationData.type === "group" && (
+                            {conversation.type === "group" && (
                                 <>
                                     <li>
                                         <Modal
                                             tooltipClassName="w-screen max-w-lg"
                                             direction="screen-middle"
                                             blur
-                                            element={() => (
-                                                <Members
-                                                    conversationData={
-                                                        conversationData
-                                                    }
-                                                />
-                                            )}
+                                            element={() => <Members />}
                                         >
                                             <Tooltip
                                                 direction="top"
@@ -92,20 +88,13 @@ export const Main = ({ data, conversationData, retrieved }: Props) => {
                                         </Modal>
                                     </li>
 
-                                    {conversationData.membership.can_invite !==
-                                        false && (
+                                    {conversation.membership.can_invite !== false && (
                                         <li>
                                             <Modal
                                                 tooltipClassName="w-screen max-w-lg"
                                                 direction="screen-middle"
                                                 blur
-                                                element={() => (
-                                                    <CreateInvites
-                                                        conversationData={
-                                                            conversationData
-                                                        }
-                                                    />
-                                                )}
+                                                element={() => <CreateInvites />}
                                             >
                                                 <Tooltip
                                                     direction="top"
@@ -131,13 +120,7 @@ export const Main = ({ data, conversationData, retrieved }: Props) => {
                                     direction="screen-middle"
                                     tooltipClassName="w-screen max-w-2xl"
                                     blur
-                                    element={(hide) => (
-                                        <EditingMenu
-                                            hide={hide}
-                                            data={data}
-                                            conversationData={conversationData}
-                                        />
-                                    )}
+                                    element={(hide) => <EditingMenu hide={hide} />}
                                 >
                                     <Tooltip
                                         direction="top"
@@ -182,17 +165,11 @@ export const Main = ({ data, conversationData, retrieved }: Props) => {
 
                                         wrapPromise("reload", async () => {
                                             queryInvalidate({
-                                                key: [
-                                                    "messages",
-                                                    retrieved.conversation_id,
-                                                ],
+                                                key: ["messages", retrieved.conversation_id],
                                                 silent: false,
                                             });
                                             return queryInvalidate({
-                                                key: [
-                                                    "conversations",
-                                                    status.id,
-                                                ],
+                                                key: ["conversations", status.id],
                                             });
                                         });
                                     }

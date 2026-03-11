@@ -1,3 +1,5 @@
+/** @format */
+
 import { queryCache, queryListeners } from "@/query/init";
 import { CacheKey, CacheAPIValue } from "@/query/types/types";
 
@@ -8,18 +10,16 @@ import { CacheKey, CacheAPIValue } from "@/query/types/types";
  */
 export const queryMutate = <T extends CacheKey>(config: {
     key: T;
-    value:
-        | CacheAPIValue<T>["data"]
-        | ((state: CacheAPIValue<T>["data"]) => CacheAPIValue<T>["data"]);
+    value: CacheAPIValue<T>["data"] | ((state: CacheAPIValue<T>["data"]) => CacheAPIValue<T>["data"]);
 }) => {
     const value =
-        typeof config.value === "function"
-            ? config.value(
-                  queryCache.get({
-                      key: config.key,
-                  }) as CacheAPIValue<T>["data"],
-              )
-            : config.value;
+        typeof config.value === "function" ?
+            config.value(
+                queryCache.get({
+                    key: config.key,
+                }) as CacheAPIValue<T>["data"],
+            )
+        :   config.value;
 
     queryCache.set({ key: config.key, value });
     queryListeners.fire({
@@ -46,11 +46,13 @@ export const queryDelete = <T extends CacheKey>(config: { key: T }) => {
 export const queryInvalidate = <T extends CacheKey>(config: {
     key: T;
     silent?: boolean;
+    onInvalidate?: () => void;
 }) => {
     queryCache.delete({ key: config.key });
     queryListeners.fire({
         key: config.key,
         type: "refetch",
         silent: config.silent ?? true,
+        onInvalidate: config.onInvalidate,
     });
 };

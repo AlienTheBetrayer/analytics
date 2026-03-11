@@ -1,3 +1,5 @@
+/** @format */
+
 import { AbsentData } from "@/features/ui/absentdata/components/AbsentData";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import Image from "next/image";
@@ -12,8 +14,7 @@ export const NoInvitation = () => {
             }
             description={
                 <>
-                    This invitation does not exist or has been <u>revoked</u>.
-                    Ensure the URL is <mark>correct</mark>.
+                    This invitation does not exist or has been <u>revoked</u>. Ensure the URL is <mark>correct</mark>.
                 </>
             }
         >

@@ -1,63 +1,15 @@
+/** @format */
+
 import { SelectPart } from "@/features/messages/components/conversations/topline/SelectPart";
-import { CacheAPIProtocol } from "@/query-api/protocol";
-import { useAppStore } from "@/zustand/store";
+import { useTitle } from "@/features/messages/components/conversations/topline/useTitle";
 import { motion } from "motion/react";
 import Image from "next/image";
-import { useParams } from "next/navigation";
 
-type Props = {
-    data: CacheAPIProtocol["conversations"]["data"] | null;
-};
+export const Title = () => {
+    // ui
+    const { color, image, text } = useTitle();
 
-export const Title = ({ data }: Props) => {
-    let color = "";
-    let image = "";
-    let text = "";
-
-    // sources
-    const display = useAppStore((state) => state.display.conversations);
-    const { tab, id, extra } = useParams<{
-        tab?: string;
-        id?: string;
-        extra?: string;
-    }>();
-
-    // conversation absence
-    if (!data?.length) {
-        color = "var(--red-1)";
-        image = "/archive.svg";
-        text = "No conversations";
-    } else {
-        color = "var(--blue-1)";
-        image = "/cubes.svg";
-        text = "Conversations";
-    }
-
-    // conversation tab
-    switch (display.tab) {
-        case "archive": {
-            color = "var(--orange-1)";
-            image = "/archive.svg";
-            text = "Archived";
-            break;
-        }
-    }
-
-    switch (tab) {
-        case "notes": {
-            if (id === "board") {
-                color = "var(--blue-1)";
-                image = "/dashboard.svg";
-                text = extra ? "Note" : "Noteboard";
-            } else {
-                color = "var(--blue-1)";
-                image = "/pencil.svg";
-                text = "Notes";
-            }
-            break;
-        }
-    }
-
+    // jsx
     return (
         <motion.span
             className="flex items-center gap-1 whitespace-nowrap"

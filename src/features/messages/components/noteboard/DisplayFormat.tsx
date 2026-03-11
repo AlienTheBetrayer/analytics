@@ -1,3 +1,5 @@
+/** @format */
+
 import { Button } from "@/features/ui/button/components/Button";
 import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
 import { useLocalStore } from "@/zustand/localStore";
@@ -49,9 +51,7 @@ export const DisplayFormat = () => {
 
                 <li className="flex flex-col gap-1 items-center">
                     <Checkbox
-                        value={
-                            display?.messages?.noteboard?.view === "expanded"
-                        }
+                        value={display?.messages?.noteboard?.view === "expanded"}
                         onToggle={() =>
                             updateDisplay({
                                 messages: { noteboard: { view: "expanded" } },

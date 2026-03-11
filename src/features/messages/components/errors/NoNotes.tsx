@@ -1,3 +1,5 @@
+/** @format */
+
 import { AbsentData } from "@/features/ui/absentdata/components/AbsentData";
 
 export const NoNotes = () => {
@@ -11,8 +13,7 @@ export const NoNotes = () => {
             }
             description={
                 <>
-                    This board has no elements in it. But you can{" "}
-                    <mark>add</mark> them!
+                    This board has no elements in it. But you can <mark>add</mark> them!
                 </>
             }
         />

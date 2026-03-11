@@ -1,3 +1,5 @@
+/** @format */
+
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import Image from "next/image";
 
@@ -27,7 +29,7 @@ export const PermissionBadges = ({ data }: Props) => {
         );
     }
 
-    if(data.is_admin){ 
+    if (data.is_admin) {
         return (
             <ul className="flex gap-1 items-center">
                 <PermissionBadge>

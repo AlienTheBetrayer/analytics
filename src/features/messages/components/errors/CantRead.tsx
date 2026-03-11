@@ -1,3 +1,5 @@
+/** @format */
+
 import { AbsentData } from "@/features/ui/absentdata/components/AbsentData";
 
 export const CantRead = () => {
@@ -10,8 +12,8 @@ export const CantRead = () => {
             }
             description={
                 <>
-                    You have been indefinitely muted and prohibited from sending
-                    any messages, contact founders or admins!
+                    You have been indefinitely muted and prohibited from sending any messages, contact founders or
+                    admins!
                 </>
             }
         />

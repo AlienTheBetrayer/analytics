@@ -1,3 +1,5 @@
+/** @format */
+
 import { supabaseServer } from "@/utils/server/private/supabase";
 import { nextResponse } from "@/utils/api/response";
 import { NextRequest } from "next/server";
@@ -11,19 +13,14 @@ export const GET = async (request: NextRequest) => {
             throw "user_id is undefined";
         }
 
-        const { data, error } = await supabaseServer
+        const { data: conversations, error } = await supabaseServer
             .from("conversations")
             .select(
                 `
                     *, 
                     membership:conversation_members!inner(*),
-
-                    last_message:messages(*, 
-                        user:users(id, username, last_seen_at,
-                        profile:profiles(avatar_url, color))),
-
+                    last_message:messages(*, user:users(id, username, last_seen_at, profile:profiles(avatar_url, color))),
                     peer:conversation_members(user:users(id, username, last_seen_at, profile:profiles(avatar_url, color))),
-
                     conversation_meta:conversation_meta(pinned, archived, pinned_at)
                 `,
             )
@@ -44,15 +41,21 @@ export const GET = async (request: NextRequest) => {
             throw error;
         }
 
+        const sorted = conversations.sort((a, b) => {
+            const aTime: string = a.conversation_meta?.[0]?.pinned_at || "";
+            const bTime: string = b.conversation_meta?.[0]?.pinned_at || "";
+            return bTime.localeCompare(aTime);
+        });
+
         return nextResponse(
             {
                 success: true,
-                conversations: data.map((entry) => ({
-                    ...entry,
-                    last_message: entry.last_message?.[0],
-                    membership: entry.membership?.[0],
-                    conversation_meta: entry.conversation_meta?.[0],
-                    peer: entry.peer?.[0]?.user,
+                conversations: sorted.map((c) => ({
+                    ...c,
+                    last_message: c.last_message?.[0],
+                    membership: c.membership?.[0],
+                    conversation_meta: c.conversation_meta?.[0],
+                    peer: c.peer?.[0]?.user,
                 })),
             },
             200,

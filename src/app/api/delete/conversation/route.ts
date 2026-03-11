@@ -1,3 +1,5 @@
+/** @format */
+
 import { supabaseServer } from "@/utils/server/private/supabase";
 import { Conversation } from "@/types/tables/messages";
 import { nextResponse } from "@/utils/api/response";
@@ -76,8 +78,17 @@ export const POST = async (request: NextRequest) => {
 
                 return nextResponse({ success: true }, 200);
             }
+            case "clear-history": {
+                const { error } = await supabaseServer.from("messages").delete().eq("conversation_id", conversation_id);
+
+                if (error) {
+                    throw error;
+                }
+
+                return nextResponse({ success: true }, 200);
+            }
             default: {
-                throw "type is invalid. available: leave/delete-all";
+                throw "type is invalid. available: leave/delete-all/clear-history";
             }
         }
     } catch (error) {
