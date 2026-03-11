@@ -1,22 +1,13 @@
-import { CacheAPIProtocol } from "@/query-api/protocol";
 import { supabaseServer } from "@/utils/server/private/supabase";
 import { nextResponse } from "@/utils/api/response";
 import { tokenVerify } from "@/utils/auth/tokenVerify";
 import { NextRequest } from "next/server";
+import { Message } from "@/types/tables/messages";
 
 export const POST = async (request: NextRequest) => {
     try {
-        const {
-            type,
-            from_id,
-            to_id,
-            message,
-            message_type,
-            conversation_id,
-            message_id,
-            forward,
-            reply,
-        } = await request.json();
+        const { type, from_id, to_id, message, message_type, conversation_id, message_id, forward, reply } =
+            await request.json();
 
         if (!type || !from_id) {
             throw "type and from_id are undefined";
@@ -47,10 +38,7 @@ export const POST = async (request: NextRequest) => {
                                     `,
                         )
                         .eq("type", to_id === "notes" ? "notes" : "dm")
-                        .in(
-                            "conversation_members.user_id",
-                            to_id === "notes" ? [from_id] : [from_id, to_id],
-                        );
+                        .in("conversation_members.user_id", to_id === "notes" ? [from_id] : [from_id, to_id]);
 
                     if (error) {
                         throw error;
@@ -77,9 +65,7 @@ export const POST = async (request: NextRequest) => {
                             .from("conversation_members")
                             .insert([
                                 { conversation_id: cid, user_id: from_id },
-                                ...(to_id !== "notes"
-                                    ? [{ conversation_id: cid, user_id: to_id }]
-                                    : []),
+                                ...(to_id !== "notes" ? [{ conversation_id: cid, user_id: to_id }] : []),
                             ]);
 
                         if (memberError) {
@@ -87,14 +73,12 @@ export const POST = async (request: NextRequest) => {
                         }
 
                         {
-                            const { error } = await supabaseServer
-                                .from("messages")
-                                .insert({
-                                    message: "Conversation created",
-                                    type: "system",
-                                    conversation_id: cid,
-                                    user_id: null,
-                                });
+                            const { error } = await supabaseServer.from("messages").insert({
+                                message: "Conversation created",
+                                type: "system",
+                                conversation_id: cid,
+                                user_id: null,
+                            });
 
                             if (error) {
                                 throw error;
@@ -103,12 +87,8 @@ export const POST = async (request: NextRequest) => {
                     }
                 }
 
-                const replyMessage = reply as
-                    | CacheAPIProtocol["messages"]["data"][number]
-                    | undefined;
-                const forwardMessage = forward as
-                    | CacheAPIProtocol["messages"]["data"][number]
-                    | undefined;
+                const replyMessage = reply as Message | undefined;
+                const forwardMessage = forward as Message | undefined;
 
                 const { data, error } = await supabaseServer
                     .from("messages")

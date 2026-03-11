@@ -1,5 +1,5 @@
 import { CacheAPIFunctions } from "@/query-api/protocol";
-import { Project } from "@/types/tables/project";
+import { Event, Project } from "@/types/tables/project";
 import { refreshedRequest } from "@/utils/auth/refreshedRequest";
 
 /**
