@@ -1,6 +1,8 @@
 import { RealtimeBroadcastEvent } from "@/features/messages/realtime/useRealtime";
+import { notificationListeners } from "@/notifications/data/init";
 import { queryDelete, queryInvalidate, queryMutate } from "@/query/auxiliary";
 import { ConversationMember } from "@/types/tables/messages";
+import { relativeTime } from "@/utils/other/relativeTime";
 
 export const handleRealtimeMember = (
     user_id: string,
@@ -29,6 +31,41 @@ export const handleRealtimeMember = (
                     }
 
                     conversations.set(member.conversation_id, { ...c, membership: member });
+
+                    if (!c.membership.muted_until && member.muted_until) {
+                        notificationListeners.fire({
+                            key: "all",
+                            notification: {
+                                status: "Error",
+                                tab: "Account",
+                                title: `You've been muted!`,
+                                description: `Your mute will expire ${relativeTime(member.muted_until)}`,
+                                type: "Muted",
+                            },
+                        });
+                    } else if (c.membership.muted_until && !member.muted_until) {
+                        notificationListeners.fire({
+                            key: "all",
+                            notification: {
+                                status: "Information",
+                                tab: "Account",
+                                title: `Your mute has expired.`,
+                                description: `You are now unmuted!`,
+                                type: "Unmuted",
+                            },
+                        });
+                    } else if (c.membership.unread_amount === member.unread_amount) {
+                        notificationListeners.fire({
+                            key: "all",
+                            notification: {
+                                status: "Warning",
+                                tab: "Account",
+                                title: `Permissions changed!`,
+                                description: `Your permissions / membership has been changed.`,
+                                type: "Membership changed",
+                            },
+                        });
+                    }
 
                     return { ...state, conversations };
                 },

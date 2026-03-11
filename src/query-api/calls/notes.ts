@@ -1,5 +1,6 @@
 /** @format */
 
+import { notificationListeners } from "@/notifications/data/init";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { queryMutate } from "@/query/auxiliary";
 import { queryCache } from "@/query/init";
@@ -23,28 +24,44 @@ export const upsertNoteboard = async (
         return Promise.reject();
     }
 
-    if (options.type === "edit") {
-        queryMutate({
-            key: ["noteboards", user.id],
-            value: (state) =>
-                state.map((n) =>
-                    n.id === options.noteboard_id ?
-                        {
-                            ...n,
-                            ...("title" in options && {
-                                title: options.title,
-                            }),
-                            ...("description" in options && {
-                                description: options.description,
-                            }),
-                            ...("pinned" in options && {
-                                pinned: options.pinned,
-                                pinned_at: new Date().toISOString(),
-                            }),
-                        }
-                    :   n,
-                ),
-        });
+    switch (options.type) {
+        case "edit": {
+            queryMutate({
+                key: ["noteboards", user.id],
+                value: (state) =>
+                    state.map((n) =>
+                        n.id === options.noteboard_id ?
+                            {
+                                ...n,
+                                ...("title" in options && {
+                                    title: options.title,
+                                }),
+                                ...("description" in options && {
+                                    description: options.description,
+                                }),
+                                ...("pinned" in options && {
+                                    pinned: options.pinned,
+                                    pinned_at: new Date().toISOString(),
+                                }),
+                            }
+                        :   n,
+                    ),
+            });
+            break;
+        }
+        case "create": {
+            notificationListeners.fire({
+                key: "all",
+                notification: {
+                    status: "Information",
+                    tab: "Account",
+                    title: `Noteboard created!`,
+                    description: `You've just created a noteboard!`,
+                    type: "Noteboard created",
+                },
+            });
+            break;
+        }
     }
 
     const res = await refreshedRequest({
@@ -93,6 +110,17 @@ export const deleteNoteboard = async (options: { noteboard_id: string }) => {
         body: {
             ...options,
             user_id: user.id,
+        },
+    });
+
+    notificationListeners.fire({
+        key: "all",
+        notification: {
+            status: "Warning",
+            tab: "Account",
+            title: `Noteboard deleted!`,
+            description: `The noteboard has just been deleted`,
+            type: "Noteboard deleted",
         },
     });
 

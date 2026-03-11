@@ -16,9 +16,7 @@ export const LocalStoreWatcher = () => {
 
     // popup states
     const [mounted, setMounted] = useState<boolean>(false);
-    const [notification, setNotification] = useState<NotificationData | null>(
-        null,
-    );
+    const [notification, setNotification] = useState<NotificationData | null>(null);
 
     // notification
     useEffect(() => {

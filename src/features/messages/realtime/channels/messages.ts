@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { RealtimeBroadcastEvent } from "@/features/messages/realtime/useRealtime";
+import { notificationListeners } from "@/notifications/data/init";
 import { setLastMessage } from "@/query-api/calls/messages";
 import { ReducedUser } from "@/query-api/protocol/messages";
 import { queryMutate } from "@/query/auxiliary";
@@ -69,6 +70,19 @@ export const handleRealtimeMessage = (
                         for (const user of messageUsers) {
                             users.set(user.id, user);
                         }
+                    }
+
+                    if (message.user_id !== user_id) {
+                        notificationListeners.fire({
+                            key: "all",
+                            notification: {
+                                status: "Information",
+                                tab: "Account",
+                                title: `Message from ${user.username}`,
+                                description: message.message,
+                                type: "Message received!",
+                            },
+                        });
                     }
 
                     return { ...state, messages, users, ids };

@@ -12,7 +12,7 @@ type Props = {
 
 export const Topline = ({ notification, onInteract }: Props) => {
     return (
-        <ul className="box p-0! relative flex flex-row! items-center justify-between border-b border-b-background-a-11">
+        <ul className="box p-0! acrylic relative flex flex-row! items-center justify-between border-b border-b-background-a-11">
             <li className="flex items-center gap-1 absolute left-1/2 top-1/2 -translate-1/2">
                 <div
                     className="w-1 h-1 rounded-full"

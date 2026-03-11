@@ -13,7 +13,13 @@ export type NotificationType =
     | "Account deleted"
     | "Signed up"
     | "Profile modified"
-    | "Feedback sent";
+    | "Feedback sent"
+    | "Message received!"
+    | "Muted"
+    | "Unmuted"
+    | "Membership changed"
+    | "Noteboard created"
+    | "Noteboard deleted";
 
 export type Notification = {
     id: string;
