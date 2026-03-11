@@ -9,7 +9,6 @@ import { PromiseState } from "@/promises/components/PromiseState";
 import { wrapPromise } from "@/promises/core";
 import { deleteInvitation } from "@/query-api/calls/invitations";
 import { CacheAPIProtocol } from "@/query-api/protocol";
-import { useQuery } from "@/query/core";
 import { relativeTime } from "@/utils/other/relativeTime";
 import Image from "next/image";
 
@@ -18,9 +17,10 @@ type Props = {
 };
 
 export const InviteDisplay = ({ data }: Props) => {
+    // message boxes
     const deleteBox = useMessageBox();
-    const { data: status } = useQuery({ key: ["status"] });
 
+    // jsx
     return (
         <article
             className={`box p-1.5! min-h-20 rounded-4xl! overflow-hidden items-center! flex-row!
@@ -29,13 +29,8 @@ export const InviteDisplay = ({ data }: Props) => {
             {deleteBox.render({
                 children: "Revoking this invitation will disallow everyone to use it!",
                 onSelect: (res) => {
-                    if (!status) {
-                        return;
-                    }
-
                     if (res === "yes") {
                         return deleteInvitation({
-                            user: status,
                             invitation: data,
                         });
                     }
