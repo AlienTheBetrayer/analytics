@@ -13,9 +13,10 @@ import { redirect, useParams } from "next/navigation";
 
 type Props = {
     conversation: ExpandedConversation | null;
+    hide?: () => void;
 };
 
-export const RegularContextMenu = ({ conversation }: Props) => {
+export const RegularContextMenu = ({ conversation, hide }: Props) => {
     // url
     const { id } = useParams<{ id?: string }>();
 
@@ -133,6 +134,7 @@ export const RegularContextMenu = ({ conversation }: Props) => {
                                             archived: !conversation.conversation_meta?.archived,
                                         });
                                     });
+                                    hide?.();
                                 }}
                             >
                                 <Image
@@ -158,6 +160,7 @@ export const RegularContextMenu = ({ conversation }: Props) => {
                                             pinned: !conversation.conversation_meta?.pinned,
                                         });
                                     });
+                                    hide?.();
                                 }}
                             >
                                 <Image

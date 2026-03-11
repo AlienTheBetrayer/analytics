@@ -155,7 +155,12 @@ export const NoteboardTopline = () => {
                         <Modal
                             tooltipClassName="w-screen max-w-96"
                             direction="bottom-left"
-                            element={() => <CreateBoard type="edit" />}
+                            element={() => (
+                                <CreateBoard
+                                    type="edit"
+                                    data={noteboard}
+                                />
+                            )}
                         >
                             <Tooltip
                                 direction="bottom"

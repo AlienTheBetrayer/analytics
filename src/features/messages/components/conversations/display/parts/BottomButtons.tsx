@@ -20,11 +20,6 @@ type Props =
     | { type: "archived"; isCollapsed: boolean };
 
 export const BottomButtons = (props: Props) => {
-    // ui states
-    const contextElement =
-        props.type === "archived" ? <ArchivedContextMenu /> : <RegularContextMenu conversation={props.conversation} />;
-
-    // jsx
     return (
         <div
             className={`flex items-center gap-1 absolute right-4.5 bottom-1 translate-y-0 transition-all duration-300
@@ -48,8 +43,14 @@ export const BottomButtons = (props: Props) => {
 
             <Modal
                 tooltipClassName="w-screen max-w-64"
-                element={() => contextElement}
-                isActive={!!contextElement}
+                element={(hide) =>
+                    props.type === "archived" ?
+                        <ArchivedContextMenu hide={hide} />
+                    :   <RegularContextMenu
+                            conversation={props.conversation}
+                            hide={hide}
+                        />
+                }
                 direction="right"
             >
                 <Button className="min-w-5! min-h-5! h-5! w-5! p-0! rounded-sm!">

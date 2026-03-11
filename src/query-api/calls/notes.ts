@@ -92,6 +92,7 @@ export const deleteNoteboard = async (options: { noteboard_id: string }) => {
         method: "POST",
         body: {
             ...options,
+            user_id: user.id,
         },
     });
 

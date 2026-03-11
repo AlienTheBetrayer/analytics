@@ -6,7 +6,6 @@ import { PromiseState } from "@/promises/components/PromiseState";
 import { wrapPromise } from "@/promises/core";
 import { upsertNoteboard } from "@/query-api/calls/notes";
 import { CacheAPIProtocol } from "@/query-api/protocol";
-import { useQuery } from "@/query/core";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -16,7 +15,6 @@ type Props = {
 };
 
 export const CreateBoard = ({ type, data }: Props) => {
-    const { data: status } = useQuery({ key: ["status"] });
     const [title, setTitle] = useState<string>(type === "edit" && data ? data.title : "");
     const [description, setDescription] = useState<string>(
         type === "edit" && data?.description ? data.description : "",
@@ -40,16 +38,11 @@ export const CreateBoard = ({ type, data }: Props) => {
                 onSubmit={(e) => {
                     e.preventDefault();
 
-                    if (!status) {
-                        return;
-                    }
-
                     wrapPromise("createNoteboard", () => {
                         switch (type) {
                             case "create": {
                                 return upsertNoteboard({
                                     type: "create",
-                                    user_id: status.id,
                                     title: title,
                                     ...(description && { description }),
                                 });
@@ -61,7 +54,6 @@ export const CreateBoard = ({ type, data }: Props) => {
 
                                 return upsertNoteboard({
                                     type: "edit",
-                                    user_id: status.id,
                                     title: title,
                                     ...(description && { description }),
                                     noteboard_id: data.id,

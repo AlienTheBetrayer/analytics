@@ -125,7 +125,6 @@ export const upsertMessage = async (
                         ...(options.forward && { forward: options.forward }),
                     });
 
-
                     return { ...state, messages, ids: [...state.ids, `temp${temp}`] };
                 },
             });

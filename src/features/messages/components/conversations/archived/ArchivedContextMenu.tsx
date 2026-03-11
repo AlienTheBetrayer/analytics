@@ -5,7 +5,11 @@ import { Button } from "@/features/ui/button/components/Button";
 import { useLocalStore } from "@/zustand/localStore";
 import Image from "next/image";
 
-export const ArchivedContextMenu = () => {
+type Props = {
+    hide?: () => void;
+}
+
+export const ArchivedContextMenu = ({ hide }: Props) => {
     const display = useLocalStore((state) => state.display.messages);
     const updateDisplay = useLocalStore((state) => state.updateDisplay);
 

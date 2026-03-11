@@ -1,27 +1,56 @@
-import { queryMutate } from "@/query/auxiliary";
+import { RealtimeBroadcastEvent } from "@/features/messages/realtime/useRealtime";
+import { queryDelete, queryInvalidate, queryMutate } from "@/query/auxiliary";
 import { ConversationMember } from "@/types/tables/messages";
 
-export type RealtimePayloadMember = {
-    payload: ConversationMember;
-};
-
-export const handleRealtimeMember = (user_id: string, payload: RealtimePayloadMember) => {
+export const handleRealtimeMember = (
+    user_id: string,
+    payload: {
+        event: RealtimeBroadcastEvent;
+        payload: ConversationMember;
+    },
+) => {
     const member = payload.payload;
 
-    queryMutate({
-        key: ["conversations", user_id],
-        value: (state) => {
-            const conversations = new Map(state?.conversations ?? []);
+    if (!member || member.user_id !== user_id) {
+        return;
+    }
 
-            const c = conversations.get(member.conversation_id);
+    switch (payload.event) {
+        case "UPDATE": {
+            queryMutate({
+                key: ["conversations", user_id],
+                value: (state) => {
+                    const conversations = new Map(state?.conversations ?? []);
 
-            if (!c) {
-                return state;
-            }
+                    const c = conversations.get(member.conversation_id);
 
-            conversations.set(member.conversation_id, { ...c, membership: member });
+                    if (!c) {
+                        return state;
+                    }
 
-            return { ...state, conversations };
-        },
-    });
+                    conversations.set(member.conversation_id, { ...c, membership: member });
+
+                    return { ...state, conversations };
+                },
+            });
+            break;
+        }
+        case "DELETE": {
+            queryMutate({
+                key: ["conversations", user_id],
+                value: (state) => {
+                    const conversations = new Map(state.conversations);
+                    conversations.delete(member.conversation_id);
+
+                    return { ...state, conversations };
+                },
+            });
+            queryDelete({ key: ["messages", member.conversation_id] });
+            break;
+        }
+        case "INSERT": {
+            queryInvalidate({ key: ["conversations", user_id] });
+            break;
+        }
+    }
 };

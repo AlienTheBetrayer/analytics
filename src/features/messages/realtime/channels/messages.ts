@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { RealtimeBroadcastEvent } from "@/features/messages/realtime/useRealtime";
 import { setLastMessage } from "@/query-api/calls/messages";
 import { ReducedUser } from "@/query-api/protocol/messages";
 import { queryMutate } from "@/query/auxiliary";
@@ -6,16 +7,16 @@ import { Message } from "@/types/tables/messages";
 
 type PayloadMessage = Message & { user: ReducedUser };
 
-export type RealtimePayloadMessage = {
-    event: "UPDATE" | "INSERT" | "DELETE" | (string & {});
-    type: string;
-    payload: PayloadMessage & { reply?: PayloadMessage; forward?: PayloadMessage };
-};
-
-export const handleRealtimeMessage = (user_id: string, response: RealtimePayloadMessage) => {
+export const handleRealtimeMessage = (
+    user_id: string,
+    response: {
+        event: RealtimeBroadcastEvent;
+        payload: PayloadMessage & { reply?: PayloadMessage; forward?: PayloadMessage };
+    },
+) => {
     const { event, payload } = response;
 
-    if (payload.user_id === user_id) {
+    if (!payload) {
         return;
     }
 
@@ -24,6 +25,10 @@ export const handleRealtimeMessage = (user_id: string, response: RealtimePayload
     let forward: Message | undefined = undefined;
     const messageUsers: ReducedUser[] = [];
     const { user, ...message } = payload;
+
+    if (!user || !message) {
+        return;
+    }
 
     // users
     messageUsers.push(user);
@@ -46,6 +51,17 @@ export const handleRealtimeMessage = (user_id: string, response: RealtimePayload
                 key: ["messages", message.conversation_id],
                 value: (state) => {
                     const messages = new Map(state?.messages ?? []);
+                    let ids = state?.ids ?? [];
+
+                    // deduplication
+                    for (const [id, msg] of messages) {
+                        if ((msg.user_id === message.user_id && msg.type === "loading") || id === message.id) {
+                            return state;
+                        }
+                    }
+
+                    ids = [...ids, message.id];
+
                     const users = new Map(state?.users ?? []);
                     messages.set(message.id, message);
 
@@ -55,7 +71,7 @@ export const handleRealtimeMessage = (user_id: string, response: RealtimePayload
                         }
                     }
 
-                    return { ...state, messages, users, ids: [...(state?.ids ?? []), message.id] };
+                    return { ...state, messages, users, ids };
                 },
             });
             break;

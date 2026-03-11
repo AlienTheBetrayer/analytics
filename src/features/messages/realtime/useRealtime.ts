@@ -1,40 +1,78 @@
-import { handleRealtimeMember, RealtimePayloadMember } from "@/features/messages/realtime/channels/member";
-import { handleRealtimeMessage, RealtimePayloadMessage } from "@/features/messages/realtime/channels/messages";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { handleRealtimeConversation } from "@/features/messages/realtime/channels/conversation";
+import { handleRealtimeMember } from "@/features/messages/realtime/channels/member";
+import { handleRealtimeMessage } from "@/features/messages/realtime/channels/messages";
 import { useQuery } from "@/query/core";
 import { supabaseClient } from "@/utils/server/public/supabase";
-import { useEffect } from "react";
+import { RealtimeChannel } from "@supabase/supabase-js";
+import { useEffect, useMemo, useRef } from "react";
+
+export type RealtimeBroadcastEvent = "INSERT" | "UPDATE" | "DELETE" | "*";
+
+type RealtimeBroadcastChannel = {
+    name: string;
+    fn: (payload: unknown) => void;
+};
 
 export const useRealtime = () => {
+    // status
     const { data: status } = useQuery({ key: ["status"] });
 
-    useEffect(() => {
+    // all realtime channels
+    const channels: RealtimeBroadcastChannel[] = useMemo(() => {
         if (!status) {
-            return;
+            return [];
         }
 
-        const messageChannel = supabaseClient
-            .channel(`realtime:messages:${status.id}`)
-            .on(
-                "broadcast",
-                {
-                    event: "*",
+        return [
+            {
+                name: `realtime:messages:${status.id}`,
+                fn: (payload) => {
+                    handleRealtimeMessage(status.id, payload as Parameters<typeof handleRealtimeMessage>["1"]);
                 },
-                (payload: RealtimePayloadMessage) => {
-                    handleRealtimeMessage(status.id, payload);
+            },
+            {
+                name: `realtime:member:${status.id}`,
+                fn: (payload) => {
+                    handleRealtimeMember(status.id, payload as Parameters<typeof handleRealtimeMember>["1"]);
                 },
-            )
-            .subscribe();
+            },
+            {
+                name: `realtime:conversation:${status.id}`,
+                fn: (payload) => {
+                    handleRealtimeConversation(
+                        status.id,
+                        payload as Parameters<typeof handleRealtimeConversation>["1"],
+                    );
+                },
+            },
+        ] as RealtimeBroadcastChannel[];
+    }, [status]);
 
-        const memberChannel = supabaseClient
-            .channel(`realtime:member:${status.id}`)
-            .on("broadcast", { event: "*" }, (payload: RealtimePayloadMember) => {
-                handleRealtimeMember(status.id, payload);
-            })
-            .subscribe();
+    // currently subscribed
+    const channelRefs = useRef<Map<string, RealtimeChannel>>(new Map());
+
+    // handling channels
+    useEffect(() => {
+        channels.forEach((c) => {
+            if (channelRefs.current.has(c.name)) {
+                return;
+            }
+
+            const channel = supabaseClient.channel(c.name).on("broadcast", { event: "*" }, c.fn).subscribe();
+
+            channelRefs.current.set(c.name, channel);
+        });
 
         return () => {
-            supabaseClient.removeChannel(messageChannel);
-            supabaseClient.removeChannel(memberChannel);
+            channels.forEach((c) => {
+                const channel = channelRefs.current.get(c.name);
+
+                if (channel) {
+                    supabaseClient.removeChannel(channel);
+                    channelRefs.current.delete(c.name);
+                }
+            });
         };
-    }, [status]);
+    }, [channels]);
 };

@@ -1,5 +1,6 @@
 /** @format */
 
+import { sortConversations } from "@/features/messages/utils/sort";
 import { useAppStore } from "@/zustand/store";
 import { useMemo, useEffect } from "react";
 
@@ -15,36 +16,7 @@ export const useList = () => {
 
     // splitting
     const ids = useMemo(() => {
-        const archivedIds = [] as string[];
-        const regularIds = [] as string[];
-        let notesId = null as string | null;
-
-        if (!conversations?.ids.length) {
-            return { archivedIds, regularIds, notesId };
-        }
-
-        for (const id of reversed ? [...conversations.ids].reverse() : conversations.ids) {
-            const c = conversations.conversations.get(id);
-
-            if (!c) {
-                continue;
-            }
-
-            const trimmedFilter = filter.toLowerCase().trim();
-            if (trimmedFilter && !c.title?.toLowerCase().trim().includes(trimmedFilter)) {
-                continue;
-            }
-
-            if (c.type === "notes") {
-                notesId = id;
-            } else if (c.conversation_meta?.archived) {
-                archivedIds.push(id);
-            } else {
-                regularIds.push(id);
-            }
-        }
-
-        return { archivedIds, regularIds, notesId };
+        return sortConversations({ conversations, filter, reversed })
     }, [conversations, filter, reversed]);
 
     // syncing
