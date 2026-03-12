@@ -15,7 +15,7 @@ export const BentoGrid = () => {
             <li style={{ gridArea: "b" }}>
                 <ThreeContainer>
                     <div className="grid place-items-center h-full">
-                        <span>Caching</span>
+                        <span></span>
                     </div>
                 </ThreeContainer>
             </li>
@@ -31,7 +31,7 @@ export const BentoGrid = () => {
             <li style={{ gridArea: "d" }}>
                 <ThreeContainer>
                     <div className="grid place-items-center h-full">
-                        <span>Caching</span>
+                        <span>Realtime</span>
                     </div>
                 </ThreeContainer>
             </li>
@@ -39,7 +39,7 @@ export const BentoGrid = () => {
             <li style={{ gridArea: "e" }}>
                 <ThreeContainer>
                     <div className="grid place-items-center h-full">
-                        <span>Caching</span>
+                        <span>useQuery()</span>
                     </div>
                 </ThreeContainer>
             </li>

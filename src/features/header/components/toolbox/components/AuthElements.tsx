@@ -1,49 +1,59 @@
 import { Button } from "@/features/ui/button/components/Button";
-import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
+import { useMessageBox } from "@/features/ui/messagebox/hooks/useMessageBox";
 import { PromiseState } from "@/promises/components/PromiseState";
 import { wrapPromise } from "@/promises/core";
 import { applicationLogout } from "@/query-api/calls/auth";
 import { useQuery } from "@/query/core";
 import Image from "next/image";
-import { useState } from "react";
 
 export const AuthElements = () => {
     // status
     const { data: status } = useQuery({ key: ["status"] });
 
-    // button disability
-    const [logoutEnabled, setLogoutEnabled] = useState<boolean>(false);
+    // message bxoes
+    const logoutBox = useMessageBox();
 
     return (
-        <div className="relative box gap-4! acrylic h-full w-full">
-            <div className="flex flex-col gap-1 items-center">
-                <div className="relative flex gap-1">
+        <div className="relative box gap-4! p-4! acrylic h-full w-full items-center">
+            {logoutBox.render({
+                children: "You will be logged out of your account!",
+                onSelect: (res) => {
+                    if (res === "yes") {
+                        wrapPromise("logout", () => {
+                            return applicationLogout();
+                        });
+                    }
+                },
+            })}
+            <div className="flex flex-col items-center">
+                <span className="relative flex gap-1 items-center">
+                    <div className="w-1 h-1 rounded-full bg-blue-1" />
                     <Image
                         width={16}
                         height={16}
                         alt=""
                         src="/server.svg"
                     />
-                    <span>Authentication</span>
-                </div>
-                <p>This will unlock many features and pages</p>
+                </span>
+                <span>Authentication</span>
             </div>
 
-            <hr />
-
-            <ul className="flex flex-col gap-2">
+            <ul className="grid grid-cols-3 gap-2 w-full max-w-81">
                 <li>
                     <LinkButton
                         href="/signup"
-                        className="w-full"
+                        className="box w-full aspect-square p-2! rounded-4xl!"
                     >
-                        <Image
-                            alt=""
-                            width={16}
-                            height={16}
-                            src="/pencil.svg"
-                        />
+                        <span className="flex items-center">
+                            <div className="w-1 h-1 rounded-full bg-blue-3" />
+                            <Image
+                                alt=""
+                                width={16}
+                                height={16}
+                                src="/pencil.svg"
+                            />
+                        </span>
                         Sign up
                     </LinkButton>
                 </li>
@@ -51,46 +61,40 @@ export const AuthElements = () => {
                 <li>
                     <LinkButton
                         href="/login"
-                        className="w-full"
+                        className="box w-full aspect-square p-2! rounded-4xl!"
                     >
-                        <Image
-                            alt=""
-                            width={16}
-                            height={16}
-                            src="/security.svg"
-                        />
+                        <span className="flex items-center">
+                            <div className="w-1 h-1 rounded-full bg-blue-1" />
+                            <Image
+                                alt=""
+                                width={16}
+                                height={16}
+                                src="/security.svg"
+                            />
+                        </span>
                         Log in
                     </LinkButton>
                 </li>
 
-                {status && (
-                    <li className="flex items-center gap-1">
-                        <Checkbox
-                            className="w-fit!"
-                            value={logoutEnabled}
-                            onToggle={setLogoutEnabled}
-                        />
-
-                        <Button
-                            className="w-full"
-                            onClick={() => {
-                                wrapPromise("logout", () => {
-                                    return applicationLogout();
-                                });
-                            }}
-                            isEnabled={logoutEnabled}
-                        >
+                <li>
+                    <Button
+                        isEnabled={!!status}
+                        className="box w-full aspect-square p-2! rounded-4xl!"
+                        onClick={logoutBox.show}
+                    >
+                        <span className="flex items-center">
                             <PromiseState state="logout" />
+                            <div className="w-1 h-1 rounded-full bg-red-1" />
                             <Image
                                 alt=""
                                 width={16}
                                 height={16}
                                 src="/delete.svg"
                             />
-                            <u>Log out</u>
-                        </Button>
-                    </li>
-                )}
+                        </span>
+                        Log out
+                    </Button>
+                </li>
             </ul>
         </div>
     );

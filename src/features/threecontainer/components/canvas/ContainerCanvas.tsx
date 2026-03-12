@@ -10,7 +10,7 @@ export const ContainerCanvas = () => {
         <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 1, duration: 2 }}
+            transition={{ delay: 1, duration: 1 }}
             onPointerEnter={() => setIsHovered(true)}
             onPointerLeave={() => setIsHovered(false)}
             className="absolute! inset-0 z-0"

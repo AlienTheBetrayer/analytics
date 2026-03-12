@@ -2,11 +2,7 @@ import { ContainerCanvas } from "./canvas/ContainerCanvas";
 
 type Props = {} & React.ComponentPropsWithoutRef<"div">;
 
-export const ThreeContainer = ({
-    className = "",
-    children,
-    ...rest
-}: Props) => {
+export const ThreeContainer = ({ className = "", children, ...rest }: Props) => {
     return (
         <div
             className={`box p-0! overflow-hidden w-full h-full ${className}`}
@@ -14,9 +10,7 @@ export const ThreeContainer = ({
         >
             <ContainerCanvas />
 
-            <div className="flex flex-col z-2 w-full h-full pointer-events-none *:pointer-events-auto">
-                {children}
-            </div>
+            <div className="flex flex-col z-2 w-full h-full pointer-events-none *:pointer-events-auto">{children}</div>
         </div>
     );
 };

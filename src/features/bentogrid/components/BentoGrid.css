@@ -44,7 +44,7 @@
         grid-template-areas: none;
     }
 
-    .bento-grid > div {
+    .bento-grid > li {
         grid-area: auto !important;
     }
 }

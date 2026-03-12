@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import { useState } from "react";
 import { Tooltip } from "../../ui/popovers/components/tooltip/Tooltip";
@@ -8,6 +9,8 @@ import { wrapPromise } from "@/promises/core";
 import { PromiseState } from "@/promises/components/PromiseState";
 import { AxiosResponse } from "axios";
 import { motion } from "motion/react";
+import { ThreeContainer } from "@/features/threecontainer/components/ThreeContainer";
+import { usePathname } from "next/navigation";
 
 type Props = {
     title: string;
@@ -15,23 +18,20 @@ type Props = {
         text: string;
         tooltip: string;
     };
-    onSubmit: (
-        username: string,
-        password: string,
-    ) => Promise<AxiosResponse | undefined>;
+    onSubmit: (username: string, password: string) => Promise<AxiosResponse | undefined>;
     className?: string;
     type?: "login" | "register";
 };
 
-export const AuthenticationForm = ({
-    title,
-    button,
-    onSubmit,
-    type = "login",
-}: Props) => {
+export const AuthenticationForm = ({ title, button, onSubmit, type = "login" }: Props) => {
+    // url
+    const pathname = usePathname();
+    const isSignUp = pathname === "/signup";
+
     // react input states
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
+    const [valid, setValid] = useState<boolean>(false);
 
     // authentication internal states
     const [response, setResponse] = useState<{
@@ -40,7 +40,7 @@ export const AuthenticationForm = ({
     } | null>(null);
 
     return (
-        <div className="flex flex-col gap-2 w-full max-w-7xl">
+        <div className="flex flex-col gap-2 w-full max-w-sm">
             <div className="box w-full box flex flex-row! p-0! min-h-10 h-10 items-center gap-1">
                 <Tooltip text="Home">
                     <LinkButton
@@ -67,21 +67,29 @@ export const AuthenticationForm = ({
                 </span>
             </div>
 
-            <div className="box w-full flex flex-col items-center gap-8!">
-                <div className="box bg-bg-2! h-10! flex-row! p-0! w-full gap-1! justify-center items-center">
-                    <Image
-                        alt=""
-                        width={20}
-                        height={20}
-                        src="/privacy.svg"
-                    />
-                    <span>{title}</span>
+            <div className="box w-full flex flex-col items-center gap-2! p-4!">
+                <div className="flex relative w-full h-48">
+                    <ThreeContainer className="p-4! grow h-full" />
+                    <span className="flex items-center gap-1 absolute left-1/2 top-1/2 -translate-1/2">
+                        <div className="w-1 h-1 rounded-full bg-blue-1" />
+                        <Image
+                            alt=""
+                            width={20}
+                            height={20}
+                            src="/privacy.svg"
+                        />
+                        <span>{title}</span>
+                    </span>
                 </div>
-                <hr />
+
+                <hr className="my-2!" />
 
                 {/* main form */}
                 <form
-                    className="flex flex-col w-full min-h-64"
+                    className="flex flex-col w-full"
+                    onChange={(e) => {
+                        setValid(e.currentTarget.checkValidity());
+                    }}
                     onSubmit={async (e) => {
                         e.preventDefault();
 
@@ -103,29 +111,12 @@ export const AuthenticationForm = ({
                         });
                     }}
                 >
-                    <ul className="flex flex-col gap-8 grow">
+                    <ul className="flex flex-col gap-2 grow">
                         <li className="flex flex-col gap-2">
-                            <label
-                                htmlFor="username"
-                                className="flex items-center gap-1"
-                            >
-                                <Image
-                                    alt=""
-                                    width={16}
-                                    height={16}
-                                    src="/account.svg"
-                                />
-                                <span>Username</span>
-                                {type === "register" && (
-                                    <small className="ml-auto!">
-                                        (your unique name)
-                                    </small>
-                                )}
-                            </label>
                             <Input
                                 id="username"
                                 value={username}
-                                placeholder={"at least 6 characters"}
+                                placeholder="Username..."
                                 onChange={(value) => setUsername(value)}
                                 type="text"
                                 aria-label="Username"
@@ -134,32 +125,11 @@ export const AuthenticationForm = ({
                             />
                         </li>
 
-                        <li>
-                            <hr />
-                        </li>
-
                         <li className="flex flex-col gap-2">
-                            <label
-                                htmlFor="password"
-                                className="flex items-center gap-1"
-                            >
-                                <Image
-                                    alt=""
-                                    width={16}
-                                    height={16}
-                                    src="/security.svg"
-                                />
-                                <span>Password</span>
-                                {type === "register" && (
-                                    <small className="ml-auto!">
-                                        (create a strong password)
-                                    </small>
-                                )}
-                            </label>
                             <Input
                                 id="password"
                                 value={password}
-                                placeholder={"at least 6 characters"}
+                                placeholder="Password..."
                                 onChange={(value) => setPassword(value)}
                                 type="password"
                                 aria-label="Password"
@@ -168,11 +138,11 @@ export const AuthenticationForm = ({
                             />
                         </li>
 
-                        <li className="mt-auto!">
-                            <hr />
+                        <li>
+                            <hr className="my-1!" />
                         </li>
 
-                        <li className="flex flex-col gap-2">
+                        <li className="flex flex-col gap-2 mt-auto!">
                             <Tooltip
                                 text={button.tooltip}
                                 direction={"bottom"}
@@ -182,8 +152,11 @@ export const AuthenticationForm = ({
                                     className="w-full"
                                     type="submit"
                                 >
+                                    <div
+                                        className="w-1 h-1 rounded-full transition-all duration-500"
+                                        style={{ background: valid ? "var(--blue-1)" : "var(--red-1)" }}
+                                    />
                                     <PromiseState state="auth" />
-
                                     <Image
                                         alt=""
                                         width={20}
@@ -197,27 +170,26 @@ export const AuthenticationForm = ({
                     </ul>
                 </form>
 
-                {response?.success && (
-                    <motion.div
-                        className="flex flex-col gap-2 w-full mt-8"
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: "auto" }}
+                <div className="flex flex-col mt-auto! w-full">
+                    <Tooltip
+                        text="Proceed the authentication"
+                        direction="bottom"
+                        className="w-full"
                     >
-                        <hr />
-                        <Tooltip
-                            text="Proceed the authentication"
-                            direction="bottom"
+                        <LinkButton
                             className="w-full"
+                            href={isSignUp ? "/login" : "/signup"}
                         >
-                            <LinkButton
-                                className="w-full"
-                                href="/login"
-                            >
-                                Redirect to log in
-                            </LinkButton>
-                        </Tooltip>
-                    </motion.div>
-                )}
+                            <Image
+                                alt=""
+                                width={16}
+                                height={16}
+                                src="/launch.svg"
+                            />
+                            <span>{isSignUp ? "Redirect to log in" : "Redirect to sign up"}</span>
+                        </LinkButton>
+                    </Tooltip>
+                </div>
 
                 {/* status message */}
                 {response && (

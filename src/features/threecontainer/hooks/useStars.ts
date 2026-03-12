@@ -5,7 +5,7 @@ import { useMemo, useRef } from "react";
 import { createNoise3D } from "simplex-noise";
 import { InstancedMesh, Matrix4, Vector3 } from "three";
 
-export const STARS_QUANTITY = 200;
+export const STARS_QUANTITY = 175;
 
 /**
  * a custom hook used to generate and move all the stars
