@@ -3,7 +3,7 @@ import "./BentoGrid.css";
 
 export const BentoGrid = () => {
     return (
-        <ul className="bento-grid **:text-white!">
+        <ul className="bento-grid">
             <li style={{ gridArea: "a" }}>
                 <ThreeContainer>
                     <div className="grid place-items-center h-full">

@@ -11,10 +11,7 @@ export const STARS_QUANTITY = 175;
  * a custom hook used to generate and move all the stars
  * @param instancesRef - the ref object for the <Instances/>
  */
-export const useStars = (
-    instancesRef: React.RefObject<InstancedMesh | null>,
-    isHovered?: boolean
-) => {
+export const useStars = (instancesRef: React.RefObject<InstancedMesh | null>, isHovered?: boolean) => {
     // 3js states
     const { viewport } = useThree();
 
@@ -22,12 +19,7 @@ export const useStars = (
     const base = useMemo(() => {
         return Array.from(
             { length: STARS_QUANTITY },
-            () =>
-                new Vector3(
-                    (Math.random() - 0.5) * viewport.width,
-                    (Math.random() - 0.5) * viewport.height,
-                    0
-                )
+            () => new Vector3((Math.random() - 0.5) * viewport.width, (Math.random() - 0.5) * viewport.height, 0),
         );
     }, [viewport.width, viewport.height]);
 
@@ -39,7 +31,9 @@ export const useStars = (
     const hoverProgress = useRef<number>(0);
 
     useFrame(({ clock }, delta) => {
-        if (!instancesRef.current) return;
+        if (!instancesRef.current) {
+            return;
+        }
 
         const t = clock.elapsedTime;
 
@@ -72,8 +66,7 @@ export const useStars = (
             const armIndex = Math.floor(rand * 4);
             const armOffset = (armIndex * Math.PI * 2) / 4;
 
-            const spiralAngle =
-                Math.log(r) * 6 + armOffset + t * (1 - nr) * 2.5;
+            const spiralAngle = Math.log(r) * 6 + armOffset + t * (1 - nr) * 2.5;
 
             const galaxyR = r * (0.25 + nr);
 
@@ -93,11 +86,7 @@ export const useStars = (
             const tz = gy * Math.sin(tilt) + gz * Math.cos(tilt);
 
             // blend
-            pos.set(
-                sx + (gx - sx) * snap,
-                sy + (ty - sy) * snap,
-                sz + (tz - sz) * snap
-            );
+            pos.set(sx + (gx - sx) * snap, sy + (ty - sy) * snap, sz + (tz - sz) * snap);
 
             matrix.setPosition(pos);
             instancesRef.current.setMatrixAt(i, matrix);

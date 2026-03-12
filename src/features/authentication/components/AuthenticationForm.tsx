@@ -194,11 +194,11 @@ export const AuthenticationForm = ({ title, button, onSubmit, type = "login" }: 
                 {/* status message */}
                 {response && (
                     <motion.div
-                        className="flex flex-col gap-2 w-full mt-8"
+                        className="flex flex-col gap-2 w-full"
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: "auto" }}
                     >
-                        <hr />
+                        <hr className="my-1!" />
                         <div className="flex gap-1 items-center mx-auto">
                             <div
                                 className={`rounded-full w-1 h-1 ${response.success ? "bg-blue-1" : "bg-red-1"} shrink-0`}
