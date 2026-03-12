@@ -23,12 +23,10 @@ export const DashboardProject = ({ data }: Props) => {
                 direction="top"
             >
                 <Button
-                    className={`relative rounded-4xl! w-full px-4! py-2! sm:h-16! project-button justify-between! items-center duration-300! 
+                    className={`relative rounded-4xl! w-full px-4! py-2! h-24 sm:h-16! not-hover:bg-bg-1! project-button justify-between! items-center duration-300! 
                         ${data.id === selectedProjectId ? "border-blue-1!" : ""}`}
                     onClick={() => {
-                        selectProject(
-                            data.id !== selectedProjectId ? data.id : undefined,
-                        );
+                        selectProject(data.id !== selectedProjectId ? data.id : undefined);
                     }}
                 >
                     <div className="flex items-center gap-1">
@@ -38,9 +36,7 @@ export const DashboardProject = ({ data }: Props) => {
                             width={16}
                             height={16}
                         />
-                        <span className="text-6! text-foreground-4!">
-                            {data.name}
-                        </span>
+                        <span className="text-6! text-foreground-4!">{data.name}</span>
                     </div>
 
                     <div className="grid grid-flow-col place-items-center gap-2">

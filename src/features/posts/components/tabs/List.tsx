@@ -12,26 +12,18 @@ type Props = {
 
 export const List = ({ data }: Props) => {
     return (
-        <ul className="flex flex-col gap-8">
-            <li className="grid lg:grid-cols-[30%_auto_1fr] gap-8 lg:gap-4">
+        <ul className="flex flex-col gap-4">
+            <li className="box grow bg-bg-2! p-4!  border-0! grid! lg:grid-cols-[30%_auto_1fr] gap-8 lg:gap-4 ">
                 <PostsAuthor data={data} />
                 <hr className="lg:w-px! lg:h-1/2! self-center" />
                 <PostImagesGrid data={data} />
-            </li>
-
-            <li>
-                <hr />
             </li>
 
             <li className="sticky! top-16! z-2 bg-background-3! rounded-full">
                 <ListTopline data={data} />
             </li>
 
-            <li>
-                <hr />
-            </li>
-
-            <li>
+            <li className="box grow bg-bg-2! p-4!  border-0!">
                 <PostsView data={data} />
             </li>
         </ul>

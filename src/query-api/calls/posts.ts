@@ -1,6 +1,6 @@
 import { notificationListeners } from "@/notifications/data/init";
-import { queryInvalidate } from "@/query/auxiliary";
-import { PostPrivacy } from "@/types/tables/posts";
+import { queryDelete, queryInvalidate, queryMutate } from "@/query/auxiliary";
+import { Comment, PostPrivacy } from "@/types/tables/posts";
 import { refreshedRequest } from "@/utils/auth/refreshedRequest";
 
 export type PostData = {
@@ -56,8 +56,7 @@ export const updatePost = async (
                     status: "Information",
                     tab: "Account",
                     title: "Post changed!",
-                    description:
-                        "You have just successfully modified your post!",
+                    description: "You have just successfully modified your post!",
                     type: "Post changed",
                 },
             });
@@ -69,11 +68,52 @@ export const updatePost = async (
 };
 
 export const like = async (
-    options: (
-        | { type: "like"; id: string }
-        | { type: "dislike"; id: string }
-    ) & { user_id: string; what: "post" | "comment" },
+    options: ({ type: "like"; id: string } | { type: "dislike"; id: string }) & {
+        user_id: string;
+        what: "post" | "comment";
+    },
 ) => {
+    switch (options.what) {
+        case "post": {
+            queryMutate({
+                key: ["post", options.id],
+                value: (state) => {
+                    return {
+                        ...state,
+                        has_liked: !state.has_liked,
+                        likes: state.has_liked ? state.likes - 1 : state.likes + 1,
+                    };
+                },
+            });
+            break;
+        }
+        case "comment": {
+            queryMutate({
+                key: ["comment", options.id],
+                value: (state) => {
+                    const properties =
+                        options.type === "like" ?
+                            {
+                                has_liked: !state.has_liked,
+                                has_disliked: !state.has_liked ? false : state.has_disliked,
+                                likes: state.has_liked ? state.likes - 1 : state.likes + 1,
+                            }
+                        :   {
+                                has_disliked: !state.has_disliked,
+                                has_liked: !state.has_disliked ? false : state.has_liked,
+                                likes: state.has_liked ? state.likes - 1 : state.likes,
+                            };
+
+                    return {
+                        ...state,
+                        ...properties,
+                    };
+                },
+            });
+            break;
+        }
+    }
+
     const res = await refreshedRequest({
         route: "/api/update/like",
         method: "POST",
@@ -85,17 +125,6 @@ export const like = async (
         },
     });
 
-    switch (options.what) {
-        case "post": {
-            queryInvalidate({ key: ["post", options.id] });
-            break;
-        }
-        case "comment": {
-            queryInvalidate({ key: ["comment", options.id] });
-            break;
-        }
-    }
-
     return res;
 };
 
@@ -106,34 +135,53 @@ export const updateComment = async (
         | { type: "delete"; comment_id: string }
     ) & { user_id: string; post_id: string },
 ) => {
-    const res = await refreshedRequest({
-        route: "/api/update/comment",
-        method: "POST",
-        body: {
-            user_id: options.user_id,
-            type: options.type,
-            ...("post_id" in options && {
-                post_id: options.post_id,
-            }),
-            ...("comment" in options && {
-                comment: options.comment,
-            }),
-            ...("comment_id" in options && {
-                comment_id: options.comment_id,
-            }),
-        },
-    });
-
     switch (options.type) {
-        case "send": {
-            queryInvalidate({ key: ["comments", options.post_id] });
+        case "edit": {
+            queryMutate({
+                key: ["comment", options.comment_id],
+                value: (state) => {
+                    return { ...state, comment: options.comment, edited_at: new Date().toISOString() };
+                },
+            });
             break;
         }
-        default: {
-            queryInvalidate({ key: ["comment", options.comment_id] });
+        case "delete": {
+            queryMutate({
+                key: ["comments", options.post_id],
+                value: (state) => state.filter((id) => id !== options.comment_id),
+            });
+            queryDelete({ key: ["comment", options.comment_id] });
             break;
         }
     }
 
-    return res;
+    const comment = (
+        await refreshedRequest({
+            route: "/api/update/comment",
+            method: "POST",
+            body: {
+                user_id: options.user_id,
+                type: options.type,
+                ...("post_id" in options && {
+                    post_id: options.post_id,
+                }),
+                ...("comment" in options && {
+                    comment: options.comment,
+                }),
+                ...("comment_id" in options && {
+                    comment_id: options.comment_id,
+                }),
+            },
+        })
+    ).data.comment as Comment;
+
+    if (options.type === "send") {
+        queryMutate({
+            key: ["comment", comment.id],
+            value: { ...comment, has_liked: false, has_disliked: false, likes: 0 },
+        });
+        queryMutate({ key: ["comments", comment.post_id], value: (state) => [...(state ?? []), comment.id] });
+    }
+
+    return comment;
 };

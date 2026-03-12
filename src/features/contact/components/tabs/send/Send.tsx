@@ -1,9 +1,5 @@
 import { Preview } from "@/features/contact/components/tabs/send/Preview";
-import {
-    SendForm,
-    SendFormContents,
-    SendFormHandle,
-} from "@/features/contact/components/tabs/send/SendForm";
+import { SendForm, SendFormContents, SendFormHandle } from "@/features/contact/components/tabs/send/SendForm";
 import { Button } from "@/features/ui/button/components/Button";
 import { useMessageBox } from "@/features/ui/messagebox/hooks/useMessageBox";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
@@ -40,12 +36,11 @@ export const Send = ({ type, data }: Props) => {
     // refs & handles
     const handle = useRef<SendFormHandle | null>(null);
 
-    const isEditable =
-        !status || (type === "edit" && status.id !== data.user_id);
+    const isEditable = !status || (type === "edit" && status.id !== data.user_id);
 
     return (
         <div
-            className={`flex flex-col items-center transition-all duration-500 gap-8 grow ${isEditable ? "opacity-30" : ""}`}
+            className={`flex flex-col items-center transition-all duration-500 gap-4 grow ${isEditable ? "opacity-30" : ""}`}
             inert={isEditable}
         >
             {deleteBox.render({
@@ -57,7 +52,7 @@ export const Send = ({ type, data }: Props) => {
                 },
             })}
 
-            <ul className="box bg-bg-2! p-0! h-10! flex-row! w-full mt-6! md:mt-0!">
+            <ul className="box bg-bg-2! p-0! h-10! flex-row! w-full mt-6! md:mt-0! items-center">
                 <li className="absolute left-1/2 -top-1/2 md:top-1/2 -translate-1/2">
                     <span className="flex items-center gap-1">
                         <Image
@@ -87,9 +82,9 @@ export const Send = ({ type, data }: Props) => {
                 </li>
             </ul>
 
-            <div className="w-full grid lg:grid-cols-[1fr_40%]  gap-8">
-                <div className="flex flex-col items-center gap-8">
-                    <ul className="box bg-bg-2! flex-row! items-center min-h-10 h-10! p-0! w-full">
+            <div className="w-full grid lg:grid-cols-[1fr_40%] gap-4">
+                <div className="box grow bg-bg-2! p-4! border-0! ">
+                    <ul className="box flex-row! items-center min-h-10 h-10! p-0! w-full">
                         <li className="absolute left-1/2 -top-1/2 md:top-1/2 -translate-1/2">
                             <span className="flex items-center gap-1">
                                 <Image
@@ -119,22 +114,17 @@ export const Send = ({ type, data }: Props) => {
                         ref={handle}
                         onSubmit={() => {
                             wrapPromise("updateContact", () => {
-                                if (
-                                    !status ||
-                                    !contents.email ||
-                                    !contents.message ||
-                                    !contents.title
-                                ) {
+                                if (!status || !contents.email || !contents.message || !contents.title) {
                                     return Promise.reject();
                                 }
 
                                 return updateContact({
-                                    ...(type === "edit"
-                                        ? {
-                                              type: "edit",
-                                              message_id: data.id,
-                                          }
-                                        : { type: "send", user_id: status.id }),
+                                    ...(type === "edit" ?
+                                        {
+                                            type: "edit",
+                                            message_id: data.id,
+                                        }
+                                    :   { type: "send", user_id: status.id }),
                                     title: contents.title,
                                     message: contents.message,
                                     email: contents.email,
@@ -147,8 +137,8 @@ export const Send = ({ type, data }: Props) => {
                     />
                 </div>
 
-                <div className="flex flex-col items-center gap-8">
-                    <ul className="box bg-bg-2! flex-row! items-center min-h-10 h-10! p-0! w-full">
+                <div className="box grow bg-bg-2! p-4! border-0! ">
+                    <ul className="box flex-row! items-center min-h-10 h-10! p-0! w-full">
                         <li>
                             <Tooltip text="Expanded / Collapsed">
                                 <Button
@@ -165,11 +155,7 @@ export const Send = ({ type, data }: Props) => {
                                     />
                                     <TabSelection
                                         condition={true}
-                                        color={
-                                            previewExpanded
-                                                ? "var(--blue-1)"
-                                                : "var(--orange-1)"
-                                        }
+                                        color={previewExpanded ? "var(--blue-1)" : "var(--orange-1)"}
                                     />
                                 </Button>
                             </Tooltip>

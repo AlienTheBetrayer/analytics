@@ -34,7 +34,7 @@ export const NotificationCompact = ({
     return (
         <div className="flex flex-col">
             <ul
-                className={`box bg-bg-2! w-full max-w-400 justify-between!
+                className={`box bg-bg-1! w-full max-w-400 justify-between!
                      mx-auto p-0! px-2! gap-1! flex-row! transition-all duration-500 min-h-10 h-10 items-center
                      rounded-b-none! `}
             >
@@ -82,7 +82,7 @@ export const NotificationCompact = ({
             </ul>
 
             <LinkButton
-                className={`box rounded-4xl! rounded-t-none! backdrop-blur-none! grid! md:grid-cols-[30%_auto_1fr] gap-4! min-h-20! text-center ${buttonClassName ?? ""}`}
+                className={`box not-hover:bg-bg-1! rounded-4xl! rounded-t-none! backdrop-blur-none! grid! md:grid-cols-[30%_auto_1fr] gap-4! min-h-20! text-center ${buttonClassName ?? ""}`}
                 href={`/notification/${notification.id}`}
             >
                 <div className="h-full grid place-items-center gap-1">

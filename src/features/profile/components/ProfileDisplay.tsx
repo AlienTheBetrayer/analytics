@@ -23,7 +23,7 @@ export const ProfileDisplay = ({ id }: Props) => {
     return (
         <LinkButton
             href={`/profile/${data.username}`}
-            className="justify-start! px-4! py-2! h-full rounded-3xl!"
+            className="justify-start! px-4! py-2! h-full rounded-3xl! not-hover:bg-bg-1!"
         >
             <ul className="flex flex-col w-full! lg:flex-row gap-2 items-center! justify-start! text-center">
                 <li>

@@ -21,10 +21,8 @@ export const Emulate = () => {
     const [description, setDescription] = useState<string>("");
 
     return (
-        <div className="flex flex-col gap-4 grow">
+        <div className="box grow bg-bg-2! p-4! border-0!">
             <Topline />
-
-            <hr />
 
             <form
                 className="flex flex-col grow"
@@ -54,6 +52,7 @@ export const Emulate = () => {
                             Title
                         </label>
                         <Input
+                            className="not-hover:bg-bg-1!"
                             id="title"
                             value={title}
                             onChange={(e) => setTitle(e)}
@@ -78,6 +77,7 @@ export const Emulate = () => {
                             Description
                         </label>
                         <Input
+                            className="not-hover:bg-bg-1!"
                             id="description"
                             value={description}
                             onChange={(e) => setDescription(e)}
@@ -102,6 +102,7 @@ export const Emulate = () => {
                                     Status
                                 </label>
                                 <Select
+                                    className="not-hover:bg-bg-1!"
                                     id="status"
                                     items={["Information", "Warning", "Error"]}
                                     value={status}
@@ -125,6 +126,7 @@ export const Emulate = () => {
                                     Tab
                                 </label>
                                 <Select
+                                    className="not-hover:bg-bg-1!"
                                     id="tab"
                                     items={["Account", "Dashboard"]}
                                     value={tab}
@@ -139,7 +141,7 @@ export const Emulate = () => {
                     <li className="flex flex-col gap-1 mt-auto!">
                         <Button
                             type="submit"
-                            className="w-full"
+                            className="w-full not-hover:bg-bg-1!"
                         >
                             <Image
                                 alt=""

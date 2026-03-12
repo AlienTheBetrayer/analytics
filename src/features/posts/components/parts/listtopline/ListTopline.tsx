@@ -18,9 +18,7 @@ type Props = {
 export const ListTopline = ({ data }: Props) => {
     // zustand & localstore
     const postFiltering = useAppStore((state) => state.postFiltering);
-    const updatePostFiltering = useAppStore(
-        (state) => state.updatePostFiltering,
-    );
+    const updatePostFiltering = useAppStore((state) => state.updatePostFiltering);
     const display = useLocalStore((state) => state.display);
     const toggleSorting = useLocalStore((state) => state.toggleSorting);
 
@@ -48,7 +46,7 @@ export const ListTopline = ({ data }: Props) => {
             <li>
                 <Tooltip text="Sorting direction">
                     <Button
-                        className="aspect-square"
+                        className="aspect-square not-hover:bg-bg-1!"
                         onClick={() => {
                             toggleSorting("posts");
                         }}
@@ -79,7 +77,7 @@ export const ListTopline = ({ data }: Props) => {
                         element={() => <Filtering />}
                         direction="bottom-right"
                     >
-                        <Button className="aspect-square">
+                        <Button className="aspect-square not-hover:bg-bg-1!">
                             <Image
                                 alt="filter"
                                 src="/filter.svg"
@@ -104,7 +102,7 @@ export const ListTopline = ({ data }: Props) => {
             <li>
                 <Tooltip text="Filters every field">
                     <Input
-                        className="rounded-full!"
+                        className="rounded-full! not-hover:bg-bg-1!"
                         placeholder="Filter..."
                         value={postFiltering.filter}
                         onChange={(filter) => {
@@ -121,7 +119,7 @@ export const ListTopline = ({ data }: Props) => {
                         element={() => <DisplayFormat />}
                         direction="bottom-left"
                     >
-                        <Button>
+                        <Button className="not-hover:bg-bg-1!">
                             <Image
                                 alt=""
                                 width={16}

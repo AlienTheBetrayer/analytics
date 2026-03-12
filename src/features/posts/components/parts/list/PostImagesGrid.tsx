@@ -44,7 +44,7 @@ export const PostImagesGrid = ({ data }: Props) => {
 
     return (
         <article className="flex flex-col gap-4">
-            <ul className="flex bg-bg-2! flex-row! h-10! items-center gap-1 box p-0! w-full">
+            <ul className="flex flex-row! h-10! items-center gap-1 box p-0! w-full">
                 <li>
                     <Tooltip text="Go to a random post">
                         <Button
@@ -107,7 +107,7 @@ export const PostImagesGrid = ({ data }: Props) => {
                 isEnabled={!!posts?.length}
             >
                 <Button
-                    className="w-full"
+                    className="w-full not-hover:bg-bg-1!"
                     onClick={() => {
                         randomRedirect(posts);
                     }}

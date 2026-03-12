@@ -38,83 +38,82 @@ export type CacheAPIProtocolPosts = {
 /**
  * functions
  */
-export const CacheAPIFunctionsPosts: CacheAPIFunctions<CacheAPIProtocolPosts> =
-    {
-        posts: async (args: unknown[]) => {
-            return __posts(args, "user_ids");
-        },
-        post_privacy: async (args: unknown[]) => {
-            if (!args[0]) {
-                throw new Error("post_ids is undefined");
-            }
+export const CacheAPIFunctionsPosts: CacheAPIFunctions<CacheAPIProtocolPosts> = {
+    posts: async (args: unknown[]) => {
+        return __posts(args, "user_ids");
+    },
+    post_privacy: async (args: unknown[]) => {
+        if (!args[0]) {
+            throw new Error("post_ids is undefined");
+        }
 
-            const privacy = (
-                await axios.get("/api/get/post_privacy", {
-                    params: { post_ids: args[0] },
-                })
-            ).data?.privacy?.[0] as PostPrivacy;
+        const privacy = (
+            await axios.get("/api/get/post_privacy", {
+                params: { post_ids: args[0] },
+            })
+        ).data?.privacy?.[0] as PostPrivacy;
 
-            return privacy;
-        },
+        return privacy;
+    },
 
-        post: async (args: unknown[]) => {
-            if (!args[0]) {
-                throw new Error("post_id is undefined");
-            }
+    post: async (args: unknown[]) => {
+        if (!args[0]) {
+            throw new Error("post_id is undefined");
+        }
 
-            return (
-                await axios.get("/api/get/posts", {
-                    params: { post_ids: args[0] },
-                })
-            ).data?.posts?.[0];
-        },
+        return (
+            await axios.get("/api/get/posts", {
+                params: { post_ids: args[0] },
+            })
+        ).data?.posts?.[0];
+    },
 
-        // comments
-        comments: async (args: unknown[]) => {
-            if (!args[0]) {
-                throw new Error("post_id is undefined");
-            }
+    // comments
+    comments: async (args: unknown[]) => {
+        if (!args[0]) {
+            throw new Error("post_id is undefined");
+        }
 
-            const data = (
-                await axios.get("/api/get/comments", {
-                    params: { post_id: args[0] },
-                })
-            ).data.comments as CacheAPIProtocol["comment"]["data"][];
+        const data = (
+            await axios.get("/api/get/comments", {
+                params: { post_id: args[0] },
+            })
+        ).data.comments as CacheAPIProtocol["comment"]["data"][];
 
-            for (const comment of data) {
-                queryMutate({ key: ["comment", comment.id], value: comment });
-            }
+        for (const comment of data) {
+            queryMutate({ key: ["comment", comment.id], value: comment });
+        }
 
-            const user_ids = [...new Set(data.map((d) => d.user_id))];
+        const user_ids = [...new Set(data.map((d) => d.user_id))];
 
-            const users = (
-                await axios.get("/api/get/users", {
-                    params: { user_ids: user_ids.join(",") },
-                })
-            ).data.users;
+        const users = (
+            await axios.get("/api/get/users", {
+                params: { user_ids: user_ids.join(",") },
+            })
+        ).data.users;
 
-            for (const user of users) {
-                queryMutate({ key: ["user", user.id], value: user });
-                queryMutate({
-                    key: ["user__username", user.username],
-                    value: user,
-                });
-            }
+        for (const user of users) {
+            queryMutate({ key: ["user", user.id], value: user });
+            queryMutate({
+                key: ["user__username", user.username],
+                value: user,
+            });
+        }
 
-            return data.map((d) => d.id);
-        },
+        return data.map((d) => d.id);
+    },
 
-        comment: async (args: unknown[]) => {
-            if (!args[0]) {
-                throw new Error("comment_id is undefined");
-            }
+    comment: async (args: unknown[]) => {
+        if (!args[0]) {
+            throw new Error("comment_id is undefined");
+        }
 
-            const data = (
-                await axios.get("/api/get/comments", {
-                    params: { comment_id: args[0] },
-                })
-            ).data.comments?.[0] as CacheAPIProtocol["comment"]["data"];
+        const data = (
+            await axios.get("/api/get/comments", {
+                params: { comment_id: args[0] },
+            })
+        ).data.comments?.[0] as CacheAPIProtocol["comment"]["data"];
 
-            return data;
-        },
-    };
+        return data;
+    },
+};

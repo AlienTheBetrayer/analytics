@@ -1,6 +1,7 @@
 import { NoMessages } from "@/features/contact/components/errors/NoMessages";
 import { Item } from "@/features/contact/components/tabs/list/Item";
 import { ContactListItems } from "@/features/contact/components/tabs/list/List";
+import { Spinner } from "@/features/ui/spinner/components/Spinner";
 import { useQuery } from "@/query/core";
 import { AuthenticationToken } from "@/types/auth/authentication";
 
@@ -19,9 +20,11 @@ export const ListItems = ({ filter, reversed, tab, collapsed }: Props) => {
             <div className="flex flex-col gap-4">
                 {Array.from({ length: 4 }, (_, k) => (
                     <div
-                        className="w-full min-h-32 loading rounded-4xl!"
+                        className="flex items-center justify-center relative w-full min-h-32 loading rounded-4xl!"
                         key={k}
-                    />
+                    >
+                        <Spinner className="absolute left-1/2 top-1/2" />
+                    </div>
                 ))}
             </div>
         );
@@ -53,19 +56,10 @@ type SelectProps = {
     filter?: string;
     reversed?: boolean;
 };
-const ListItemsSelect = ({
-    reversed,
-    filter,
-    tab,
-    status,
-    collapsed,
-}: SelectProps) => {
+const ListItemsSelect = ({ reversed, filter, tab, status, collapsed }: SelectProps) => {
     // dynamic fetching
     const { data, isLoading } = useQuery({
-        key:
-            tab === "own"
-                ? ["contact_messages", status.id]
-                : ["contact_messages"],
+        key: tab === "own" ? ["contact_messages", status.id] : ["contact_messages"],
     });
 
     // fallbacks
@@ -74,9 +68,11 @@ const ListItemsSelect = ({
             <div className="flex flex-col gap-4">
                 {Array.from({ length: 4 }, (_, k) => (
                     <div
-                        className="w-full min-h-32 loading rounded-4xl!"
+                        className="flex items-center justify-center relative w-full min-h-32 loading rounded-4xl!"
                         key={k}
-                    />
+                    >
+                        <Spinner className="absolute left-1/2 top-1/2 -translate-1/2" />
+                    </div>
                 ))}
             </div>
         );
@@ -92,10 +88,10 @@ const ListItemsSelect = ({
 
     return (
         <div
-            className={`grid! gap-4 overflow-hidden transition-all duration-500 
+            className={`box grow bg-bg-2! p-4! border-0! grid! gap-4 overflow-hidden transition-all duration-500 
                 ${collapsed ? "grid-rows-[0fr]" : "grid-rows-[1fr]"}`}
         >
-            <ul className="flex flex-col gap-4 overflow-hidden">
+            <ul className="flex flex-col gap-2 overflow-hidden">
                 {(reversed ? [...data].reverse() : data).map((id) => (
                     <li key={id}>
                         <Item

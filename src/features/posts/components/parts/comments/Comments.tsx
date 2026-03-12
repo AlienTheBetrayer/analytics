@@ -4,6 +4,7 @@ import { NoComments } from "@/features/posts/components/parts/errors/NoComments"
 import { Button } from "@/features/ui/button/components/Button";
 import { Input } from "@/features/ui/input/components/Input";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
+import { Spinner } from "@/features/ui/spinner/components/Spinner";
 import { PromiseState } from "@/promises/components/PromiseState";
 import { wrapPromise } from "@/promises/core";
 import { queryInvalidate } from "@/query/auxiliary";
@@ -23,16 +24,15 @@ export const Comments = ({ id }: Props) => {
     const { data: privacy } = useQuery({ key: ["post_privacy", id] });
     const { data: status } = useQuery({ key: ["status"] });
 
-    const areCommentsEditable =
-        status && (privacy?.comments !== false || status.id === post?.user_id);
+    const areCommentsEditable = status && (privacy?.comments !== false || status.id === post?.user_id);
 
     // react states
     const [collapsed, setCollapsed] = useState<boolean>(false);
     const [filter, setFilter] = useState<string>("");
 
     return (
-        <ul className="flex flex-col gap-4">
-            <li className="flex items-center gap-1! box bg-bg-2! p-0! flex-row! h-10!">
+        <ul className="box grow bg-bg-2! p-4! border-0!">
+            <li className="flex items-center gap-1! box bg-bg-1! p-0! flex-row! h-10!">
                 <Tooltip text="Collapse / Expand">
                     <Button
                         onClick={() => setCollapsed((prev) => !prev)}
@@ -46,9 +46,7 @@ export const Comments = ({ id }: Props) => {
                         />
                         <TabSelection
                             condition={true}
-                            color={
-                                collapsed ? "var(--orange-1)" : "var(--blue-1)"
-                            }
+                            color={collapsed ? "var(--orange-1)" : "var(--blue-1)"}
                         />
                     </Button>
                 </Tooltip>
@@ -62,16 +60,6 @@ export const Comments = ({ id }: Props) => {
                     value={filter}
                     onChange={(value) => setFilter(value)}
                 />
-
-                <div className="flex items-center gap-1 absolute left-1/2 -top-1/2 md:top-1/2 -translate-1/2">
-                    <Image
-                        alt=""
-                        width={16}
-                        height={16}
-                        src="/comments.svg"
-                    />
-                    <span>Comments:</span>
-                </div>
 
                 <Tooltip
                     text="Reload comments"
@@ -142,9 +130,11 @@ const CommentsDisplay = ({ isLoading, comments, filter }: DisplayProps) => {
             <div className="flex flex-col gap-2">
                 {Array.from({ length: 4 }, (_, k) => (
                     <div
-                        className="w-full h-36 loading"
+                        className="flex items-center justify-center w-full h-36 loading"
                         key={k}
-                    />
+                    >
+                        <Spinner />
+                    </div>
                 ))}
             </div>
         );

@@ -50,12 +50,15 @@ export const Filtering = ({ project_id }: Props) => {
     return (
         <div className="relative box p-4! w-full gap-4! acrylic">
             <span className="flex flex-col items-center">
-                <Image
-                    alt="filter"
-                    src="/filter.svg"
-                    width={16}
-                    height={16}
-                />
+                <span className="flex items-center gap-1">
+                    <div className="w-1 h-1 rounded-full bg-blue-1" />
+                    <Image
+                        alt="filter"
+                        src="/filter.svg"
+                        width={16}
+                        height={16}
+                    />
+                </span>
                 Type filtering
             </span>
 
@@ -73,11 +76,7 @@ export const Filtering = ({ project_id }: Props) => {
                                     type: "event-filter",
                                 });
                             }}
-                            value={
-                                eventFilters[project_id]?.eventsFiltering?.[
-                                    type
-                                ]
-                            }
+                            value={eventFilters[project_id]?.eventsFiltering?.[type]}
                         >
                             <span>{type}</span>
 

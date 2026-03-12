@@ -12,6 +12,7 @@ import { wrapPromise } from "@/promises/core";
 import { PromiseState } from "@/promises/components/PromiseState";
 import { useQuery } from "@/query/core";
 import { dashboardSync } from "@/query-api/calls/dashboard";
+import { Spinner } from "@/features/ui/spinner/components/Spinner";
 
 export const Emulate = () => {
     // url
@@ -29,6 +30,7 @@ export const Emulate = () => {
 
                 <div className="flex flex-col w-full max-w-400 p-6! rounded-4xl! gap-4! m-auto box">
                     <LoadingEmulate />
+                    <Spinner className="absolute left-1/2 top-1/2 -translate-1/2" />
                 </div>
             </>
         );
@@ -42,6 +44,7 @@ export const Emulate = () => {
 
                 <div className="flex flex-col w-full mt-16 max-w-400 min-h-128 p-6! rounded-4xl! gap-4! m-auto box">
                     <LoadingEmulate />
+                    <Spinner className="absolute left-1/2 top-1/2 -translate-1/2" />
                 </div>
             </>
         );
@@ -55,6 +58,7 @@ export const Emulate = () => {
 
                 <div className="flex flex-col w-full mt-16 max-w-400 min-h-128 p-6! rounded-4xl! gap-4! m-auto box">
                     <FetchPrompt />
+                    <Spinner className="absolute left-1/2 top-1/2 -translate-1/2" />
                 </div>
             </>
         );
@@ -66,7 +70,7 @@ export const Emulate = () => {
             <>
                 <AbsentTopline title="Project does not exist" />
 
-                <div className="flex flex-col gap-8! w-full max-w-400 min-h-128 m-auto box p-6! rounded-4xl!">
+                <div className="flex flex-col gap-4! w-full max-w-400 min-h-128 m-auto box p-1! sm:p-4! rounded-4xl!">
                     <FetchPrompt />
                     <hr />
                     <ProjectList data={data} />
@@ -79,16 +83,15 @@ export const Emulate = () => {
         <>
             <Topline />
 
-            <div className="flex flex-col w-full max-w-400 p-6! min-h-128 rounded-4xl! gap-8! box m-auto">
-                <div className="flex flex-col gap-2 items-center">
-                    {!Object.values(data).length ? (
+            <div className="flex flex-col w-full max-w-400 p-1! sm:p-4! min-h-128 rounded-4xl! gap-4! box m-auto">
+                <div className="box grow bg-bg-2! p-4! border-0! items-center">
+                    {!Object.values(data).length ?
                         <>
-                            <span className="text-center text-foreground-2! text-5! whitespace-nowrap">
+                            <span className="flex items-center gap-1 text-center text-foreground-2! text-5! whitespace-nowrap">
                                 <u>No project data</u>
                             </span>
                             <span className="text-center">
-                                Try re-fetching. If that does not help -
-                                database is empty.
+                                Try re-fetching. If that does not help - database is empty.
                             </span>
 
                             <Button
@@ -109,24 +112,20 @@ export const Emulate = () => {
                                 Fetch
                             </Button>
                         </>
-                    ) : (
-                        <>
+                    :   <>
                             <span className="flex items-center gap-1 text-center whitespace-nowrap">
+                                <div className="w-1 h-1 rounded-full bg-blue-1" />
                                 <Image
                                     width={16}
                                     height={16}
                                     alt=""
                                     src="/cube.svg"
                                 />
-                                <span className="text-5!">
-                                    Project selection
-                                </span>
+                                <span className="flex items-center gap-1 text-5!">Project selection</span>
                             </span>
-                            <span className="text-center">
-                                Select a project first to emulate events
-                            </span>
+                            <span className="text-center">Select a project first to emulate events</span>
                         </>
-                    )}
+                    }
                 </div>
 
                 {!!Object.values(data).length && <ProjectList data={data} />}

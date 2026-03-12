@@ -24,8 +24,8 @@ export const PostsOverview = ({
     const [filter, setFilter] = useState<string>("");
 
     return (
-        <div className="flex flex-col gap-4">
-            <ul className="box bg-bg-2! p-0! h-10! rounded-full! flex-row! items-center">
+        <div className="box grow bg-bg-2! p-4! border-0!">
+            <ul className="box p-0! h-10! rounded-full! flex-row! items-center">
                 <li>
                     <Tooltip text="Collapse / Expand">
                         <Button

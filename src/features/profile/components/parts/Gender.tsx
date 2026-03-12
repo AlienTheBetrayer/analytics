@@ -17,10 +17,9 @@ export const Gender = ({ className, data }: Props) => {
             case "female": {
                 return {
                     element: (
-                        <div
-                            className={`box p-1! px-2! w-max! items-center! outline-1 outline-[#e0afbb] ${className ?? ""}`}
-                        >
-                            <div className="flex gap-1">
+                        <div className={`box p-2! w-max! items-center! ${className ?? ""}`}>
+                            <div className="flex gap-1 items-center">
+                                <div className="w-1 h-1 rounded-full bg-red-3" />
                                 <Image
                                     width={16}
                                     height={16}
@@ -37,10 +36,9 @@ export const Gender = ({ className, data }: Props) => {
             case "male": {
                 return {
                     element: (
-                        <div
-                            className={`box p-1! px-2! w-max! items-center! outline-1 outline-[#82aece] ${className ?? ""}`}
-                        >
-                            <div className="flex gap-1">
+                        <div className={`box p-2! w-max! items-center! ${className ?? ""}`}>
+                            <div className="flex gap-1 items-center">
+                                <div className="w-1 h-1 rounded-full bg-blue-3" />
                                 <Image
                                     width={16}
                                     height={16}
@@ -57,10 +55,9 @@ export const Gender = ({ className, data }: Props) => {
             case "other": {
                 return {
                     element: (
-                        <div
-                            className={`box p-1! px-2! w-max! outline-1 outline-[#9d95c7] ${className ?? ""}`}
-                        >
-                            <div className="flex gap-1">
+                        <div className={`box p-2! w-max! ${className ?? ""}`}>
+                            <div className="flex gap-1 items-center">
+                                <div className="w-1 h-1 rounded-full bg-[#7d4fd9]" />
                                 <Image
                                     width={16}
                                     height={16}
@@ -78,10 +75,9 @@ export const Gender = ({ className, data }: Props) => {
             case "unspecified": {
                 return {
                     element: (
-                        <div
-                            className={`box p-1! px-2! w-max! items-center! ${className ?? ""}`}
-                        >
-                            <div className="flex gap-1">
+                        <div className={`box p-1! px-2! w-max! items-center! ${className ?? ""}`}>
+                            <div className="flex gap-1 items-center">
+                                <div className="w-1 h-1 rounded-full bg-bg-8!" />
                                 <Image
                                     width={16}
                                     height={16}

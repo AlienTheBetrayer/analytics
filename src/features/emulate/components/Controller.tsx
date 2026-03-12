@@ -33,9 +33,10 @@ export const Controller = ({ data }: Props) => {
     const [emulationStatus, setEmulationStatus] = useState<boolean>(false);
 
     return (
-        <div className="flex flex-col gap-4">
+        <div className="box grow bg-bg-2! p-4! border-0!">
             <div className="flex flex-col gap-2 items-center">
                 <span className="flex items-center gap-1 text-center text-foreground-2!">
+                    <div className="w-1 h-1 rounded-full bg-blue-1"/>
                     <Image
                         width={16}
                         height={16}
@@ -88,6 +89,7 @@ export const Controller = ({ data }: Props) => {
                                     </small>
                                 </label>
                                 <Input
+                                    className="not-hover:bg-bg-1!"
                                     id="custom-name"
                                     placeholder="at least 8 characters"
                                     required
@@ -110,6 +112,7 @@ export const Controller = ({ data }: Props) => {
                                 </small>
                             </label>
                             <Input
+                                className="not-hover:bg-bg-1!"
                                 id="event-type"
                                 placeholder="at least 5 characters"
                                 required
@@ -131,6 +134,7 @@ export const Controller = ({ data }: Props) => {
                                 </small>
                             </label>
                             <Input
+                                className="not-hover:bg-bg-1!"
                                 id="description"
                                 placeholder="64 characters max"
                                 value={description}
@@ -147,7 +151,7 @@ export const Controller = ({ data }: Props) => {
                             >
                                 <Button
                                     type="submit"
-                                    className="w-full"
+                                    className="w-full not-hover:bg-bg-1!"
                                     isEnabled={isValid}
                                 >
                                     <PromiseState state="emulateEvents" />
@@ -171,7 +175,7 @@ export const Controller = ({ data }: Props) => {
                         direction="top"
                     >
                         <LinkButton
-                            className="w-full"
+                            className="w-full not-hover:bg-bg-1!"
                             href="/dashboard"
                         >
                             <Image

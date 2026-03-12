@@ -6,10 +6,7 @@ import { useMessageBox } from "@/features/ui/messagebox/hooks/useMessageBox";
 import { wrapPromise } from "@/promises/core";
 import { PromiseState } from "@/promises/components/PromiseState";
 import { useQuery } from "@/query/core";
-import {
-    dashboardDeleteProject,
-    dashboardDeleteEvents,
-} from "@/query-api/calls/dashboard";
+import { dashboardDeleteProject, dashboardDeleteEvents } from "@/query-api/calls/dashboard";
 
 export const ProjectManipulation = () => {
     // zustand
@@ -23,10 +20,9 @@ export const ProjectManipulation = () => {
     const { data } = useQuery({ key: ["projects"] });
 
     return (
-        <div className="relative flex flex-col box acrylic w-full gap-8!">
+        <div className="relative flex flex-col box acrylic w-full gap-4! p-4! items-center">
             {deleteProjectsBox.render({
-                children:
-                    "You will delete every single data entry about this project, including events!",
+                children: "You will delete every single data entry about this project, including events!",
                 onSelect: (res) => {
                     if (!selectedProjectId || !data?.[selectedProjectId]) {
                         return;
@@ -59,68 +55,77 @@ export const ProjectManipulation = () => {
                 },
             })}
 
-            <div className="flex flex-col gap-1 items-center">
-                <Image
-                    alt=""
-                    width={16}
-                    height={16}
-                    src="/cube.svg"
-                />
-                <span className="text-5!">Project manipulation</span>
-                <p className="whitespace-normal text-center">
-                    Add new events or projects or remove existing ones
-                </p>
+            <div className="flex flex-col gap-1 items-center mb-4!">
+                <span className="flex items-center gap-1">
+                    <div className="w-1 h-1 rounded-full bg-blue-1" />
+                    <Image
+                        alt=""
+                        width={16}
+                        height={16}
+                        src="/cube.svg"
+                    />
+                </span>
+                <span>Project manipulation</span>
             </div>
 
-            <ul className="flex flex-col gap-2">
+            <ul className="grid grid-cols-3 gap-0 sm:gap-2 w-full max-w-96">
                 <li>
                     <LinkButton
-                        className="w-full"
+                        className="flex-col w-full aspect-square rounded-4xl!"
                         href={`/emulate/${selectedProjectId}`}
                     >
-                        <Image
-                            src="/emulate.svg"
-                            width={16}
-                            height={16}
-                            alt=""
-                        />
-                        Emulate events
+                        <span className="flex items-center gap-1">
+                            <div className="w-1 h-1 rounded-full bg-blue-1"/>
+                            <Image
+                                src="/emulate.svg"
+                                width={16}
+                                height={16}
+                                alt=""
+                            />
+                        </span>
+                        <span className="truncate">Emulate</span>
                     </LinkButton>
                 </li>
 
                 <li>
                     <Button
-                        className="w-full"
+                        className="flex-col w-full aspect-square rounded-4xl!"
                         onClick={() => {
                             deleteProjectsBox.show();
                         }}
                     >
-                        <PromiseState state="deleteProject" />
-                        <Image
-                            src="/delete.svg"
-                            width={16}
-                            height={16}
-                            alt=""
-                        />
-                        Delete project
+                        <span className="flex items-center gap-1">
+                            <PromiseState state="deleteProject" />
+                            <div className="w-1 h-1 rounded-full bg-orange-1"/>
+                            <Image
+                                src="/delete.svg"
+                                width={16}
+                                height={16}
+                                alt=""
+                            />
+                        </span>
+                        <span className="truncate">Delete project</span>
                     </Button>
                 </li>
 
                 <li>
                     <Button
-                        className="w-full"
+                        className="flex-col w-full aspect-square rounded-4xl!"
                         onClick={() => {
                             deleteEventsBox.show();
                         }}
                     >
-                        <PromiseState state="deleteEvents" />
-                        <Image
-                            src="/type.svg"
-                            width={16}
-                            height={16}
-                            alt=""
-                        />
-                        Delete all events
+                        <span className="flex items-center gap-1">
+                            <PromiseState state="deleteEvents" />
+                            <div className="w-1 h-1 rounded-full bg-red-1"/>
+                            <Image
+                                src="/type.svg"
+                                width={16}
+                                height={16}
+                                alt=""
+                            />
+                        </span>
+                        <span className="truncate">Delete events</span>
                     </Button>
                 </li>
             </ul>

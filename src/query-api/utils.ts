@@ -125,7 +125,7 @@ export const __requests = async (
         throw new Error("user_id is undefined");
     }
 
-    const requests = (
+    const data = (
         await axios.get(
             type === "outcoming"
                 ? "/api/get/requests_outcoming/"
@@ -136,8 +136,10 @@ export const __requests = async (
                 params: { user_id: args[0] },
             },
         )
-    ).data.requests as string[];
-    const user_ids = requests.join(",");
+    ).data;
+
+    const ids = "friends" in data ? data.friends : data.requests;
+    const user_ids = ids.join(",");
 
     if (user_ids.length) {
         // caching and normalizing them all
@@ -154,5 +156,5 @@ export const __requests = async (
         }
     }
 
-    return requests;
+    return ids;
 };

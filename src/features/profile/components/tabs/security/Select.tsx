@@ -29,10 +29,8 @@ export const Select = ({ data }: Props) => {
     };
 
     return (
-        <div className="flex flex-col gap-4">
-            <ul
-                className={`box bg-bg-2! p-0! gap-1! flex-row! w-full  transition-all duration-500 min-h-10 h-10 items-center`}
-            >
+        <div className="flex flex-col gap-4 grow">
+            <ul className={`box p-0! gap-1! flex-row! w-full  transition-all duration-500 min-h-10 h-10 items-center`}>
                 <li>
                     <Tooltip
                         text="Valuable authentication data"

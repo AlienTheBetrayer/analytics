@@ -20,9 +20,7 @@ export const PostExpanded = ({ id }: Props) => {
                     className="max-w-400!"
                 />
 
-                <div
-                    className={`box max-w-400 w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}
-                >
+                <div className={`box max-w-400 w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}>
                     <LoadingEmulate />
                 </div>
             </>
@@ -37,9 +35,7 @@ export const PostExpanded = ({ id }: Props) => {
                     className="max-w-400!"
                 />
 
-                <div
-                    className={`box max-w-400 w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}
-                >
+                <div className={`box max-w-400 w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}>
                     <LoadingEmulate />
                 </div>
             </>
@@ -49,40 +45,40 @@ export const PostExpanded = ({ id }: Props) => {
     // main jsx
     return (
         <article
-            className={`flex flex-col rounded-4xl! overflow-hidden min-h-128! relative
+            className={`box grow bg-bg-2! p-4!  border-0! overflow-hidden min-h-128! relative
         ${data.image_url ? "" : "border border-background-a-5"}`}
         >
-            <ToplineExpanded
-                data={data}
-                className="overflow-hidden!"
-            />
+            <div className="flex flex-col gap-4 relative">
+                <ToplineExpanded
+                    data={data}
+                    className="overflow-hidden!"
+                />
 
-            <ul className="flex flex-col gap-16">
-                {data.image_url && (
-                    <li className="w-full relative h-150">
-                        <Image
-                            alt="post image"
-                            fill
-                            src={data.image_url}
-                            style={{ objectFit: "cover" }}
-                            className="invert-0! rounded-4xl"
-                        />
-                    </li>
-                )}
-
-                <li
-                    className="box bg-bg-2! p-4! min-h-64 flex flex-col gap-4"
-                    style={{
-                        marginTop: data.image_url ? "0rem" : "8rem",
-                    }}
-                >
-                    {data.content?.trim().length ? (
-                        <p>{data.content}</p>
-                    ) : (
-                        <NoContent data={data} />
+                <ul className="flex flex-col gap-16">
+                    {data.image_url && (
+                        <li className="w-full relative h-150">
+                            <Image
+                                alt="post image"
+                                fill
+                                src={data.image_url}
+                                style={{ objectFit: "cover" }}
+                                className="invert-0! rounded-4xl"
+                            />
+                        </li>
                     )}
-                </li>
-            </ul>
+
+                    <li
+                        className="box p-4! min-h-64 flex flex-col gap-4 "
+                        style={{
+                            marginTop: data.image_url ? "0rem" : "8rem",
+                        }}
+                    >
+                        {data.content?.trim().length ?
+                            <p>{data.content}</p>
+                        :   <NoContent data={data} />}
+                    </li>
+                </ul>
+            </div>
         </article>
     );
 };

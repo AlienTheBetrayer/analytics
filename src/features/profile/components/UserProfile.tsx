@@ -6,6 +6,7 @@ import { Topline } from "./display/Topline";
 import { LoadingProfile } from "@/features/ui/loading/components/LoadingProfile";
 import { AbsentTopline } from "@/features/ui/loading/components/AbsentTopline";
 import { useQuery } from "@/query/core";
+import { Spinner } from "@/features/ui/spinner/components/Spinner";
 
 export const UserProfile = () => {
     // url
@@ -24,10 +25,9 @@ export const UserProfile = () => {
             <>
                 <AbsentTopline title="Incorrect username" />
 
-                <div
-                    className={`box max-w-400 mt-2 w-full m-auto min-h-128 rounded-4xl! overflow-hidden`}
-                >
+                <div className={`box max-w-400 mt-2 w-full m-auto min-h-128 rounded-4xl! overflow-hidden`}>
                     <LoadingProfile />
+                    <Spinner className="absolute left-1/2 top-1/2" />
                 </div>
             </>
         );
@@ -48,10 +48,9 @@ const UserProfileResult = ({ username }: ResultProps) => {
             <>
                 <AbsentTopline title="Loading..." />
 
-                <div
-                    className={`box max-w-400 mt-2 w-full m-auto min-h-128 rounded-4xl! overflow-hidden`}
-                >
+                <div className={`box max-w-400 mt-2 w-full m-auto min-h-128 rounded-4xl! overflow-hidden`}>
                     <LoadingProfile />
+                    <Spinner className="absolute left-1/2 top-1/2" />
                 </div>
             </>
         );
@@ -62,10 +61,9 @@ const UserProfileResult = ({ username }: ResultProps) => {
             <>
                 <AbsentTopline title="User does not exist!" />
 
-                <div
-                    className={`box max-w-400 mt-2 w-full m-auto min-h-128 rounded-4xl! overflow-hidden`}
-                >
+                <div className={`box max-w-400 mt-2 w-full m-auto min-h-128 rounded-4xl! overflow-hidden`}>
                     <LoadingProfile />
+                    <Spinner className="absolute left-1/2 top-1/2" />
                 </div>
             </>
         );
@@ -75,9 +73,7 @@ const UserProfileResult = ({ username }: ResultProps) => {
         <>
             <Topline data={data} />
 
-            <div
-                className={`box max-w-400 w-full m-auto rounded-4xl! min-h-128 overflow-hidden`}
-            >
+            <div className={`box max-w-400 p-1! sm:p-4! w-full m-auto rounded-4xl! min-h-128 overflow-hidden`}>
                 <Content data={data} />
             </div>
         </>

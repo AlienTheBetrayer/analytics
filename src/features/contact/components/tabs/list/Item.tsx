@@ -18,9 +18,7 @@ type Props = {
 
 export const Item = ({ className, id, filter }: Props) => {
     // local store
-    const display = useLocalStore(
-        (state) => state.display.view.contactMessages,
-    );
+    const display = useLocalStore((state) => state.display.view.contactMessages);
 
     // fetching
     const { data, isLoading } = useQuery({ key: ["contact_message", id] });
@@ -35,17 +33,14 @@ export const Item = ({ className, id, filter }: Props) => {
         return null;
     }
 
-    if (
-        filter &&
-        !data.title.trim().toLowerCase().includes(filter.trim().toLowerCase())
-    ) {
+    if (filter && !data.title.trim().toLowerCase().includes(filter.trim().toLowerCase())) {
         return null;
     }
 
     return (
         <div className="flex flex-col">
             <ul
-                className={`box bg-bg-2! h-10! flex-row! gap-1! items-center! justify-start! p-0! ${display !== "compact" ? "rounded-b-none! px-3!" : ""}`}
+                className={`box h-10! flex-row! gap-1! items-center! justify-start! p-0! ${display !== "compact" ? "rounded-b-none! px-3!" : ""}`}
             >
                 {display !== "compact" && (
                     <li>
@@ -67,7 +62,7 @@ export const Item = ({ className, id, filter }: Props) => {
                 {display === "compact" && (
                     <li className="w-full">
                         <LinkButton
-                            className="grid! grid-cols-[6rem_auto_1fr_auto] w-full gap-1! whitespace-nowrap"
+                            className="not-hover:bg-bg-1! grid! grid-cols-[6rem_auto_1fr_auto] w-full gap-1! whitespace-nowrap"
                             href={`/contact/view/${id}`}
                         >
                             <div className="flex items-center gap-1 box p-0.5! flex-row! bg-bg-3! truncate">

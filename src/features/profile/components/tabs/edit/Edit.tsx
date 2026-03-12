@@ -28,20 +28,16 @@ export const Edit = ({ data }: Props) => {
     const [name, setName] = useState<string>(data.profile.name ?? "");
     const [bio, setBio] = useState<string>(data.profile.bio ?? "");
     const [title, setTitle] = useState<string>(data.profile.title ?? "");
-    const [gender, setGender] = useState<ProfileGender>(
-        data.profile.gender ?? "unspecified",
-    );
+    const [gender, setGender] = useState<ProfileGender>(data.profile.gender ?? "unspecified");
     const [avatar, setAvatar] = useState<string>(data.profile.avatar_url ?? "");
-    const [avatarFile, setAvatarFile] = useState<File | undefined | null>(
-        undefined,
-    );
+    const [avatarFile, setAvatarFile] = useState<File | undefined | null>(undefined);
 
     // fetching
     const { data: colors } = useQuery({ key: ["colors", data.id] });
 
     return (
         <div className="flex flex-col gap-4 w-full grow">
-            <div className="flex flex-col gap-2 items-center">
+            <div className="box bg-bg-2! p-2! border-0! items-center">
                 <div className="flex gap-1 items-center">
                     <Image
                         width={16}
@@ -57,10 +53,8 @@ export const Edit = ({ data }: Props) => {
                 <span>Appearance editing</span>
             </div>
 
-            <hr />
-
             <form
-                className="grid lg:grid-cols-[30%_1fr] gap-16 lg:gap-8 grow"
+                className="grid lg:grid-cols-[30%_1fr] gap-4 grow"
                 onSubmit={async (e) => {
                     e.preventDefault();
 
@@ -82,15 +76,13 @@ export const Edit = ({ data }: Props) => {
                     });
                 }}
             >
-                <ul className="flex flex-col gap-4">
+                <ul className="flex flex-col gap-4 box grow bg-bg-2! p-4! border-0!">
                     <li className="flex flex-col items-center justify-center gap-2 grow">
                         <ImageSelectCircle
-                            className="w-screen max-w-48 aspect-square"
+                            className="w-screen max-w-48 aspect-square not-hover:bg-bg-1!"
                             value={avatar}
                             onChange={(file) => {
-                                setAvatar(
-                                    file ? URL.createObjectURL(file) : "",
-                                );
+                                setAvatar(file ? URL.createObjectURL(file) : "");
                                 setAvatarFile(file);
                             }}
                         />
@@ -108,11 +100,10 @@ export const Edit = ({ data }: Props) => {
                                 element={() => <Colors data={data} />}
                                 className="w-full"
                             >
-                                <Button className="w-full! max-w-81 lg:max-w-full mx-auto min-h-9! flex flex-col!">
-                                    {colors ? (
+                                <Button className="w-full! not-hover:bg-bg-1! max-w-81 lg:max-w-full mx-auto min-h-9! flex flex-col!">
+                                    {colors ?
                                         <ColorSwatches data={data} />
-                                    ) : (
-                                        <div className="flex gap-1 items-center">
+                                    :   <div className="flex gap-1 items-center">
                                             <Image
                                                 src="/cube.svg"
                                                 width={16}
@@ -121,14 +112,14 @@ export const Edit = ({ data }: Props) => {
                                             />
                                             Color panel
                                         </div>
-                                    )}
+                                    }
                                 </Button>
                             </Modal>
                         </Tooltip>
                     </li>
                 </ul>
 
-                <ul className="flex flex-col gap-4">
+                <ul className="flex flex-col gap-4 box grow bg-bg-2! p-4! border-0!">
                     <li className="flex flex-col">
                         <ul className="grid md:grid-cols-2 gap-8 md:gap-4">
                             <li className="flex flex-col gap-2">
@@ -143,11 +134,10 @@ export const Edit = ({ data }: Props) => {
                                         src="/pencil.svg"
                                     />
                                     Name
-                                    <small className="ml-auto truncate-left">
-                                        (your name, can be fictional)
-                                    </small>
+                                    <small className="ml-auto truncate-left">(your name, can be fictional)</small>
                                 </label>
                                 <Input
+                                    className="not-hover:bg-bg-1!"
                                     id="name"
                                     value={name}
                                     onChange={(e) => setName(e)}
@@ -168,12 +158,11 @@ export const Edit = ({ data }: Props) => {
                                         src="/type.svg"
                                     />
                                     Title
-                                    <small className="ml-auto truncate-left">
-                                        (a short phrase that feels yours)
-                                    </small>
+                                    <small className="ml-auto truncate-left">(a short phrase that feels yours)</small>
                                 </label>
 
                                 <Input
+                                    className="not-hover:bg-bg-1!"
                                     id="title"
                                     value={title}
                                     onChange={(e) => setTitle(e)}
@@ -196,11 +185,10 @@ export const Edit = ({ data }: Props) => {
                                 src="/menu.svg"
                             />
                             Status
-                            <small className="ml-auto truncate-left">
-                                (a short text capturing your mood)
-                            </small>
+                            <small className="ml-auto truncate-left">(a short text capturing your mood)</small>
                         </label>
                         <Input
+                            className="not-hover:bg-bg-1!"
                             id="status"
                             value={status}
                             onChange={(e) => setStatus(e)}
@@ -221,11 +209,10 @@ export const Edit = ({ data }: Props) => {
                                 src="/book.svg"
                             />
                             Bio
-                            <small className="ml-auto truncate-left">
-                                (a long piece of text, describe yourself)
-                            </small>
+                            <small className="ml-auto truncate-left">(a long piece of text, describe yourself)</small>
                         </label>
                         <Input
+                            className="not-hover:bg-bg-1!"
                             id="bio"
                             value={bio}
                             onChange={(e) => setBio(e)}
@@ -246,11 +233,10 @@ export const Edit = ({ data }: Props) => {
                                 src="/account.svg"
                             />
                             Gender
-                            <small className="ml-auto truncate-left">
-                                (the way you identify yourself)
-                            </small>
+                            <small className="ml-auto truncate-left">(the way you identify yourself)</small>
                         </label>
                         <Select
+                            className="not-hover:bg-bg-1!"
                             id="gender"
                             items={["Male", "Female", "Other", "Unspecified"]}
                             value={capitalize(gender)}
@@ -268,7 +254,7 @@ export const Edit = ({ data }: Props) => {
                         >
                             <Button
                                 type="submit"
-                                className="w-full"
+                                className="w-full not-hover:bg-bg-1!"
                             >
                                 <PromiseState state="updateUser" />
                                 <Image

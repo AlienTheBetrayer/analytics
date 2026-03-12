@@ -8,10 +8,8 @@ export const Preferences = () => {
     const updatePreferences = useLocalStore((state) => state.updatePreferences);
 
     return (
-        <div className="flex flex-col gap-4 grow">
+        <div className="box grow bg-bg-2! p-4! border-0! gap-4!">
             <Topline />
-
-            <hr />
 
             <label
                 htmlFor="visibility"
@@ -23,6 +21,7 @@ export const Preferences = () => {
                 </small>
             </label>
             <Checkbox
+                className="not-hover:bg-bg-1!"
                 id="visibility"
                 value={preferences.visibility}
                 onToggle={(flag) => {

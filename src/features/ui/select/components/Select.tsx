@@ -2,32 +2,40 @@ import { motion } from "motion/react";
 import { type ComponentPropsWithoutRef } from "react";
 import { useInputSelect } from "../hooks/useInputSelect";
 import Image from "next/image";
+import { rippleEnable } from "@/features/ui/ripple/utils/ripple";
 
 type Props = {
     items: string[];
     onChange?: (item: string) => void;
 } & Omit<ComponentPropsWithoutRef<"button">, "onChange">;
 
-export const Select = ({
-    items,
-    className,
-    value,
-    onChange,
-    ...rest
-}: Props) => {
+export const Select = ({ items, className, onPointerDown, onPointerEnter, value, onChange, ...rest }: Props) => {
     // controller
-    const { inputRef, inputValue, expandToggle, keyDown, render } =
-        useInputSelect(items, value as string | undefined, onChange);
+    const { inputRef, inputValue, expandToggle, keyDown, render } = useInputSelect(
+        items,
+        value as string | undefined,
+        onChange,
+    );
 
     return (
         <button
             ref={inputRef}
             type="button"
-            className={`flex w-full items-center min-h-8 
+            className={`flex w-full items-center min-h-8 ripple
             bg-bg-2 outline-2 outline-bg-3 p-2 rounded-full focus:outline-blue-1 
              hover:bg-bg-3 active:bg-bg-4 transition-all duration-300 ease-out cursor-pointer ${className ?? ""}`}
             onClick={expandToggle}
             onKeyDown={keyDown}
+            onPointerDown={(e) => {
+                onPointerDown?.(e);
+                rippleEnable(e);
+            }}
+            onPointerEnter={(e) => {
+                onPointerEnter?.(e);
+                if (e.buttons & 1) {
+                    rippleEnable(e);
+                }
+            }}
             {...rest}
         >
             <motion.span

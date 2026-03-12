@@ -7,7 +7,7 @@ type Props = {
 
 export const Edit = ({ id }: Props) => {
     return (
-        <div className="flex flex-col gap-4 grow w-full mx-auto">
+        <div className="box bg-bg-2! grow w-full mx-auto">
             <div className="flex gap-1 items-center justify-center">
                 <Image
                     alt=""

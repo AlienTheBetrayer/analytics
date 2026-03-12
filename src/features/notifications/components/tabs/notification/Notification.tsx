@@ -16,7 +16,7 @@ export const Notification = () => {
         : undefined;
 
     return (
-        <div className="flex flex-col gap-8">
+        <div className="box grow bg-bg-2! p-4! border-0!">
             <Topline data={data} />
             <Display data={data} />
         </div>

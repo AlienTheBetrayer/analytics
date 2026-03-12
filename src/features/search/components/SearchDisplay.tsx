@@ -27,7 +27,7 @@ export const SearchDisplay = ({ filter, data }: Props) => {
     }
 
     return (
-        <div className="flex flex-col gap-2">
+        <div className="box p-4! gap-2! bg-bg-2!">
             <SearchDisplayProfile data={data} />
 
             {!!data.post_ids.length && <SearchDisplayPosts data={data} />}
@@ -54,16 +54,12 @@ const SearchDisplayProfile = ({ data }: Props) => {
         >
             <LinkButton
                 href={`/profile/${user.username}`}
-                className="justify-start! p-4! min-h-24 rounded-4xl!"
+                className="justify-start! p-4! min-h-24 rounded-4xl! not-hover:bg-bg-1!"
             >
                 <ul className="flex flex-col w-full! md:flex-row gap-4! pt-8! md:pt-0! items-center! justify-start! text-center">
                     <li
                         className="p-1! border rounded-full aspect-square"
-                        style={
-                            user.profile.color
-                                ? { borderColor: `${user.profile.color}` }
-                                : {}
-                        }
+                        style={user.profile.color ? { borderColor: `${user.profile.color}` } : {}}
                     >
                         <ProfileImage
                             className="w-32! md:w-16! h-fit! aspect-square!"
@@ -84,7 +80,8 @@ const SearchDisplayProfile = ({ data }: Props) => {
 
                     <li className="absolute left-1/2 top-6 md:top-4 -translate-x-1/2">
                         <span className="flex gap-1 items-center">
-                            <mark>{user.username}</mark>
+                            <div className="w-1 h-1 rounded-full bg-blue-1" />
+                            <span>{user.username}</span>
                         </span>
                     </li>
 
@@ -147,9 +144,7 @@ const SearchDisplayPost = ({ id }: PostProps) => {
                     />
                 )}
 
-                <span className="z-2 mix-blend-difference text-white!">
-                    {post.title}
-                </span>
+                <span className="z-2 mix-blend-difference text-white!">{post.title}</span>
 
                 <div className="flex items-center gap-1 z-2 mix-blend-difference">
                     <Image
@@ -159,9 +154,7 @@ const SearchDisplayPost = ({ id }: PostProps) => {
                         src={`${post.edited_at ? "/pencil.svg" : "/plus.svg"}`}
                         className="invert-100!"
                     />
-                    <span className="text-white!">
-                        {relativeTime(post.edited_at || post.created_at)}
-                    </span>
+                    <span className="text-white!">{relativeTime(post.edited_at || post.created_at)}</span>
                 </div>
             </LinkButton>
         </li>

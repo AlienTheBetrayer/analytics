@@ -1,19 +1,14 @@
+import { Button } from "@/features/ui/button/components/Button";
 import { useDisabledScroll } from "@/hooks/useDisabledScroll";
 import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
-export const useInputSelect = (
-    items: string[],
-    value: string | undefined,
-    onChange?: (item: string) => void,
-) => {
+export const useInputSelect = (items: string[], value: string | undefined, onChange?: (item: string) => void) => {
     // states
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
-    const [selectedItem, setSelectedItem] = useState<string>(
-        items.length > 0 ? items[0] : "",
-    );
+    const [selectedItem, setSelectedItem] = useState<string>(items.length > 0 ? items[0] : "");
 
     const { setIsDisabled } = useDisabledScroll();
 
@@ -75,12 +70,7 @@ export const useInputSelect = (
 
             const bounds = dialogRef.current.getBoundingClientRect();
 
-            if (
-                x > bounds.left &&
-                x < bounds.right &&
-                y > bounds.top &&
-                y < bounds.bottom
-            ) {
+            if (x > bounds.left && x < bounds.right && y > bounds.top && y < bounds.bottom) {
                 return;
             }
 
@@ -121,11 +111,11 @@ export const useInputSelect = (
                         >
                             {items.map((item) => (
                                 <li key={item}>
-                                    <button
+                                    <Button
                                         type="button"
-                                        className={`grid grid-cols-[1.25rem_1fr] gap-2 items-center w-full 
-             backdrop-blur-md p-2.5 outline-0 focus:bg-bg-2
-             hover:bg-bg-a-3 active:bg-bg-a-4 transition-colors duration-300 ease-out group cursor-pointer`}
+                                        className={`grid! grid-cols-[1.25rem_1fr] gap-2 items-center w-full 
+             backdrop-blur-md! p-2.5! outline-0 focus:bg-bg-2! not-hover:bg-transparent! rounded-none! border-0!
+             hover:bg-bg-a-3! active:bg-bg-a-4! transition-colors duration-300 ease-out group cursor-pointer`}
                                         onClick={(e) => {
                                             e.stopPropagation();
                                             if (value) {
@@ -152,10 +142,8 @@ export const useInputSelect = (
                                             )}
                                         </div>
 
-                                        <span className="whitespace-nowrap text-ellipsis text-left">
-                                            {item}
-                                        </span>
-                                    </button>
+                                        <span className="whitespace-nowrap text-ellipsis text-left">{item}</span>
+                                    </Button>
                                 </li>
                             ))}
                         </motion.ul>

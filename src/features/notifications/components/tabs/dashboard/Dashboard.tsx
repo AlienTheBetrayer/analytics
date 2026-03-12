@@ -8,7 +8,7 @@ export const Dashboard = () => {
     const notifications = useAppStore((state) => state.notifications).Dashboard;
 
     return (
-        <div className="flex flex-col gap-4">
+        <div className="box grow bg-bg-2! p-4! border-0!">
             <div className="flex items-center justify-center relative w-full gap-1">
                 <Image
                     alt="dashboard-only"
@@ -23,8 +23,6 @@ export const Dashboard = () => {
             </div>
 
             <Topline tab="Dashboard" />
-
-            <hr />
             <TabDisplay tab="Dashboard" />
         </div>
     );

@@ -29,8 +29,7 @@ export const Security = ({ data }: Props) => {
     return (
         <div className="flex flex-col gap-4 w-full grow">
             {deleteBox.render({
-                children:
-                    "You are about to delete your account data forever! Think twice!",
+                children: "You are about to delete your account data forever! Think twice!",
                 onSelect: (res) => {
                     if (res === "yes") {
                         if (data.id === status?.id) {
@@ -41,7 +40,7 @@ export const Security = ({ data }: Props) => {
                 },
             })}
 
-            <div className="flex flex-col gap-2 items-center">
+            <div className="box bg-bg-2! p-2! border-0! items-center">
                 <div className="flex gap-1 items-center">
                     <Image
                         width={16}
@@ -57,10 +56,8 @@ export const Security = ({ data }: Props) => {
                 <span>Security & Authentication</span>
             </div>
 
-            <hr />
-
-            <div className="grid lg:grid-cols-[30%_1fr] gap-16 lg:gap-8 grow">
-                <div className="flex flex-col items-center gap-2">
+            <div className="grid lg:grid-cols-[30%_1fr] gap-4 grow">
+                <div className="flex flex-col items-center gap-2 box grow bg-bg-2! p-4! border-0!">
                     <span>{data.profile.name}</span>
                     <ProfileImage
                         profile={data.profile}
@@ -74,7 +71,7 @@ export const Security = ({ data }: Props) => {
                             className="w-full"
                         >
                             <Button
-                                className="w-full"
+                                className="w-full not-hover:bg-bg-1!"
                                 onClick={() => {
                                     wrapPromise("logout", async () => {
                                         applicationLogout();
@@ -98,7 +95,7 @@ export const Security = ({ data }: Props) => {
                                 text="Confirm deletion"
                             >
                                 <Checkbox
-                                    className="rounded-full! w-8! justify-center! bg-blue-1"
+                                    className="rounded-full! w-8! justify-center! not-hover:bg-bg-1!"
                                     onToggle={(e) => setIsDeletionEnabled(e)}
                                     value={isDeletionEnabled}
                                 />
@@ -111,7 +108,7 @@ export const Security = ({ data }: Props) => {
                                 isEnabled={isDeletionEnabled}
                             >
                                 <Button
-                                    className="w-full"
+                                    className="w-full not-hover:bg-bg-1!"
                                     onClick={() => {
                                         deleteBox.show();
                                     }}
@@ -137,7 +134,9 @@ export const Security = ({ data }: Props) => {
                     </div>
                 </div>
 
-                <Select data={data} />
+                <div className="box grow bg-bg-2! p-4! border-0!">
+                    <Select data={data} />
+                </div>
             </div>
         </div>
     );

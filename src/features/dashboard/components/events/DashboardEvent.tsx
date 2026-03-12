@@ -26,16 +26,12 @@ export const DashboardEvent = ({ event }: Props) => {
             direction="top"
         >
             <li
-                className="sm:h-16 dashboard-event relative gap-3 rounded-full
-            bg-bg-2! px-4! py-2! hover:bg-bg-3! focus-within:bg-bg-3! duration-400 ease-out transition-all"
+                className="sm:h-16 dashboard-event relative gap-3 rounded-2xl
+            not-hover:bg-bg-1! px-4! py-2! hover:bg-bg-3! focus-within:bg-bg-3! duration-400 ease-out transition-all"
             >
                 <div className="absolute inset-0 grid place-items-center pointer-events-none select-none">
-                    <span
-                        className={`text-5xl! opacity-30 transition-all duration-300 ease-out`}
-                    >
-                        {event.type && (
-                            <small>{event.type[0].toUpperCase()}</small>
-                        )}
+                    <span className={`text-5xl! opacity-30 transition-all duration-300 ease-out`}>
+                        {event.type && <small>{event.type[0].toUpperCase()}</small>}
                     </span>
                 </div>
 
@@ -92,16 +88,9 @@ type PropertyProps = {
     image?: string;
 };
 
-const EventProperty = ({
-    eventType,
-    value,
-    image,
-    className,
-}: PropertyProps) => {
+const EventProperty = ({ eventType, value, image, className }: PropertyProps) => {
     return (
-        <div
-            className={`dashboard-event-element flex flex-col ${className ?? ""}`}
-        >
+        <div className={`dashboard-event-element flex flex-col ${className ?? ""}`}>
             <span>
                 <small className="flex items-center gap-1">
                     {image && (
@@ -115,13 +104,12 @@ const EventProperty = ({
                     {eventType}
                 </small>
             </span>
-            {value ? (
+            {value ?
                 <span>{value}</span>
-            ) : (
-                <span>
+            :   <span>
                     <small>None</small>
                 </span>
-            )}
+            }
         </div>
     );
 };

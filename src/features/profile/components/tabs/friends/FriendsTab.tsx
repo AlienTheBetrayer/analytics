@@ -1,4 +1,5 @@
 import { ProfileDisplay } from "@/features/profile/components/ProfileDisplay";
+import { Spinner } from "@/features/ui/spinner/components/Spinner";
 import { CacheAPIProtocol } from "@/query-api/protocol";
 import { useQuery } from "@/query/core";
 import Image from "next/image";
@@ -16,13 +17,14 @@ export const FriendsTab = ({ data, fetchKey }: Props) => {
 
     if (isLoading) {
         return (
-            <div className="flex flex-col gap-2 grow">
+            <div className="flex flex-col gap-2 relative">
                 {Array.from({ length: 4 }, (_, k) => (
                     <li
                         key={k}
                         className="w-full loading h-12"
                     />
                 ))}
+                <Spinner className="absolute left-1/2 top-1/2" />
             </div>
         );
     }
@@ -52,15 +54,10 @@ export const FriendsTab = ({ data, fetchKey }: Props) => {
                         alt=""
                         width={16}
                         height={16}
-                        src={
-                            fetchKey === "friends"
-                                ? "/friends.svg"
-                                : "/auth.svg"
-                        }
+                        src={fetchKey === "friends" ? "/friends.svg" : "/auth.svg"}
                     />
                     <span>
-                        {fetchKey === "friends" ? "Friends" : "Requests"} are{" "}
-                        <u>absent</u>
+                        {fetchKey === "friends" ? "Friends" : "Requests"} are <u>absent</u>
                     </span>
                 </span>
             </div>

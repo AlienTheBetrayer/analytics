@@ -57,14 +57,12 @@ export const Data = ({ data }: Props) => {
                             src="/pencil.svg"
                         />
                         <span>Username</span>
-                        <small className="ml-auto truncate-left">
-                            (a new username)
-                        </small>
+                        <small className="ml-auto truncate-left">(a new username)</small>
                     </label>
 
                     <div className="flex items-center gap-2">
                         <Checkbox
-                            className="rounded-full! w-8! justify-center!"
+                            className="rounded-full! w-8! justify-center! not-hover:bg-bg-1!"
                             onToggle={(e) =>
                                 setFieldsEnabled((prev) => ({
                                     ...prev,
@@ -74,6 +72,7 @@ export const Data = ({ data }: Props) => {
                             value={fieldsEnabled.username}
                         />
                         <Input
+                            className="not-hover:bg-bg-1!"
                             id="username"
                             type="username"
                             isEnabled={fieldsEnabled.username}
@@ -98,14 +97,12 @@ export const Data = ({ data }: Props) => {
                             src="/security.svg"
                         />
                         <span>Password</span>
-                        <small className="ml-auto truncate-left">
-                            (a new strong password)
-                        </small>
+                        <small className="ml-auto truncate-left">(a new strong password)</small>
                     </label>
 
                     <div className="flex gap-2 items-center">
                         <Checkbox
-                            className="rounded-full! w-8! justify-center!"
+                            className="rounded-full! w-8! justify-center! not-hover:bg-bg-1!"
                             onToggle={(e) =>
                                 setFieldsEnabled((prev) => ({
                                     ...prev,
@@ -115,6 +112,7 @@ export const Data = ({ data }: Props) => {
                             value={fieldsEnabled.password}
                         />
                         <Input
+                            className="not-hover:bg-bg-1!"
                             id="password"
                             isEnabled={fieldsEnabled.password}
                             type="password"
@@ -135,10 +133,8 @@ export const Data = ({ data }: Props) => {
                     >
                         <Button
                             type="submit"
-                            className="w-full"
-                            isEnabled={Object.values(fieldsEnabled).some(
-                                Boolean,
-                            )}
+                            className="w-full not-hover:bg-bg-1!"
+                            isEnabled={Object.values(fieldsEnabled).some(Boolean)}
                         >
                             <PromiseState state="updateUser" />
                             <Image

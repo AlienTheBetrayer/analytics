@@ -24,8 +24,7 @@ export const View = () => {
     return (
         <div className="flex flex-col grow! w-full gap-8">
             {deleteBox.render({
-                children:
-                    "This message will be permanently deleted and we won't be able to see it.",
+                children: "This message will be permanently deleted and we won't be able to see it.",
                 onSelect: (res) => {
                     if (res === "yes") {
                         if (!data) {
@@ -42,82 +41,80 @@ export const View = () => {
                 },
             })}
 
-            <ul
-                className={`box bg-bg-2! p-0! h-10! w-full items-center flex-row! ${!data ? "opacity-30" : ""}`}
-                inert={!!!data}
-            >
-                <li>
-                    <Tooltip text="Go back">
-                        <LinkButton
-                            ariaLabel="back"
-                            href="/contact/list"
+            <div className="box grow bg-bg-2! p-4! gap-4! border-0!">
+                <ul
+                    className={`box p-0! h-10! w-full items-center flex-row! ${!data ? "opacity-30" : ""}`}
+                    inert={!!!data}
+                >
+                    <li>
+                        <Tooltip text="Go back">
+                            <LinkButton
+                                ariaLabel="back"
+                                href="/contact/list"
+                            >
+                                <Image
+                                    alt="back"
+                                    width={16}
+                                    height={16}
+                                    src="/back.svg"
+                                />
+                            </LinkButton>
+                        </Tooltip>
+                    </li>
+
+                    <li className="ml-auto!">
+                        <Tooltip
+                            text="Edit"
+                            isEnabled={status?.id === data?.user_id}
                         >
-                            <Image
-                                alt="back"
-                                width={16}
-                                height={16}
-                                src="/back.svg"
-                            />
-                        </LinkButton>
-                    </Tooltip>
-                </li>
+                            <LinkButton
+                                ariaLabel="edit"
+                                href={`/contact/edit/${id}`}
+                            >
+                                <Image
+                                    alt="edit"
+                                    width={16}
+                                    height={16}
+                                    src="/pencil.svg"
+                                />
+                            </LinkButton>
+                        </Tooltip>
+                    </li>
 
-                <li className="ml-auto!">
-                    <Tooltip
-                        text="Edit"
-                        isEnabled={status?.id === data?.user_id}
-                    >
-                        <LinkButton
-                            ariaLabel="edit"
-                            href={`/contact/edit/${id}`}
+                    <li>
+                        <Tooltip
+                            text="Unsend"
+                            isEnabled={
+                                status?.id === data?.user_id || status?.role === "admin" || status?.role === "op"
+                            }
                         >
-                            <Image
-                                alt="edit"
-                                width={16}
-                                height={16}
-                                src="/pencil.svg"
-                            />
-                        </LinkButton>
-                    </Tooltip>
-                </li>
+                            <Button
+                                aria-label="delete"
+                                onClick={deleteBox.show}
+                            >
+                                <PromiseState state="deleteContact" />
+                                <Image
+                                    alt="delete"
+                                    width={16}
+                                    height={16}
+                                    src="/delete.svg"
+                                />
+                            </Button>
+                        </Tooltip>
+                    </li>
+                </ul>
 
-                <li>
-                    <Tooltip
-                        text="Unsend"
-                        isEnabled={
-                            status?.id === data?.user_id ||
-                            status?.role === "admin" ||
-                            status?.role === "op"
-                        }
-                    >
-                        <Button
-                            aria-label="delete"
-                            onClick={deleteBox.show}
-                        >
-                            <PromiseState state="deleteContact" />
-                            <Image
-                                alt="delete"
-                                width={16}
-                                height={16}
-                                src="/delete.svg"
-                            />
-                        </Button>
-                    </Tooltip>
-                </li>
-            </ul>
+                <ViewMessage
+                    data={data}
+                    isLoading={isLoading}
+                />
+            </div>
 
-            <ViewMessage
-                data={data}
-                isLoading={isLoading}
-            />
-
-            {(status?.id === data?.user_id ||
-                status?.role === "admin" ||
-                status?.role === "op") && (
-                <>
+            <div className="box grow bg-bg-2! p-4! gap-4! border-0!">
+                {(status?.id === data?.user_id || status?.role === "admin" || status?.role === "op") && (
                     <Response data={data} />
-                </>
-            )}
+                )}
+            </div>
         </div>
     );
 };

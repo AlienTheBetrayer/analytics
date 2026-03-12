@@ -17,10 +17,9 @@ export const Role = ({ className, data }: Props) => {
             case "user": {
                 return {
                     element: (
-                        <div
-                            className={`box p-1! px-2! w-max! items-center! outline-1 outline-[#8a8b91] ${className ?? ""}`}
-                        >
-                            <div className="flex gap-1">
+                        <div className={`box p-2! w-max! items-center! ${className ?? ""}`}>
+                            <div className="flex gap-1 items-center">
+                                <div className="w-1 h-1 rounded-full bg-[#8a8b91]" />
                                 <Image
                                     width={16}
                                     height={16}
@@ -37,10 +36,9 @@ export const Role = ({ className, data }: Props) => {
             case "admin": {
                 return {
                     element: (
-                        <div
-                            className={`box p-1! px-2! w-max! items-center! outline-1 outline-[#97a2da] ${className ?? ""}`}
-                        >
-                            <div className="flex gap-1">
+                        <div className={`box p-1! px-2! w-max! items-center! ${className ?? ""}`}>
+                            <div className="flex gap-1 items-center">
+                                <div className="w-1 h-1 rounded-full bg-red-3" />
                                 <Image
                                     width={16}
                                     height={16}
@@ -57,10 +55,9 @@ export const Role = ({ className, data }: Props) => {
             case "op": {
                 return {
                     element: (
-                        <div
-                            className={`box p-1! px-2! w-max! items-center! outline-1 outline-[#cd5151] ${className ?? ""}`}
-                        >
-                            <div className="flex gap-1">
+                        <div className={`box p-1! px-2! w-max! items-center! ${className ?? ""}`}>
+                            <div className="flex gap-1 items-center">
+                                <div className="w-1 h-1 rounded-full bg-blue-1" />
                                 <Image
                                     width={16}
                                     height={16}

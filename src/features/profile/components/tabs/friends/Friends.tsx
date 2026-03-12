@@ -10,7 +10,7 @@ type Props = {
 export const Friends = ({ data }: Props) => {
     return (
         <div className="flex flex-col gap-4 w-full grow">
-            <div className="flex flex-col gap-2 items-center">
+            <div className="box bg-bg-2! p-2! border-0! items-center">
                 <div className="flex gap-1 items-center">
                     <Image
                         width={16}
@@ -26,10 +26,8 @@ export const Friends = ({ data }: Props) => {
                 <span>Friends & Friend requests</span>
             </div>
 
-            <hr />
-
-            <div className="grid lg:grid-cols-[30%_1fr] gap-16 lg:gap-8 grow">
-                <div className="flex flex-col items-center gap-2">
+            <div className="grid lg:grid-cols-[30%_1fr] gap-4 grow">
+                <div className="flex flex-col items-center gap-2 box grow bg-bg-2! p-4! border-0!">
                     <span>{data.profile.name}</span>
                     <ProfileImage
                         profile={data.profile}
@@ -38,7 +36,9 @@ export const Friends = ({ data }: Props) => {
                     />
                 </div>
 
-                <Select data={data} />
+                <div className="box grow bg-bg-2! p-4! border-0!">
+                    <Select data={data} />
+                </div>
             </div>
         </div>
     );

@@ -3,10 +3,7 @@ import { queryDelete, queryInvalidate } from "@/query/auxiliary";
 import { refreshedRequest } from "@/utils/auth/refreshedRequest";
 import axios, { AxiosError } from "axios";
 
-export const applicationLogin = async (options: {
-    username: string;
-    password: string;
-}) => {
+export const applicationLogin = async (options: { username: string; password: string }) => {
     try {
         const res = await axios.post("/api/auth/login", { ...options });
 
@@ -25,10 +22,7 @@ export const applicationLogout = async () => {
     return res;
 };
 
-export const applicationSignup = async (options: {
-    username: string;
-    password: string;
-}) => {
+export const applicationSignup = async (options: { username: string; password: string }) => {
     try {
         const res = await axios.post("/api/auth/signup", { ...options });
 
@@ -38,8 +32,7 @@ export const applicationSignup = async (options: {
                 status: "Information",
                 tab: "Account",
                 title: "Account registered!",
-                description:
-                    "You have just successfully registered a new account!",
+                description: "You have just successfully registered a new account!",
                 type: "Signed up",
             },
         });
@@ -50,10 +43,7 @@ export const applicationSignup = async (options: {
     }
 };
 
-export const terminateSessions = async (options: {
-    user_id: string;
-    session_ids: string[];
-}) => {
+export const terminateSessions = async (options: { user_id: string; session_ids: string[] }) => {
     const res = await refreshedRequest({
         route: "/api/auth/terminate",
         method: "POST",
@@ -68,8 +58,7 @@ export const terminateSessions = async (options: {
             status: "Warning",
             tab: "Account",
             title: "Sessions terminated!",
-            description:
-                "Now you only have one session remaining (the current one)",
+            description: "You have just terminated a session or two",
             type: "Sessions terminated",
         },
     });

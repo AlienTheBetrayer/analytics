@@ -18,12 +18,15 @@ export const Sorting = () => {
     return (
         <div className="relative box p-4! acrylic gap-4! w-full">
             <span className="flex flex-col items-center">
-                <Image
-                    alt="filter"
-                    src="/sort.svg"
-                    width={16}
-                    height={16}
-                />
+                <span className="flex items-center gap-1">
+                    <div className="w-1 h-1 rounded-full bg-blue-1" />
+                    <Image
+                        alt="filter"
+                        src="/sort.svg"
+                        width={16}
+                        height={16}
+                    />
+                </span>
                 Sorting
             </span>
 
@@ -36,10 +39,7 @@ export const Sorting = () => {
                 >
                     <Select
                         items={["Type", "Description", "Created Date"]}
-                        value={
-                            eventFilters[selectedProjectId]?.eventsSorting
-                                ?.column ?? "Created Date"
-                        }
+                        value={eventFilters[selectedProjectId]?.eventsSorting?.column ?? "Created Date"}
                         onChange={(item) => {
                             setFilter({
                                 project_id: selectedProjectId,
@@ -53,10 +53,9 @@ export const Sorting = () => {
                 <Tooltip
                     direction="top"
                     text={
-                        eventFilters[selectedProjectId]?.eventsSorting
-                            ?.direction === "ascendant"
-                            ? "Ascendant"
-                            : "Descendant"
+                        eventFilters[selectedProjectId]?.eventsSorting?.direction === "ascendant" ?
+                            "Ascendant"
+                        :   "Descendant"
                     }
                 >
                     <Button
@@ -66,11 +65,9 @@ export const Sorting = () => {
                                 project_id: selectedProjectId,
                                 type: "event-sort",
                                 direction:
-                                    eventFilters[selectedProjectId]
-                                        ?.eventsSorting?.direction ===
-                                    "ascendant"
-                                        ? "descendant"
-                                        : "ascendant",
+                                    eventFilters[selectedProjectId]?.eventsSorting?.direction === "ascendant" ?
+                                        "descendant"
+                                    :   "ascendant",
                             });
                         }}
                     >
@@ -82,11 +79,9 @@ export const Sorting = () => {
                             className="duration-500! ease-out!"
                             style={{
                                 transform:
-                                    eventFilters[selectedProjectId]
-                                        ?.eventsSorting?.direction ===
-                                    "ascendant"
-                                        ? `rotate(180deg)`
-                                        : `rotate(0deg)`,
+                                    eventFilters[selectedProjectId]?.eventsSorting?.direction === "ascendant" ?
+                                        `rotate(180deg)`
+                                    :   `rotate(0deg)`,
                             }}
                         />
                     </Button>

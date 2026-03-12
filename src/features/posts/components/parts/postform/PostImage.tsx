@@ -126,7 +126,7 @@ export const PostImage = React.memo(function PostImageComponent({
             </AnimatePresence>
 
             <Button
-                className={`absolute! inset-0 rounded-4xl! w-full! ${img || dragging ? "border-2! border-blue-1!" : "border-0!"}`}
+                className={`absolute! not-hover:bg-bg-1! inset-0 rounded-4xl! w-full! ${img || dragging ? "border-2! border-blue-1!" : "border-0!"}`}
                 onClick={() => {
                     selectRef.current?.click();
                 }}

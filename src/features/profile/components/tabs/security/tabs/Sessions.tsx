@@ -76,6 +76,7 @@ export const Sessions = ({ data }: Props) => {
                     direction="top"
                 >
                     <Button
+                        className="not-hover:bg-bg-1!"
                         onClick={() => {
                             wrapPromise("sessionsReload", async () => {
                                 return queryInvalidate({
@@ -124,7 +125,7 @@ export const Sessions = ({ data }: Props) => {
                 className="w-full mt-auto!"
             >
                 <Button
-                    className="w-full"
+                    className="w-full not-hover:bg-bg-1!"
                     onClick={() => {
                         deleteBox.show();
                     }}

@@ -15,7 +15,7 @@ export const ProjectList = ({ data }: Props) => {
 
     return (
         <ul
-            className="flex flex-col gap-2 min-h-32 max-h-64 p-1! overflow-y-auto scheme-dark"
+            className="box grow bg-bg-2! p-4! border-0! min-h-32 max-h-96 overflow-y-auto scheme-dark"
             style={{
                 scrollbarWidth: "thin",
             }}
@@ -29,7 +29,7 @@ export const ProjectList = ({ data }: Props) => {
                     >
                         <LinkButton
                             href={`/emulate/${project.id !== id ? project.id : ""}`}
-                            className={`flex flex-row! w-full h-full box p-4!
+                            className={`flex flex-row! w-full h-full box p-4! not-hover:bg-bg-1!
                             ${project.id === id ? "border-blue-1!" : ""}`}
                         >
                             <Image
@@ -52,17 +52,17 @@ export const ProjectList = ({ data }: Props) => {
             <li>
                 <LinkButton
                     href="/emulate/"
-                    className={`flex flex-row! w-full h-full box p-4!
+                    className={`flex flex-row! w-full h-full box p-4! not-hover:bg-bg-1!
                             ${!id ? "border-blue-1!" : ""}
                             `}
                 >
+                    <div className="w-1 h-1 rounded-full bg-orange-1" />
                     <Image
                         src="/cubeadd.svg"
                         width={16}
                         height={16}
                         alt=""
                     />
-
                     <span>Synthetic project</span>
                 </LinkButton>
             </li>

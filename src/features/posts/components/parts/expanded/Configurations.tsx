@@ -25,7 +25,7 @@ export const Configurations = ({ data }: Props) => {
     const [likes, setLikes] = useState<boolean>(post_privacy?.likes ?? true);
 
     return (
-        <div className="box w-full">
+        <div className="box w-full p-4! gap-4! acrylic">
             <div className="flex flex-col items-center">
                 <Image
                     alt=""
@@ -64,16 +64,6 @@ export const Configurations = ({ data }: Props) => {
                 }}
             >
                 <ul className="flex flex-col gap-2">
-                    <li className="flex items-center gap-1">
-                        <Image
-                            alt=""
-                            width={16}
-                            height={16}
-                            src="/security.svg"
-                        />
-                        <span>Others able to:</span>
-                    </li>
-
                     <li className="flex flex-col gap-2 items-center">
                         <Checkbox
                             value={comments}

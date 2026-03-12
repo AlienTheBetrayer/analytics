@@ -48,7 +48,7 @@ export const Select = ({ data }: Props) => {
     };
 
     return (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 grow">
             <ul
                 className={`box p-0! gap-1! flex-row! w-full transition-all duration-500 min-h-10 h-10 items-center`}
             >

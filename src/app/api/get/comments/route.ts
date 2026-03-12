@@ -29,21 +29,14 @@ export const GET = async (request: NextRequest) => {
             )
             .eq(post_id ? "post_id" : "id", post_id || comment_id)
             // likes
-            .eq(
-                "has_liked.user_id",
-                caller_id ?? "00000000-0000-0000-0000-000000000000",
-            )
+            .eq("has_liked.user_id", caller_id ?? "00000000-0000-0000-0000-000000000000")
             .eq("has_liked.like", true)
             // dislikes
-            .eq(
-                "has_disliked.user_id",
-                caller_id ?? "00000000-0000-0000-0000-000000000000",
-            )
+            .eq("has_disliked.user_id", caller_id ?? "00000000-0000-0000-0000-000000000000")
             .eq("has_disliked.like", false)
             // total likes
             .eq("likes.like", true)
             // sorting
-            .order("edited_at", { ascending: false, nullsFirst: false })
             .order("created_at", { ascending: false })) as {
             data: (Comment & {
                 has_liked: string[];

@@ -55,7 +55,7 @@ export const EventTopline = () => {
                     }
                 >
                     <Tooltip text="Filter events">
-                        <Button className="aspect-square">
+                        <Button className="aspect-square  not-hover:bg-bg-1!">
                             <Image
                                 alt="filter"
                                 src="/filter.svg"
@@ -78,7 +78,7 @@ export const EventTopline = () => {
                     element={() => <Sorting />}
                 >
                     <Tooltip text="Sort events">
-                        <Button className="aspect-square">
+                        <Button className="aspect-square  not-hover:bg-bg-1!">
                             <Image
                                 alt="sort"
                                 src="/sort.svg"

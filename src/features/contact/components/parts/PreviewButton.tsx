@@ -39,7 +39,7 @@ export const PreviewButton = ({
         <Tooltip
             direction="middle"
             element={
-                type === "form" ? (
+                type === "form" ?
                     <div className="box flex-row! p-2!">
                         <Image
                             alt=""
@@ -49,19 +49,13 @@ export const PreviewButton = ({
                         />
                         <span>Preview</span>
                     </div>
-                ) : (
-                    <PreviewDate data={data} />
-                )
+                :   <PreviewDate data={data} />
             }
             className="w-full h-full flex items-center"
         >
             <LinkButton
-                href={
-                    type === "form"
-                        ? `/contact/send/`
-                        : `/contact/view/${data.id}`
-                }
-                className={`flex flex-col p-4! w-full 
+                href={type === "form" ? `/contact/send/` : `/contact/view/${data.id}`}
+                className={`not-hover:bg-bg-1! flex flex-col p-4! w-full 
                  justify-start! items-stretch! rounded-4xl! h-full!
                  ${expanded ? "max-h-100 md:max-h-150" : "max-h-64 md:max-h-32"} ${className ?? ""}`}
             >
@@ -98,28 +92,26 @@ export const PreviewButton = ({
                             </span>
                         )}
 
-                        {avatar_url ? (
+                        {avatar_url ?
                             <ProfileImage
                                 className="w-full aspect-square!"
                                 src={avatar_url}
                                 width={256}
                                 height={256}
                             />
-                        ) : avatar_color ? (
+                        : avatar_color ?
                             <div
                                 className="w-full aspect-square rounded-full!"
                                 style={{
                                     background: avatar_color,
                                 }}
                             />
-                        ) : (
-                            <div className="w-full aspect-square loading rounded-full!" />
-                        )}
+                        :   <div className="w-full aspect-square loading rounded-full!" />}
                     </div>
 
                     <ul className="grid grid-flow-row grid-rows-[1.5rem_1.5rem_1fr] wrap-anywhere items-center w-full grow gap-1 overflow-hidden">
                         <li className="h-full">
-                            {contents.title ? (
+                            {contents.title ?
                                 <span
                                     className={`flex mx-auto gap-1 bg-bg-3 w-fit px-4! rounded-full overflow-hidden ${!validity?.title ? "invalid" : ""}`}
                                 >
@@ -133,8 +125,7 @@ export const PreviewButton = ({
                                     )}
                                     <b>{contents.title}</b>
                                 </span>
-                            ) : (
-                                <div className="flex items-center justify-center w-full loading rounded-lg! h-full">
+                            :   <div className="flex items-center justify-center w-full loading rounded-lg! h-full">
                                     <span>
                                         <small className="flex items-center gap-1">
                                             <Image
@@ -147,18 +138,15 @@ export const PreviewButton = ({
                                         </small>
                                     </span>
                                 </div>
-                            )}
+                            }
                         </li>
 
                         <li className="h-full">
-                            {contents.email ? (
-                                <span
-                                    className={`overflow-hidden ${!validity?.email ? "invalid" : ""}`}
-                                >
+                            {contents.email ?
+                                <span className={`overflow-hidden ${!validity?.email ? "invalid" : ""}`}>
                                     {contents.email}
                                 </span>
-                            ) : (
-                                <div className="flex items-center justify-center w-full loading rounded-lg! h-full">
+                            :   <div className="flex items-center justify-center w-full loading rounded-lg! h-full">
                                     <span>
                                         <small className="flex items-center gap-1">
                                             <Image
@@ -171,18 +159,15 @@ export const PreviewButton = ({
                                         </small>
                                     </span>
                                 </div>
-                            )}
+                            }
                         </li>
 
                         <li className="h-full">
-                            {contents.message ? (
-                                <span
-                                    className={`overflow-hidden ${!validity?.message ? "invalid" : ""}`}
-                                >
+                            {contents.message ?
+                                <span className={`overflow-hidden ${!validity?.message ? "invalid" : ""}`}>
                                     {contents.message}
                                 </span>
-                            ) : (
-                                <div className="flex items-center justify-center w-full loading rounded-lg! h-full">
+                            :   <div className="flex items-center justify-center w-full loading rounded-lg! h-full">
                                     <span>
                                         <small className="flex items-center gap-1">
                                             <Image
@@ -195,7 +180,7 @@ export const PreviewButton = ({
                                         </small>
                                     </span>
                                 </div>
-                            )}
+                            }
                         </li>
                     </ul>
                 </div>

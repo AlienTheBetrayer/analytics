@@ -14,7 +14,7 @@ export const Contact = () => {
         <>
             <Topline />
 
-            <div className="box w-full max-w-400 mx-auto min-h-128">
+            <div className="box w-full max-w-400 mx-auto min-h-128 p-1! sm:p-4!">
                 <Select />
             </div>
         </>

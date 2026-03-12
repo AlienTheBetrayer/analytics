@@ -12,7 +12,7 @@ export const Manipulation = () => {
                 direction="bottom"
                 element={() => <ProjectManipulation />}
             >
-                <Button className="text-6! p-0!">
+                <Button className="text-6! p-0!  not-hover:bg-bg-1!">
                     <Image
                         alt="manipulation"
                         src="/settings.svg"

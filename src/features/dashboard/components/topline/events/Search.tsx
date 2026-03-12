@@ -35,7 +35,7 @@ export const Search = () => {
     return (
         <Tooltip text="Filters every field">
             <Input
-                className="rounded-full!"
+                className="rounded-full!  not-hover:bg-bg-1!"
                 placeholder="Filter..."
                 value={searchValue}
                 onChange={(value) => {

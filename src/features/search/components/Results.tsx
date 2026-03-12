@@ -21,14 +21,13 @@ export const Results = () => {
     const [page, setPage] = useState<number>(0);
     const [collapsed, setCollapsed] = useState<boolean>(false);
     const [filter, setFilter] = useState<string>("");
-    const [whatReload, setWhatReload] =
-        useState<(typeof WhatSelect)[number]>("First page");
+    const [whatReload, setWhatReload] = useState<(typeof WhatSelect)[number]>("First page");
 
     // fetching
     const { data, isLoading } = useQuery({ key: ["search", query, page] });
 
     return (
-        <ul className="flex flex-col gap-8">
+        <ul className="flex flex-col gap-4">
             <li className="box bg-bg-2! flex-row! h-10! p-0! mt-8! md:mt-0! w-full gap-2! items-center">
                 <Tooltip text="Collapse / Expand">
                     <Button onClick={() => setCollapsed((prev) => !prev)}>
@@ -40,9 +39,7 @@ export const Results = () => {
                         />
                         <TabSelection
                             condition={true}
-                            color={
-                                collapsed ? "var(--orange-1)" : "var(--blue-1)"
-                            }
+                            color={collapsed ? "var(--orange-1)" : "var(--blue-1)"}
                         />
                     </Button>
                 </Tooltip>
@@ -59,9 +56,8 @@ export const Results = () => {
                         alt=""
                         width={16}
                         height={16}
-                        src="/arrow.svg"
+                        src="/cubes.svg"
                     />
-
                     <span>{data?.pages ?? 0} Results</span>
                 </div>
 
@@ -69,9 +65,7 @@ export const Results = () => {
                     items={[...WhatSelect]}
                     className="ml-auto! w-full! max-w-48! whitespace-nowrap!"
                     value={whatReload}
-                    onChange={(item) =>
-                        setWhatReload(item as (typeof WhatSelect)[number])
-                    }
+                    onChange={(item) => setWhatReload(item as (typeof WhatSelect)[number])}
                 />
 
                 <Tooltip text="Re-fetch">
@@ -80,10 +74,7 @@ export const Results = () => {
                             const pages = (() => {
                                 switch (whatReload) {
                                     case "All pages": {
-                                        return Array.from(
-                                            { length: page + 1 },
-                                            (_, k) => k,
-                                        );
+                                        return Array.from({ length: page + 1 }, (_, k) => k);
                                     }
                                     case "First page": {
                                         return [0];
@@ -112,14 +103,10 @@ export const Results = () => {
                 </Tooltip>
             </li>
 
-            <li>
-                <hr />
-            </li>
-
             <li
                 className={`grid overflow-hidden transition-all duration-500 ${collapsed ? "grid-rows-[0fr]" : "grid-rows-[1fr]"}`}
             >
-                <ul className="flex flex-col gap-8 overflow-hidden">
+                <ul className="flex flex-col gap-4 overflow-hidden">
                     {Array.from({ length: page + 1 }, (_, k) => (
                         <Page
                             filter={filter}
@@ -133,11 +120,12 @@ export const Results = () => {
             {(page + 1) * 3 < (data?.pages ?? 0) && (
                 <li>
                     <Button
-                        className="w-full"
+                        className="w-full max-w-64 mx-auto"
                         onClick={() => {
                             setPage((prev) => prev + 1);
                         }}
                     >
+                        <div className="w-1 h-1 rounded-full bg-orange-1" />
                         {isLoading && <Spinner />}
                         <Image
                             alt=""

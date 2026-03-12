@@ -20,10 +20,9 @@ export const ResponseAdmin = ({ data }: Props) => {
     const deleteBox = useMessageBox();
 
     return (
-        <div className="box rounded-4xl! grow p-2! items-center gap-2!">
+        <div className="flex flex-col grow items-center gap-1">
             {deleteBox.render({
-                children:
-                    "The response will be deleted and the user won't be able to see it.",
+                children: "The response will be deleted and the user won't be able to see it.",
                 onSelect: (res) => {
                     if (res === "yes") {
                         wrapPromise("deleteResponse", () => {
@@ -37,7 +36,7 @@ export const ResponseAdmin = ({ data }: Props) => {
                 },
             })}
 
-            <ul className="box bg-bg-2! h-10! p-0! flex-row! items-center! w-full">
+            <ul className="box h-10! p-0! flex-row! items-center! w-full">
                 <li className="absolute left-1/2 top-1/2 -translate-1/2">
                     <span className="flex items-center gap-1">
                         <Image
@@ -95,7 +94,7 @@ export const ResponseAdmin = ({ data }: Props) => {
                             gridTemplateColumns: "1fr",
                         },
                     }}
-                    className="resize-none! rounded-2xl! self-stretch"
+                    className="resize-none! rounded-2xl! self-stretch not-hover:bg-bg-1!"
                 />
 
                 <ul className="grid grid-cols-2 w-full max-w-96 gap-4">
@@ -109,7 +108,7 @@ export const ResponseAdmin = ({ data }: Props) => {
                                 onClick={() => {
                                     setResponse("");
                                 }}
-                                className="w-full"
+                                className="w-full not-hover:bg-bg-1!"
                                 type="button"
                             >
                                 <Image
@@ -129,7 +128,7 @@ export const ResponseAdmin = ({ data }: Props) => {
                             text="Send a response"
                         >
                             <Button
-                                className="w-full"
+                                className="w-full not-hover:bg-bg-1!"
                                 type="submit"
                             >
                                 <PromiseState state="response" />

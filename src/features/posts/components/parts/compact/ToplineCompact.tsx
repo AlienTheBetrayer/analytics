@@ -31,11 +31,10 @@ export const ToplineCompact = ({ data, className, type, onDelete }: Props) => {
                 <div
                     className="w-1 h-1 rounded-full aspect-square"
                     style={{
-                        background: data.image_url
-                            ? "var(--blue-1)"
-                            : data.content
-                              ? "var(--orange-1)"
-                              : "var(--red-1)",
+                        background:
+                            data.image_url ? "var(--blue-1)"
+                            : data.content ? "var(--orange-1)"
+                            : "var(--red-1)",
                     }}
                 />
                 <span>
@@ -69,10 +68,7 @@ export const ToplineCompact = ({ data, className, type, onDelete }: Props) => {
                     <li>
                         <Tooltip
                             text={`${data.has_liked ? "Remove like" : "Like this post"}`}
-                            isEnabled={
-                                post_privacy?.likes !== false ||
-                                data.user_id === status?.id
-                            }
+                            isEnabled={post_privacy?.likes !== false || data.user_id === status?.id}
                         >
                             <Button
                                 aria-label={`${data.has_liked ? "unlike post" : "like post"}`}
@@ -90,27 +86,26 @@ export const ToplineCompact = ({ data, className, type, onDelete }: Props) => {
                                 }}
                                 className={`${data.has_liked ? "invert-100!" : ""}`}
                             >
-                                {data.has_liked ? (
+                                {data.has_liked ?
                                     <Image
                                         alt=""
                                         width={14}
                                         height={14}
                                         src="/heartbroken.svg"
                                     />
-                                ) : (
-                                    <Image
+                                :   <Image
                                         alt=""
                                         width={13}
                                         height={13}
                                         src="/heart.svg"
                                     />
-                                )}
+                                }
                             </Button>
                         </Tooltip>
                     </li>
                 )}
 
-                {type === "compact" ? (
+                {type === "compact" ?
                     <>
                         <li>
                             <Tooltip text="View this post">
@@ -128,8 +123,7 @@ export const ToplineCompact = ({ data, className, type, onDelete }: Props) => {
                             </Tooltip>
                         </li>
                     </>
-                ) : (
-                    status &&
+                :   status &&
                     status.id === data.user_id && (
                         <>
                             <li>
@@ -152,9 +146,7 @@ export const ToplineCompact = ({ data, className, type, onDelete }: Props) => {
                                 <Tooltip text="Privacy configurations">
                                     <Modal
                                         tooltipClassName="w-screen max-w-92"
-                                        element={() => (
-                                            <Configurations data={data} />
-                                        )}
+                                        element={() => <Configurations data={data} />}
                                     >
                                         <Button aria-label="privacy">
                                             <Image
@@ -169,7 +161,7 @@ export const ToplineCompact = ({ data, className, type, onDelete }: Props) => {
                             </li>
                         </>
                     )
-                )}
+                }
 
                 {data.user_id === status?.id && (
                     <li>

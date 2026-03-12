@@ -22,7 +22,11 @@ export const TabDisplay = ({ tab }: Props) => {
 
     // fallbacks
     if (!Object.keys(notifications).length) {
-        return <AbsentNotifications />;
+        return (
+            <div className="loading p-4! rounded-4xl grow items-center justify-center flex">
+                <AbsentNotifications />
+            </div>
+        );
     }
 
     // data mapped
@@ -38,9 +42,7 @@ export const TabDisplay = ({ tab }: Props) => {
                     (notification) =>
                         notification && (
                             <li key={notification.id}>
-                                <NotificationCompact
-                                    notification={notification}
-                                />
+                                <NotificationCompact notification={notification} />
                             </li>
                         ),
                 )}
@@ -48,7 +50,7 @@ export const TabDisplay = ({ tab }: Props) => {
                 <li className="w-full">
                     {(filtered?.length ?? 0) > 4 * (pagination + 1) && (
                         <Button
-                            className="w-full"
+                            className="w-full not-hover:bg-bg-1!"
                             onClick={() => {
                                 setPagination((prev) => prev + 1);
                             }}
@@ -57,7 +59,7 @@ export const TabDisplay = ({ tab }: Props) => {
                                 alt=""
                                 width={16}
                                 height={16}
-                                src="/download.svg"
+                                src="/reload.svg"
                             />
                         </Button>
                     )}

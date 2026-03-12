@@ -7,7 +7,7 @@ type Props = {
 
 export const View = ({ id }: Props) => {
     return (
-        <div className="flex flex-col gap-16">
+        <div className="flex flex-col gap-8">
             <PostExpanded id={id} />
             <Comments id={id} />
         </div>

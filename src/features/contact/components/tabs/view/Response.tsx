@@ -23,12 +23,10 @@ export const Response = ({ data }: Props) => {
     }
 
     return (
-        <div className="flex flex-col gap-2 grow min-h-82">
-            {tab === "view" ? (
+        <div className="flex flex-col gap-2 grow min-h-82 ">
+            {tab === "view" ?
                 <ResponseView data={data} />
-            ) : (
-                <ResponseAdmin data={data} />
-            )}
+            :   <ResponseAdmin data={data} />}
 
             {status?.role === "admin" ||
                 (status?.role === "op" && (
@@ -45,14 +43,14 @@ export const Response = ({ data }: Props) => {
 const ResponseView = ({ data }: Props) => {
     if (!data?.response) {
         return (
-            <div className="box p-3! h-full grow flex justify-center items-center loading">
+            <div className="box p-4! h-full grow flex justify-center items-center loading ">
                 <NoResponse />
             </div>
         );
     }
 
     return (
-        <div className="box p-3! grow">
+        <div className="flex flex-col grow gap-1">
             <ul className="box h-10! p-0! flex-row! items-center! w-full">
                 <li className="absolute left-1/2 top-1/2 -translate-1/2">
                     <span className="flex items-center gap-1">

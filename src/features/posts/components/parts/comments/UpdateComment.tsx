@@ -25,9 +25,7 @@ export const UpdateComment = ({ type, data, isEnabled }: Props) => {
     const { data: status } = useQuery({ key: ["status"] });
 
     // react
-    const [comment, setComment] = useState<string>(
-        type === "edit" ? data.comment.comment : "",
-    );
+    const [comment, setComment] = useState<string>(type === "edit" ? data.comment.comment : "");
 
     return (
         <form
@@ -35,7 +33,7 @@ export const UpdateComment = ({ type, data, isEnabled }: Props) => {
                 e.preventDefault();
                 setComment("");
 
-                if (!status || comment.trim().length < 8) {
+                if (!status) {
                     return;
                 }
 
@@ -61,23 +59,19 @@ export const UpdateComment = ({ type, data, isEnabled }: Props) => {
             }}
         >
             <ul className="flex flex-col gap-4">
-                <li className="flex flex-col sm:flex-row gap-2 items-center">
+                <li className="flex flex-col sm:flex-row gap-1 items-center">
                     <Input
                         isEnabled={isEnabled ?? true}
                         aria-label="comment text"
                         required
-                        minLength={8}
                         maxLength={256}
-                        placeholder={
-                            type === "edit"
-                                ? "Edit this comment"
-                                : "Add a comment"
-                        }
+                        placeholder={type === "edit" ? "Edit this comment" : "Add a comment"}
                         value={comment}
                         onChange={setComment}
+                        className="not-hover:bg-bg-1!"
                     />
 
-                    <div className="grid grid-cols-2 w-full sm:w-fit gap-2">
+                    <div className="grid grid-cols-2 w-full sm:w-fit gap-0">
                         <Tooltip
                             text="Clear comment"
                             className="w-full"
@@ -85,7 +79,7 @@ export const UpdateComment = ({ type, data, isEnabled }: Props) => {
                         >
                             <Button
                                 aria-label="clear"
-                                className="w-full"
+                                className="w-full not-hover:bg-bg-1!"
                                 type="button"
                                 onClick={() => {
                                     setComment("");
@@ -107,9 +101,10 @@ export const UpdateComment = ({ type, data, isEnabled }: Props) => {
                         >
                             <Button
                                 aria-label="send"
-                                className="w-full"
+                                className="w-full not-hover:bg-bg-1! gap-0!"
                                 type="submit"
                             >
+                                <div className="w-1 h-1 rounded-full bg-blue-1 shrink-0" />
                                 <PromiseState state="updateComment" />
                                 <Image
                                     alt="x"

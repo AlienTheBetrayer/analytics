@@ -40,7 +40,7 @@ export const ProjectTopline = () => {
                     element={() => <Sorting />}
                 >
                     <Tooltip text="Sort projects">
-                        <Button className="aspect-square">
+                        <Button className="aspect-square not-hover:bg-bg-1!">
                             <Image
                                 alt="sort"
                                 src="/sort.svg"
@@ -49,10 +49,9 @@ export const ProjectTopline = () => {
                                 className="duration-500! ease-out!"
                                 style={{
                                     transform:
-                                        projectFilters?.projectSorting
-                                            ?.direction === "ascendant"
-                                            ? `rotate(180deg)`
-                                            : `rotate(0deg)`,
+                                        projectFilters?.projectSorting?.direction === "ascendant" ?
+                                            `rotate(180deg)`
+                                        :   `rotate(0deg)`,
                                 }}
                             />
 

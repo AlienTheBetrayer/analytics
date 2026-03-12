@@ -20,12 +20,8 @@ export const PostForm = ({ mode, id }: Props) => {
     const { data: status } = useQuery({ key: ["status"] });
 
     // react states
-    const [title, setTitle] = useState<string>(
-        mode === "create" ? "" : (post?.title ?? ""),
-    );
-    const [content, setContent] = useState<string>(
-        mode === "create" ? "" : (post?.content ?? ""),
-    );
+    const [title, setTitle] = useState<string>(mode === "create" ? "" : (post?.title ?? ""));
+    const [content, setContent] = useState<string>(mode === "create" ? "" : (post?.content ?? ""));
     const [image, setImage] = useState<File | undefined | null>(undefined);
 
     return (
@@ -76,7 +72,7 @@ export const PostForm = ({ mode, id }: Props) => {
                 });
             }}
         >
-            <ul className="flex flex-col gap-12 grow">
+            <ul className="flex flex-col gap-8 grow">
                 <li className="flex flex-col gap-2">
                     <label
                         htmlFor="title"
@@ -91,6 +87,7 @@ export const PostForm = ({ mode, id }: Props) => {
                         Title
                     </label>
                     <Input
+                        className="not-hover:bg-bg-1!"
                         id="title"
                         required
                         minLength={8}
@@ -144,14 +141,17 @@ export const PostForm = ({ mode, id }: Props) => {
                             maxHeight: "40rem",
                         }}
                         as="textarea"
-                        className="self-stretch grow rounded-3xl!"
+                        className="self-stretch grow rounded-3xl! p-4! not-hover:bg-bg-1!"
                         value={content}
                         onChange={(value) => setContent(value)}
                     />
                 </li>
 
                 <li className="flex flex-col">
-                    <Button type="submit">
+                    <Button
+                        type="submit"
+                        className="not-hover:bg-bg-1!"
+                    >
                         <PromiseState state="updatePost" />
                         <Image
                             alt=""

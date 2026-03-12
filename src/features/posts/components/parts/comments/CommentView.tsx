@@ -24,7 +24,7 @@ export const CommentView = ({ id, onEdit, editing }: Props) => {
     }
 
     return (
-        <li className="box bg-bg-2! min-h-24 grid! grid-cols-[48px_1fr] p-4! gap-4! hover:bg-background-a-8! duration-400! transition-all!">
+        <li className="box bg-bg-1! min-h-24 grid! grid-cols-[48px_1fr] p-4! gap-4! hover:bg-background-a-8! duration-400! transition-all!">
             <LinkButton
                 href={`/profile/${user.username}`}
                 className="p-0! w-fit! h-fit!"
@@ -40,13 +40,11 @@ export const CommentView = ({ id, onEdit, editing }: Props) => {
             <div className="flex flex-col gap-2">
                 <CommentViewTopline
                     data={comment}
-                    onEdit={() =>
-                        onEdit(comment.id === editing ? null : comment.id)
-                    }
+                    onEdit={() => onEdit(comment.id === editing ? null : comment.id)}
                 />
 
                 <div>
-                    {editing === comment.id ? (
+                    {editing === comment.id ?
                         <UpdateComment
                             type="edit"
                             data={{
@@ -56,9 +54,7 @@ export const CommentView = ({ id, onEdit, editing }: Props) => {
                                 },
                             }}
                         />
-                    ) : (
-                        <span>{comment.comment}</span>
-                    )}
+                    :   <span>{comment.comment}</span>}
                 </div>
 
                 <div className="flex items-center gap-2">

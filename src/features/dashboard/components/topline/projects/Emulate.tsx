@@ -10,7 +10,7 @@ export const Emulate = () => {
     return (
         <Tooltip text="Emulate events for this project">
             <LinkButton
-                className="text-6! p-0!"
+                className="text-6! p-0!  not-hover:bg-bg-1!"
                 href={`/emulate/${selectedProjectId}`}
             >
                 <Image

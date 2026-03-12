@@ -6,6 +6,7 @@ import { useEventList } from "@/features/dashboard/hooks/useEventList";
 import { motion } from "motion/react";
 import { NoEvents } from "@/features/dashboard/components/errors/NoEvents";
 import { useQuery } from "@/query/core";
+import { Spinner } from "@/features/ui/spinner/components/Spinner";
 
 type Props = {
     id: string;
@@ -29,13 +30,19 @@ export const DashboardEvents = ({ id }: Props) => {
         return Array.from({ length: 8 }, (_, k) => (
             <div
                 key={k}
-                className="w-full h-16 loading rounded-full!"
-            />
+                className="w-full h-16 loading rounded-full! relative"
+            >
+                <Spinner className="absolute left-1/2 top-1/2 -translate-1/2" />
+            </div>
         ));
     }
 
     if (!filteredEvents?.length) {
-        return <NoEvents />;
+        return (
+            <div className="rounded-4xl loading p-4! grow items-center justify-center flex">
+                <NoEvents />
+            </div>
+        );
     }
 
     return (
@@ -44,7 +51,7 @@ export const DashboardEvents = ({ id }: Props) => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 ref={ref}
-                className="flex flex-col gap-2 h-full overflow-y-auto overflow-x-hidden scheme-dark p-1!"
+                className="box grow bg-bg-2! p-4! border-0! h-full overflow-y-auto overflow-x-hidden scheme-dark"
                 style={{
                     scrollbarWidth: "thin",
                 }}

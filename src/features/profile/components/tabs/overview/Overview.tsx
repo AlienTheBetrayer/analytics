@@ -19,14 +19,10 @@ export const Overview = ({ data }: Props) => {
 
     return (
         <div className="flex flex-col gap-4">
-            <ul className="flex flex-col items-center">
+            <ul className="flex flex-col gap-4">
                 <li className="flex gap-1 items-center self-end">
                     <Button
-                        onClick={() =>
-                            setDateview((prev) =>
-                                prev === "seen" ? "created" : "seen",
-                            )
-                        }
+                        onClick={() => setDateview((prev) => (prev === "seen" ? "created" : "seen"))}
                     >
                         <motion.div
                             className="flex gap-1 items-center"
@@ -34,7 +30,7 @@ export const Overview = ({ data }: Props) => {
                             initial={{ y: 5 }}
                             animate={{ y: 0 }}
                         >
-                            {dateview === "seen" ? (
+                            {dateview === "seen" ?
                                 <>
                                     <Image
                                         width={16}
@@ -42,46 +38,38 @@ export const Overview = ({ data }: Props) => {
                                         alt=""
                                         src="/calendar.svg"
                                     />
-                                    <span className="whitespace-nowrap">
-                                        seen {relativeTime(data.last_seen_at)}
-                                    </span>
+                                    <span className="whitespace-nowrap">seen {relativeTime(data.last_seen_at)}</span>
                                 </>
-                            ) : (
-                                <>
+                            :   <>
                                     <Image
                                         width={16}
                                         height={16}
                                         alt=""
                                         src="/plus.svg"
                                     />
-                                    <span className="whitespace-nowrap">
-                                        created {relativeTime(data.created_at)}
-                                    </span>
+                                    <span className="whitespace-nowrap">created {relativeTime(data.created_at)}</span>
                                 </>
-                            )}
+                            }
                         </motion.div>
                     </Button>
                 </li>
 
-                <li className="flex gap-1 items-center">
-                    <Image
-                        width={16}
-                        height={16}
-                        alt=""
-                        src="/book.svg"
-                    />
-                    <span className="text-foreground-2! flex">
-                        <mark>{data.username}</mark>
-                        &apos;s profile
+                <li className="box bg-bg-2! p-2! border-0! items-center">
+                    <span className="flex items-center gap-1">
+                        <Image
+                            width={16}
+                            height={16}
+                            alt=""
+                            src="/book.svg"
+                        />
+                        <span className="text-foreground-2! flex">
+                            <mark>{data.username}</mark>
+                            &apos;s profile
+                        </span>
                     </span>
-                </li>
-
-                <li>
                     <span>Profile overview</span>
                 </li>
             </ul>
-
-            <hr />
 
             <div className="flex flex-col xl:grid xl:grid-cols-2 gap-4">
                 <ProfileOverview

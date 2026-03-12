@@ -18,12 +18,15 @@ export const Sorting = () => {
     return (
         <div className="relative box p-4! gap-4! acrylic w-full">
             <span className="flex flex-col items-center">
-                <Image
-                    alt="filter"
-                    src="/sort.svg"
-                    width={16}
-                    height={16}
-                />
+                <span className="flex items-center gap-1">
+                    <div className="w-1 h-1 rounded-full bg-blue-1" />
+                    <Image
+                        alt="filter"
+                        src="/sort.svg"
+                        width={16}
+                        height={16}
+                    />
+                </span>
                 Sorting
             </span>
 
@@ -36,10 +39,7 @@ export const Sorting = () => {
                 >
                     <Select
                         items={["Name", "Created Date", "Updated Date"]}
-                        value={
-                            projectFilters?.projectSorting?.column ??
-                            "Updated Date"
-                        }
+                        value={projectFilters?.projectSorting?.column ?? "Updated Date"}
                         onChange={(item) => {
                             setFilter({
                                 project_id: selectedProjectId,
@@ -52,12 +52,7 @@ export const Sorting = () => {
 
                 <Tooltip
                     direction="top"
-                    text={
-                        projectFilters?.projectSorting?.direction ===
-                        "ascendant"
-                            ? "Ascendant"
-                            : "Descendant"
-                    }
+                    text={projectFilters?.projectSorting?.direction === "ascendant" ? "Ascendant" : "Descendant"}
                 >
                     <Button
                         className="aspect-square p-0!"
@@ -66,10 +61,9 @@ export const Sorting = () => {
                                 project_id: selectedProjectId,
                                 type: "project-sort",
                                 direction:
-                                    projectFilters?.projectSorting
-                                        ?.direction === "ascendant"
-                                        ? "descendant"
-                                        : "ascendant",
+                                    projectFilters?.projectSorting?.direction === "ascendant" ?
+                                        "descendant"
+                                    :   "ascendant",
                             });
                         }}
                     >
@@ -81,10 +75,9 @@ export const Sorting = () => {
                             className="duration-500! ease-out!"
                             style={{
                                 transform:
-                                    projectFilters?.projectSorting
-                                        ?.direction === "ascendant"
-                                        ? `rotate(180deg)`
-                                        : `rotate(0deg)`,
+                                    projectFilters?.projectSorting?.direction === "ascendant" ?
+                                        `rotate(180deg)`
+                                    :   `rotate(0deg)`,
                             }}
                         />
                     </Button>

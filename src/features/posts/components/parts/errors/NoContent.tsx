@@ -23,9 +23,8 @@ export const NoContent = ({ data }: Props) => {
             }
             description={
                 <>
-                    The post you are currently on does not have{" "}
-                    <u>any content</u> in it, the <b>author</b> decided that it
-                    would be great for it to be <u>empty</u>.
+                    The post you are currently on does not have <u>any content</u> in it, the <b>author</b> decided that
+                    it would be great for it to be <u>empty</u>.
                 </>
             }
         >
@@ -33,7 +32,10 @@ export const NoContent = ({ data }: Props) => {
                 text="To posts"
                 className="w-full"
             >
-                <LinkButton href={`/posts/${user?.username}`}>
+                <LinkButton
+                    href={`/posts/${user?.username}`}
+                    className="not-hover:bg-bg-1!"
+                >
                     <Image
                         alt=""
                         width={16}

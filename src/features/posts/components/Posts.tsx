@@ -5,6 +5,7 @@ import { Select } from "@/features/posts/components/Select";
 import { Topline } from "@/features/posts/components/Topline";
 import { useParams } from "next/navigation";
 import { useQuery } from "@/query/core";
+import { Spinner } from "@/features/ui/spinner/components/Spinner";
 
 export const Posts = () => {
     // url
@@ -24,9 +25,7 @@ export const Posts = () => {
                     className="max-w-400!"
                 />
 
-                <div
-                    className={`box max-w-400 w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}
-                >
+                <div className={`box max-w-400 w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}>
                     <LoadingEmulate />
                 </div>
             </>
@@ -51,10 +50,9 @@ const PostsResult = ({ name }: ResultProps) => {
                     className="max-w-400!"
                 />
 
-                <div
-                    className={`box max-w-400 w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}
-                >
+                <div className={`box max-w-400 w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}>
                     <LoadingEmulate />
+                    <Spinner className="absolute left-1/2 top-1/2"/>
                 </div>
             </>
         );
@@ -68,10 +66,9 @@ const PostsResult = ({ name }: ResultProps) => {
                     className="max-w-400!"
                 />
 
-                <div
-                    className={`box max-w-400 w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}
-                >
+                <div className={`box max-w-400 w-full mx-auto min-h-128 rounded-4xl! overflow-hidden`}>
                     <LoadingEmulate />
+                    <Spinner className="absolute left-1/2 top-1/2"/>
                 </div>
             </>
         );
@@ -81,7 +78,7 @@ const PostsResult = ({ name }: ResultProps) => {
         <>
             <Topline type="posts" />
 
-            <div className="box max-w-400 w-full mx-auto min-h-128 rounded-4xl!">
+            <div className="box max-w-400 p-1! sm:p-4! w-full mx-auto min-h-128 rounded-4xl!">
                 <Select
                     type="posts"
                     data={data}

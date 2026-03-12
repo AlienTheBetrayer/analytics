@@ -9,6 +9,7 @@ import { EventTopline } from "@/features/dashboard/components/topline/events/Eve
 import { NoProjectSelected } from "@/features/dashboard/components/errors/NoProjectSelected";
 import { ProjectTopline } from "@/features/dashboard/components/topline/projects/ProjectTopline";
 import { useQuery } from "@/query/core";
+import { Spinner } from "@/features/ui/spinner/components/Spinner";
 
 export const Dashboard = () => {
     // zustand
@@ -39,6 +40,7 @@ export const Dashboard = () => {
                 <AbsentTopline title={errorString} />
                 <div className="w-full max-w-400 m-auto min-h-200 box">
                     <LoadingDashboard />
+                    <Spinner className="absolute left-1/2 top-1/2 -translate-1/2" />
                 </div>
             </>
         );
@@ -47,24 +49,24 @@ export const Dashboard = () => {
     return (
         <>
             <Topline />
-            <div className="w-full max-w-400 m-auto min-h-200 box gap-3!">
-                <div className="flex flex-col lg:flex-row gap-8 lg:gap-4 grow *:w-full">
-                    <div className="flex flex-col gap-3 relative max-h-256">
+
+            <div className="w-full max-w-400 m-auto min-h-200 box gap-4! p-1! sm:p-4!">
+                <div className="flex flex-col lg:flex-row gap-4 grow *:w-full">
+                    <div className="flex flex-col gap-4 relative max-h-256">
                         <ProjectTopline />
-                        <hr />
                         {data && <DashboardProjects data={data} />}
                     </div>
 
                     <hr className="lg:hidden" />
 
-                    <div className="flex flex-col gap-3 max-h-256 relative">
+                    <div className="flex flex-col gap-4 max-h-256 relative">
                         <EventTopline />
-                        <hr />
-                        {selectedProjectId ? (
+                        {selectedProjectId ?
                             <DashboardEvents id={selectedProjectId} />
-                        ) : (
-                            <NoProjectSelected />
-                        )}
+                        :   <div className="rounded-4xl loading p-4! grow items-center justify-center flex">
+                                <NoProjectSelected />
+                            </div>
+                        }
                     </div>
                 </div>
             </div>

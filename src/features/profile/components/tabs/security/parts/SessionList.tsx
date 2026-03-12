@@ -28,10 +28,10 @@ export const SessionList = ({ data, currentSessions }: Props) => {
             {currentSessions.map((token) => (
                 <li
                     key={token.id}
-                    className={`flex gap-2 hover:bg-background-4 focus-within:bg-background-4
+                    className={`flex gap-2 not-hover:bg-bg-1 hover:bg-bg-2 focus-within:bg-bg-4
                             items-center rounded-full min-h-14 px-4! 
                              transition-all duration-400 ease-out 
-                             border-2 border-background-4
+                             border-2 border-bg-3
                             ${token.is_current ? "border-2 border-blue-2" : ""}`}
                 >
                     {token.is_current ? (
@@ -58,6 +58,7 @@ export const SessionList = ({ data, currentSessions }: Props) => {
                         isEnabled={!token.is_current}
                     >
                         <Button
+                        
                             isEnabled={!token.is_current}
                             onClick={async () => {
                                 wrapPromise(

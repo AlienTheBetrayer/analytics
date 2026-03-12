@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export const Create = () => {
     return (
-        <div className="flex flex-col gap-8 grow w-full mx-auto">
+        <div className="box bg-bg-2! grow w-full mx-auto">
             <div className="box h-10! p-0! flex-row! flex gap-1 items-center justify-center">
                 <Image
                     alt=""

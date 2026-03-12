@@ -31,8 +31,7 @@ export const ToplineExpanded = ({ data, className }: Props) => {
                 ${className ?? ""}`}
         >
             {deleteBox.render({
-                children:
-                    "You will permanently delete this post and no one will be able to see it again",
+                children: "You will permanently delete this post and no one will be able to see it again",
                 onSelect: (res) => {
                     if (res === "yes") {
                         wrapPromise("updatePost", () => {
@@ -127,9 +126,7 @@ export const ToplineExpanded = ({ data, className }: Props) => {
                                         </em>
 
                                         <span>
-                                            <em>
-                                                {relativeTime(data.edited_at)}
-                                            </em>
+                                            <em>{relativeTime(data.edited_at)}</em>
                                         </span>
                                     </li>
                                 </>

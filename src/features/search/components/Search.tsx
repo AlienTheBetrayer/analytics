@@ -6,6 +6,7 @@ import { Results } from "@/features/search/components/Results";
 import { Topline } from "@/features/search/components/Topline";
 import { useParams } from "next/navigation";
 import { useQuery } from "@/query/core";
+import { Spinner } from "@/features/ui/spinner/components/Spinner";
 
 export const Search = () => {
     // url
@@ -19,6 +20,7 @@ export const Search = () => {
 
                 <div className="box w-full max-w-400 mx-auto min-h-128">
                     <LoadingSearch />
+                    <Spinner className="absolute left-1/2 top-1/2 -translate-1/2" />
                 </div>
             </>
         );
@@ -42,6 +44,7 @@ const SearchQuery = () => {
 
                 <div className="box w-full max-w-400 mx-auto min-h-128">
                     <LoadingSearch />
+                    <Spinner className="absolute left-1/2 top-1/2 -translate-1/2" />
                 </div>
             </>
         );
@@ -52,7 +55,7 @@ const SearchQuery = () => {
             <>
                 <Topline />
 
-                <div className="box w-full max-w-400 mx-auto min-h-128">
+                <div className="box w-full max-w-400 mx-auto min-h-128 loading items-center justify-center">
                     <NoResults />
                 </div>
             </>
@@ -64,8 +67,8 @@ const SearchQuery = () => {
         <>
             <Topline />
 
-            <div className="box w-full max-w-400 mx-auto min-h-128">
-                <Results/>
+            <div className="box w-full max-w-400 mx-auto min-h-128 p-1! sm:p-4!">
+                <Results />
             </div>
         </>
     );
