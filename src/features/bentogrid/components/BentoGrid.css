@@ -2,7 +2,7 @@
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-auto-rows: 13rem;
-    gap: 0.7rem;
+    gap: 1rem;
 
     grid-template-areas:
         "e f f f k"
@@ -40,12 +40,20 @@
 
 @media (max-width: 640px) {
     .bento-grid {
-        grid-template-columns: 1fr;
-        grid-template-areas: none;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
     }
 
     .bento-grid > li {
-        grid-area: auto !important;
+        min-height: 13rem;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .bento-grid > li > * {
+        height: 100% !important;
+        flex-grow: 1;
     }
 }
 

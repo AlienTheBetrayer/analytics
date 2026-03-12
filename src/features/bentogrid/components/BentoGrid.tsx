@@ -1,5 +1,14 @@
 import { ThreeContainer } from "@/features/threecontainer/components/ThreeContainer";
 import "./BentoGrid.css";
+import { UseQuery } from "@/features/bentogrid/components/sections/UseQuery";
+import { UI } from "@/features/bentogrid/components/sections/UI";
+import { Permissions } from "@/features/bentogrid/components/sections/Permissions";
+import { Zustand } from "@/features/bentogrid/components/sections/Zustand";
+import { Realtime } from "@/features/bentogrid/components/sections/Realtime";
+import { JWT } from "@/features/bentogrid/components/sections/JWT";
+import { NPM } from "@/features/bentogrid/components/sections/NPM";
+import { SWR } from "@/features/bentogrid/components/sections/SWR";
+import { Typescript } from "@/features/bentogrid/components/sections/Typescript";
 
 export const BentoGrid = () => {
     return (
@@ -7,7 +16,7 @@ export const BentoGrid = () => {
             <li style={{ gridArea: "a" }}>
                 <ThreeContainer>
                     <div className="grid place-items-center h-full">
-                        <span>Caching</span>
+                        <Typescript />
                     </div>
                 </ThreeContainer>
             </li>
@@ -15,7 +24,7 @@ export const BentoGrid = () => {
             <li style={{ gridArea: "b" }}>
                 <ThreeContainer>
                     <div className="grid place-items-center h-full">
-                        <span></span>
+                        <SWR />
                     </div>
                 </ThreeContainer>
             </li>
@@ -23,7 +32,7 @@ export const BentoGrid = () => {
             <li style={{ gridArea: "c" }}>
                 <ThreeContainer>
                     <div className="grid place-items-center h-full">
-                        <span>Caching</span>
+                        <NPM />
                     </div>
                 </ThreeContainer>
             </li>
@@ -31,7 +40,7 @@ export const BentoGrid = () => {
             <li style={{ gridArea: "d" }}>
                 <ThreeContainer>
                     <div className="grid place-items-center h-full">
-                        <span>Realtime</span>
+                        <JWT />
                     </div>
                 </ThreeContainer>
             </li>
@@ -39,7 +48,7 @@ export const BentoGrid = () => {
             <li style={{ gridArea: "e" }}>
                 <ThreeContainer>
                     <div className="grid place-items-center h-full">
-                        <span>useQuery()</span>
+                        <UseQuery />
                     </div>
                 </ThreeContainer>
             </li>
@@ -47,7 +56,7 @@ export const BentoGrid = () => {
             <li style={{ gridArea: "f" }}>
                 <ThreeContainer>
                     <div className="grid place-items-center h-full">
-                        <span>Caching</span>
+                        <UI />
                     </div>
                 </ThreeContainer>
             </li>
@@ -55,7 +64,7 @@ export const BentoGrid = () => {
             <li style={{ gridArea: "k" }}>
                 <ThreeContainer>
                     <div className="grid place-items-center h-full">
-                        <span>Caching</span>
+                        <Permissions />
                     </div>
                 </ThreeContainer>
             </li>
@@ -63,7 +72,7 @@ export const BentoGrid = () => {
             <li style={{ gridArea: "l" }}>
                 <ThreeContainer>
                     <div className="grid place-items-center h-full">
-                        <span>Caching</span>
+                        <Zustand />
                     </div>
                 </ThreeContainer>
             </li>
@@ -71,7 +80,7 @@ export const BentoGrid = () => {
             <li style={{ gridArea: "o" }}>
                 <ThreeContainer>
                     <div className="grid place-items-center h-full">
-                        <span>Caching</span>
+                        <Realtime />
                     </div>
                 </ThreeContainer>
             </li>

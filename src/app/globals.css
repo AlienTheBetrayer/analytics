@@ -387,7 +387,7 @@ input[list]::-webkit-calendar-picker-indicator {
 }
 
 p {
-    color: var(--bg-8);
+    color: var(--bg-6);
 }
 
 ul,

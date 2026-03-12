@@ -77,7 +77,7 @@ export const AuthElements = ({ hide }: Props) => {
                                 alt=""
                                 width={16}
                                 height={16}
-                                src="/security.svg"
+                                src="/send.svg"
                             />
                         </span>
                         Log in

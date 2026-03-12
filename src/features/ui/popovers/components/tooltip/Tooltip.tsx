@@ -11,6 +11,8 @@ type Props = {
     element?: React.ReactNode;
     direction?: PopoverDirection;
     pointerEvents?: boolean;
+    clickHides?: boolean;
+    tooltipClassname?: string;
     className?: string;
     isEnabled?: boolean;
     isActive?: boolean;
@@ -21,7 +23,9 @@ export const Tooltip = React.memo(function TooltipFunction({
     title,
     text,
     direction = "bottom",
+    tooltipClassname = "",
     className = "",
+    clickHides = true,
     element,
     pointerEvents = false,
     isActive = true,
@@ -118,16 +122,14 @@ export const Tooltip = React.memo(function TooltipFunction({
                                 }}
                                 onToggle={(e) => {
                                     e.stopPropagation();
-                                    if (e.newState === "closed") {
+                                    if (e.newState === "closed" && clickHides) {
                                         setIsShown(false);
                                     }
                                 }}
                                 ref={tooltipRef}
-                                className="bg-transparent overflow-hidden whitespace-nowrap p-1 z-1000"
+                                className={`bg-transparent overflow-hidden whitespace-nowrap p-1 z-1000 text-center ${tooltipClassname ?? ""}`}
                                 style={{
-                                    pointerEvents: pointerEvents
-                                        ? "all"
-                                        : "none",
+                                    pointerEvents: pointerEvents ? "all" : "none",
                                 }}
                             >
                                 <motion.div
