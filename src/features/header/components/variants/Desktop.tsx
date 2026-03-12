@@ -23,9 +23,7 @@ export const Desktop = ({ className }: Props) => {
     const { data: status } = useQuery({ key: ["status"] });
 
     return (
-        <ul
-            className={`grid grid-cols-[1fr_1fr_1fr] items-center w-full px-4! ${className ?? ""}`}
-        >
+        <ul className={`grid grid-cols-[1fr_1fr_1fr] items-center w-full px-4! ${className ?? ""}`}>
             <li className="min-w-max">
                 <ul className="flex items-center gap-1">
                     <li className="flex group items-center">
@@ -43,9 +41,7 @@ export const Desktop = ({ className }: Props) => {
                                     height={18}
                                     alt="home"
                                 />
-                                <TabSelection
-                                    condition={!page || page === "home"}
-                                />
+                                <TabSelection condition={!page || page === "home"} />
                             </LinkButton>
                         </Tooltip>
                     </li>
@@ -72,9 +68,7 @@ export const Desktop = ({ className }: Props) => {
                                             src="/dashboard.svg"
                                             alt="dashboard"
                                         />
-                                        <TabSelection
-                                            condition={page === "dashboard"}
-                                        />
+                                        <TabSelection condition={page === "dashboard"} />
                                     </LinkButton>
                                 </Tooltip>
                             </li>
@@ -92,12 +86,7 @@ export const Desktop = ({ className }: Props) => {
                                             src="/notification.svg"
                                             alt="notification"
                                         />
-                                        <TabSelection
-                                            condition={
-                                                page === "notifications" ||
-                                                page === "notification"
-                                            }
-                                        />
+                                        <TabSelection condition={page === "notifications" || page === "notification"} />
                                     </LinkButton>
                                 </Tooltip>
                             </li>
@@ -115,9 +104,7 @@ export const Desktop = ({ className }: Props) => {
                                             src="/phone.svg"
                                             alt="contact"
                                         />
-                                        <TabSelection
-                                            condition={page === "contact"}
-                                        />
+                                        <TabSelection condition={page === "contact"} />
                                     </LinkButton>
                                 </Tooltip>
                             </li>
@@ -135,9 +122,7 @@ export const Desktop = ({ className }: Props) => {
                                             src="/account.svg"
                                             alt="posts"
                                         />
-                                        <TabSelection
-                                            condition={page === "profile"}
-                                        />
+                                        <TabSelection condition={page === "profile"} />
                                     </LinkButton>
                                 </Tooltip>
                             </li>
@@ -155,12 +140,7 @@ export const Desktop = ({ className }: Props) => {
                                             src="/select.svg"
                                             alt="posts"
                                         />
-                                        <TabSelection
-                                            condition={
-                                                page === "posts" ||
-                                                page === "post"
-                                            }
-                                        />
+                                        <TabSelection condition={page === "posts" || page === "post"} />
                                     </LinkButton>
                                 </Tooltip>
                             </li>
@@ -178,32 +158,27 @@ export const Desktop = ({ className }: Props) => {
                                             src="/send.svg"
                                             alt="msg"
                                         />
-                                        <TabSelection
-                                            condition={page === "messages"}
-                                        />
+                                        <TabSelection condition={page === "messages"} />
                                     </LinkButton>
                                 </Tooltip>
                             </li>
 
                             <li>
-                                <LinkButton
-                                    href="/messages/notes/board"
-                                    styles="link"
-                                    className="button-img"
-                                >
-                                    <Image
-                                        src="/save.svg"
-                                        width={16}
-                                        height={16}
-                                        alt=""
-                                    />
-                                    <TabSelection
-                                        condition={
-                                            page === "messages" &&
-                                            secondary === "notes"
-                                        }
-                                    />
-                                </LinkButton>
+                                <Tooltip text="Notes">
+                                    <LinkButton
+                                        href="/messages/notes/board"
+                                        styles="link"
+                                        className="button-img"
+                                    >
+                                        <Image
+                                            src="/save.svg"
+                                            width={16}
+                                            height={16}
+                                            alt=""
+                                        />
+                                        <TabSelection condition={page === "messages" && secondary === "notes"} />
+                                    </LinkButton>
+                                </Tooltip>
                             </li>
                         </ul>
                     </li>
@@ -217,9 +192,7 @@ export const Desktop = ({ className }: Props) => {
             <li className="flex items-center justify-end">
                 <ul className="flex gap-1 items-center">
                     <li>
-                        <div
-                            className={`relative rounded-full ${!status ? "border-awaiting" : ""}`}
-                        >
+                        <div className={`relative rounded-full ${!status ? "border-awaiting" : ""}`}>
                             <AuthButton />
                             <TabSelection condition={page === "profile"} />
                         </div>
@@ -230,9 +203,7 @@ export const Desktop = ({ className }: Props) => {
                     </li>
 
                     <li>
-                        <Tooltip
-                            text={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
-                        >
+                        <Tooltip text={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}>
                             <Theme />
                         </Tooltip>
                     </li>

@@ -19,7 +19,8 @@ export type NotificationType =
     | "Unmuted"
     | "Membership changed"
     | "Noteboard created"
-    | "Noteboard deleted";
+    | "Noteboard deleted"
+    | "Authenticated";
 
 export type Notification = {
     id: string;

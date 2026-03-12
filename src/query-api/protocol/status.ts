@@ -21,22 +21,23 @@ export type CacheAPIProtocolStatus = {
 /**
  * functions
  */
-export const CacheAPIFunctionsStatus: CacheAPIFunctions<CacheAPIProtocolStatus> =
-    {
-        status: async () => {
-            return (await axios.get("/api/auth/status")).data.status;
-        },
-        sessions: async (args: unknown[]) => {
-            if (!args[0]) {
-                throw new Error("user_id is undefined");
-            }
+export const CacheAPIFunctionsStatus: CacheAPIFunctions<CacheAPIProtocolStatus> = {
+    status: async () => {
+        const res = (await axios.get("/api/auth/status")).data.status as AuthenticationToken;
 
-            return (
-                await refreshedRequest({
-                    route: "/api/get/sessions",
-                    method: "GET",
-                    config: { params: { user_id: args[0] } },
-                })
-            ).data.sessions;
-        },
-    };
+        return res;
+    },
+    sessions: async (args: unknown[]) => {
+        if (!args[0]) {
+            throw new Error("user_id is undefined");
+        }
+
+        return (
+            await refreshedRequest({
+                route: "/api/get/sessions",
+                method: "GET",
+                config: { params: { user_id: args[0] } },
+            })
+        ).data.sessions;
+    },
+};
