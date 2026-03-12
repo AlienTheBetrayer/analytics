@@ -41,7 +41,7 @@ export const AuthenticationForm = ({ title, button, onSubmit, type = "login" }: 
 
     return (
         <div className="flex flex-col gap-2 w-full max-w-sm">
-            <div className="box w-full box flex flex-row! p-0! min-h-10 h-10 items-center gap-1">
+            <div className="box w-full box flex flex-row! p-0! min-h-10 h-10 items-center gap-1 loading">
                 <Tooltip text="Home">
                     <LinkButton
                         href="/home"

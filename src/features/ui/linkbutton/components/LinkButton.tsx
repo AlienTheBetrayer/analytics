@@ -9,50 +9,43 @@ type Props = {
     className?: string;
     isEnabled?: boolean;
     styles?: string;
+    onClick?: () => void;
     newTab?: boolean;
     style?: CSSProperties;
     ariaLabel?: string;
 };
 
-export const LinkButton = forwardRef<HTMLAnchorElement, Props>(
-    function LinkButton(
-        {
-            className,
-            children,
-            href,
-            isEnabled,
-            style,
-            styles,
-            ariaLabel,
-            newTab = false,
-        }: Props,
-        ref,
-    ) {
-        // main jsx
-        return (
-            <Link
-                ref={ref}
-                href={href}
-                style={style}
-                target={`${newTab ? "_blank" : "_self"}`}
-                rel="noopener noreferrer"
-                className={`group ripple
+export const LinkButton = forwardRef<HTMLAnchorElement, Props>(function LinkButton(
+    { className, children, href, isEnabled, style, styles, ariaLabel, onClick, newTab = false }: Props,
+    ref,
+) {
+    // main jsx
+    return (
+        <Link
+            ref={ref}
+            href={href}
+            style={style}
+            target={`${newTab ? "_blank" : "_self"}`}
+            rel="noopener noreferrer"
+            className={`group ripple
                     ${styles ?? "button"}
                     ${(isEnabled ?? true) !== true ? "pointer-events-none opacity-30" : ""} 
                     ${className ?? ""} 
                 `}
-                aria-label={ariaLabel}
-                onPointerDown={(e) => {
+            onClick={() => {
+                onClick?.();
+            }}
+            aria-label={ariaLabel}
+            onPointerDown={(e) => {
+                rippleEnable(e);
+            }}
+            onPointerEnter={(e) => {
+                if (e.buttons & 1) {
                     rippleEnable(e);
-                }}
-                onPointerEnter={(e) => {
-                    if (e.buttons & 1) {
-                        rippleEnable(e);
-                    }
-                }}
-            >
-                {children}
-            </Link>
-        );
-    },
-);
+                }
+            }}
+        >
+            {children}
+        </Link>
+    );
+});

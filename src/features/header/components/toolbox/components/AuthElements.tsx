@@ -7,7 +7,11 @@ import { applicationLogout } from "@/query-api/calls/auth";
 import { useQuery } from "@/query/core";
 import Image from "next/image";
 
-export const AuthElements = () => {
+type Props = {
+    hide?: () => void;
+};
+
+export const AuthElements = ({ hide }: Props) => {
     // status
     const { data: status } = useQuery({ key: ["status"] });
 
@@ -23,9 +27,11 @@ export const AuthElements = () => {
                         wrapPromise("logout", () => {
                             return applicationLogout();
                         });
+                        hide?.();
                     }
                 },
             })}
+
             <div className="flex flex-col items-center">
                 <span className="relative flex gap-1 items-center">
                     <div className="w-1 h-1 rounded-full bg-blue-1" />
@@ -44,6 +50,7 @@ export const AuthElements = () => {
                     <LinkButton
                         href="/signup"
                         className="box w-full aspect-square p-2! rounded-4xl!"
+                        onClick={hide}
                     >
                         <span className="flex items-center">
                             <div className="w-1 h-1 rounded-full bg-blue-3" />
@@ -62,6 +69,7 @@ export const AuthElements = () => {
                     <LinkButton
                         href="/login"
                         className="box w-full aspect-square p-2! rounded-4xl!"
+                        onClick={hide}
                     >
                         <span className="flex items-center">
                             <div className="w-1 h-1 rounded-full bg-blue-1" />

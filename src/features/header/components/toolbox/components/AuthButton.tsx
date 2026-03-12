@@ -45,7 +45,7 @@ export const AuthButton = () => {
                 <Modal
                     tooltipClassName="w-screen max-w-100"
                     direction="bottom-left"
-                    element={() => <AuthElements />}
+                    element={(hide) => <AuthElements hide={hide} />}
                 >
                     <Button className="p-0!">
                         <Image
@@ -54,9 +54,7 @@ export const AuthButton = () => {
                             height={16}
                             src="/auth.svg"
                         />
-                        <TabSelection
-                            condition={page === "login" || page === "signup"}
-                        />
+                        <TabSelection condition={page === "login" || page === "signup"} />
                     </Button>
                 </Modal>
             </Tooltip>
