@@ -11,7 +11,7 @@ type Props = {
 export const NotificationPopup = ({ notification, onInteract }: Props) => {
     return (
         <motion.div
-            className="flex flex-col gap-0 fixed! right-4 top-4 w-[70vw] max-w-96 z-10 p-0! acrylic rounded-4xl!"
+            className="flex flex-col gap-0 fixed! right-4 top-4 w-[70vw] max-w-72 z-10 p-0! acrylic rounded-4xl!"
             initial={{ opacity: 0, y: -100 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -100 }}
@@ -27,7 +27,7 @@ export const NotificationPopup = ({ notification, onInteract }: Props) => {
                     onInteract={onInteract}
                 />
 
-                <div className="flex flex-col text-center items-center justify-center gap-2 px-4! py-8!">
+                <div className="flex flex-col text-center items-center justify-center gap-2 px-4! py-4!">
                     <div className="flex flex-col items-center gap-0">
                         <Image
                             alt=""

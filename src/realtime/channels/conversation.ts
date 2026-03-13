@@ -1,5 +1,5 @@
-import { RealtimeBroadcastEvent } from "@/features/messages/realtime/useRealtime";
 import { queryMutate } from "@/query/auxiliary";
+import { RealtimeBroadcastEvent } from "@/realtime/useRealtime";
 import { Conversation } from "@/types/tables/messages";
 
 export const handleRealtimeConversation = (

@@ -4,7 +4,6 @@ import { MessageView } from "@/features/messages/components/message/MessageView"
 import { useParams } from "next/navigation";
 import { Conversations } from "@/features/messages/components/conversations/Conversations";
 import { AdditionalTopline } from "@/features/messages/components/topline/AdditionalTopline";
-import { useRealtime } from "@/features/messages/realtime/useRealtime";
 import { useRetrieved } from "@/features/messages/components/useRetrieved";
 import { useAppStore } from "@/zustand/store";
 import { MessagesTopline } from "@/features/messages/components/message/topline/MessagesTopline";
@@ -22,9 +21,6 @@ export const Select = () => {
 
     // retrieved fetching + syncing
     useRetrieved();
-
-    // websocket connection
-    useRealtime();
 
     return (
         <div className="flex flex-col gap-4 grow">

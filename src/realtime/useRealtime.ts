@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { handleRealtimeConversation } from "@/features/messages/realtime/channels/conversation";
-import { handleRealtimeMember } from "@/features/messages/realtime/channels/member";
-import { handleRealtimeMessage } from "@/features/messages/realtime/channels/messages";
 import { useQuery } from "@/query/core";
+import { handleRealtimeConversation } from "@/realtime/channels/conversation";
+import { handleRealtimeMember } from "@/realtime/channels/member";
+import { handleRealtimeMessage } from "@/realtime/channels/messages";
 import { supabaseClient } from "@/utils/server/public/supabase";
 import { RealtimeChannel } from "@supabase/supabase-js";
 import { useEffect, useMemo, useRef } from "react";

@@ -1,6 +1,6 @@
-import { RealtimeBroadcastEvent } from "@/features/messages/realtime/useRealtime";
 import { notificationListeners } from "@/notifications/data/init";
 import { queryDelete, queryInvalidate, queryMutate } from "@/query/auxiliary";
+import { RealtimeBroadcastEvent } from "@/realtime/useRealtime";
 import { ConversationMember } from "@/types/tables/messages";
 import { relativeTime } from "@/utils/other/relativeTime";
 

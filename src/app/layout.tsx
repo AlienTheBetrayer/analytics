@@ -7,6 +7,7 @@ import { AuthWatcher } from "@/watchers/AuthWatcher";
 import { LocalStoreWatcher } from "@/watchers/LocalStoreWatcher";
 import { ScrollUp } from "@/features/ui/scrollup/components/ScrollUp";
 import { Footer } from "@/features/footer/components/Footer";
+import { RealtimeWatcher } from "@/watchers/RealtimeWatcher";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -32,6 +33,7 @@ export default function RootLayout({
         <html lang="en">
             <AuthWatcher />
             <LocalStoreWatcher />
+            <RealtimeWatcher />
 
             <body
                 className={`${geistSans.variable} ${geistMono.variable} px-4! dotted antialiased overflow-x-hidden min-h-screen flex flex-col relative`}

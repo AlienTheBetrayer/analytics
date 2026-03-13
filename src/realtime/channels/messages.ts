@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { RealtimeBroadcastEvent } from "@/features/messages/realtime/useRealtime";
 import { notificationListeners } from "@/notifications/data/init";
 import { setLastMessage } from "@/query-api/calls/messages";
 import { ReducedUser } from "@/query-api/protocol/messages";
 import { queryMutate } from "@/query/auxiliary";
+import { RealtimeBroadcastEvent } from "@/realtime/useRealtime";
 import { Message } from "@/types/tables/messages";
 
 type PayloadMessage = Message & { user: ReducedUser };
