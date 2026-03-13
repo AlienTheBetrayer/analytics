@@ -43,7 +43,7 @@ export const Forwarding = ({ onAction }: ForwardingProps) => {
 
             {conversationIds.length ?
                 <ul
-                    className="flex flex-col gap-1 w-full overflow-y-auto max-h-64 scheme-dark"
+                    className="flex flex-col gap-1 w-full overflow-y-auto max-h-64"
                     style={{
                         scrollbarWidth: "thin",
                     }}

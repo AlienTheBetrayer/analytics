@@ -45,7 +45,7 @@ export const List = ({ onNavigate }: Props) => {
     // jsx
     return (
         <ul
-            className="flex flex-col items-center gap-2 max-h-64 overflow-y-auto scheme-dark"
+            className="flex flex-col items-center gap-2 max-h-64 overflow-y-auto"
             style={{
                 scrollbarWidth: "thin",
             }}

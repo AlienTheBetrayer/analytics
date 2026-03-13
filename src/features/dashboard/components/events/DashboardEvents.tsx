@@ -51,7 +51,7 @@ export const DashboardEvents = ({ id }: Props) => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 ref={ref}
-                className="box grow bg-bg-2! p-4! border-0! h-full overflow-y-auto overflow-x-hidden scheme-dark"
+                className="box grow bg-bg-2! p-4! border-0! h-full overflow-y-auto overflow-x-hidden"
                 style={{
                     scrollbarWidth: "thin",
                 }}

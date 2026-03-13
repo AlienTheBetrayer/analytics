@@ -15,7 +15,7 @@ export const ProjectList = ({ data }: Props) => {
 
     return (
         <ul
-            className="box grow bg-bg-2! p-4! border-0! min-h-32 max-h-96 overflow-y-auto scheme-dark"
+            className="box grow bg-bg-2! p-4! border-0! min-h-32 max-h-96 overflow-y-auto"
             style={{
                 scrollbarWidth: "thin",
             }}

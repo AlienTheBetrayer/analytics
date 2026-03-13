@@ -63,7 +63,11 @@ export const MessageViewList = () => {
                         listRef={listRef}
                         rowComponent={MessageDisplayRow}
                         rowCount={messageIds.length}
-                        style={{ colorScheme: "dark", scrollbarWidth: "thin", overflowY: "scroll", height: "100%" }}
+                        style={{
+                            scrollbarWidth: "thin",
+                            overflowY: "scroll",
+                            height: "100%",
+                        }}
                         rowHeight={rowHeight}
                         rowProps={{
                             messageIds: reversed ? [...messageIds].reverse() : messageIds,

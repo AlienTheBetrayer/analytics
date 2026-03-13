@@ -1,28 +1,24 @@
 import { BentoSection } from "@/features/bentogrid/components/parts/BentoSection";
 import { InfoTooltip } from "@/features/bentogrid/components/parts/InfoTooltip";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
+import { Spinner } from "@/features/ui/spinner/components/Spinner";
 import { useQuery } from "@/query/core";
 import Image from "next/image";
 
 export const Permissions = () => {
-    const { data: status } = useQuery({ key: ["status"] });
+    const { data: status, isLoading } = useQuery({ key: ["status"] });
 
     return (
         <BentoSection
             src="/security.svg"
             text="Permissions"
+            className="gap-4"
         >
             {status ?
-                <div className="box p-4! gap-4! bg-bg-2! items-center">
-                    <span className="flex items-center gap-1">
-                        <span>Your role —</span>
-                        <div className="w-1 h-1 bg-blue-1 rounded-full" />
-                        <span>{status?.role}</span>
-                    </span>
-
+                <div className="flex flex-col items-center gap-1">
                     <LinkButton
                         href="/profile"
-                        className="w-full p-2! not-hover:bg-bg-1!"
+                        className="w-full p-2!"
                     >
                         <div className="w-1 h-1 rounded-full bg-blue-3" />
                         <Image
@@ -34,53 +30,63 @@ export const Permissions = () => {
                         Profile
                     </LinkButton>
                 </div>
-            :   <ul className="grid grid-cols-2 gap-1 w-full max-w-42">
-                    <li>
-                        <LinkButton
-                            href="/login"
-                            className="w-full flex-col not-hover:bg-bg-1! aspect-square truncate rounded-4xl!"
-                        >
-                            <span className="flex items-center">
-                                <div className="w-1 h-1 rounded-full bg-blue-1" />
-                                <Image
-                                    alt=""
-                                    width={16}
-                                    height={16}
-                                    src="/send.svg"
-                                />
-                            </span>
-                            Log in
-                        </LinkButton>
-                    </li>
+            :   <ul className="grid grid-cols-2 gap-2 w-full max-w-32 lg:max-w-42 mx-auto! relative">
+                    {isLoading ?
+                        <>
+                            <li className="box w-full loading rounded-4xl! col-span-2" />
+                            <li>
+                                <Spinner className="absolute left-1/2 top-1/2 -translate-1/2" />
+                            </li>
+                        </>
+                    :   <>
+                            <li>
+                                <LinkButton
+                                    href="/login"
+                                    className="w-full flex-col not-hover:bg-bg-1! aspect-square truncate rounded-4xl!"
+                                >
+                                    <span className="flex items-center">
+                                        <div className="w-1 h-1 rounded-full bg-blue-1" />
+                                        <Image
+                                            alt=""
+                                            width={16}
+                                            height={16}
+                                            src="/send.svg"
+                                        />
+                                    </span>
+                                    Log in
+                                </LinkButton>
+                            </li>
 
-                    <li>
-                        <LinkButton
-                            href="/signup"
-                            className="w-full flex-col not-hover:bg-bg-1! aspect-square truncate rounded-4xl!"
-                        >
-                            <span className="flex items-center">
-                                <div className="w-1 h-1 rounded-full bg-orange-3" />
-                                <Image
-                                    alt=""
-                                    width={16}
-                                    height={16}
-                                    src="/pencil.svg"
-                                />
-                            </span>
-                            Sign up
-                        </LinkButton>
-                    </li>
+                            <li>
+                                <LinkButton
+                                    href="/signup"
+                                    className="w-full flex-col not-hover:bg-bg-1! aspect-square truncate rounded-4xl!"
+                                >
+                                    <span className="flex items-center">
+                                        <div className="w-1 h-1 rounded-full bg-orange-3" />
+                                        <Image
+                                            alt=""
+                                            width={16}
+                                            height={16}
+                                            src="/pencil.svg"
+                                        />
+                                    </span>
+                                    Sign up
+                                </LinkButton>
+                            </li>
+                        </>
+                    }
                 </ul>
             }
 
-            <ul className="box p-4! gap-1! bg-bg-2! grid! grid-cols-3">
+            <ul className="grid! grid-cols-3 gap-2 w-full max-w-48 mx-auto!">
                 <li>
                     <InfoTooltip
                         color="var(--blue-3)"
                         src="/cube.svg"
-                        text={"Roles are stored in JWT tokens and determine the UI for each user"}
+                        text={"Roles"}
                     >
-                        Roles
+                        Roles are stored in JWT tokens and determine the UI for each user
                     </InfoTooltip>
                 </li>
 
@@ -88,9 +94,9 @@ export const Permissions = () => {
                     <InfoTooltip
                         color="var(--orange-1)"
                         src="/settings.svg"
-                        text={"Primary security is enforced at the API layer to prevent unauthorized access"}
+                        text={"API"}
                     >
-                        API
+                        Primary security is enforced at the API layer to prevent unauthorized access
                     </InfoTooltip>
                 </li>
 
@@ -98,9 +104,9 @@ export const Permissions = () => {
                     <InfoTooltip
                         color="var(--red-1)"
                         src="/delete.svg"
-                        text={"Additional security features allow users to revoke active sessions on other devices"}
+                        text={"Sessions"}
                     >
-                        Sessions
+                        Additional security features allow users to revoke active sessions on other devices
                     </InfoTooltip>
                 </li>
             </ul>

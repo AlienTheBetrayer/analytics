@@ -15,7 +15,7 @@ export const InfoTooltip = ({ text, color, src, children }: Props) => {
             tooltipClassname="whitespace-normal! max-w-81"
             clickHides={false}
             direction="top"
-            text={text}
+            text={children}
             className="w-full"
         >
             <Button className="flex-col w-full aspect-square not-hover:bg-bg-1! gap-0! rounded-4xl!">
@@ -31,7 +31,7 @@ export const InfoTooltip = ({ text, color, src, children }: Props) => {
                         src={src}
                     />
                 </span>
-                {children}
+                {text}
             </Button>
         </Tooltip>
     );

@@ -20,7 +20,7 @@ export const SessionList = ({ data, currentSessions }: Props) => {
 
     return (
         <ul
-            className="flex flex-col overflow-y-auto h-full max-h-128 scheme-dark gap-2"
+            className="flex flex-col overflow-y-auto h-full max-h-128 gap-2"
             style={{
                 scrollbarWidth: "thin",
             }}

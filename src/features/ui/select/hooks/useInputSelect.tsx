@@ -107,7 +107,8 @@ export const useInputSelect = (items: string[], value: string | undefined, onCha
                             animate={{ height: "auto" }}
                             exit={{ height: "0px" }}
                             data-tooltip
-                            className="flex flex-col overflow-hidden rounded-xl border-2 border-bg-3! modal-element"
+                            className="flex flex-col overflow-hidden rounded-xl border-2 border-bg-3! modal-element max-h-48 overflow-y-auto"
+                            style={{ scrollbarWidth: "thin" }}
                         >
                             {items.map((item) => (
                                 <li key={item}>

@@ -83,7 +83,8 @@
     --brightness-b: 1.3;
     --dotted: var(--background-2);
     --loading: var(--background-4);
-    --backdrop: rgba(0, 0, 0, 0.4);
+    --backdrop: rgba(0, 0, 0, 0.3);
+    --scheme: dark;
 
     --invert-1: 0.1;
     --invert-2: 0.2;
@@ -144,7 +145,8 @@
     --brightness-b: 0.3;
     --dotted: var(--background-10);
     --loading: var(--background-7);
-    --backdrop: rgba(0, 0, 0, 0.2);
+    --backdrop: rgba(0, 0, 0, 0.15);
+    --scheme: light;
 
     --invert-1: 0.9;
     --invert-2: 0.8;
@@ -270,6 +272,13 @@ body {
     padding: 0;
 }
 
+input,
+button,
+ul,
+div[role="list"] {
+    color-scheme: var(--scheme) !important;
+}
+
 b,
 i,
 u,
@@ -303,8 +312,7 @@ mark {
 em {
     color: rgb(216, 216, 216);
     display: inline-block;
-    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5))
-        drop-shadow(0 0 4px rgba(0, 0, 0, 0.3))
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5)) drop-shadow(0 0 4px rgba(0, 0, 0, 0.3))
         drop-shadow(0 0 8px rgba(0, 0, 0, 0.3));
 }
 
@@ -553,12 +561,7 @@ img {
 
 .loading {
     position: relative;
-    background: linear-gradient(
-        90deg,
-        var(--bg-1) 25%,
-        var(--bg-3) 37%,
-        var(--bg-1) 63%
-    );
+    background: linear-gradient(90deg, var(--bg-1) 25%, var(--bg-3) 37%, var(--bg-1) 63%);
 
     background-size: 200% 100%;
     border-radius: 1.5rem;

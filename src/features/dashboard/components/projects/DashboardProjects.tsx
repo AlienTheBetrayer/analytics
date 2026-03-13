@@ -12,7 +12,7 @@ export const DashboardProjects = ({ data }: Props) => {
 
     return (
         <ul
-            className="box grow bg-bg-2! p-4! border-0! h-full overflow-y-auto overflow-x-hidden scheme-dark"
+            className="box grow bg-bg-2! p-4! border-0! h-full overflow-y-auto overflow-x-hidden"
             style={{
                 scrollbarWidth: "thin",
             }}

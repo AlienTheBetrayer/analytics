@@ -67,7 +67,7 @@ export const FriendsTab = ({ data, fetchKey }: Props) => {
     return (
         <div className="flex flex-col gap-2 grow">
             <ul
-                className="flex flex-col gap-2 overflow-y-auto max-h-128 scheme-dark"
+                className="flex flex-col gap-2 overflow-y-auto max-h-128"
                 style={{ scrollbarWidth: "thin" }}
             >
                 {tabData?.map((id) => (

@@ -12,6 +12,10 @@
         "a a b b b";
 }
 
+.bento-grid > li {
+    overflow: auto;
+}
+
 @media (max-width: 1024px) {
     .bento-grid {
         grid-template-columns: repeat(6, 1fr);
@@ -57,13 +61,10 @@
     }
 }
 
-.bento-grid > div {
-    display: grid;
-    place-items: center;
+.bento-grid > li > div {
     transition: 0.5s;
-    background: rgb(7, 7, 7);
 }
 
-.bento-grid > div:hover {
-    background: rgb(28, 28, 28);
+.bento-grid > li:hover > div {
+    background: var(--bg-3);
 }

@@ -22,15 +22,16 @@ export const FilterSelector = ({ tab, notificationTab }: Props) => {
     );
 
     return (
-        <div
-            className="flex flex-col gap-1.5 max-h-48 overflow-y-auto scheme-dark p-1"
+        <ul
+            className="flex flex-col gap-1.5 max-h-48 overflow-y-auto p-1"
             style={{
                 scrollbarWidth: "thin",
             }}
         >
             {items.map((type) => (
+                <li key={type}>
+
                 <Checkbox
-                    key={type}
                     onToggle={(flag) => {
                         setNotificationFilter({
                             type: "filter",
@@ -46,7 +47,9 @@ export const FilterSelector = ({ tab, notificationTab }: Props) => {
                         <small>{notificationCount[type] ?? 0}</small>
                     </span>
                 </Checkbox>
+                </li>
+
             ))}
-        </div>
+        </ul>
     );
 };

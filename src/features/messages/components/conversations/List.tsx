@@ -26,7 +26,7 @@ export const List = () => {
     return (
         <div className="flex flex-col relative grow overflow-hidden">
             <motion.ul
-                className="flex flex-col gap-1 relative grow scheme-dark h-100 overflow-y-auto"
+                className="flex flex-col gap-1 relative grow h-100 overflow-y-auto"
                 style={{ scrollbarWidth: "thin" }}
                 animate={{ x: tab !== "conversations" ? "-50%" : "0%" }}
                 transition={{ ease: [0.4, 0, 0.2, 1], duration: 0.3 }}

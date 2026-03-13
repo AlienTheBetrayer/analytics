@@ -130,7 +130,6 @@ export const Colors = ({ data }: Props) => {
                                     text="Smoothness of colors"
                                 >
                                     <input
-                                        className="scheme-dark!"
                                         id="hue-rotation"
                                         type="range"
                                         value={controller.hueRotation}
