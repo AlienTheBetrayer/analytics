@@ -18,16 +18,7 @@ type Props = {
     text?: string;
 };
 
-export const Results = ({
-    type,
-    view,
-    onSelect,
-    search,
-    isEnabled,
-    required,
-    text,
-    promiseState,
-}: Props) => {
+export const Results = ({ type, view, onSelect, search, isEnabled, required, text, promiseState }: Props) => {
     // view = select only
     const [selected, setSelected] = useState<Record<string, boolean>>({});
     const selectedToggled = useMemo(() => {
@@ -63,73 +54,65 @@ export const Results = ({
         );
     }
 
-    if (!search.data.length) {
-        return (
-            <div className="flex items-center justify-center loading grow p-4">
-                {type === "friends" ? <NoFriends /> : <NoResults />}
-            </div>
-        );
-    }
-
     return (
-        <ul className="flex flex-col gap-2 grow">
-            {search.data.map((d) => (
-                <li key={d.id}>
-                    {view === "list" ? (
-                        <MiniProfileDisplay
-                            data={d}
-                            view="list"
-                        />
-                    ) : (
-                        <MiniProfileDisplay
-                            data={d}
-                            view={view}
-                            value={selected[d.id]}
-                            onSelect={(flag) =>
-                                setSelected((prev) => ({
-                                    ...prev,
-                                    [d.id]: flag,
-                                }))
-                            }
-                        />
-                    )}
-                </li>
-            ))}
-
-            {view === "select" && (
-                <>
-                    <li className="mt-auto!">
-                        <hr />
-                    </li>
-
-                    <li className="w-full">
-                        <Button
-                            className="w-full"
-                            isEnabled={
-                                isEnabled !== false &&
-                                (!required ? true : !!selectedToggled.length)
-                            }
-                            onClick={() => onSelect?.(selectedToggled)}
-                        >
-                            {promiseState && (
-                                <PromiseState state={promiseState} />
-                            )}
-                            <Image
-                                alt=""
-                                width={16}
-                                height={16}
-                                src="/imageadd.svg"
-                            />
-                            {text ?? "Add"}
-                            {!!selectedToggled.length && (
-                                <small className="ml-1">
-                                    ({selectedToggled.length})
-                                </small>
-                            )}
-                        </Button>
-                    </li>
-                </>
+        <>
+            {!!!search.data.length && (
+                <div className="flex items-center justify-center loading grow p-4">
+                    {type === "friends" ?
+                        <NoFriends />
+                    :   <NoResults />}
+                </div>
             )}
-        </ul>
+
+            <ul className="flex flex-col gap-2 grow">
+                {search.data.map((d) => (
+                    <li key={d.id}>
+                        {view === "list" ?
+                            <MiniProfileDisplay
+                                data={d}
+                                view="list"
+                            />
+                        :   <MiniProfileDisplay
+                                data={d}
+                                view={view}
+                                value={selected[d.id]}
+                                onSelect={(flag) =>
+                                    setSelected((prev) => ({
+                                        ...prev,
+                                        [d.id]: flag,
+                                    }))
+                                }
+                            />
+                        }
+                    </li>
+                ))}
+
+                {view === "select" && (
+                    <>
+                        <li className="mt-auto!">
+                            <hr />
+                        </li>
+
+                        <li className="w-full">
+                            <Button
+                                className="w-full"
+                                isEnabled={isEnabled !== false && (!required ? true : !!selectedToggled.length)}
+                                onClick={() => onSelect?.(selectedToggled)}
+                            >
+                                {promiseState && <PromiseState state={promiseState} />}
+                                <Image
+                                    alt=""
+                                    width={16}
+                                    height={16}
+                                    src="/imageadd.svg"
+                                />
+                                {text ?? "Add"}
+                                {!!selectedToggled.length && <small className="ml-1">({selectedToggled.length})</small>}
+                            </Button>
+                        </li>
+                    </>
+                )}
+            </ul>
+        </>
     );
 };

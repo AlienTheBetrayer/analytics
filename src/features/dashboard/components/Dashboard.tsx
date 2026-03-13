@@ -22,7 +22,7 @@ export const Dashboard = () => {
     // fallbacks
     let errorString = "";
 
-    if (!status) {
+    if (!status || status.role === "user") {
         errorString = "Not authenticated";
     }
 

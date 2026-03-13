@@ -53,7 +53,7 @@ export const Send = ({ type, data }: Props) => {
             })}
 
             <ul className="box bg-bg-2! p-0! h-10! flex-row! w-full mt-6! md:mt-0! items-center">
-                <li className="absolute left-1/2 -top-1/2 md:top-1/2 -translate-1/2">
+                <li className="absolute left-1/2 top-1/2 -translate-1/2">
                     <span className="flex items-center gap-1">
                         <Image
                             alt=""
@@ -85,7 +85,7 @@ export const Send = ({ type, data }: Props) => {
             <div className="w-full grid lg:grid-cols-[1fr_40%] gap-4">
                 <div className="box grow bg-bg-2! p-4! border-0! ">
                     <ul className="box flex-row! items-center min-h-10 h-10! p-0! w-full">
-                        <li className="absolute left-1/2 -top-1/2 md:top-1/2 -translate-1/2">
+                        <li className="absolute left-1/2 top-1/2 -translate-1/2">
                             <span className="flex items-center gap-1">
                                 <Image
                                     alt=""
@@ -161,7 +161,7 @@ export const Send = ({ type, data }: Props) => {
                             </Tooltip>
                         </li>
 
-                        <li className="absolute left-1/2 -top-1/2 md:top-1/2 -translate-1/2">
+                        <li className="absolute left-1/2 top-1/2 -translate-1/2">
                             <span className="flex items-center gap-1">
                                 <Image
                                     alt=""

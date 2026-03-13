@@ -122,7 +122,7 @@ export const Item = ({ className, id, filter }: Props) => {
             </ul>
 
             <div
-                className={`transition-all duration-500 overflow-hidden ${display === "compact" ? "max-h-0" : "max-h-32"}`}
+                className={`transition-all duration-500 overflow-hidden ${display === "compact" ? "max-h-0" : "max-h-64"}`}
             >
                 <PreviewButton
                     className={className}
