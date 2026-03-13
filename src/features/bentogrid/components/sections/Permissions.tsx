@@ -79,7 +79,7 @@ export const Permissions = () => {
                 </ul>
             }
 
-            <ul className="grid! grid-cols-2 gap-2 w-full max-w-48 mx-auto!">
+            <ul className="grid! grid-cols-2 gap-2 w-full max-w-36 lg:max-w-48 mx-auto!">
                 <li>
                     <InfoTooltip
                         color="var(--blue-3)"

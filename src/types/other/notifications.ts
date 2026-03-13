@@ -20,7 +20,8 @@ export type NotificationType =
     | "Membership changed"
     | "Noteboard created"
     | "Noteboard deleted"
-    | "Authenticated";
+    | "Authenticated"
+    | "Easter egg";
 
 export type Notification = {
     id: string;

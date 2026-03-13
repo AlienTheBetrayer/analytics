@@ -9,8 +9,11 @@ import { Modal } from "@/features/ui/popovers/components/modal/Modal";
 import { Tooltip } from "@/features/ui/popovers/components/tooltip/Tooltip";
 import { PopoverDirection, PopoverDirections } from "@/features/ui/popovers/types/popover";
 import { Select } from "@/features/ui/select/components/Select";
+import { notificationListeners } from "@/notifications/data/init";
 import Image from "next/image";
 import { useMemo, useState } from "react";
+
+const UISelectItems = "You can select multiple items at once and interact with UI!".split(" ");
 
 export const UI = () => {
     // message boxes
@@ -32,7 +35,20 @@ export const UI = () => {
         >
             {box.render({
                 children: "Focus-trapped + One line of code + Easy integration",
-                onSelect: () => {},
+                onSelect: (res) => {
+                    if (res === "yes") {
+                        notificationListeners.fire({
+                            key: "all",
+                            notification: {
+                                status: "Information",
+                                tab: "Account",
+                                title: `Easter egg!`,
+                                description: `You've found the secret on the home page...`,
+                                type: "Easter egg",
+                            },
+                        });
+                    }
+                },
             })}
 
             <div className="flex items-center justify-center w-full max-w-24">
@@ -52,7 +68,7 @@ export const UI = () => {
 
             <ul className="w-full h-fit! gap-2 mx-auto! grid! auto-cols-fr grid-cols-2 sm:grid-cols-4">
                 <li>
-                    <Button className="w-full h-full">
+                    <Button className="w-full h-full truncate">
                         <Image
                             alt=""
                             width={16}
@@ -87,12 +103,12 @@ export const UI = () => {
                 </li>
 
                 <li>
-                    <Select items={["Select", "Many", "Items", "At", "Once"]} />
+                    <Select items={UISelectItems} />
                 </li>
 
                 <li>
                     <Button
-                        className="w-full h-full"
+                        className="w-full h-full truncate"
                         onClick={box.show}
                     >
                         <div className="w-1 h-1 rounded-full bg-green-1" />
@@ -102,7 +118,7 @@ export const UI = () => {
                             height={16}
                             src="/dashboard.svg"
                         />
-                        Message Box
+                        <span className="truncate">Message Box</span>
                     </Button>
                 </li>
 

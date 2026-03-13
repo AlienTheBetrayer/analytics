@@ -35,7 +35,7 @@ export const UseQuery = () => {
             src="/auth.svg"
             text="useQuery()"
         >
-            <ul className="grid! grid-cols-2 gap-2 w-full max-w-48 mx-auto!">
+            <ul className="grid! grid-cols-4 lg:grid-cols-2 gap-2 w-full max-w-72 lg:max-w-48 mx-auto!">
                 <li>
                     <InfoTooltip
                         color="var(--blue-1)"
@@ -105,7 +105,7 @@ export const UseQuery = () => {
 
                 <li
                     className="overflow-hidden transition-all duration-500! ease-in-out"
-                    style={{ maxWidth: data ? "2.25rem" : "0rem" }}
+                    style={{ maxWidth: data ? "2.25rem" : "0rem", scale: data ? 1 : 0 }}
                 >
                     <Button
                         inert={!data}

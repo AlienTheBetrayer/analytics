@@ -58,12 +58,7 @@ export const MessageBox = ({ visibility, children, onSelect }: Props) => {
 
             const bounds = dialogRef.current.getBoundingClientRect();
 
-            if (
-                x > bounds.left &&
-                x < bounds.right &&
-                y > bounds.top &&
-                y < bounds.bottom
-            ) {
+            if (x > bounds.left && x < bounds.right && y > bounds.top && y < bounds.bottom) {
                 return;
             }
 
@@ -90,7 +85,7 @@ export const MessageBox = ({ visibility, children, onSelect }: Props) => {
                 }}
                 ref={dialogRef}
                 onClick={(e) => e.stopPropagation()}
-                className="m-auto!"
+                className="m-auto! w-screen max-w-92"
             >
                 <AnimatePresence
                     onExitComplete={() => {
@@ -117,7 +112,7 @@ export const MessageBox = ({ visibility, children, onSelect }: Props) => {
                                 scale: 1,
                             }}
                             exit={{ opacity: 0, scale: 0.85 }}
-                            className="relative box msg-box acrylic justify-between w-screen max-w-92 gap-4! aspect-video backdrop-blur-xl!"
+                            className="relative box msg-box acrylic justify-between w-full gap-4! aspect-video backdrop-blur-xl!"
                         >
                             <CloseButton hide={() => onSelect?.("no")} />
 
@@ -136,9 +131,7 @@ export const MessageBox = ({ visibility, children, onSelect }: Props) => {
                                 </span>
                             </div>
 
-                            <span className="text-center w-full">
-                                {children}
-                            </span>
+                            <span className="text-center w-full">{children}</span>
 
                             <ul className="grid grid-cols-2 w-full gap-4">
                                 <li>
