@@ -1,5 +1,6 @@
 import { notificationListeners } from "@/notifications/data/init";
 import { queryDelete, queryInvalidate, queryMutate } from "@/query/auxiliary";
+import { ConversationElement } from "@/realtime/channels/messages";
 import { RealtimeBroadcastEvent } from "@/realtime/useRealtime";
 import { ConversationMember } from "@/types/tables/messages";
 import { relativeTime } from "@/utils/other/relativeTime";
@@ -52,6 +53,7 @@ export const handleRealtimeMember = (
                                 title: `Your mute has expired.`,
                                 description: `You are now unmuted!`,
                                 type: "Unmuted",
+                                element: <ConversationElement conversation_id={c.id} />,
                             },
                         });
                     } else if (c.membership.unread_amount === member.unread_amount) {
@@ -63,6 +65,7 @@ export const handleRealtimeMember = (
                                 title: `Permissions changed!`,
                                 description: `Your permissions / membership has been changed.`,
                                 type: "Membership changed",
+                                element: <ConversationElement conversation_id={c.id} />,
                             },
                         });
                     }

@@ -1,3 +1,5 @@
+import { JSX } from "react";
+
 // notifications
 export type NotificationStatus = "Information" | "Error" | "Warning";
 export type NotificationTab = "Account" | "Dashboard";
@@ -39,6 +41,7 @@ export type NotificationData = {
     tab: NotificationTab;
     type: NotificationType;
     description?: string;
+    element?: JSX.Element;
 };
 
 // filters

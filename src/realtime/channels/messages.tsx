@@ -1,12 +1,16 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { notificationListeners } from "@/notifications/data/init";
 import { setLastMessage } from "@/query-api/calls/messages";
 import { ReducedUser } from "@/query-api/protocol/messages";
 import { queryMutate } from "@/query/auxiliary";
 import { RealtimeBroadcastEvent } from "@/realtime/useRealtime";
 import { Message } from "@/types/tables/messages";
+import Image from "next/image";
 
 type PayloadMessage = Message & { user: ReducedUser };
+
+
 
 export const handleRealtimeMessage = (
     user_id: string,
@@ -81,6 +85,7 @@ export const handleRealtimeMessage = (
                                 title: `Message from ${user.username}`,
                                 description: message.message,
                                 type: "Message received!",
+                                element: <ConversationElement conversation_id={message.conversation_id} />,
                             },
                         });
                     }
@@ -117,4 +122,26 @@ export const handleRealtimeMessage = (
     }
 
     setLastMessage(user_id, message.conversation_id);
+};
+
+type ElementProps = {
+    conversation_id: string;
+};
+
+export const ConversationElement = ({ conversation_id }: ElementProps) => {
+    return (
+        <LinkButton
+            href={`/messages/c/${conversation_id}`}
+            className="mx-auto! w-full max-w-48"
+        >
+            <div className="w-1 h-1 rounded-full bg-blue-1" />
+            <Image
+                alt=""
+                width={16}
+                height={16}
+                src="/launch.svg"
+            />
+            Conversation
+        </LinkButton>
+    );
 };
