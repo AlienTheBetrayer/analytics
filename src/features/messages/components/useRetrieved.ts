@@ -56,6 +56,7 @@ export const useRetrieved = () => {
     const { data: retrievedConversation } = useQuery({
         key: ["conversation_retrieve", tab, status?.id, id ?? null],
         trigger: result === "fetch",
+        revalidate: true,
     });
 
     // return state

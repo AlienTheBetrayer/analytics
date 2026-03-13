@@ -31,18 +31,10 @@ export const useMessageView = () => {
 
     // syncing global state
     useEffect(() => {
-        if (!messages) {
-            return;
-        }
-
-        updateMessages(messages);
+        updateMessages(messages ?? null);
     }, [messages, updateMessages]);
     useEffect(() => {
-        if (!conversation) {
-            return;
-        }
-
-        updateConversation(conversation);
+        updateConversation(conversation ?? null);
     }, [conversation, updateConversation]);
 
     // moving back out of archived page
