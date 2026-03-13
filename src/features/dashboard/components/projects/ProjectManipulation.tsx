@@ -68,7 +68,7 @@ export const ProjectManipulation = () => {
                 <span>Project manipulation</span>
             </div>
 
-            <ul className="grid grid-cols-3 gap-0 sm:gap-2 w-full max-w-96">
+            <ul className="grid grid-cols-3 gap-0 sm:gap-2 w-full">
                 <li>
                     <LinkButton
                         className="flex-col w-full aspect-square rounded-4xl!"

@@ -20,22 +20,18 @@ export const RoleEditing = ({ data }: Props) => {
     return (
         <ul className="relative box h-full gap-4! acrylic w-full">
             <li className="flex flex-col gap-1 items-center text-center">
-                <div className="relative flex gap-1">
-                    <Image
-                        width={16}
-                        height={16}
-                        alt=""
-                        src="/cube.svg"
-                    />
+                <div className="relative flex flex-col gap-1 items-center">
+                    <span className="flex items-center">
+                        <div className="w-1 h-1 rounded-full bg-blue-1" />
+                        <Image
+                            width={16}
+                            height={16}
+                            alt=""
+                            src="/cube.svg"
+                        />
+                    </span>
                     <span>{data.username}</span>
                 </div>
-
-                <span className="text-5!">Role editing</span>
-
-                <p>
-                    Since you have full permissions, you can <u>edit</u> this
-                    user&apos;s roles!
-                </p>
             </li>
 
             <li>
@@ -48,9 +44,7 @@ export const RoleEditing = ({ data }: Props) => {
                     htmlFor="role-select"
                 >
                     <span>Role</span>
-                    <small className="ml-auto truncate-left">
-                        (different roles have different permissions)
-                    </small>
+                    <small className="ml-auto truncate-left">(different roles have different permissions)</small>
                 </label>
 
                 <Select

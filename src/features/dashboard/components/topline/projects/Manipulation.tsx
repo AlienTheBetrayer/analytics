@@ -8,7 +8,7 @@ export const Manipulation = () => {
     return (
         <Tooltip text="Advanced editing">
             <Modal
-                tooltipClassName="w-screen max-w-lg"
+                tooltipClassName="w-screen max-w-81"
                 direction="bottom"
                 element={() => <ProjectManipulation />}
             >
