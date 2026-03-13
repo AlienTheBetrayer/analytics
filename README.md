@@ -1,237 +1,151 @@
-
 # Analytics
 
-A **production-grade analytics platform** implemented using **Next.js, React, TypeScript, SQL, and a custom-built SDK**.
+## Overview
+**A brief overview of the application, not all features were displayed, there's more to the application**
 
-The system aggregates analytics events from multiple external services into a centralized, **view-only dashboard**, leveraging a **self-authored npm SDK** and a **custom authentication architecture with server-side token rotation**.
+---
 
-![Analytics Dashboard Showcase](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/front.png)
+**Features:**
+- [Home](#Home)
+- [Messenger](#Messenger)
+- [Noteboard](#Noteboard)
+- [Posts](#Posts)
+- [Dashboard](#Dashboard)
+- [Notifications](#Notifications)
+- [Contact](#Contact)
+- [Profile](#Profile)
+- [Search](#Search)
+- [Auth](#Auth)
+- [Theme](#Theme)
 
-----------
+---
 
-## 🚀 Tech Stack
+## Home
+Stellar grid view:
+![](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/home/home1.png)
 
-**Frontend**
+Modal:
+![](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/home/home2.png)
 
--   Next.js (App Router)
-    
--   React
-    
--   TypeScript
-    
--   Tailwind CSS
-    
--   Context API, Providers, and custom hooks
-    
+---
 
-**Backend**
+## Messenger
+View:
+![](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/messages/messages1.png)
 
--   Next.js API routes
-    
--   SQL (Supabase / PostgreSQL)
-    
--   Custom authentication layer
-    
--   HttpOnly cookie-based sessions
-    
--   Access and refresh token rotation
-    
+Virtualized messages list + Context menu:
+![](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/messages/messages2.png)
 
-**SDK**
+Invitation creation: (+image)
+![](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/messages/messages3.png)
 
--   `@alienthebetrayer/analytics-sdk-core`
-    
--   `@alienthebetrayer/analytics-sdk-react`
-    
--   Strongly typed API client
-    
--   React Provider abstraction
-    
+Invitation view:
+![](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/messages/messages4.png)
 
-----------
+Forwarding messages:
+![](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/messages/messages5.png)
 
-## 📚 Libraries / Tooling
+Conversation members + roles:
+![](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/messages/messages6.png)
 
--   Axios
-    
--   Supabase
-    
--   Tailwind CSS
-    
--   TypeScript (strict mode)
-    
--   npm workspaces (monorepo architecture)
-    
--   Custom middleware and CORS handling
-    
+Member editing (permissions + role + mute):
+![](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/messages/messages7.png)
 
-----------
+Conversation editing:
+![](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/messages/messages8.png)
 
-## 🧠 Engineering Principles
+Messages selection (copy + delete):
+![](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/messages/messages9.png)
 
--   **Security-oriented design**  
-    Server-side session validation, token rotation, protected routes, and CORS-aware API boundaries
-    
--   **Scalable system architecture**  
-    SDK-driven ingestion, separation of core and framework-specific layers, and aggregation-based data modeling
-    
--   **Maintainability and clarity**  
-    End-to-end static typing, reusable abstractions, consistent project structure, and JSDoc-driven documentation
-    
--   **Full technical ownership**  
-    No third-party authentication, analytics, or SDK frameworks; all critical infrastructure implemented explicitly
-    
+Group creation: (image + realtime friend list)
+![](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/messages/messages10.png)
 
-----------
+---
 
-## 📸 Project Overview
+## Noteboard
+- **Notes conversation allows both messages and a noteboard**
 
-**Dashboard**
+View:
+![](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/noteboard/noteboard1.png)
 
--   Read-only analytics interface
-    
--   Project-level and event-level insights
-    
--   Pre-aggregated metrics
-    
--   Server-side data fetching for performance and consistency
-    
+Elements: (ability to edit / delete / pin)
+![](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/noteboard/noteboard2.png)
 
-![Analytics Dashboard](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/dashboard.png)
+---
 
-**Authentication**
+## Posts
+View: (sort + filter + display type)
+![](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/posts/posts1.png)
 
--   Fully custom-built authentication flow
-    
--   Access and refresh token lifecycle management
-    
--   Server-side rotation and invalidation
-    
--   Explicit session termination and invalidation semantics
-    
+Expanded view:
+![](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/posts/posts2.png)
 
-![Authentication Flow](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/login.png)
+Comments: (likes + dislikes + editing)
+![](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/posts/posts3.png)
 
-----------
+Creation / editing:
+![](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/posts/posts4.png)
 
-## ✅ Final Notes
+---
 
-This project demonstrates **end-to-end system ownership**, spanning frontend engineering, backend API design, authentication infrastructure, SDK development, and relational data modeling, with an emphasis on production-oriented trade-offs and long-term maintainability.
-# Analytics
+## Dashboard
+View: (gathered from other applications via an NPM SDK)
+![](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/dashboard/dashboard1.png)
 
-A **production-grade analytics platform** implemented using **Next.js, React, TypeScript, SQL, and a custom-built SDK**.
+Emulation (fake events):
+![](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/dashboard/dashboard2.png)
 
-The system aggregates analytics events from multiple external services into a centralized, **view-only dashboard**, leveraging a **self-authored npm SDK** and a **custom authentication architecture with server-side token rotation**.
+---
 
-![Analytics Dashboard Showcase](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/front.png)
+## Notifications
+View: (+advanced filtering):
+![](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/notifications/notifications1.png)
 
-----------
+--- 
 
-## 🚀 Tech Stack
+## Contact
 
-**Frontend**
+Message sending + preview:
+![](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/contact/contact1.png)
 
--   Next.js (App Router)
-    
--   React
-    
--   TypeScript
-    
--   Tailwind CSS
-    
--   Context API, Providers, and custom hooks
-    
+Admin panel:
+![](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/contact/contact2.png)
 
-**Backend**
+Admin panel messages list: (other users' feedback)
+![](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/contact/contact3.png)
 
--   Next.js API routes
-    
--   SQL (Supabase / PostgreSQL)
-    
--   Custom authentication layer
-    
--   HttpOnly cookie-based sessions
-    
--   Access and refresh token rotation
-    
+---
 
-**SDK**
+## Profile
+View: (profile info + three most recent posts)
+![](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/profile/profile1.png)
 
--   `@alienthebetrayer/analytics-sdk-core`
-    
--   `@alienthebetrayer/analytics-sdk-react`
-    
--   Strongly typed API client
-    
--   React Provider abstraction
-    
+Security tab: (authentication sessions + ability to revoke)
+![](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/profile/profile2.png)
 
-----------
+Friends tab: (incoming / outcoming requests + friend list)
+![](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/profile/profile3.png)
 
-## 📚 Libraries / Tooling
+---
 
--   Axios
-    
--   Supabase
-    
--   Tailwind CSS
-    
--   TypeScript (strict mode)
-    
--   npm workspaces (monorepo architecture)
-    
--   Custom middleware and CORS handling
-    
+## Search
+Users: (+three recent posts)
+![](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/search/search1.png)
 
-----------
+---
 
-## 🧠 Engineering Principles
+## Theme
+Messages:
+![](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/theme/theme1.png)
 
--   **Security-oriented design**  
-    Server-side session validation, token rotation, protected routes, and CORS-aware API boundaries
-    
--   **Scalable system architecture**  
-    SDK-driven ingestion, separation of core and framework-specific layers, and aggregation-based data modeling
-    
--   **Maintainability and clarity**  
-    End-to-end static typing, reusable abstractions, consistent project structure, and JSDoc-driven documentation
-    
--   **Full technical ownership**  
-    No third-party authentication, analytics, or SDK frameworks; all critical infrastructure implemented explicitly
-    
+Home:
+![](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/theme/theme2.png)
 
-----------
+Dashboard:
+![](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/theme/theme3.png)
 
-## 📸 Project Overview
+---
 
-**Dashboard**
-
--   Read-only analytics interface
-    
--   Project-level and event-level insights
-    
--   Pre-aggregated metrics
-    
--   Server-side data fetching for performance and consistency
-    
-
-![Analytics Dashboard](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/dashboard.png)
-
-**Authentication**
-
--   Fully custom-built authentication flow
-    
--   Access and refresh token lifecycle management
-    
--   Server-side rotation and invalidation
-    
--   Explicit session termination and invalidation semantics
-    
-
-![Authentication Flow](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/login.png)
-
-----------
-
-## ✅ Final Notes
-
-This project demonstrates **end-to-end system ownership**, spanning frontend engineering, backend API design, authentication infrastructure, SDK development, and relational data modeling, with an emphasis on production-oriented trade-offs and long-term maintainability.
+## Auth
+Login / Register form:
+![](https://raw.githubusercontent.com/AlienTheBetrayer/analytics/refs/heads/main/readme/images/auth/auth1.png)
