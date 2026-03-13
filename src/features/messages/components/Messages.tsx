@@ -16,7 +16,7 @@ export const Messages = () => {
             <Topline />
 
             <div
-                className={`box w-full max-w-400 min-h-164 p-4! mx-auto
+                className={`box w-full max-w-400 min-h-164 p-1! sm:p-4! mx-auto
                 ${isMaximized ? "fixed! inset-0 z-4 max-w-screen" : ""}`}
             >
                 <Select />

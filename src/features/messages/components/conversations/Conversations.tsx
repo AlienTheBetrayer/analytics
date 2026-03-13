@@ -26,7 +26,7 @@ export const Conversations = () => {
 
     // jsx
     return (
-        <article className="w-full flex flex-col bg-bg-2! grow p-4! gap-2 rounded-4xl relative">
+        <article className="w-full flex flex-col bg-bg-2! grow p-1! sm:p-4! gap-2 rounded-4xl relative">
             <ConversationsTopline />
 
             {isLoading || !zustandConversations ?

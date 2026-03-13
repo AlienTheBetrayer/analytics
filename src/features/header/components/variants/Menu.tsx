@@ -26,7 +26,7 @@ export const Menu = ({ hideMenu }: Props) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1, pointerEvents: "all" }}
             exit={{ opacity: 0, pointerEvents: "none" }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.3 }}
             className="fixed z-100 inset-0 bg-background-a-1 backdrop-blur-md md:hidden w-full h-full overflow-hidden"
             onClick={hideMenu}
         >
@@ -79,10 +79,7 @@ export const Menu = ({ hideMenu }: Props) => {
                                         <span>Notifications</span>
                                         <TabSelection
                                             className="right-4! top-2!"
-                                            condition={
-                                                page === "notifications" ||
-                                                page === "notification"
-                                            }
+                                            condition={page === "notifications" || page === "notification"}
                                         />
                                     </LinkButton>
                                 </li>
@@ -128,10 +125,7 @@ export const Menu = ({ hideMenu }: Props) => {
                                         <span>Notes</span>
                                         <TabSelection
                                             className="right-4! top-2!"
-                                            condition={
-                                                page === "messages" &&
-                                                secondary === "notes"
-                                            }
+                                            condition={page === "messages" && secondary === "notes"}
                                         />
                                     </LinkButton>
                                 </li>
@@ -147,10 +141,7 @@ export const Menu = ({ hideMenu }: Props) => {
                                         <span>Posts</span>
                                         <TabSelection
                                             className="right-4! top-2!"
-                                            condition={
-                                                page === "post" ||
-                                                page === "posts"
-                                            }
+                                            condition={page === "post" || page === "posts"}
                                         />
                                     </LinkButton>
                                 </li>
@@ -161,7 +152,7 @@ export const Menu = ({ hideMenu }: Props) => {
 
                 <li>
                     <ul className="flex flex-col gap-2">
-                        {status ? (
+                        {status ?
                             <li>
                                 <LinkButton
                                     href="/profile"
@@ -180,8 +171,7 @@ export const Menu = ({ hideMenu }: Props) => {
                                     />
                                 </LinkButton>
                             </li>
-                        ) : (
-                            <>
+                        :   <>
                                 <li>
                                     <Tooltip
                                         text="Create an account"
@@ -224,7 +214,7 @@ export const Menu = ({ hideMenu }: Props) => {
                                     </Tooltip>
                                 </li>
                             </>
-                        )}
+                        }
 
                         <li>
                             <Theme className="gap-1!">

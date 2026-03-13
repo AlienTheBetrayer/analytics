@@ -35,12 +35,12 @@ export const Header = () => {
                 <motion.nav
                     className="flex items-center w-full rounded-full"
                     initial={
-                        !animations.header
-                            ? {
-                                  opacity: 0,
-                                  y: -32,
-                              }
-                            : {}
+                        !animations.header ?
+                            {
+                                opacity: 0,
+                                y: -32,
+                            }
+                        :   {}
                     }
                     animate={{ y: 0, opacity: 1 }}
                     transition={{
@@ -58,9 +58,7 @@ export const Header = () => {
                 </motion.nav>
             </header>
 
-            <AnimatePresence>
-                {isMenuOpen && <Menu hideMenu={hideMenu} />}
-            </AnimatePresence>
+            <AnimatePresence>{isMenuOpen && <Menu hideMenu={hideMenu} />}</AnimatePresence>
         </>
     );
 };
