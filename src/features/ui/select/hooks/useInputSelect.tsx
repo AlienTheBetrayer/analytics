@@ -9,6 +9,7 @@ export const useInputSelect = (items: string[], value: string | undefined, onCha
     // states
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
     const [selectedItem, setSelectedItem] = useState<string>(items.length > 0 ? items[0] : "");
+    const [mounted, setMounted] = useState<boolean>(false);
 
     const { setIsDisabled } = useDisabledScroll();
 
@@ -18,6 +19,12 @@ export const useInputSelect = (items: string[], value: string | undefined, onCha
     // refs
     const inputRef = useRef<HTMLButtonElement | null>(null);
     const dialogRef = useRef<HTMLDialogElement | null>(null);
+
+    useEffect(() => {
+        requestAnimationFrame(() => {
+            setMounted(true);
+        });
+    }, []);
 
     useEffect(() => {
         if (!dialogRef.current) {
@@ -85,7 +92,7 @@ export const useInputSelect = (items: string[], value: string | undefined, onCha
     }, [isExpanded]);
 
     const render = useCallback(() => {
-        return createPortal(
+        return !!mounted && createPortal(
             <AnimatePresence
                 onExitComplete={() => {
                     dialogRef.current?.close();
@@ -153,7 +160,7 @@ export const useInputSelect = (items: string[], value: string | undefined, onCha
             </AnimatePresence>,
             document.body,
         );
-    }, [items, isExpanded, onChange, value, inputValue]);
+    }, [items, isExpanded, onChange, value, inputValue, mounted]);
 
     const expandToggle = useCallback(() => {
         setIsExpanded((prev) => !prev);

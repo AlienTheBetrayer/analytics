@@ -31,6 +31,7 @@ export const useQuery = <T extends CacheKey>(config: QueryConfig<T>) => {
     // hashing
     const hashKey = convertKey(config.key);
     const keyRef = useRef(config.key);
+    
     useEffect(() => {
         keyRef.current = config.key;
     });

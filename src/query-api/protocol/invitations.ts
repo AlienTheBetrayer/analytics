@@ -19,7 +19,7 @@ export type CacheAPIProtocolInvitations = {
     };
 };
 
-export const CacheAPIProtocolInvitations: CacheAPIFunctions<CacheAPIProtocolInvitations> =
+export const CacheAPIFunctionsInvitations: CacheAPIFunctions<CacheAPIProtocolInvitations> =
     {
         invitations: async (args: unknown[]) => {
             if (!args[0]) {
