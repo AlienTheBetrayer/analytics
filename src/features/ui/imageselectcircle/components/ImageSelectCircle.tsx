@@ -10,15 +10,10 @@ type Props = {
     onError?: (file: File) => void;
     mbLimit?: number;
     className?: string;
+    containerClassName?: string;
 };
 
-export const ImageSelectCircle = ({
-    value,
-    onChange,
-    onError,
-    mbLimit = 1,
-    className,
-}: Props) => {
+export const ImageSelectCircle = ({ value, containerClassName, onChange, onError, mbLimit = 1, className }: Props) => {
     // internal states & refs
     const [selected, setSelected] = useState<File | undefined>(undefined);
     const [error, setError] = useState<boolean>(false);
@@ -49,7 +44,7 @@ export const ImageSelectCircle = ({
     }, []);
 
     return (
-        <div className="relative w-fit h-fit">
+        <div className={`relative w-fit h-fit ${containerClassName ?? ""}`}>
             <input
                 type="file"
                 ref={inputRef}
@@ -83,7 +78,7 @@ export const ImageSelectCircle = ({
             >
                 {/* images */}
                 <AnimatePresence>
-                    {value || selected ? (
+                    {value || selected ?
                         <motion.div
                             initial={{ scale: 0, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
@@ -97,15 +92,10 @@ export const ImageSelectCircle = ({
                                 style={{ objectFit: "cover" }}
                                 alt="image"
                                 className="invert-0! rounded-full"
-                                src={
-                                    selected
-                                        ? URL.createObjectURL(selected)
-                                        : value
-                                }
+                                src={selected ? URL.createObjectURL(selected) : value}
                             />
                         </motion.div>
-                    ) : (
-                        <motion.div
+                    :   <motion.div
                             initial={{ scale: 0, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
                             exit={{ scale: 0, opacity: 0 }}
@@ -122,7 +112,7 @@ export const ImageSelectCircle = ({
                             />
                             <div className="absolute inset-0 loading z-2" />
                         </motion.div>
-                    )}
+                    }
                 </AnimatePresence>
 
                 {/* error message */}
@@ -158,7 +148,7 @@ export const ImageSelectCircle = ({
                         transition={{ type: "spring", bounce: 0 }}
                         className="absolute bottom-2 left-1/2 -translate-x-1/2 flex items-center gap-1 bg-blend-difference"
                     >
-                        {selected ? (
+                        {selected ?
                             <>
                                 <Tooltip text="Cancel">
                                     <Button
@@ -198,8 +188,7 @@ export const ImageSelectCircle = ({
                                     </Button>
                                 </Tooltip>
                             </>
-                        ) : (
-                            value && (
+                        :   value && (
                                 <Tooltip text="Delete">
                                     <Button
                                         onClick={() => {
@@ -215,7 +204,7 @@ export const ImageSelectCircle = ({
                                     </Button>
                                 </Tooltip>
                             )
-                        )}
+                        }
                     </motion.div>
                 )}
             </AnimatePresence>

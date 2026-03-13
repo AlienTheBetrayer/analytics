@@ -1,6 +1,7 @@
 import { BentoSection } from "@/features/bentogrid/components/parts/BentoSection";
 import { Button } from "@/features/ui/button/components/Button";
 import { Checkbox } from "@/features/ui/checkbox/components/Checkbox";
+import { ImageSelectCircle } from "@/features/ui/imageselectcircle/components/ImageSelectCircle";
 import { Input } from "@/features/ui/input/components/Input";
 import { LinkButton } from "@/features/ui/linkbutton/components/LinkButton";
 import { useMessageBox } from "@/features/ui/messagebox/hooks/useMessageBox";
@@ -19,18 +20,37 @@ export const UI = () => {
     const [blur, setBlur] = useState<boolean>(false);
     const [direction, setDirection] = useState<PopoverDirection>("screen-middle");
 
+    // react states
+    const [image, setImage] = useState<string>("");
+
     // jsx
     return (
         <BentoSection
             src="/cubes.svg"
             text="UI"
+            className="flex-row! items-center"
         >
             {box.render({
-                children: "Messages boxes are very straight-forward to code!",
+                children: "Focus-trapped + One line of code + Easy integration",
                 onSelect: () => {},
             })}
 
-            <ul className="w-full gap-2 mx-auto! grid! auto-cols-fr grid-cols-2 sm:grid-cols-4">
+            <div className="flex items-center justify-center w-full max-w-24">
+                <ImageSelectCircle
+                    containerClassName="w-full"
+                    className="w-full aspect-square"
+                    value={image}
+                    onChange={(value) => {
+                        if (value) {
+                            setImage(URL.createObjectURL(value));
+                        } else {
+                            setImage("");
+                        }
+                    }}
+                />
+            </div>
+
+            <ul className="w-full h-fit! gap-2 mx-auto! grid! auto-cols-fr grid-cols-2 sm:grid-cols-4">
                 <li>
                     <Button className="w-full h-full">
                         <Image
@@ -75,6 +95,7 @@ export const UI = () => {
                         className="w-full h-full"
                         onClick={box.show}
                     >
+                        <div className="w-1 h-1 rounded-full bg-green-1" />
                         <Image
                             alt=""
                             width={16}
