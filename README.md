@@ -5,7 +5,7 @@
 
 ---
 
-**Features:**
+## Features:
 - [Home](#Home)
 - [Messenger](#Messenger)
 - [Noteboard](#Noteboard)
@@ -17,6 +17,42 @@
 - [Search](#Search)
 - [Auth](#Auth)
 - [Theme](#Theme)
+
+--- 
+
+## Tech Stack
+
+- **Frontend & Backend**
+  - React
+  - Next.js
+  - TypeScript
+
+- **State Management & Data**
+  - Normalized caching
+  - Custom strongly-typed `useQuery()` system (SWR)
+  - Zustand with state synchronization
+
+- **Authentication & API**
+  - JWT-based authentication (refreshing + roles/permissions + encryption)
+  - 60+ RESTful API endpoints
+  - Real-time WebSocket communication
+  - NPM package to gather analytics
+
+- **UI & Styling**
+  - Tailwind CSS
+  - Three.js for 3D graphics
+  - Framer Motion for animations
+
+- **Custom UI Toolkit**
+  - Fully accessible modals, tooltips, and popovers
+  - Custom buttons, inputs, and checkboxes
+  - Elegant ripple effects
+  - Dark/light theme support
+
+- **Utilities & Patterns**
+  - Promise handler with deduplication and race condition management
+  - Robust notifications system
+  - Caching + SWR
 
 ---
 
