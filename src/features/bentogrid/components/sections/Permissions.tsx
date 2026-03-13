@@ -18,7 +18,7 @@ export const Permissions = () => {
                 <div className="flex flex-col items-center gap-1">
                     <LinkButton
                         href="/profile"
-                        className="w-full p-2!"
+                        className="w-full p-2! max-w-32 mx-auto!"
                     >
                         <div className="w-1 h-1 rounded-full bg-blue-3" />
                         <Image
@@ -79,7 +79,7 @@ export const Permissions = () => {
                 </ul>
             }
 
-            <ul className="grid! grid-cols-3 gap-2 w-full max-w-48 mx-auto!">
+            <ul className="grid! grid-cols-2 gap-2 w-full max-w-48 mx-auto!">
                 <li>
                     <InfoTooltip
                         color="var(--blue-3)"
@@ -97,16 +97,6 @@ export const Permissions = () => {
                         text={"API"}
                     >
                         Primary security is enforced at the API layer to prevent unauthorized access
-                    </InfoTooltip>
-                </li>
-
-                <li>
-                    <InfoTooltip
-                        color="var(--red-1)"
-                        src="/delete.svg"
-                        text={"Sessions"}
-                    >
-                        Additional security features allow users to revoke active sessions on other devices
                     </InfoTooltip>
                 </li>
             </ul>
