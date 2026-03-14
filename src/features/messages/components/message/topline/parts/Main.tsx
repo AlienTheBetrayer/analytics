@@ -88,7 +88,9 @@ export const Main = () => {
                                         </Modal>
                                     </li>
 
-                                    {conversation.membership.can_invite !== false && (
+                                    {(conversation.membership.can_invite === true ||
+                                        conversation.membership.is_admin ||
+                                        conversation.membership.is_founder) && (
                                         <li>
                                             <Modal
                                                 tooltipClassName="w-screen max-w-lg"
