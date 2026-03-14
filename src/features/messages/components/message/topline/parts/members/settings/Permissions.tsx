@@ -22,7 +22,6 @@ export const Permissions = ({ data }: MemberSettingsProps) => {
 
     // react states
     const [canRead, setCanRead] = useState<boolean>(data.can_read ?? true);
-    const [canKick, setCanKick] = useState<boolean>(data.can_kick ?? false);
     const [canInvite, setCanInvite] = useState<boolean>(data.can_invite ?? false);
     const [canDelete, setCanDelete] = useState<boolean>(data.can_delete_messages ?? false);
     const [canSend, setCanSend] = useState<boolean>(data.can_send ?? true);
@@ -51,7 +50,7 @@ export const Permissions = ({ data }: MemberSettingsProps) => {
         );
     }
 
-    if(data.is_founder) {
+    if (data.is_founder) {
         return null;
     }
 
@@ -81,7 +80,6 @@ export const Permissions = ({ data }: MemberSettingsProps) => {
                             can_send: canSend,
                             can_invite: canInvite,
                             can_delete_messages: canDelete,
-                            can_kick: canKick,
                         });
                     });
                 }}
@@ -102,15 +100,6 @@ export const Permissions = ({ data }: MemberSettingsProps) => {
                             onToggle={(flag) => setCanSend(flag)}
                         >
                             Send messages
-                        </Checkbox>
-                    </li>
-
-                    <li>
-                        <Checkbox
-                            value={canKick}
-                            onToggle={(flag) => setCanKick(flag)}
-                        >
-                            Kick others
                         </Checkbox>
                     </li>
 
