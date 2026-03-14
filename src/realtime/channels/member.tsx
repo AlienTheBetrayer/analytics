@@ -56,18 +56,6 @@ export const handleRealtimeMember = (
                                 element: <ConversationElement conversation_id={c.id} />,
                             },
                         });
-                    } else if (c.membership.unread_amount === member.unread_amount) {
-                        notificationListeners.fire({
-                            key: "all",
-                            notification: {
-                                status: "Warning",
-                                tab: "Account",
-                                title: `Permissions changed!`,
-                                description: `Your permissions / membership has been changed.`,
-                                type: "Membership changed",
-                                element: <ConversationElement conversation_id={c.id} />,
-                            },
-                        });
                     }
 
                     return { ...state, conversations };
