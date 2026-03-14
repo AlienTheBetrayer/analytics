@@ -23,7 +23,7 @@ export const Forward = ({ message }: Props) => {
     }
 
     // ui state
-    const user = messages?.users.get(message.forward.user_id);
+    const user = messages?.users?.get?.(message.forward.user_id);
 
     // jsx
     return (

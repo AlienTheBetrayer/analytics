@@ -110,6 +110,11 @@ export const upsertMessage = async (
             // temp message
             const temp = crypto.randomUUID();
 
+            const cMessages = queryCache.get({ key: ["messages", options.conversation_id] }) as
+                | CacheAPIProtocol["messages"]["data"]
+                | null;
+            const author = cMessages?.users?.get?.(options.forward?.user_id || options.reply?.user_id || user.id);
+
             queryMutate({
                 key: ["messages", options.conversation_id],
                 value: (state) => {
@@ -125,7 +130,13 @@ export const upsertMessage = async (
                         ...(options.forward && { forward: options.forward }),
                     });
 
-                    return { ...state, messages, ids: [...state.ids, `temp${temp}`] };
+                    const users = new Map(state?.users ?? []);
+
+                    if (author) {
+                        users.set(author.id, author);
+                    }
+
+                    return { ...state, messages, ids: [...(state?.ids ?? []), `temp${temp}`], users };
                 },
             });
 
@@ -157,13 +168,13 @@ export const upsertMessage = async (
             queryMutate({
                 key: ["messages", message.conversation_id],
                 value: (state) => {
-                    const m = state.messages.get(`temp${temp}`);
+                    const m = state.messages?.get?.(`temp${temp}`);
 
                     if (!m) {
                         return state;
                     }
 
-                    const messages = new Map(state.messages);
+                    const messages = new Map(state.messages ?? []);
                     messages.delete(`temp${temp}`);
                     messages.set(msg.id, {
                         ...m,
@@ -174,7 +185,7 @@ export const upsertMessage = async (
                     return {
                         ...state,
                         messages,
-                        ids: state.ids.map((id) => (id === `temp${temp}` ? msg.id : id)),
+                        ids: state.ids?.map?.((id) => (id === `temp${temp}` ? msg.id : id)) ?? [],
                     };
                 },
             });
@@ -184,13 +195,13 @@ export const upsertMessage = async (
             queryMutate({
                 key: ["messages", options.message.conversation_id],
                 value: (state) => {
-                    const m = state.messages.get(options.message.id);
+                    const m = state.messages?.get?.(options.message.id);
 
                     if (!m) {
                         return state;
                     }
 
-                    const messages = new Map(state.messages).set(options.message.id, {
+                    const messages = new Map(state.messages ?? []).set(options.message.id, {
                         ...m,
                         ...("content" in options && { message: options.content, edited_at: new Date().toISOString() }),
                     });
