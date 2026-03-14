@@ -17,7 +17,7 @@ export const setLastMessage = (user_id: string, conversation_id: string) => {
         key: ["conversations", user_id],
         value: (state) => {
             const conversations = new Map(state?.conversations ?? []);
-            const c = conversations.get(conversation_id);
+            const c = conversations?.get?.(conversation_id);
 
             if (!c) {
                 return state;
@@ -25,19 +25,19 @@ export const setLastMessage = (user_id: string, conversation_id: string) => {
 
             const messages = queryCache.get({ key: ["messages", c.id] }) as CacheAPIProtocol["messages"]["data"];
 
-            const lastMessageId = messages && messages.ids.at(-1);
+            const lastMessageId = messages && messages?.ids?.at?.(-1);
 
             if (!lastMessageId) {
                 return state;
             }
 
-            const lastMessage = messages.messages.get(lastMessageId);
+            const lastMessage = messages?.messages?.get?.(lastMessageId);
 
             if (!lastMessage) {
                 return state;
             }
 
-            const lastUser = messages.users.get(lastMessage.user_id);
+            const lastUser = messages?.users?.get?.(lastMessage.user_id);
 
             if (!lastUser) {
                 return state;

@@ -124,7 +124,7 @@ export const useMessageInput = ({
                         to_id,
                         message: currentMessage,
                     }).then((message) => {
-                        if (tab === "notes" || !message) {
+                        if (!message) {
                             return;
                         }
 
