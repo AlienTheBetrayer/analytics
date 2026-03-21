@@ -133,7 +133,6 @@ export const ContextMenu = ({ message, hide, onAction }: Props) => {
                     <>
                         <li>
                             <Modal
-                                blur
                                 tooltipClassName="w-screen max-w-96"
                                 direction="screen-middle"
                                 className="w-full"

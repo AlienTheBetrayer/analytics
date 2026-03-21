@@ -69,7 +69,6 @@ export const Main = () => {
                                         <Modal
                                             tooltipClassName="w-screen max-w-lg"
                                             direction="screen-middle"
-                                            blur
                                             element={() => <Members />}
                                         >
                                             <Tooltip
@@ -95,7 +94,6 @@ export const Main = () => {
                                             <Modal
                                                 tooltipClassName="w-screen max-w-lg"
                                                 direction="screen-middle"
-                                                blur
                                                 element={() => <CreateInvites />}
                                             >
                                                 <Tooltip
@@ -121,7 +119,6 @@ export const Main = () => {
                                 <Modal
                                     direction="screen-middle"
                                     tooltipClassName="w-screen max-w-2xl"
-                                    blur
                                     element={(hide) => <EditingMenu hide={hide} />}
                                 >
                                     <Tooltip

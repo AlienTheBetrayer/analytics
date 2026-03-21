@@ -95,16 +95,6 @@ export const MessageBox = ({ visibility, children, onSelect }: Props) => {
                 >
                     {visibility && (
                         <motion.div
-                            key="blur"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            className="fixed inset-0 backdrop-blur-xs"
-                        />
-                    )}
-
-                    {visibility && (
-                        <motion.div
                             key="box"
                             initial={{ opacity: 0, scale: 0.85 }}
                             animate={{
