@@ -1,59 +1,67 @@
 # Analytics
 
-## Overview
+## 📝 Overview
 **A brief overview of the application, not all features were displayed, there's more to the application**
 
 ---
 
-## Features:
-- [Home](#Home)
-- [Messenger](#Messenger)
-- [Noteboard](#Noteboard)
-- [Posts](#Posts)
-- [Dashboard](#Dashboard)
-- [Notifications](#Notifications)
-- [Contact](#Contact)
-- [Profile](#Profile)
-- [Search](#Search)
-- [Auth](#Auth)
-- [Theme](#Theme)
+## 🚀 Features:
+- 🏠 [Home](#Home)
+- 💬 [Messenger](#Messenger)
+- 📋 [Noteboard](#Noteboard)
+- 📮 [Posts](#Posts)
+- 📈 [Dashboard](#Dashboard)
+- 🔔 [Notifications](#Notifications)
+- 📩 [Contact](#Contact)
+- 👤 [Profile](#Profile)
+- 🔍 [Search](#Search)
+- 🔐 [Auth](#Auth)
+- 🎨 [Theme](#Theme)
 
 --- 
 
-## Tech Stack
+## 🛠️ Tech Stack
 
-- **Frontend & Backend**
+- **💻 Frontend & Backend**
   - React
   - Next.js
   - TypeScript
+  - Tailwind + CSS
 
-- **State Management & Data**
+- **⏱️ Real-time Synchronization**
+  - Robust WebSocket communication
+  - Multi-device & multi-tab state synchronization
+  - Real-time member permissions & instant muting
+  - Live analytics streaming & instant notifications
+  - Consistent data sync for messages & conversations
+
+- **📦 State Management & Data**
   - Normalized caching
-  - Custom strongly-typed `useQuery()` system (SWR)
-  - Zustand with state synchronization
+  - Custom strongly-typed `useQuery()` system & SWR
+  - Zustand global state synchronization
 
-- **Authentication & API**
-  - JWT-based authentication (refreshing + roles/permissions + encryption)
+- **🔐 Authentication & API**
+  - JWT-based authentication (refreshing + encryption)
+  - Roles and Permissions at Frontend & API
   - 60+ RESTful API endpoints
-  - Real-time WebSocket communication
-  - NPM package to gather analytics
+  - Custom NPM package for analytics collection
 
-- **UI & Styling**
+- **🎨 UI & Styling**
   - Tailwind CSS
   - Three.js for 3D graphics
   - Framer Motion for animations
 
-- **Custom UI Toolkit**
+- **🧱 Custom UI Toolkit**
   - Fully accessible modals, tooltips, and popovers
   - Custom buttons, inputs, and checkboxes
   - Elegant ripple effects
   - Dark/light theme support
 
-- **Utilities & Patterns**
+- **⚙️ Utilities & Patterns**
   - Promise handler with deduplication and race condition management
   - Robust notifications system
   - Caching + SWR
-
+    
 ---
 
 ## Home
